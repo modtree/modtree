@@ -16,6 +16,7 @@
     "build": "tsc",
     "pm": "tsc && node ./lib/pullMod",
     "gm": "tsc && node ./lib/getMod",
-    "id": "tsc && node ./lib/initDegree"
+    "id": "tsc && node ./lib/initDegree",
+    "gd": "tsc && node ./lib/getDegree"
   }
 }
