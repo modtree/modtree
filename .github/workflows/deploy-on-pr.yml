@@ -1,13 +1,15 @@
-name: Deploy Backend Functions
+name: Check Backend Functions
 
 on:
   pull_request:
     types: [opened, reopened]
 
 jobs:
-  deploy_to_firebase:
+  check_backend_functions:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - run: cd database/functions && yarn deploy
+      - name: Setup Symfony
+        working-directory: ./apps/database/functions
+      - run: yarn build && yarn lint
