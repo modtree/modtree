@@ -15,8 +15,10 @@
     "dev": "tsc && node .",
     "build": "tsc",
     "pm": "tsc && node ./lib/pullMod",
+    "pam": "tsc && node ./lib/pullAllMods",
     "gm": "tsc && node ./lib/getMod",
     "id": "tsc && node ./lib/initDegree",
-    "gd": "tsc && node ./lib/getDegree"
+    "gd": "tsc && node ./lib/getDegree",
+    "nm": "tsc && node ./lib/numberMods"
   }
 }

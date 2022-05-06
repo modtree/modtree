@@ -24,6 +24,15 @@ export const pullMod = https.onRequest(async (req, res) => {
   });
 });
 
+export const numberMods = https.onRequest(async (req, res) => {
+  const collectionRef = firestore().collection("modules");
+  const length = await collectionRef.listDocuments()
+  res.json({
+    length: length.length,
+  });
+});
+
+
 export namespace utils {
   export const getMod = async (search: Record<string, string>) => {
     const collectionRef = firestore().collection("modules");
