@@ -73,4 +73,3 @@ Learn more about the power of Turborepo:
 - [Caching](https://turborepo.org/docs/core-concepts/caching)
 - [Remote Caching (Beta)](https://turborepo.org/docs/core-concepts/remote-caching)
 - [Scoped Tasks](https://turborepo.org/docs/core-concepts/scopes)
-- [Configuration Options](https://turborepo.org/docs/reference/configuration)
