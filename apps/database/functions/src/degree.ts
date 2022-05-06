@@ -3,7 +3,7 @@ import { firestore } from "firebase-admin";
 import { FirestoreDataConverter } from "@google-cloud/firestore";
 import { utils } from "./index";
 
-class Degree {
+export class Degree {
   hardRequirements: string[];
   name: string;
   static converter: FirestoreDataConverter<Degree> = {
@@ -22,6 +22,9 @@ class Degree {
   constructor(name: string, hardRequirements: string[]) {
     this.name = name;
     this.hardRequirements = hardRequirements;
+  }
+  getHardRequirements() {
+    return this.hardRequirements
   }
 }
 
