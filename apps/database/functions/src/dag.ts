@@ -2,7 +2,7 @@ import { https } from "firebase-functions";
 // import { firestore } from "firebase-admin";
 import { utils } from ".";
 import { Degree } from "./degree";
-// import { Module } from "../types/modules";
+import { Module as NusmodsModule } from "../types/modules";
 // import { DocumentData } from "@google-cloud/firestore";
 
 type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
@@ -25,6 +25,18 @@ type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 //   }
 // }
 
+class Module {
+  moduleCode: string;
+  constructor(moduleCode: string) {
+    this.moduleCode = moduleCode;
+  }
+  async getPrereqTree(): Promise<PrereqTree> {
+    return utils.getMod({ moduleCode: this.moduleCode }).then((module) => {
+      return module.prereqTree || "";
+    });
+  }
+}
+
 class User {
   done: string[];
   degree: Degree;
@@ -40,6 +52,13 @@ class User {
   setDegree(degree: Degree) {
     this.degree = degree;
   }
+  // can take it right now, given modules done
+  async canTakeModule(moduleCode: string): Promise<boolean> {
+    const module = new Module(moduleCode);
+    const prereqTree = await module.getPrereqTree();
+    const can = checkTree(prereqTree, this.done);
+    return can;
+  }
 }
 
 // class Tree {
@@ -50,13 +69,9 @@ class User {
 // }
 //
 
-function checkTree(
-  prereqTree: PrereqTree,
-  modulesCleared: string[],
-): boolean {
-  console.log('checkTree', prereqTree)
-  if (prereqTree === "")
-    return true
+function checkTree(prereqTree: PrereqTree, modulesCleared: string[]): boolean {
+  console.log("checkTree", prereqTree);
+  if (prereqTree === "") return true;
   else if (typeof prereqTree === "string")
     return modulesCleared.includes(prereqTree);
   else if (Array.isArray(prereqTree.and)) {
@@ -68,7 +83,7 @@ function checkTree(
       checkTree(one, modulesCleared)
     );
   } else {
-    console.warn("not supposed to be here")
+    console.warn("not supposed to be here");
     return true;
   }
 }
@@ -81,26 +96,17 @@ export const test = https.onRequest(async (req, res) => {
     "CS2030S",
   ]);
   user.setDegree(degree);
-  const hardRequirements = user.degree.getHardRequirements();
-  const q: Promise<number | void>[] = [];
-  const prereqTrees: PrereqTree[] = Array(hardRequirements.length);
-  hardRequirements.forEach((module, index) => {
-    q.push(
-      utils.getMod({ moduleCode: module }).then((module) => {
-        console.log("1st in queue", module.title);
-        prereqTrees[index] = (module.prereqTree || "");
-      })
-    );
-  });
-  await Promise.allSettled(q);
 
-  console.log("trees", prereqTrees);
-  hardRequirements.forEach((module, index) => {
-    const prereqTree = prereqTrees[index]
-    const can = checkTree(prereqTree, user.done);
-    console.log(module, can)
-  });
-  console.log(user, hardRequirements);
+  const moduleCode = 'MA2101'
+  const t1 = await user.canTakeModule(moduleCode)
+  console.log(moduleCode, t1)
+
+  user.do('MA2001')
+
+  const t2 = await user.canTakeModule(moduleCode)
+  console.log(moduleCode, t2)
+
+
   res.json({
     message: "done",
   });
