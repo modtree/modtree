@@ -55,6 +55,7 @@ export const test = https.onRequest(async (req, res) => {
   user.setDegree(degree);
   const hardRequirements = user.degree.getHardRequirements()
   hardRequirements.forEach(module => {
+    let prereqTree: PrereqTree
     // get module into from database
     // if no prereqTree, return true
     // else traverse the tree
