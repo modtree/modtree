@@ -23,4 +23,5 @@ export class User {
     const can = checkTree(prereqTree, this.done);
     return can;
   }
+  // TODO: list version of canTakeModule
 }
