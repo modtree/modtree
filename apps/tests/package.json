@@ -14,6 +14,7 @@
   "scripts": {
     "dev": "tsc && node .",
     "build": "tsc",
-    "pm": "tsc && node ./lib/pullMod"
+    "pm": "tsc && node ./lib/pullMod",
+    "gm": "tsc && node ./lib/getMod"
   }
 }
