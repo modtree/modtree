@@ -1,7 +1,7 @@
-import { https } from "firebase-functions";
-import { firestore } from "firebase-admin";
-import { FirestoreDataConverter } from "@google-cloud/firestore";
-import { utils } from "./index";
+import {https} from "firebase-functions";
+import {firestore} from "firebase-admin";
+import {FirestoreDataConverter} from "@google-cloud/firestore";
+import utils from "../utils";
 
 export class Degree {
   hardRequirements: string[];
@@ -24,14 +24,14 @@ export class Degree {
     this.hardRequirements = hardRequirements;
   }
   getHardRequirements() {
-    return this.hardRequirements
+    return this.hardRequirements;
   }
 }
 
 export const initDegree = https.onRequest(async (req, res) => {
   const collectionRef = firestore()
-    .collection("degrees")
-    .withConverter(Degree.converter);
+      .collection("degrees")
+      .withConverter(Degree.converter);
   const degree = new Degree("Computer Science", [
     "CS1101S",
     "CS1231S",
@@ -59,16 +59,16 @@ export const getDegree = https.onRequest(async (req, res) => {
     });
     return;
   }
-  const one = result[0]
-  const tree: any[] = []
-  const awaitStack: any[] = []
-  one.hardRequirements.forEach(mod => {
-    awaitStack.push(utils.getMod({ moduleCode: mod }))
-  })
-  const data = await Promise.allSettled(awaitStack)
+  const one = result[0];
+  const tree: any[] = [];
+  const awaitStack: any[] = [];
+  one.hardRequirements.forEach((mod) => {
+    awaitStack.push(utils.getMod({moduleCode: mod}));
+  });
+  const data = await Promise.allSettled(awaitStack);
   data.forEach((moduleResult: any) => {
-    tree.push(moduleResult.value[0].prereqTree || [])
-  })
+    tree.push(moduleResult.value[0].prereqTree || []);
+  });
 
   res.json({
     tree,

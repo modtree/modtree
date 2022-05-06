@@ -1,0 +1,24 @@
+class Edge {
+  pre: string;
+  post: string;
+  constructor(pre: string, post: string) {
+    this.pre = pre;
+    this.post = post;
+  }
+}
+
+class GraphNode {
+  name: string;
+  required: GraphNode[];
+  constructor(name: string, required: GraphNode[]) {
+    this.name = name;
+    this.required = required.length === 0 ? [] : required;
+  }
+}
+
+class Tree {
+  tree: PrereqTree;
+  constructor(tree: PrereqTree) {
+    this.tree = tree;
+  }
+}
