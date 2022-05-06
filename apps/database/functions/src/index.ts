@@ -73,8 +73,10 @@ export const getMod = https.onRequest(async (req, res) => {
 
 export const getTree = https.onRequest(async (req, res) => {
   const module = await utils.getMod(req.body)
+  const tree= module.prereqTree || {}
+  console.log(JSON.stringify(tree, null, 2))
   res.json({
-    module,
+    tree,
   });
 });
 
