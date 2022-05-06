@@ -25,6 +25,17 @@ export const pullMod = https.onRequest(async (req, res) => {
   });
 });
 
+export const apiMod = https.onRequest(async (req, res) => {
+  const moduleCode = req.body.moduleCode;
+  const apiRequest = nusmodsApi(`modules/${moduleCode}`);
+  const result = await axios.get(apiRequest);
+  const data = result.data;
+  console.log(data)
+  res.json({
+    result: data,
+  });
+});
+
 export const numberMods = https.onRequest(async (req, res) => {
   const collectionRef = firestore().collection("modules");
   const length = await collectionRef.listDocuments();
@@ -105,6 +116,7 @@ export const getMod = https.onRequest(async (req, res) => {
   const result: DocumentData[] = [];
   snapshot.forEach((doc) => {
     const data = doc.data();
+    console.log('get mod', data)
     result.push(data);
   });
   res.json({

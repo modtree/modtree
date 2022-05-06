@@ -15,6 +15,7 @@
     "dev": "tsc && node .",
     "build": "tsc",
     "pm": "tsc && node ./lib/pullMod",
+    "am": "tsc && node ./lib/apiMod",
     "pam": "tsc && node ./lib/pullAllMods",
     "gm": "tsc && node ./lib/getMod",
     "gt": "tsc && node ./lib/getTree",

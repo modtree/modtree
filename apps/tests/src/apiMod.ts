@@ -6,9 +6,9 @@ export function cloud(string: string): string {
   return `${base}/${string}`;
 }
 
-const fn = "pullMod";
+const fn = "apiMod";
 
-const modList = [ "CS2030S"];
+const modList = ['CS2030S'];
 
 modList.forEach((mod) => {
   axios.post(cloud(fn), { moduleCode: mod }).then((res) => {

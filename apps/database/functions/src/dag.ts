@@ -53,19 +53,22 @@ class User {
 function checkTree(
   prereqTree: PrereqTree,
   modulesCleared: string[],
-  hardRequirements: string[]
 ): boolean {
-  if (typeof prereqTree === "string")
-    return hardRequirements.includes(prereqTree);
+  console.log('checkTree', prereqTree)
+  if (prereqTree === "")
+    return true
+  else if (typeof prereqTree === "string")
+    return modulesCleared.includes(prereqTree);
   else if (Array.isArray(prereqTree.and)) {
     return prereqTree.and.every((one: PrereqTree) =>
-      checkTree(one, modulesCleared, hardRequirements)
+      checkTree(one, modulesCleared)
     );
   } else if (Array.isArray(prereqTree.or)) {
     return prereqTree.or.some((one: PrereqTree) =>
-      checkTree(one, modulesCleared, hardRequirements)
+      checkTree(one, modulesCleared)
     );
   } else {
+    console.warn("not supposed to be here")
     return true;
   }
 }
@@ -94,7 +97,7 @@ export const test = https.onRequest(async (req, res) => {
   console.log("trees", prereqTrees);
   hardRequirements.forEach((module, index) => {
     const prereqTree = prereqTrees[index]
-    const can = checkTree(prereqTree, user.done, hardRequirements);
+    const can = checkTree(prereqTree, user.done);
     console.log(module, can)
   });
   console.log(user, hardRequirements);
