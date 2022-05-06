@@ -50,6 +50,18 @@ class User {
 // }
 //
 
+function checkTree(prereqTree: PrereqTree, modulesCleared: string[], hardRequirements: string[]): boolean {
+  if (typeof prereqTree === 'string')
+    return hardRequirements.includes(prereqTree);
+  else if (Array.isArray(prereqTree.and)) {
+    return prereqTree.and.every((one: PrereqTree) => checkTree(one, modulesCleared, hardRequirements))
+  } else if (Array.isArray(prereqTree.or)) {
+    return prereqTree.or.some((one: PrereqTree) => checkTree(one, modulesCleared, hardRequirements))
+  } else {
+    return false;
+  }
+}
+
 export const test = https.onRequest(async (req, res) => {
   const user = new User();
   const degree = new Degree("Computer Science", [
@@ -77,7 +89,9 @@ export const test = https.onRequest(async (req, res) => {
     // get module into from database
     // if no prereqTree, return true
     // else traverse the tree
-  });
+    return checkTree(prereqTree, user.done, hardRequirements);
+  })
+  console.log(user, hardRequirements)
   res.json({
     message: "done",
   });
