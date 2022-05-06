@@ -50,15 +50,23 @@ class User {
 // }
 //
 
-function checkTree(prereqTree: PrereqTree, modulesCleared: string[], hardRequirements: string[]): boolean {
-  if (typeof prereqTree === 'string')
+function checkTree(
+  prereqTree: PrereqTree,
+  modulesCleared: string[],
+  hardRequirements: string[]
+): boolean {
+  if (typeof prereqTree === "string")
     return hardRequirements.includes(prereqTree);
   else if (Array.isArray(prereqTree.and)) {
-    return prereqTree.and.every((one: PrereqTree) => checkTree(one, modulesCleared, hardRequirements))
+    return prereqTree.and.every((one: PrereqTree) =>
+      checkTree(one, modulesCleared, hardRequirements)
+    );
   } else if (Array.isArray(prereqTree.or)) {
-    return prereqTree.or.some((one: PrereqTree) => checkTree(one, modulesCleared, hardRequirements))
+    return prereqTree.or.some((one: PrereqTree) =>
+      checkTree(one, modulesCleared, hardRequirements)
+    );
   } else {
-    return false;
+    return true;
   }
 }
 
@@ -72,26 +80,24 @@ export const test = https.onRequest(async (req, res) => {
   user.setDegree(degree);
   const hardRequirements = user.degree.getHardRequirements();
   const q: Promise<number | void>[] = [];
-  const prereqTrees: PrereqTree[] = [];
-  hardRequirements.forEach((module) => {
+  const prereqTrees: PrereqTree[] = Array(hardRequirements.length);
+  hardRequirements.forEach((module, index) => {
     q.push(
       utils.getMod({ moduleCode: module }).then((module) => {
         console.log("1st in queue", module.title);
-        prereqTrees.push(module.prereqTree || "");
+        prereqTrees[index] = (module.prereqTree || "");
       })
     );
   });
   await Promise.allSettled(q);
 
   console.log("trees", prereqTrees);
-  hardRequirements.forEach((module) => {
-    console.log("2nd", module);
-    // get module into from database
-    // if no prereqTree, return true
-    // else traverse the tree
-    return checkTree(prereqTree, user.done, hardRequirements);
-  })
-  console.log(user, hardRequirements)
+  hardRequirements.forEach((module, index) => {
+    const prereqTree = prereqTrees[index]
+    const can = checkTree(prereqTree, user.done, hardRequirements);
+    console.log(module, can)
+  });
+  console.log(user, hardRequirements);
   res.json({
     message: "done",
   });
