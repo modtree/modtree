@@ -63,6 +63,7 @@ export default function FlowPage() {
   return (
     <div style={{'height': 1000, 'width': 1000}}>
       <Flow nodes={defaultNodes} edges={defaultEdges} />
+      <div className="text-red-300">Hello</div>
     </div>
   );
 }
