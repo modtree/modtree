@@ -1,5 +1,5 @@
 import {PrereqTree} from '../../types/modules';
-import utils from '../utils';
+import {utils} from '../utils';
 
 /** a Module class */
 export class Module {

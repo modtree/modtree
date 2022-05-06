@@ -1,4 +1,4 @@
-import {checkTree} from '../utils';
+import {utils} from '../utils';
 import {Degree, Module} from '.';
 
 /** a User class */
@@ -34,7 +34,7 @@ export class User {
   async canTakeModule(moduleCode: string): Promise<boolean> {
     const module = new Module(moduleCode);
     const prereqTree = await module.getPrereqTree();
-    const can = checkTree(prereqTree, this.done);
+    const can = utils.checkTree(prereqTree, this.done);
     return can;
   }
   // TODO: list version of canTakeModule

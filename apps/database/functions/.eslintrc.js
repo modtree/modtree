@@ -25,6 +25,7 @@ module.exports = {
     'import',
   ],
   rules: {
+    '@typescript-eslint/no-namespace': 'off',
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
     'max-len': 'off',

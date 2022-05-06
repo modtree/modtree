@@ -2,7 +2,7 @@ import {https} from 'firebase-functions';
 import {firestore} from 'firebase-admin';
 import {FirestoreDataConverter} from '@google-cloud/firestore';
 import {Module, PrereqTree} from '../../types/modules';
-import utils from '../utils';
+import {utils} from '../utils';
 
 /** a Degree class */
 export class Degree {
