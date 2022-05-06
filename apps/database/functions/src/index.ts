@@ -47,7 +47,7 @@ export namespace utils {
       const data = doc.data();
       result.push(data);
     });
-    return result
+    return result[0] || {}
   };
 }
 
@@ -70,5 +70,13 @@ export const getMod = https.onRequest(async (req, res) => {
     result,
   });
 });
+
+export const getTree = https.onRequest(async (req, res) => {
+  const module = await utils.getMod(req.body)
+  res.json({
+    module,
+  });
+});
+
 
 export * from "./degree";
