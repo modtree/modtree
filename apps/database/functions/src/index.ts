@@ -82,3 +82,4 @@ export const getTree = https.onRequest(async (req, res) => {
 
 
 export * from "./degree";
+export * from "./dag";

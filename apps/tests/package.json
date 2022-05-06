@@ -18,7 +18,8 @@
     "pam": "tsc && node ./lib/pullAllMods",
     "gm": "tsc && node ./lib/getMod",
     "gt": "tsc && node ./lib/getTree",
-    "id": "tsc && node ./lib/initDegree",
+    "ideg": "tsc && node ./lib/initDegree",
+    "idag": "tsc && node ./lib/initDag",
     "gd": "tsc && node ./lib/getDegree",
     "nm": "tsc && node ./lib/numberMods"
   }
