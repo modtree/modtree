@@ -1,0 +1,38 @@
+{
+  "name": "functions",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint --fix --ext .js,.ts .",
+    "prettier": "prettier --write ./src/**/*.ts",
+    "deploy": "yarn firelink deploy --only functions && yarn clean",
+    "deploy:n": "yarn firelink deploy --only functions && yarn clean && notify 'deployment done'",
+    "clean": "rm -rf ./packages",
+    "unnode": "lsof -i -a -c node -c java -t | xargs kill -9",
+    "uncache": "rm -rf ./lib",
+    "start:functions": "tsc -w | firebase emulators:start --only functions",
+    "start:local": "tsc -w | firebase emulators:start",
+    "use-production-db": "yarn uncache && tsc && yarn start:functions",
+    "serve": "yarn uncache && tsc && yarn start:functions",
+    "serve:local": "yarn unnode && yarn uncache && tsc && yarn start:local",
+    "test": "firelink deploy --only functions:development-createUsers"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
