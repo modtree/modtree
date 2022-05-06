@@ -3,6 +3,7 @@ import axios from "axios";
 import { firestore } from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
 import { DocumentData } from "@google-cloud/firestore";
+import { Module } from "../types/modules";
 
 initializeApp();
 
@@ -26,15 +27,16 @@ export const pullMod = https.onRequest(async (req, res) => {
 
 export const numberMods = https.onRequest(async (req, res) => {
   const collectionRef = firestore().collection("modules");
-  const length = await collectionRef.listDocuments()
+  const length = await collectionRef.listDocuments();
   res.json({
     length: length.length,
   });
 });
 
-
 export namespace utils {
-  export const getMod = async (search: Record<string, string>) => {
+  export const getMod = async (
+    search: Record<string, string>
+  ): Promise<Module> => {
     const collectionRef = firestore().collection("modules");
     const arr = Object.entries(search);
     let query = collectionRef.where(arr[0][0], "==", arr[0][1]);
@@ -47,7 +49,46 @@ export namespace utils {
       const data = doc.data();
       result.push(data);
     });
-    return result[0] || {}
+    if (result.length === 0) {
+      return {
+        acadYear: "",
+        moduleCode: "",
+        title: "",
+        description: "",
+        moduleCredit: "",
+        department: "",
+        faculty: "",
+        workload: "",
+        aliases: [],
+        attributes: {},
+        prerequisite: "",
+        corequisite: "",
+        preclusion: "",
+        semesterData: [],
+        prereqTree: "",
+        fulfillRequirements: [],
+      };
+    }
+    const data = result[0];
+    const module: Module = {
+      acadYear: data.acadYear,
+      moduleCode: data.moduleCode,
+      title: data.title,
+      description: data.description || "",
+      moduleCredit: data.moduleCredit,
+      department: data.department,
+      faculty: data.faculty,
+      workload: data.workload || "",
+      aliases: data.aliases || [],
+      attributes: data.attributes || {},
+      prerequisite: data.prerequisite || "",
+      corequisite: data.corequisite || "",
+      preclusion: data.preclusion || "",
+      semesterData: data.semesterData || [],
+      prereqTree: data.prereqTree || "",
+      fulfillRequirements: data.fulfillRequirements || [],
+    };
+    return module;
   };
 }
 
@@ -72,14 +113,13 @@ export const getMod = https.onRequest(async (req, res) => {
 });
 
 export const getTree = https.onRequest(async (req, res) => {
-  const module = await utils.getMod(req.body)
-  const tree= module.prereqTree || {}
-  console.log(JSON.stringify(tree, null, 2))
+  const module = await utils.getMod(req.body);
+  const tree = module.prereqTree || {};
+  console.log(JSON.stringify(tree, null, 2));
   res.json({
     tree,
   });
 });
-
 
 export * from "./degree";
 export * from "./dag";

@@ -2,7 +2,8 @@ import { https } from "firebase-functions";
 // import { firestore } from "firebase-admin";
 import { utils } from ".";
 import { Degree } from "./degree";
-import { Module } from "../types/modules";
+// import { Module } from "../types/modules";
+// import { DocumentData } from "@google-cloud/firestore";
 
 type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 
@@ -15,14 +16,14 @@ type PrereqTree = string | { and?: PrereqTree[]; or?: PrereqTree[] };
 //   }
 // }
 
-class GraphNode {
-  name: string;
-  required: GraphNode[];
-  constructor(name: string, required: GraphNode[]) {
-    this.name = name;
-    this.required = required.length === 0 ? [] : required;
-  }
-}
+// class GraphNode {
+//   name: string;
+//   required: GraphNode[];
+//   constructor(name: string, required: GraphNode[]) {
+//     this.name = name;
+//     this.required = required.length === 0 ? [] : required;
+//   }
+// }
 
 class User {
   done: string[];
@@ -51,18 +52,34 @@ class User {
 
 export const test = https.onRequest(async (req, res) => {
   const user = new User();
-  const degree = new Degree("Computer Science", ["CS1010S", "CS1231S"]);
+  const degree = new Degree("Computer Science", [
+    "CS1101S",
+    "CS1231S",
+    "CS2030S",
+  ]);
   user.setDegree(degree);
-  const hardRequirements = user.degree.getHardRequirements()
-  hardRequirements.forEach(module => {
-    let prereqTree: PrereqTree
+  const hardRequirements = user.degree.getHardRequirements();
+  const q: Promise<number | void>[] = [];
+  const prereqTrees: PrereqTree[] = [];
+  hardRequirements.forEach((module) => {
+    q.push(
+      utils.getMod({ moduleCode: module }).then((module) => {
+        console.log("1st in queue", module.title);
+        prereqTrees.push(module.prereqTree || "");
+      })
+    );
+  });
+  await Promise.allSettled(q);
+
+  console.log("trees", prereqTrees);
+  hardRequirements.forEach((module) => {
+    console.log("2nd", module);
     // get module into from database
     // if no prereqTree, return true
     // else traverse the tree
-  })
-  console.log(user, hardRequirements)
+  });
   res.json({
-    message: "done"
-  })
-  return
+    message: "done",
+  });
+  return;
 });
