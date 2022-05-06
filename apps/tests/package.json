@@ -22,6 +22,7 @@
     "id": "tsc && node ./lib/initDegree",
     "test": "tsc && node ./lib/test",
     "gd": "tsc && node ./lib/getDegree",
+    "cli": "tsc && node ./lib/cli",
     "nm": "tsc && node ./lib/numberMods"
   }
 }
