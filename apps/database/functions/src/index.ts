@@ -3,7 +3,7 @@ import axios from 'axios';
 import {firestore} from 'firebase-admin';
 import {initializeApp} from 'firebase-admin/app';
 import {DocumentData} from '@google-cloud/firestore';
-export {pullModuleList} from "./pull";
+export {pullModuleList} from './pull';
 import {utils} from './utils';
 export * from './test';
 
