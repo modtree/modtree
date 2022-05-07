@@ -26,4 +26,3 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         working-directory: ./apps/database/functions
         run: firebase deploy --token "$FIREBASE_TOKEN" --only functions
-

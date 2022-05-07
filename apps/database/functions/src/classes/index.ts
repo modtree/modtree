@@ -1,3 +1,3 @@
-export * from './degree';
-export * from './module';
-export * from './user';
+export * from './degree'
+export * from './module'
+export * from './user'

@@ -1,27 +1,16 @@
-import {firestore} from 'firebase-admin';
+import { firestore } from 'firebase-admin'
 
 /**
  * a UniquenessChecker class
  */
 export class UniquenessChecker<T extends string | number | symbol> {
-  database: Partial<Record<T, boolean>>;
+  database: Partial<Record<T, boolean>>
 
   /**
    * constructor for UniquessChecker
    */
   constructor() {
-    this.database = {};
-  }
-
-  /**
-   * get
-   *
-   * @param {T} key
-   * @param {T} defaultValue
-   * @return {T}
-   */
-  get(key: T, defaultValue: T): T | Partial<Record<T, boolean>>[T] {
-    return key in this.database ? this.database[key] : defaultValue;
+    this.database = {}
   }
 
   /**
@@ -31,7 +20,7 @@ export class UniquenessChecker<T extends string | number | symbol> {
    * @return {boolean}
    */
   exists(key: T): boolean {
-    return key in this.database;
+    return key in this.database
   }
 
   /**
@@ -42,10 +31,10 @@ export class UniquenessChecker<T extends string | number | symbol> {
    */
   push(key: T): boolean {
     if (!(key in this.database)) {
-      this.database[key] = true;
-      return true;
+      this.database[key] = true
+      return true
     }
-    return false;
+    return false
   }
 }
 
@@ -57,14 +46,14 @@ export class UniquenessChecker<T extends string | number | symbol> {
  * @return {UniquenessChecker<string>}
  */
 export async function getAllExistingValues(
-    collection: string,
-    field: string
+  collection: string,
+  field: string
 ): Promise<UniquenessChecker<string>> {
-  const result = new UniquenessChecker<string>();
-  const snapshot = await firestore().collection(collection).get();
+  const result = new UniquenessChecker<string>()
+  const snapshot = await firestore().collection(collection).get()
   snapshot.forEach((doc) => {
-    const value = doc.data()[field];
-    result.push(value);
-  });
-  return result;
+    const value = doc.data()[field]
+    result.push(value)
+  })
+  return result
 }
