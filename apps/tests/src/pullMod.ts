@@ -1,18 +1,18 @@
-import axios from "axios";
+import axios from 'axios'
 
-const base = "http://localhost:5001/mod-tree/us-central1";
+const base = 'http://localhost:5001/mod-tree/us-central1'
 
 export function cloud(string: string): string {
-  return `${base}/${string}`;
+  return `${base}/${string}`
 }
 
-const fn = "pullMod";
+const fn = 'pullMod'
 
-const modList = [ "CS2030S"];
+const modList = ['CS2030S']
 
 modList.forEach((mod) => {
   axios.post(cloud(fn), { moduleCode: mod }).then((res) => {
-    const data = res.data;
-    console.debug(data);
-  });
-});
+    const data = res.data
+    console.debug(data)
+  })
+})
