@@ -1,7 +1,7 @@
 import { https } from 'firebase-functions'
 import axios from 'axios'
 import { DocumentData } from '@google-cloud/firestore'
-export { pullModuleList } from './pull'
+export { pullModuleList, pullAllModules } from './pull'
 import { utils, nusmodsApi } from './utils'
 import { db } from './firebase'
 

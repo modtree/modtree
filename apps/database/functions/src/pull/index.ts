@@ -1,38 +1,58 @@
-// import { User, Degree } from "../classes";
 import { https } from 'firebase-functions'
 import { db } from '../firebase'
 import { DocumentReference, DocumentData } from '@google-cloud/firestore'
-import { ModuleCondensed } from '../../types/nusmods'
+import { ModuleCondensed, Module as NusmodsModule } from '../../types/nusmods'
 import { getAllExistingValues } from '../classes'
-import axios from 'axios'
-
-const nusmodsApi = (req: string) =>
-  `https://api.nusmods.com/v2/2021-2022/${req}.json`
+import axios, { AxiosResponse } from 'axios'
+import { nusmodsApi } from '../utils'
 
 export const pullModuleList = https.onRequest(async (req, res) => {
   const moduleList = db.collection('moduleList')
-
   const already = await getAllExistingValues('moduleList', 'moduleCode')
-
-  /* get existing modules */
-
-  const apiRequest = nusmodsApi('moduleList')
-  const result = await axios.get(apiRequest)
+  const result = await axios.get(nusmodsApi('moduleList'))
   const data: ModuleCondensed[] = result.data
-
-  const filtered = data.filter((x) => !already.exists(x.moduleCode))
-
   const stack: Promise<DocumentReference<DocumentData>>[] = []
-
-  filtered.forEach((x: ModuleCondensed) => {
-    stack.push(moduleList.add(x))
-  })
-
-  console.log(filtered)
-  console.log('added')
-
+  data
+    .filter((x) => !already.exists(x.moduleCode))
+    .forEach((x: ModuleCondensed) => {
+      stack.push(moduleList.add(x))
+    })
   await Promise.allSettled(stack)
   res.json({
-    result: data,
+    message: `Added ${stack.length} modules to database.`,
+  })
+})
+
+export const pullAllModules = https.onRequest(async (req, res) => {
+  const collectionRef = db.collection('modules2')
+  const snapshot = await db.collection('moduleList').get()
+  const already = await getAllExistingValues('modules2', 'moduleCode')
+  const condensedModules = snapshot.docs
+    .map((doc) => doc.data().moduleCode)
+    .filter((x) => !already.exists(x))
+
+  console.log(`fetching ${condensedModules.length} new modules`)
+
+  const apiEndpoints = condensedModules.map((m) => nusmodsApi(`modules/${m}`))
+  let added = 0
+
+  const q: Promise<AxiosResponse<NusmodsModule>>[] = []
+  for (let i = 0; i < 300; i++) {
+    q.push(axios.get(apiEndpoints[i]))
+  }
+
+  const f = await Promise.allSettled(q)
+  const write: Promise<DocumentReference<DocumentData>>[] = []
+  f.forEach((x) => {
+    if (x.status === 'fulfilled') {
+      write.push(collectionRef.add(x.value.data))
+      console.log(`writing ${x.value.data.moduleCode}...`)
+      added += 1
+    }
+  })
+  await Promise.allSettled(write)
+
+  res.json({
+    message: `Added ${added} modules to database.`,
   })
 })

@@ -17,7 +17,7 @@
     "build": "tsc",
     "pm": "tsc && node ./lib/pullMod",
     "am": "tsc && node ./lib/apiMod",
-    "pam": "tsc && node ./lib/pullAllMods",
+    "pam": "tsc && node ./lib/pullAllModules",
     "gm": "tsc && node ./lib/getMod",
     "gt": "tsc && node ./lib/getTree",
     "id": "tsc && node ./lib/initDegree",

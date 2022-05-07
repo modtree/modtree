@@ -1,7 +1,10 @@
 on:
+  pull_request:
+    types: [opened, reopened]
   push:
     branches:
       - dev
+
 jobs:
   lint_backend_functions:
     runs-on: ubuntu-latest
