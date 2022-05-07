@@ -2,7 +2,7 @@ import {https} from 'firebase-functions';
 import {User, Degree} from './classes';
 
 import {utils}  from './utils';
-import {Module} from '../types/modules';
+import {Module} from '../types/nusmods';
 import {addModuleNumber} from './migrations/addModuleNumber'
 
 export const test = https.onRequest(async (req, res) => {

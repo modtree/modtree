@@ -2,7 +2,7 @@
 import {https} from 'firebase-functions';
 import {firestore} from 'firebase-admin';
 import {DocumentReference, DocumentData} from '@google-cloud/firestore';
-import {ModuleCondensed} from '../../types/modules';
+import {ModuleCondensed} from '../../types/nusmods';
 import {getAllExistingValues} from '../classes/unique-check';
 import axios from 'axios';
 

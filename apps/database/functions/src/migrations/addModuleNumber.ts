@@ -1,5 +1,5 @@
 import {firestore} from 'firebase-admin';
-import {Module} from '../../types/modules';
+import {Module} from '../../types/nusmods';
 
 /**
  * Add moduleNumber parameter to each module in "modules" collection

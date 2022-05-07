@@ -1,4 +1,4 @@
-import {PrereqTree, Module} from '../types/modules';
+import {PrereqTree, Module} from '../types/nusmods';
 import {firestore} from 'firebase-admin';
 import {DocumentData} from '@google-cloud/firestore';
 

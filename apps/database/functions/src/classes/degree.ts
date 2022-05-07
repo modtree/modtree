@@ -1,7 +1,7 @@
 import {https} from 'firebase-functions';
 import {firestore} from 'firebase-admin';
 import {FirestoreDataConverter} from '@google-cloud/firestore';
-import {Module, PrereqTree} from '../../types/modules';
+import {Module, PrereqTree} from '../../types/nusmods';
 import {utils} from '../utils';
 
 /** a Degree class */

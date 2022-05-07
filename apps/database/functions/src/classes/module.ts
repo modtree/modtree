@@ -1,4 +1,4 @@
-import {PrereqTree} from '../../types/modules';
+import {PrereqTree} from '../../types/nusmods';
 import {utils} from '../utils';
 
 /** a Module class */
