@@ -14,17 +14,6 @@ export class UniquenessChecker<T extends string | number | symbol> {
   }
 
   /**
-   * get
-   *
-   * @param {T} key
-   * @param {T} defaultValue
-   * @return {T}
-   */
-  get(key: T, defaultValue: T): T | Partial<Record<T, boolean>>[T] {
-    return key in this.database ? this.database[key] : defaultValue
-  }
-
-  /**
    * exists
    *
    * @param {T} key
