@@ -1,25 +1,12 @@
 import { https } from 'firebase-functions'
 import { firestore } from 'firebase-admin'
-import { FirestoreDataConverter } from '@google-cloud/firestore'
 import { Module, PrereqTree } from '../../types/nusmods'
-import { utils } from '../utils'
+import { utils, converter } from '../utils'
 
 /** a Degree class */
 export class Degree {
   hardRequirements: string[]
   name: string
-  static converter: FirestoreDataConverter<Degree> = {
-    toFirestore: (degree: Degree) => {
-      return {
-        name: degree.name,
-        hardRequirements: degree.hardRequirements,
-      }
-    },
-    fromFirestore: (snapshot) => {
-      const data = snapshot.data()
-      return new Degree(data.name, data.hardRequirements)
-    },
-  }
   static empty = new Degree('', [])
   /**
    * create a Degree
@@ -42,7 +29,7 @@ export class Degree {
 export const initDegree = https.onRequest(async (req, res) => {
   const collectionRef = firestore()
     .collection('degrees')
-    .withConverter(Degree.converter)
+    .withConverter(converter.degree)
   const degree = new Degree('Computer Science', [
     'CS1101S',
     'CS1231S',
@@ -58,7 +45,7 @@ export const initDegree = https.onRequest(async (req, res) => {
 export const getDegree = https.onRequest(async (req, res) => {
   const collectionRef = firestore().collection('degrees')
   const query = collectionRef.where('name', '==', 'Computer Science')
-  const snapshot = await query.withConverter(Degree.converter).get()
+  const snapshot = await query.withConverter(converter.degree).get()
 
   const result: Degree[] = []
 

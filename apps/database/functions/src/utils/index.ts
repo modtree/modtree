@@ -1,6 +1,7 @@
-import { PrereqTree, Module } from '../types/nusmods'
+import { PrereqTree, Module } from '../../types/nusmods'
 import { firestore } from 'firebase-admin'
 import { DocumentData } from '@google-cloud/firestore'
+export { converter } from './converter'
 
 export namespace utils {
   /**
