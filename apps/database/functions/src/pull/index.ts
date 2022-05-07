@@ -56,15 +56,3 @@ export const pullAllModules = https.onRequest(async (req, res) => {
     message: `Added ${added} modules to database.`,
   })
 })
-
-// export const pullMod = https.onRequest(async (req, res) => {
-//   const moduleCode = req.body.moduleCode
-//   const apiRequest = nusmodsApi(`modules/${moduleCode}`)
-//   const result = await axios.get(apiRequest)
-//   const data = result.data
-//   const collectionRef = db.collection('modules')
-//   await collectionRef.add(data)
-//   res.json({
-//     result: data,
-//   })
-// })
