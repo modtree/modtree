@@ -1,6 +1,3 @@
-// Components within a module:
-import {CovidZoneId} from '../services/getCovidZones';
-
 export type AcadYear = string; // E.g. "2016/2017"
 export type ClassNo = string; // E.g. "1", "A"
 export type DayText = string; // E.g. "Monday", "Tuesday"
@@ -73,16 +70,12 @@ export type RawLesson = Readonly<{
   venue: Venue;
   weeks: Weeks;
   size: number;
-  covidZone: CovidZoneId;
 }>;
 
 // Semester-specific information of a module.
 export type SemesterData = {
   semester: Semester;
   timetable: RawLesson[];
-
-  // Aggregated from timetable
-  covidZones: CovidZoneId[];
 
   // Exam
   examDate?: string;
