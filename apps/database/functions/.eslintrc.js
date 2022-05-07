@@ -11,6 +11,7 @@ module.exports = {
     'plugin:import/typescript',
     'google',
     'plugin:@typescript-eslint/recommended',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -19,14 +20,15 @@ module.exports = {
   },
   ignorePatterns: [
     '/lib/**/*', // Ignore built files.
-    ".eslintrc.js" // Ignore this file.
+    '.eslintrc.js', // Ignore this file.
   ],
   plugins: ['@typescript-eslint', 'import'],
   rules: {
     '@typescript-eslint/no-namespace': 'off',
     quotes: ['error', 'single'],
-    semi: ['error', 'always'],
+    semi: ['error', 'never'],
     'max-len': 'off',
     'import/no-unresolved': 0,
+    'object-curly-spacing': ['error', 'always'],
   },
 }
