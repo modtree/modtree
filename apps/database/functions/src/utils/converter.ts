@@ -1,9 +1,9 @@
 import {
   FirestoreDataConverter as Converter,
   DocumentData,
-} from '@google-cloud/firestore'
-import { Degree, Module } from '../classes'
-import { Module as NusmodsModule } from '../../types/nusmods'
+} from '@google-cloud/firestore';
+import {Degree, Module} from '../classes';
+import {Module as NusmodsModule} from '../../types/nusmods';
 
 export namespace flatten {
   type Either<T> = T | DocumentData
@@ -24,7 +24,7 @@ export namespace flatten {
     semesterData: src.semesterData || [],
     prereqTree: src.prereqTree || '',
     fulfillRequirements: src.fulfillRequirements || [],
-  })
+  });
 }
 
 export namespace converter {
@@ -33,31 +33,31 @@ export namespace converter {
       return {
         name: degree.name,
         hardRequirements: degree.hardRequirements,
-      }
+      };
     },
     fromFirestore: (snapshot) => {
-      const data = snapshot.data()
-      return new Degree(data.name, data.hardRequirements)
+      const data = snapshot.data();
+      return new Degree(data.name, data.hardRequirements);
     },
-  }
+  };
   export const module: Converter<Module> = {
     toFirestore: (module) => {
       return {
         moduleCode: module.moduleCode,
-      }
+      };
     },
     fromFirestore: (snapshot) => {
-      const data = snapshot.data()
-      return new Module(data.moduleCode)
+      const data = snapshot.data();
+      return new Module(data.moduleCode);
     },
-  }
+  };
   export const nusmodsModule: Converter<NusmodsModule> = {
     toFirestore: (module) => {
-      return flatten.nusmodsModule(module)
+      return flatten.nusmodsModule(module);
     },
     fromFirestore: (snapshot) => {
-      const data = snapshot.data()
-      return flatten.nusmodsModule(data)
+      const data = snapshot.data();
+      return flatten.nusmodsModule(data);
     },
-  }
+  };
 }
