@@ -1,7 +1,6 @@
-import { PrereqTree, Module } from '../../types/nusmods'
+import { PrereqTree, Module as NusmodsModule } from '../../types/nusmods'
 import { firestore } from 'firebase-admin'
-import { DocumentData } from '@google-cloud/firestore'
-export { converter } from './converter'
+import { converter, flatten } from './converter'
 
 export namespace utils {
   /**
@@ -32,60 +31,31 @@ export namespace utils {
     }
   }
 
+  /**
+   * retrieves a module by exact match (and)
+   * @param {Record<string, string>} search query
+   * @returns {Promise<NusmodsModule>}
+   */
   export const getMod = async (
     search: Record<string, string>
-  ): Promise<Module> => {
-    const collectionRef = firestore().collection('modules')
+  ): Promise<NusmodsModule> => {
+    const collectionRef = firestore()
+      .collection('modules')
+      .withConverter(converter.nusmodsModule)
     const arr = Object.entries(search)
     let query = collectionRef.where(arr[0][0], '==', arr[0][1])
     for (let i = 1; i < arr.length; i++) {
       query = query.where(arr[i][0], '==', arr[i][1])
     }
     const snapshot = await query.get()
-    const result: DocumentData[] = []
-    snapshot.forEach((doc) => {
-      const data = doc.data()
-      result.push(data)
-    })
+    const result: NusmodsModule[] = snapshot.docs
+      .map((doc) => doc.data())
+      .filter((x) => x !== undefined)
     if (result.length === 0) {
-      return {
-        acadYear: '',
-        moduleCode: '',
-        title: '',
-        description: '',
-        moduleCredit: '',
-        department: '',
-        faculty: '',
-        workload: '',
-        aliases: [],
-        attributes: {},
-        prerequisite: '',
-        corequisite: '',
-        preclusion: '',
-        semesterData: [],
-        prereqTree: '',
-        fulfillRequirements: [],
-      }
+      return flatten.nusmodsModule({})
     }
-    const data = result[0]
-    const module: Module = {
-      acadYear: data.acadYear || '',
-      moduleCode: data.moduleCode || '',
-      title: data.title || '',
-      description: data.description || '',
-      moduleCredit: data.moduleCredit || '0',
-      department: data.department || '',
-      faculty: data.faculty || '',
-      workload: data.workload || '',
-      aliases: data.aliases || [],
-      attributes: data.attributes || {},
-      prerequisite: data.prerequisite || '',
-      corequisite: data.corequisite || '',
-      preclusion: data.preclusion || '',
-      semesterData: data.semesterData || [],
-      prereqTree: data.prereqTree || '',
-      fulfillRequirements: data.fulfillRequirements || [],
-    }
-    return module
+    return result[0]
   }
 }
+
+export { converter, flatten } from './converter'
