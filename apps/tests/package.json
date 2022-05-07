@@ -23,6 +23,7 @@
     "test": "tsc && node ./lib/test",
     "gd": "tsc && node ./lib/getDegree",
     "cli": "tsc && node ./lib/cli",
-    "nm": "tsc && node ./lib/numberMods"
+    "nm": "tsc && node ./lib/numberMods",
+    "pml": "tsc && node ./lib/pullModuleList"
   }
 }

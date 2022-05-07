@@ -6,7 +6,7 @@ export function cloud(string: string): string {
   return `${base}/${string}`;
 }
 
-const fn = "pullAllMods";
+const fn = "pullModuleList";
 
 axios.post(cloud(fn)).then((res) => {
   const data = res.data;
