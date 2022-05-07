@@ -29,7 +29,7 @@ export const apiMod = https.onRequest(async (req, res) => {
 })
 
 export const numberMods = https.onRequest(async (req, res) => {
-  const collectionRef = db.collection('modules')
+  const collectionRef = db.collection('modules2')
   const length = await collectionRef.listDocuments()
   res.json({
     length: length.length,

@@ -1,7 +1,7 @@
 import { https } from 'firebase-functions'
 import { db } from '../firebase'
 import { DocumentReference, DocumentData } from '@google-cloud/firestore'
-import { ModuleCondensed } from '../../types/nusmods'
+import { ModuleCondensed, Module as NusmodsModule } from '../../types/nusmods'
 import { getAllExistingValues } from '../classes'
 import axios, { AxiosResponse } from 'axios'
 import { nusmodsApi } from '../utils'
@@ -34,9 +34,9 @@ export const pullAllModules = https.onRequest(async (req, res) => {
   console.log(`fetching ${condensedModules.length} new modules`)
 
   const apiEndpoints = condensedModules.map((m) => nusmodsApi(`modules/${m}`))
-  var added = 0
+  let added = 0
 
-  const q: Promise<AxiosResponse<any, any>>[] = []
+  const q: Promise<AxiosResponse<NusmodsModule>>[] = []
   for (let i = 0; i < 300; i++) {
     q.push(axios.get(apiEndpoints[i]))
   }
