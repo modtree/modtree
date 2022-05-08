@@ -25,6 +25,7 @@
     "gd": "tsc && node ./lib/getDegree",
     "cli": "tsc && node ./lib/cli",
     "nm": "tsc && node ./lib/numberMods",
-    "pml": "tsc && node ./lib/pullModuleList"
+    "pml": "tsc && node ./lib/pullModuleList",
+    "au": "tsc && node ./lib/addUser"
   }
 }
