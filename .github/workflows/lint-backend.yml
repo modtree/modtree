@@ -14,5 +14,5 @@ jobs:
       - name: install yarn
         run: yarn
       - name: lint
-        working-directory: ./apps/database/functions
+        working-directory: ./apps/backend/functions
         run: yarn build && yarn lint
