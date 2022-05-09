@@ -11,10 +11,10 @@
     "clean": "rm -rf ./packages",
     "unnode": "lsof -i -a -c node -c java -t | xargs kill -9",
     "uncache": "rm -rf ./lib",
-    "start:functions": "tsc -w | firebase emulators:start --only functions",
+    "start:functions": "tsc -w | yarn firelink emulators:start --only functions",
     "start:local": "tsc -w | firebase emulators:start",
     "use-production-db": "yarn uncache && tsc && yarn start:functions",
-    "serve": "yarn uncache && tsc && yarn firelink start:functions",
+    "serve": "yarn uncache && tsc && yarn start:functions",
     "serve:local": "yarn unnode && yarn uncache && tsc && yarn start:local",
     "test": "firelink deploy --only functions:development-createUsers"
   },
