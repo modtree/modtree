@@ -5,6 +5,11 @@ module.exports = {
       rootDir: ["apps/*/", "packages/*/"],
     },
   },
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: "tsconfig.json",
+    sourceType: "module",
+  },
   rules: {
     "max-len": ["off", 0],
     indent: ["error", 2],
