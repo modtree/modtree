@@ -33,11 +33,5 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "build": "tsc --declaration",
     "lint": "eslint --fix --ext .js,.ts ."
-  },
-  "prettier": {
-    "arrowParens": "always",
-    "singleQuote": true,
-    "tabWidth": 2,
-    "semi": false
   }
 }
