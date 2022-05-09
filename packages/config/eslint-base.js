@@ -10,6 +10,10 @@ module.exports = {
     project: "tsconfig.json",
     sourceType: "module",
   },
+  ignorePatterns: [
+    "/lib/**/*", // Ignore built files.
+    ".eslintrc.js", // Ignore this file.
+  ],
   rules: {
     "max-len": ["off", 0],
     indent: ["error", 2],

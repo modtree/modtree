@@ -1,5 +1,6 @@
 const base = require("./eslint-base");
 module.exports = {
+  ...base,
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",

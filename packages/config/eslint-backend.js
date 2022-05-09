@@ -10,9 +10,5 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "prettier",
   ], // let prettier configs override formatting
-  ignorePatterns: [
-    "/lib/**/*", // Ignore built files.
-    ".eslintrc.js", // Ignore this file.
-  ],
   plugins: ["@typescript-eslint", "import"],
 };
