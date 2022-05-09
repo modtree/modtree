@@ -1,7 +1,7 @@
 import { https } from 'firebase-functions'
 
 // database
-import { AppDataSource } from './data-source'
+import { LocalSource as AppDataSource } from './data-source'
 import { User } from './entities/User'
 
 export const addUser = https.onRequest(async (req, res) => {
