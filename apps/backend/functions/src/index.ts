@@ -2,7 +2,7 @@ import { https } from 'firebase-functions'
 
 // database
 import { LocalSource as AppDataSource } from './data-source'
-import { User } from './entities/User'
+import { User } from 'modtree'
 
 export const addUser = https.onRequest(async (req, res) => {
   // info

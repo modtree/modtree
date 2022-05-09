@@ -36,8 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.User = void 0;
 var data_source_1 = require("./data-source");
 var User_1 = require("./entities/User");
+Object.defineProperty(exports, "User", { enumerable: true, get: function () { return User_1.User; } });
 data_source_1.AppDataSource.initialize()
     .then(function () { return __awaiter(void 0, void 0, void 0, function () {
     var user, users;
