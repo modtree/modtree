@@ -9,6 +9,13 @@
     ".": "./lib/index.js",
     "./entities": "./src/entities/index.ts"
   },
+  "typesVersions": {
+    "*": {
+      "entities": [
+        "./src/entities/index.ts"
+      ]
+    }
+  },
   "devDependencies": {
     "@types/node": "^16.11.10",
     "ts-node": "10.7.0",
