@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["prettier"],
+  extends: ["prettier"], // let prettier configs override formatting
   settings: {
     next: {
       rootDir: ["apps/*/", "packages/*/"],
@@ -7,11 +7,11 @@ module.exports = {
   },
   rules: {
     "max-len": ["off", 0],
-    indent: [1, 2],
+    indent: ["error", 2],
     quotes: ["error", "single"],
     semi: ["error", "never"],
     "object-curly-spacing": ["error", "always"],
-    "import/no-unresolved": 0,
+    "import/no-unresolved": "off",
     "@typescript-eslint/no-explicit-any": "off",
   },
 };

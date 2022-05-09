@@ -1,6 +1,6 @@
 yarn:
 	yarn
-	yarn base
+	yarn build:deps
 	yarn
 
 khang:
