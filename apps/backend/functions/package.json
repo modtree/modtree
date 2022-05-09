@@ -23,6 +23,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "axios": "^0.27.2",
+    "dotenv": "^16.0.0",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",
     "mysql": "^2.18.1",
