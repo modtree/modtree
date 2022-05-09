@@ -14,7 +14,8 @@
     "base": "turbo run build --filter=modtree",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "setup": "yarn && yarn base && yarn"
   },
   "devDependencies": {
     "prettier": "latest",

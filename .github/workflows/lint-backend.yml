@@ -19,15 +19,6 @@ jobs:
       - name: fetch packages
         working-directory: ./apps/backend/functions
         run: yarn link:deps
-      - name: list files in .packages
-        working-directory: ./apps/backend/functions
-        run: ls -a ./.packages
-      - name: list files in .packages/modtree
-        working-directory: ./apps/backend/functions
-        run: ls -a ./.packages/modtree
-      - name: package.json contents
-        working-directory: ./apps/backend/functions
-        run: cat package.json
       - name: lint
         working-directory: ./apps/backend/functions
         run: yarn build && yarn lint
