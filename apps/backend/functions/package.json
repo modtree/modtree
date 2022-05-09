@@ -6,6 +6,7 @@
     "lint": "eslint --fix --ext .js,.ts .",
     "prettier": "prettier --write ./src/**/*.ts",
     "deploy": "yarn firelink deploy --only functions && yarn clean",
+    "backend": "yarn deploy",
     "clean": "rm -rf ./packages",
     "unnode": "lsof -i -a -c node -c java -t | xargs kill -9",
     "uncache": "rm -rf ./lib",

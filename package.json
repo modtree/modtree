@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "back": "turbo run backend --filter=functions",
     "build": "turbo run build",
     "base": "turbo run build --filter=modtree",
     "dev": "turbo run dev --parallel",
