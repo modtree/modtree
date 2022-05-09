@@ -5,6 +5,17 @@
   "main": "./lib/index.js",
   "description": "modtree common libraries",
   "type": "commonjs",
+  "exports": {
+    ".": "./lib/index.js",
+    "./entities": "./lib/entities/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "entities": [
+        "./src/entities/index.d.ts"
+      ]
+    }
+  },
   "devDependencies": {
     "@types/node": "^16.11.10",
     "ts-node": "10.7.0",

@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { User } from './entities/User'
+import { User } from 'modtree/entities'
 import 'dotenv/config'
 
 export const LocalSource = new DataSource({
