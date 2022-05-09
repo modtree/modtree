@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc",
-    "link:deps": "yarn firelink --no-runner",
+    "link:deps": "yarn firelink --no-runner --leave-changes",
     "lint": "eslint --fix --ext .js,.ts .",
     "prettier": "prettier --write ./src/**/*.ts",
     "deploy": "yarn firelink deploy --only functions && yarn clean",
