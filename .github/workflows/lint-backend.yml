@@ -20,6 +20,6 @@ jobs:
       - name: fetch packages
         working-directory: ./apps/backend/functions
         run: yarn link:deps
-      - name: lint
+      - name: lint backend
         working-directory: ./apps/backend/functions
         run: yarn build && yarn lint
