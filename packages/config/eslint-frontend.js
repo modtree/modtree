@@ -10,8 +10,8 @@ module.exports = {
       rootDir: ["apps/*/", "packages/*/"],
     },
     react: {
-      version: "detect"
-    }
+      version: "detect",
+    },
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -27,5 +27,6 @@ module.exports = {
     "import/no-unresolved": "off",
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "react/react-in-jsx-scope": "off",
   },
 };
