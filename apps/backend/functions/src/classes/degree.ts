@@ -27,9 +27,7 @@ export class Degree {
 }
 
 export const initDegree = https.onRequest(async (req, res) => {
-  const collectionRef = db
-    .collection('degrees')
-    .withConverter(converter.degree)
+  const collectionRef = db.collection('degrees').withConverter(converter.degree)
   const degree = new Degree('Computer Science', [
     'CS1101S',
     'CS1231S',

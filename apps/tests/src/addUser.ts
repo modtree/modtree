@@ -8,7 +8,9 @@ export function cloud(string: string): string {
 
 const fn = 'addUser'
 
-axios.post(cloud(fn), {firstName: "Wei Seng", lastName: "Tan", age: 22}).then((res) => {
-  const data = res.data
-  console.debug(data)
-})
+axios
+  .post(cloud(fn), { firstName: 'Wei Seng', lastName: 'Tan', age: 22 })
+  .then((res) => {
+    const data = res.data
+    console.debug(data)
+  })
