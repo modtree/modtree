@@ -13,6 +13,9 @@ jobs:
         uses: actions/checkout@v3
       - name: install yarn
         run: yarn
+      - name: fetch packages
+        working-directory: ./apps/backend/functions
+        run: yarn link:deps
       - name: lint
         working-directory: ./apps/backend/functions
         run: yarn build && yarn lint
