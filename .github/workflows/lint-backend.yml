@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - ci-test
+      - k
 
 jobs:
   lint_backend_functions:

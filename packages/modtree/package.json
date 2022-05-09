@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/node": "^16.11.10",
     "ts-node": "10.7.0",
+    "config": "*",
     "typescript": "4.5.2"
   },
   "dependencies": {
