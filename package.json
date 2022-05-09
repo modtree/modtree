@@ -12,7 +12,6 @@
     "build": "turbo run build",
     "build:backend": "turbo run build --filter=functions",
     "build:deps": "turbo run build --filter=modtree",
-    "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "setup": "yarn && yarn build:deps && yarn"
