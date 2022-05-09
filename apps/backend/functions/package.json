@@ -5,7 +5,7 @@
     "build": "tsc",
     "lint": "eslint --fix --ext .js,.ts .",
     "prettier": "prettier --write ./src/**/*.ts",
-    "deploy": "yarn firelink deploy --only functions --revert-changes && yarn clean",
+    "deploy": "yarn firelink deploy --only functions && yarn clean",
     "clean": "rm -rf ./packages",
     "unnode": "lsof -i -a -c node -c java -t | xargs kill -9",
     "uncache": "rm -rf ./lib",

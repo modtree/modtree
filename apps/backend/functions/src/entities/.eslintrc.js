@@ -31,5 +31,6 @@ module.exports = {
     'import/no-unresolved': 0,
     'object-curly-spacing': ['error', 'always'],
     'new-cap': 'off',
+    'require-jsdoc': 'off',
   },
 }
