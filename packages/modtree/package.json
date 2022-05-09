@@ -7,12 +7,12 @@
   "type": "commonjs",
   "exports": {
     ".": "./lib/index.js",
-    "./entities": "./src/entities/index.ts"
+    "./entities": "./lib/entities/index.js"
   },
   "typesVersions": {
     "*": {
       "entities": [
-        "./src/entities/index.ts"
+        "./src/entities/index.d.ts"
       ]
     }
   },
