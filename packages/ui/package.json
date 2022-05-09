@@ -5,6 +5,7 @@
   "types": "./index.tsx",
   "license": "MIT",
   "scripts": {
+    "build": "tsc --declaration",
     "lint": "eslint --fix --ext .tsx,.ts ."
   },
   "devDependencies": {

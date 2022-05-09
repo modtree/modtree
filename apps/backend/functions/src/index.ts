@@ -28,6 +28,6 @@ export const addUser = https.onRequest(async (req, res) => {
   })
 
   res.json({
-    message: 'Successful addUser'
+    message: 'Successful addUser',
   })
 })
