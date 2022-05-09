@@ -1,0 +1,26 @@
+on:
+  pull_request:
+    types: [opened, reopened]
+  push:
+    branches:
+      - dev
+      - ci-test
+      - k
+      - w
+
+jobs:
+  build everything:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Check out repository code
+        uses: actions/checkout@v3
+
+      - name: 🧶 Install yarn
+        run: yarn
+
+      - name: 🔥 Firelink packages for backend/functions
+        working-directory: ./apps/backend/functions
+        run: yarn link:deps
+
+      - name: 📦 Project-wide build & lint
+        run: yarn build
