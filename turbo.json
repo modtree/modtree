@@ -4,7 +4,7 @@
       "dependsOn": ["^build", "lint"],
       "outputs": ["dist/**", ".next/**", "lib/**"]
     },
-    "backend": {
+    "deploy": {
       "dependsOn": ["build", "lint"]
     },
     "lint": {

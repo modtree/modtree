@@ -46,8 +46,8 @@ export class UniquenessChecker<T extends string | number | symbol> {
  * @return {UniquenessChecker<string>}
  */
 export async function getAllExistingValues(
-    collection: string,
-    field: string
+  collection: string,
+  field: string
 ): Promise<UniquenessChecker<string>> {
   const result = new UniquenessChecker<string>()
   const snapshot = await db.collection(collection).get()

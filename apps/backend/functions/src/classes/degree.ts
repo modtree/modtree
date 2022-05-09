@@ -28,8 +28,8 @@ export class Degree {
 
 export const initDegree = https.onRequest(async (req, res) => {
   const collectionRef = db
-      .collection('degrees')
-      .withConverter(converter.degree)
+    .collection('degrees')
+    .withConverter(converter.degree)
   const degree = new Degree('Computer Science', [
     'CS1101S',
     'CS1231S',
@@ -71,7 +71,7 @@ export const getDegree = https.onRequest(async (req, res) => {
   })
 
   const data: PromiseSettledResult<Module>[] = await Promise.allSettled(
-      awaitStack
+    awaitStack
   )
 
   data.forEach((moduleResult) => {

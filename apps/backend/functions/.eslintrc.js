@@ -6,4 +6,8 @@ module.exports = {
     node: true,
   },
   ...config,
+  rules: {
+    ...config.rules,
+    '@typescript-eslint/no-namespace': 'off',
+  },
 }

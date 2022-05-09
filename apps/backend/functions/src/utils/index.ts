@@ -13,8 +13,8 @@ export namespace utils {
    * @return {boolean}
    */
   export function checkTree(
-      prereqTree: PrereqTree,
-      modulesCleared: string[]
+    prereqTree: PrereqTree,
+    modulesCleared: string[]
   ): boolean {
     console.log('checkTree', prereqTree)
     if (prereqTree === '') return true
@@ -40,11 +40,11 @@ export namespace utils {
    * @return {Promise<NusmodsModule>}
    */
   export const getMod = async (
-      search: Record<string, string>
+    search: Record<string, string>
   ): Promise<NusmodsModule> => {
     const collectionRef = db
-        .collection('modules')
-        .withConverter(converter.nusmodsModule)
+      .collection('modules')
+      .withConverter(converter.nusmodsModule)
     const arr = Object.entries(search)
     let query = collectionRef.where(arr[0][0], '==', arr[0][1])
     for (let i = 1; i < arr.length; i++) {
@@ -52,8 +52,8 @@ export namespace utils {
     }
     const snapshot = await query.get()
     const result: NusmodsModule[] = snapshot.docs
-        .map((doc) => doc.data())
-        .filter((x) => x !== undefined)
+      .map((doc) => doc.data())
+      .filter((x) => x !== undefined)
     if (result.length === 0) {
       return flatten.nusmodsModule({})
     }
