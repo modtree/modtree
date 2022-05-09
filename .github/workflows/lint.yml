@@ -9,7 +9,7 @@ on:
       - w
 
 jobs:
-  build everything:
+  build-everything:
     runs-on: ubuntu-latest
     steps:
       - name: 🔍 Check out repository code
