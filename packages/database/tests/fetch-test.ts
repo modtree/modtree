@@ -1,3 +1,6 @@
+// import { AppDataSource, db } from '../src/data-source'
+// import { Module } from '../src/entity'
+import { listModuleCodes } from '../src/modules'
 import { fetch, write } from '../src/nusmods'
 
 test('fetch all condensed modules from nusmods api', async () => {
@@ -9,5 +12,6 @@ test('fetch all condensed modules from nusmods api', async () => {
 test('pull all condensed modules into database', async () => {
   const { modules } = await fetch.moduleCondensed()
   await write.moduleCondensed(modules)
-  expect(4).toEqual(4)
+  const indexedModuleCodes: Set<string> = await listModuleCodes()
+  expect(Array.from(indexedModuleCodes).length).toEqual(6186)
 })

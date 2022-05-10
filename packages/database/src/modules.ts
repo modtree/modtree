@@ -15,6 +15,7 @@ export const listModuleCodes = async (): Promise<Set<string>> => {
   console.debug('total data sets:', modules.length)
   console.debug('unique data:', existingModuleCodes.size)
   await db.close()
+  console.log(Array.from(existingModuleCodes))
   return existingModuleCodes
 }
 

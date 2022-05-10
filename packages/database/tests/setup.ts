@@ -13,12 +13,12 @@ export default async function setup() {
   await init.end()
 
   // reset tables
-  log.yellow(`creating connection that requires ${config.database}`)
-  const con = await createConnection(connectionConfig)
-  await deleteTable2(con, 'moduleCondensed')
-  await deleteTable2(con, 'module')
-  await deleteTable2(con, 'user')
-  await deleteTable2(con, 'moduleCheck')
-  await con.end()
-  console.log('finished setup')
+  // log.yellow(`creating connection that requires ${config.database}`)
+  // const con = await createConnection(connectionConfig)
+  // await deleteTable2(con, 'moduleCondensed')
+  // await deleteTable2(con, 'module')
+  // await deleteTable2(con, 'user')
+  // await deleteTable2(con, 'moduleCheck')
+  // await con.end()
+  // console.log('finished setup')
 }
