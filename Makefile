@@ -7,3 +7,6 @@ yarn:
 k:
 	cp ~/dots/personal/.secrets/modtree2.env .env
 	mv .env ./packages/database
+
+k-inv:
+	cp ./packages/database/.env ~/dots/personal/.secrets/modtree2.env
