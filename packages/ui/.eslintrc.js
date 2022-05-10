@@ -1,4 +1,4 @@
-const config = require('config/eslint-frontend')
+const config = require('modtree-config/eslint-frontend')
 
 module.exports = {
   ...config,

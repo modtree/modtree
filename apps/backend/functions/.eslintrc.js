@@ -1,4 +1,4 @@
-const config = require('config/eslint-backend')
+const config = require('modtree-config/eslint-backend')
 module.exports = {
   root: true,
   env: {

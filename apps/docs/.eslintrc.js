@@ -1,1 +1,1 @@
-module.exports = require('config/eslint-frontend')
+module.exports = require('modtree-config/eslint-frontend')
