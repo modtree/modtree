@@ -13,7 +13,7 @@ export default async function setup() {
   await init.end()
 
   // reset tables
-  log.yellow('creating connection that requires mtt')
+  log.yellow(`creating connection that requires ${config.database}`)
   const con = await createConnection(connectionConfig)
   await deleteTable2(con, 'moduleCondensed')
   await deleteTable2(con, 'module')

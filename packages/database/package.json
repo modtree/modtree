@@ -50,6 +50,7 @@
     "clearMocks": true,
     "preset": "ts-jest",
     "globalSetup": "./tests/setup.ts",
+    "globalTeardown": "./tests/teardown.ts",
     "testMatch": [
       "**/tests/**/*.[jt]s?(x)",
       "**/?(*.)+(spec|test).[jt]s?(x)"
