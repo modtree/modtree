@@ -6,9 +6,9 @@ import { log } from '../src/cli'
 export default async function setup() {
   const init =  await createConnection(initConfig)
   await init.query(`CREATE DATABASE ${config.database};`).then(() => {
-    log.magenta('Created test database')
+    log.yellow('Setup: created test database')
   }).catch(() => {
-    log.magenta('Failed or exists')
+    log.gray('Setup: test db already exists')
   })
   await init.end()
 
