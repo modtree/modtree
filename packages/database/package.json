@@ -35,6 +35,7 @@
     "fnmc": "ts-node ./src/api/nusmods/fetchNewModuleCondensed",
     "pamc": "ts-node ./src/api/nusmods/pullAllModuleCondensed",
     "reset:mc": "ts-node ./src/api/sql/deleteModuleCondensed",
-    "reset:all": "ts-node ./src/api/sql/reset"
+    "reset:all": "ts-node ./src/api/sql/reset",
+    "reset": "ts-node ./src/api/sql/softReset"
   }
 }
