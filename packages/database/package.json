@@ -1,0 +1,40 @@
+{
+  "name": "modtree-database",
+  "version": "0.0.0-alpha.1",
+  "license": "MIT",
+  "description": "modtree database with MySQL",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/mysql": "^2.15.21",
+    "@types/node": "^16.11.10",
+    "modtree-config": "*",
+    "ts-node": "10.7.0",
+    "typescript": "4.5.2"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.0",
+    "mysql": "^2.14.1",
+    "mysqldump": "^3.2.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "0.3.6"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint --fix --ext .js,.ts .",
+    "dev": "node lib",
+    "dump": "node lib/export",
+    "start": "ts-node src/index.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "au": "ts-node ./src/api/addUser",
+    "ls": "ts-node ./src/api/listModule",
+    "lsc": "ts-node ./src/api/listModuleCondensed",
+    "fm": "ts-node ./src/api/nusmods/fetchModule",
+    "fsm": "ts-node ./src/api/nusmods/fetchSomeModule",
+    "famc": "ts-node ./src/api/nusmods/fetchAllModuleCondensed",
+    "fnmc": "ts-node ./src/api/nusmods/fetchNewModuleCondensed",
+    "pamc": "ts-node ./src/api/nusmods/pullAllModuleCondensed",
+    "reset:mc": "ts-node ./src/api/sql/deleteModuleCondensed",
+    "reset:all": "ts-node ./src/api/sql/reset"
+  }
+}

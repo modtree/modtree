@@ -1,0 +1,3 @@
+import { listModules } from '../'
+
+listModules()
