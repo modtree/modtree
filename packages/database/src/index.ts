@@ -36,13 +36,3 @@ export const addModule = () => {
     .catch((error) => console.log(error))
   return
 }
-
-export const listModules = async () => {
-  await AppDataSource.initialize().then(async () => {
-    const repo = AppDataSource.getRepository(Module)
-    // list all modules in DB
-    console.log('Loading modules from the database...')
-    const modules = await repo.find()
-    console.log('Loaded modules: ', modules)
-  })
-}
