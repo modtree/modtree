@@ -5,10 +5,7 @@ import {
   ModuleTitle,
   Department,
   Faculty,
-  Workload,
   NUSModuleAttributes,
-  SemesterData,
-  PrereqTree,
 } from '../../types/nusmods'
 
 @Entity({ name: 'module' })
@@ -37,9 +34,6 @@ export class Module {
   @Column({ type: 'text', default: null })
   faculty: Faculty
 
-  // @Column({ type: 'json', default: null })
-  // workload: Workload
-
   @Column({ type: 'json', default: null })
   aliases: ModuleCode[]
 
@@ -55,12 +49,15 @@ export class Module {
   @Column({ type: 'text', default: null })
   preclusion: string
 
+  @Column({ type: 'json', default: null })
+  fulfillRequirements: ModuleCode[]
+
   // @Column({ type: 'json', default: null })
   // semesterData: SemesterData[]
 
   // @Column({ type: 'json', default: null })
   // prereqTree: PrereqTree
 
-  @Column({ type: 'json', default: null })
-  fulfillRequirements: ModuleCode[]
+  // @Column({ type: 'json', default: null })
+  // workload: Workload
 }

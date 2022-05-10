@@ -8,10 +8,8 @@
     "packages/*"
   ],
   "scripts": {
-    "deploy:backend": "turbo run deploy --filter=functions",
     "build": "turbo run build",
-    "build:backend": "turbo run build --filter=functions",
-    "build:deps": "turbo run build --filter=modtree",
+    "build:db": "turbo run build --filter=database",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "setup": "yarn && yarn build:deps && yarn"

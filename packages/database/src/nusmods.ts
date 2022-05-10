@@ -2,17 +2,20 @@ import { ModuleCondensed, Module } from './entity'
 import { ModuleCondensed as NMC, Module as NM } from '../types/nusmods'
 import axios from 'axios'
 import { AppDataSource, container } from './data-source'
-import { listModuleCondensed } from './modules'
+import { listModuleCondensed , listModules } from './modules'
 import { log } from './cli'
 import { Agent } from 'https'
-import { listModules } from './modules'
-import { sanitizeJSON } from './string'
 
 export const nusmodsApi = (req: string) =>
   `https://api.nusmods.com/v2/2021-2022/${req}.json`
 
-function getNumbersBetweenLetters(s: string): string {
-  return s.replace(/\D*([0-9]*)\D*.*$/, '$1')
+/**
+ * parses out the numbers that represent the module level
+ * @param {string} moduleCode
+ * @return {string}
+ */
+function getModuleLevel(moduleCode: string): string {
+  return moduleCode.replace(/\D*([0-9]*)\D*.*$/, '$1')
 }
 
 export const fetchAllModuleCondensed = async (): Promise<ModuleCondensed[]> => {
@@ -23,8 +26,8 @@ export const fetchAllModuleCondensed = async (): Promise<ModuleCondensed[]> => {
   const modules: ModuleCondensed[] = []
   data.forEach((n) => {
     const m = new ModuleCondensed()
-    const btw = getNumbersBetweenLetters(n.moduleCode)
-    const l = btw.length
+    const level = getModuleLevel(n.moduleCode)
+    const l = level.length
     lengths.add(l)
     if (l !== 4) {
       outliers.push(n.moduleCode)
@@ -32,7 +35,7 @@ export const fetchAllModuleCondensed = async (): Promise<ModuleCondensed[]> => {
     }
     m.title = n.title
     m.moduleCode = n.moduleCode
-    m.moduleLevel = parseInt(btw) || 0
+    m.moduleLevel = parseInt(level) || 0
     modules.push(m)
   })
   console.debug('unique lengths:', Array.from(lengths))
