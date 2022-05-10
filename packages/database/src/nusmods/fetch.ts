@@ -7,15 +7,22 @@ import { nusmodsApi, getModuleLevel } from './utils'
 import axios from 'axios'
 import { constructModule } from './utils'
 
+type FetchModuleCondensed = {
+  modules: ModuleCondensed[]
+  total: number
+  unique: number[]
+  indexed: number
+}
+
 export namespace fetch {
   /**
    * fetches a list of condensed modules
    * @returns {Promise<ModuleCondensed[]>}
    */
-  export async function moduleCondensed(): Promise<ModuleCondensed[]> {
+  export async function moduleCondensed(): Promise<FetchModuleCondensed> {
     const res = await axios.get(nusmodsApi('moduleList'))
     const data: NMC[] = res.data
-    const lengths = new Set()
+    const lengths = new Set<number>()
     const outliers: string[] = []
     const modules: ModuleCondensed[] = []
     data.forEach((n) => {
@@ -36,7 +43,12 @@ export namespace fetch {
     console.debug('non-4 lengths', outliers)
     console.debug('total response', data.length)
     console.debug('total indexed', modules.length)
-    return modules
+    return {
+      modules,
+      total: data.length,
+      unique: Array.from(lengths),
+      indexed: modules.length,
+    }
   }
 
   /**

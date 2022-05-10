@@ -14,6 +14,7 @@
     "babel-jest": "^28.1.0",
     "jest": "^28.1.0",
     "modtree-config": "*",
+    "ts-jest": "^28.0.2",
     "ts-node": "10.7.0",
     "typescript": "4.5.2"
   },
@@ -28,7 +29,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --fix --ext .js,.ts .",
-    "test": "jest",
+    "test": "jest --silent",
     "dev": "node lib",
     "dump": "node lib/export",
     "start": "ts-node src/index.ts",
@@ -44,6 +45,11 @@
     "reset": "ts-node ./src/api/sql/softReset"
   },
   "jest": {
-    "testMatch": [ "**/tests/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)" ]
+    "clearMocks": true,
+    "preset": "ts-jest",
+    "testMatch": [
+      "**/tests/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ]
   }
 }

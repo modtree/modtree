@@ -7,7 +7,7 @@ export namespace pull {
   export const moduleCondensed = async (): Promise<ModuleCondensed[]> => {
     log.fname('pull-diff moduleCondensed')
     const existing = await listModuleCodes()
-    const freshPull = await fetch.moduleCondensed()
+    const freshPull = (await fetch.moduleCondensed()).modules
     const toAdd = freshPull.filter((x) => !existing.has(x.moduleCode))
     console.log(toAdd)
     console.log('total:', toAdd.length)
