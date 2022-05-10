@@ -8,7 +8,7 @@ const envFile = `.env${suffix}`
 const envPath = resolve(process.cwd(), envFile)
 dotenvConfig({ path: envPath })
 
-log.magenta(`using <${envFile}> environment`)
+log.magenta(`\nusing <${envFile}> environment`)
 log.magenta(`using <${process.env.MYSQL_ACTIVE_DATABASE}> database`)
 
 export const config = {
