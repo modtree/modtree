@@ -1,4 +1,15 @@
-import 'dotenv/config'
+import { config as dotenvConfig } from 'dotenv'
+import { log } from './cli'
+import { resolve } from 'path'
+
+const env = process.env.NODE_ENV
+const suffix = env ? `.${env}` : ''
+const envFile = `.env${suffix}`
+const envPath = resolve(process.cwd(), envFile)
+dotenvConfig({ path: envPath })
+
+log.magenta(`using <${envFile}> environment`)
+log.magenta(`using <${process.env.MYSQL_ACTIVE_DATABASE}> database`)
 
 export const config = {
   password: process.env.MYSQL_PASSWORD,

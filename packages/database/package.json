@@ -29,7 +29,8 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --fix --ext .js,.ts .",
-    "test": "jest --silent",
+    "test": "NODE_ENV=test jest --silent",
+    "test:v": "NODE_ENV=test jest",
     "dev": "node lib",
     "dump": "node lib/export",
     "start": "ts-node src/index.ts",
