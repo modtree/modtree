@@ -28,6 +28,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --fix --ext .js,.ts .",
+    "test": "jest",
     "dev": "node lib",
     "dump": "node lib/export",
     "start": "ts-node src/index.ts",
@@ -41,5 +42,8 @@
     "pmc": "ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
     "reset:all": "ts-node ./src/api/sql/reset",
     "reset": "ts-node ./src/api/sql/softReset"
+  },
+  "jest": {
+    "testMatch": [ "**/tests/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)" ]
   }
 }
