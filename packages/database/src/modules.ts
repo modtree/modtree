@@ -2,9 +2,9 @@ import { AppDataSource, db } from './data-source'
 import { ModuleCondensed, Module, ModuleCheck } from './entity'
 import { log } from './cli'
 
-export const listModuleCondensed = async (): Promise<Set<string>> => {
+export const listModuleCodes = async (): Promise<Set<string>> => {
   await db.open()
-  log.fname('listModuleCondensed')
+  log.fname('listModuleCodes')
   const existingModuleCodes = new Set<string>()
   const repo = AppDataSource.getRepository(ModuleCondensed)
   console.log('Loading modules from the database...')
@@ -36,7 +36,7 @@ export const listModules = async () => {
 
 export const listModuleCheck = async (): Promise<Set<string>> => {
   await db.open()
-  log.fname('listModuleCondensed')
+  log.fname('listModuleCheck')
   const existingModuleCodes = new Set<string>()
   const repo = AppDataSource.getRepository(ModuleCheck)
   console.log('Loading modules from the database...')

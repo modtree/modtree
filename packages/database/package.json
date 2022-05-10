@@ -28,7 +28,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "au": "ts-node ./src/api/addUser",
     "ls": "ts-node ./src/api/listModule",
-    "lsc": "ts-node ./src/api/listModuleCondensed",
+    "lsc": "ts-node ./src/api/listModuleCodes",
     "fm": "ts-node ./src/api/nusmods/fetchModule",
     "fsm": "ts-node ./src/api/nusmods/fetchSomeModule",
     "famc": "ts-node ./src/api/nusmods/fetchAllModuleCondensed",

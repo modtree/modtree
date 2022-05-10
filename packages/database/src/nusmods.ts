@@ -2,7 +2,7 @@ import { ModuleCondensed, Module } from './entity'
 import { ModuleCondensed as NMC, Module as NM } from '../types/nusmods'
 import axios from 'axios'
 import { AppDataSource, container } from './data-source'
-import { listModuleCondensed , listModules } from './modules'
+import { listModuleCodes , listModules } from './modules'
 import { log } from './cli'
 import { Agent } from 'https'
 
@@ -47,7 +47,7 @@ export const fetchAllModuleCondensed = async (): Promise<ModuleCondensed[]> => {
 
 export const fetchNewModuleCondensed = async (): Promise<ModuleCondensed[]> => {
   log.fname('fetchNewModuleCondensed')
-  const existing = await listModuleCondensed()
+  const existing = await listModuleCodes()
   const freshPull = await fetchAllModuleCondensed()
   const toAdd = freshPull.filter((x) => !existing.has(x.moduleCode))
   console.log(toAdd)
@@ -84,7 +84,7 @@ export const fetchSomeModule = async (n: number): Promise<Module[]> => {
     maxRedirects: 10,
     httpsAgent: new Agent({ keepAlive: true }),
   })
-  const toPull = await listModuleCondensed()
+  const toPull = await listModuleCodes()
   const already = await listModules()
   const _arr = Array.from(toPull).filter((x) => !already.has(x))
   const arr = _arr.slice(0, n)
