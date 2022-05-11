@@ -1,9 +1,9 @@
 import { ModuleCondensed, Module } from '../entity'
-import { listModuleCodes } from '../modules'
+import { listModuleCodes, listModules } from '../modules'
 import { log } from '../cli'
 import { fetch } from './fetch'
 
-import { AppDataSource } from '../data-source'
+import { AppDataSource, db } from '../data-source'
 import { nusmodsApi } from './utils'
 import axios from 'axios'
 
@@ -20,27 +20,29 @@ export namespace pull {
 
   export const module = async(): Promise<Module[]> => {
     // get ModuleCondensed and Module lists from DB
-    await AppDataSource.initialize()
-    const moduleCondensedList: ModuleCondensed[] = await AppDataSource.manager.find(ModuleCondensed) // modules in ModuleCondensed
-    const moduleList: Module[] = await AppDataSource.manager.find(Module) // modules in Module
+    const moduleCondensedList = await listModuleCodes()
+    const moduleList = await listModules()
 
     // compare to see what needs to be added
     const moduleCondensedCodes = new Set()
-    moduleCondensedList.forEach(one => {
-      moduleCondensedCodes.add(one.moduleCode)
+    moduleCondensedList.forEach(code => {
+      moduleCondensedCodes.add(code)
     })
 
     const moduleCodes = new Set()
-    moduleList.forEach((one: Module) => {
-      moduleCodes.add(one.moduleCode)
+    moduleList.forEach(code => {
+      moduleCodes.add(code)
     })
 
     const difference = new Set(Array.from(moduleCondensedCodes).filter(x => !moduleCodes.has(x)))
     const diffArr = Array.from(difference)
 
+    await db.open()
+
     // pull necessary mods from NUSMods
     const LIMIT = 100;
     let moduleInfo: Module[] = []
+    let i = 0;
     while (diffArr.length > 0) {
       let count = Math.min(LIMIT, diffArr.length);
       let calls = []
@@ -73,16 +75,20 @@ export namespace pull {
 
         moduleInfo.push(module);
       });
-      console.log(moduleInfo)
+
       // save data to DB
       await AppDataSource.manager.save(moduleInfo)
 
+      console.log(i*100);
+      i++;
       moduleInfo = []
     }
 
     // list all modules in DB
     const modules = await AppDataSource.manager.find(Module)
     console.log('Final modules.length: ', modules.length)
+
+    await db.close()
 
     return modules;
   }
