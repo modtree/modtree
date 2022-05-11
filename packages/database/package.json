@@ -36,7 +36,7 @@
     "dump": "node lib/export",
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
-    "au": "ts-node ./src/api/addUser",
+    "au": "ts-node ./src/api/user/add",
     "lm": "ts-node ./src/api/listModule",
     "lmc": "ts-node ./src/api/listModuleCodes",
     "fm": "ts-node ./src/api/nusmods/fetch/module",
@@ -48,6 +48,7 @@
     "pm": "ts-node ./src/api/nusmods/pull/module.ts",
     "pmc:heroku": "NODE_ENV=heroku ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
     "reset:all": "ts-node ./src/api/sql/reset",
+    "reset:mc": "ts-node ./src/api/sql/resetModuleCondensed",
     "reset": "ts-node ./src/api/sql/softReset"
   },
   "jest": {
