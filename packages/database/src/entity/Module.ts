@@ -61,6 +61,6 @@ export class Module {
   @Column({ type: 'json' })
   prereqTree: PrereqTree
 
-  @Column('json')
+  @Column({ type: 'json' })
   workload: Workload
 }

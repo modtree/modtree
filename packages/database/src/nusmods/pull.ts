@@ -2,11 +2,11 @@ import { Module as NM } from '../../types/nusmods'
 import { constructModule } from './utils'
 import { log } from '../cli'
 import { fetch } from './fetch'
+import { listModuleCodes, listModules } from '../modules'
+import { ModuleCondensed, Module } from '../entity'
+import { AppDataSource, container } from '../data-source'
 import axios from 'axios'
 import { Agent } from 'https'
-import { listModuleCodes, listModules } from '../modules'
-import { container, AppDataSource } from '../data-source'
-import { ModuleCondensed, Module } from '../entity'
 
 export namespace pull {
   export const moduleCondensed = async (): Promise<ModuleCondensed[]> => {
