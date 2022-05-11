@@ -11,4 +11,8 @@ module.exports = {
     "prettier",
   ], // let prettier configs override formatting
   plugins: ["@typescript-eslint", "import"],
+  rules: {
+    ...base.rules,
+    "@typescript-eslint/no-namespace": "off",
+  },
 };

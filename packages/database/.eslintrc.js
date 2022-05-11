@@ -6,4 +6,9 @@ module.exports = {
     node: true,
   },
   ...config,
+  ignorePatterns: [
+    ...config.ignorePatterns,
+    "babel.config.js",
+    "tests/*",
+  ],
 }

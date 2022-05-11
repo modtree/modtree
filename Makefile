@@ -1,7 +1,5 @@
 yarn:
 	yarn
-	yarn build:deps
-	yarn
 	find . -name *.log | xargs rm
 
 w:
