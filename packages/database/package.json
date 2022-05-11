@@ -21,12 +21,9 @@
   "dependencies": {
     "@inquirer/input": "^0.0.20-alpha.0",
     "axios": "^0.27.2",
-    "chalk": "^4.1.2",
     "dotenv": "^16.0.0",
     "inquirer": "^8.2.4",
-    "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
-    "mysqldump": "^3.2.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.6"
   },

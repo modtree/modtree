@@ -1,6 +1,3 @@
-import { connectionConfig, deleteTable }  from '../../sql'
-import { createConnection } from 'mysql'
+import { remove } from '../../sql/remove'
 
-const con = createConnection(connectionConfig)
-deleteTable(con, 'module')
-con.end()
+remove(['module'])
