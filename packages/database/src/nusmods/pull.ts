@@ -6,6 +6,7 @@ import { fetch } from './fetch'
 import { AppDataSource, db } from '../data-source'
 import { nusmodsApi } from './utils'
 import axios from 'axios'
+import { Agent } from 'https'
 
 export namespace pull {
   export const moduleCondensed = async (): Promise<ModuleCondensed[]> => {
@@ -19,22 +20,19 @@ export namespace pull {
   }
 
   export const module = async(): Promise<Module[]> => {
+    // instantiate client
+    const client = axios.create({
+      baseURL: 'https://api.nusmods.com/v2/2021-2022/modules/',
+      timeout: 60000,
+      maxRedirects: 10,
+      httpsAgent: new Agent({ keepAlive: true }),
+    })
+
     // get ModuleCondensed and Module lists from DB
-    const moduleCondensedList = await listModuleCodes()
-    const moduleList = await listModules()
+    const moduleCondensedSet = await listModuleCodes()
+    const moduleSet = await listModules()
 
-    // compare to see what needs to be added
-    const moduleCondensedCodes = new Set()
-    moduleCondensedList.forEach(code => {
-      moduleCondensedCodes.add(code)
-    })
-
-    const moduleCodes = new Set()
-    moduleList.forEach(code => {
-      moduleCodes.add(code)
-    })
-
-    const difference = new Set(Array.from(moduleCondensedCodes).filter(x => !moduleCodes.has(x)))
+    const difference = new Set(Array.from(moduleCondensedSet).filter(x => !moduleSet.has(x)))
     const diffArr = Array.from(difference)
 
     await db.open()
@@ -48,7 +46,7 @@ export namespace pull {
       let calls = []
       while (count > 0) {
         const moduleCode = diffArr.shift();
-        calls.push(axios.get(nusmodsApi(`modules/${moduleCode}`)))
+        calls.push(client.get(nusmodsApi(`modules/${moduleCode}`)))
         count--;
       }
       const res = await Promise.all(calls);
