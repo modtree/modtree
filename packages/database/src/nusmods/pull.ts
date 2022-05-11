@@ -60,12 +60,11 @@ export namespace pull {
               // console.log('exit with status', status)
               buffer -= 1
             })
-            .catch((err) => {
+            .catch(() => {
               buffer -= 1
               // fails on workload is a string
-              console.log('Error', err)
               log.red(moduleCode)
-              throw new err()
+              throw new Error(`failed loading ${moduleCode}`)
             })
         )
       }
