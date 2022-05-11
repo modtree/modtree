@@ -37,6 +37,7 @@
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "au": "ts-node ./src/api/user/add",
+    "ctm": "ts-node ./src/api/user/canTakeModule",
     "lm": "ts-node ./src/api/listModule",
     "lmc": "ts-node ./src/api/listModuleCodes",
     "fm": "ts-node ./src/api/nusmods/fetch/module",

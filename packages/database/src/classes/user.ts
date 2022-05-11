@@ -1,18 +1,17 @@
-import { Module } from "../entity"
+import { User as UserEntity } from '../entity'
 
+/** User class */
 export class User {
-  displayName: string
-  username: string
-  modulesCompleted: Module[]
-  modulesDoing: Module[]
-  degree: undefined // TODO: implement Degree class
-  savedDegrees: undefined[] // TODO: implement Degree class
+  user: UserEntity
+  /** User constructor */
   public constructor() {
-    this.displayName = ''
-    this.username = ''
-    this.modulesCompleted = []
-    this.modulesDoing = []
-    this.degree = undefined
-    this.savedDegrees= undefined
+    this.user = new UserEntity()
+  }
+  /**
+   * sets entity displayName
+   * @param {string} displayName
+   */
+  setDisplayName(displayName: string) {
+    this.user.displayName = displayName
   }
 }
