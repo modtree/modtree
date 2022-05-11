@@ -1,3 +1,3 @@
-import { dump } from "../../sql/dump";
+import { dump } from '../../sql/dump'
 
 dump()

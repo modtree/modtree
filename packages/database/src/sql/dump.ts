@@ -12,7 +12,7 @@ const projectRoot = process.cwd()
 const sqlDir = path.join(projectRoot, '.sql')
 
 export const dump = async () => {
-  const sqlFilename = await input({ message: "Enter .sql filename:", default: 'backup' })
+  const sqlFilename = await input({ message: 'Enter .sql filename:', default: 'backup' })
   const sqlFilepath = path.join(sqlDir, `${sqlFilename}.sql`)
   const cmd = `mysqldump -u ${config.username} -p"${config.password}" ${config.database} > ${sqlFilepath}`
   exec(cmd)

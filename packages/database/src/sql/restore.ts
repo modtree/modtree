@@ -2,7 +2,7 @@ import { exec } from 'child_process'
 import { config } from '../config'
 import path from 'path'
 import fs from 'fs'
-const inquirer = require('inquirer')
+import inquirer from 'inquirer'
 
 /* grab project root directory
  * note that this only works because `yarn restore`

@@ -1,7 +1,6 @@
 import { config } from '../config'
 import { Connection } from 'mysql'
 import { Connection as Connection2 } from 'mysql2/promise'
-import { exec } from 'child_process'
 
 export const initConfig = {
   host: config.host,
