@@ -1,3 +1,3 @@
-import { listModules } from '../'
+import { listModules } from '../modules'
 
 listModules()

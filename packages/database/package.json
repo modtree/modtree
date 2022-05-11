@@ -1,13 +1,20 @@
 {
-  "name": "modtree-database",
-  "version": "0.0.0-alpha.1",
+  "name": "database",
+  "version": "0.0.0",
   "license": "MIT",
   "description": "modtree database with MySQL",
   "type": "commonjs",
   "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.5.0",
     "@types/mysql": "^2.15.21",
     "@types/node": "^16.11.10",
+    "babel-jest": "^28.1.0",
+    "jest": "^28.1.0",
     "modtree-config": "*",
+    "ts-jest": "^28.0.2",
     "ts-node": "10.7.0",
     "typescript": "4.5.2"
   },
@@ -15,6 +22,7 @@
     "axios": "^0.27.2",
     "dotenv": "^16.0.0",
     "mysql": "^2.14.1",
+    "mysql2": "^2.3.3",
     "mysqldump": "^3.2.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.6"
@@ -22,19 +30,38 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --fix --ext .js,.ts .",
+    "test": "NODE_ENV=test jest --silent",
+    "test:v": "NODE_ENV=test jest",
     "dev": "node lib",
     "dump": "node lib/export",
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "au": "ts-node ./src/api/addUser",
-    "ls": "ts-node ./src/api/listModule",
-    "lsc": "ts-node ./src/api/listModuleCondensed",
-    "fm": "ts-node ./src/api/nusmods/fetchModule",
-    "fsm": "ts-node ./src/api/nusmods/fetchSomeModule",
-    "famc": "ts-node ./src/api/nusmods/fetchAllModuleCondensed",
-    "fnmc": "ts-node ./src/api/nusmods/fetchNewModuleCondensed",
-    "pamc": "ts-node ./src/api/nusmods/pullAllModuleCondensed",
-    "reset:mc": "ts-node ./src/api/sql/deleteModuleCondensed",
-    "reset:all": "ts-node ./src/api/sql/reset"
+    "lm": "ts-node ./src/api/listModule",
+    "lmc": "ts-node ./src/api/listModuleCodes",
+    "fm": "ts-node ./src/api/nusmods/fetch/module",
+    "fom": "ts-node ./src/api/nusmods/fetch/oneModule",
+    "fsm": "ts-node ./src/api/nusmods/fetch/someModules",
+    "fmc": "ts-node ./src/api/nusmods/fetch/moduleCondensed.ts",
+    "fnmc": "ts-node ./src/api/nusmods/fetch/newModuleCondensed.ts",
+    "pmc": "ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
+    "pm": "ts-node ./src/api/nusmods/pull/module.ts",
+    "pmc:heroku": "NODE_ENV=heroku ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
+    "reset:all": "ts-node ./src/api/sql/reset",
+    "reset": "ts-node ./src/api/sql/softReset"
+  },
+  "jest": {
+    "clearMocks": true,
+    "preset": "ts-jest",
+    "globalSetup": "./tests/setup.ts",
+    "globalTeardown": "./tests/teardown.ts",
+    "testMatch": [
+      "**/tests/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "setup.ts",
+      "teardown.ts"
+    ]
   }
 }

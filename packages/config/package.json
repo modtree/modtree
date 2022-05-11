@@ -1,5 +1,5 @@
 {
-  "name": "config",
+  "name": "modtree-config",
   "version": "0.0.0",
   "license": "MIT",
   "dependencies": {
