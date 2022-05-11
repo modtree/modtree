@@ -1,6 +1,11 @@
 import { connectionConfig } from '.'
 import { createConnection, Connection } from 'mysql2/promise'
 
+/**
+ * removes a one table from a mysql database
+ * @param {Connection} con
+ * @param {string} table name
+ */
 const removeTable = async (con: Connection, table: string) => {
   const sql = `DROP TABLE IF EXISTS ${table}`
   await con.query(sql).then(() => {
@@ -8,6 +13,10 @@ const removeTable = async (con: Connection, table: string) => {
   })
 }
 
+/**
+ * removes a list of tables from a mysql database
+ * @param {string[]} tables
+ */
 export async function remove(tables: string[]) {
   const con = await createConnection(connectionConfig)
   const q = []
