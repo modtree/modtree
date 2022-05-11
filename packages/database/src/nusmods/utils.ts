@@ -14,19 +14,20 @@ export function getModuleLevel(moduleCode: string): string {
 }
 
 export const constructModule = (n: NM, m: Module) => {
-  m.acadYear = n.acadYear
-  m.moduleCode = n.moduleCode
-  m.title = n.title
-  // m.description = n.description
-  m.moduleCredit = n.moduleCredit
-  m.department = n.department
-  m.faculty = n.faculty
-  // m.workload = n.workload
-  m.aliases = n.aliases
-  m.attributes = n.attributes
-  m.prerequisite = n.prerequisite
-  m.corequisite = n.corequisite
-  m.preclusion = n.preclusion
-  // m.prereqTree = n.prereqTree
-  m.fulfillRequirements = n.fulfillRequirements
+  m.acadYear = n.acadYear || ''
+  m.moduleCode = n.moduleCode || ''
+  m.title = n.title || ''
+  m.description = n.description || ''
+  m.moduleCredit = n.moduleCredit || ''
+  m.department = n.department || ''
+  m.faculty = n.faculty || ''
+  m.workload = n.workload || ''
+  m.aliases = n.aliases || []
+  m.attributes = n.attributes || {}
+  m.prerequisite = n.prerequisite || ''
+  m.corequisite = n.corequisite || ''
+  m.preclusion = n.preclusion || ''
+  m.prereqTree = n.prereqTree || ''
+  m.semesterData = n.semesterData || []
+  m.fulfillRequirements = n.fulfillRequirements || []
 }

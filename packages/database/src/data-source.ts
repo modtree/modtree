@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: config.database,
   synchronize: true,
   logging: false,
-  entities: [User, ModuleCondensed, Module, ModuleCheck],
+  entities: [ModuleCondensed, Module],
   migrations: [],
   subscribers: [],
 })

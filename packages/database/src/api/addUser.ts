@@ -1,3 +1,0 @@
-import { addUser } from '../'
-
-addUser()

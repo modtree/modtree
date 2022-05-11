@@ -2,6 +2,9 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import {
   AcadYear,
   ModuleCode,
+  SemesterData,
+  Workload,
+  PrereqTree,
   ModuleTitle,
   Department,
   Faculty,
@@ -13,51 +16,51 @@ export class Module {
   @PrimaryGeneratedColumn('uuid')
   id: number
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   acadYear: AcadYear
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   moduleCode: ModuleCode
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   title: ModuleTitle
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'longblob' })
   description: string
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   moduleCredit: string
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   department: Department
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   faculty: Faculty
 
-  @Column({ type: 'json', default: null })
+  @Column({ type: 'json' })
   aliases: ModuleCode[]
 
-  @Column({ type: 'json', default: null })
+  @Column({ type: 'json' })
   attributes: NUSModuleAttributes
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   prerequisite: string
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   corequisite: string
 
-  @Column({ type: 'text', default: null })
+  @Column({ type: 'text' })
   preclusion: string
 
-  @Column({ type: 'json', default: null })
+  @Column({ type: 'json' })
   fulfillRequirements: ModuleCode[]
 
-  // @Column({ type: 'json', default: null })
-  // semesterData: SemesterData[]
+  @Column({ type: 'json' })
+  semesterData: SemesterData[]
 
-  // @Column({ type: 'json', default: null })
-  // prereqTree: PrereqTree
+  @Column({ type: 'json' })
+  prereqTree: PrereqTree
 
-  // @Column({ type: 'json', default: null })
-  // workload: Workload
+  @Column('json')
+  workload: Workload
 }

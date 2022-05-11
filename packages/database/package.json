@@ -40,9 +40,13 @@
     "lm": "ts-node ./src/api/listModule",
     "lmc": "ts-node ./src/api/listModuleCodes",
     "fm": "ts-node ./src/api/nusmods/fetch/module",
+    "fom": "ts-node ./src/api/nusmods/fetch/oneModule",
+    "fsm": "ts-node ./src/api/nusmods/fetch/someModules",
     "fmc": "ts-node ./src/api/nusmods/fetch/moduleCondensed.ts",
     "fnmc": "ts-node ./src/api/nusmods/fetch/newModuleCondensed.ts",
     "pmc": "ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
+    "pm": "ts-node ./src/api/nusmods/pull/module.ts",
+    "pmc:heroku": "NODE_ENV=heroku ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
     "reset:all": "ts-node ./src/api/sql/reset",
     "reset": "ts-node ./src/api/sql/softReset"
   },

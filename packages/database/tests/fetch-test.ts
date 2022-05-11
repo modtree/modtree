@@ -1,6 +1,6 @@
 // import { AppDataSource, db } from '../src/data-source'
-// import { Module } from '../src/entity'
-import { listModuleCodes } from '../src/modules'
+import { Module } from '../src/entity'
+import { listModuleCodes, listModules } from '../src/modules'
 import { fetch, write } from '../src/nusmods'
 
 test('fetch all condensed modules from nusmods api', async () => {
@@ -18,4 +18,14 @@ test('list modules in database', async () => {
   const indexedModuleCodes: Set<string> = await listModuleCodes()
   const count = indexedModuleCodes.size
   expect(count).toEqual(6187)
+})
+
+test ('fetch all modules with full details', async () => {
+  const end = (await listModuleCodes()).size
+  let d = (await listModules()).size
+  while (d < end) {
+    const modules: Module[] = await fetch.module(7000)
+    await write.module(modules)
+    d = (await listModules()).size
+  }
 })
