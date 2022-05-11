@@ -2,10 +2,9 @@ import { ModuleCondensed as NMC, Module as NM } from '../../types/nusmods'
 import { ModuleCondensed, Module } from '../entity'
 import { listModuleCodes, listModules } from '../modules'
 import { log } from '../cli'
-import { nusmodsApi, getModuleLevel } from './utils'
+import { nusmodsApi, getModuleLevel , constructModule } from './utils'
 import axios from 'axios'
 import { Agent } from 'https'
-import { constructModule } from './utils'
 import { AppDataSource, db, container } from '../data-source'
 
 type FetchModuleCondensed = {
@@ -18,7 +17,7 @@ type FetchModuleCondensed = {
 export namespace fetch {
   /**
    * fetches a list of condensed modules
-   * @returns {Promise<FetchModuleCondensed>}
+   * @return {Promise<FetchModuleCondensed>}
    */
   export async function moduleCondensed(): Promise<FetchModuleCondensed> {
     const res = await axios.get(nusmodsApi('moduleList'))
