@@ -34,6 +34,8 @@ export namespace pull {
     const diffArr = Array.from(difference)
     let buffer = 0
     container(async () => {
+      const fetchQueue = []
+      const writeQueue = []
       const test = async (moduleCode: string, index: number) => {
         // const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
         const res = await client.get(`${moduleCode}.json`)
@@ -42,10 +44,9 @@ export namespace pull {
         constructModule(n, m)
         console.log(m.moduleCode)
         log.yellow(index.toString())
-        await AppDataSource.manager.save(m)
+        writeQueue.push(AppDataSource.manager.save(m))
         return 'ok'
       }
-      const q = []
       for (let i = 0; i < diffArr.length; i++) {
         const moduleCode = diffArr[i]
         console.log(moduleCode)
@@ -53,7 +54,7 @@ export namespace pull {
           await new Promise((resolve) => setTimeout(resolve, 0.1))
         }
         buffer += 1
-        q.push(
+        fetchQueue.push(
           test(moduleCode, i)
             .then(() => {
               // console.log('exit with status', status)
@@ -68,7 +69,8 @@ export namespace pull {
             })
         )
       }
-      await Promise.all(q)
+      await Promise.all(fetchQueue)
+      await Promise.all(writeQueue)
     })
   }
 }
