@@ -48,9 +48,9 @@
     "pmc": "ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
     "pm": "ts-node ./src/api/nusmods/pull/module.ts",
     "pmc:heroku": "NODE_ENV=heroku ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
-    "reset:all": "ts-node ./src/api/sql/reset",
+    "reset:all": "ts-node ./src/api/sql/resetAll",
     "reset:mc": "ts-node ./src/api/sql/resetModuleCondensed",
-    "reset": "ts-node ./src/api/sql/softReset"
+    "reset:m": "ts-node ./src/api/sql/resetModule.ts"
   },
   "jest": {
     "clearMocks": true,
