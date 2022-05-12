@@ -52,6 +52,7 @@
     "reset:all": "ts-node ./src/api/sql/reset/all.ts",
     "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed.ts",
     "reset:m": "ts-node ./src/api/sql/reset/module.ts",
+    "reset:d": "ts-node ./src/api/sql/reset/degree.ts",
     "ad": "ts-node ./src/api/degree/add.ts",
     "sd": "ts-node ./src/api/degree/show.ts"
   }

@@ -1,3 +1,4 @@
 import { showDegree } from '../../functions/degree'
+import { analyze } from '../analyze'
 
-showDegree()
+analyze(showDegree)

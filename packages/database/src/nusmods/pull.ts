@@ -31,7 +31,7 @@ export namespace pull {
     const difference = new Set(moduleCodes.filter((x) => !existing.has(x)))
     const diffArr = Array.from(difference)
     let buffer = 0
-    container(async () => {
+    await container(async () => {
       const fetchQueue = []
       const writeQueue = []
       const test = async (moduleCode: string, index: number) => {

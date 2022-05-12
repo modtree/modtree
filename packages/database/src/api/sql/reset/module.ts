@@ -1,3 +1,3 @@
 import { remove } from '../../../sql/remove'
 
-remove.tables(['module'])
+remove.tables(['degree_modules_required_module', 'module'])
