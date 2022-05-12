@@ -1,4 +1,4 @@
-import { connectionConfig } from '.'
+import { connectionConfig } from './config'
 import { createConnection, Connection } from 'mysql2/promise'
 
 /**
@@ -13,17 +13,28 @@ const removeTable = async (con: Connection, table: string) => {
   })
 }
 
-/**
- * removes a list of tables from a mysql database
- * @param {string[]} tables
- */
-export async function remove(tables: string[]) {
-  const con = await createConnection(connectionConfig)
-  const q = []
-  tables.forEach((table) => {
-    q.push(removeTable(con, table))
-  })
-  await Promise.all(q)
-  await con.end()
-  console.log('finished setup')
+export namespace remove {
+  /**
+   * removes a list of tables from a mysql database
+   * @param {string[]} tables
+   */
+  export async function tables(tables: string[]) {
+    const con = await createConnection(connectionConfig)
+    const q = []
+    tables.forEach((table) => {
+      q.push(removeTable(con, table))
+    })
+    await Promise.all(q)
+    await con.end()
+  }
+
+  /**
+   * removes a single table from a mysql database
+   * @param {string} table
+   */
+  export async function table(table: string) {
+    const con = await createConnection(connectionConfig)
+    await removeTable(con, table)
+    await con.end()
+  }
 }

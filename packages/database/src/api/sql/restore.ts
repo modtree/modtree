@@ -1,3 +1,3 @@
 import { restore } from '../../sql/restore'
 
-restore()
+restore.prompted()

@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
+import { log } from './cli'
 import { config } from './config'
 import { ModuleCondensed, Module, User } from './entity'
 
@@ -22,8 +23,18 @@ export const db = {
   close: async () => AppDataSource.destroy(),
 }
 
-export const container = async (fn: () => Promise<void>) => {
-  await db.open()
-  await fn()
-  await db.close()
+export const container = async (fn: () => Promise<any>): Promise<any> => {
+  const res = await AppDataSource.initialize()
+    .then(async () => {
+      /** successfully initialize database connection */
+      const res = await fn()
+      AppDataSource.destroy()
+      return res
+    })
+  /** failed to initialize database connection */
+    .catch((error) => {
+      console.log(error)
+      log.red('typeorm failed to initialize connection to database.')
+    })
+  return res
 }

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+PASS=$(pass mysql-mac-pro)
+USERNAME=khang
+DATABASE=mt_test
+SQLFILE=../test-source.sql
+
+mysql -u $USERNAME -p"$PASS" $DATABASE < $SQLFILE

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+PASS=$(pass mysql-mac-pro)
+USERNAME=khang
+cat << EOF | sudo mysql
+GRANT ALL PRIVILEGES ON *.* TO '$USERNAME'@'localhost' WITH GRANT OPTION;
+EOF

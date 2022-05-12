@@ -1,31 +1,66 @@
-const colors = {
-  reset: '\x1b[0m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  magenta: '\x1b[35m',
-  cyan: '\x1b[36m',
-  gray: '\x1b[37m',
+import boxen from 'boxen'
+import chalk from 'chalk'
+
+type Color =
+  | 'black'
+  | 'red'
+  | 'green'
+  | 'yellow'
+  | 'blue'
+  | 'magenta'
+  | 'cyan'
+  | 'white'
+  | 'gray'
+  | 'grey'
+
+const boxenConfig = (color: Color) => ({
+  borderColor: color,
+  padding: {
+    right: 1,
+    left: 1,
+    top: 0,
+    bottom: 0,
+  },
+})
+
+const colorLog = (color: Color) => {
+  /**
+   * sends all arguments to chalk[color]
+   * @param {any[]} ...args
+   */
+  function helper(...args: any[]) {
+    console.log(chalk[color](...args))
+  }
+  return helper
 }
 
-const clog = (color: string) => (text: string) => {
-  console.log(`${color}${text}${colors.reset} `)
-}
-
-const fnmaeLog = (text: string) => {
-  console.log(
-    `${colors.gray}[ ${colors.green}${text}${colors.gray} ]${colors.reset}`
-  )
+const boxColorLog = (color: Color) => {
+  /**
+   * sends string to boxen
+   * @param {string} text
+   */
+  function helper(text: string) {
+    console.log(boxen(text, boxenConfig(color)))
+  }
+  return helper
 }
 
 export const log = {
-  red: clog(colors.red),
-  green: clog(colors.green),
-  yellow: clog(colors.yellow),
-  blue: clog(colors.blue),
-  magenta: clog(colors.magenta),
-  cyan: clog(colors.cyan),
-  gray: clog(colors.gray),
-  fname: fnmaeLog,
+  red: colorLog('red'),
+  green: colorLog('green'),
+  yellow: colorLog('yellow'),
+  blue: colorLog('blue'),
+  magenta: colorLog('magenta'),
+  cyan: colorLog('cyan'),
+  gray: colorLog('gray'),
+}
+
+export const box = {
+  red: boxColorLog('red'),
+  green: boxColorLog('green'),
+  yellow: boxColorLog('yellow'),
+  blue: boxColorLog('blue'),
+  magenta: boxColorLog('magenta'),
+  cyan: boxColorLog('cyan'),
+  gray: boxColorLog('gray'),
 }
