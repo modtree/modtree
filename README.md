@@ -10,17 +10,16 @@ This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package ma
 
 - `docs`: a [Next.js](https://nextjs.org) app
 - `web`: another [Next.js](https://nextjs.org) app
-- `backend`: a firebase app handling backend and authentication
 
 ### Packages
 
-- `modtree`: a library containing shared types/ORM entities
-- `config`: `eslint` configurations
+- `database`: a library of database functions
+- `config`: linting and formattings configurations
 - `tsconfig`: typescript configs used throughout the monorepo
 
 ## Setup
 
-After cloning, simply run `yarn setup` from the root of the workspace.
+After cloning, run `yarn setup` from the root of the workspace.
 
 ```
 git clone git@github.com:modtree/modtree.git

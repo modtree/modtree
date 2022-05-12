@@ -6,14 +6,29 @@ export class User {
   id: number
 
   @Column()
-  firstName: string
+  displayName: string
 
   @Column()
-  lastName: string
+  username: string
+
+  @Column({ type: 'json' })
+  modulesCompleted: string[]
+
+  @Column({ type: 'json' })
+  modulesDoing: string[]
 
   @Column()
-  age: number
+  matriculationYear: number
 
-  // @Column()
-  // comment: string
+  @Column()
+  graduationYear: number
+
+  @Column()
+  graduationSemester: number
+
+  async canTakeModule(moduleCode: string): Promise<boolean> {
+    // TODO make this take a Module instead of a string
+    console.log(`checking if user can take ${moduleCode}...`)
+    return true
+  }
 }

@@ -12,7 +12,8 @@
     "build:db": "turbo run build --filter=database",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "setup": "yarn && yarn build:deps && yarn"
+    "rm:logs": "find . -name *.log | xargs rm",
+    "setup": "yarn && yarn build:db && yarn"
   },
   "devDependencies": {
     "prettier": "latest",
