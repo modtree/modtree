@@ -23,7 +23,7 @@ type Answers = {
 
 /**
  * Executes a shell command and return it as a Promise.
- * @param cmd {string}
+ * @param {string} cmd
  * @return {Promise<string>}
  */
 function exec(cmd: string): Promise<string> {

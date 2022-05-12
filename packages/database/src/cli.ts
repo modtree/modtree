@@ -24,6 +24,10 @@ const boxenConfig = (color: Color) => ({
 })
 
 const colorLog = (color: Color) => {
+  /**
+   * sends all arguments to chalk[color]
+   * @param {any[]} ...args
+   */
   function helper(...args: any[]) {
     console.log(chalk[color](...args))
   }
@@ -31,6 +35,10 @@ const colorLog = (color: Color) => {
 }
 
 const boxColorLog = (color: Color) => {
+  /**
+   * sends string to boxen
+   * @param {string} text
+   */
   function helper(text: string) {
     console.log(boxen(text, boxenConfig(color)))
   }
