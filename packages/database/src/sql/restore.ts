@@ -68,7 +68,6 @@ export namespace restore {
   export const file = async (filename: string) => {
     const sqlFilepath = path.join(sqlDir, filename)
     const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
-    log.yellow(`cmd: ${cmd}`)
     await exec(cmd)
   }
 }
