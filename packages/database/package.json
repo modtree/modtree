@@ -32,7 +32,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --fix --ext .js,.ts .",
-    "test": "NODE_ENV=test jest --config ./tests/configs/main.config.js",
+    "test": "NODE_ENV=test jest --config ./tests/configs/main.config.js --detectOpenHandles",
     "test:fetch": "NODE_ENV=test jest --config ./tests/configs/fetch.config.js",
     "test:scripts": "NODE_ENV=test jest --config ./tests/configs/scripts.config.js --json --outputFile ./.logs/scripts.json --testTimeout=20000",
     "test:all-scripts": "NODE_ENV=test jest --config ./tests/configs/all-scripts.config.js --json --outputFile ./.logs/all-scripts.json --testTimeout=20000",
