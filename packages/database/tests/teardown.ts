@@ -17,5 +17,5 @@ function nulldown() {
 nulldown.name
 teardown.name
 
-// export default teardown
-export default nulldown
+export default teardown
+// export default nulldown
