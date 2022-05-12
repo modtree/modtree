@@ -3,7 +3,6 @@ import { config } from '../config'
 import path from 'path'
 import fs from 'fs'
 import inquirer from 'inquirer'
-import { log } from '../cli'
 
 /* grab project root directory
  * note that this only works because `yarn restore`
