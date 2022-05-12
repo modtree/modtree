@@ -1,3 +1,4 @@
 import { pull } from '../../../nusmods'
+import { analyze } from '../../analyze'
 
-pull.modules()
+analyze(pull.modules)

@@ -2,7 +2,7 @@ import { container, AppDataSource } from '../data-source'
 import { User } from '../entity'
 
 export const addUser = async() => {
-  container(async() => {
+  await container(async() => {
     const a = new User()
     a.username = 'nvkhang'
     a.displayName = 'Nguyen Vu Khang'
@@ -16,7 +16,7 @@ export const addUser = async() => {
 }
 
 export const canTakeModule = async() => {
-  container(async() => {
+  await container(async() => {
     const user = new User()
     await user.canTakeModule('CS1010S')
   })

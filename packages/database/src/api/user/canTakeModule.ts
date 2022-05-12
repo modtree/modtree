@@ -1,3 +1,4 @@
 import { canTakeModule } from '../../functions/user'
+import { analyze } from '../analyze'
 
-canTakeModule()
+analyze(canTakeModule)

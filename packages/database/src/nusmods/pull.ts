@@ -31,11 +31,10 @@ export namespace pull {
     const difference = new Set(moduleCodes.filter((x) => !existing.has(x)))
     const diffArr = Array.from(difference)
     let buffer = 0
-    container(async () => {
+    await container(async () => {
       const fetchQueue = []
       const writeQueue = []
       const test = async (moduleCode: string, index: number) => {
-        // const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
         const res = await client.get(`${moduleCode}.json`)
         const n: NM = res.data
         const m = new Module()
