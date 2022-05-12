@@ -35,7 +35,6 @@ export namespace pull {
       const fetchQueue = []
       const writeQueue = []
       const test = async (moduleCode: string, index: number) => {
-        // const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
         const res = await client.get(`${moduleCode}.json`)
         const n: NM = res.data
         const m = new Module()

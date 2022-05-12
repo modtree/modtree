@@ -1,4 +1,4 @@
-import { AppDataSource, db , container } from './data-source'
+import { AppDataSource, container } from './data-source'
 import { ModuleCondensed, Module } from './entity'
 import { log } from './cli'
 import { config } from './config'
@@ -32,17 +32,17 @@ export namespace list {
   }
 
   export const module = async () => {
-    await db.open()
     const existingModuleCodes = new Set<string>()
-    const repo = AppDataSource.getRepository(Module)
-    console.log('Loading modules from the database...')
-    const modules = await repo.find()
-    modules.forEach((m) => {
-      existingModuleCodes.add(m.moduleCode)
+    await container(async () => {
+      const repo = AppDataSource.getRepository(Module)
+      console.log('Loading modules from the database...')
+      const modules = await repo.find()
+      modules.forEach((m) => {
+        existingModuleCodes.add(m.moduleCode)
+      })
+      console.debug('total data sets:', modules.length)
+      console.debug('unique data:', existingModuleCodes.size)
     })
-    console.debug('total data sets:', modules.length)
-    console.debug('unique data:', existingModuleCodes.size)
-    await db.close()
     return existingModuleCodes
   }
 }

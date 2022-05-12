@@ -1,5 +1,5 @@
 import { ModuleCondensed, Module } from '../entity'
-import { AppDataSource, container, db } from '../data-source'
+import { AppDataSource, container } from '../data-source'
 
 export namespace write {
   /**
@@ -7,11 +7,11 @@ export namespace write {
    * @param {ModuleCondensed[]} moduleList
    */
   export async function moduleCondensed(moduleList: ModuleCondensed[]) {
-    await db.open()
-    console.debug('Importing a list of condensed modules...')
-    await AppDataSource.manager.save(moduleList)
-    console.log('Done saving.')
-    await db.close()
+    await container(async () => {
+      console.debug('Importing a list of condensed modules...')
+      await AppDataSource.manager.save(moduleList)
+      console.log('Done saving.')
+    })
   }
 
   /**
@@ -19,7 +19,7 @@ export namespace write {
    * @param {Module[]} moduleList
    */
   export async function module(moduleList: Module[]) {
-    container(async () => {
+    await container(async () => {
       console.debug('Importing a list of condensed modules...')
       await AppDataSource.manager.save(moduleList)
       console.log('Done saving.')

@@ -1,17 +1,26 @@
-import { exec as execDefault } from 'child_process'
+import { exec as execDefault, ExecException } from 'child_process'
+
+type Response = {
+  output: string
+  error: ExecException
+}
 
 /**
  * Executes a shell command and return it as a Promise.
  * @param {string} cmd
  * @return {Promise<string>}
  */
-export function exec(cmd: string): Promise<string> {
-  return new Promise((resolve) => {
+export function exec(cmd: string): Promise<Response> {
+  return new Promise((resolve, reject) => {
     execDefault(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.warn(error)
-      }
-      resolve(stdout ? stdout : stderr)
+      resolve({
+        output: stdout ? stdout : stderr,
+        error,
+      })
+      reject({
+        output: 'rejected, but calmn down and carry on shelling',
+        error,
+      })
     })
   })
 }

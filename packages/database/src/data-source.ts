@@ -18,17 +18,19 @@ export const AppDataSource = new DataSource({
   subscribers: [],
 })
 
-export const db = {
-  open: async () => AppDataSource.initialize(),
-  close: async () => AppDataSource.destroy(),
-}
-
 export const container = async (fn: () => Promise<any>): Promise<any> => {
+  // if already initialized, reattach to old instance
+  if (AppDataSource.isInitialized) {
+    log.cyan('already initialized, reattaching.')
+    const res = await fn()
+    return res
+  }
+  // if not initialized, kickstart a new instance
   const res = await AppDataSource.initialize()
     .then(async () => {
       /** successfully initialize database connection */
+      log.cyan('initialized a new connection to database.')
       const res = await fn()
-      AppDataSource.destroy()
       return res
     })
   /** failed to initialize database connection */
