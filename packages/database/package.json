@@ -51,6 +51,8 @@
     "pm": "ts-node ./src/api/nusmods/pull/module.ts",
     "reset:all": "ts-node ./src/api/sql/reset/all.ts",
     "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed.ts",
-    "reset:m": "ts-node ./src/api/sql/reset/module.ts"
+    "reset:m": "ts-node ./src/api/sql/reset/module.ts",
+    "ad": "ts-node ./src/api/degree/add.ts",
+    "sd": "ts-node ./src/api/degree/show.ts"
   }
 }
