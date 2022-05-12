@@ -1,11 +1,3 @@
-import { config } from '../config'
-
-export const initConfig = {
-  host: config.host,
-  user: config.username,
-  password: config.password,
-}
-export const connectionConfig = {
-  ...initConfig,
-  database: config.database,
-}
+export { dump } from './dump'
+export { restore } from './restore'
+export { remove } from './remove'

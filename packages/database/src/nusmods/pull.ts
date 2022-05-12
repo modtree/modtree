@@ -1,21 +1,19 @@
 import { Module as NM } from '../../types/nusmods'
 import { constructModule } from './utils'
 import { log } from '../cli'
-import { fetch } from './fetch'
-import { listModuleCodes, listModules } from '../modules'
+import { fetch, write } from '.'
+import { list } from '../list'
 import { ModuleCondensed, Module } from '../entity'
-import { AppDataSource, container } from '../data-source'
+import { AppDataSource, container2 } from '../data-source'
 import axios from 'axios'
 import { Agent } from 'https'
 
 export namespace pull {
   export const moduleCondensed = async (): Promise<ModuleCondensed[]> => {
-    log.fname('pull-diff moduleCondensed')
-    const existing = await listModuleCodes()
+    const existing = await list.moduleCode()
     const freshPull = (await fetch.moduleCondensed()).modules
     const toAdd = freshPull.filter((x) => !existing.has(x.moduleCode))
-    console.log(toAdd)
-    console.log('total:', toAdd.length)
+    await write.moduleCondensed(toAdd)
     return toAdd
   }
   /**
@@ -28,12 +26,12 @@ export namespace pull {
       maxRedirects: 10,
       httpsAgent: new Agent({ keepAlive: true }),
     })
-    const moduleCodes: string[] = Array.from(await listModuleCodes())
-    const existing = await listModules()
+    const moduleCodes: string[] = Array.from(await list.moduleCode())
+    const existing = await list.module()
     const difference = new Set(moduleCodes.filter((x) => !existing.has(x)))
     const diffArr = Array.from(difference)
     let buffer = 0
-    container(async () => {
+    container2(async () => {
       const fetchQueue = []
       const writeQueue = []
       const test = async (moduleCode: string, index: number) => {

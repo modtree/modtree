@@ -52,13 +52,13 @@ export namespace fetch {
    * fetches exactly one module with full details
    * @param {string} moduleCode
    */
-  export async function oneModule(moduleCode: string) {
+  export async function oneModule(moduleCode: string)  {
     // const test = 'MA5205'
     const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
     // const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
     const n: NM = res.data
     const m = new Module()
     constructModule(n, m)
-    console.log(m)
+    // return m
   }
 }

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+PASS=$(pass mysql-mac-pro)
+DATABASE=mt
+USERNAME=khang
+mysql -u $USERNAME -p"$PASS" --database=$DATABASE < "${1-script.sql}"
