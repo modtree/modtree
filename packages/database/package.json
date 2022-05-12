@@ -43,6 +43,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "au": "ts-node ./src/api/user/add",
     "ctm": "ts-node ./src/api/user/canTakeModule",
+    "ad": "ts-node ./src/api/degree/add",
     "lm": "ts-node ./src/api/list/module",
     "lmc": "ts-node ./src/api/list/moduleCode",
     "fm": "ts-node ./src/api/nusmods/fetch/module",
