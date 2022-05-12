@@ -14,7 +14,7 @@ const projectRoot = process.cwd()
 const sqlDir = path.join(projectRoot, '.sql')
 
 /* grab a list of all .sql files */
-const sqlList = fs.readdirSync(sqlDir).filter(x => x.endsWith(".sql"))
+const sqlList = fs.readdirSync(sqlDir).filter(x => x.endsWith('.sql'))
 
 type Answers = {
   sql: string
@@ -27,14 +27,14 @@ type Answers = {
  * @return {Promise<string>}
  */
 function exec(cmd: string): Promise<string> {
- return new Promise((resolve) => {
-  execDefault(cmd, (error, stdout, stderr) => {
-   if (error) {
-    console.warn(error);
-   }
-   resolve(stdout? stdout : stderr);
-  });
- });
+  return new Promise((resolve) => {
+    execDefault(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.warn(error)
+      }
+      resolve(stdout? stdout : stderr)
+    })
+  })
 }
 
 export namespace restore {

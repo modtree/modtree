@@ -1,7 +1,6 @@
-import { AppDataSource, db } from './data-source'
+import { AppDataSource, db , container2 } from './data-source'
 import { ModuleCondensed, Module } from './entity'
 import { log } from './cli'
-import { container2 } from './data-source'
 import { config } from './config'
 
 export namespace list {

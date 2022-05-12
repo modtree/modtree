@@ -37,7 +37,7 @@ export const container2 = async (fn: () => Promise<any>): Promise<any> => {
       AppDataSource.destroy()
       return res
     })
-      /** failed to initialize database connection */
+  /** failed to initialize database connection */
     .catch((error) => {
       console.log(error)
       log.red('typeorm failed to initialize connection to database.')
