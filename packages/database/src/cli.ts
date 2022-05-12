@@ -13,6 +13,16 @@ type Color =
   | 'gray'
   | 'grey'
 
+const boxenConfig = (color: Color) => ({
+  borderColor: color,
+  padding: {
+    right: 1,
+    left: 1,
+    top: 0,
+    bottom: 0,
+  },
+})
+
 const colorLog = (color: Color) => {
   function helper(...args: any[]) {
     console.log(chalk[color](...args))
@@ -22,17 +32,7 @@ const colorLog = (color: Color) => {
 
 const boxColorLog = (color: Color) => {
   function helper(text: string) {
-    console.log(
-      boxen(text, {
-        borderColor: color,
-        padding: {
-          right: 1,
-          left: 1,
-          top: 0,
-          bottom: 0,
-        },
-      })
-    )
+    console.log(boxen(text, boxenConfig(color)))
   }
   return helper
 }
