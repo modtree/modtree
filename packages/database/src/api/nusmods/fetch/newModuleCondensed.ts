@@ -1,4 +1,4 @@
-import { listModuleCodes } from '../../../modules'
+import { listModuleCodes } from '../../../list'
 import { fetch } from '../../../nusmods'
 
 /** endpoint function */

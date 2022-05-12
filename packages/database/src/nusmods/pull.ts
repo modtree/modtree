@@ -2,7 +2,7 @@ import { Module as NM } from '../../types/nusmods'
 import { constructModule } from './utils'
 import { log } from '../cli'
 import { fetch } from './fetch'
-import { listModuleCodes, listModules } from '../modules'
+import { listModuleCodes, listModules } from '../list'
 import { ModuleCondensed, Module } from '../entity'
 import { AppDataSource, container } from '../data-source'
 import axios from 'axios'
@@ -10,7 +10,6 @@ import { Agent } from 'https'
 
 export namespace pull {
   export const moduleCondensed = async (): Promise<ModuleCondensed[]> => {
-    log.fname('pull-diff moduleCondensed')
     const existing = await listModuleCodes()
     const freshPull = (await fetch.moduleCondensed()).modules
     const toAdd = freshPull.filter((x) => !existing.has(x.moduleCode))

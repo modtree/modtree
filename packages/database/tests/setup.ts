@@ -1,4 +1,4 @@
-import { initConfig, deleteTable2, connectionConfig } from '../src/sql'
+import { initConfig } from '../src/sql'
 import { config } from '../src/config'
 import { createConnection } from 'mysql2/promise'
 import { log } from '../src/cli'
