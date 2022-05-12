@@ -25,3 +25,19 @@ export const addDegree = async() => {
     await AppDataSource.manager.save(degree)
   })
 }
+
+export const showDegree = async() => {
+  await container(async() => {
+    const repo = AppDataSource.getRepository(Degree)
+    const degree = await repo.findOne({
+      where: {
+        title: "Computer Science"
+      },
+      relations: ["modulesRequired"]
+    })
+
+    console.log("Degree:", degree.title) // overall structure
+    const moduleCodes = degree.modulesRequired.map(one => one.moduleCode)
+    console.log(moduleCodes)
+  })
+}
