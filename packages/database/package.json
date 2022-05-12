@@ -32,8 +32,8 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --fix --ext .js,.ts .",
-    "test": "NODE_ENV=test jest --silent",
-    "test:v": "NODE_ENV=test jest",
+    "test": "NODE_ENV=test jest --config ./tests/configs/main.config.js",
+    "test:fetch": "NODE_ENV=test jest --config ./tests/configs/fetch.config.js",
     "dev": "node lib",
     "dump": "ts-node ./src/api/sql/dump",
     "restore": "ts-node ./src/api/sql/restore",
@@ -54,19 +54,5 @@
     "reset:all": "ts-node ./src/api/sql/resetAll",
     "reset:mc": "ts-node ./src/api/sql/resetModuleCondensed",
     "reset:m": "ts-node ./src/api/sql/resetModule"
-  },
-  "jest": {
-    "clearMocks": true,
-    "preset": "ts-jest",
-    "globalSetup": "./tests/setup.ts",
-    "globalTeardown": "./tests/teardown.ts",
-    "testMatch": [
-      "**/tests/**/*.[jt]s?(x)",
-      "**/?(*.)+(spec|test).[jt]s?(x)"
-    ],
-    "testPathIgnorePatterns": [
-      "setup.ts",
-      "teardown.ts"
-    ]
   }
 }

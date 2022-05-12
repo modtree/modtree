@@ -1,6 +1,6 @@
 // import { AppDataSource, db } from '../src/data-source'
 // import { Module } from '../src/entity'
-import { listModuleCodes } from '../src/modules'
+import { listModuleCodes } from '../src/list'
 import { fetch, write } from '../src/nusmods'
 
 test('fetch all condensed modules from nusmods api', async () => {

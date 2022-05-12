@@ -4,7 +4,7 @@ import { log } from '../cli'
 import { fetch } from './fetch'
 import { listModuleCodes, listModules } from '../list'
 import { ModuleCondensed, Module } from '../entity'
-import { AppDataSource, container } from '../data-source'
+import { AppDataSource, container2 } from '../data-source'
 import axios from 'axios'
 import { Agent } from 'https'
 
@@ -32,7 +32,7 @@ export namespace pull {
     const difference = new Set(moduleCodes.filter((x) => !existing.has(x)))
     const diffArr = Array.from(difference)
     let buffer = 0
-    container(async () => {
+    container2(async () => {
       const fetchQueue = []
       const writeQueue = []
       const test = async (moduleCode: string, index: number) => {
