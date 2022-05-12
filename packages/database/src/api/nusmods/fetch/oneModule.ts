@@ -1,3 +1,4 @@
 import { fetch } from '../../../nusmods'
+import { print } from '../../async'
 
-fetch.oneModule('CS2040S')
+print(() => fetch.oneModule('CS2040S'))

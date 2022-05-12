@@ -1,3 +1,4 @@
 import { list } from '../../list'
+import { print } from '../async'
 
-list.module()
+print(list.module)

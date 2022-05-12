@@ -1,3 +1,4 @@
 import { fetch } from '../../../nusmods'
+import { print } from '../../async'
 
-fetch.moduleCondensed()
+print(fetch.moduleCondensed)

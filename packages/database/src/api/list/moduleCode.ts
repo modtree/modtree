@@ -1,9 +1,4 @@
 import { list } from '../../list'
+import { print } from '../async'
 
-/** main function */
-async function main() {
-  const res = await list.moduleCode()
-  console.log('return value:', res)
-}
-
-main()
+print(list.moduleCode)
