@@ -17,6 +17,9 @@ export namespace fetch {
    * @return {Promise<FetchModuleCondensed>}
    */
   export async function moduleCondensed(): Promise<FetchModuleCondensed> {
+    /* this line is required for JEST. Wihtout awaiting nextTick, 
+     * the next line will somehow trigger JEST's open handle catcher.
+     */
     await process.nextTick(() => {})
     const res = await axios.get(nusmodsApi('moduleList'))
     const data: NMC[] = res.data

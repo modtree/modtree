@@ -1,11 +1,10 @@
 import { analyze } from '../api/analyze'
-import { config } from '../config'
 import { list } from '../list'
 import { fetch } from '../nusmods'
-import { wipe } from '../sql'
+import { setup } from '../../tests/setup'
 
 beforeAll(async () => {
-  await wipe.database(config.database, config.restoreSource)
+  await setup()
 })
 
 test('test list module codes', async () => {

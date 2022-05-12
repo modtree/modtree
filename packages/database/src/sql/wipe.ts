@@ -1,6 +1,5 @@
 import { createConnection } from 'mysql2/promise'
 import { log } from '../cli'
-import { restore } from './restore'
 import { initConfig } from './config'
 
 export namespace wipe {
@@ -8,7 +7,7 @@ export namespace wipe {
    * and then recreates it for a completely fresh start
    * so ensure .env.test has the corrent database name.
    */
-  export async function database(database: string, sqlFile: string) {
+  export async function database(database: string) {
     await createConnection(initConfig).then(async (connection) => {
       // drop the database if it exists
       await connection
@@ -24,8 +23,6 @@ export namespace wipe {
         .catch(() => {
           log.gray(`database [${database}] already exists`)
         })
-      // restore the database state from /.sql/${sqlFile}
-      await restore.file(sqlFile)
       await connection.end()
     })
   }

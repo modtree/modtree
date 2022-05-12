@@ -1,8 +1,7 @@
 import { config } from '../src/config'
-import { wipe } from '../src/sql'
+import { restore, wipe } from '../src/sql'
 
-const setup = async () => {
-  await wipe.database(config.database, config.restoreSource)
+export async function setup() {
+  await wipe.database(config.database)
+  await restore.file(config.restoreSource)
 }
-
-export default setup

@@ -1,5 +1,10 @@
 import { exec } from '../src/shell'
 import { getScriptsByRegex } from '../src/yarn'
+import { setup } from '../tests/setup'
+
+beforeEach(async() => {
+  await setup()
+})
 
 const commandRegexList = ['reset*'].map((x) => new RegExp(x))
 

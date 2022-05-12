@@ -1,10 +1,5 @@
-import { remove } from '../../../sql/remove'
+import { config } from '../../../config'
+import { wipe } from '../../../sql/wipe'
+import { analyze } from '../../analyze'
 
-remove.tables([
-  'degree_modules_required_module',
-  'degree',
-  'moduleCondensed',
-  'module',
-  'user',
-  'moduleCheck',
-])
+analyze(() => wipe.database(config.database))

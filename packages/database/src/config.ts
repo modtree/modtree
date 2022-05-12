@@ -5,7 +5,8 @@ import { box } from './cli'
 const env = process.env.NODE_ENV
 const suffix = env ? `.${env}` : ''
 const envFile = `.env${suffix}`
-const envPath = resolve(process.cwd(), envFile)
+const rootDir = process.cwd()
+const envPath = resolve(rootDir, envFile)
 dotenvConfig({ path: envPath })
 
 const output = [
@@ -23,6 +24,7 @@ if (env === 'test') {
 box.blue(output.join('\n'))
 
 export const config = {
+  rootDir,
   password: process.env.MYSQL_PASSWORD,
   username: process.env.MYSQL_USERNAME,
   host: process.env.MYSQL_HOST,
