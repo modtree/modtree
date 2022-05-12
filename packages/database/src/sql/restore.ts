@@ -1,4 +1,4 @@
-import { exec as execDefault } from 'child_process'
+import { exec } from '../shell'
 import { config } from '../config'
 import path from 'path'
 import fs from 'fs'
@@ -18,22 +18,6 @@ const sqlList = fs.readdirSync(sqlDir).filter(x => x.endsWith('.sql'))
 type Answers = {
   sql: string
   confirm: 'yes' | 'no'
-}
-
-/**
- * Executes a shell command and return it as a Promise.
- * @param {string} cmd
- * @return {Promise<string>}
- */
-function exec(cmd: string): Promise<string> {
-  return new Promise((resolve) => {
-    execDefault(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.warn(error)
-      }
-      resolve(stdout? stdout : stderr)
-    })
-  })
 }
 
 export namespace restore {
