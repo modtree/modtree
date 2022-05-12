@@ -42,6 +42,7 @@
     "dev": "node lib",
     "dump": "ts-node ./src/api/sql/dump.ts",
     "restore": "ts-node ./src/api/sql/restore.ts",
+    "restore:t": "ts-node ./src/api/sql/restoreTest.ts",
     "au": "ts-node ./src/api/user/add.ts",
     "ctm": "ts-node ./src/api/user/canTakeModule.ts",
     "lm": "ts-node ./src/api/list/module.ts",

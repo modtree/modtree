@@ -1,0 +1,39 @@
+on:
+  pull_request:
+    types: [ready_for_review]
+  push:
+    branches:
+      - dev
+      - ci-test
+      - k
+      - w
+
+env:
+  MYSQL_DATABASE: test_db
+  DB_USER: root
+  DB_PASSWORD: root
+  RESTORE: .test.sql
+
+jobs:
+  check-database-package-json-scripts:
+    runs-on: ubuntu-20.04
+      
+    steps:
+      - name: 🔥 Initialize MySQL
+        run: sudo /etc/init.d/mysql start
+      
+      - name: 📌 Initialize first database
+        run: mysql -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: 🚀 Boost user
+        run: mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: 🍺 Check out repository code
+        uses: actions/checkout@v3
+
+      - name: 🧶 Install yarn
+        run: yarn install --frozen-lockfile
+
+      - name: 📦 run tests
+        working-directory: ./packages/database
+        run: MYSQL_RESTORE_SOURCE=$RESTORE MYSQL_USERNAME=$DB_USER MYSQL_PASSWORD=$DB_PASSWORD MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE yarn test

@@ -10,6 +10,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:db": "turbo run build --filter=database",
+    "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "rm:logs": "find . -name *.log | xargs rm",
