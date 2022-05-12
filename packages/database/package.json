@@ -47,7 +47,6 @@
     "lmc": "ts-node ./src/api/list/moduleCode",
     "fm": "ts-node ./src/api/nusmods/fetch/module",
     "fom": "ts-node ./src/api/nusmods/fetch/oneModule",
-    "fsm": "ts-node ./src/api/nusmods/fetch/someModules",
     "fmc": "ts-node ./src/api/nusmods/fetch/moduleCondensed",
     "fnmc": "ts-node ./src/api/nusmods/fetch/newModuleCondensed",
     "pmc": "ts-node ./src/api/nusmods/pull/moduleCondensed",
