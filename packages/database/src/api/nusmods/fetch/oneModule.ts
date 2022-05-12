@@ -1,4 +1,4 @@
 import { fetch } from '../../../nusmods'
-import { print } from '../../async'
+import { analyze } from '../../analyze'
 
-print(() => fetch.oneModule('CS2040S'))
+analyze(() => fetch.oneModule('CS2040S'))

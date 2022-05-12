@@ -26,7 +26,7 @@ const printResponse = (response: any, options: Options) => {
   log.blue(response)
 }
 
-export const print = async (callback: () => Promise<any>, options?: Options) => {
+export const analyze = async (callback: () => Promise<any>, options?: Options) => {
   const response = await callback()
   console.log('─────── Response ────────')
   printResponse(response, options)

@@ -1,4 +1,4 @@
 import { fetch } from '../../../nusmods'
-import { print } from '../../async'
+import { analyze } from '../../analyze'
 
-print(fetch.moduleCondensed)
+analyze(fetch.moduleCondensed)

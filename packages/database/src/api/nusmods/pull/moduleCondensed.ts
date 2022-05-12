@@ -1,4 +1,4 @@
 import { pull } from '../../../nusmods/pull'
-import { print } from '../../async'
+import { analyze } from '../../analyze'
 
-print(pull.moduleCondensed)
+analyze(pull.moduleCondensed)

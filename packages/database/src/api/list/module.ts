@@ -1,4 +1,4 @@
 import { list } from '../../list'
-import { print } from '../async'
+import { analyze } from '../analyze'
 
-print(list.module)
+analyze(list.module)
