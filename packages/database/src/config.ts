@@ -27,6 +27,7 @@ export const config = {
   username: process.env.MYSQL_USERNAME,
   host: process.env.MYSQL_HOST,
   database: process.env.MYSQL_ACTIVE_DATABASE,
+  restoreSource: process.env.MYSQL_RESTORE_SOURCE,
   server_ca: process.env.MYSQL_SERVER_CA,
   client_cert: process.env.MYSQL_CLIENT_CERT,
   client_key: process.env.MYSQL_CLIENT_KEY,
