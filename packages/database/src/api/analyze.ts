@@ -59,4 +59,5 @@ export const analyze = async (
   if (AppDataSource.isInitialized) {
     await AppDataSource.destroy()
   }
+  return response
 }
