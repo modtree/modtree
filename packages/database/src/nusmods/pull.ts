@@ -1,7 +1,7 @@
 import { Module as NM } from '../../types/nusmods'
 import { constructModule } from './utils'
 import { log } from '../cli'
-import { fetch } from './fetch'
+import { fetch, write } from '.'
 import { list } from '../list'
 import { ModuleCondensed, Module } from '../entity'
 import { AppDataSource, container2 } from '../data-source'
@@ -13,8 +13,7 @@ export namespace pull {
     const existing = await list.moduleCode()
     const freshPull = (await fetch.moduleCondensed()).modules
     const toAdd = freshPull.filter((x) => !existing.has(x.moduleCode))
-    console.log(toAdd)
-    console.log('total:', toAdd.length)
+    await write.moduleCondensed(toAdd)
     return toAdd
   }
   /**

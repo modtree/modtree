@@ -1,10 +1,4 @@
-import { fetch, write } from '../../../nusmods'
+import { pull } from '../../../nusmods/pull'
+import { print } from '../../async'
 
-/** endpoint function */
-async function main() {
-  const { modules } = await fetch.moduleCondensed()
-  console.log(modules)
-  await write.moduleCondensed(modules)
-}
-
-main()
+print(pull.moduleCondensed)
