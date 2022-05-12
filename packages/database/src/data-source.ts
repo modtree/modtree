@@ -23,13 +23,7 @@ export const db = {
   close: async () => AppDataSource.destroy(),
 }
 
-export const container = async (fn: () => Promise<void>) => {
-  await db.open()
-  await fn()
-  await db.close()
-}
-
-export const container2 = async (fn: () => Promise<any>): Promise<any> => {
+export const container = async (fn: () => Promise<any>): Promise<any> => {
   const res = await AppDataSource.initialize()
     .then(async () => {
       /** successfully initialize database connection */

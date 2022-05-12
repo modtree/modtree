@@ -1,4 +1,4 @@
-import { AppDataSource, db , container2 } from './data-source'
+import { AppDataSource, db , container } from './data-source'
 import { ModuleCondensed, Module } from './entity'
 import { log } from './cli'
 import { config } from './config'
@@ -6,7 +6,7 @@ import { config } from './config'
 export namespace list {
   export const moduleCode = async (): Promise<Set<string>> => {
     const existingModuleCodes = new Set<string>()
-    const res = await container2(async () => {
+    const res = await container(async () => {
       const repo = AppDataSource.getRepository(ModuleCondensed)
       const db = config.database
       log.yellow(`retrieving module codes from ${db}.moduleCondensed`)
