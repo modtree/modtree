@@ -34,6 +34,8 @@
     "lint": "eslint --fix --ext .js,.ts .",
     "test": "NODE_ENV=test jest --config ./tests/configs/main.config.js",
     "test:fetch": "NODE_ENV=test jest --config ./tests/configs/fetch.config.js",
+    "test:verbose": "NODE_ENV=test jest --config ./tests/configs/main-verbose.config.js",
+    "test:v": "yarn test:verbose",
     "dev": "node lib",
     "dump": "ts-node ./src/api/sql/dump",
     "restore": "ts-node ./src/api/sql/restore",
@@ -51,8 +53,8 @@
     "pmc": "ts-node ./src/api/nusmods/pull/moduleCondensed",
     "pm": "ts-node ./src/api/nusmods/pull/module",
     "pmc:heroku": "NODE_ENV=heroku ts-node ./src/api/nusmods/pull/moduleCondensed",
-    "reset:all": "ts-node ./src/api/sql/resetAll",
-    "reset:mc": "ts-node ./src/api/sql/resetModuleCondensed",
-    "reset:m": "ts-node ./src/api/sql/resetModule"
+    "reset:all": "ts-node ./src/api/sql/reset/all",
+    "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed",
+    "reset:m": "ts-node ./src/api/sql/reset/module"
   }
 }
