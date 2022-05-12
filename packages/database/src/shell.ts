@@ -8,7 +8,7 @@ type Response = {
 /**
  * Executes a shell command and return it as a Promise.
  * @param {string} cmd
- * @return {Promise<string>}
+ * @return {Promise<Response>}
  */
 export function exec(cmd: string): Promise<Response> {
   return new Promise((resolve, reject) => {
@@ -17,10 +17,7 @@ export function exec(cmd: string): Promise<Response> {
         output: stdout ? stdout : stderr,
         error,
       })
-      reject({
-        output: 'rejected, but calmn down and carry on shelling',
-        error,
-      })
+      reject(new Error('rejected, but calmn down and carry on shelling'))
     })
   })
 }

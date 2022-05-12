@@ -5,13 +5,18 @@ type Script = {
   name: string
   command: string
 }
+type RegexRequest = {
+
+  nameRegexList?: RegExp[]
+  commandRegexList?: RegExp[]
+}
 
 /**
  * returns a copy of the list to be filtered
  * @param {string[]} list
  * @param {RegExp[]} ignore: same idea as .ignore files
  * @param {string[]} blacklist
- * @returns {string}
+ * @return {string}
  */
 function filterList(
   list: string[],
@@ -43,7 +48,7 @@ function filterList(
  * returns a whitelisted copy of a supplied list
  * @param {string[]} list
  * @param {RegExp[]} whitelist
- * @returns {string[]}
+ * @return {string[]}
  */
 function regexMatchOneOf(list: string[], whitelist?: RegExp[]): string[] {
   if (whitelist === undefined) {
@@ -62,7 +67,7 @@ function regexMatchOneOf(list: string[], whitelist?: RegExp[]): string[] {
 /**
  * indiscriminately lists all scripts in package.json
  * meant to be filtered before actual use
- * @returns {Script[]}
+ * @return {Script[]}
  */
 function getAllScripts(): Script[] {
   const root = process.cwd()
@@ -79,7 +84,7 @@ function getAllScripts(): Script[] {
 
 /**
  * scripts that are meant to be ran modularly
- * @returns {string[]} the list of script names
+ * @return {string[]} the list of script names
  */
 export function getModularScripts(): Script[] {
   let allScripts = getAllScripts()
@@ -105,12 +110,10 @@ export function getModularScripts(): Script[] {
 
 /**
  * scripts that are meant to be ran modularly
- * @returns {string[]} the list of script names
+ * @param {RegexRequest} props: the list of script names
+ * @return {Script[]}
  */
-export function getScriptsByRegex(props: {
-  nameRegexList?: RegExp[]
-  commandRegexList?: RegExp[]
-}): Script[] {
+export function getScriptsByRegex(props: RegexRequest): Script[] {
   const { nameRegexList, commandRegexList } = props
   let allScripts = getAllScripts()
   // filter by commands
