@@ -30,6 +30,11 @@ export class User {
   @Column()
   graduationSemester: number
 
+  /**
+   * Constructor for User
+   * @param {UserProps} props
+   * @return {User}
+   */
   static new(props) {
     const user = new User()
     const { displayName = '', username = '', modulesCompleted = [], modulesDoing = [], matriculationYear = 2021, graduationYear = 2025, graduationSemester = 2 }: UserProps = props || {}
@@ -67,6 +72,8 @@ export class User {
 
   /**
    * Adds a User to DB
+   * @param {UserProps} props
+   * @return {Promise<void>}
    */
   static async save(props: UserProps): Promise<void> {
     await container(async() => {
