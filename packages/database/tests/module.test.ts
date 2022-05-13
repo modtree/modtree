@@ -63,6 +63,7 @@ test('moduleCondensed.fetch', async () => {
   expect(s.size).toStrictEqual(total)
 })
 
+jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
   remove.tables(['moduleCondensed'])
   const pullOnEmpty = await endpoint(moduleCondensed.pull)

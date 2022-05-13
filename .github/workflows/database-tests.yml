@@ -15,7 +15,7 @@ env:
   RESTORE: .test.sql
 
 jobs:
-  check-database-package-json-scripts:
+  database-unit-tests:
     runs-on: ubuntu-20.04
       
     steps:
@@ -42,4 +42,4 @@ jobs:
           MYSQL_USERNAME=$DB_USER \
           MYSQL_PASSWORD=$DB_PASSWORD \
           MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
-          yarn test:ci
+          yarn test

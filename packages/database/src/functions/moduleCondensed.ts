@@ -43,7 +43,7 @@ export namespace moduleCondensed {
     /* this line is required for JEST. Wihtout awaiting nextTick,
      * the next line will somehow trigger JEST's open handle catcher.
      */
-    // await process.nextTick(() => true)
+    await process.nextTick(() => true)
     const res = await axios.get(nusmodsApi('moduleList'))
     const data: NMC[] = res.data
     return data.map((n) => ModuleCondensed.new(n))

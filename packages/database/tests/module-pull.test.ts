@@ -14,7 +14,7 @@ beforeAll(async () => {
  * ===================================================================
  */
 
-jest.setTimeout(12000)
+jest.setTimeout(120000)
 test('module.pull', async () => {
   await remove.tables(['degree_modules_required_module', 'module'])
   // check that table removal was successfull

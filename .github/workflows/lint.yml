@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - dev
-      - ci-test
       - k
       - w
 
 jobs:
-  build-database:
+  lint-database:
     runs-on: ubuntu-latest
     steps:
       - name: 🔍 Check out repository code
@@ -18,5 +17,5 @@ jobs:
       - name: 🧶 Install yarn
         run: yarn
 
-      - name: 📦 build database functions
+      - name: 📦 build & lint database functions
         run: yarn build:db
