@@ -34,7 +34,7 @@
     "test": "NODE_ENV=test jest --config ./tests/configs/ci.config.js --detectOpenHandles --runInBand",
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.js --runInBand",
     "test:entity": "NODE_ENV=test jest --config ./tests/configs/entity.config.js --json --outputFile ./.logs/entity.json",
-    "lint": "eslint --fix --ext .js,.ts .",
+    "lint": "prettier --ignore-path .gitignore --write . && eslint --fix --ext .js,.ts .",
     "dump": "ts-node ./src/api/sql/dump.ts",
     "restore": "ts-node ./src/api/sql/restore.ts",
     "restore:t": "ts-node ./src/api/sql/restoreTest.ts",

@@ -7,7 +7,6 @@ type Script = {
   command: string
 }
 type RegexRequest = {
-
   nameRegexList?: RegExp[]
   commandRegexList?: RegExp[]
 }

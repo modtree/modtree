@@ -37,7 +37,15 @@ export class User {
    */
   static new(props) {
     const user = new User()
-    const { displayName = '', username = '', modulesCompleted = [], modulesDoing = [], matriculationYear = 2021, graduationYear = 2025, graduationSemester = 2 }: UserProps = props || {}
+    const {
+      displayName = '',
+      username = '',
+      modulesCompleted = [],
+      modulesDoing = [],
+      matriculationYear = 2021,
+      graduationYear = 2025,
+      graduationSemester = 2,
+    }: UserProps = props || {}
     user.displayName = displayName
     user.username = username
     user.modulesCompleted = modulesCompleted
@@ -61,7 +69,7 @@ export class User {
       const repo = AppDataSource.getRepository(Module)
       const module = await repo.findOne({
         where: {
-          moduleCode: moduleCode
+          moduleCode: moduleCode,
         },
       })
 
@@ -76,7 +84,7 @@ export class User {
    * @return {Promise<void>}
    */
   static async save(props: UserProps): Promise<void> {
-    await container(async() => {
+    await container(async () => {
       const user = User.new(props)
       await AppDataSource.manager.save(user)
     })

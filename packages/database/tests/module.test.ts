@@ -3,7 +3,7 @@ import { moduleCondensed } from '../src/functions/moduleCondensed'
 import { endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { Module, ModuleCondensed } from '../src/entity'
-import { remove, } from '../src/sql'
+import { remove } from '../src/sql'
 import { config } from '../src/config'
 
 const lowerBound = 6000
@@ -118,11 +118,10 @@ test('module.getCodes', async () => {
 })
 
 test('moduleCondensed.fetch', async () => {
-  const m = await endpoint(() => module.fetchOne("CS2040S"))
+  const m = await endpoint(() => module.fetchOne('CS2040S'))
   expect(m).toBeDefined()
   if (!m) {
     return
   }
   expect(m).toBeInstanceOf(Module)
 })
-

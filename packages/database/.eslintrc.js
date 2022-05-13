@@ -8,8 +8,8 @@ module.exports = {
   ...config,
   ignorePatterns: [
     ...config.ignorePatterns,
-    "babel.config.js",
-    "types/*",
-    "tests/*",
+    'babel.config.js',
+    'types/*',
+    'tests/*',
   ],
 }

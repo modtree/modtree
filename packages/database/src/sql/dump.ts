@@ -11,7 +11,10 @@ import input from '@inquirer/input'
 const sqlDir = path.join(config.rootDir, '.sql')
 
 export const dump = async () => {
-  const sqlFilename = await input({ message: 'Enter .sql filename:', default: 'backup' })
+  const sqlFilename = await input({
+    message: 'Enter .sql filename:',
+    default: 'backup',
+  })
   const sqlFilepath = path.join(sqlDir, `${sqlFilename}.sql`)
   const cmd = `mysqldump -u ${config.username} -p"${config.password}" ${config.database} > ${sqlFilepath}`
   exec(cmd)
