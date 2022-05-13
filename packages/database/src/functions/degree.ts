@@ -2,6 +2,9 @@ import { container, AppDataSource } from '../data-source'
 import { Degree, Module } from '../entity'
 import { In } from 'typeorm'
 
+/**
+ * Adds a Degree to DB
+ */
 export async function add() {
   const moduleCodes = [
     'CS1101S',
@@ -33,7 +36,10 @@ export async function add() {
   })
 }
 
-export async function show() {
+/**
+ * Gets one Degree from DB
+ */
+export async function getOne() {
   await container(async () => {
     const repo = AppDataSource.getRepository(Degree)
     const degree = await repo.findOne({

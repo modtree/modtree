@@ -1,6 +1,9 @@
 import { container, AppDataSource } from '../data-source'
 import { User } from '../entity'
 
+/**
+ * Adds a User to DB
+ */
 export async function add() {
   await container(async() => {
     const a = new User()
@@ -15,6 +18,10 @@ export async function add() {
   })
 }
 
+/**
+ * Checks if a user can take a module, given their completed modules
+ * Currently does not check for preclusion
+ */
 export async function canTakeModule() {
   await container(async () => {
     // find user

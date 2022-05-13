@@ -57,6 +57,6 @@
     "reset:m": "ts-node ./src/api/sql/reset/module.ts",
     "reset:d": "ts-node ./src/api/sql/reset/degree.ts",
     "ad": "ts-node ./src/api/degree/add.ts",
-    "sd": "ts-node ./src/api/degree/show.ts"
+    "god": "ts-node ./src/api/degree/getOne.ts"
   }
 }
