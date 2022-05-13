@@ -1,6 +1,7 @@
 import { log } from '../cli'
 import { inspect } from 'util'
 import { endpoint } from '../data-source'
+import { ModtreeFunction } from '../../types/modtree'
 
 type Verbosity = 'none' | 'verbose' | 'normal'
 
@@ -70,7 +71,7 @@ namespace print {
 /**
  * prints the return value of a function to be analyzed
  * @param {any} response
- * @param {Options} options
+ * @param {Verbosity} verbosity
  */
 function printResponse(response: any, verbosity: Verbosity) {
   log.yellow('─────── BEGIN RESPONSE ───────')
@@ -84,9 +85,11 @@ function printResponse(response: any, verbosity: Verbosity) {
 
 /**
  * analyzes the output of an endpoint function
+ * @param {ModtreeFunction} callback
+ * @param {Verbosity} verbosity
  */
-export async function analyze(
-  callback: () => Promise<any>,
+export async function analyze<T>(
+  callback: ModtreeFunction<T>,
   verbosity: Verbosity = 'normal'
 ) {
   const response = await endpoint(callback)
