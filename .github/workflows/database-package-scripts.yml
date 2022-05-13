@@ -20,13 +20,14 @@ jobs:
       
     steps:
       - name: 🔥 Initialize MySQL
-        run: sudo /etc/init.d/mysql start
+        # run: sudo /etc/init.d/mysql start
+        run: sudo systemctl start mysql.service
       
-      - name: 📌 Initialize first database
-        run: mysql -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-
       - name: 🚀 Boost user
-        run: mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+        run: |
+          mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
+          IDENTIFIED WITH mysql_native_password BY 'root';" \
+          -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - name: 🍺 Check out repository code
         uses: actions/checkout@v3
@@ -36,4 +37,9 @@ jobs:
 
       - name: 📦 run tests
         working-directory: ./packages/database
-        run: MYSQL_RESTORE_SOURCE=$RESTORE MYSQL_USERNAME=$DB_USER MYSQL_PASSWORD=$DB_PASSWORD MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE yarn test
+        run: |
+          MYSQL_RESTORE_SOURCE=$RESTORE \
+          MYSQL_USERNAME=$DB_USER \
+          MYSQL_PASSWORD=$DB_PASSWORD \
+          MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
+          yarn test
