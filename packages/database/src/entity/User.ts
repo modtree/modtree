@@ -35,16 +35,15 @@ export class User {
    * @param {UserProps} props
    * @return {User}
    */
-  static new(props) {
+  static new(props: UserProps) {
     const user = new User()
-    const { displayName = '', username = '', modulesCompleted = [], modulesDoing = [], matriculationYear = 2021, graduationYear = 2025, graduationSemester = 2 }: UserProps = props || {}
-    user.displayName = displayName
-    user.username = username
-    user.modulesCompleted = modulesCompleted
-    user.modulesDoing = modulesDoing
-    user.matriculationYear = matriculationYear
-    user.graduationYear = graduationYear
-    user.graduationSemester = graduationSemester
+    user.displayName = props.displayName || ''
+    user.username = props.username || ''
+    user.modulesCompleted = props.modulesCompleted || []
+    user.modulesDoing = props.modulesDoing || []
+    user.matriculationYear = props.matriculationYear || 2021
+    user.graduationYear = props.graduationYear || 2025
+    user.graduationSemester = props.graduationSemester || 2
     return user
   }
 
