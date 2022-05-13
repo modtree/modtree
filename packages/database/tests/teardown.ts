@@ -3,16 +3,14 @@ import { createConnection } from 'mysql2/promise'
 import { log } from '../src/cli'
 import { config } from '../src/config'
 
+/**
+ * post-test tear down
+ */
 async function teardown() {
  await createConnection(connectionConfig)
     .then(async (connection) => {
-      await connection
-        .query(`DROP DATABASE ${config.database};`)
-        .then()
-        .catch(() => {
-          console.log('ok')
-        })
-      await connection.end().then().catch()
+      await connection.query(`DROP DATABASE ${config.database};`)
+      await connection.end()
       log.yellow('Teardown: completed')
     })
     .catch(() => {
@@ -20,10 +18,12 @@ async function teardown() {
     })
 }
 
+// for debugging
 function nulldown() {
   log.yellow('did nothing for teardown')
 }
 
+// to keep lsp happy when I'm not using one of them
 nulldown.name
 teardown.name
 
