@@ -14,7 +14,7 @@ test('canTakeModule is successful', async () => {
   // currently adds Khang
   await add()
 
-  await endpoint(
+  const res = await endpoint(
     async () =>
       await container(async () => {
         // find user
@@ -26,8 +26,9 @@ test('canTakeModule is successful', async () => {
         })
 
         // user is initialized with MA2001 completed
-        const res = await user.canTakeModule('MA2101')
-        expect(res).toEqual(true)
+        return await user.canTakeModule('MA2101')
       })
   )
+
+  expect(res).toEqual(true)
 })
