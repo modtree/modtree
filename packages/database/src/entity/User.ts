@@ -1,4 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { container, AppDataSource } from '../data-source'
+import { Module } from '../entity'
+import { utils } from '../utils'
 
 @Entity({ name: 'user' })
 export class User {
@@ -26,9 +29,25 @@ export class User {
   @Column()
   graduationSemester: number
 
-  async canTakeModule(moduleCode: string): Promise<boolean> {
-    // TODO make this take a Module instead of a string
-    console.log(`checking if user can take ${moduleCode}...`)
-    return true
+  /**
+   * Given a module code, checks if user has cleared sufficient pre-requisites.
+   * Currently does not check for preclusion.
+   *
+   * @param{string} moduleCode
+   * @return{Promise<boolean>}
+   */
+  async canTakeModule(moduleCode: string): Promise<boolean | void> {
+    return await container(async () => {
+      // find module
+      const repo = AppDataSource.getRepository(Module)
+      const module = await repo.findOne({
+        where: {
+          moduleCode: moduleCode
+        },
+      })
+
+      // check if PrereqTree is fulfilled
+      return utils.checkTree(module.prereqTree, this.modulesCompleted)
+    })
   }
 }
