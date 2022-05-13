@@ -39,6 +39,7 @@
     "test:all-scripts": "NODE_ENV=test jest --config ./tests/configs/all-scripts.config.js --json --outputFile ./.logs/all-scripts.json --testTimeout=20000",
     "test:verbose": "NODE_ENV=test jest --config ./tests/configs/main-verbose.config.js",
     "test:v": "yarn test:verbose",
+    "test:entity": "NODE_ENV=test jest --config ./tests/configs/entity.config.js --json --outputFile ./.logs/entity.json",
     "dev": "node lib",
     "dump": "ts-node ./src/api/sql/dump.ts",
     "restore": "ts-node ./src/api/sql/restore.ts",
