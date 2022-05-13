@@ -53,6 +53,7 @@ export const log = {
   magenta: colorLog('magenta'),
   cyan: colorLog('cyan'),
   gray: colorLog('gray'),
+  warn: colorLog('yellow'),
 }
 
 export const box = {

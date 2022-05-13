@@ -36,6 +36,7 @@
     "test:fetch": "NODE_ENV=test jest --config ./tests/configs/fetch.config.js",
     "test:scripts": "NODE_ENV=test jest --config ./tests/configs/scripts.config.js --json --outputFile ./.logs/scripts.json",
     "test:list": "NODE_ENV=test jest --config ./tests/configs/list.config.js --json --outputFile ./.logs/list.json",
+    "test:khang": "NODE_ENV=test jest --config ./tests/configs/khang.config.js --runInBand --json --outputFile ./.logs/khang.json",
     "test:all-scripts": "NODE_ENV=test jest --config ./tests/configs/all-scripts.config.js --json --outputFile ./.logs/all-scripts.json --testTimeout=20000",
     "test:verbose": "NODE_ENV=test jest --config ./tests/configs/main-verbose.config.js",
     "test:v": "yarn test:verbose",
@@ -51,12 +52,16 @@
     "fom": "ts-node ./src/api/nusmods/fetch/oneModule.ts",
     "fmc": "ts-node ./src/api/nusmods/fetch/moduleCondensed.ts",
     "pmc": "ts-node ./src/api/nusmods/pull/moduleCondensed.ts",
-    "pm": "ts-node ./src/api/nusmods/pull/module.ts",
     "reset:all": "ts-node ./src/api/sql/reset/all.ts",
     "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed.ts",
     "reset:m": "ts-node ./src/api/sql/reset/module.ts",
     "reset:d": "ts-node ./src/api/sql/reset/degree.ts",
     "ad": "ts-node ./src/api/degree/add.ts",
-    "sd": "ts-node ./src/api/degree/show.ts"
+    "sd": "ts-node ./src/api/degree/show.ts",
+    "mcg": "ts-node ./src/api/moduleCondensed/get",
+    "mcf": "ts-node ./src/api/moduleCondensed/fetch",
+    "mg": "ts-node ./src/api/module/get",
+    "mgc": "ts-node ./src/api/module/get/codes",
+    "pm": "ts-node ./src/api/module/pull.ts"
   }
 }
