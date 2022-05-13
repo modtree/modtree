@@ -1,7 +1,7 @@
 import { container, AppDataSource } from '../data-source'
 import { User } from '../entity'
 
-export const addUser = async() => {
+export const add = async() => {
   await container(async() => {
     const a = new User()
     a.username = 'nvkhang'
@@ -16,8 +16,17 @@ export const addUser = async() => {
 }
 
 export const canTakeModule = async() => {
-  await container(async() => {
-    const user = new User()
-    await user.canTakeModule('CS1010S')
+  await container(async () => {
+    // find user
+    const repo = AppDataSource.getRepository(User)
+    const user = await repo.findOne({
+      where: {
+        username: 'nvkhang',
+      },
+    })
+
+    // user is initialized with MA2001 completed
+    const res = await user.canTakeModule('MA2101')
+    expect(res).toEqual(true)
   })
 }
