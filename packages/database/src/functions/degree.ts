@@ -1,39 +1,32 @@
 import { container, AppDataSource } from '../data-source'
-import { Degree, Module } from '../entity'
-import { In } from 'typeorm'
+import { Degree } from '../entity'
 
-export const addDegree = async () => {
-  const moduleCodes = [
-    'CS1101S',
-    'CS1231S',
-    'CS2030S',
-    'CS2040S',
-    'CS2100',
-    'CS2103T',
-    'CS2106',
-    'CS2109S',
-    'CS3230',
-  ]
+/**
+ * Adds a Degree to DB
+ */
+export async function save() {
+  const props = {
+    moduleCodes: [
+      'CS1101S',
+      'CS1231S',
+      'CS2030S',
+      'CS2040S',
+      'CS2100',
+      'CS2103T',
+      'CS2106',
+      'CS2109S',
+      'CS3230',
+    ],
+    title: 'Computer Science'
+  }
 
-  await container(async () => {
-    // find modules required
-    // to create many-to-many relation
-
-    const repo = AppDataSource.getRepository(Module)
-    const modulesRequired = await repo.find({
-      where: {
-        moduleCode: In(moduleCodes),
-      },
-    })
-
-    const degree = new Degree()
-    degree.title = 'Computer Science'
-    degree.modulesRequired = modulesRequired
-    await AppDataSource.manager.save(degree)
-  })
+  await Degree.save(props)
 }
 
-export const showDegree = async () => {
+/**
+ * Gets one Degree from DB
+ */
+export async function getOne() {
   await container(async () => {
     const repo = AppDataSource.getRepository(Degree)
     const degree = await repo.findOne({
