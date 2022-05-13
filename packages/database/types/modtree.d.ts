@@ -10,7 +10,12 @@ export type UserProps = {
   graduationSemester: number,
 }
 
-export type DegreeProps = {
+export type DegreeInitProps = {
   moduleCodes: string[]
+  title: string
+}
+
+export type DegreeProps = {
+  modulesRequired: Module[]
   title: string
 }

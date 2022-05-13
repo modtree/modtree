@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable , In } from 'typeorm'
 import { Module } from './Module'
 import { container, AppDataSource } from '../data-source'
-import { DegreeProps } from '../../types/modtree'
+import { DegreeInitProps, DegreeProps } from '../../types/modtree'
 
 @Entity({ name: 'degree' })
 export class Degree {
@@ -17,11 +17,11 @@ export class Degree {
 
   /**
    * Constructor for Degree
-   * Note: the props here is slightly different from DegreeProps
-   * @param {} props
+   * Note: the props here is slightly different from DegreeInitProps
+   * @param {DegreeProps} props
    * @return {Degree}
    */
-  static new(props): Degree {
+  static new(props: DegreeProps): Degree {
     const degree = new Degree()
     degree.title = props.title || ''
     degree.modulesRequired = props.modulesRequired || []
@@ -30,10 +30,10 @@ export class Degree {
 
   /**
    * Adds a Degree to DB
-   * @param {DegreeProps} props
+   * @param {DegreeInitProps} props
    * @return {Promise<void>}
    */
-  static async save(props: DegreeProps): Promise<void> {
+  static async save(props: DegreeInitProps): Promise<void> {
     await container(async() => {
       // find modules required, to create many-to-many relation
       const repo = AppDataSource.getRepository(Module)
