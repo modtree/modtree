@@ -32,8 +32,12 @@ jobs:
       - name: 🍺 Check out repository code
         uses: actions/checkout@v3
 
-      - name: 🧶 Install yarn
-        run: yarn install --frozen-lockfile
+      # - name: 🧶 Install yarn
+      #   run: yarn install --frozen-lockfile
+      #
+      - name: NPM or Yarn install with caching
+        uses: bahmutov/npm-install@v1.6.0
+
 
       - name: 📦 run tests
         working-directory: ./packages/database
@@ -42,4 +46,4 @@ jobs:
           MYSQL_USERNAME=$DB_USER \
           MYSQL_PASSWORD=$DB_PASSWORD \
           MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
-          yarn test
+          yarn test:ci
