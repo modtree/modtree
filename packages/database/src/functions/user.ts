@@ -1,21 +1,22 @@
 import { container, AppDataSource } from '../data-source'
 import { User } from '../entity'
+import { User as UserProps } from '../../types/modtree'
 
 /**
  * Adds a User to DB
  */
 export async function add() {
-  await container(async() => {
-    const a = new User()
-    a.username = 'nvkhang'
-    a.displayName = 'Nguyen Vu Khang'
-    a.modulesCompleted = ['MA2001']
-    a.modulesDoing = ['MA2219']
-    a.matriculationYear = 2021
-    a.graduationYear = 2025
-    a.graduationSemester = 2
-    await AppDataSource.manager.save(a)
-  })
+  const props: UserProps = {
+    displayName: 'Nguyen Vu Khang',
+    username: 'nvkhang',
+    modulesCompleted: ['MA2001'],
+    modulesDoing: ['MA2219'],
+    matriculationYear: 2021,
+    graduationYear: 2025,
+    graduationSemester: 2,
+  }
+
+  await User.add(props)
 }
 
 /**
