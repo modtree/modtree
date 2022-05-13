@@ -1,6 +1,6 @@
 import { setup } from '../setup'
 import { endpoint } from '../../src/data-source'
-import { add } from '../../src/functions/user'
+import { save } from '../../src/functions/user'
 import { container, AppDataSource } from '../../src/data-source'
 import { User } from '../../src/entity'
 
@@ -12,7 +12,7 @@ jest.setTimeout(20000)
 
 test('canTakeModule is successful', async () => {
   // currently adds Khang
-  await add()
+  await save()
 
   const res = await endpoint(
     async () =>

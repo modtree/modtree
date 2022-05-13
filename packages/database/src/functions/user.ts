@@ -5,7 +5,7 @@ import { UserProps } from '../../types/modtree'
 /**
  * Adds a User to DB
  */
-export async function add() {
+export async function save() {
   const props: UserProps = {
     displayName: 'Nguyen Vu Khang',
     username: 'nvkhang',
@@ -16,7 +16,7 @@ export async function add() {
     graduationSemester: 2,
   }
 
-  await User.add(props)
+  await User.save(props)
 }
 
 /**

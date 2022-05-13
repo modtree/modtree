@@ -27,7 +27,7 @@ export class Degree {
   /**
    * Adds a Degree to DB
    */
-  static async add(props: DegreeProps): Promise<void> {
+  static async save(props: DegreeProps): Promise<void> {
     await container(async() => {
       // find modules required, to create many-to-many relation
       const repo = AppDataSource.getRepository(Module)

@@ -4,7 +4,7 @@ import { Degree } from '../entity'
 /**
  * Adds a Degree to DB
  */
-export async function add() {
+export async function save() {
   const props = {
     moduleCodes: [
       'CS1101S',
@@ -20,7 +20,7 @@ export async function add() {
     title: 'Computer Science'
   }
 
-  await Degree.add(props)
+  await Degree.save(props)
 }
 
 /**

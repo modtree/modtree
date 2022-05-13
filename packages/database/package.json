@@ -44,7 +44,7 @@
     "dump": "ts-node ./src/api/sql/dump.ts",
     "restore": "ts-node ./src/api/sql/restore.ts",
     "restore:t": "ts-node ./src/api/sql/restoreTest.ts",
-    "ua": "ts-node ./src/api/user/add.ts",
+    "us": "ts-node ./src/api/user/save.ts",
     "uctm": "ts-node ./src/api/user/canTakeModule.ts",
     "lm": "ts-node ./src/api/list/module.ts",
     "lmc": "ts-node ./src/api/list/moduleCode.ts",
@@ -56,7 +56,7 @@
     "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed.ts",
     "reset:m": "ts-node ./src/api/sql/reset/module.ts",
     "reset:d": "ts-node ./src/api/sql/reset/degree.ts",
-    "da": "ts-node ./src/api/degree/add.ts",
+    "ds": "ts-node ./src/api/degree/save.ts",
     "dgo": "ts-node ./src/api/degree/getOne.ts"
   }
 }

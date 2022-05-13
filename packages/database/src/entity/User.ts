@@ -68,7 +68,7 @@ export class User {
   /**
    * Adds a User to DB
    */
-  static async add(props: UserProps): Promise<void> {
+  static async save(props: UserProps): Promise<void> {
     await container(async() => {
       const user = User.new(props)
       await AppDataSource.manager.save(user)
