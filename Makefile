@@ -1,6 +1,7 @@
 yarn:
 	yarn
 	find . -name *.log | xargs rm
+	mkdir ./packages/database/.logs
 
 w:
 	cp $$REPOS/orbital/env/.env.test ./packages/database/.env.test
