@@ -1,6 +1,6 @@
 import { container, AppDataSource } from '../data-source'
 import { User } from '../entity'
-import { User as UserProps } from '../../types/modtree'
+import { UserProps } from '../../types/modtree'
 
 /**
  * Adds a User to DB
