@@ -30,6 +30,19 @@ export class User {
   @Column()
   graduationSemester: number
 
+  static new(props) {
+    const user = new User()
+    const { displayName = '', username = '', modulesCompleted = [], modulesDoing = [], matriculationYear = 2021, graduationYear = 2025, graduationSemester = 2 }: UserProps = props || {}
+    user.displayName = displayName
+    user.username = username
+    user.modulesCompleted = modulesCompleted
+    user.modulesDoing = modulesDoing
+    user.matriculationYear = matriculationYear
+    user.graduationYear = graduationYear
+    user.graduationSemester = graduationSemester
+    return user
+  }
+
   /**
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
@@ -57,14 +70,7 @@ export class User {
    */
   static async add(props: UserProps): Promise<void> {
     await container(async() => {
-      const user = new User()
-      user.displayName = props.displayName || ''
-      user.username = props.username || ''
-      user.modulesCompleted = props.modulesCompleted || []
-      user.modulesDoing = props.modulesDoing || []
-      user.matriculationYear = props.matriculationYear || 2021
-      user.graduationYear = props.graduationYear || 2025
-      user.graduationSemester = props.graduationSemester || 2
+      const user = User.new(props)
       await AppDataSource.manager.save(user)
     })
   }

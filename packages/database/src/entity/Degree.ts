@@ -16,6 +16,14 @@ export class Degree {
   @Column()
   title: string
 
+  static new(props): Degree {
+    const degree = new Degree()
+    const { title = '', modulesRequired = [] } = props || {}
+    degree.title = title
+    degree.modulesRequired = modulesRequired
+    return degree
+  }
+
   /**
    * Adds a Degree to DB
    */
@@ -29,9 +37,12 @@ export class Degree {
         },
       })
 
-      const degree = new Degree()
-      degree.title = props.title
-      degree.modulesRequired = modulesRequired
+      const degreeProps = {
+        modulesRequired,
+        title: props.title
+      }
+
+      const degree = Degree.new(degreeProps)
       await AppDataSource.manager.save(degree)
     })
   }
