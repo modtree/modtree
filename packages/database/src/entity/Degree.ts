@@ -17,14 +17,14 @@ export class Degree {
 
   /**
    * Constructor for Degree
-   * @param {DegreeProps} props
+   * Note: the props here is slightly different from DegreeProps
+   * @param {} props
    * @return {Degree}
    */
   static new(props): Degree {
     const degree = new Degree()
-    const { title = '', modulesRequired = [] } = props || {}
-    degree.title = title
-    degree.modulesRequired = modulesRequired
+    degree.title = props.title || ''
+    degree.modulesRequired = props.modulesRequired || []
     return degree
   }
 
