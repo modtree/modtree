@@ -35,11 +35,11 @@ jobs:
       - name: 🧶 Install yarn
         run: yarn install --frozen-lockfile
 
-      - name: 📦 test:main
+      - name: 📦 run tests
         working-directory: ./packages/database
         run: |
           MYSQL_RESTORE_SOURCE=$RESTORE \
           MYSQL_USERNAME=$DB_USER \
           MYSQL_PASSWORD=$DB_PASSWORD \
           MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
-          yarn test:main
+          yarn test:ci
