@@ -35,6 +35,6 @@ export async function canTakeModule() {
 
     // user is initialized with MA2001 completed
     const res = await user.canTakeModule('MA2101')
-    expect(res).toEqual(true)
+    return res
   })
 }
