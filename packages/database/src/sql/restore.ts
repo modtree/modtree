@@ -1,19 +1,19 @@
 import { exec } from '../shell'
 import { config } from '../config'
-import path from 'path'
+import { join } from 'path'
 import fs from 'fs'
 import inquirer from 'inquirer'
+import { log } from '../cli'
 
 /* grab project root directory
  * note that this only works because `yarn restore`
  * is saved as a package.json script, and so it's always
  * ran from project root.
  */
-const projectRoot = process.cwd()
-const sqlDir = path.join(projectRoot, '.sql')
+const sqlDir = join(config.rootDir, '.sql')
 
 /* grab a list of all .sql files */
-const sqlList = fs.readdirSync(sqlDir).filter(x => x.endsWith('.sql'))
+const sqlList = fs.readdirSync(sqlDir).filter((x) => x.endsWith('.sql'))
 
 type Answers = {
   sql: string
@@ -21,7 +21,19 @@ type Answers = {
 }
 
 export namespace restore {
-  export const prompted = () => {
+  /**
+   * restores SQL database from a file
+   * @param {string} filename
+   */
+  export async function file(filename: string) {
+    const sqlFilepath = join(sqlDir, filename)
+    const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
+    log.cyan(`restoring from ${sqlFilepath}`)
+    await exec(cmd)
+  }
+
+  /** interactive prompt to guide the user to restore an SQL database */
+  export function prompted() {
     inquirer
       .prompt([
         {
@@ -42,15 +54,9 @@ export namespace restore {
           console.log('cancelled.')
           return
         }
-        const sqlFilepath = path.join(sqlDir, answers.sql)
+        const sqlFilepath = join(sqlDir, answers.sql)
         const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
         await exec(cmd)
       })
-  }
-
-  export const file = async (filename: string) => {
-    const sqlFilepath = path.join(sqlDir, filename)
-    const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
-    await exec(cmd)
   }
 }

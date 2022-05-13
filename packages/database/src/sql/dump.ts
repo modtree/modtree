@@ -8,8 +8,7 @@ import input from '@inquirer/input'
  * is saved as a package.json script, and so it's always
  * ran from project root.
  */
-const projectRoot = process.cwd()
-const sqlDir = path.join(projectRoot, '.sql')
+const sqlDir = path.join(config.rootDir, '.sql')
 
 export const dump = async () => {
   const sqlFilename = await input({ message: 'Enter .sql filename:', default: 'backup' })

@@ -17,6 +17,10 @@ export namespace fetch {
    * @return {Promise<FetchModuleCondensed>}
    */
   export async function moduleCondensed(): Promise<FetchModuleCondensed> {
+    /* this line is required for JEST. Wihtout awaiting nextTick, 
+     * the next line will somehow trigger JEST's open handle catcher.
+     */
+    await process.nextTick(() => true)
     const res = await axios.get(nusmodsApi('moduleList'))
     const data: NMC[] = res.data
     const lengths = new Set<number>()
@@ -52,7 +56,7 @@ export namespace fetch {
    * fetches exactly one module with full details
    * @param {string} moduleCode
    */
-  export async function oneModule(moduleCode: string)  {
+  export async function oneModule(moduleCode: string) {
     // const test = 'MA5205'
     const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
     // const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))

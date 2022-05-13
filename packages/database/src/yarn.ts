@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import { config } from './config'
 
 type Script = {
   name: string
@@ -70,8 +71,7 @@ function regexMatchOneOf(list: string[], whitelist?: RegExp[]): string[] {
  * @return {Script[]}
  */
 function getAllScripts(): Script[] {
-  const root = process.cwd()
-  const filepath = path.join(root, 'package.json')
+  const filepath = path.join(config.rootDir, 'package.json')
   const rawData = fs.readFileSync(filepath).toString()
   const packageJson = JSON.parse(rawData)
   const entries: [string, string][] = Object.entries(packageJson.scripts)
