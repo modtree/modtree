@@ -1,7 +1,7 @@
 import { container, AppDataSource } from '../data-source'
 import { User } from '../entity'
 
-export const add = async() => {
+export async function add() {
   await container(async() => {
     const a = new User()
     a.username = 'nvkhang'
@@ -15,7 +15,7 @@ export const add = async() => {
   })
 }
 
-export const canTakeModule = async() => {
+export async function canTakeModule() {
   await container(async () => {
     // find user
     const repo = AppDataSource.getRepository(User)
