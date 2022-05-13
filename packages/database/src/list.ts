@@ -25,6 +25,10 @@ export namespace list {
         })
       return { length }
     })
+    // undefined return
+    if (!res) {
+      return existingModuleCodes
+    }
     console.debug('total data sets:', res.length)
     console.debug('unique data:', existingModuleCodes.size)
     console.log('first 20:', Array.from(existingModuleCodes).slice(0, 20))
