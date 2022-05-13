@@ -4,6 +4,7 @@ import { join } from 'path'
 import fs from 'fs'
 import inquirer from 'inquirer'
 import { log } from '../cli'
+import { wipe } from '.'
 
 /* grab project root directory
  * note that this only works because `yarn restore`
@@ -26,6 +27,7 @@ export namespace restore {
    * @param {string} filename
    */
   export async function file(filename: string) {
+    await wipe.database(config.database)
     const sqlFilepath = join(sqlDir, filename)
     const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
     log.cyan(`restoring from ${sqlFilepath}`)
@@ -54,6 +56,7 @@ export namespace restore {
           console.log('cancelled.')
           return
         }
+        await wipe.database(config.database)
         const sqlFilepath = join(sqlDir, answers.sql)
         const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
         await exec(cmd)
