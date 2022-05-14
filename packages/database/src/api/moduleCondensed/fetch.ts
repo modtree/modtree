@@ -1,4 +1,4 @@
 import { analyze } from '../analyze'
-import { moduleCondensed } from '../../functions/moduleCondensed'
+import { ModuleCondensed } from '../../entity/ModuleCondensed'
 
-analyze(moduleCondensed.fetch)
+analyze(ModuleCondensed.fetch)
