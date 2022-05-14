@@ -25,3 +25,9 @@ export type DegreeProps = {
   modulesRequired: Module[]
   title: string
 }
+
+declare namespace modtree {
+  export class Module {
+    get(): Promise<Module[]>
+  }
+}
