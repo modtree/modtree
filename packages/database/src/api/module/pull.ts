@@ -1,5 +1,4 @@
-import { module } from '../../functions/module'
-
+import { Module } from '../../entity/Module'
 import { analyze } from '../analyze'
 
-analyze(module.pull)
+analyze(Module.pull)

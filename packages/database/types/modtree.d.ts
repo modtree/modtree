@@ -25,3 +25,12 @@ export type DegreeProps = {
   modulesRequired: Module[]
   title: string
 }
+
+declare namespace modtree {
+  export class Module {
+    static get(): Promise<Module[]>
+    static getCodes(): Promise<Set<string>>
+    static fetchOne(moduleCode: string): Promise<Module>
+    static pull(): Promise<Module[]>
+  }
+}

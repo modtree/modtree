@@ -1,4 +1,4 @@
 import { analyze } from '../../analyze'
-import { module } from '../../../functions/module'
+import { Module } from '../../../entity/Module'
 
-analyze(module.getCodes)
+analyze(Module.getCodes)
