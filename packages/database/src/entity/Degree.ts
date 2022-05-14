@@ -41,7 +41,7 @@ export class Degree {
    * @return {Promise<void>}
    */
   static async save(props: DegreeInitProps): Promise<void> {
-    await container(async() => {
+    await container(async () => {
       // find modules required, to create many-to-many relation
       const repo = AppDataSource.getRepository(Module)
       const modulesRequired = await repo.find({
