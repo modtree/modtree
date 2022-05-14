@@ -1,4 +1,3 @@
-import { module } from '../src/functions/module'
 import { endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { Module } from '../src/entity'
@@ -17,7 +16,7 @@ beforeAll(async () => {
  */
 
 test('module.get', async () => {
-  const moduleList = await endpoint(module.get)
+  const moduleList = await endpoint(Module.get)
   expect(moduleList).toBeDefined()
   if (!moduleList) {
     return
@@ -34,7 +33,7 @@ test('module.get', async () => {
 })
 
 test('module.getCodes', async () => {
-  const moduleList = await endpoint(module.getCodes)
+  const moduleList = await endpoint(Module.getCodes)
   expect(moduleList).toBeDefined()
   expect(moduleList).toBeInstanceOf(Set)
   if (!moduleList) {
@@ -45,7 +44,7 @@ test('module.getCodes', async () => {
 })
 
 test('moduleCondensed.fetch', async () => {
-  const m = await endpoint(() => module.fetchOne('CS2040S'))
+  const m = await endpoint(() => Module.fetchOne('CS2040S'))
   expect(m).toBeDefined()
   if (!m) {
     return
