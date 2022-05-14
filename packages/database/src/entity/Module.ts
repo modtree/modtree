@@ -17,7 +17,7 @@ import { Agent } from 'https'
 import { log } from '../cli'
 import { AppDataSource, container } from '../data-source'
 import { nusmodsApi } from '../utils/string'
-import { moduleCondensed } from '../functions/moduleCondensed'
+import { ModuleCondensed } from './ModuleCondensed'
 
 @Entity({ name: 'module' })
 export class Module implements modtree.Module {
@@ -153,7 +153,7 @@ export class Module implements modtree.Module {
       httpsAgent: new Agent({ keepAlive: true }),
     })
     const moduleCodes = await Module.getCodes()
-    const moduleCondesedCodes = await moduleCondensed.getCodes()
+    const moduleCondesedCodes = await ModuleCondensed.getCodes()
     const diff = Array.from(moduleCondesedCodes).filter(
       (x) => !moduleCodes.has(x)
     )

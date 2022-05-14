@@ -1,4 +1,3 @@
-import { moduleCondensed } from '../src/functions/moduleCondensed'
 import { endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { ModuleCondensed } from '../src/entity'
@@ -18,7 +17,7 @@ beforeAll(async () => {
  */
 
 test('moduleCondensed.get', async () => {
-  const moduleList = await endpoint(moduleCondensed.get)
+  const moduleList = await endpoint(ModuleCondensed.get)
   expect(moduleList).toBeDefined()
   if (!moduleList) {
     return
@@ -35,7 +34,7 @@ test('moduleCondensed.get', async () => {
 })
 
 test('moduleCondensed.getCodes', async () => {
-  const moduleList = await endpoint(moduleCondensed.getCodes)
+  const moduleList = await endpoint(ModuleCondensed.getCodes)
   expect(moduleList).toBeDefined()
   expect(moduleList).toBeInstanceOf(Set)
   if (!moduleList) {
@@ -46,7 +45,7 @@ test('moduleCondensed.getCodes', async () => {
 })
 
 test('moduleCondensed.fetch', async () => {
-  const moduleList = await endpoint(moduleCondensed.fetch)
+  const moduleList = await endpoint(ModuleCondensed.fetch)
   expect(moduleList).toBeDefined()
   if (!moduleList) {
     return
@@ -64,9 +63,9 @@ test('moduleCondensed.fetch', async () => {
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
   remove.tables(['moduleCondensed'])
-  const pullOnEmpty = await endpoint(moduleCondensed.pull)
-  const pullOnFull = await endpoint(moduleCondensed.pull)
-  const written = await endpoint(moduleCondensed.get)
+  const pullOnEmpty = await endpoint(ModuleCondensed.pull)
+  const pullOnFull = await endpoint(ModuleCondensed.pull)
+  const written = await endpoint(ModuleCondensed.get)
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()
   if (!pullOnFull || !pullOnEmpty || !written) {

@@ -1,18 +1,17 @@
-import { moduleCondensed } from '../src/functions/moduleCondensed'
 import { endpoint } from '../src/data-source'
 import { setup } from './setup'
-import { Module } from '../src/entity'
+import { Module, ModuleCondensed } from '../src/entity'
 import { remove } from '../src/sql'
 
 beforeAll(async () => {
   await setup()
 })
 
+jest.setTimeout(120000)
 test('module.pull', async () => {
-  jest.setTimeout(120000)
   await remove.tables(['degree_modules_required_module', 'module'])
   // check that table removal was successfull
-  const mc = await endpoint(moduleCondensed.getCodes)
+  const mc = await endpoint(ModuleCondensed.getCodes)
   const m = await endpoint(Module.getCodes)
   expect(mc).toBeDefined()
   expect(m).toBeDefined()
