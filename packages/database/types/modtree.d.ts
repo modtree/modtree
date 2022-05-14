@@ -28,13 +28,9 @@ export type DegreeProps = {
 
 declare namespace modtree {
   export class Module {
-    static async get(): Promise<Module[]>
-    /**
-     * get module codes from the module table
-     * @return {Promise<Set<string>>}
-     */
-    static async getCodes(): Promise<Set<string>>
-    static async fetchOne(moduleCode: string): Promise<Module>
-    static async pull(): Promise<Module[]>
+    static get(): Promise<Module[]>
+    static getCodes(): Promise<Set<string>>
+    static fetchOne(moduleCode: string): Promise<Module>
+    static pull(): Promise<Module[]>
   }
 }
