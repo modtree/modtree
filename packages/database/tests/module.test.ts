@@ -10,11 +10,6 @@ beforeAll(async () => {
   await setup()
 })
 
-/* ===================================================================
- *   MODULE
- * ===================================================================
- */
-
 test('module.get', async () => {
   const moduleList = await endpoint(Module.get)
   expect(moduleList).toBeDefined()
