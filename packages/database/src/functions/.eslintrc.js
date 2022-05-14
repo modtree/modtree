@@ -9,5 +9,5 @@ module.exports = {
   rules: {
     ...config.rules,
     'new-cap': 'off',
-  }
+  },
 }

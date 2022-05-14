@@ -1,8 +1,9 @@
 on:
   pull_request:
-    types: [ready_for_review]
+    types: [opened, reopened, ready_for_review]
   push:
     branches:
+      - ci-test
       - dev
       - k
       - w
@@ -14,8 +15,11 @@ jobs:
       - name: 🔍 Check out repository code
         uses: actions/checkout@v3
 
-      - name: 🧶 Install yarn
-        run: yarn
+      # - name: 🧶 Install yarn
+      #   run: yarn
+      #
+      - name: NPM or Yarn install with caching
+        uses: bahmutov/npm-install@v1.6.0
 
       - name: 📦 build & lint database functions
         run: yarn build:db

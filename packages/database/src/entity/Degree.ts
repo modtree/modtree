@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable , In } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+  In,
+} from 'typeorm'
 import { Module } from './Module'
 import { container, AppDataSource } from '../data-source'
 import { DegreeInitProps, DegreeProps } from '../../types/modtree'
@@ -45,7 +52,7 @@ export class Degree {
 
       const degreeProps = {
         modulesRequired,
-        title: props.title
+        title: props.title,
       }
 
       const degree = Degree.new(degreeProps)

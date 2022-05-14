@@ -35,7 +35,7 @@ export class User {
    * @param {UserProps} props
    * @return {User}
    */
-  static new(props: UserProps) {
+  static new(props: UserProps): User {
     const user = new User()
     user.displayName = props.displayName || ''
     user.username = props.username || ''
@@ -60,7 +60,7 @@ export class User {
       const repo = AppDataSource.getRepository(Module)
       const module = await repo.findOne({
         where: {
-          moduleCode: moduleCode
+          moduleCode: moduleCode,
         },
       })
 
@@ -75,7 +75,7 @@ export class User {
    * @return {Promise<void>}
    */
   static async save(props: UserProps): Promise<void> {
-    await container(async() => {
+    await container(async () => {
       const user = User.new(props)
       await AppDataSource.manager.save(user)
     })

@@ -49,8 +49,7 @@ test('module.pull', async () => {
   pm.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
   })
-  const s = new Set(pm.map(x => x.moduleCode))
+  const s = new Set(pm.map((x) => x.moduleCode))
   expect(s.size).toBe(pm.length)
   expect(s.size).toStrictEqual(mc.size)
 })
-

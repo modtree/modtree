@@ -9,7 +9,7 @@ import {
   Department,
   Faculty,
   NUSModuleAttributes,
-  Module as NM
+  Module as NM,
 } from '../../types/nusmods'
 
 // type Props = {

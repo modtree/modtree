@@ -17,7 +17,7 @@ export async function save() {
       'CS2109S',
       'CS3230',
     ],
-    title: 'Computer Science'
+    title: 'Computer Science',
   }
 
   await Degree.save(props)

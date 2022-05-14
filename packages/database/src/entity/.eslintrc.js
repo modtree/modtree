@@ -9,6 +9,6 @@ module.exports = {
   rules: {
     ...config.rules,
     'new-cap': 'off',
-    'require-jsdoc': 'off'
-  }
+    'require-jsdoc': 'off',
+  },
 }

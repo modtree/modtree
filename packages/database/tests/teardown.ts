@@ -7,7 +7,7 @@ import { config } from '../src/config'
  * post-test tear down
  */
 async function teardown() {
- await createConnection(connectionConfig)
+  await createConnection(connectionConfig)
     .then(async (connection) => {
       await connection.query(`DROP DATABASE ${config.database};`)
       await connection.end()

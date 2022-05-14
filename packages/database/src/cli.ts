@@ -13,17 +13,14 @@ type Color =
   | 'gray'
   | 'grey'
 
-const boxenConfig = (color: Color) => ({
-  borderColor: color,
-  padding: {
-    right: 1,
-    left: 1,
-    top: 0,
-    bottom: 0,
-  },
-})
+type TextPrinter = (e: any) => void
 
-const colorLog = (color: Color) => {
+/**
+ * prints colored text
+ * @param {Color} color
+ * @return {TextPrinter}
+ */
+function colorLog(color: Color): TextPrinter {
   /**
    * sends all arguments to chalk[color]
    * @param {any[]} ...args
@@ -34,13 +31,28 @@ const colorLog = (color: Color) => {
   return helper
 }
 
-const boxColorLog = (color: Color) => {
+/**
+ * prints a colored box around text
+ * @param {Color} color
+ * @return {TextPrinter}
+ */
+function boxColorLog(color: Color): TextPrinter {
   /**
    * sends string to boxen
    * @param {string} text
    */
   function helper(text: string) {
-    console.log(boxen(text, boxenConfig(color)))
+    console.log(
+      boxen(text, {
+        borderColor: color,
+        padding: {
+          right: 1,
+          left: 1,
+          top: 0,
+          bottom: 0,
+        },
+      })
+    )
   }
   return helper
 }

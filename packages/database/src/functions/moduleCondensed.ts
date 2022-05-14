@@ -31,7 +31,7 @@ export namespace moduleCondensed {
    */
   export async function getCodes(): Promise<Set<string>> {
     const modules = await get()
-    const codes = modules.map(m => m.moduleCode)
+    const codes = modules.map((m) => m.moduleCode)
     return new Set(codes)
   }
 
@@ -54,9 +54,11 @@ export namespace moduleCondensed {
    * @return {Promise<ModuleCondensed[]>}
    */
   export async function pull(): Promise<ModuleCondensed[]> {
-    const existingModules = new Set((await get()).map(m => m.moduleCode))
+    const existingModules = new Set((await get()).map((m) => m.moduleCode))
     const freshModules = await fetch()
-    const modulesToSave = freshModules.filter((x) => !existingModules.has(x.moduleCode))
+    const modulesToSave = freshModules.filter(
+      (x) => !existingModules.has(x.moduleCode)
+    )
     await AppDataSource.manager.save(modulesToSave)
     return modulesToSave
   }
