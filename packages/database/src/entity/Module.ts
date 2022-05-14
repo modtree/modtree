@@ -72,7 +72,12 @@ export class Module implements modtree.Module {
   @Column({ type: 'json' })
   workload: Workload
 
-  static new(props: NM) {
+  /**
+   * a drop-in replacement of a constructor
+   * @param {NM} props
+   * @return {Module}
+   */
+  static new(props: NM): Module {
     const m = new Module()
     m.acadYear = props.acadYear || ''
     m.moduleCode = props.moduleCode || ''
@@ -92,6 +97,7 @@ export class Module implements modtree.Module {
     m.fulfillRequirements = props.fulfillRequirements || []
     return m
   }
+
   /**
    * get all modules in the database
    * @return {Promise<Module[]>}
@@ -111,6 +117,10 @@ export class Module implements modtree.Module {
     return modules
   }
 
+  /**
+   * get all module codes from the module table
+   * @return {Promise<Set<string>>}
+   */
   static async getCodes(): Promise<Set<string>> {
     const modules = await Module.get()
     const codes = modules.map((m) => m.moduleCode)

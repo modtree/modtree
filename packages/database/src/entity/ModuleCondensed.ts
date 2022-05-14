@@ -22,7 +22,12 @@ export class ModuleCondensed {
   @Column()
   title: ModuleTitle
 
-  static new(props: Props) {
+  /**
+   * a drop-in replacement of a constructor
+   * @param {Props} props
+   * @return {ModuleCondensed}
+   */
+  static new(props: Props): ModuleCondensed {
     const m = new ModuleCondensed()
     m.title = props.title || ''
     m.moduleCode = props.moduleCode || ''

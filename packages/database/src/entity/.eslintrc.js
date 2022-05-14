@@ -9,5 +9,17 @@ module.exports = {
   rules: {
     ...config.rules,
     'new-cap': 'off',
+    'require-jsdoc': [
+      'error',
+      {
+        require: {
+          FunctionDeclaration: true,
+          MethodDefinition: true,
+          ClassDeclaration: false,
+          ArrowFunctionExpression: false,
+          FunctionExpression: false,
+        },
+      },
+    ],
   },
 }
