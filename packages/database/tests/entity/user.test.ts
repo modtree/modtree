@@ -1,8 +1,8 @@
 import { setup } from '../setup'
 import { endpoint } from '../../src/data-source'
-import { save } from '../../src/functions/user'
 import { container, AppDataSource } from '../../src/data-source'
 import { User } from '../../src/entity'
+import { UserProps } from '../../types/modtree'
 
 beforeAll(async () => {
   await setup()
@@ -11,8 +11,16 @@ beforeAll(async () => {
 jest.setTimeout(20000)
 
 test('canTakeModule is successful', async () => {
-  // currently adds Khang
-  await save()
+  const props: UserProps = {
+    displayName: 'Nguyen Vu Khang',
+    username: 'nvkhang',
+    modulesCompleted: ['MA2001'],
+    modulesDoing: ['MA2219'],
+    matriculationYear: 2021,
+    graduationYear: 2025,
+    graduationSemester: 2,
+  }
+  await User.save(props)
 
   const res = await endpoint(
     async () =>
