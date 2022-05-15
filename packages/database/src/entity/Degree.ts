@@ -9,6 +9,7 @@ import {
 import { Module } from './Module'
 import { container, AppDataSource } from '../data-source'
 import { DegreeInitProps, DegreeProps } from '../../types/modtree'
+import { log } from '../cli'
 
 @Entity({ name: 'degree' })
 export class Degree {
@@ -58,5 +59,51 @@ export class Degree {
       const degree = Degree.new(degreeProps)
       await AppDataSource.manager.save(degree)
     })
+  }
+
+  /**
+   * get one Degree in DB
+   * @param {string} title
+   * @return {Promise<Degree>}
+   * @throws {Error}
+   */
+  static async getOne(title: string): Promise<Degree> {
+    const degree = await container(async () => {
+      const repo = AppDataSource.getRepository(Degree)
+      const degree = await repo.findOne({
+        where: {
+          title,
+        },
+        relations: ['modulesRequired'],
+      }).catch((err) => {
+        log.warn('Warning: failed to getOne Degree from database.')
+        console.log(err)
+      })
+      return degree
+    })
+
+    if (!degree)
+      throw new Error('Failed to getOne Degree')
+
+    return degree
+  }
+
+  /**
+   * get all Degrees in DB
+   * @return {Promise<Degree[]>}
+   */
+  static async get(): Promise<Degree[]> {
+    const degrees = await container(async () => {
+      const repo = AppDataSource.getRepository(Degree)
+      const degrees = await repo.find({
+        relations: ['modulesRequired'],
+      }).catch((err) => {
+        log.warn('Warning: failed to get Degrees from database.')
+        console.log(err)
+      })
+      return degrees
+    })
+
+    return !degrees ? [] : degrees
   }
 }

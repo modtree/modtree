@@ -50,8 +50,6 @@
     "mcf": "ts-node ./src/api/moduleCondensed/fetch.ts",
     "mg": "ts-node ./src/api/module/get/index.ts",
     "mgc": "ts-node ./src/api/module/get/codes.ts",
-    "pm": "ts-node ./src/api/module/pull.ts",
-    "ds": "ts-node ./src/api/degree/save.ts",
-    "dgo": "ts-node ./src/api/degree/getOne.ts"
+    "pm": "ts-node ./src/api/module/pull.ts"
   }
 }
