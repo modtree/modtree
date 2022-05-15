@@ -34,10 +34,6 @@ async function getCodes(): Promise<string[]> {
  * @return {Promise<ModuleCondensed[]>}
  */
 async function fetch(): Promise<ModuleCondensed[]> {
-  /* this line is required for JEST. Wihtout awaiting nextTick,
-   * the next line will somehow trigger JEST's open handle catcher.
-   */
-  // await process.nextTick(() => true)
   const res = await axios.get(nusmodsApi('moduleList'))
   const data: NMC[] = res.data
   return data.map((n) => build(n))
