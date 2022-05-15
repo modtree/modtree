@@ -1,15 +1,8 @@
-import { AppDataSource, container, endpoint } from '../../src/data-source'
+import { container, endpoint } from '../../src/data-source'
 import { setup } from '../setup'
-import { ModuleCondensed } from '../../src/entity-repo/ModuleCondensed'
-import { ModuleCondensedRepository } from '../../src/repository/ModuleCondensed'
 import { DegreeRepository } from '../../src/repository/Degree'
-import { remove } from '../../src/sql'
 import { Module } from '../../src/entity-repo/Module'
 import { Degree } from '../../src/entity-repo/Degree'
-
-const lowerBound = 6000
-
-let total = 0
 
 beforeAll(async () => {
   await setup()
@@ -17,7 +10,7 @@ beforeAll(async () => {
 
 jest.setTimeout(5000)
 
-test('Degree.save() is successful', async () => {
+test('Degree.initialize() is successful', async () => {
   // Save the degree
   const props = {
     moduleCodes: [
