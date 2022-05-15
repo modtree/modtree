@@ -1,21 +1,29 @@
-# modtree
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/wiki/modtree/modtree/logo.png" alt="modtree">
+</h1>
 
-This is modtree's [turbocharged](https://turborepo.org) monorepo.
+Modtree is a project that seeks to leverage [existing
+data](https://api.nusmods.com/v2/) in a graph-oriented visualization
+tool in order to:
 
-## What's inside?
+* Increase clarity in degree planning
+* Allow students to efficiently experiment with different degree paths
+* Minimize mental overhead and time spent to source for degree data
+* Improve module information accessibility
 
-This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package manager. It includes the following packages/apps:
+## Project Layout
 
-### Apps
-
-- `docs`: a [Next.js](https://nextjs.org) app
-- `web`: another [Next.js](https://nextjs.org) app
-
-### Packages
-
-- `database`: a library of database functions
-- `config`: linting and formattings configurations
-- `tsconfig`: typescript configs used throughout the monorepo
+```
+├── .github/workflows   automated testing
+├── apps                front-end apps
+│  ├── docs             documentation website source
+│  └── web              main website source
+└── packages            project-wide shared resources
+   ├── config           lint and formatting configs
+   ├── database         backend functions
+   ├── tsconfig         typescript configs
+   └── ui               shared UI elements
+```
 
 ## Setup
 
