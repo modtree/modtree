@@ -66,8 +66,21 @@ export class User {
         },
       })
 
+      // Relations are not stored in the entity, so they must be explicitly
+      // asked for from the DB
+      const userRepo = AppDataSource.getRepository(User)
+      const user = await userRepo.findOne({
+        where: {
+          id: this.id,
+        },
+        relations: ['modulesCompleted'],
+      })
+      const modulesCompleted = user.modulesCompleted
+
       // check if PrereqTree is fulfilled
-      return utils.checkTree(module.prereqTree, this.modulesCompleted)
+      const completedModulesCodes = modulesCompleted.map((one: Module) => one.moduleCode)
+
+      return utils.checkTree(module.prereqTree, completedModulesCodes)
     })
   }
 
