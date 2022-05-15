@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm'
 import { ModtreeFunction, ModtreeFunctionWithArgs } from '../types/modtree'
 import { log } from './cli'
 import { config } from './config'
-import { Module } from './entity/Module'
+import { Module } from './entity-repo/Module'
 
 export const AppDataSource = new DataSource({
   type: 'mysql',

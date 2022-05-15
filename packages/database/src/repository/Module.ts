@@ -1,5 +1,5 @@
 import { AppDataSource } from '../data-source'
-import { Module } from '../entity/Module'
+import { Module } from '../entity-repo/Module'
 
 export const ModuleRepository = AppDataSource.getRepository(Module).extend({
   findByFaculty(faculty: string): Promise<Module[]> {
