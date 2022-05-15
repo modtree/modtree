@@ -3,7 +3,6 @@ import { DataSource } from 'typeorm'
 import { ModtreeFunction, ModtreeFunctionWithArgs } from '../types/modtree'
 import { log } from './cli'
 import { config } from './config'
-import { Module } from './entity-repo/Module'
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -14,7 +13,7 @@ export const AppDataSource = new DataSource({
   database: config.database,
   synchronize: true,
   logging: false,
-  entities: [Module],
+  entities: ['src/entity-repo/*.ts'],
   migrations: [],
   subscribers: [],
 })
