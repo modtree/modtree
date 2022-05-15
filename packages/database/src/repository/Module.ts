@@ -84,7 +84,7 @@ async function fetchOne(moduleCode: string): Promise<Module> {
   /* this line is required for JEST. Wihtout awaiting nextTick,
    * the next line will somehow trigger JEST's open handle catcher.
    */
-  await process.nextTick(() => true)
+  // await process.nextTick(() => true)
   const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
   const n: NM = res.data
   const m = build(n)

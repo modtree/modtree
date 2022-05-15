@@ -13,7 +13,7 @@ async function pull() {
   return res
 }
 
-jest.setTimeout(10000)
+jest.setTimeout(60000)
 test('pull all modules from NUSMods', async () => {
   await remove.tables(['degree_modules_required_module', 'module'])
   const res = await endpoint(async () => await container(pull))
