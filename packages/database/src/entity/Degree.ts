@@ -87,4 +87,23 @@ export class Degree {
 
     return degree
   }
+
+  /**
+   * get all Degrees in DB
+   * @return {Promise<Degree[]>}
+   */
+  static async get(): Promise<Degree[]> {
+    const degrees = await container(async () => {
+      const repo = AppDataSource.getRepository(Degree)
+      const degrees = await repo.find({
+        relations: ['modulesRequired'],
+      }).catch((err) => {
+        log.warn('Warning: failed to get Degrees from database.')
+        console.log(err)
+      })
+      return degrees
+    })
+
+    return !degrees ? [] : degrees
+  }
 }
