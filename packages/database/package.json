@@ -32,7 +32,7 @@
   "scripts": {
     "build": "tsc",
     "test": "yarn test:ci --detectOpenHandles",
-    "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.js --runInBand",
+    "test:ci": "NODE_ENV=test jest --coverage --config ./tests/configs/ci.config.js --runInBand",
     "test:k": "NODE_ENV=test jest --config ./tests/configs/khang.config.js --runInBand",
     "test:entity": "NODE_ENV=test jest --config ./tests/configs/entity.config.js --json --outputFile ./.logs/entity.json",
     "lint": "eslint --fix --ext .js,.ts .",
