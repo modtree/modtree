@@ -68,26 +68,7 @@ async function getOne(title: string): Promise<Degree> {
   return degree
 }
 
-/**
- * get all Degrees in DB
- * @return {Promise<Degree[]>}
- */
-async function get(): Promise<Degree[]> {
-  const degrees = await container(async () => {
-    const degrees = await DegreeRepository.find({
-      relations: ['modulesRequired'],
-    }).catch((err) => {
-      log.warn('Warning: failed to get Degrees from database.')
-      console.log(err)
-    })
-    return degrees
-  })
-
-  return !degrees ? [] : degrees
-}
-
 export const DegreeRepository = Repository.extend({
-  get,
   getOne,
   initialize,
   build
