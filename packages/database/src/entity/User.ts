@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, In } from 'typeorm'
 import { container, AppDataSource } from '../data-source'
 import { Module } from '../entity'
 import { utils } from '../utils'
-import { UserProps } from '../../types/modtree'
+import { UserInitProps, UserProps } from '../../types/modtree'
 
 @Entity({ name: 'user' })
 export class User {
@@ -15,11 +15,13 @@ export class User {
   @Column()
   username: string
 
-  @Column({ type: 'json' })
-  modulesCompleted: string[]
+  @ManyToMany(() => Module)
+  @JoinTable()
+  modulesCompleted: Module[]
 
-  @Column({ type: 'json' })
-  modulesDoing: string[]
+  @ManyToMany(() => Module)
+  @JoinTable()
+  modulesDoing: Module[]
 
   @Column()
   matriculationYear: number
@@ -74,9 +76,32 @@ export class User {
    * @param {UserProps} props
    * @return {Promise<void>}
    */
-  static async save(props: UserProps): Promise<void> {
+  static async save(props: UserInitProps): Promise<void> {
     await container(async () => {
-      const user = User.new(props)
+      // find modules completed and modules doing, to create many-to-many relation
+      const repo = AppDataSource.getRepository(Module)
+      const modulesCompleted = await repo.find({
+        where: {
+          moduleCode: In(props.modulesCompleted),
+        },
+      })
+      const modulesDoing = await repo.find({
+        where: {
+          moduleCode: In(props.modulesDoing),
+        },
+      })
+
+      const userProps = {
+        displayName: props.displayName,
+        username: props.username,
+        modulesCompleted,
+        modulesDoing,
+        matriculationYear: props.matriculationYear,
+        graduationYear: props.graduationYear,
+        graduationSemester: props.graduationSemester
+      }
+
+      const user = User.new(userProps)
       await AppDataSource.manager.save(user)
     })
   }
