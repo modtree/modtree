@@ -50,6 +50,8 @@
     "mcf": "ts-node ./src/api/moduleCondensed/fetch.ts",
     "mg": "ts-node ./src/api/module/get/index.ts",
     "mgc": "ts-node ./src/api/module/get/codes.ts",
-    "pm": "ts-node ./src/api/module/pull.ts"
+    "pm": "ts-node ./src/api/module/pull.ts",
+    "typeorm_ds": "typeorm-ts-node-esm -d ./src/data-source.ts",
+    "migration": "yarn typeorm_ds migration:generate ./src/migrations/migrationName"
   }
 }
