@@ -13,7 +13,7 @@ const Repository = AppDataSource.getRepository(Module)
 
 /**
  * @param {string} faculty
- * @returns {Promise<Module[]>}
+ * @return {Promise<Module[]>}
  */
 async function findByFaculty(faculty: string): Promise<Module[]> {
   return this.createQueryBuilder('module')

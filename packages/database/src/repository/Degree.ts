@@ -71,5 +71,5 @@ async function getOne(title: string): Promise<Degree> {
 export const DegreeRepository = Repository.extend({
   getOne,
   initialize,
-  build
+  build,
 })

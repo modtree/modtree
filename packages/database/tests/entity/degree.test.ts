@@ -28,15 +28,13 @@ test('Degree.save() is successful', async () => {
 
   const degree = await endpoint(() => Degree.getOne(props.title))
   expect(degree).toBeDefined()
-  if (!degree)
-    return
+  if (!degree) return
 
   const modulesRequired = degree.modulesRequired
 
   // defined
   expect(modulesRequired).toBeDefined()
-  if (!modulesRequired)
-    return
+  if (!modulesRequired) return
 
   // set equality: A = B if A subset of B and B subset of A
   const moduleCodes = modulesRequired.map((one: Module) => one.moduleCode)
@@ -79,8 +77,7 @@ test('Degree.get() is successful', async () => {
 
   const degrees = await endpoint(() => Degree.get())
   expect(degrees).toBeDefined()
-  if (!degrees)
-    return
+  if (!degrees) return
 
   const degreeNames = degrees.map((one: Degree) => one.title)
   const names = ['Computer Science', 'Mathematics']

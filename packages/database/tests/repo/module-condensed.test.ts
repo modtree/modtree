@@ -40,7 +40,7 @@ test('moduleCondensed.getCodes', async () => {
     return
   }
   expect(moduleList).toBeInstanceOf(Array)
-  moduleList.forEach(moduleCode => {
+  moduleList.forEach((moduleCode) => {
     expect(typeof moduleCode).toBe('string')
   })
   expect(moduleList.length).toBeGreaterThan(lowerBound)
