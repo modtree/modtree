@@ -28,12 +28,13 @@
     "express": "^4.18.1",
     "inquirer": "^8.2.4",
     "mysql2": "^2.3.3",
+    "nodemon": "^2.0.16",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.6"
   },
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node src/server.ts",
+    "dev": "nodemon src/server.ts",
     "test": "yarn test:ci --detectOpenHandles",
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.ts --runInBand",
     "test:k": "NODE_ENV=test jest --config ./tests/configs/khang.config.ts --runInBand --detectOpenHandles",

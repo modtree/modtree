@@ -1,23 +1,16 @@
-import { ModuleCondesnedController } from "./controller/ModuleCondensedController"
+import { ModuleCondesnedController } from './controller/ModuleCondensedController'
 
-export const Routes = [{
-    method: "get",
-    route: "/users",
+export const Routes = [
+  {
+    method: 'get',
+    route: '/modules',
     controller: ModuleCondesnedController,
-    action: "all"
-}, {
-    method: "get",
-    route: "/users/:id",
+    action: 'all',
+  },
+  {
+    method: 'get',
+    route: '/modules/:moduleCode',
     controller: ModuleCondesnedController,
-    action: "one"
-}, {
-    method: "post",
-    route: "/users",
-    controller: ModuleCondesnedController,
-    action: "save"
-}, {
-    method: "delete",
-    route: "/users/:id",
-    controller: ModuleCondesnedController,
-    action: "remove"
-}]
+    action: 'one',
+  },
+]
