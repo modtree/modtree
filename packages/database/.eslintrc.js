@@ -11,5 +11,6 @@ module.exports = {
     'babel.config.js',
     'types/*',
     'tests/*',
+    'src/migrations/*',
   ],
 }

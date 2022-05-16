@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
-import { container, AppDataSource } from '../data-source'
-import { Module } from '../entity'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm'
+import { container } from '../data-source'
+import { ModuleRepository } from '../repository/Module'
+import { UserRepository } from '../repository/User'
+import { Module } from '../entity/Module'
 import { utils } from '../utils'
-import { UserProps } from '../../types/modtree'
 
 @Entity({ name: 'user' })
 export class User {
@@ -15,11 +16,13 @@ export class User {
   @Column()
   username: string
 
-  @Column({ type: 'json' })
-  modulesCompleted: string[]
+  @ManyToMany(() => Module)
+  @JoinTable()
+  modulesCompleted: Module[]
 
-  @Column({ type: 'json' })
-  modulesDoing: string[]
+  @ManyToMany(() => Module)
+  @JoinTable()
+  modulesDoing: Module[]
 
   @Column()
   matriculationYear: number
@@ -31,23 +34,6 @@ export class User {
   graduationSemester: number
 
   /**
-   * Constructor for User
-   * @param {UserProps} props
-   * @return {User}
-   */
-  static new(props: UserProps): User {
-    const user = new User()
-    user.displayName = props.displayName || ''
-    user.username = props.username || ''
-    user.modulesCompleted = props.modulesCompleted || []
-    user.modulesDoing = props.modulesDoing || []
-    user.matriculationYear = props.matriculationYear || 2021
-    user.graduationYear = props.graduationYear || 2025
-    user.graduationSemester = props.graduationSemester || 2
-    return user
-  }
-
-  /**
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
@@ -57,27 +43,26 @@ export class User {
   async canTakeModule(moduleCode: string): Promise<boolean | void> {
     return await container(async () => {
       // find module
-      const repo = AppDataSource.getRepository(Module)
-      const module = await repo.findOne({
+      const module = await ModuleRepository.findOne({
         where: {
           moduleCode: moduleCode,
         },
       })
 
-      // check if PrereqTree is fulfilled
-      return utils.checkTree(module.prereqTree, this.modulesCompleted)
-    })
-  }
+      // Relations are not stored in the entity, so they must be explicitly
+      // asked for from the DB
+      const user = await UserRepository.findOne({
+        where: {
+          id: this.id,
+        },
+        relations: ['modulesCompleted'],
+      })
+      const modulesCompleted = user.modulesCompleted
 
-  /**
-   * Adds a User to DB
-   * @param {UserProps} props
-   * @return {Promise<void>}
-   */
-  static async save(props: UserProps): Promise<void> {
-    await container(async () => {
-      const user = User.new(props)
-      await AppDataSource.manager.save(user)
+      // check if PrereqTree is fulfilled
+      const completedModulesCodes = modulesCompleted.map((one: Module) => one.moduleCode)
+
+      return utils.checkTree(module.prereqTree, completedModulesCodes)
     })
   }
 }

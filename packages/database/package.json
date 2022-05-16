@@ -40,6 +40,8 @@
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.ts --runInBand",
     "test:k": "NODE_ENV=test jest --config ./tests/configs/khang.config.ts --runInBand --detectOpenHandles",
     "test:pull": "NODE_ENV=test jest --config ./tests/configs/pull.config.ts --runInBand --detectOpenHandles",
+    "test:entity": "NODE_ENV=test jest --config ./tests/configs/entity.config.js --json --outputFile ./.logs/entity.json",
+    "test:w": "NODE_ENV=test jest --config ./tests/configs/w.config.js",
     "lint": "eslint --fix --ext .js,.ts .",
     "lint:prettier": "prettier --ignore-path .gitignore --write . && yarn lint",
     "dump": "ts-node ./src/api/sql/dump.ts",
@@ -55,6 +57,9 @@
     "mcf": "ts-node ./src/api/moduleCondensed/fetch.ts",
     "mg": "ts-node ./src/api/module/get/index.ts",
     "mgc": "ts-node ./src/api/module/get/codes.ts",
-    "pm": "ts-node ./src/api/module/pull.ts"
+    "pm": "ts-node ./src/api/module/pull.ts",
+    "typeorm_ds": "typeorm-ts-node-esm -d ./src/data-source.ts",
+    "migration": "yarn typeorm_ds migration:generate ./src/migrations/migrationName",
+    "revert": "yarn typeorm_ds migration:revert"
   }
 }

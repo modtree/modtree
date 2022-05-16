@@ -1,6 +1,6 @@
 import { AppDataSource, container, endpoint } from '../src/data-source'
 import { setup } from './setup'
-import { ModuleCondensed } from '../src/entity-repo/ModuleCondensed'
+import { ModuleCondensed } from '../src/entity/ModuleCondensed'
 import { ModuleCondensedRepository } from '../src/repository/ModuleCondensed'
 import { remove } from '../src/sql'
 
