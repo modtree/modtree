@@ -33,6 +33,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "dev": "ts-node src/server.ts",
     "test": "yarn test:ci --detectOpenHandles",
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.ts --runInBand",
     "test:k": "NODE_ENV=test jest --config ./tests/configs/khang.config.ts --runInBand --detectOpenHandles",
