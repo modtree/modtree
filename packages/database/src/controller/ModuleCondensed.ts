@@ -1,6 +1,6 @@
 import { AppDataSource } from '../data-source'
 import { Request, Response } from 'express'
-import { ModuleCondensed } from '../entity-repo/ModuleCondensed'
+import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { Like } from 'typeorm'
 
 /** ModuleCondensed api controller */
