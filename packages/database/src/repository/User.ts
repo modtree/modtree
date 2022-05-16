@@ -15,7 +15,7 @@ function build(props: UserProps): User {
   const user = new User()
   user.displayName = props.displayName || ''
   user.username = props.username || ''
-  user.modulesCompleted = props.modulesCompleted || []
+  user.modulesDone = props.modulesDone || []
   user.modulesDoing = props.modulesDoing || []
   user.matriculationYear = props.matriculationYear || 2021
   user.graduationYear = props.graduationYear || 2025
@@ -31,9 +31,9 @@ function build(props: UserProps): User {
 async function initialize(props: UserInitProps): Promise<void> {
   await container(async () => {
     // find modules completed and modules doing, to create many-to-many relation
-    const modulesCompleted = await ModuleRepository.find({
+    const modulesDone = await ModuleRepository.find({
       where: {
-        moduleCode: In(props.modulesCompleted),
+        moduleCode: In(props.modulesDone),
       },
     })
     const modulesDoing = await ModuleRepository.find({
@@ -45,7 +45,7 @@ async function initialize(props: UserInitProps): Promise<void> {
     const userProps: UserProps = {
       displayName: props.displayName,
       username: props.username,
-      modulesCompleted: modulesCompleted || [],
+      modulesDone: modulesDone || [],
       modulesDoing: modulesDoing || [],
       matriculationYear: props.matriculationYear,
       graduationYear: props.graduationYear,

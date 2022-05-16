@@ -3,7 +3,6 @@ import { AppDataSource, container } from '../data-source'
 import { DegreeInitProps, DegreeProps } from '../../types/modtree'
 import { ModuleRepository } from './Module'
 import { In } from 'typeorm'
-import { log } from '../cli'
 
 const Repository = AppDataSource.getRepository(Degree)
 
@@ -16,7 +15,7 @@ const Repository = AppDataSource.getRepository(Degree)
 function build(props: DegreeProps): Degree {
   const degree = new Degree()
   degree.title = props.title || ''
-  degree.modulesRequired = props.modulesRequired || []
+  degree.modules = props.modules || []
   return degree
 }
 
@@ -28,13 +27,13 @@ function build(props: DegreeProps): Degree {
 async function initialize(props: DegreeInitProps): Promise<void> {
   await container(async () => {
     // find modules required, to create many-to-many relation
-    const modulesRequired = await ModuleRepository.find({
+    const modules = await ModuleRepository.find({
       where: {
         moduleCode: In(props.moduleCodes),
       },
     })
     const degreeProps = {
-      modulesRequired,
+      modules,
       title: props.title,
     }
     const degree = build(degreeProps)
@@ -42,34 +41,7 @@ async function initialize(props: DegreeInitProps): Promise<void> {
   })
 }
 
-/**
- * get one Degree in DB
- * @param {string} title
- * @return {Promise<Degree>}
- * @throws {Error}
- */
-async function getOne(title: string): Promise<Degree> {
-  const degree = await container(async () => {
-    const repo = AppDataSource.getRepository(Degree)
-    const degree = await repo
-      .findOne({
-        where: {
-          title,
-        },
-        relations: ['modulesRequired'],
-      })
-      .catch((err) => {
-        log.warn('Warning: failed to getOne Degree from database.')
-        console.log(err)
-      })
-    return degree
-  })
-  if (!degree) throw new Error('Failed to getOne Degree')
-  return degree
-}
-
 export const DegreeRepository = Repository.extend({
-  getOne,
   initialize,
   build,
 })

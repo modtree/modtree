@@ -13,7 +13,7 @@ test('canTakeModule is successful', async () => {
   const props: UserInitProps = {
     displayName: 'Nguyen Vu Khang',
     username: 'nvkhang',
-    modulesCompleted: ['MA2001'],
+    modulesDone: ['MA2001'],
     modulesDoing: ['MA2219'],
     matriculationYear: 2021,
     graduationYear: 2025,

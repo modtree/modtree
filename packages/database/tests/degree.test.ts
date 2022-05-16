@@ -29,18 +29,24 @@ test('Degree.initialize() is successful', async () => {
     await DegreeRepository.initialize(props)
   })
 
-  const degree = await endpoint(() => DegreeRepository.getOne(props.title))
+  const degree = await endpoint(() =>
+    DegreeRepository.findOne({
+      where: {
+        title: props.title,
+      }, relations: ['modules']
+    })
+  )
   expect(degree).toBeDefined()
   if (!degree) return
 
-  const modulesRequired = degree.modulesRequired
+  const modules = degree.modules
 
   // defined
-  expect(modulesRequired).toBeDefined()
-  if (!modulesRequired) return
+  expect(modules).toBeDefined()
+  if (!modules) return
 
   // set equality: A = B if A subset of B and B subset of A
-  const moduleCodes = modulesRequired.map((one: Module) => one.moduleCode)
+  const moduleCodes = modules.map((one: Module) => one.moduleCode)
   expect(props.moduleCodes).toEqual(expect.arrayContaining(moduleCodes))
   expect(moduleCodes).toEqual(expect.arrayContaining(props.moduleCodes))
 })

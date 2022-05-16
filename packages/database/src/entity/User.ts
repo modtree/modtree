@@ -18,7 +18,7 @@ export class User {
 
   @ManyToMany(() => Module)
   @JoinTable()
-  modulesCompleted: Module[]
+  modulesDone: Module[]
 
   @ManyToMany(() => Module)
   @JoinTable()
@@ -55,12 +55,12 @@ export class User {
         where: {
           id: this.id,
         },
-        relations: ['modulesCompleted'],
+        relations: ['modulesDone'],
       })
-      const modulesCompleted = user.modulesCompleted
+      const modulesDone = user.modulesDone
 
       // check if PrereqTree is fulfilled
-      const completedModulesCodes = modulesCompleted.map((one: Module) => one.moduleCode)
+      const completedModulesCodes = modulesDone.map((one: Module) => one.moduleCode)
 
       return utils.checkTree(module.prereqTree, completedModulesCodes)
     })
