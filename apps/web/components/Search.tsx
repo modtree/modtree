@@ -7,18 +7,21 @@ const Search = (props: {
   const [display, setDisplay] = useState('')
 
   async function handleQuery(value: string) {
+    setDisplay(value)
     const upper = value.toUpperCase()
     const backend = process.env.NEXT_PUBLIC_BACKEND
+    if (upper.length === 0) {
+      props.setQuery('')
+      props.setResults([])
+      return
+    }
     const url = `${backend}/modules/${upper}`
     console.log('querying url:', url)
     fetch(url).then((res) => {
-      console.log('got here', res)
       res.json().then((json) => {
-        console.log('received', json.result)
         props.setResults(json.result.map((x) => x.moduleCode))
       })
     })
-    setDisplay(value)
     if (upper.length > 0) {
       console.log('upper:', upper)
     }
