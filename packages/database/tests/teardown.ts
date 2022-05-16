@@ -25,7 +25,7 @@ function nulldown() {
 
 // to keep lsp happy when I'm not using one of them
 nulldown.name
-teardown.name
+// teardown.name
 
 export default teardown
 // export default nulldown

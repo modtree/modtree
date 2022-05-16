@@ -13,6 +13,7 @@ module.exports = {
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
     ".eslintrc.js", // Ignore this file.
+    "/coverage/**/*", // Ignore coverage files
   ],
   rules: {
     "max-len": ["off", 0],
