@@ -1,7 +1,7 @@
-import { container, endpoint } from '../../src/data-source'
-import { setup } from '../setup'
-import { DegreeRepository } from '../../src/repository/Degree'
-import { Module } from '../../src/entity-repo/Module'
+import { container, endpoint } from '../src/data-source'
+import { setup } from './setup'
+import { DegreeRepository } from '../src/repository/Degree'
+import { Module } from '../src/entity-repo/Module'
 
 beforeAll(async () => {
   await setup()
