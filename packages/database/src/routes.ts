@@ -1,4 +1,4 @@
-import { moduleCondensedController } from './controller/ModuleCondensedController'
+import { moduleCondensedController } from './controller/ModuleCondensed'
 
 export const Routes = [
   {
