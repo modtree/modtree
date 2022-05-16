@@ -45,16 +45,9 @@
     "dump": "ts-node ./src/api/sql/dump.ts",
     "restore": "ts-node ./src/api/sql/restore.ts",
     "restore:t": "ts-node ./src/api/sql/restoreTest.ts",
-    "us": "ts-node ./src/api/user/save.ts",
-    "uctm": "ts-node ./src/api/user/canTakeModule.ts",
     "reset:all": "ts-node ./src/api/sql/reset/all.ts",
     "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed.ts",
     "reset:m": "ts-node ./src/api/sql/reset/module.ts",
-    "reset:d": "ts-node ./src/api/sql/reset/degree.ts",
-    "mcg": "ts-node ./src/api/moduleCondensed/get.ts",
-    "mcf": "ts-node ./src/api/moduleCondensed/fetch.ts",
-    "mg": "ts-node ./src/api/module/get/index.ts",
-    "mgc": "ts-node ./src/api/module/get/codes.ts",
-    "pm": "ts-node ./src/api/module/pull.ts"
+    "reset:d": "ts-node ./src/api/sql/reset/degree.ts"
   }
 }

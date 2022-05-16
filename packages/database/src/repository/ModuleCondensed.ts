@@ -2,7 +2,7 @@ import { ModuleCondensed } from '../entity-repo/ModuleCondensed'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { AppDataSource } from '../data-source'
 import axios from 'axios'
-import { nusmodsApi , getModuleLevel } from '../utils/string'
+import { nusmodsApi, getModuleLevel } from '../utils/string'
 
 const Repository = AppDataSource.getRepository(ModuleCondensed)
 

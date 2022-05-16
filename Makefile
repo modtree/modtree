@@ -14,7 +14,9 @@ w-inv:
 k:
 	cp ~/dots/personal/.secrets/modtree/.env .env
 	cp ~/dots/personal/.secrets/modtree/.env.test .env.test
+	cp ~/dots/personal/.secrets/modtree/.env.local ./apps/web
 	mv .env* ./packages/database
 
 k-inv:
 	cp ./packages/database/.env* ~/dots/personal/.secrets/modtree
+	cp ./apps/web/.env.local ~/dots/personal/.secrets/modtree

@@ -35,6 +35,7 @@ export default function SearchPage() {
         </p>
         {ResultsDisplay}
       </div>
+      <span className="text-black">count: {results.length}</span>
     </>
   )
 }
