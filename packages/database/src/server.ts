@@ -1,6 +1,5 @@
-import express from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import * as bodyParser from 'body-parser'
-import { Request, Response } from 'express'
 import { AppDataSource } from './data-source'
 import { Routes } from './routes'
 import cors, { CorsOptions } from 'cors'
@@ -20,7 +19,7 @@ AppDataSource.initialize()
     Routes.forEach((route) => {
       ;(app as any)[route.method](
         route.route,
-        (req: Request, res: Response, next: Function) => {
+        (req: Request, res: Response, next: NextFunction) => {
           const result = new (route.controller as any)()[route.action](
             req,
             res,
