@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "description": "modtree database with MySQL",
+  "main": "src/index.ts",
   "type": "commonjs",
   "devDependencies": {
     "@babel/core": "^7.17.10",
