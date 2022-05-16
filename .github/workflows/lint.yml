@@ -15,11 +15,8 @@ jobs:
       - name: 🔍 Check out repository code
         uses: actions/checkout@v3
 
-      # - name: 🧶 Install yarn
-      #   run: yarn
-      #
-      - name: NPM or Yarn install with caching
-        uses: bahmutov/npm-install@v1.6.0
-
+      - name: 🧶 Install yarn
+        run: yarn
+      
       - name: 📦 build & lint database functions
         run: yarn build:db
