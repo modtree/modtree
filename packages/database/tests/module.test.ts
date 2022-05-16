@@ -1,48 +1,81 @@
-import { endpoint } from '../src/data-source'
+import { container, endpoint } from '../src/data-source'
+import { Module } from '../src/entity-repo/Module'
+import { ModuleRepository } from '../src/repository/Module'
 import { setup } from './setup'
-import { Module } from '../src/entity'
-
-const lowerBound = 6000
-
-let total = 0
 
 beforeAll(async () => {
   await setup()
 })
 
-test('module.get', async () => {
-  const moduleList = await endpoint(Module.get)
-  expect(moduleList).toBeDefined()
-  if (!moduleList) {
+async function findByFaculty() {
+  const res = await ModuleRepository.findByFaculty('Computing')
+  return res
+}
+
+async function fetchOne() {
+  const res = await ModuleRepository.fetchOne('CS2040S')
+  return res
+}
+
+async function getAll() {
+  const res = await ModuleRepository.find()
+  return res
+}
+
+function build() {
+  const res = ModuleRepository.build({
+    acadYear: '2020',
+    moduleCode: 'CS1010S',
+    title: 'Winning',
+    description: 'Read title',
+    moduleCredit: '10',
+    department: 'Games',
+    faculty: 'Life',
+    workload: '420',
+    aliases: ['CS9999S'],
+    attributes: {
+      su: true,
+    },
+    prerequisite: 'CS1010S',
+    semesterData: [],
+  })
+  return res
+}
+
+test('find modules by faculty', async () => {
+  const res = await endpoint(async () => await container(findByFaculty))
+  expect(res).toBeDefined()
+  expect(res).not.toBeNull()
+  if (!res) {
     return
   }
-  /* make sure every element is a valid Module */
-  moduleList.forEach((module) => {
+  expect(res).toBeInstanceOf(Array)
+  res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
   })
-  /* make sure that all moduleCodes are unique */
-  const s = new Set(moduleList.map((m) => m.moduleCode))
-  expect(s.size).toBe(moduleList.length)
-  expect(s.size).toBeGreaterThan(lowerBound)
-  total = s.size
 })
 
-test('module.getCodes', async () => {
-  const moduleList = await endpoint(Module.getCodes)
-  expect(moduleList).toBeDefined()
-  expect(moduleList).toBeInstanceOf(Set)
-  if (!moduleList) {
-    return
-  }
-  expect(moduleList.size).toBeGreaterThan(lowerBound)
-  expect(moduleList.size).toStrictEqual(total)
+test('fetch one module from NUSMods', async () => {
+  const res = await endpoint(async () => await container(fetchOne))
+  expect(res).not.toBeNull()
+  expect(res).toBeInstanceOf(Module)
 })
 
-test('moduleCondensed.fetch', async () => {
-  const m = await endpoint(() => Module.fetchOne('CS2040S'))
-  expect(m).toBeDefined()
-  if (!m) {
+test('build a module from props', () => {
+  const res = build()
+  expect(res).not.toBeNull()
+  expect(res).toBeInstanceOf(Module)
+})
+
+test('get all modules in database', async () => {
+  const res = await endpoint(async () => await container(getAll))
+  expect(res).toBeDefined()
+  expect(res).not.toBeNull()
+  if (!res) {
     return
   }
-  expect(m).toBeInstanceOf(Module)
+  res.forEach((module) => {
+    expect(module).toBeInstanceOf(Module)
+  })
+  expect(res.length).toBeGreaterThan(6100)
 })

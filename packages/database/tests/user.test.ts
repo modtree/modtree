@@ -1,8 +1,7 @@
-import { setup } from '../setup'
-import { endpoint } from '../../src/data-source'
-import { container, AppDataSource } from '../../src/data-source'
-import { User } from '../../src/entity'
-import { UserInitProps } from '../../types/modtree'
+import { container, endpoint } from '../src/data-source'
+import { setup } from './setup'
+import { UserInitProps } from '../types/modtree'
+import { UserRepository } from '../src/repository/User'
 
 beforeAll(async () => {
   await setup()
@@ -20,14 +19,13 @@ test('canTakeModule is successful', async () => {
     graduationYear: 2025,
     graduationSemester: 2,
   }
-  await User.save(props)
+  await UserRepository.initialize(props)
 
   const res = await endpoint(
     async () =>
       await container(async () => {
         // find user
-        const repo = AppDataSource.getRepository(User)
-        const user = await repo.findOne({
+        const user = await UserRepository.findOne({
           where: {
             username: 'nvkhang',
           },

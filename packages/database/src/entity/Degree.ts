@@ -70,20 +70,21 @@ export class Degree {
   static async getOne(title: string): Promise<Degree> {
     const degree = await container(async () => {
       const repo = AppDataSource.getRepository(Degree)
-      const degree = await repo.findOne({
-        where: {
-          title,
-        },
-        relations: ['modulesRequired'],
-      }).catch((err) => {
-        log.warn('Warning: failed to getOne Degree from database.')
-        console.log(err)
-      })
+      const degree = await repo
+        .findOne({
+          where: {
+            title,
+          },
+          relations: ['modulesRequired'],
+        })
+        .catch((err) => {
+          log.warn('Warning: failed to getOne Degree from database.')
+          console.log(err)
+        })
       return degree
     })
 
-    if (!degree)
-      throw new Error('Failed to getOne Degree')
+    if (!degree) throw new Error('Failed to getOne Degree')
 
     return degree
   }
@@ -95,12 +96,14 @@ export class Degree {
   static async get(): Promise<Degree[]> {
     const degrees = await container(async () => {
       const repo = AppDataSource.getRepository(Degree)
-      const degrees = await repo.find({
-        relations: ['modulesRequired'],
-      }).catch((err) => {
-        log.warn('Warning: failed to get Degrees from database.')
-        console.log(err)
-      })
+      const degrees = await repo
+        .find({
+          relations: ['modulesRequired'],
+        })
+        .catch((err) => {
+          log.warn('Warning: failed to get Degrees from database.')
+          console.log(err)
+        })
       return degrees
     })
 
