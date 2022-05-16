@@ -6,17 +6,14 @@ import { log } from '../cli'
 import { AppDataSource, container } from '../data-source'
 import { nusmodsApi } from '../utils/string'
 import { Agent } from 'https'
-import { ModuleCondensed } from '../entity-repo/ModuleCondensed'
 import { ModuleCondensedRepository } from './ModuleCondensed'
-
-const Repository = AppDataSource.getRepository(Module)
 
 /**
  * @param {string} faculty
  * @return {Promise<Module[]>}
  */
 async function findByFaculty(faculty: string): Promise<Module[]> {
-  return this.createQueryBuilder('module')
+  return ModuleRepository.createQueryBuilder('module')
     .where('module.faculty = :faculty', { faculty })
     .getMany()
 }
@@ -141,7 +138,7 @@ async function pull(): Promise<Module[]> {
   return result
 }
 
-export const ModuleRepository = Repository.extend({
+export const ModuleRepository = AppDataSource.getRepository(Module).extend({
   findByFaculty,
   build,
   getCodes,

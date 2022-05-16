@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import { container } from '../data-source'
 import { ModuleRepository } from '../repository/Module'
-import { UserRepository } from '../repository/User'
 import { utils } from '../utils'
 
 @Entity({ name: 'user' })
