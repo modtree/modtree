@@ -1,30 +1,30 @@
 import { Dispatch, SetStateAction, useState } from 'react'
+import { Module } from 'database'
 
 const Search = (props: {
   setQuery: Dispatch<SetStateAction<string>>
   setResults: Dispatch<SetStateAction<string[]>>
 }) => {
+  // the text that shows up in the search bar
   const [display, setDisplay] = useState('')
-
   async function handleQuery(value: string) {
     setDisplay(value)
     const upper = value.toUpperCase()
     const backend = process.env.NEXT_PUBLIC_BACKEND
     if (upper.length === 0) {
+      // empty queries are really slow
       props.setQuery('')
       props.setResults([])
       return
     }
     const url = `${backend}/modules/${upper}`
-    console.log('querying url:', url)
+    console.debug('querying url:', url)
     fetch(url).then((res) => {
       res.json().then((json) => {
-        props.setResults(json.result.map((x) => x.moduleCode))
+        const moduleList: Module[] = json.result
+        props.setResults(moduleList.map((x) => x.moduleCode))
       })
     })
-    if (upper.length > 0) {
-      console.log('upper:', upper)
-    }
     props.setQuery(upper)
   }
   return (
