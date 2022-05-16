@@ -14,7 +14,7 @@ export class Degree {
 
   @ManyToMany(() => Module)
   @JoinTable()
-  modulesRequired: Module[]
+  modules: Module[]
 
   @Column()
   title: string

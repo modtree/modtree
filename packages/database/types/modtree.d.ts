@@ -9,7 +9,7 @@ export type ModtreeFunctionWithArgs<A extends BaseArgs, T> = (
 export type UserInitProps = {
   displayName: string
   username: string
-  modulesCompleted: string[]
+  modulesDone: string[]
   modulesDoing: string[]
   matriculationYear: number
   graduationYear: number
@@ -19,7 +19,7 @@ export type UserInitProps = {
 export type UserProps = {
   displayName: string
   username: string
-  modulesCompleted: Module[]
+  modulesDone: Module[]
   modulesDoing: Module[]
   matriculationYear: number
   graduationYear: number
@@ -32,7 +32,7 @@ export type DegreeInitProps = {
 }
 
 export type DegreeProps = {
-  modulesRequired: Module[]
+  modules: Module[]
   title: string
 }
 

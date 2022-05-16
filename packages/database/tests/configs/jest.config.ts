@@ -32,5 +32,4 @@ export const k: Config.InitialOptions = {
   testMatch: ['**/tests/**/module.test.ts'],
 }
 
-
 export default base
