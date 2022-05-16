@@ -9,7 +9,7 @@ beforeAll(async () => {
 
 jest.setTimeout(120000)
 test('module.pull', async () => {
-  await remove.tables(['degree_modules_required_module', 'module'])
+  await remove.tables(['user_modules_completed_module', 'user_modules_doing_module', 'degree_modules_required_module', 'module'])
   // check that table removal was successfull
   const mc = await endpoint(ModuleCondensed.getCodes)
   const m = await endpoint(Module.getCodes)
