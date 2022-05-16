@@ -9,14 +9,14 @@ const Search = (props: {
   const [display, setDisplay] = useState('')
   async function handleQuery(value: string) {
     setDisplay(value)
-    const upper = value.toUpperCase()
-    const backend = process.env.NEXT_PUBLIC_BACKEND
-    if (upper.length === 0) {
+    if (value.length === 0) {
       // empty queries are really slow
       props.setQuery('')
       props.setResults([])
       return
     }
+    const upper = value.toUpperCase()
+    const backend = process.env.NEXT_PUBLIC_BACKEND
     const url = `${backend}/modules/${upper}`
     console.debug('querying url:', url)
     fetch(url).then((res) => {
