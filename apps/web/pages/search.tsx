@@ -1,27 +1,32 @@
 import { useEffect, useState } from 'react'
 import Search from '../components/Search'
 import { H1 } from '../components/Html'
+// import axios from 'axios'
 
 export default function SearchPage() {
-  const [data, setData] = useState('')
+  const [module, setModule] = useState('')
   useEffect(() => {
-    async function getData() {
-      const res = await fetch('/api/helloworld')
+    async function getModule() {
+      const moduleCode = 'CS1010S'
+      const res = await fetch(`/api/module/get/${moduleCode}`)
       const data = await res.json()
-      setData(data)
+      setModule(data)
     }
-    getData()
+    getModule()
   }, [])
   const queryState = useState('')
   const [query, setQuery] = queryState
-  console.log(data)
+  console.log(module)
 
   return (
     <>
       <H1>Search Page</H1>
       <Search queryState={queryState} />
-      <div>{query}</div>
-      <div>{data.name}</div>
+      <div className='mt-8 text-gray-600'>Console</div>
+      <div className="bg-white py-1 px-2 font-mono">
+        <span className='text-emerald-500'>{'> '}</span>
+        {query}
+      </div>
     </>
   )
 }
