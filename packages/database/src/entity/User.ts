@@ -107,8 +107,8 @@ export class User {
       const userProps = {
         displayName: props.displayName,
         username: props.username,
-        modulesCompleted,
-        modulesDoing,
+        modulesCompleted: modulesCompleted || [],
+        modulesDoing: modulesDoing || [],
         matriculationYear: props.matriculationYear,
         graduationYear: props.graduationYear,
         graduationSemester: props.graduationSemester
