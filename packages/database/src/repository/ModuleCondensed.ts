@@ -1,4 +1,4 @@
-import { ModuleCondensed } from '../entity-repo/ModuleCondensed'
+import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { AppDataSource } from '../data-source'
 import axios from 'axios'

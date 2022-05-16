@@ -1,5 +1,5 @@
 import { AppDataSource, container } from '../data-source'
-import { User } from '../entity-repo/User'
+import { User } from '../entity/User'
 import { UserInitProps, UserProps } from '../../types/modtree'
 import { In } from 'typeorm'
 import { ModuleRepository } from './Module'

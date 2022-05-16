@@ -1,5 +1,5 @@
 import { container, endpoint } from '../src/data-source'
-import { Module } from '../src/entity-repo/Module'
+import { Module } from '../src/entity/Module'
 import { ModuleRepository } from '../src/repository/Module'
 import { remove } from '../src/sql'
 import { setup } from './setup'

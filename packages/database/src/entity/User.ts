@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 't
 import { container } from '../data-source'
 import { ModuleRepository } from '../repository/Module'
 import { UserRepository } from '../repository/User'
-import { Module } from '../entity-repo/Module'
+import { Module } from '../entity/Module'
 import { utils } from '../utils'
 
 @Entity({ name: 'user' })

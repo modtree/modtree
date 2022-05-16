@@ -1,4 +1,4 @@
-import { Degree } from '../entity-repo/Degree'
+import { Degree } from '../entity/Degree'
 import { AppDataSource, container } from '../data-source'
 import { DegreeInitProps, DegreeProps } from '../../types/modtree'
 import { ModuleRepository } from './Module'
