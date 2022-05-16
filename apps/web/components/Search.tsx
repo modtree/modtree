@@ -1,11 +1,9 @@
 import { Dispatch, SetStateAction, useState } from 'react'
-import { UseState } from '../types'
 
 const Search = (props: {
-  queryState: UseState<string>
+  setQuery: Dispatch<SetStateAction<string>>
   setResults: Dispatch<SetStateAction<string[]>>
 }) => {
-  const setQuery = props.queryState[1]
   const [display, setDisplay] = useState('')
 
   async function handleQuery(value: string) {
@@ -17,14 +15,14 @@ const Search = (props: {
       console.log('got here', res)
       res.json().then((json) => {
         console.log('received', json.result)
-        props.setResults(json.result.map(x => x.moduleCode))
+        props.setResults(json.result.map((x) => x.moduleCode))
       })
     })
     setDisplay(value)
     if (upper.length > 0) {
       console.log('upper:', upper)
     }
-    setQuery(upper)
+    props.setQuery(upper)
   }
   return (
     <div>

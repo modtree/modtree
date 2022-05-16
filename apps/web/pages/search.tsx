@@ -18,13 +18,12 @@ export default function SearchPage() {
 
   const queryState = useState('')
   const [query, setQuery] = queryState
-  const resultState = useState({})
   const [results, setResults] = useState<string[]>([])
 
   return (
     <>
       <H1>Search Page</H1>
-      <Search queryState={queryState} setResults={setResults} />
+      <Search setQuery={setQuery} setResults={setResults} />
       <div className="mt-8 text-gray-600">Console</div>
       <div className="bg-gray-900 py-1 px-2 font-mono rounded-md h-56 overflow-y-hidden">
         <p className="text-amber-100">
@@ -32,9 +31,11 @@ export default function SearchPage() {
           {query}
         </p>
         {results.map((module, i) => (
-          <span className='text-white' key={i}>{module}, </span>
+          <span className="text-white" key={i}>
+            {module}
+            {i === results.length - 1 ? '' : ', '}
+          </span>
         ))}
-        {/* <p className="text-wrap text-amber-100">{JSON.stringify(results)}</p> */}
       </div>
     </>
   )
