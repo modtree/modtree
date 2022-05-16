@@ -4,11 +4,17 @@ import { Request, Response } from 'express'
 import { AppDataSource } from './data-source'
 import { Routes } from './routes'
 import { ModuleCondensed } from './entity-repo/ModuleCondensed'
+import cors, { CorsOptions } from 'cors'
+
+const corsOpts: CorsOptions = {
+  origin: 'http://localhost:3000'
+}
 
 AppDataSource.initialize()
   .then(async () => {
     // create express app
     const app = express()
+    app.use(cors(corsOpts))
     app.use(bodyParser.json())
 
     // register express routes from defined application routes
@@ -38,24 +44,24 @@ AppDataSource.initialize()
     // ...
 
     // start express server
-    app.listen(3000)
+    app.listen(8080)
 
-    // insert new users for test
-    await AppDataSource.manager.save(
-      AppDataSource.manager.create(ModuleCondensed, {
-        moduleCode: 'MA2001',
-        moduleLevel: 2,
-        title: 'Linear Algebra 1',
-      })
-    )
-
-    await AppDataSource.manager.save(
-      AppDataSource.manager.create(ModuleCondensed, {
-        moduleCode: 'MA2002',
-        moduleLevel: 2,
-        title: 'Calculus 1',
-      })
-    )
+    // // insert new users for test
+    // await AppDataSource.manager.save(
+    //   AppDataSource.manager.create(ModuleCondensed, {
+    //     moduleCode: 'MA2001',
+    //     moduleLevel: 2,
+    //     title: 'Linear Algebra 1',
+    //   })
+    // )
+    //
+    // await AppDataSource.manager.save(
+    //   AppDataSource.manager.create(ModuleCondensed, {
+    //     moduleCode: 'MA2002',
+    //     moduleLevel: 2,
+    //     title: 'Calculus 1',
+    //   })
+    // )
 
     console.log(
       'Express server has started on port 3000. Open http://localhost:3000/users to see results'

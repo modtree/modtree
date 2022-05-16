@@ -13,12 +13,18 @@ export class ModuleCondesnedController {
   }
 
   async one(req: Request, res: Response) {
-    const a = await this.moduleRepo.find({
-      where: {
-        moduleCode: Like(`%${req.params.moduleCode}%`),
-      },
-    })
-    res.json({ message: 'done', result: a })
+    this.moduleRepo
+      .find({
+        where: {
+          moduleCode: Like(`%${req.params.moduleCode}%`),
+        },
+      })
+      .then((result) => {
+        res.json({ message: 'done', result })
+      })
+      .catch((err) => {
+        res.json({ message: 'error', error: err })
+      })
     return
   }
 }

@@ -1,20 +1,28 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { UseState } from '../types'
 
 const Search = (props: {
   queryState: UseState<string>
-  resultState: UseState<Object>
+  setResults: Dispatch<SetStateAction<string[]>>
 }) => {
   const setQuery = props.queryState[1]
   const [display, setDisplay] = useState('')
-  const [result, setResult] = props.resultState
+
   async function handleQuery(value: string) {
     const upper = value.toUpperCase()
+    const backend = process.env.NEXT_PUBLIC_BACKEND
+    const url = `${backend}/modules/${upper}`
+    console.log('querying url:', url)
+    fetch(url).then((res) => {
+      console.log('got here', res)
+      res.json().then((json) => {
+        console.log('received', json.result)
+        props.setResults(json.result.map(x => x.moduleCode))
+      })
+    })
     setDisplay(value)
     if (upper.length > 0) {
-      const res = await fetch(`/api/module/get/${upper}`)
-      const data = await res.json()
-      setResult(data)
+      console.log('upper:', upper)
     }
     setQuery(upper)
   }
