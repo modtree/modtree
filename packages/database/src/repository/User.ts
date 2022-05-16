@@ -1,6 +1,8 @@
 import { AppDataSource, container } from '../data-source'
 import { User } from '../entity-repo/User'
-import { UserProps } from '../../types/modtree'
+import { UserInitProps, UserProps } from '../../types/modtree'
+import { In } from 'typeorm'
+import { ModuleRepository } from './Module'
 
 const Repository = AppDataSource.getRepository(User)
 
@@ -26,10 +28,32 @@ function build(props: UserProps): User {
  * @param {UserProps} props
  * @return {Promise<void>}
  */
-async function initialize(props: UserProps): Promise<void> {
+async function initialize(props: UserInitProps): Promise<void> {
   await container(async () => {
-    const user = build(props)
-    await UserRepository.save(user)
+    // find modules completed and modules doing, to create many-to-many relation
+    const modulesCompleted = await ModuleRepository.find({
+      where: {
+        moduleCode: In(props.modulesCompleted),
+      },
+    })
+    const modulesDoing = await ModuleRepository.find({
+      where: {
+        moduleCode: In(props.modulesDoing),
+      },
+    })
+
+    const userProps: UserProps = {
+      displayName: props.displayName,
+      username: props.username,
+      modulesCompleted: modulesCompleted || [],
+      modulesDoing: modulesDoing || [],
+      matriculationYear: props.matriculationYear,
+      graduationYear: props.graduationYear,
+      graduationSemester: props.graduationSemester
+    }
+
+    const user = build(userProps)
+    await AppDataSource.manager.save(user)
   })
 }
 

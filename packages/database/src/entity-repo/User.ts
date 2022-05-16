@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm'
 import { container } from '../data-source'
 import { ModuleRepository } from '../repository/Module'
+import { UserRepository } from '../repository/User'
+import { Module } from '../entity-repo/Module'
 import { utils } from '../utils'
 
 @Entity({ name: 'user' })
@@ -14,11 +16,13 @@ export class User {
   @Column()
   username: string
 
-  @Column({ type: 'json' })
-  modulesCompleted: string[]
+  @ManyToMany(() => Module)
+  @JoinTable()
+  modulesCompleted: Module[]
 
-  @Column({ type: 'json' })
-  modulesDoing: string[]
+  @ManyToMany(() => Module)
+  @JoinTable()
+  modulesDoing: Module[]
 
   @Column()
   matriculationYear: number
@@ -45,8 +49,20 @@ export class User {
         },
       })
 
+      // Relations are not stored in the entity, so they must be explicitly
+      // asked for from the DB
+      const user = await UserRepository.findOne({
+        where: {
+          id: this.id,
+        },
+        relations: ['modulesCompleted'],
+      })
+      const modulesCompleted = user.modulesCompleted
+
       // check if PrereqTree is fulfilled
-      return utils.checkTree(module.prereqTree, this.modulesCompleted)
+      const completedModulesCodes = modulesCompleted.map((one: Module) => one.moduleCode)
+
+      return utils.checkTree(module.prereqTree, completedModulesCodes)
     })
   }
 }
