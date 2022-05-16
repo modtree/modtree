@@ -35,6 +35,7 @@
     "test:ci": "NODE_ENV=test jest --coverage --config ./tests/configs/ci.config.js --runInBand",
     "test:k": "NODE_ENV=test jest --config ./tests/configs/khang.config.js --runInBand",
     "test:entity": "NODE_ENV=test jest --config ./tests/configs/entity.config.js --json --outputFile ./.logs/entity.json",
+    "test:w": "NODE_ENV=test jest --config ./tests/configs/w.config.js",
     "lint": "eslint --fix --ext .js,.ts .",
     "lint:prettier": "prettier --ignore-path .gitignore --write . && yarn lint",
     "dump": "ts-node ./src/api/sql/dump.ts",
