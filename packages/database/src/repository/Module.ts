@@ -1,4 +1,4 @@
-import { Module } from '../entity-repo/Module'
+import { Module } from '../entity/Module'
 import { Module as NM } from '../../types/nusmods'
 import axios from 'axios'
 // import { Agent } from 'https'
