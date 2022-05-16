@@ -4,7 +4,7 @@ import { ModuleCondensed } from '../entity-repo/ModuleCondensed'
 import { Like } from 'typeorm'
 
 /** ModuleCondensed api controller */
-export class ModuleCondesnedController {
+export class moduleCondensedController {
   private moduleRepo = AppDataSource.getRepository(ModuleCondensed)
 
   /**
