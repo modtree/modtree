@@ -30,18 +30,22 @@ export class Degree {
   async insertModules(moduleCodes: string[]): Promise<void> {
     await container(async () => {
       // find modules to add
-      const modules = await ModuleRepository.find({
+      const newModules = await ModuleRepository.find({
         where: {
           moduleCode: In(moduleCodes),
         },
       })
 
       // find modules part of current degree
-      const degree = await DegreeRepository.findOne({
+      await DegreeRepository.findOne({
         where: {
           id: this.id,
         },
         relations: ['modules'],
+      }).then(async (degree) => {
+        console.log('before', degree.modules.map(x => x.moduleCode))
+        degree.modules.push(...newModules)
+        await DegreeRepository.save(degree)
       })
 
       // 1. query builder
@@ -59,15 +63,15 @@ export class Degree {
 
       // 2. delete and save
       // - delete not working
-      await DegreeRepository.delete(this.id)
-      await DegreeRepository.delete({
-        id: degree.id
-      })
-      await DegreeRepository.save(degree)
-
-      modules.forEach((one: Module) => {
-        degree.modules.push(one)
-      })
+      // await DegreeRepository.delete(this.id)
+      // await DegreeRepository.delete({
+      //   id: degree.id
+      // })
+      // await DegreeRepository.save(degree)
+      //
+      // modules.forEach((one: Module) => {
+      //   degree.modules.push(one)
+      // })
       // 3. update
       // - many to many error
       // await DegreeRepository.update(this.id, degree)

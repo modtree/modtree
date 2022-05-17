@@ -29,7 +29,8 @@ export const pull: Config.InitialOptions = {
 
 export const k: Config.InitialOptions = {
   ...base,
-  testMatch: ['**/tests/**/module.test.ts'],
+  testMatch: ['**/tests/**/degree.test.ts'],
+  silent: false,
 }
 
 export default base

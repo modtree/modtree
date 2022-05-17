@@ -3,7 +3,7 @@ import { setup } from './setup'
 import { DegreeRepository } from '../src/repository/Degree'
 import { Module } from '../src/entity/Module'
 
-beforeAll(async () => {
+beforeEach(async () => {
   await setup()
 })
 
@@ -33,7 +33,8 @@ test('Degree.initialize() is successful', async () => {
     DegreeRepository.findOne({
       where: {
         title: props.title,
-      }, relations: ['modules']
+      },
+      relations: ['modules'],
     })
   )
   expect(degree).toBeDefined()
@@ -71,43 +72,51 @@ test('Degree.insertModules', async () => {
     await DegreeRepository.initialize(props)
   })
 
-  const degree = await container(() =>
-    DegreeRepository.findOne({
-      where: {
-        title: props.title,
-      }, relations: ['modules']
-    })
+  const first = await container(
+    async () =>
+      await DegreeRepository.findOne({
+        where: {
+          title: props.title,
+        },
+        relations: ['modules'],
+      })
   )
 
-  expect(degree).toBeDefined()
-  if (!degree) return
+  expect(first).toBeDefined()
+  if (!first) return
 
   // 2. Add modules to degree
-  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
-  await degree.insertModules(newModuleCodes)
+  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334', 'CS2106']
+  await first.insertModules(newModuleCodes)
 
   // 3. Search for degree again
-  const degrees = await container(() =>
-    DegreeRepository.find({
-      where: {
-        title: props.title,
-      }, relations: ['modules']
-    })
+  const second = await endpoint(
+    async () =>
+      await container(
+        async () =>
+          await DegreeRepository.find({
+            where: {
+              title: props.title,
+            },
+            relations: ['modules'],
+          })
+      )
   )
-  expect(degrees).toBeDefined()
-  if (!degrees) return
+  expect(second).toBeDefined()
+  if (!second) return
 
-  console.log(degrees)
+  // console.log(degrees)
   // Inserting modules to the degree should not create a new Degree
-  expect(degrees.length).toEqual(1)
+  expect(second.length).toEqual(1)
 
   // 4. Confirm that the insert worked as expected
-  const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes)
+  const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes).filter(x => x !== 'CS2106')
+  combinedModuleCodes.push('CS2106')
 
-  const modules = degrees[0].modules
+  const modules = second[0].modules
 
   // set equality: A = B if A subset of B and B subset of A
   const moduleCodes = modules.map((one: Module) => one.moduleCode)
-  expect(combinedModuleCodes).toEqual(expect.arrayContaining(moduleCodes))
-  expect(moduleCodes).toEqual(expect.arrayContaining(combinedModuleCodes))
+  expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
+  expect(moduleCodes.length).toStrictEqual(12)
 })
