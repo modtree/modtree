@@ -43,53 +43,9 @@ export class Degree {
         },
         relations: ['modules'],
       }).then(async (degree) => {
-        console.log('before', degree.modules.map(x => x.moduleCode))
         degree.modules.push(...newModules)
         await DegreeRepository.save(degree)
       })
-
-      // 1. query builder
-      // - many to many error
-      /*
-      await DegreeRepository
-        .createQueryBuilder()
-        .update(Degree)
-        .set({
-          modules,
-        })
-        .where("id = :id", {id: this.id})
-        .execute()
-        */
-
-      // 2. delete and save
-      // - delete not working
-      // await DegreeRepository.delete(this.id)
-      // await DegreeRepository.delete({
-      //   id: degree.id
-      // })
-      // await DegreeRepository.save(degree)
-      //
-      // modules.forEach((one: Module) => {
-      //   degree.modules.push(one)
-      // })
-      // 3. update
-      // - many to many error
-      // await DegreeRepository.update(this.id, degree)
-
-      // 4. save
-      // - duplicate degree
-      // await DegreeRepository.save(degree)
-
-      // 5. save and delete
-      // - delete not working
-      // await DegreeRepository.save(degree)
-      // await DegreeRepository.delete(this.id)
-
-      // 6. extend base entity and save
-      // await degree.save()
-
-      // 7. dont delete just get latest (will require a new created_at column)
-      // await DegreeRepository.save(degree)
     })
   }
 }

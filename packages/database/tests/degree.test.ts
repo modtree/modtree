@@ -86,7 +86,7 @@ test('Degree.insertModules', async () => {
   if (!first) return
 
   // 2. Add modules to degree
-  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334', 'CS2106']
+  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
   await first.insertModules(newModuleCodes)
 
   // 3. Search for degree again
@@ -105,13 +105,11 @@ test('Degree.insertModules', async () => {
   expect(second).toBeDefined()
   if (!second) return
 
-  // console.log(degrees)
   // Inserting modules to the degree should not create a new Degree
   expect(second.length).toEqual(1)
 
   // 4. Confirm that the insert worked as expected
-  const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes).filter(x => x !== 'CS2106')
-  combinedModuleCodes.push('CS2106')
+  const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes)
 
   const modules = second[0].modules
 
