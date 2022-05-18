@@ -1,9 +1,11 @@
+name: database tests
+
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
   push:
     branches:
-      - ci-test
+      - ci-tele
       - dev
       - k
       - w
@@ -15,12 +17,11 @@ env:
   RESTORE: .test.sql
 
 jobs:
-  database-unit-tests:
+  main:
     runs-on: ubuntu-20.04
       
     steps:
       - name: 🔥 Initialize MySQL
-        # run: sudo /etc/init.d/mysql start
         run: sudo systemctl start mysql.service
       
       - name: 🚀 Boost user
