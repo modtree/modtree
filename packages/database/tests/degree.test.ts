@@ -1,8 +1,7 @@
 import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
-
-import { Module } from '../src/entity/Module'
-import { DegreeRepository } from '../src/repository/Degree'
+import { Module } from '../src/entity'
+import { DegreeRepository } from '../src/repository'
 
 beforeEach(async () => {
   await setup()

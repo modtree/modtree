@@ -3,17 +3,18 @@ import { Agent } from 'https'
 import { log } from '../cli'
 import { AppDataSource, container } from '../data-source'
 import { nusmodsApi } from '../utils/string'
-
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
+
+const Repository = AppDataSource.getRepository(Module)
 
 /**
  * @param {string} faculty
  * @return {Promise<Module[]>}
  */
 async function findByFaculty(faculty: string): Promise<Module[]> {
-  return ModuleRepository.createQueryBuilder('module')
+  return Repository.createQueryBuilder('module')
     .where('module.faculty = :faculty', { faculty })
     .getMany()
 }
@@ -50,8 +51,7 @@ function build(props: NM): Module {
  */
 async function get(): Promise<Module[]> {
   const modules = await container(async () => {
-    const repo = AppDataSource.getRepository(Module)
-    const modules = await repo.find().catch((err) => {
+    const modules = await Repository.find().catch((err) => {
       log.warn('Warning: failed to get Modules from database.')
       console.log(err)
     })
@@ -138,7 +138,7 @@ async function pull(): Promise<Module[]> {
   return result
 }
 
-export const ModuleRepository = AppDataSource.getRepository(Module).extend({
+export const ModuleRepository = Repository.extend({
   findByFaculty,
   build,
   getCodes,

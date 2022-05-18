@@ -7,10 +7,9 @@ import {
   In,
 } from 'typeorm'
 import { container } from '../data-source'
-
 import { Module } from './Module'
-import { DegreeRepository } from '../repository/Degree'
 import { ModuleRepository } from '../repository/Module'
+import { DegreeRepository } from '../repository/Degree'
 
 @Entity({ name: 'degree' })
 export class Degree {

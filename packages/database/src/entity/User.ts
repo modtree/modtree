@@ -1,10 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm'
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm'
 import { container } from '../data-source'
 import { utils } from '../utils'
-
 import { Module } from '../entity/Module'
-import { ModuleRepository } from '../repository/Module'
 import { UserRepository } from '../repository/User'
+import { ModuleRepository } from '../repository/Module'
 
 @Entity({ name: 'user' })
 export class User {
@@ -61,7 +66,9 @@ export class User {
       const modulesDone = user.modulesDone
 
       // check if PrereqTree is fulfilled
-      const completedModulesCodes = modulesDone.map((one: Module) => one.moduleCode)
+      const completedModulesCodes = modulesDone.map(
+        (one: Module) => one.moduleCode
+      )
 
       return utils.checkTree(module.prereqTree, completedModulesCodes)
     })

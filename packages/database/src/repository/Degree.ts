@@ -1,6 +1,5 @@
 import { AppDataSource, container } from '../data-source'
 import { In } from 'typeorm'
-
 import { DegreeInitProps, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'

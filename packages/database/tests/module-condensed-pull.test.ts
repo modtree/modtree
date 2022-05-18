@@ -1,9 +1,8 @@
 import { AppDataSource, container, endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { remove } from '../src/sql'
-
-import { ModuleCondensed } from '../src/entity/ModuleCondensed'
-import { ModuleCondensedRepository } from '../src/repository/ModuleCondensed'
+import { ModuleCondensed } from '../src/entity'
+import { ModuleCondensedRepository } from '../src/repository'
 
 const lowerBound = 6000
 

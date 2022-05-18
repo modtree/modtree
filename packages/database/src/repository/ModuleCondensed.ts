@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { AppDataSource } from '../data-source'
 import { nusmodsApi, getModuleLevel } from '../utils/string'
-
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 
