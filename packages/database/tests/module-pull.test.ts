@@ -1,8 +1,8 @@
 import { container, endpoint } from '../src/data-source'
-import { Module } from '../src/entity/Module'
-import { ModuleRepository } from '../src/repository/Module'
 import { remove } from '../src/sql'
 import { setup } from './setup'
+import { Module } from '../src/entity'
+import { ModuleRepository } from '../src/repository'
 
 beforeAll(async () => {
   await setup()
