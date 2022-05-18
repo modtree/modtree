@@ -1,7 +1,8 @@
 import { AppDataSource, container } from '../data-source'
-import { User } from '../entity/User'
-import { UserInitProps, UserProps } from '../../types/modtree'
 import { In } from 'typeorm'
+
+import { UserInitProps, UserProps } from '../../types/modtree'
+import { User } from '../entity/User'
 import { ModuleRepository } from './Module'
 
 const Repository = AppDataSource.getRepository(User)

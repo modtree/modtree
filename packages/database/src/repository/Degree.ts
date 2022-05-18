@@ -1,8 +1,9 @@
-import { Degree } from '../entity/Degree'
 import { AppDataSource, container } from '../data-source'
-import { DegreeInitProps, DegreeProps } from '../../types/modtree'
-import { ModuleRepository } from './Module'
 import { In } from 'typeorm'
+
+import { DegreeInitProps, DegreeProps } from '../../types/modtree'
+import { Degree } from '../entity/Degree'
+import { ModuleRepository } from './Module'
 
 const Repository = AppDataSource.getRepository(Degree)
 

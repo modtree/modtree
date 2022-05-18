@@ -6,8 +6,9 @@ import {
   JoinTable,
   In,
 } from 'typeorm'
-import { Module } from './Module'
 import { container } from '../data-source'
+
+import { Module } from './Module'
 import { DegreeRepository } from '../repository/Degree'
 import { ModuleRepository } from '../repository/Module'
 

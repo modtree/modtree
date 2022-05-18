@@ -1,11 +1,11 @@
-import { Module } from '../entity/Module'
-import { Module as NM } from '../../types/nusmods'
 import axios from 'axios'
-// import { Agent } from 'https'
+import { Agent } from 'https'
 import { log } from '../cli'
 import { AppDataSource, container } from '../data-source'
 import { nusmodsApi } from '../utils/string'
-import { Agent } from 'https'
+
+import { Module as NM } from '../../types/nusmods'
+import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 
 /**
