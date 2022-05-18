@@ -7,7 +7,7 @@ on:
       - completed
 
 env:
-  TELEGRAM_GROUP: 257481278 # khang's
+  TELEGRAM_GROUP: -1001647699011
 
 jobs:
   telegram:
