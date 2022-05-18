@@ -4,10 +4,10 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  In,
 } from 'typeorm'
 import { Module } from './Module'
 import { container } from '../data-source'
-import { In } from 'typeorm'
 import { DegreeRepository } from '../repository/Degree'
 import { ModuleRepository } from '../repository/Module'
 
