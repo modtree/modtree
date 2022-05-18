@@ -46,10 +46,9 @@ test('Degree.initialize() is successful', async () => {
   expect(modules).toBeDefined()
   if (!modules) return
 
-  // set equality: A = B if A subset of B and B subset of A
   const moduleCodes = modules.map((one: Module) => one.moduleCode)
-  expect(props.moduleCodes).toEqual(expect.arrayContaining(moduleCodes))
-  expect(moduleCodes).toEqual(expect.arrayContaining(props.moduleCodes))
+  expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
+  expect(moduleCodes.length).toStrictEqual(9)
 })
 
 test('Degree.insertModules', async () => {
