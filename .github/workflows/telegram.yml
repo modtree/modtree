@@ -28,6 +28,7 @@ jobs:
         uses: appleboy/telegram-action@master
         with:
           disable_web_page_preview: true
+          disable_notification: true
           to: ${{ env.TELEGRAM_GROUP }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
