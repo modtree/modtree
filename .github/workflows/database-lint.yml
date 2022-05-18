@@ -1,16 +1,18 @@
+name: database lint
+
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
   push:
     branches:
-      - ci-test
+      - ci-tele
       - dev
       - k
       - w
 
 jobs:
-  lint-database:
-    runs-on: ubuntu-latest
+  main:
+    runs-on: ubuntu-20.04
     steps:
       - name: 🔍 Check out repository code
         uses: actions/checkout@v3

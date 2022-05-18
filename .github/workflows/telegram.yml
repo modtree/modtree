@@ -1,0 +1,36 @@
+name: telegram
+
+on:
+  workflow_run:
+    workflows: [database lint, database tests]
+    types:
+      - completed
+
+env:
+  TELEGRAM_GROUP: -1001647699011
+
+jobs:
+  telegram:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: prep for Telegram
+        run: |
+          echo 'JOB_ID<<EOF' >> $GITHUB_ENV
+          curl ${{ github.event.workflow_run.jobs_url }} \
+          | jq -c '.jobs[] | select(.name | contains("main")) | .id' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+          echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
+          [[ ${{ github.event.workflow_run.conclusion }} == "success" ]] \
+          && echo "STATUS=✅" >> $GITHUB_ENV \
+          || echo "STATUS=❌" >> $GITHUB_ENV;
+
+      - name: Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          disable_web_page_preview: true
+          to: ${{ env.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            ${{ env.STATUS }} ${{ github.event.workflow_run.name }}  [view logs](${{ github.event.repository.html_url }}/runs/${{ env.JOB_ID }})
+            `${{ env.SHORT_SHA }}` ${{ github.event.workflow_run.head_commit.message }}
