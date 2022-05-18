@@ -13,10 +13,10 @@ beforeAll(async () => {
 })
 
 test('moduleCondensed.get', async () => {
-  const moduleList = await endpoint(
-    async () => await container(() => ModuleCondensedRepository.find())
+  const moduleList = await endpoint(() =>
+    container(() => ModuleCondensedRepository.find())
   )
-  expect(moduleList).toBeDefined()
+  expect(moduleList).toEqual(expect.anything())
   if (!moduleList) {
     return
   }
@@ -29,11 +29,12 @@ test('moduleCondensed.get', async () => {
   expect(s.size).toBe(moduleList.length)
   expect(s.size).toBeGreaterThan(lowerBound)
   total = s.size
+  return true
 })
 
 test('moduleCondensed.getCodes', async () => {
-  const moduleList = await endpoint(
-    async () => await container(() => ModuleCondensedRepository.getCodes())
+  const moduleList = await endpoint(() =>
+    container(() => ModuleCondensedRepository.getCodes())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -45,13 +46,14 @@ test('moduleCondensed.getCodes', async () => {
   })
   expect(moduleList.length).toBeGreaterThan(lowerBound)
   expect(moduleList.length).toStrictEqual(total)
+  return true
 })
 
 test('moduleCondensed.fetch', async () => {
-  const moduleList = await endpoint(
-    async () => await container(() => ModuleCondensedRepository.fetch())
+  const moduleList = await endpoint(() =>
+    container(() => ModuleCondensedRepository.fetch())
   )
-  expect(moduleList).toBeDefined()
+  expect(moduleList).toEqual(expect.anything())
   if (!moduleList) {
     return
   }
@@ -63,4 +65,5 @@ test('moduleCondensed.fetch', async () => {
   expect(s.size).toBe(moduleList.length)
   expect(s.size).toBeGreaterThan(lowerBound)
   expect(s.size).toStrictEqual(total)
+  return true
 })
