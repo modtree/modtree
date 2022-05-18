@@ -16,7 +16,7 @@ test('moduleCondensed.get', async () => {
   const moduleList = await endpoint(() =>
     container(() => ModuleCondensedRepository.find())
   )
-  expect(moduleList).toEqual(expect.anything())
+  expect(moduleList).toBeDefined()
   if (!moduleList) {
     return
   }
@@ -53,7 +53,7 @@ test('moduleCondensed.fetch', async () => {
   const moduleList = await endpoint(() =>
     container(() => ModuleCondensedRepository.fetch())
   )
-  expect(moduleList).toEqual(expect.anything())
+  expect(moduleList).toBeDefined()
   if (!moduleList) {
     return
   }
