@@ -59,13 +59,6 @@ describe('DAG.initialize() is successful', () => {
   })
 
   it('Saves a dag', async() => {
-    // Since modulesPlacedCodes and modulesHiddenCodes not passed in,
-    // then ALL of
-    // - user.modulesDoing
-    // - user.modulesDone
-    // - degree.modules
-    // are placed modules, and no modules are hidden.
-
     const dagProps: DAGInitProps = {
       userId: user.id,
       degreeId: degree.id,
@@ -198,13 +191,6 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
   })
 
   it('Saves a dag', async() => {
-    // Since modulesPlacedCodes and modulesHiddenCodes not passed in,
-    // then ALL of
-    // - user.modulesDoing
-    // - user.modulesDone
-    // - degree.modules
-    // are placed modules, and no modules are hidden.
-
     const dagProps: DAGInitProps = {
       userId: user.id,
       degreeId: degree.id,
