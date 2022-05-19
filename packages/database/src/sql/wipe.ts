@@ -13,7 +13,7 @@ export namespace wipe {
       // drop the database if it exists
       await connection
         .query(`DROP DATABASE ${database};`)
-        .catch(() => `database already non-existent`)
+        .catch(() => 'database already non-existent')
       // create the database again
       await connection
         .query(`CREATE DATABASE ${database};`)
