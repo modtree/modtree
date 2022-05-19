@@ -151,27 +151,7 @@ describe('DAG.toggleModules()', () => {
   ]
 
   it('Correctly changes a module\'s state from placed to hidden', async() => {
-    await dag.toggleModule('MA2001')
-
-    const res = await container(() =>
-      DAGRepository.find({
-        relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
-        where: {
-          user: {
-            id: user.id
-          },
-          degree: {
-            id: degree.id
-          },
-        },
-      })
-    )
-    expect(res).toBeDefined()
-    if (!res) return
-
-    expect(res.length).toEqual(1)
-
-    dag = res[0]
+    await container(() => dag.toggleModule('MA2001'))
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
     expect(dag.modulesHidden.length).toEqual(1)
@@ -179,31 +159,13 @@ describe('DAG.toggleModules()', () => {
   })
 
   it('Correctly changes a module\'s state from hidden to placed', async() => {
-    dag = await dag.toggleModule('MA2001')
-
-    const res = await endpoint(
-      async () =>
+    await endpoint(
+      async() =>
         await container(
           async () =>
-            DAGRepository.find({
-              relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
-              where: {
-                user: {
-                  id: user.id
-                },
-                degree: {
-                  id: degree.id
-                },
-              },
-            })
+            dag.toggleModule('MA2001')
         )
     )
-    expect(res).toBeDefined()
-    if (!res) return
-
-    expect(res.length).toEqual(1)
-
-    dag = res[0]
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
     expect(dag.modulesHidden.length).toEqual(0)

@@ -68,6 +68,11 @@ export class DAG {
       } else {
         console.log('Module not found in DAG')
       }
+
+      // update this so that devs don't need a second query
+      this.modulesPlaced = dag.modulesPlaced
+      this.modulesHidden = dag.modulesHidden
+
       return await DAGRepository.save(dag)
     })
 
