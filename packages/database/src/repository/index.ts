@@ -1,5 +1,5 @@
-export { ModuleRepository } from './Module'
 export { ModuleCondensedRepository } from './ModuleCondensed'
+export { ModuleRepository } from './Module'
 export { DegreeRepository } from './Degree'
 export { UserRepository } from './User'
 export { DAGRepository } from './DAG'
