@@ -1,89 +1,118 @@
+import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
-import { AppDataSource, container, endpoint } from '../src/data-source'
-import { Module, ModuleCondensed, Degree, User } from '../src/entity'
-import {
-  ModuleRepository,
-  ModuleCondensedRepository,
-  DegreeRepository,
-  UserRepository,
-} from '../src/repository'
+import { Degree, Module } from '../src/entity'
+import { DegreeRepository } from '../src/repository'
+import { DegreeInitProps } from '../types/modtree'
 
-beforeAll(async () => {
+beforeEach(async () => {
   await setup()
 })
 
-test('AppDataSource is defined', () => {
-  expect(AppDataSource).toBeDefined()
-})
+jest.setTimeout(5000)
 
-test('AppDataSource can be initialized and destroyed', async () => {
-  await AppDataSource.initialize()
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
-  expect(AppDataSource.isInitialized).toBe(false)
-})
-
-test('container is working', async () => {
-  const res = await container(async () => {
-    expect(AppDataSource.isInitialized).toBe(true)
-    return true
-  })
-  expect(res).toBe(true)
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
-})
-
-test('container can run repo function', async () => {
-  const res = await container(() =>
-    ModuleCondensedRepository.findOneBy({
-      moduleCode: 'CS1010S',
-    })
-  )
-  expect(res).toBeInstanceOf(ModuleCondensed)
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
-})
-
-test('endpoint is working', async () => {
-  const res = await endpoint(() =>
-    container(async () => {
-      expect(AppDataSource.isInitialized).toBe(true)
-      return true
-    })
-  )
-  expect(res).toBe(true)
-  expect(AppDataSource.isInitialized).toBe(false)
-})
-
-test('endpoint can run repo function', async () => {
-  // retrieve all modules from the Computing faculty
-  const res = await endpoint(() =>
-    container(() => ModuleRepository.findByFaculty('Computing'))
-  )
-  expect(res).toBeInstanceOf(Array)
-  // check definition and ditch void to keep typescript happy
-  expect(res).toBeDefined()
-  if (!res) {
-    return
+test('Degree.initialize() is successful', async () => {
+  const props: DegreeInitProps = {
+    moduleCodes: [
+      'CS1101S',
+      'CS1231S',
+      'CS2030S',
+      'CS2040S',
+      'CS2100',
+      'CS2103T',
+      'CS2106',
+      'CS2109S',
+      'CS3230',
+    ],
+    title: 'Computer Science',
   }
-  // ensure that all elements are instances of Module
-  res.forEach((m) => {
-    expect(m).toBeInstanceOf(Module)
-  })
-  expect(res.length).toBeGreaterThan(10)
-  expect(AppDataSource.isInitialized).toBe(false)
+  // write the degree to database
+  await container(() => DegreeRepository.initialize(props))
+
+  // retrieve that degree again
+  const possiblyNull: Degree | void = await endpoint(() =>
+    container(() =>
+      DegreeRepository.findOne({
+        where: {
+          title: props.title,
+        },
+        relations: ['modules'],
+      })
+    )
+  )
+  // expect degree to be not null, not undefined
+  expect(possiblyNull).toBeDefined()
+  if (!possiblyNull) return
+
+  const degree: Degree = possiblyNull
+  const modules: Module[] = degree.modules
+
+  expect(modules).toBeDefined()
+  if (!modules) return
+
+  const moduleCodes = modules.map((m) => m.moduleCode)
+  // match relation's module codes to init props' modules codes
+  expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
+  expect(moduleCodes.length).toStrictEqual(9)
 })
 
-test('All entities are defined', () => {
-  expect(Module).toBeDefined()
-  expect(ModuleCondensed).toBeDefined()
-  expect(Degree).toBeDefined()
-  expect(User).toBeDefined()
-})
+test('Degree.insertModules', async () => {
+  const props = {
+    moduleCodes: [
+      'CS1101S',
+      'CS1231S',
+      'CS2030S',
+      'CS2040S',
+      'CS2100',
+      'CS2103T',
+      'CS2106',
+      'CS2109S',
+      'CS3230',
+    ],
+    title: 'Computer Science',
+  }
+  // 1. write the degree to database
+  await container(() => DegreeRepository.initialize(props))
 
-test('All repositories are defined', () => {
-  expect(ModuleRepository).toBeDefined()
-  expect(ModuleCondensedRepository).toBeDefined()
-  expect(DegreeRepository).toBeDefined()
-  expect(UserRepository).toBeDefined()
+  const first = await container(() =>
+    DegreeRepository.findOne({
+      where: {
+        title: props.title,
+      },
+      relations: ['modules'],
+    })
+  )
+
+  expect(first).toBeDefined()
+  if (!first) return
+
+  // 2. Add modules to degree, and write the result to database
+  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
+  await first.insertModules(newModuleCodes)
+
+  // 3. Retrieve the degree from database
+  const second = await endpoint(() =>
+    container(() =>
+      DegreeRepository.find({
+        where: {
+          title: props.title,
+        },
+        relations: ['modules'],
+      })
+    )
+  )
+  expect(second).toBeDefined()
+  if (!second) return
+
+  // Inserting modules to the degree should not create a new Degree
+  expect(second.length).toEqual(1)
+
+  // 4. Confirm that the insert worked as expected
+  const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes)
+
+  const modules = second[0].modules
+  const moduleCodes = modules.map((m: Module) => m.moduleCode)
+  // match retrieved module codes to
+  // init props' module codes + added module codes
+  expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
+  expect(moduleCodes.length).toStrictEqual(12)
 })
