@@ -28,7 +28,6 @@ export async function container<T>(
 ): Promise<T | void> {
   // if already initialized, reattach to old instance
   if (AppDataSource.isInitialized) {
-    log.cyan('already initialized, reattaching.')
     const res = await fn()
     return res
   }
@@ -36,7 +35,6 @@ export async function container<T>(
   const res = await AppDataSource.initialize()
     .then(async () => {
       /** successfully initialize database connection */
-      log.cyan('initialized a new connection to database.')
       const res = await fn()
       return res
     })
