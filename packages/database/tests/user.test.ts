@@ -11,7 +11,9 @@ beforeAll(async () => {
 jest.setTimeout(20000)
 
 test('canTakeModule is successful', async () => {
-  const props: Init.UserProps = init.user1
+  const props: Init.UserProps = init.emptyUser
+  props.modulesDone.push('MA2001')
+  props.modulesDoing.push('MA2219')
   await UserRepository.initialize(props)
   const res = await endpoint(() =>
     container(async () => {

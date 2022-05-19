@@ -16,7 +16,6 @@ test('AppDataSource is defined', () => {
   expect(AppDataSource).toBeDefined()
 })
 
-
 test('All entities are defined', () => {
   expect(Module).toBeDefined()
   expect(ModuleCondensed).toBeDefined()

@@ -7,7 +7,9 @@ class CustomSequencer extends Sequencer {
     const baseFirst = copyTests.filter((t) => t.path.endsWith('base.test.ts'))
     const baseless = copyTests.filter((t) => !t.path.endsWith('base.test.ts'))
     /** sort the rest alphabetically  */
-    const alphabetical = baseless.sort((testA, testB) => (testA.path > testB.path ? 1 : -1))
+    const alphabetical = baseless.sort((testA, testB) =>
+      testA.path > testB.path ? 1 : -1
+    )
     const testSequence = baseFirst.concat(alphabetical)
     return testSequence
   }

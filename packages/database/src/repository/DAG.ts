@@ -36,22 +36,23 @@ async function initialize(props: DAGInitProps): Promise<void> {
       where: {
         id: props.userId,
       },
-      relations: ["modulesDone", "modulesDoing"],
+      relations: ['modulesDone', 'modulesDoing'],
     })
     const degree = await DegreeRepository.findOne({
       where: {
         id: props.degreeId,
       },
-      relations: ["modules"],
+      relations: ['modules'],
     })
-    let modulesPlaced: Module[] = [], modulesHidden: Module[] = [];
+    let modulesPlaced: Module[] = [],
+      modulesHidden: Module[] = []
 
     if (props.pullAll) {
       // if don't pass in anything, then by default add ALL of
       // - user.modulesDoing
       // - user.modulesDone
       // - degree.modules
-      
+
       const modulesPlacedSet = new Set<Module>()
       degree.modules.forEach((one: Module) => {
         modulesPlacedSet.add(one)

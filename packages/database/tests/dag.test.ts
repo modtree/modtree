@@ -1,6 +1,5 @@
 import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
-
 import { DAGInitProps } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
 import { DegreeRepository } from '../src/repository/Degree'
@@ -38,7 +37,7 @@ describe('DAG.initialize() is successful', () => {
     degree = res
   })
 
-  it('Saves a user', async() => {
+  it('Saves a user', async () => {
     userProps = init.user1
 
     await container(async () => {
@@ -58,7 +57,7 @@ describe('DAG.initialize() is successful', () => {
     user = res
   })
 
-  it('Saves a dag', async() => {
+  it('Saves a dag', async () => {
     const dagProps: DAGInitProps = {
       userId: user.id,
       degreeId: degree.id,
@@ -77,10 +76,10 @@ describe('DAG.initialize() is successful', () => {
               relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
               where: {
                 user: {
-                  id: user.id
+                  id: user.id,
                 },
                 degree: {
-                  id: degree.id
+                  id: degree.id,
                 },
               },
             })
@@ -94,23 +93,25 @@ describe('DAG.initialize() is successful', () => {
     dag = res[0]
   })
 
-  it('Correctly populates modulesPlaced', async() => {
-      const moduleCodes = [
-        'CS1101S',
-        'CS1231S',
-        'CS2030S',
-        'CS2040S',
-        'CS2100',
-        'CS2103T',
-        'CS2106',
-        'CS2109S',
-        'CS3230',
-        'MA2001',
-        'MA2219',
-      ]
-      const modulesPlacedCodes = dag.modulesPlaced.map((one: Module) => one.moduleCode)
-      expect(moduleCodes.sort()).toEqual(modulesPlacedCodes.sort())
-      expect(dag.modulesHidden.length).toEqual(0)
+  it('Correctly populates modulesPlaced', async () => {
+    const moduleCodes = [
+      'CS1101S',
+      'CS1231S',
+      'CS2030S',
+      'CS2040S',
+      'CS2100',
+      'CS2103T',
+      'CS2106',
+      'CS2109S',
+      'CS3230',
+      'MA2001',
+      'MA2219',
+    ]
+    const modulesPlacedCodes = dag.modulesPlaced.map(
+      (one: Module) => one.moduleCode
+    )
+    expect(moduleCodes.sort()).toEqual(modulesPlacedCodes.sort())
+    expect(dag.modulesHidden.length).toEqual(0)
   })
 })
 
@@ -129,7 +130,7 @@ describe('DAG.toggleModules()', () => {
     'MA2219',
   ]
 
-  it('Correctly changes a module\'s state from placed to hidden', async() => {
+  it("Correctly changes a module's state from placed to hidden", async () => {
     await container(() => dag.toggleModule('MA2001'))
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
@@ -137,13 +138,9 @@ describe('DAG.toggleModules()', () => {
     expect(dag.modulesHidden[0].moduleCode).toEqual('MA2001')
   })
 
-  it('Correctly changes a module\'s state from hidden to placed', async() => {
+  it("Correctly changes a module's state from hidden to placed", async () => {
     await endpoint(
-      async() =>
-        await container(
-          async () =>
-            dag.toggleModule('MA2001')
-        )
+      async () => await container(async () => dag.toggleModule('MA2001'))
     )
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
@@ -172,7 +169,7 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
     degree = res
   })
 
-  it('Saves a user', async() => {
+  it('Saves a user', async () => {
     await container(async () => {
       await UserRepository.initialize(userProps)
     })
@@ -190,7 +187,7 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
     user = res
   })
 
-  it('Saves a dag', async() => {
+  it('Saves a dag', async () => {
     const dagProps: DAGInitProps = {
       userId: user.id,
       degreeId: degree.id,
@@ -209,10 +206,10 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
               relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
               where: {
                 user: {
-                  id: user.id
+                  id: user.id,
                 },
                 degree: {
-                  id: degree.id
+                  id: degree.id,
                 },
               },
             })
@@ -226,8 +223,8 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
     dag = res[0]
   })
 
-  it('modulesPlaced and modulesHidden are blank', async() => {
-      expect(dag.modulesPlaced.length).toEqual(0)
-      expect(dag.modulesHidden.length).toEqual(0)
+  it('modulesPlaced and modulesHidden are blank', async () => {
+    expect(dag.modulesPlaced.length).toEqual(0)
+    expect(dag.modulesHidden.length).toEqual(0)
   })
 })
