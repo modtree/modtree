@@ -14,12 +14,13 @@ const base: Config.InitialOptionsWithRootDir = {
   globalTeardown: './tests/teardown.ts',
   testMatch: ['**/tests/**/*.test.ts'],
   testPathIgnorePatterns: ['setup.ts', 'teardown.ts'],
+  testSequencer: './tests/configs/sequencer.js'
 }
 
 export const ci: Config.InitialOptions = {
   ...base,
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: [...base.testPathIgnorePatterns, 'pull'],
+  testPathIgnorePatterns: [...base.testPathIgnorePatterns, 'pull', 'khang.test'],
 }
 
 export const pull: Config.InitialOptions = {
