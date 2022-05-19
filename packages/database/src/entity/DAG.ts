@@ -45,12 +45,6 @@ export class DAG {
         relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden']
       })
 
-      const module = await ModuleRepository.findOne({
-        where: {
-          moduleCode,
-        },
-      })
-
       const modulesPlacedCodes = dag.modulesPlaced.map((one: Module) => one.moduleCode)
       const modulesPlacedIndex = modulesPlacedCodes.indexOf(moduleCode)
 
@@ -59,11 +53,24 @@ export class DAG {
 
       if (modulesPlacedIndex != -1) {
         // is a placed module
-        dag.modulesPlaced = dag.modulesPlaced.filter((one: Module) => one.moduleCode != moduleCode)
+        const module = dag.modulesPlaced[modulesPlacedIndex]
+
+        // O(1) delete
+        if (dag.modulesPlaced.length > 1)
+          dag.modulesPlaced[modulesPlacedIndex] = dag.modulesPlaced.pop()
+        else
+          dag.modulesPlaced = []
+
         dag.modulesHidden.push(module)
       } else if (modulesHiddenIndex != -1) {
         // is a hidden module
-        dag.modulesHidden = dag.modulesHidden.filter((one: Module) => one.moduleCode != moduleCode)
+        const module = dag.modulesHidden[modulesHiddenIndex]
+
+        if (dag.modulesHidden.length > 1)
+          dag.modulesHidden[modulesHiddenIndex] = dag.modulesHidden.pop() // O(1) delete
+        else
+          dag.modulesHidden = []
+
         dag.modulesPlaced.push(module)
       } else {
         console.log('Module not found in DAG')
