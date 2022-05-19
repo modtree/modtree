@@ -1,9 +1,12 @@
 yarn:
-	yarn
-	find . -name *.log | xargs rm
-	mkdir ./packages/database/.logs
+	@yarn
+	@find . -name *.log | xargs rm
+	@mkdir -p ./packages/database/.logs
+	@if [[ $$USER == "khang" ]]; then make k; fi
+	@if [[ $$USER == "weiseng" ]]; then make w; fi
 
 w:
+	cp $$REPOS/orbital/env/.env.local ./apps/web/.env.local
 	cp $$REPOS/orbital/env/.env.test ./packages/database/.env.test
 	cp $$REPOS/orbital/env/.env ./packages/database/.env
 
