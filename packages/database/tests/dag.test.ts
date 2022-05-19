@@ -32,9 +32,7 @@ describe('DAG.initialize() is successful', () => {
       ],
       title: 'Computer Science',
     }
-    await container(async () => {
-      await DegreeRepository.initialize(degreeProps)
-    })
+    await container(() => DegreeRepository.initialize(degreeProps))
 
     const res = await container(() =>
       DegreeRepository.findOne({
@@ -90,22 +88,24 @@ describe('DAG.initialize() is successful', () => {
       degreeId: degree.id,
     }
 
-    await container(async () => {
-      await DAGRepository.initialize(dagProps)
-    })
+    await container(() => DAGRepository.initialize(dagProps))
 
-    const res = await endpoint(() =>
-      DAGRepository.find({
-        relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
-        where: {
-          user: {
-            id: user.id
-          },
-          degree: {
-            id: degree.id
-          },
-        },
-      })
+    const res = await endpoint(
+      async () =>
+        await container(
+          async () =>
+            await DAGRepository.find({
+              relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
+              where: {
+                user: {
+                  id: user.id
+                },
+                degree: {
+                  id: degree.id
+                },
+              },
+            })
+        )
     )
     expect(res).toBeDefined()
     if (!res) return
@@ -181,18 +181,22 @@ describe('DAG.toggleModules()', () => {
   it('Correctly changes a module\'s state from hidden to placed', async() => {
     dag = await dag.toggleModule('MA2001')
 
-    const res = await endpoint(() =>
-      DAGRepository.find({
-        relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
-        where: {
-          user: {
-            id: user.id
-          },
-          degree: {
-            id: degree.id
-          },
-        },
-      })
+    const res = await endpoint(
+      async () =>
+        await container(
+          async () =>
+            DAGRepository.find({
+              relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
+              where: {
+                user: {
+                  id: user.id
+                },
+                degree: {
+                  id: degree.id
+                },
+              },
+            })
+        )
     )
     expect(res).toBeDefined()
     if (!res) return
