@@ -13,8 +13,8 @@ beforeAll(async () => {
 })
 
 test('moduleCondensed.get', async () => {
-  const moduleList = await endpoint(
-    async () => await container(() => ModuleCondensedRepository.find())
+  const moduleList = await endpoint(() =>
+    container(() => ModuleCondensedRepository.find())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -32,8 +32,8 @@ test('moduleCondensed.get', async () => {
 })
 
 test('moduleCondensed.getCodes', async () => {
-  const moduleList = await endpoint(
-    async () => await container(() => ModuleCondensedRepository.getCodes())
+  const moduleList = await endpoint(() =>
+    container(() => ModuleCondensedRepository.getCodes())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -48,8 +48,8 @@ test('moduleCondensed.getCodes', async () => {
 })
 
 test('moduleCondensed.fetch', async () => {
-  const moduleList = await endpoint(
-    async () => await container(() => ModuleCondensedRepository.fetch())
+  const moduleList = await endpoint(() =>
+    container(() => ModuleCondensedRepository.fetch())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
