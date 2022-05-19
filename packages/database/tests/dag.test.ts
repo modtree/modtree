@@ -48,7 +48,7 @@ describe('DAG.initialize() is successful', () => {
     const res = await container(() =>
       UserRepository.findOne({
         where: {
-          username: 'nvkhang',
+          username: userProps.username,
         },
       })
     )
@@ -187,7 +187,7 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
     const res = await container(() =>
       UserRepository.findOne({
         where: {
-          username: 'nvkhang',
+          username: userProps.username,
         },
       })
     )
