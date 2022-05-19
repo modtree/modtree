@@ -15,5 +15,22 @@ export namespace init {
     ],
     title: 'Computer Science',
   }
+  export const user1: Init.UserProps = {
+    displayName: 'Nguyen Vu Khang',
+    username: 'nguyenvukhang',
+    modulesDone: ['MA2001'],
+    modulesDoing: ['MA2219'],
+    matriculationYear: 2021,
+    graduationYear: 2025,
+    graduationSemester: 2,
+  }
+  export const emptyUser: Init.UserProps = {
+    displayName: 'Khang Vu Nguyen',
+    username: 'definitelynotkhang',
+    modulesDone: [],
+    modulesDoing: [],
+    matriculationYear: 2021,
+    graduationYear: 2025,
+    graduationSemester: 2,
+  }
 }
-

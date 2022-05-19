@@ -16,7 +16,6 @@ export namespace Init {
     graduationYear: number
     graduationSemester: number
   }
-
   export type DegreeProps = {
     moduleCodes: string[]
     title: string
@@ -36,6 +35,21 @@ export type UserProps = {
 export type DegreeProps = {
   modules: Module[]
   title: string
+}
+
+export type DAGInitProps = {
+  userId: int
+  degreeId: Degree
+  modulesPlacedCodes: string[]
+  modulesHiddenCodes: string[]
+  pullAll: boolean
+}
+
+export type DAGProps = {
+  user: User
+  degree: Degree
+  modulesPlaced: Module[]
+  modulesHidden: Module[]
 }
 
 declare namespace modtree {

@@ -49,7 +49,7 @@ async function initialize(props: Init.UserProps): Promise<void> {
       modulesDoing: modulesDoing || [],
       matriculationYear: props.matriculationYear,
       graduationYear: props.graduationYear,
-      graduationSemester: props.graduationSemester
+      graduationSemester: props.graduationSemester,
     }
 
     const user = build(userProps)
