@@ -1,0 +1,114 @@
+name: ci
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, review_requested, edited]
+  push:
+    branches:
+      - master
+      - dev
+      - k
+      - w
+
+env:
+  MYSQL_DATABASE: test_db
+  DB_USER: root
+  DB_PASSWORD: root
+  RESTORE: .test.sql
+  TELEGRAM_GROUP: -1001647699011
+
+jobs:
+  pre_job:
+    # skip duplicate checks
+    # https://github.com/marketplace/actions/skip-duplicate-actions
+    runs-on: ubuntu-20.04
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          concurrent_skipping: same_content_newer
+          paths_ignore: '["**/README.md", "**/docs/**"]'
+
+  database_lint:
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    runs-on: ubuntu-20.04
+    outputs:
+      status: ${{ job.status }}
+    steps:
+      - name: 🍺 Check out repository code
+        uses: actions/checkout@v3
+
+      - name: 🧶 Install yarn
+        run: yarn
+      
+      - name: 📦 Build & lint database functions
+        run: yarn build:db
+
+  database_tests:
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    runs-on: ubuntu-20.04
+    outputs:
+      status: ${{ job.status }}
+    steps:
+      - name: 🔥 Initialize MySQL
+        run: sudo systemctl start mysql.service
+      
+      - name: 🚀 Boost user
+        run: |
+          mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
+          IDENTIFIED WITH mysql_native_password BY 'root';" \
+          -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: 🍺 Check out repository code
+        uses: actions/checkout@v3
+
+      - name: 🧶 Install yarn
+        run: yarn install --frozen-lockfile
+      
+      - name: 📦 Run tests
+        working-directory: ./packages/database
+        run: |
+          MYSQL_RESTORE_SOURCE=$RESTORE \
+          MYSQL_USERNAME=$DB_USER \
+          MYSQL_PASSWORD=$DB_PASSWORD \
+          MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
+          yarn test:ci
+
+  telegram:
+    needs: [pre_job, database_lint, database_tests]
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    runs-on: ubuntu-20.04
+    steps: 
+      - name: Logs
+        run: |
+          echo ${{ needs.database_lint.outputs.status }}; \
+          echo ${{ needs.database_tests.outputs.status }}; \
+          echo ${GITHUB_SHA::7};
+
+      - name: Environment prep
+        run: |
+          echo "RUN_URL=https://github.com/modtree/modtree/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV; \
+          echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV; \
+          [[ "${{ needs.database_lint.outputs.status }}" == "success" ]] \
+          && echo "LINT_STATUS=✅" >> $GITHUB_ENV \
+          || echo "LINT_STATUS=❌" >> $GITHUB_ENV; \
+          [[ "${{ needs.database_tests.outputs.status }}" == "success" ]] \
+          && echo "TESTS_STATUS=✅" >> $GITHUB_ENV \
+          || echo "TESTS_STATUS=❌" >> $GITHUB_ENV;
+
+      - name: Send message
+        uses: appleboy/telegram-action@master
+        with:
+          disable_web_page_preview: true
+          to: ${{ env.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            `${{ env.SHORT_SHA }}` ${{ github.event.head_commit.message }}
+            ${{ env.LINT_STATUS }} lint
+            ${{ env.TESTS_STATUS }} tests
+            [view logs](${{ env.RUN_URL }})
