@@ -29,7 +29,6 @@ test('moduleCondensed.get', async () => {
   expect(s.size).toBe(moduleList.length)
   expect(s.size).toBeGreaterThan(lowerBound)
   total = s.size
-  return true
 })
 
 test('moduleCondensed.getCodes', async () => {
@@ -46,7 +45,6 @@ test('moduleCondensed.getCodes', async () => {
   })
   expect(moduleList.length).toBeGreaterThan(lowerBound)
   expect(moduleList.length).toStrictEqual(total)
-  return true
 })
 
 test('moduleCondensed.fetch', async () => {
@@ -65,5 +63,4 @@ test('moduleCondensed.fetch', async () => {
   expect(s.size).toBe(moduleList.length)
   expect(s.size).toBeGreaterThan(lowerBound)
   expect(s.size).toStrictEqual(total)
-  return true
 })
