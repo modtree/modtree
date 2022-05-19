@@ -41,8 +41,9 @@ export type DegreeProps = {
 export type DAGInitProps = {
   userId: int
   degreeId: Degree
-  modulesPlacedCodes?: string[]
-  modulesHiddenCodes?: string[]
+  modulesPlacedCodes: string[]
+  modulesHiddenCodes: string[]
+  pullAll: boolean
 }
 
 export type DAGProps = {

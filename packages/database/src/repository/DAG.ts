@@ -46,7 +46,7 @@ async function initialize(props: DAGInitProps): Promise<void> {
     })
     let modulesPlaced: Module[] = [], modulesHidden: Module[] = [];
 
-    if (!props.modulesPlacedCodes && !props.modulesHiddenCodes) {
+    if (props.pullAll) {
       // if don't pass in anything, then by default add ALL of
       // - user.modulesDoing
       // - user.modulesDone

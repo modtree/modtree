@@ -86,6 +86,9 @@ describe('DAG.initialize() is successful', () => {
     const dagProps: DAGInitProps = {
       userId: user.id,
       degreeId: degree.id,
+      modulesPlacedCodes: [],
+      modulesHiddenCodes: [],
+      pullAll: true,
     }
 
     await container(() => DAGRepository.initialize(dagProps))
