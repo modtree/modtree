@@ -18,7 +18,7 @@ export namespace init {
 
   export const user1: Init.UserProps = {
     displayName: 'Nguyen Vu Khang',
-    username: 'nvkhang',
+    username: 'nguyenvukhang',
     modulesDone: ['MA2001'],
     modulesDoing: ['MA2219'],
     matriculationYear: 2021,
