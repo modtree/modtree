@@ -1,6 +1,6 @@
 import { AppDataSource, container } from '../data-source'
 import { In } from 'typeorm'
-import { DegreeInitProps, DegreeProps } from '../../types/modtree'
+import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 
@@ -8,7 +8,7 @@ const Repository = AppDataSource.getRepository(Degree)
 
 /**
  * Constructor for Degree
- * Note: the props here is slightly different from DegreeInitProps
+ * Note: the props here is slightly different from Init.DegreeProps
  * @param {DegreeProps} props
  * @return {Degree}
  */
@@ -24,7 +24,7 @@ function build(props: DegreeProps): Degree {
  * @param {DegreeInitProps} props
  * @return {Promise<void>}
  */
-async function initialize(props: DegreeInitProps): Promise<void> {
+async function initialize(props: Init.DegreeProps): Promise<void> {
   await container(async () => {
     // find modules required, to create many-to-many relation
     const modules = await ModuleRepository.find({

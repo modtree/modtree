@@ -1,6 +1,6 @@
 import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
-import { UserInitProps } from '../types/modtree'
+import { Init } from '../types/modtree'
 import { UserRepository } from '../src/repository'
 
 beforeAll(async () => {
@@ -10,7 +10,7 @@ beforeAll(async () => {
 jest.setTimeout(20000)
 
 test('canTakeModule is successful', async () => {
-  const props: UserInitProps = {
+  const props: Init.UserProps = {
     displayName: 'Nguyen Vu Khang',
     username: 'nvkhang',
     modulesDone: ['MA2001'],

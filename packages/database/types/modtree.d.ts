@@ -6,14 +6,21 @@ export type ModtreeFunctionWithArgs<A extends BaseArgs, T> = (
   args: A
 ) => Promise<T>
 
-export type UserInitProps = {
-  displayName: string
-  username: string
-  modulesDone: string[]
-  modulesDoing: string[]
-  matriculationYear: number
-  graduationYear: number
-  graduationSemester: number
+export namespace Init {
+  export type UserProps = {
+    displayName: string
+    username: string
+    modulesDone: string[]
+    modulesDoing: string[]
+    matriculationYear: number
+    graduationYear: number
+    graduationSemester: number
+  }
+
+  export type DegreeProps = {
+    moduleCodes: string[]
+    title: string
+  }
 }
 
 export type UserProps = {
@@ -24,11 +31,6 @@ export type UserProps = {
   matriculationYear: number
   graduationYear: number
   graduationSemester: number
-}
-
-export type DegreeInitProps = {
-  moduleCodes: string[]
-  title: string
 }
 
 export type DegreeProps = {

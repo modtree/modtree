@@ -2,7 +2,7 @@ import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { Degree, Module } from '../src/entity'
 import { DegreeRepository } from '../src/repository'
-import { DegreeInitProps } from '../types/modtree'
+import { Init } from '../types/modtree'
 
 beforeEach(async () => {
   await setup()
@@ -11,7 +11,7 @@ beforeEach(async () => {
 jest.setTimeout(5000)
 
 test('Degree.initialize() is successful', async () => {
-  const props: DegreeInitProps = {
+  const props: Init.DegreeProps = {
     moduleCodes: [
       'CS1101S',
       'CS1231S',
