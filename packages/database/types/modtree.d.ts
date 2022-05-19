@@ -38,6 +38,20 @@ export type DegreeProps = {
   title: string
 }
 
+export type DAGInitProps = {
+  userId: int
+  degreeId: Degree
+  modulesPlacedCodes?: string[]
+  modulesHiddenCodes?: string[]
+}
+
+export type DAGProps = {
+  user: User
+  degree: Degree
+  modulesPlaced: Module[]
+  modulesHidden: Module[]
+}
+
 declare namespace modtree {
   export class Module {
     static get(): Promise<Module[]>
