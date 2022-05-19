@@ -2,6 +2,7 @@ import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { Init } from '../types/modtree'
 import { UserRepository } from '../src/repository'
+import { init } from './init'
 
 beforeAll(async () => {
   await setup()
@@ -10,15 +11,8 @@ beforeAll(async () => {
 jest.setTimeout(20000)
 
 test('canTakeModule is successful', async () => {
-  const props: Init.UserProps = {
-    displayName: 'Nguyen Vu Khang',
-    username: 'nvkhang',
-    modulesDone: ['MA2001'],
-    modulesDoing: ['MA2219'],
-    matriculationYear: 2021,
-    graduationYear: 2025,
-    graduationSemester: 2,
-  }
+  const props: Init.UserProps = init.user1
+
   await UserRepository.initialize(props)
 
   const res = await endpoint(() =>

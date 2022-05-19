@@ -39,15 +39,8 @@ describe('DAG.initialize() is successful', () => {
   })
 
   it('Saves a user', async() => {
-    userProps = {
-      displayName: 'Nguyen Vu Khang',
-      username: 'nvkhang',
-      modulesDone: ['MA2001'],
-      modulesDoing: ['MA2219'],
-      matriculationYear: 2021,
-      graduationYear: 2025,
-      graduationSemester: 2,
-    }
+    userProps = init.user1
+
     await container(async () => {
       await UserRepository.initialize(userProps)
     })
@@ -187,15 +180,6 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
   })
 
   it('Saves a user', async() => {
-    userProps = {
-      displayName: 'Nguyen Vu Khang',
-      username: 'nvkhang',
-      modulesDone: ['MA2001'],
-      modulesDoing: ['MA2219'],
-      matriculationYear: 2021,
-      graduationYear: 2025,
-      graduationSemester: 2,
-    }
     await container(async () => {
       await UserRepository.initialize(userProps)
     })
