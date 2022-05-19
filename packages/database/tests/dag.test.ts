@@ -174,3 +174,114 @@ describe('DAG.toggleModules()', () => {
     expect(dag.modulesHidden.length).toEqual(0)
   })
 })
+
+describe('DAG.initialize() with pullAll = false is empty', () => {
+  beforeAll(async () => {
+    await setup()
+  })
+  it('Saves a degree', async () => {
+    degreeProps = {
+      moduleCodes: [
+        'CS1101S',
+        'CS1231S',
+        'CS2030S',
+        'CS2040S',
+        'CS2100',
+        'CS2103T',
+        'CS2106',
+        'CS2109S',
+        'CS3230',
+      ],
+      title: 'Computer Science',
+    }
+    await container(() => DegreeRepository.initialize(degreeProps))
+
+    const res = await container(() =>
+      DegreeRepository.findOne({
+        where: {
+          title: degreeProps.title,
+        },
+        relations: ['modules'],
+      })
+    )
+    expect(res).toBeDefined()
+    if (!res) return
+
+    degree = res
+  })
+
+  it('Saves a user', async() => {
+    userProps = {
+      displayName: 'Nguyen Vu Khang',
+      username: 'nvkhang',
+      modulesDone: ['MA2001'],
+      modulesDoing: ['MA2219'],
+      matriculationYear: 2021,
+      graduationYear: 2025,
+      graduationSemester: 2,
+    }
+    await container(async () => {
+      await UserRepository.initialize(userProps)
+    })
+
+    const res = await container(() =>
+      UserRepository.findOne({
+        where: {
+          username: 'nvkhang',
+        },
+      })
+    )
+    expect(res).toBeDefined()
+    if (!res) return
+
+    user = res
+  })
+
+  it('Saves a dag', async() => {
+    // Since modulesPlacedCodes and modulesHiddenCodes not passed in,
+    // then ALL of
+    // - user.modulesDoing
+    // - user.modulesDone
+    // - degree.modules
+    // are placed modules, and no modules are hidden.
+
+    const dagProps: DAGInitProps = {
+      userId: user.id,
+      degreeId: degree.id,
+      modulesPlacedCodes: [],
+      modulesHiddenCodes: [],
+      pullAll: false,
+    }
+
+    await container(() => DAGRepository.initialize(dagProps))
+
+    const res = await endpoint(
+      async () =>
+        await container(
+          async () =>
+            await DAGRepository.find({
+              relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
+              where: {
+                user: {
+                  id: user.id
+                },
+                degree: {
+                  id: degree.id
+                },
+              },
+            })
+        )
+    )
+    expect(res).toBeDefined()
+    if (!res) return
+
+    expect(res.length).toEqual(1)
+
+    dag = res[0]
+  })
+
+  it('modulesPlaced and modulesHidden are blank', async() => {
+      expect(dag.modulesPlaced.length).toEqual(0)
+      expect(dag.modulesHidden.length).toEqual(0)
+  })
+})
