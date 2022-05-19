@@ -36,7 +36,7 @@ export const k: Config.InitialOptions = {
 
 export const w: Config.InitialOptions = {
   ...base,
-  testMatch: ['**/tests/**/module-pull.test.ts'],
+  testMatch: ['**/tests/**/dag.test.ts'],
   silent: false,
 }
 
