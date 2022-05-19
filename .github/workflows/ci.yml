@@ -2,7 +2,7 @@ name: ci
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, review_requested, edited]
+    types: [opened, reopened, ready_for_review, review_requested]
   push:
     branches:
       - master
