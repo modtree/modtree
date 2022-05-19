@@ -16,6 +16,20 @@ test('AppDataSource is defined', () => {
   expect(AppDataSource).toBeDefined()
 })
 
+
+test('All entities are defined', () => {
+  expect(Module).toBeDefined()
+  expect(ModuleCondensed).toBeDefined()
+  expect(Degree).toBeDefined()
+  expect(User).toBeDefined()
+})
+
+test('All repositories are defined', () => {
+  expect(ModuleRepository).toBeDefined()
+  expect(ModuleCondensedRepository).toBeDefined()
+  expect(DegreeRepository).toBeDefined()
+  expect(UserRepository).toBeDefined()
+})
 test('AppDataSource can be initialized and destroyed', async () => {
   await AppDataSource.initialize()
   expect(AppDataSource.isInitialized).toBe(true)
@@ -72,18 +86,4 @@ test('endpoint can run repo function', async () => {
   })
   expect(res.length).toBeGreaterThan(10)
   expect(AppDataSource.isInitialized).toBe(false)
-})
-
-test('All entities are defined', () => {
-  expect(Module).toBeDefined()
-  expect(ModuleCondensed).toBeDefined()
-  expect(Degree).toBeDefined()
-  expect(User).toBeDefined()
-})
-
-test('All repositories are defined', () => {
-  expect(ModuleRepository).toBeDefined()
-  expect(ModuleCondensedRepository).toBeDefined()
-  expect(DegreeRepository).toBeDefined()
-  expect(UserRepository).toBeDefined()
 })
