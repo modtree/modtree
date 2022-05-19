@@ -9,18 +9,12 @@ const rootDir = process.cwd()
 const envPath = resolve(rootDir, envFile)
 dotenvConfig({ path: envPath })
 
+// show which env file was loaded
+// which database is being used
 const output = [
   `Env File: ${envFile}`,
   `Database: ${process.env.MYSQL_ACTIVE_DATABASE}`,
 ]
-
-/* the following will be the pre-cursor for every run */
-// print newline for test runs (because jest's logs are weird)
-if (env === 'test') {
-  console.log('')
-}
-// show which env file was loaded
-// which database is being used
 box.blue(output.join('\n'))
 
 export const config = {

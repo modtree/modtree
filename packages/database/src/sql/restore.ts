@@ -3,7 +3,6 @@ import { config } from '../config'
 import { join } from 'path'
 import fs from 'fs'
 import inquirer from 'inquirer'
-import { log } from '../cli'
 import { wipe } from '.'
 
 /* grab project root directory
@@ -30,7 +29,6 @@ export namespace restore {
     await wipe.database(config.database)
     const sqlFilepath = join(sqlDir, filename)
     const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
-    log.cyan(`restoring from ${sqlFilepath}`)
     await exec(cmd)
   }
 

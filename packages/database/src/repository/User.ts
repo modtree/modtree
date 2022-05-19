@@ -1,6 +1,6 @@
 import { AppDataSource, container } from '../data-source'
 import { In } from 'typeorm'
-import { UserInitProps, UserProps } from '../../types/modtree'
+import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
 import { ModuleRepository } from './Module'
 
@@ -28,7 +28,7 @@ function build(props: UserProps): User {
  * @param {UserProps} props
  * @return {Promise<void>}
  */
-async function initialize(props: UserInitProps): Promise<void> {
+async function initialize(props: Init.UserProps): Promise<void> {
   await container(async () => {
     // find modules completed and modules doing, to create many-to-many relation
     const modulesDone = await ModuleRepository.find({
