@@ -44,8 +44,8 @@ async function initialize(props: DAGInitProps): Promise<void> {
       },
       relations: ['modules'],
     })
-    let modulesPlaced: Module[] = [],
-      modulesHidden: Module[] = []
+    let modulesPlaced: Module[] = []
+    let modulesHidden: Module[] = []
 
     if (props.pullAll) {
       // if don't pass in anything, then by default add ALL of
