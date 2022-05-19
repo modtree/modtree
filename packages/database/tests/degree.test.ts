@@ -3,6 +3,7 @@ import { setup } from './setup'
 import { Degree, Module } from '../src/entity'
 import { DegreeRepository } from '../src/repository'
 import { Init } from '../types/modtree'
+import { init } from './init'
 
 beforeEach(async () => {
   await setup()
@@ -11,20 +12,7 @@ beforeEach(async () => {
 jest.setTimeout(5000)
 
 test('Degree.initialize() is successful', async () => {
-  const props: Init.DegreeProps = {
-    moduleCodes: [
-      'CS1101S',
-      'CS1231S',
-      'CS2030S',
-      'CS2040S',
-      'CS2100',
-      'CS2103T',
-      'CS2106',
-      'CS2109S',
-      'CS3230',
-    ],
-    title: 'Computer Science',
-  }
+  const props: Init.DegreeProps = init.degree1
   // write the degree to database
   await container(() => DegreeRepository.initialize(props))
 
@@ -56,20 +44,7 @@ test('Degree.initialize() is successful', async () => {
 })
 
 test('Degree.insertModules', async () => {
-  const props = {
-    moduleCodes: [
-      'CS1101S',
-      'CS1231S',
-      'CS2030S',
-      'CS2040S',
-      'CS2100',
-      'CS2103T',
-      'CS2106',
-      'CS2109S',
-      'CS3230',
-    ],
-    title: 'Computer Science',
-  }
+  const props = init.degree1
   // 1. write the degree to database
   await container(() => DegreeRepository.initialize(props))
 

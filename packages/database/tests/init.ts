@@ -1,7 +1,7 @@
 import { Init } from '../types/modtree'
 
 export namespace init {
-  const props: Init.DegreeProps = {
+  export const degree1: Init.DegreeProps = {
     moduleCodes: [
       'CS1101S',
       'CS1231S',
