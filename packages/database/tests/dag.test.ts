@@ -1,11 +1,13 @@
 import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
 
-import { DAGInitProps, DegreeInitProps, UserInitProps } from '../types/modtree'
+import { DAGInitProps } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
 import { DegreeRepository } from '../src/repository/Degree'
 import { UserRepository } from '../src/repository/User'
 import { DAGRepository } from '../src/repository/DAG'
+import { Init } from '../types/modtree'
+import { init } from './init'
 
 jest.setTimeout(5000)
 
@@ -14,24 +16,12 @@ beforeAll(async () => {
 })
 
 let degree: Degree, user: User, dag: DAG
-let degreeProps: DegreeInitProps, userProps: UserInitProps
+let degreeProps: Init.DegreeProps, userProps: Init.UserProps
 
 describe('DAG.initialize() is successful', () => {
   it('Saves a degree', async () => {
-    degreeProps = {
-      moduleCodes: [
-        'CS1101S',
-        'CS1231S',
-        'CS2030S',
-        'CS2040S',
-        'CS2100',
-        'CS2103T',
-        'CS2106',
-        'CS2109S',
-        'CS3230',
-      ],
-      title: 'Computer Science',
-    }
+    degreeProps = init.degree1
+
     await container(() => DegreeRepository.initialize(degreeProps))
 
     const res = await container(() =>
@@ -180,20 +170,6 @@ describe('DAG.initialize() with pullAll = false is empty', () => {
     await setup()
   })
   it('Saves a degree', async () => {
-    degreeProps = {
-      moduleCodes: [
-        'CS1101S',
-        'CS1231S',
-        'CS2030S',
-        'CS2040S',
-        'CS2100',
-        'CS2103T',
-        'CS2106',
-        'CS2109S',
-        'CS3230',
-      ],
-      title: 'Computer Science',
-    }
     await container(() => DegreeRepository.initialize(degreeProps))
 
     const res = await container(() =>
