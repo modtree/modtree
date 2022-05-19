@@ -9,12 +9,14 @@ import { DAGRepository } from '../src/repository/DAG'
 
 jest.setTimeout(5000)
 
+beforeAll(async () => {
+  await setup()
+})
+
+let degree: Degree, user: User, dag: DAG
+let degreeProps: DegreeInitProps, userProps: UserInitProps
+
 describe('DAG.initialize() is successful', () => {
-  beforeAll(async () => {
-    await setup()
-  })
-  let degree: Degree, user: User, dag: DAG
-  let degreeProps: DegreeInitProps, userProps: UserInitProps
   it('Saves a degree', async () => {
     degreeProps = {
       moduleCodes: [
@@ -62,7 +64,7 @@ describe('DAG.initialize() is successful', () => {
       await UserRepository.initialize(userProps)
     })
 
-    const res = await container(() => 
+    const res = await container(() =>
       UserRepository.findOne({
         where: {
           username: 'nvkhang',
@@ -82,7 +84,7 @@ describe('DAG.initialize() is successful', () => {
     // - user.modulesDone
     // - degree.modules
     // are placed modules, and no modules are hidden.
-    
+
     const dagProps: DAGInitProps = {
       userId: user.id,
       degreeId: degree.id,
@@ -92,7 +94,7 @@ describe('DAG.initialize() is successful', () => {
       await DAGRepository.initialize(dagProps)
     })
 
-    const res = await endpoint(() => 
+    const res = await endpoint(() =>
       DAGRepository.find({
         relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
         where: {
@@ -130,5 +132,76 @@ describe('DAG.initialize() is successful', () => {
       const modulesPlacedCodes = dag.modulesPlaced.map((one: Module) => one.moduleCode)
       expect(moduleCodes.sort()).toEqual(modulesPlacedCodes.sort())
       expect(dag.modulesHidden.length).toEqual(0)
+  })
+})
+
+describe('DAG.toggleModules()', () => {
+  const moduleCodes = [
+    'CS1101S',
+    'CS1231S',
+    'CS2030S',
+    'CS2040S',
+    'CS2100',
+    'CS2103T',
+    'CS2106',
+    'CS2109S',
+    'CS3230',
+    'MA2001',
+    'MA2219',
+  ]
+
+  it('Correctly changes a module\'s state from placed to hidden', async() => {
+    await dag.toggleModule('MA2001')
+
+    const res = await container(() =>
+      DAGRepository.find({
+        relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
+        where: {
+          user: {
+            id: user.id
+          },
+          degree: {
+            id: degree.id
+          },
+        },
+      })
+    )
+    expect(res).toBeDefined()
+    if (!res) return
+
+    expect(res.length).toEqual(1)
+
+    dag = res[0]
+
+    expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
+    expect(dag.modulesHidden.length).toEqual(1)
+    expect(dag.modulesHidden[0].moduleCode).toEqual('MA2001')
+  })
+
+  it('Correctly changes a module\'s state from hidden to placed', async() => {
+    dag = await dag.toggleModule('MA2001')
+
+    const res = await endpoint(() =>
+      DAGRepository.find({
+        relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
+        where: {
+          user: {
+            id: user.id
+          },
+          degree: {
+            id: degree.id
+          },
+        },
+      })
+    )
+    expect(res).toBeDefined()
+    if (!res) return
+
+    expect(res.length).toEqual(1)
+
+    dag = res[0]
+
+    expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
+    expect(dag.modulesHidden.length).toEqual(0)
   })
 })
