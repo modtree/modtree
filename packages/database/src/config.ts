@@ -16,9 +16,6 @@ const output = [
 
 /* the following will be the pre-cursor for every run */
 // print newline for test runs (because jest's logs are weird)
-if (env === 'test') {
-  console.log('')
-}
 // show which env file was loaded
 // which database is being used
 box.blue(output.join('\n'))

@@ -1,4 +1,4 @@
-import { AppDataSource, container } from '../src/data-source'
+import { AppDataSource, container, endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { Module, ModuleCondensed, Degree, User } from '../src/entity'
 import {
@@ -27,13 +27,12 @@ test('container is working', async () => {
 })
 
 test('endpoint is working', async () => {
-  const res = await container(async () => {
+  const res = await endpoint(() => container(async() => {
     expect(AppDataSource.isInitialized).toBe(true)
     return true
-  })
+  }))
   expect(res).toBe(true)
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
+  expect(AppDataSource.isInitialized).toBe(false)
 })
 
 test('AppDataSource can be initialized and destroyed', async () => {
