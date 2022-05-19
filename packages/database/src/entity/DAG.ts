@@ -51,23 +51,22 @@ export class DAG {
         },
       })
 
-      // find index of the module in modulesPlaced
-      // if index is unchanged, then the module must be in modulesHidden
-      let placedIdx = -1
-      for (let i=0; i<dag.modulesPlaced.length; i++)
-        if (dag.modulesPlaced[i].moduleCode == moduleCode) {
-          placedIdx = i
-          break
-        }
+      const modulesPlacedCodes = dag.modulesPlaced.map((one: Module) => one.moduleCode)
+      const modulesPlacedIndex = modulesPlacedCodes.indexOf(moduleCode)
 
-      if (placedIdx != -1) {
+      const modulesHiddenCodes = dag.modulesHidden.map((one: Module) => one.moduleCode)
+      const modulesHiddenIndex = modulesHiddenCodes.indexOf(moduleCode)
+
+      if (modulesPlacedIndex != -1) {
         // is a placed module
         dag.modulesPlaced = dag.modulesPlaced.filter((one: Module) => one.moduleCode != moduleCode)
         dag.modulesHidden.push(module)
-      } else {
+      } else if (modulesHiddenIndex != -1) {
         // is a hidden module
         dag.modulesHidden = dag.modulesHidden.filter((one: Module) => one.moduleCode != moduleCode)
         dag.modulesPlaced.push(module)
+      } else {
+        console.log('Module not found in DAG')
       }
       return await DAGRepository.save(dag)
     })
