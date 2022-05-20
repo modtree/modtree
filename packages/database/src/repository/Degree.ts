@@ -44,7 +44,10 @@ async function initialize(props: Init.DegreeProps): Promise<void> {
  * @param {Degree} degree
  * @param {string[]} moduleCodes
  */
-async function insertModules(degree: Degree, moduleCodes: string[]): Promise<void> {
+async function insertModules(
+  degree: Degree,
+  moduleCodes: string[]
+): Promise<void> {
   await container(async () => {
     // find modules to add
     const newModules = await ModuleRepository.find({
