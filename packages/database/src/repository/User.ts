@@ -35,9 +35,9 @@ export function UserRepository(database?: DataSource): UserRepository {
     user.username = props.username || ''
     user.modulesDone = props.modulesDone || []
     user.modulesDoing = props.modulesDoing || []
-    user.matriculationYear = props.matriculationYear || 2021
-    user.graduationYear = props.graduationYear || 2025
-    user.graduationSemester = props.graduationSemester || 2
+    user.matriculationYear = props.matriculationYear || 0
+    user.graduationYear = props.graduationYear || 0
+    user.graduationSemester = props.graduationSemester || 0
     return user
   }
 
