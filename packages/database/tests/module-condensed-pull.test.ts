@@ -1,4 +1,4 @@
-import { AppDataSource, container, endpoint } from '../src/data-source'
+import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { remove } from '../src/sql'
 import { ModuleCondensed } from '../src/entity'
@@ -29,7 +29,7 @@ test('moduleCondensed.pull', async () => {
   const s = new Set(written)
   expect(s.size).toBe(written.length)
   expect(s.size).toBeGreaterThan(lowerBound)
-  if (AppDataSource.isInitialized) {
-    await AppDataSource.destroy()
+  if (db.isInitialized) {
+    await db.destroy()
   }
 })

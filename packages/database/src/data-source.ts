@@ -1,8 +1,8 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { ModtreeFunction, ModtreeFunctionWithArgs } from '../types/modtree'
+import { ModtreeFunction } from '../types/modtree'
 import { log } from './cli'
-import { config } from './config'
+import { config, db } from './config'
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -46,16 +46,16 @@ export function getSource(database: string): DataSource {
  * @return {Promise<T | void>}
  */
 export async function container<T>(
-  database: string,
+  database: DataSource,
   fn: () => Promise<T | void>
 ): Promise<T | void> {
   // if already initialized, reattach to old instance
-  if (AppDataSource.isInitialized) {
+  if (database.isInitialized) {
     const res = await fn()
     return res
   }
   // if not initialized, kickstart a new instance
-  const res = await AppDataSource.initialize()
+  const res = await database.initialize()
     .then(async () => {
       /** successfully initialize database connection */
       const res = await fn()
@@ -85,32 +85,32 @@ export async function endpoint<T>(
       console.log('Endpoint error:', err)
     })
   // close database if still open
-  if (AppDataSource.isInitialized) {
-    await AppDataSource.destroy()
+  if (db.isInitialized) {
+    await db.destroy()
   }
   return response
 }
 
-/**
- * same as endpoint but with arguments
- * @param {ModtreeFunctionWithArgs<A, T>} callback
- * @param {A} args
- * @return {Promise<T | void>}
- */
-export async function endpointWithArgs<A, T>(
-  callback: ModtreeFunctionWithArgs<A, T>,
-  args: A
-): Promise<T | void> {
-  const response = await callback(args)
-    .then((res) => {
-      return res
-    })
-    .catch((err) => {
-      console.log('Endpoint error:', err)
-    })
-  // close database if still open
-  if (AppDataSource.isInitialized) {
-    await AppDataSource.destroy()
-  }
-  return response
-}
+// /**
+//  * same as endpoint but with arguments
+//  * @param {ModtreeFunctionWithArgs<A, T>} callback
+//  * @param {A} args
+//  * @return {Promise<T | void>}
+//  */
+// export async function endpointWithArgs<A, T>(
+//   callback: ModtreeFunctionWithArgs<A, T>,
+//   args: A
+// ): Promise<T | void> {
+//   const response = await callback(args)
+//     .then((res) => {
+//       return res
+//     })
+//     .catch((err) => {
+//       console.log('Endpoint error:', err)
+//     })
+//   // close database if still open
+//   if (AppDataSource.isInitialized) {
+//     await AppDataSource.destroy()
+//   }
+//   return response
+// }

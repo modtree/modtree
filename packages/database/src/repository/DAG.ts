@@ -1,4 +1,4 @@
-import { AppDataSource, container } from '../data-source'
+import { container } from '../data-source'
 import { In } from 'typeorm'
 import { DAGInitProps, DAGProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
@@ -8,7 +8,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { db } from '../config'
 
-const Repository = AppDataSource.getRepository(DAG)
+const Repository = db.getRepository(DAG)
 
 /**
  * Constructor for DAG

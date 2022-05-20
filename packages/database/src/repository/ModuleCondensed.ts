@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { AppDataSource } from '../data-source'
 import { nusmodsApi, getModuleLevel } from '../utils/string'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
+import { db } from '../config'
 
 /**
  * a drop-in replacement of a constructor
@@ -52,7 +52,7 @@ async function pull(): Promise<ModuleCondensed[]> {
   return modulesToSave
 }
 
-const BaseRepo = AppDataSource.getRepository(ModuleCondensed)
+const BaseRepo = db.getRepository(ModuleCondensed)
 export const ModuleCondensedRepository = BaseRepo.extend({
   build,
   getCodes,

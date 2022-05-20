@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Agent } from 'https'
 import { log } from '../cli'
-import { AppDataSource, container } from '../data-source'
+import { container } from '../data-source'
 import { nusmodsApi } from '../utils/string'
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
@@ -137,7 +137,7 @@ async function pull(): Promise<Module[]> {
   return result
 }
 
-const BaseRepo = AppDataSource.getRepository(Module)
+const BaseRepo = db.getRepository(Module)
 export const ModuleRepository = BaseRepo.extend({
   findByFaculty,
   build,

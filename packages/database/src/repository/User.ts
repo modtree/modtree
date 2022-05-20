@@ -1,4 +1,4 @@
-import { AppDataSource, container } from '../data-source'
+import { container } from '../data-source'
 import { In } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
@@ -97,7 +97,7 @@ async function canTakeModule(
   })
 }
 
-const BaseRepo = AppDataSource.getRepository(User)
+const BaseRepo = db.getRepository(User)
 export const UserRepository = BaseRepo.extend({
   initialize,
   canTakeModule,

@@ -1,14 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express'
 import * as bodyParser from 'body-parser'
-import { AppDataSource } from './data-source'
 import { Routes } from './routes'
 import cors, { CorsOptions } from 'cors'
+import { db } from './config'
 
 const corsOpts: CorsOptions = {
   origin: 'http://localhost:3000',
 }
 
-AppDataSource.initialize()
+db.initialize()
   .then(async () => {
     // create express app
     const app = express()

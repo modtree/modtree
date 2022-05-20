@@ -1,5 +1,5 @@
 import { setup } from './setup'
-import { AppDataSource, container, endpoint } from '../src/data-source'
+import { container, endpoint } from '../src/data-source'
 import { Module, ModuleCondensed, Degree, User } from '../src/entity'
 import {
   ModuleRepository,
@@ -12,7 +12,7 @@ import { db } from '../src/config'
 beforeAll(setup)
 
 test('AppDataSource is defined', () => {
-  expect(AppDataSource).toBeDefined()
+  expect(db).toBeDefined()
 })
 
 test('All entities are defined', () => {
@@ -29,20 +29,20 @@ test('All repositories are defined', () => {
   expect(UserRepository).toBeDefined()
 })
 test('AppDataSource can be initialized and destroyed', async () => {
-  await AppDataSource.initialize()
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
-  expect(AppDataSource.isInitialized).toBe(false)
+  await db.initialize()
+  expect(db.isInitialized).toBe(true)
+  await db.destroy()
+  expect(db.isInitialized).toBe(false)
 })
 
 test('container is working', async () => {
   const res = await container(db, async () => {
-    expect(AppDataSource.isInitialized).toBe(true)
+    expect(db.isInitialized).toBe(true)
     return true
   })
   expect(res).toBe(true)
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
+  expect(db.isInitialized).toBe(true)
+  await db.destroy()
 })
 
 test('container can run repo function', async () => {
@@ -52,19 +52,19 @@ test('container can run repo function', async () => {
     })
   )
   expect(res).toBeInstanceOf(ModuleCondensed)
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
+  expect(db.isInitialized).toBe(true)
+  await db.destroy()
 })
 
 test('endpoint is working', async () => {
   const res = await endpoint(() =>
     container(db, async () => {
-      expect(AppDataSource.isInitialized).toBe(true)
+      expect(db.isInitialized).toBe(true)
       return true
     })
   )
   expect(res).toBe(true)
-  expect(AppDataSource.isInitialized).toBe(false)
+  expect(db.isInitialized).toBe(false)
 })
 
 test('endpoint can run repo function', async () => {
@@ -83,5 +83,5 @@ test('endpoint can run repo function', async () => {
     expect(m).toBeInstanceOf(Module)
   })
   expect(res.length).toBeGreaterThan(10)
-  expect(AppDataSource.isInitialized).toBe(false)
+  expect(db.isInitialized).toBe(false)
 })

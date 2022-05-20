@@ -1,4 +1,4 @@
-import { AppDataSource, container } from '../data-source'
+import { container } from '../data-source'
 import { In } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
@@ -71,7 +71,7 @@ async function insertModules(
   })
 }
 
-const BaseRepo = AppDataSource.getRepository(Degree)
+const BaseRepo = db.getRepository(Degree)
 export const DegreeRepository = BaseRepo.extend({
   initialize,
   build,
