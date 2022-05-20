@@ -77,18 +77,16 @@ async function canTakeModule(
         moduleCode: moduleCode,
       },
     })
-
-    // Relations are not stored in the entity, so they must be explicitly
-    // asked for from the DB
+    /* Relations are not stored in the entity, so they must be explicitly
+     * asked for from the DB
+     */
     const retrieved = await UserRepository.findOne({
       where: {
         id: user.id,
       },
-      // relations: ['modulesDone'],
     })
     await UserRepository.loadRelations(retrieved, { modulesDone: true })
     const modulesDone = retrieved.modulesDone
-
     // check if PrereqTree is fulfilled
     const completedModulesCodes = modulesDone.map(
       (one: Module) => one.moduleCode
