@@ -13,7 +13,7 @@ import { db } from '../src/config'
 
 importChecks({
   entities: [Module, Degree, User, DAG],
-  repositories: [UserRepository(db), DegreeRepository(db), DAGRepository],
+  repositories: [UserRepository(db), DegreeRepository(db), DAGRepository(db)],
 })
 
 jest.setTimeout(5000)
@@ -73,13 +73,13 @@ describe('DAG.initialize with pullAll = true', () => {
         pullAll: true,
       }
 
-      await container(db, () => DAGRepository.initialize(dagProps))
+      await container(db, () => DAGRepository(db).initialize(dagProps))
 
       const res = await endpoint(db, 
         async () =>
           await container(db,
             async () =>
-              await DAGRepository.find({
+              await DAGRepository(db).find({
                 relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
                 where: {
                   user: {
@@ -138,7 +138,7 @@ describe('DAG.initialize with pullAll = true', () => {
     ]
 
     it("Correctly changes a module's state from placed to hidden", async () => {
-      await container(db,() => DAGRepository.toggleModule(dag, 'MA2001'))
+      await container(db,() => DAGRepository(db).toggleModule(dag, 'MA2001'))
 
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
       expect(dag.modulesHidden.length).toEqual(1)
@@ -148,7 +148,7 @@ describe('DAG.initialize with pullAll = true', () => {
     it("Correctly changes a module's state from hidden to placed", async () => {
       await endpoint(db, 
         async () =>
-          await container(db,async () => DAGRepository.toggleModule(dag, 'MA2001'))
+          await container(db,async () => DAGRepository(db).toggleModule(dag, 'MA2001'))
       )
 
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
@@ -206,13 +206,13 @@ describe('DAG.initialize with pullAll = false', () => {
         pullAll: false,
       }
 
-      await container(db,() => DAGRepository.initialize(dagProps))
+      await container(db,() => DAGRepository(db).initialize(dagProps))
 
       const res = await endpoint(db, 
         async () =>
           await container(db,
             async () =>
-              await DAGRepository.find({
+              await DAGRepository(db).find({
                 relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
                 where: {
                   user: {

@@ -6,7 +6,7 @@ import { ModuleRepository } from './Module'
 import { db as DefaultSource } from '../config'
 
 interface DegreeRepository extends Repository<Degree> {
-  build(props: DegreeProps): DegreeProps
+  build(props: DegreeProps): Degree
   initialize(props: Init.DegreeProps): Promise<void>
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
 }
