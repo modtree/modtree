@@ -7,12 +7,13 @@ import { ModuleRepository } from './Module'
 import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { db as DefaultSource } from '../config'
-import { useLoadRelations } from './base'
+import { LoadRelations, useLoadRelations } from './base'
 
 interface DAGRepository extends Repository<DAG> {
   build(props: DAGProps): DAG
   initialize(props: DAGInitProps): Promise<void>
   toggleModule(dag: DAG, moduleCode: string): Promise<void>
+  loadRelations: LoadRelations<DAG>
 }
 
 /**

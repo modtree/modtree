@@ -8,7 +8,7 @@ import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { db as DefaultSource } from '../config'
 import { DataSource, Repository } from 'typeorm'
-import { useLoadRelations } from './base'
+import { LoadRelations, useLoadRelations } from './base'
 
 interface ModuleRepository extends Repository<Module> {
   build(props: NM): Module
@@ -17,6 +17,7 @@ interface ModuleRepository extends Repository<Module> {
   getCodes(): Promise<string[]>
   pull(): Promise<Module[]>
   findByFaculty(faculty: string): Promise<Module[]>
+  loadRelations: LoadRelations<Module>
 }
 
 /**

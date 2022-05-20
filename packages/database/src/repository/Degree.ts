@@ -4,12 +4,13 @@ import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { db as DefaultSource } from '../config'
-import { useLoadRelations } from './base'
+import { LoadRelations, useLoadRelations } from './base'
 
 interface DegreeRepository extends Repository<Degree> {
   build(props: DegreeProps): Degree
   initialize(props: Init.DegreeProps): Promise<void>
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
+  loadRelations: LoadRelations<Degree>
 }
 
 /**

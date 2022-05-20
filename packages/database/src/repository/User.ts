@@ -5,13 +5,14 @@ import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
-import { useLoadRelations } from './base'
+import { useLoadRelations, LoadRelations } from './base'
 import { db as DefaultSource } from '../config'
 
 interface UserRepository extends Repository<User> {
   build(props: UserProps): User
   initialize(props: Init.UserProps): Promise<void>
   canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
+  loadRelations: LoadRelations<User>
 }
 
 /**
@@ -112,6 +113,6 @@ export function UserRepository(database?: DataSource): UserRepository {
     canTakeModule,
     build,
     initialize,
-    loadRelations
+    loadRelations,
   })
 }

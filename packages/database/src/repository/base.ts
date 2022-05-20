@@ -6,6 +6,11 @@ type LoadRelationsMethod = (
   relations: FindOptionsRelations<ModtreeEntity>
 ) => Promise<void>
 
+export type LoadRelations<T> = (
+  entity: T,
+  relations: FindOptionsRelations<T>
+) => Promise<void>
+
 /**
  * takes in a repository, returns a function that is meant to be used
  * as a repository method
