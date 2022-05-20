@@ -112,5 +112,6 @@ export function UserRepository(database?: DataSource): UserRepository {
     canTakeModule,
     build,
     initialize,
+    loadRelations
   })
 }

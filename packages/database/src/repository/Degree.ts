@@ -4,6 +4,7 @@ import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { db as DefaultSource } from '../config'
+import { useLoadRelations } from './base'
 
 interface DegreeRepository extends Repository<Degree> {
   build(props: DegreeProps): Degree
@@ -18,6 +19,7 @@ interface DegreeRepository extends Repository<Degree> {
 export function DegreeRepository(database?: DataSource): DegreeRepository {
   const db = database || DefaultSource
   const BaseRepo = db.getRepository(Degree)
+  const loadRelations = useLoadRelations(BaseRepo)
 
   /**
    * Constructor for Degree
@@ -89,5 +91,6 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
     build,
     initialize,
     insertModules,
+    loadRelations
   })
 }

@@ -8,6 +8,7 @@ import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { db as DefaultSource } from '../config'
 import { DataSource, Repository } from 'typeorm'
+import { useLoadRelations } from './base'
 
 interface ModuleRepository extends Repository<Module> {
   build(props: NM): Module
@@ -25,6 +26,7 @@ interface ModuleRepository extends Repository<Module> {
 export function ModuleRepository(database?: DataSource): ModuleRepository {
   const db = database || DefaultSource
   const BaseRepo = db.getRepository(Module)
+  const loadRelations = useLoadRelations(BaseRepo)
 
   /**
    * a drop-in replacement of a constructor
@@ -162,5 +164,6 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
     fetchOne,
     pull,
     findByFaculty,
+    loadRelations,
   })
 }

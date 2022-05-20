@@ -7,6 +7,7 @@ import { ModuleRepository } from './Module'
 import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { db as DefaultSource } from '../config'
+import { useLoadRelations } from './base'
 
 interface DAGRepository extends Repository<DAG> {
   build(props: DAGProps): DAG
@@ -21,6 +22,7 @@ interface DAGRepository extends Repository<DAG> {
 export function DAGRepository(database?: DataSource): DAGRepository {
   const db = database || DefaultSource
   const BaseRepo = db.getRepository(DAG)
+  const loadRelations = useLoadRelations(BaseRepo)
 
   /**
    * Constructor for DAG
@@ -155,5 +157,6 @@ export function DAGRepository(database?: DataSource): DAGRepository {
     build,
     initialize,
     toggleModule,
+    loadRelations
   })
 }

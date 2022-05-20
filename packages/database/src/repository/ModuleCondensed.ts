@@ -4,6 +4,7 @@ import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { db as DefaultSource } from '../config'
 import { DataSource, Repository } from 'typeorm'
+import { useLoadRelations } from './base'
 
 interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
   pull(): Promise<ModuleCondensed[]>
@@ -21,6 +22,7 @@ export function ModuleCondensedRepository(
 ): ModuleCondensedRepository {
   const db = database || DefaultSource
   const BaseRepo = db.getRepository(ModuleCondensed)
+  const loadRelations = useLoadRelations(BaseRepo)
 
   /**
    * a drop-in replacement of a constructor
@@ -75,5 +77,6 @@ export function ModuleCondensedRepository(
     getCodes,
     fetch,
     pull,
+    loadRelations
   })
 }
