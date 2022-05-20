@@ -8,7 +8,6 @@ module.exports = {
   ...config,
   ignorePatterns: [
     ...config.ignorePatterns,
-    'babel.config.js',
     'types/*',
     'tests/*',
     'src/migrations/*',

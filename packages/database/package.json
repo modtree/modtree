@@ -6,13 +6,9 @@
   "main": "src/index.ts",
   "type": "commonjs",
   "devDependencies": {
-    "@babel/core": "^7.17.10",
-    "@babel/preset-env": "^7.17.10",
-    "@babel/preset-typescript": "^7.16.7",
     "@types/jest": "^27.5.0",
     "@types/mysql": "^2.15.21",
     "@types/node": "^16.11.10",
-    "babel-jest": "^28.1.0",
     "jest": "^28.1.0",
     "modtree-config": "*",
     "ts-jest": "^28.0.2",
