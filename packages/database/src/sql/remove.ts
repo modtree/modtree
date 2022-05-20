@@ -16,10 +16,11 @@ const removeTable = async (con: Connection, table: string) => {
 export namespace remove {
   /**
    * removes a list of tables from a mysql database
+   * @param {string} database
    * @param {string[]} tables
    */
-  export async function tables(tables: string[]) {
-    const con = await createConnection(connectionConfig)
+  export async function tables(database: string, tables: string[]) {
+    const con = await createConnection(connectionConfig(database))
     const q = []
     tables.forEach((table) => {
       q.push(removeTable(con, table))
@@ -30,10 +31,11 @@ export namespace remove {
 
   /**
    * removes a single table from a mysql database
+   * @param {string} database
    * @param {string} table
    */
-  export async function table(table: string) {
-    const con = await createConnection(connectionConfig)
+  export async function table(database: string, table: string) {
+    const con = await createConnection(connectionConfig(database))
     await removeTable(con, table)
     await con.end()
   }

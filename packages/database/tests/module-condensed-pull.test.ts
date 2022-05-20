@@ -14,7 +14,7 @@ afterAll(() => teardown(dbName))
 
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
-  remove.tables(['moduleCondensed'])
+  remove.tables(dbName, ['moduleCondensed'])
   const pullOnEmpty = await container(db, () => ModuleCondensedRepository(db).pull())
   const pullOnFull = await container(db, () => ModuleCondensedRepository(db).pull())
   const written = await endpoint(db, 

@@ -17,7 +17,7 @@ async function pull() {
 
 jest.setTimeout(60000)
 test('pull all modules from NUSMods', async () => {
-  await remove.tables([
+  await remove.tables(dbName, [
     'degree_modules_module',
     'user_modules_done_module',
     'user_modules_doing_module',
