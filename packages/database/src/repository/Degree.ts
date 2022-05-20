@@ -92,6 +92,6 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
     build,
     initialize,
     insertModules,
-    loadRelations
+    loadRelations,
   })
 }

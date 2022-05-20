@@ -135,24 +135,24 @@ export function DAGRepository(database?: DataSource): DAGRepository {
           modulesHidden: true,
         },
       })
-      const [modulesPlaced, modulesHidden] = [
-        retrieved.modulesPlaced,
-        retrieved.modulesHidden,
-      ]
       /**
        * find the index of the given moduleCode to toggle
        */
       const index: Record<ModuleState, number> = {
-        placed: modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
-        hidden: modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
+        placed: retrieved.modulesPlaced
+          .map((m) => m.moduleCode)
+          .indexOf(moduleCode),
+        hidden: retrieved.modulesHidden
+          .map((m) => m.moduleCode)
+          .indexOf(moduleCode),
         invalid: -1,
       }
       const state: ModuleState =
         index.placed !== -1
           ? 'placed'
           : index.hidden !== -1
-            ? 'hidden'
-            : 'invalid'
+          ? 'hidden'
+          : 'invalid'
 
       /**
        * O(1) delete from unsorted array

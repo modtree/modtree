@@ -78,6 +78,6 @@ export function ModuleCondensedRepository(
     getCodes,
     fetch,
     pull,
-    loadRelations
+    loadRelations,
   })
 }
