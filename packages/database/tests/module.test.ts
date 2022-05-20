@@ -1,5 +1,5 @@
 import { container, endpoint, getSource } from '../src/data-source'
-import { Module } from '../src/entity'
+import { Module, ModuleCondensed } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, importChecks, teardown } from './environment'
 
@@ -10,18 +10,15 @@ beforeAll(() => setup(dbName))
 afterAll(() => teardown(dbName))
 
 importChecks({
-  entities: [Module],
+  entities: [Module, ModuleCondensed],
   repositories: [ModuleRepository(db)],
 })
-
 
 test('find modules by faculty', async () => {
   const res = await endpoint(db, () =>
     container(db, () => ModuleRepository(db).findByFaculty('Computing'))
   )
-  if (!res) {
-    return
-  }
+  if (!res) return
   expect(res).toBeInstanceOf(Array)
   res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
@@ -57,13 +54,22 @@ test('build a module from props', () => {
 })
 
 test('get all modules in database', async () => {
-  const res = await endpoint(db, () => container(db, () => ModuleRepository(db).find()))
-  if (!res) {
-    return
-  }
+  const res = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).find())
+  )
+  if (!res) return
   expect(res).toBeInstanceOf(Array)
   res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
   })
+  expect(res.length).toBeGreaterThan(6000)
+})
+
+test('get all module codes in database', async () => {
+  const res = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).getCodes())
+  )
+  if (!res) return
+  expect(res).toBeInstanceOf(Array)
   expect(res.length).toBeGreaterThan(6000)
 })

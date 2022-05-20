@@ -113,38 +113,48 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         },
         relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
       })
+
       const modulesPlacedCodes = retrieved.modulesPlaced.map(
         (one: Module) => one.moduleCode
       )
       const modulesPlacedIndex = modulesPlacedCodes.indexOf(moduleCode)
+
       const modulesHiddenCodes = retrieved.modulesHidden.map(
         (one: Module) => one.moduleCode
       )
       const modulesHiddenIndex = modulesHiddenCodes.indexOf(moduleCode)
+
       if (modulesPlacedIndex != -1) {
         // is a placed module
         const module = retrieved.modulesPlaced[modulesPlacedIndex]
+
         // O(1) delete
         if (retrieved.modulesPlaced.length > 1)
           retrieved.modulesPlaced[modulesPlacedIndex] =
             retrieved.modulesPlaced.pop()
         else retrieved.modulesPlaced = []
+
         retrieved.modulesHidden.push(module)
       } else if (modulesHiddenIndex != -1) {
         // is a hidden module
         const module = retrieved.modulesHidden[modulesHiddenIndex]
+
         if (retrieved.modulesHidden.length > 1)
           retrieved.modulesHidden[modulesHiddenIndex] =
             retrieved.modulesHidden.pop()
         // O(1) delete
         else retrieved.modulesHidden = []
+
         retrieved.modulesPlaced.push(module)
       } else {
-        console.log('Module not found in DAG')
+        // throw error if module not found
+        throw new Error('Module not found in DAG')
       }
+
       // update dag so that devs don't need a second query
       dag.modulesPlaced = retrieved.modulesPlaced
       dag.modulesHidden = retrieved.modulesHidden
+
       return await BaseRepo.save(retrieved)
     })
   }

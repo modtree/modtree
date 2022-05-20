@@ -159,6 +159,23 @@ describe('DAG.initialize with pullAll = true', () => {
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
       expect(dag.modulesHidden.length).toEqual(0)
     })
+
+    it("Throws error if the module to be toggled is not part of the DAG", async () => {
+      let error
+      await db.initialize()
+
+      try {
+        await DAGRepository(db).toggleModule(dag, 'XXYYZZ')
+      } catch (err) {
+        error = err
+      }
+
+      expect(error).toBeInstanceOf(Error)
+      expect(error.message).toBe('Module not found in DAG')
+
+      await db.destroy()
+      await setup(dbName)
+    })
   })
 })
 
