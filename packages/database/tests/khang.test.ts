@@ -24,8 +24,7 @@ test('canTakeModule is successful', async () => {
         },
       })
       const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
-      const result = Promise.all(modulesTested.map((x) => user.canTakeModule(x)))
-      return result
+      return Promise.all(modulesTested.map((x) => user.canTakeModule(x)))
     })
   )
   expect(res).toStrictEqual([true, false, false, true])
