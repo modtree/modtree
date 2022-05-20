@@ -5,11 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import { container } from '../data-source'
-import { utils } from '../utils'
 import { Module } from './Module'
-import { UserRepository } from '../repository/User'
-import { ModuleRepository } from '../repository/Module'
 
 @Entity({ name: 'user' })
 export class User {

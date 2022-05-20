@@ -43,6 +43,7 @@ async function initialize(props: Init.DegreeProps): Promise<void> {
 
 /**
  * Adds Modules to a Degree
+ * @param {Degree} degree
  * @param {string[]} moduleCodes
  */
 async function insertModules(degree: Degree, moduleCodes: string[]): Promise<void> {

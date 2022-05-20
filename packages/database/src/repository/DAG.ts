@@ -92,7 +92,9 @@ async function initialize(props: DAGInitProps): Promise<void> {
 
 /**
  * Toggle a Module's status between placed and hidden.
+ * @param {DAG} thisDag
  * @param {string} moduleCode
+ * @return {Promise<DAG>}
  */
 async function toggleModule(thisDag: DAG, moduleCode: string): Promise<DAG> {
   const res = await container(async () => {
