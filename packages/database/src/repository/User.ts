@@ -81,12 +81,12 @@ async function canTakeModule(
     /* Relations are not stored in the entity, so they must be explicitly
      * asked for from the DB
      */
-    const retrieved = await UserRepository.findOne({
+    const retrieved = await UserRepository().findOne({
       where: {
         id: user.id,
       },
     })
-    await UserRepository.loadRelations(retrieved, { modulesDone: true })
+    await UserRepository().loadRelations(retrieved, { modulesDone: true })
     const modulesDone = retrieved.modulesDone
     // check if PrereqTree is fulfilled
     const completedModulesCodes = modulesDone.map(
@@ -98,9 +98,10 @@ async function canTakeModule(
 }
 
 const BaseRepo = db.getRepository(User)
-export const UserRepository = BaseRepo.extend({
-  initialize,
-  canTakeModule,
-  build,
-  loadRelations: useLoadRelations(BaseRepo),
-})
+export const UserRepository = () =>
+  BaseRepo.extend({
+    initialize,
+    canTakeModule,
+    build,
+    loadRelations: useLoadRelations(BaseRepo),
+  })

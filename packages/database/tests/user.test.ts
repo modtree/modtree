@@ -6,7 +6,7 @@ import { setup, importChecks } from './setup'
 import { db } from '../src/config'
 
 importChecks({
-  repositories: [UserRepository]
+  repositories: [UserRepository()]
 })
 
 beforeAll(setup)
@@ -17,18 +17,18 @@ test('canTakeModule is successful', async () => {
   const props: Init.UserProps = init.emptyUser
   props.modulesDone.push('MA2001')
   props.modulesDoing.push('MA2219')
-  await UserRepository.initialize(props)
+  await UserRepository().initialize(props)
   const res = await endpoint(db, () =>
     container(db,async () => {
       // find user
-      const user = await UserRepository.findOne({
+      const user = await UserRepository().findOne({
         where: {
           username: props.username,
         },
       })
       const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
       return Promise.all(
-        modulesTested.map((x) => UserRepository.canTakeModule(user, x))
+        modulesTested.map((x) => UserRepository().canTakeModule(user, x))
       )
     })
   )
