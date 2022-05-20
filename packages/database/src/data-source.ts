@@ -36,23 +36,19 @@ export async function container<T>(
   fn: () => Promise<T | void>
 ): Promise<T | void> {
   // if already initialized, reattach to old instance
-  if (database.isInitialized) {
-    const res = await fn()
-    return res
-  }
+  if (database.isInitialized) return await fn()
   // if not initialized, kickstart a new instance
-  const res = await database.initialize()
+  return await database
+    .initialize()
     .then(async () => {
-      /** successfully initialize database connection */
-      const res = await fn()
-      return res
+      // successfully initialize database connection
+      return await fn()
     })
-    /** failed to initialize database connection */
+    // failed to initialize database connection
     .catch((error) => {
       console.log(error)
       log.red('typeorm failed to initialize connection to database.')
     })
-  return res
 }
 
 /**
@@ -65,16 +61,10 @@ export async function endpoint<T>(
   database: DataSource,
   callback: ModtreeFunction<T>
 ): Promise<T | void> {
-  const response = await callback()
-    .then((res) => {
-      return res
-    })
-    .catch((err) => {
-      console.log('Endpoint error:', err)
-    })
+  const response = await callback().catch((err) => {
+    console.log('Endpoint error:', err)
+  })
   // close database if still open
-  if (database.isInitialized) {
-    await database.destroy()
-  }
+  if (database.isInitialized) await database.destroy()
   return response
 }
