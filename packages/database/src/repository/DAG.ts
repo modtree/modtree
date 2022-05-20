@@ -6,6 +6,8 @@ import { DAG } from '../entity/DAG'
 import { ModuleRepository } from './Module'
 import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
+import { Degree } from '../entity/Degree'
+import { User } from '../entity/User'
 import { db as DefaultSource } from '../config'
 import { LoadRelations, useLoadRelations } from './base'
 
@@ -47,23 +49,30 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    */
   async function initialize(props: DAGInitProps): Promise<void> {
     await container(db, async () => {
-      const userDegree = []
-      userDegree.push(UserRepository(db).findOne({
-        where: {
-          id: props.userId,
-        },
-        relations: {
-          modulesDoing: true,
-          modulesDone: true,
-        },
-      }))
-      userDegree.push(DegreeRepository(db).findOne({
-        where: {
-          id: props.degreeId,
-        },
-        relations: { modules: true },
-      }))
-      const [user, degree] = await Promise.all(userDegree)
+
+      /**
+       * retrieves the degree and user with relations, without blocking each
+       * other.
+       */
+      async function getUserAndDegree(): Promise<[User, Degree]> {
+        const getUser = UserRepository(db).findOne({
+          where: {
+            id: props.userId,
+          },
+          relations: {
+            modulesDoing: true,
+            modulesDone: true,
+          },
+        })
+        const getDegree = DegreeRepository(db).findOne({
+          where: {
+            id: props.degreeId,
+          },
+          relations: { modules: true },
+        })
+        // return [user, degree]
+        return await Promise.all([getUser, getDegree])
+      }
 
       async function getModules(): Promise<Module[][]> {
         if (props.pullAll) {
@@ -87,6 +96,7 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         )
       }
 
+      const [user, degree] = await getUserAndDegree()
       const [modulesPlaced, modulesHidden] = await getModules()
       const dag = build({
         user,
