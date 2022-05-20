@@ -1,6 +1,5 @@
 import { AppDataSource, container } from '../data-source'
 import { In } from 'typeorm'
-
 import { DAGInitProps, DAGProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
 import { DAG } from '../entity/DAG'
@@ -91,7 +90,70 @@ async function initialize(props: DAGInitProps): Promise<void> {
   })
 }
 
+/**
+ * Toggle a Module's status between placed and hidden.
+ * @param {string} moduleCode
+ */
+async function toggleModule(thisDag: DAG, moduleCode: string): Promise<DAG> {
+  const res = await container(async () => {
+    const dag = await DAGRepository.findOne({
+      where: {
+        id: thisDag.id,
+      },
+      relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
+    })
+
+    const modulesPlacedCodes = dag.modulesPlaced.map(
+      (one: Module) => one.moduleCode
+    )
+    const modulesPlacedIndex = modulesPlacedCodes.indexOf(moduleCode)
+
+    const modulesHiddenCodes = dag.modulesHidden.map(
+      (one: Module) => one.moduleCode
+    )
+    const modulesHiddenIndex = modulesHiddenCodes.indexOf(moduleCode)
+
+    if (modulesPlacedIndex != -1) {
+      // is a placed module
+      const module = dag.modulesPlaced[modulesPlacedIndex]
+
+      // O(1) delete
+      if (dag.modulesPlaced.length > 1)
+        dag.modulesPlaced[modulesPlacedIndex] = dag.modulesPlaced.pop()
+      else dag.modulesPlaced = []
+
+      dag.modulesHidden.push(module)
+    } else if (modulesHiddenIndex != -1) {
+      // is a hidden module
+      const module = dag.modulesHidden[modulesHiddenIndex]
+
+      if (dag.modulesHidden.length > 1)
+        dag.modulesHidden[modulesHiddenIndex] = dag.modulesHidden.pop()
+      // O(1) delete
+      else dag.modulesHidden = []
+
+      dag.modulesPlaced.push(module)
+    } else {
+      console.log('Module not found in DAG')
+    }
+
+    // update thisDag so that devs don't need a second query
+    thisDag.modulesPlaced = dag.modulesPlaced
+    thisDag.modulesHidden = dag.modulesHidden
+
+    return await DAGRepository.save(dag)
+  })
+
+  if (!res) {
+    console.log('Error in DAG.toggleModule')
+    return
+  }
+
+  return res
+}
+
 export const DAGRepository = Repository.extend({
   initialize,
   build,
+  toggleModule,
 })

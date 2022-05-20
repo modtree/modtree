@@ -131,7 +131,7 @@ describe('DAG.toggleModules()', () => {
   ]
 
   it("Correctly changes a module's state from placed to hidden", async () => {
-    await container(() => dag.toggleModule('MA2001'))
+    await container(() => DAGRepository.toggleModule(dag, 'MA2001'))
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
     expect(dag.modulesHidden.length).toEqual(1)
@@ -140,7 +140,8 @@ describe('DAG.toggleModules()', () => {
 
   it("Correctly changes a module's state from hidden to placed", async () => {
     await endpoint(
-      async () => await container(async () => dag.toggleModule('MA2001'))
+      async () =>
+        await container(async () => DAGRepository.toggleModule(dag, 'MA2001'))
     )
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)

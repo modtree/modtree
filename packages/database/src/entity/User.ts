@@ -7,7 +7,7 @@ import {
 } from 'typeorm'
 import { container } from '../data-source'
 import { utils } from '../utils'
-import { Module } from '../entity/Module'
+import { Module } from './Module'
 import { UserRepository } from '../repository/User'
 import { ModuleRepository } from '../repository/Module'
 
