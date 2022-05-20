@@ -30,3 +30,5 @@ export const config = {
   entities: ['src/entity/*.ts'],
   migrations: ['src/migrations/**/*.ts'],
 }
+
+export const db = config.database

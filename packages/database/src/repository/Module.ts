@@ -6,6 +6,7 @@ import { nusmodsApi } from '../utils/string'
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
+import { db } from '../config'
 
 /**
  * @param {string} faculty
@@ -48,7 +49,7 @@ function build(props: NM): Module {
  * @return {Promise<Module[]>}
  */
 async function get(): Promise<Module[]> {
-  const modules = await container(async () => {
+  const modules = await container(db, async () => {
     const modules = await BaseRepo.find().catch((err) => {
       log.warn('Warning: failed to get Modules from database.')
       console.log(err)
@@ -97,7 +98,7 @@ async function pull(): Promise<Module[]> {
   const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
   let buffer = 0
   const result: Module[] = []
-  await container(async () => {
+  await container(db, async () => {
     const fetchQueue = []
     const writeQueue = []
     const test = async (moduleCode: string) => {

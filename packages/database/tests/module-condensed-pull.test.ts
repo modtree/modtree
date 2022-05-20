@@ -3,6 +3,7 @@ import { setup } from './setup'
 import { remove } from '../src/sql'
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
+import { db } from '../src/config'
 
 const lowerBound = 6000
 
@@ -11,10 +12,10 @@ beforeAll(setup)
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
   remove.tables(['moduleCondensed'])
-  const pullOnEmpty = await container(() => ModuleCondensedRepository.pull())
-  const pullOnFull = await container(() => ModuleCondensedRepository.pull())
+  const pullOnEmpty = await container(db, () => ModuleCondensedRepository.pull())
+  const pullOnFull = await container(db, () => ModuleCondensedRepository.pull())
   const written = await endpoint(
-    async () => await container(() => ModuleCondensedRepository.find())
+    async () => await container(db, () => ModuleCondensedRepository.find())
   )
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()

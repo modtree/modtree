@@ -3,6 +3,7 @@ import { remove } from '../src/sql'
 import { setup } from './setup'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
+import { db } from '../src/config'
 
 beforeAll(setup)
 
@@ -20,7 +21,7 @@ test('pull all modules from NUSMods', async () => {
     'degree_modules_required_module',
     'module',
   ])
-  const res = await endpoint(async () => await container(pull))
+  const res = await endpoint(async () => await container(db, pull))
   expect(res).toBeDefined()
   expect(res).not.toBeNull()
   if (!res) {

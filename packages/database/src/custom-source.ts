@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { ModtreeFunction, ModtreeFunctionWithArgs } from '../types/modtree'
+import { ModtreeFunction } from '../types/modtree'
 import { log } from './cli'
 import { config } from './config'
 
@@ -98,28 +98,4 @@ export function useSource(database: string): CustomSourceComponents {
     return response
   }
   return { db, endpoint, container }
-}
-
-/**
- * same as endpoint but with arguments
- * @param {ModtreeFunctionWithArgs<A, T>} callback
- * @param {A} args
- * @return {Promise<T | void>}
- */
-export async function endpointWithArgs<A, T>(
-  callback: ModtreeFunctionWithArgs<A, T>,
-  args: A
-): Promise<T | void> {
-  const response = await callback(args)
-    .then((res) => {
-      return res
-    })
-    .catch((err) => {
-      console.log('Endpoint error:', err)
-    })
-  // close database if still open
-  if (AppDataSource.isInitialized) {
-    await AppDataSource.destroy()
-  }
-  return response
 }

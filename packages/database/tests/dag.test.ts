@@ -9,6 +9,7 @@ import {
 import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks } from './setup'
+import { db } from '../src/config'
 
 importChecks({
   entities: [Module, Degree, User, DAG],
@@ -26,9 +27,9 @@ describe('DAG.initialize with pullAll = true', () => {
     it('Saves a degree', async () => {
       degreeProps = init.degree1
 
-      await container(() => DegreeRepository.initialize(degreeProps))
+      await container(db, () => DegreeRepository.initialize(degreeProps))
 
-      const res = await container(() =>
+      const res = await container(db, () =>
         DegreeRepository.findOne({
           where: {
             title: degreeProps.title,
@@ -45,11 +46,11 @@ describe('DAG.initialize with pullAll = true', () => {
     it('Saves a user', async () => {
       userProps = init.user1
 
-      await container(async () => {
+      await container(db, async () => {
         await UserRepository.initialize(userProps)
       })
 
-      const res = await container(() =>
+      const res = await container(db, () =>
         UserRepository.findOne({
           where: {
             username: userProps.username,
@@ -72,11 +73,11 @@ describe('DAG.initialize with pullAll = true', () => {
         pullAll: true,
       }
 
-      await container(() => DAGRepository.initialize(dagProps))
+      await container(db, () => DAGRepository.initialize(dagProps))
 
       const res = await endpoint(
         async () =>
-          await container(
+          await container(db,
             async () =>
               await DAGRepository.find({
                 relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
@@ -137,7 +138,7 @@ describe('DAG.initialize with pullAll = true', () => {
     ]
 
     it("Correctly changes a module's state from placed to hidden", async () => {
-      await container(() => DAGRepository.toggleModule(dag, 'MA2001'))
+      await container(db,() => DAGRepository.toggleModule(dag, 'MA2001'))
 
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
       expect(dag.modulesHidden.length).toEqual(1)
@@ -147,7 +148,7 @@ describe('DAG.initialize with pullAll = true', () => {
     it("Correctly changes a module's state from hidden to placed", async () => {
       await endpoint(
         async () =>
-          await container(async () => DAGRepository.toggleModule(dag, 'MA2001'))
+          await container(db,async () => DAGRepository.toggleModule(dag, 'MA2001'))
       )
 
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
@@ -160,9 +161,9 @@ describe('DAG.initialize with pullAll = false', () => {
   beforeAll(setup)
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
-      await container(() => DegreeRepository.initialize(degreeProps))
+      await container(db,() => DegreeRepository.initialize(degreeProps))
 
-      const res = await container(() =>
+      const res = await container(db,() =>
         DegreeRepository.findOne({
           where: {
             title: degreeProps.title,
@@ -177,11 +178,11 @@ describe('DAG.initialize with pullAll = false', () => {
     })
 
     it('Saves a user', async () => {
-      await container(async () => {
+      await container(db,async () => {
         await UserRepository.initialize(userProps)
       })
 
-      const res = await container(() =>
+      const res = await container(db,() =>
         UserRepository.findOne({
           where: {
             username: userProps.username,
@@ -205,11 +206,11 @@ describe('DAG.initialize with pullAll = false', () => {
         pullAll: false,
       }
 
-      await container(() => DAGRepository.initialize(dagProps))
+      await container(db,() => DAGRepository.initialize(dagProps))
 
       const res = await endpoint(
         async () =>
-          await container(
+          await container(db,
             async () =>
               await DAGRepository.find({
                 relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],

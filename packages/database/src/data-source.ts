@@ -42,9 +42,11 @@ export function getSource(database: string): DataSource {
 /**
  * a wrapper for typeorm-based database connections
  * @param {ModtreeFunction} fn
+ * @param {string} database
  * @return {Promise<T | void>}
  */
 export async function container<T>(
+  database: string,
   fn: () => Promise<T | void>
 ): Promise<T | void> {
   // if already initialized, reattach to old instance

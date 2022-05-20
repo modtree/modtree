@@ -2,6 +2,7 @@ import { container, endpoint } from '../src/data-source'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, importChecks } from './setup'
+import { db } from '../src/config'
 
 importChecks({
   entities: [Module],
@@ -12,7 +13,7 @@ beforeAll(setup)
 
 test('find modules by faculty', async () => {
   const res = await endpoint(() =>
-    container(() => ModuleRepository.findByFaculty('Computing'))
+    container(db, () => ModuleRepository.findByFaculty('Computing'))
   )
   if (!res) {
     return
@@ -26,7 +27,7 @@ test('find modules by faculty', async () => {
 
 test('fetch one module from NUSMods', async () => {
   const res = await endpoint(() =>
-    container(() => ModuleRepository.fetchOne('CS2040S'))
+    container(db, () => ModuleRepository.fetchOne('CS2040S'))
   )
   expect(res).toBeInstanceOf(Module)
 })
@@ -52,7 +53,7 @@ test('build a module from props', () => {
 })
 
 test('get all modules in database', async () => {
-  const res = await endpoint(() => container(() => ModuleRepository.find()))
+  const res = await endpoint(() => container(db, () => ModuleRepository.find()))
   if (!res) {
     return
   }

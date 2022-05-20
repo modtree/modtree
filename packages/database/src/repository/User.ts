@@ -6,6 +6,7 @@ import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
 import { useLoadRelations } from './base'
+import { db } from '../config'
 
 /**
  * Constructor for User
@@ -30,7 +31,7 @@ function build(props: UserProps): User {
  * @return {Promise<void>}
  */
 async function initialize(props: Init.UserProps): Promise<void> {
-  await container(async () => {
+  await container(db, async () => {
     // find modules completed and modules doing, to create many-to-many relation
     const modulesDone = await ModuleRepository.find({
       where: {
@@ -70,7 +71,7 @@ async function canTakeModule(
   user: User,
   moduleCode: string
 ): Promise<boolean | void> {
-  return await container(async () => {
+  return await container(db, async () => {
     // find module
     const module = await ModuleRepository.findOne({
       where: {

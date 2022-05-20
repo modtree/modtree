@@ -2,6 +2,7 @@ import { container, endpoint } from '../src/data-source'
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
 import { setup, importChecks } from './setup'
+import { db } from '../src/config'
 
 importChecks({
   entities: [ModuleCondensed],
@@ -16,7 +17,7 @@ beforeAll(setup)
 
 test('moduleCondensed.get', async () => {
   const moduleList = await endpoint(() =>
-    container(() => ModuleCondensedRepository.find())
+    container(db,() => ModuleCondensedRepository.find())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -35,7 +36,7 @@ test('moduleCondensed.get', async () => {
 
 test('moduleCondensed.getCodes', async () => {
   const moduleList = await endpoint(() =>
-    container(() => ModuleCondensedRepository.getCodes())
+    container(db,() => ModuleCondensedRepository.getCodes())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -51,7 +52,7 @@ test('moduleCondensed.getCodes', async () => {
 
 test('moduleCondensed.fetch', async () => {
   const moduleList = await endpoint(() =>
-    container(() => ModuleCondensedRepository.fetch())
+    container(db,() => ModuleCondensedRepository.fetch())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {

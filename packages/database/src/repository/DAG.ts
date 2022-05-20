@@ -6,6 +6,7 @@ import { DAG } from '../entity/DAG'
 import { ModuleRepository } from './Module'
 import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
+import { db } from '../config'
 
 const Repository = AppDataSource.getRepository(DAG)
 
@@ -30,7 +31,7 @@ function build(props: DAGProps): DAG {
  * @return {Promise<void>}
  */
 async function initialize(props: DAGInitProps): Promise<void> {
-  await container(async () => {
+  await container(db, async () => {
     const user = await UserRepository.findOne({
       where: {
         id: props.userId,
@@ -97,7 +98,7 @@ async function initialize(props: DAGInitProps): Promise<void> {
  * @return {Promise<void>}
  */
 async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
-  await container(async () => {
+  await container(db, async () => {
     const retrieved = await DAGRepository.findOne({
       where: {
         id: dag.id,

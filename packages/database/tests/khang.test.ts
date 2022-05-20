@@ -3,6 +3,7 @@ import { UserRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks } from './setup'
+import { db } from '../src/config'
 
 importChecks({
   repositories: [UserRepository]
@@ -18,7 +19,7 @@ test('canTakeModule is successful', async () => {
   props.modulesDoing.push('MA2219')
   await UserRepository.initialize(props)
   const res = await endpoint(() =>
-    container(async () => {
+    container(db, async () => {
       // find user
       const user = await UserRepository.findOne({
         where: {

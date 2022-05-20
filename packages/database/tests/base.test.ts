@@ -7,6 +7,7 @@ import {
   DegreeRepository,
   UserRepository,
 } from '../src/repository'
+import { db } from '../src/config'
 
 beforeAll(setup)
 
@@ -35,7 +36,7 @@ test('AppDataSource can be initialized and destroyed', async () => {
 })
 
 test('container is working', async () => {
-  const res = await container(async () => {
+  const res = await container(db, async () => {
     expect(AppDataSource.isInitialized).toBe(true)
     return true
   })
@@ -45,7 +46,7 @@ test('container is working', async () => {
 })
 
 test('container can run repo function', async () => {
-  const res = await container(() =>
+  const res = await container(db, () =>
     ModuleCondensedRepository.findOneBy({
       moduleCode: 'CS1010S',
     })
@@ -57,7 +58,7 @@ test('container can run repo function', async () => {
 
 test('endpoint is working', async () => {
   const res = await endpoint(() =>
-    container(async () => {
+    container(db, async () => {
       expect(AppDataSource.isInitialized).toBe(true)
       return true
     })
@@ -69,7 +70,7 @@ test('endpoint is working', async () => {
 test('endpoint can run repo function', async () => {
   // retrieve all modules from the Computing faculty
   const res = await endpoint(() =>
-    container(() => ModuleRepository.findByFaculty('Computing'))
+    container(db, () => ModuleRepository.findByFaculty('Computing'))
   )
   expect(res).toBeInstanceOf(Array)
   // check definition and ditch void to keep typescript happy

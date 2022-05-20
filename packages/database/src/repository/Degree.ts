@@ -3,6 +3,7 @@ import { In } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
+import { db } from '../config'
 
 /**
  * Constructor for Degree
@@ -23,7 +24,7 @@ function build(props: DegreeProps): Degree {
  * @return {Promise<void>}
  */
 async function initialize(props: Init.DegreeProps): Promise<void> {
-  await container(async () => {
+  await container(db, async () => {
     // find modules required, to create many-to-many relation
     const modules = await ModuleRepository.find({
       where: {
@@ -48,7 +49,7 @@ async function insertModules(
   degree: Degree,
   moduleCodes: string[]
 ): Promise<void> {
-  await container(async () => {
+  await container(db, async () => {
     // find modules to add
     const newModules = await ModuleRepository.find({
       where: {

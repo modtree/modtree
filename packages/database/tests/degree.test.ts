@@ -4,6 +4,7 @@ import { DegreeRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks } from './setup'
+import { db } from '../src/config'
 
 importChecks({
   entities: [Degree, Module],
@@ -22,11 +23,11 @@ describe('Degree', () => {
   describe('Degree.initialize', () => {
     it('Saves a degree', async () => {
       // write the degree to database
-      await container(() => DegreeRepository.initialize(props))
+      await container(db,() => DegreeRepository.initialize(props))
 
       // retrieve that degree again
       const possiblyNull: Degree | void = await endpoint(() =>
-        container(() =>
+        container(db,() =>
           DegreeRepository.findOne({
             where: {
               title: props.title,
@@ -64,7 +65,7 @@ describe('Degree', () => {
 
     it('Does not create a duplicate degree', async () => {
       const res = await endpoint(() =>
-        container(() =>
+        container(db,() =>
           DegreeRepository.find({
             where: {
               title: props.title,
