@@ -64,6 +64,7 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
       const modules = await BaseRepo.find().catch((err) => {
         log.warn('Warning: failed to get Modules from database.')
         console.log(err)
+        return []
       })
       return modules
     })
