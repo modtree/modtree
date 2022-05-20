@@ -66,7 +66,7 @@ test('Degree.insertModules', async () => {
 
   // 2. Add modules to degree, and write the result to database
   const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
-  await first.insertModules(newModuleCodes)
+  await DegreeRepository.insertModules(first, newModuleCodes)
 
   // 3. Retrieve the degree from database
   const second = await endpoint(() =>
