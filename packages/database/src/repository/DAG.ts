@@ -24,6 +24,7 @@ export function DAGRepository(database?: DataSource): DAGRepository {
   const db = database || DefaultSource
   const BaseRepo = db.getRepository(DAG)
   const loadRelations = useLoadRelations(BaseRepo)
+  const LoadedRepo = BaseRepo.extend({ loadRelations })
 
   /**
    * Constructor for DAG
@@ -47,18 +48,17 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    */
   async function initialize(props: DAGInitProps): Promise<void> {
     await container(db, async () => {
-      const user = await UserRepository(db).findOne({
-        where: {
-          id: props.userId,
-        },
-        relations: ['modulesDone', 'modulesDoing'],
+      const user = await UserRepository(db).findOneBy({
+        id: props.userId,
       })
-      const degree = await DegreeRepository(db).findOne({
-        where: {
-          id: props.degreeId,
-        },
-        relations: ['modules'],
+      await UserRepository(db).loadRelations(user, {
+        modulesDoing: true,
+        modulesDone: true,
       })
+      const degree = await DegreeRepository(db).findOneBy({
+        id: props.degreeId,
+      })
+      await DegreeRepository(db).loadRelations(degree, { modules: true })
 
       async function getModules(): Promise<Module[][]> {
         if (props.pullAll) {
@@ -102,11 +102,14 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    */
   async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
     await container(db, async () => {
-      const retrieved = await BaseRepo.findOne({
-        where: {
-          id: dag.id,
-        },
-        relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
+      const retrieved = await BaseRepo.findOneBy({
+        id: dag.id,
+      })
+      await LoadedRepo.loadRelations(retrieved, {
+        user: true,
+        degree: true,
+        modulesPlaced: true,
+        modulesHidden: true,
       })
 
       const modulesPlacedCodes = retrieved.modulesPlaced.map(
@@ -158,6 +161,6 @@ export function DAGRepository(database?: DataSource): DAGRepository {
     build,
     initialize,
     toggleModule,
-    loadRelations
+    loadRelations,
   })
 }
