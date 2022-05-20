@@ -1,12 +1,13 @@
 import { container, endpoint, getSource } from '../src/data-source'
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
-import { setup, importChecks } from './setup'
+import { setup, importChecks, teardown } from './environment'
 
 const dbName = 'test_module_condensed'
 const db = getSource(dbName)
 
   beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [ModuleCondensed],

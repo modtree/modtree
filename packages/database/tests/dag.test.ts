@@ -8,12 +8,13 @@ import {
 } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
-import { setup, importChecks } from './setup'
+import { setup, importChecks, teardown } from './environment'
 
 const dbName = 'test_dag'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [Module, Degree, User, DAG],
@@ -26,7 +27,7 @@ let degree: Degree, user: User, dag: DAG
 let degreeProps: Init.DegreeProps, userProps: Init.UserProps
 
 describe('DAG.initialize with pullAll = true', () => {
-beforeAll(() => setup(dbName))
+  beforeAll(() => setup(dbName))
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
       degreeProps = init.degree1
@@ -162,7 +163,7 @@ beforeAll(() => setup(dbName))
 })
 
 describe('DAG.initialize with pullAll = false', () => {
-beforeAll(() => setup(dbName))
+  beforeAll(() => setup(dbName))
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
       await container(db,() => DegreeRepository(db).initialize(degreeProps))

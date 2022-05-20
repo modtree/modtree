@@ -1,4 +1,4 @@
-import { connectionConfig } from './config'
+import { connectionConfig, initConfig } from './config'
 import { createConnection, Connection } from 'mysql2/promise'
 
 /**
@@ -36,5 +36,18 @@ export namespace remove {
     const con = await createConnection(connectionConfig)
     await removeTable(con, table)
     await con.end()
+  }
+  /**
+   * drops the database
+   * @param {string} database
+   */
+  export async function database(database: string) {
+    await createConnection(initConfig).then(async (connection) => {
+      // drop the database if it exists
+      await connection
+        .query(`DROP DATABASE ${database};`)
+        .catch(() => 'database already non-existent')
+      await connection.end()
+    })
   }
 }

@@ -3,7 +3,7 @@ import { Degree, Module } from '../src/entity'
 import { DegreeRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
-import { setup, importChecks } from './setup'
+import { setup, importChecks, teardown } from './environment'
 
 const dbName = 'test_degree'
 const db = getSource(dbName)
@@ -17,6 +17,7 @@ jest.setTimeout(5000)
 
 describe('Degree', () => {
   beforeAll(() => setup(dbName))
+  afterAll(() => teardown(dbName))
   const props: Init.DegreeProps = init.degree1
   let degree: Degree
 

@@ -2,12 +2,13 @@ import { container, endpoint, getSource } from '../src/data-source'
 import { UserRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
-import { setup, importChecks } from './setup'
+import { setup, importChecks, teardown } from './environment'
 
 const dbName = 'test_module_pull'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 importChecks({
   repositories: [UserRepository(db)]

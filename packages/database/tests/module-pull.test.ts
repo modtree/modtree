@@ -1,6 +1,6 @@
 import { container, endpoint, getSource } from '../src/data-source'
 import { remove } from '../src/sql'
-import { setup } from './setup'
+import { setup, teardown } from './environment'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 
@@ -8,6 +8,7 @@ const dbName = 'test_module_pull'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 async function pull() {
   const res = await ModuleRepository(db).pull()

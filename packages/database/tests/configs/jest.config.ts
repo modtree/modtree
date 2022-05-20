@@ -11,9 +11,8 @@ const base: Config.InitialOptionsWithRootDir = {
   // clear mocks, calls, instances, contexts and results before every test
   clearMocks: true,
   preset: 'ts-jest',
-  globalTeardown: './tests/teardown.ts',
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: ['setup.ts', 'teardown.ts'],
+  testPathIgnorePatterns: ['environment.ts'],
   testSequencer: './tests/configs/sequencer.js',
 }
 

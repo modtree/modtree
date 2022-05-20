@@ -1,12 +1,13 @@
 import { container, endpoint, getSource } from '../src/data-source'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
-import { setup, importChecks } from './setup'
+import { setup, importChecks, teardown } from './environment'
 
 const dbName = 'test_module'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [Module],
