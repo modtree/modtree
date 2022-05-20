@@ -5,14 +5,16 @@ import {
   ManyToMany,
   JoinTable,
   In,
+  FindOptionsRelations,
 } from 'typeorm'
 import { container } from '../data-source'
 import { Module } from './Module'
 import { ModuleRepository } from '../repository/Module'
 import { DegreeRepository } from '../repository/Degree'
+import { BaseEntity } from '../base/entity'
 
 @Entity({ name: 'degree' })
-export class Degree {
+export class Degree extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number
 
@@ -22,6 +24,15 @@ export class Degree {
 
   @Column()
   title: string
+
+  /**
+   * retrieve own relations
+   *
+   * @param {FindOptionsRelations<Degree>} relations
+   */
+  async loadRelations(relations: FindOptionsRelations<Degree>) {
+    await super.loadRelations(relations, DegreeRepository)
+  }
 
   /**
    * Adds Modules to a Degree
@@ -35,17 +46,11 @@ export class Degree {
           moduleCode: In(moduleCodes),
         },
       })
-
-      // find modules part of current degree
-      await DegreeRepository.findOne({
-        where: {
-          id: this.id,
-        },
-        relations: ['modules'],
-      }).then(async (degree) => {
-        degree.modules.push(...newModules)
-        await DegreeRepository.save(degree)
-      })
+      // load relations
+      await this.loadRelations({ modules: true })
+      // append new modules
+      this.modules.push(...newModules)
+      await DegreeRepository.save(this)
     })
   }
 }
