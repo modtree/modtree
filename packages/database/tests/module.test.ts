@@ -1,15 +1,18 @@
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, importChecks } from './setup'
-import { db } from '../src/config'
+
+const dbName = 'test_module'
+const db = getSource(dbName)
+
+beforeAll(() => setup(dbName))
 
 importChecks({
   entities: [Module],
   repositories: [ModuleRepository(db)],
 })
 
-beforeAll(setup)
 
 test('find modules by faculty', async () => {
   const res = await endpoint(db, () =>

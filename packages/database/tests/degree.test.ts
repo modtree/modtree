@@ -1,22 +1,22 @@
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { Degree, Module } from '../src/entity'
 import { DegreeRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks } from './setup'
-import { db } from '../src/config'
+
+const dbName = 'test_degree'
+const db = getSource(dbName)
 
 importChecks({
   entities: [Degree, Module],
   repositories: [DegreeRepository(db)]
 })
 
-
 jest.setTimeout(5000)
 
 describe('Degree', () => {
-  beforeAll(setup)
-
+  beforeAll(() => setup(dbName))
   const props: Init.DegreeProps = init.degree1
   let degree: Degree
 

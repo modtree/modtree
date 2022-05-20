@@ -1,5 +1,5 @@
 import { setup } from './setup'
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { Module, ModuleCondensed, Degree, User } from '../src/entity'
 import {
   ModuleRepository,
@@ -7,9 +7,11 @@ import {
   DegreeRepository,
   UserRepository,
 } from '../src/repository'
-import { db } from '../src/config'
 
-beforeAll(setup)
+const dbName = 'test_base'
+const db = getSource(dbName)
+
+beforeAll(() => setup(dbName))
 
 test('AppDataSource is defined', () => {
   expect(db).toBeDefined()

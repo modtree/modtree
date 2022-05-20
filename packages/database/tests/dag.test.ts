@@ -1,4 +1,4 @@
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { DAGInitProps } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
 import {
@@ -9,7 +9,11 @@ import {
 import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks } from './setup'
-import { db } from '../src/config'
+
+const dbName = 'test_dag'
+const db = getSource(dbName)
+
+beforeAll(() => setup(dbName))
 
 importChecks({
   entities: [Module, Degree, User, DAG],
@@ -22,7 +26,7 @@ let degree: Degree, user: User, dag: DAG
 let degreeProps: Init.DegreeProps, userProps: Init.UserProps
 
 describe('DAG.initialize with pullAll = true', () => {
-  beforeAll(setup)
+beforeAll(() => setup(dbName))
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
       degreeProps = init.degree1
@@ -158,7 +162,7 @@ describe('DAG.initialize with pullAll = true', () => {
 })
 
 describe('DAG.initialize with pullAll = false', () => {
-  beforeAll(setup)
+beforeAll(() => setup(dbName))
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
       await container(db,() => DegreeRepository(db).initialize(degreeProps))

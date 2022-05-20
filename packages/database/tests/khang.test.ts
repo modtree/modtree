@@ -1,15 +1,17 @@
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { UserRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks } from './setup'
-import { db } from '../src/config'
+
+const dbName = 'test_module_pull'
+const db = getSource(dbName)
+
+beforeAll(() => setup(dbName))
 
 importChecks({
   repositories: [UserRepository(db)]
 })
-
-beforeAll(setup)
 
 jest.setTimeout(20000)
 

@@ -4,9 +4,9 @@ import { restore, wipe } from '../src/sql'
 /**
  * pre-test setup
  */
-export async function setup() {
-  await wipe.database(config.database)
-  await restore.file(config.restoreSource)
+export async function setup(database: string) {
+  await wipe.database(database)
+  await restore.file(database, config.restoreSource)
 }
 
 export function importChecks(props: {entities?: any[], repositories?: any[] }) {

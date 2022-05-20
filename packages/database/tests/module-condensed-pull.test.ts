@@ -1,13 +1,15 @@
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { setup } from './setup'
 import { remove } from '../src/sql'
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
-import { db } from '../src/config'
 
 const lowerBound = 6000
 
-beforeAll(setup)
+const dbName = 'test_module_condensed_pull'
+const db = getSource(dbName)
+
+beforeAll(() => setup(dbName))
 
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
