@@ -5,7 +5,7 @@ import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
-import { useLoadRelations } from '../utils/repository'
+import { useLoadRelations } from './base'
 
 /**
  * Constructor for User
