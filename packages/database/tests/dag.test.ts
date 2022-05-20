@@ -1,5 +1,4 @@
 import { container, endpoint } from '../src/data-source'
-import { setup } from './setup'
 import { DAGInitProps } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
 import {
@@ -9,6 +8,12 @@ import {
 } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
+import { setup, importChecks } from './setup'
+
+importChecks({
+  entities: [Module, Degree, User, DAG],
+  repositories: [UserRepository, DegreeRepository, DAGRepository],
+})
 
 jest.setTimeout(5000)
 
@@ -18,17 +23,6 @@ beforeAll(async () => {
 
 let degree: Degree, user: User, dag: DAG
 let degreeProps: Init.DegreeProps, userProps: Init.UserProps
-
-test('all imports are defined', () => {
-  const entities = [Module, Degree, User, DAG]
-  const repos = [UserRepository, DegreeRepository, DAGRepository]
-  entities.forEach((e) => {
-    expect(e).toBeDefined()
-  })
-  repos.forEach((e) => {
-    expect(e).toBeDefined()
-  })
-})
 
 describe('DAG.initialize() is successful', () => {
   it('Saves a degree', async () => {

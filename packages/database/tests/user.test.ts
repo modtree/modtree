@@ -1,8 +1,12 @@
 import { container, endpoint } from '../src/data-source'
-import { setup } from './setup'
 import { UserRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
+import { setup, importChecks } from './setup'
+
+importChecks({
+  repositories: [UserRepository]
+})
 
 beforeAll(async () => {
   await setup()

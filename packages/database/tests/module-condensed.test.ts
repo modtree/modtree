@@ -1,8 +1,12 @@
 import { container, endpoint } from '../src/data-source'
-import { setup } from './setup'
-
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
+import { setup, importChecks } from './setup'
+
+importChecks({
+  entities: [ModuleCondensed],
+  repositories: [ModuleCondensedRepository]
+})
 
 const lowerBound = 6000
 

@@ -1,9 +1,14 @@
 import { container, endpoint } from '../src/data-source'
-import { setup } from './setup'
 import { Degree, Module } from '../src/entity'
 import { DegreeRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
+import { setup, importChecks } from './setup'
+
+importChecks({
+  entities: [Degree, Module],
+  repositories: [DegreeRepository]
+})
 
 beforeEach(async () => {
   await setup()
