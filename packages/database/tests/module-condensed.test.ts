@@ -16,7 +16,7 @@ let total = 0
 beforeAll(setup)
 
 test('moduleCondensed.get', async () => {
-  const moduleList = await endpoint(() =>
+  const moduleList = await endpoint(db, () =>
     container(db,() => ModuleCondensedRepository.find())
   )
   expect(moduleList).toBeDefined()
@@ -35,7 +35,7 @@ test('moduleCondensed.get', async () => {
 })
 
 test('moduleCondensed.getCodes', async () => {
-  const moduleList = await endpoint(() =>
+  const moduleList = await endpoint(db, () =>
     container(db,() => ModuleCondensedRepository.getCodes())
   )
   expect(moduleList).toBeDefined()
@@ -51,7 +51,7 @@ test('moduleCondensed.getCodes', async () => {
 })
 
 test('moduleCondensed.fetch', async () => {
-  const moduleList = await endpoint(() =>
+  const moduleList = await endpoint(db, () =>
     container(db,() => ModuleCondensedRepository.fetch())
   )
   expect(moduleList).toBeDefined()

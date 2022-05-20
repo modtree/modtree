@@ -18,7 +18,7 @@ test('canTakeModule is successful', async () => {
   props.modulesDone.push('MA2001')
   props.modulesDoing.push('MA2219')
   await UserRepository.initialize(props)
-  const res = await endpoint(() =>
+  const res = await endpoint(db, () =>
     container(db,async () => {
       // find user
       const user = await UserRepository.findOne({

@@ -75,7 +75,7 @@ describe('DAG.initialize with pullAll = true', () => {
 
       await container(db, () => DAGRepository.initialize(dagProps))
 
-      const res = await endpoint(
+      const res = await endpoint(db, 
         async () =>
           await container(db,
             async () =>
@@ -146,7 +146,7 @@ describe('DAG.initialize with pullAll = true', () => {
     })
 
     it("Correctly changes a module's state from hidden to placed", async () => {
-      await endpoint(
+      await endpoint(db, 
         async () =>
           await container(db,async () => DAGRepository.toggleModule(dag, 'MA2001'))
       )
@@ -208,7 +208,7 @@ describe('DAG.initialize with pullAll = false', () => {
 
       await container(db,() => DAGRepository.initialize(dagProps))
 
-      const res = await endpoint(
+      const res = await endpoint(db, 
         async () =>
           await container(db,
             async () =>

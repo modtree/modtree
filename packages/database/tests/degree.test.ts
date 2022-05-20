@@ -26,7 +26,7 @@ describe('Degree', () => {
       await container(db,() => DegreeRepository.initialize(props))
 
       // retrieve that degree again
-      const possiblyNull: Degree | void = await endpoint(() =>
+      const possiblyNull: Degree | void = await endpoint(db, () =>
         container(db,() =>
           DegreeRepository.findOne({
             where: {
@@ -64,7 +64,7 @@ describe('Degree', () => {
     })
 
     it('Does not create a duplicate degree', async () => {
-      const res = await endpoint(() =>
+      const res = await endpoint(db, () =>
         container(db,() =>
           DegreeRepository.find({
             where: {

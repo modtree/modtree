@@ -75,6 +75,7 @@ export async function container<T>(
  * @param {ModtreeFunction<T>} callback
  */
 export async function endpoint<T>(
+  database: DataSource,
   callback: ModtreeFunction<T>
 ): Promise<T | void> {
   const response = await callback()

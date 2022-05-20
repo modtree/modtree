@@ -92,7 +92,7 @@ export async function analyze<T>(
   callback: ModtreeFunction<T>,
   verbosity: Verbosity = 'normal'
 ) {
-  const response = await endpoint(callback)
+  const response = await endpoint(db, callback)
   if (verbosity === 'none') {
     return
   }

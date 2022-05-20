@@ -57,7 +57,7 @@ test('container can run repo function', async () => {
 })
 
 test('endpoint is working', async () => {
-  const res = await endpoint(() =>
+  const res = await endpoint(db, () =>
     container(db, async () => {
       expect(db.isInitialized).toBe(true)
       return true
@@ -69,7 +69,7 @@ test('endpoint is working', async () => {
 
 test('endpoint can run repo function', async () => {
   // retrieve all modules from the Computing faculty
-  const res = await endpoint(() =>
+  const res = await endpoint(db, () =>
     container(db, () => ModuleRepository.findByFaculty('Computing'))
   )
   expect(res).toBeInstanceOf(Array)

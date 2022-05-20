@@ -12,7 +12,7 @@ importChecks({
 beforeAll(setup)
 
 test('find modules by faculty', async () => {
-  const res = await endpoint(() =>
+  const res = await endpoint(db, () =>
     container(db, () => ModuleRepository.findByFaculty('Computing'))
   )
   if (!res) {
@@ -26,7 +26,7 @@ test('find modules by faculty', async () => {
 })
 
 test('fetch one module from NUSMods', async () => {
-  const res = await endpoint(() =>
+  const res = await endpoint(db, () =>
     container(db, () => ModuleRepository.fetchOne('CS2040S'))
   )
   expect(res).toBeInstanceOf(Module)
@@ -53,7 +53,7 @@ test('build a module from props', () => {
 })
 
 test('get all modules in database', async () => {
-  const res = await endpoint(() => container(db, () => ModuleRepository.find()))
+  const res = await endpoint(db, () => container(db, () => ModuleRepository.find()))
   if (!res) {
     return
   }

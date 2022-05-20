@@ -14,7 +14,7 @@ test('moduleCondensed.pull', async () => {
   remove.tables(['moduleCondensed'])
   const pullOnEmpty = await container(db, () => ModuleCondensedRepository.pull())
   const pullOnFull = await container(db, () => ModuleCondensedRepository.pull())
-  const written = await endpoint(
+  const written = await endpoint(db, 
     async () => await container(db, () => ModuleCondensedRepository.find())
   )
 
