@@ -86,7 +86,7 @@ async function initialize(props: DAGInitProps): Promise<void> {
       modulesHidden,
     }
     const dag = build(dagProps)
-    await DAGRepository.save(dag)
+    await BaseRepo.save(dag)
   })
 }
 
@@ -138,7 +138,8 @@ async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
 
       retrieved.modulesPlaced.push(module)
     } else {
-      console.log('Module not found in DAG')
+      // throw error if module not found
+      throw new Error('Module not found in DAG')
     }
 
     // update dag so that devs don't need a second query
@@ -149,6 +150,7 @@ async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
   })
 }
 
+const BaseRepo = AppDataSource.getRepository(DAG)
 export const DAGRepository = Repository.extend({
   initialize,
   build,

@@ -40,7 +40,7 @@ export const k: Config.InitialOptions = {
 
 export const w: Config.InitialOptions = {
   ...base,
-  testMatch: ['**/tests/**/degree.test.ts'],
+  testMatch: ['**/tests/**/dag.test.ts'],
   silent: false,
 }
 

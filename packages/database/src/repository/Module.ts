@@ -44,29 +44,11 @@ function build(props: NM): Module {
 }
 
 /**
- * get all modules in the database
- * @return {Promise<Module[]>}
- */
-async function get(): Promise<Module[]> {
-  const modules = await container(async () => {
-    const modules = await BaseRepo.find().catch((err) => {
-      log.warn('Warning: failed to get Modules from database.')
-      console.log(err)
-    })
-    return modules
-  })
-  if (!modules) {
-    return []
-  }
-  return modules
-}
-
-/**
  * get all module codes from the module table
  * @return {Promise<string[]>}
  */
 async function getCodes(): Promise<string[]> {
-  const modules = await get()
+  const modules = await ModuleRepository.find()
   const codes = modules.map((m) => m.moduleCode)
   return codes
 }

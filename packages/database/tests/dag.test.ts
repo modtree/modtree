@@ -1,4 +1,4 @@
-import { container, endpoint } from '../src/data-source'
+import { AppDataSource, container, endpoint } from '../src/data-source'
 import { DAGInitProps } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
 import {
@@ -152,6 +152,23 @@ describe('DAG.initialize with pullAll = true', () => {
 
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
       expect(dag.modulesHidden.length).toEqual(0)
+    })
+
+    it("Throws error if the module to be toggled is not part of the DAG", async () => {
+      let error
+      await AppDataSource.initialize()
+
+      try {
+        await DAGRepository.toggleModule(dag, 'XXYYZZ')
+      } catch (err) {
+        error = err
+      }
+
+      expect(error).toBeInstanceOf(Error)
+      expect(error.message).toBe('Module not found in DAG')
+
+      await AppDataSource.destroy()
+      await setup()
     })
   })
 })
