@@ -31,21 +31,23 @@ export function getSource(database: string): DataSource {
  * @param {ModtreeFunction} fn
  * @return {Promise<T | void>}
  */
-export async function container<T>(
+export function container<T>(
   database: DataSource,
   fn: () => Promise<T | void>
 ): Promise<T | void> {
   // if already initialized, reattach to old instance
-  if (database.isInitialized) return await fn()
+  if (database.isInitialized) return fn()
   // if not initialized, kickstart a new instance
-  return await database
-    .initialize()
-    .then(fn)
-    // failed to initialize database connection
-    .catch((error) => {
-      console.log(error)
-      log.red('typeorm failed to initialize connection to database.')
-    })
+  return (
+    database
+      .initialize()
+      .then(fn)
+      // failed to initialize database connection
+      .catch((error) => {
+        console.log(error)
+        log.red('typeorm failed to initialize connection to database.')
+      })
+  )
 }
 
 /**
@@ -54,14 +56,17 @@ export async function container<T>(
  * @param {DataSource} database
  * @param {ModtreeFunction<T>} callback
  */
-export async function endpoint<T>(
+export function endpoint<T>(
   database: DataSource,
   callback: ModtreeFunction<T>
 ): Promise<T | void> {
-  const response = await callback().catch((err) => {
-    console.log('Endpoint error:', err)
-  })
-  // close database if still open
-  if (database.isInitialized) await database.destroy()
+  const response = callback()
+    .catch((err) => {
+      console.log('Endpoint error:', err)
+    })
+    .finally(async () => {
+      // close database if still open
+      if (database.isInitialized) await database.destroy()
+    })
   return response
 }
