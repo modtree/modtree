@@ -49,7 +49,6 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    */
   async function initialize(props: DAGInitProps): Promise<void> {
     await container(db, async () => {
-
       /**
        * retrieves the degree and user with relations, without blocking each
        * other.
@@ -116,6 +115,9 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    */
   async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
     await container(db, async () => {
+      /**
+       * retrieve a DAG from database given its id
+       */
       const retrieved = await BaseRepo.findOne({
         where: {
           id: dag.id,
@@ -127,34 +129,39 @@ export function DAGRepository(database?: DataSource): DAGRepository {
           modulesHidden: true,
         },
       })
+      const [modulesPlaced, modulesHidden] = [
+        retrieved.modulesPlaced,
+        retrieved.modulesHidden,
+      ]
+      /**
+       * find the index of the given moduleCode to toggle
+       */
+      const index = {
+        placed: modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
+        hidden: modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
+      }
+      const currentStatus = index.placed === -1 ? 'placed' : 'hidden'
 
-      const modulesPlacedCodes = retrieved.modulesPlaced.map(
-        (one: Module) => one.moduleCode
-      )
-      const modulesPlacedIndex = modulesPlacedCodes.indexOf(moduleCode)
+      /**
+       * O(1) delete from unsorted array
+       */
+      function quickpop(arr: Module[], index: number) {
+        const elem = arr.pop()
+        if (arr.length > index + 1) arr[index] = elem
+      }
 
-      const modulesHiddenCodes = retrieved.modulesHidden.map(
-        (one: Module) => one.moduleCode
-      )
-      const modulesHiddenIndex = modulesHiddenCodes.indexOf(moduleCode)
-
-      if (modulesPlacedIndex != -1) {
+      if (index.placed != -1) {
         // is a placed module
-        const module = retrieved.modulesPlaced[modulesPlacedIndex]
-
-        // O(1) delete
-        if (retrieved.modulesPlaced.length > 1)
-          retrieved.modulesPlaced[modulesPlacedIndex] =
-            retrieved.modulesPlaced.pop()
-        else retrieved.modulesPlaced = []
+        const module = retrieved.modulesPlaced[index.placed]
+        quickpop(retrieved.modulesPlaced, index.placed)
 
         retrieved.modulesHidden.push(module)
-      } else if (modulesHiddenIndex != -1) {
+      } else if (index.hidden != -1) {
         // is a hidden module
-        const module = retrieved.modulesHidden[modulesHiddenIndex]
+        const module = retrieved.modulesHidden[index.hidden]
 
         if (retrieved.modulesHidden.length > 1)
-          retrieved.modulesHidden[modulesHiddenIndex] =
+          retrieved.modulesHidden[index.hidden] =
             retrieved.modulesHidden.pop()
         // O(1) delete
         else retrieved.modulesHidden = []
