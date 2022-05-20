@@ -8,7 +8,7 @@ import { db } from '../src/config'
 
 importChecks({
   entities: [Degree, Module],
-  repositories: [DegreeRepository]
+  repositories: [DegreeRepository(db)]
 })
 
 
@@ -23,12 +23,12 @@ describe('Degree', () => {
   describe('Degree.initialize', () => {
     it('Saves a degree', async () => {
       // write the degree to database
-      await container(db,() => DegreeRepository.initialize(props))
+      await container(db,() => DegreeRepository(db).initialize(props))
 
       // retrieve that degree again
       const possiblyNull: Degree | void = await endpoint(db, () =>
         container(db,() =>
-          DegreeRepository.findOne({
+          DegreeRepository(db).findOne({
             where: {
               title: props.title,
             },
@@ -60,13 +60,13 @@ describe('Degree', () => {
     const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
 
     it('Adds modules to a degree', async () => {
-      await DegreeRepository.insertModules(degree, newModuleCodes)
+      await DegreeRepository(db).insertModules(degree, newModuleCodes)
     })
 
     it('Does not create a duplicate degree', async () => {
       const res = await endpoint(db, () =>
         container(db,() =>
-          DegreeRepository.find({
+          DegreeRepository(db).find({
             where: {
               title: props.title,
             },

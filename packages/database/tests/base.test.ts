@@ -25,7 +25,7 @@ test('All entities are defined', () => {
 test('All repositories are defined', () => {
   expect(ModuleRepository).toBeDefined()
   expect(ModuleCondensedRepository).toBeDefined()
-  expect(DegreeRepository).toBeDefined()
+  expect(DegreeRepository(db)).toBeDefined()
   expect(UserRepository(db)).toBeDefined()
 })
 test('AppDataSource can be initialized and destroyed', async () => {

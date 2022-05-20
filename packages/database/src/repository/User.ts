@@ -16,6 +16,7 @@ interface UserRepository extends Repository<User> {
 
 /**
  * @param {DataSource} database
+ * @return {UserRepository}
  */
 export function UserRepository(database?: DataSource): UserRepository {
   const db = database || DefaultSource
@@ -107,10 +108,9 @@ export function UserRepository(database?: DataSource): UserRepository {
       return utils.checkTree(module.prereqTree, completedModulesCodes)
     })
   }
-  const result = BaseRepo.extend({
+  return BaseRepo.extend({
     canTakeModule,
     build,
     initialize,
   })
-  return result
 }

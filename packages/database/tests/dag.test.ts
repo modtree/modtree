@@ -13,7 +13,7 @@ import { db } from '../src/config'
 
 importChecks({
   entities: [Module, Degree, User, DAG],
-  repositories: [UserRepository(db), DegreeRepository, DAGRepository],
+  repositories: [UserRepository(db), DegreeRepository(db), DAGRepository],
 })
 
 jest.setTimeout(5000)
@@ -27,10 +27,10 @@ describe('DAG.initialize with pullAll = true', () => {
     it('Saves a degree', async () => {
       degreeProps = init.degree1
 
-      await container(db, () => DegreeRepository.initialize(degreeProps))
+      await container(db, () => DegreeRepository(db).initialize(degreeProps))
 
       const res = await container(db, () =>
-        DegreeRepository.findOne({
+        DegreeRepository(db).findOne({
           where: {
             title: degreeProps.title,
           },
@@ -161,10 +161,10 @@ describe('DAG.initialize with pullAll = false', () => {
   beforeAll(setup)
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
-      await container(db,() => DegreeRepository.initialize(degreeProps))
+      await container(db,() => DegreeRepository(db).initialize(degreeProps))
 
       const res = await container(db,() =>
-        DegreeRepository.findOne({
+        DegreeRepository(db).findOne({
           where: {
             title: degreeProps.title,
           },

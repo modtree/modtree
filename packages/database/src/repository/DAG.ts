@@ -38,7 +38,7 @@ async function initialize(props: DAGInitProps): Promise<void> {
       },
       relations: ['modulesDone', 'modulesDoing'],
     })
-    const degree = await DegreeRepository.findOne({
+    const degree = await DegreeRepository(db).findOne({
       where: {
         id: props.degreeId,
       },
