@@ -2,7 +2,9 @@ import { AppDataSource, container } from '../data-source'
 import { In } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
+import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
+import { utils } from '../utils'
 
 const Repository = AppDataSource.getRepository(User)
 
@@ -57,7 +59,43 @@ async function initialize(props: Init.UserProps): Promise<void> {
   })
 }
 
+
+  /**
+   * Given a module code, checks if user has cleared sufficient pre-requisites.
+   * Currently does not check for preclusion.
+   *
+   * @param{string} moduleCode
+   * @return{Promise<boolean>}
+   */
+  async function canTakeModule(thisUser: User, moduleCode: string): Promise<boolean | void> {
+    return await container(async () => {
+      // find module
+      const module = await ModuleRepository.findOne({
+        where: {
+          moduleCode: moduleCode,
+        },
+      })
+
+      // Relations are not stored in the entity, so they must be explicitly
+      // asked for from the DB
+      const user = await UserRepository.findOne({
+        where: {
+          id: thisUser.id,
+        },
+        relations: ['modulesDone'],
+      })
+      const modulesDone = user.modulesDone
+
+      // check if PrereqTree is fulfilled
+      const completedModulesCodes = modulesDone.map(
+        (one: Module) => one.moduleCode
+      )
+
+      return utils.checkTree(module.prereqTree, completedModulesCodes)
+    })
+  }
 export const UserRepository = Repository.extend({
   initialize,
+  canTakeModule,
   build,
 })
