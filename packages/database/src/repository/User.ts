@@ -64,11 +64,11 @@ async function initialize(props: Init.UserProps): Promise<void> {
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
-   * @param{User} thisUser
+   * @param{User} user
    * @param{string} moduleCode
    * @return{Promise<boolean>}
    */
-async function canTakeModule(thisUser: User, moduleCode: string): Promise<boolean | void> {
+async function canTakeModule(user: User, moduleCode: string): Promise<boolean | void> {
   return await container(async () => {
     // find module
     const module = await ModuleRepository.findOne({
@@ -79,13 +79,13 @@ async function canTakeModule(thisUser: User, moduleCode: string): Promise<boolea
 
     // Relations are not stored in the entity, so they must be explicitly
     // asked for from the DB
-    const user = await UserRepository.findOne({
+    const retrieved = await UserRepository.findOne({
       where: {
-        id: thisUser.id,
+        id: user.id,
       },
       relations: ['modulesDone'],
     })
-    const modulesDone = user.modulesDone
+    const modulesDone = retrieved.modulesDone
 
     // check if PrereqTree is fulfilled
     const completedModulesCodes = modulesDone.map(

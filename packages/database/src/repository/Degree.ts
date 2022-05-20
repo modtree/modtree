@@ -54,7 +54,6 @@ async function insertModules(degree: Degree, moduleCodes: string[]): Promise<voi
         moduleCode: In(moduleCodes),
       },
     })
-
     // find modules part of current degree
     await DegreeRepository.findOne({
       where: {
