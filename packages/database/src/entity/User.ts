@@ -11,9 +11,10 @@ import { utils } from '../utils'
 import { Module } from '../entity/Module'
 import { UserRepository } from '../repository/User'
 import { ModuleRepository } from '../repository/Module'
+import { BaseEntity } from '../base/entity'
 
 @Entity({ name: 'user' })
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number
 
@@ -46,17 +47,7 @@ export class User {
    * @param {FindOptionsRelations<User>} relations
    */
   async loadRelations(relations: FindOptionsRelations<User>) {
-    // find itself and load relations into a temporary variable
-    const res = await UserRepository.findOne({
-      where: {
-        id: this.id,
-      },
-      relations,
-    })
-    // iterate through the requested relations and mutate `this`
-    Object.keys(relations).map((key) => {
-      this[key] = res[key]
-    })
+    await super.loadRelations(relations, UserRepository)
   }
 
   /**
