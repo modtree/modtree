@@ -23,6 +23,7 @@ type Answers = {
 export namespace restore {
   /**
    * restores SQL database from a file
+   * @param {string} database
    * @param {string} filename
    */
   export async function file(database: string, filename: string) {

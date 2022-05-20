@@ -4,20 +4,6 @@ import { ModtreeFunction } from '../types/modtree'
 import { log } from './cli'
 import { config } from './config'
 
-export const AppDataSource = new DataSource({
-  type: 'mysql',
-  host: config.host,
-  port: 3306,
-  username: config.username,
-  password: config.password,
-  database: config.database,
-  synchronize: true,
-  logging: false,
-  entities: config.entities,
-  migrations: config.migrations,
-  subscribers: [],
-})
-
 /**
  * custom source creator
  * @param {string} database to use
@@ -41,8 +27,8 @@ export function getSource(database: string): DataSource {
 
 /**
  * a wrapper for typeorm-based database connections
+ * @param {DataSource} database
  * @param {ModtreeFunction} fn
- * @param {string} database
  * @return {Promise<T | void>}
  */
 export async function container<T>(
@@ -72,6 +58,7 @@ export async function container<T>(
 /**
  * closes the connection to database after everything is done
  * meant to be an overall wrapper for all endpoint functions.
+ * @param {DataSource} database
  * @param {ModtreeFunction<T>} callback
  */
 export async function endpoint<T>(
