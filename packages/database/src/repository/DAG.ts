@@ -47,7 +47,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    */
   async function initialize(props: DAGInitProps): Promise<void> {
     await container(db, async () => {
-      const user = await UserRepository(db).findOne({
+      const userDegree = []
+      userDegree.push(UserRepository(db).findOne({
         where: {
           id: props.userId,
         },
@@ -55,13 +56,14 @@ export function DAGRepository(database?: DataSource): DAGRepository {
           modulesDoing: true,
           modulesDone: true,
         },
-      })
-      const degree = await DegreeRepository(db).findOne({
+      }))
+      userDegree.push(DegreeRepository(db).findOne({
         where: {
           id: props.degreeId,
         },
         relations: { modules: true },
-      })
+      }))
+      const [user, degree] = await Promise.all(userDegree)
 
       async function getModules(): Promise<Module[][]> {
         if (props.pullAll) {
