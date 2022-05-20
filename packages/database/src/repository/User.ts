@@ -1,12 +1,11 @@
 import { AppDataSource, container } from '../data-source'
-import { FindOptionsRelations, In } from 'typeorm'
+import { In } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
-
-const Repository = AppDataSource.getRepository(User)
+import { useLoadRelations } from '../utils/repository'
 
 /**
  * Constructor for User
@@ -59,16 +58,18 @@ async function initialize(props: Init.UserProps): Promise<void> {
   })
 }
 
-
 /**
-   * Given a module code, checks if user has cleared sufficient pre-requisites.
-   * Currently does not check for preclusion.
-   *
-   * @param{User} user
-   * @param{string} moduleCode
-   * @return{Promise<boolean>}
-   */
-async function canTakeModule(user: User, moduleCode: string): Promise<boolean | void> {
+ * Given a module code, checks if user has cleared sufficient pre-requisites.
+ * Currently does not check for preclusion.
+ *
+ * @param{User} user
+ * @param{string} moduleCode
+ * @return{Promise<boolean>}
+ */
+async function canTakeModule(
+  user: User,
+  moduleCode: string
+): Promise<boolean | void> {
   return await container(async () => {
     // find module
     const module = await ModuleRepository.findOne({
@@ -97,33 +98,11 @@ async function canTakeModule(user: User, moduleCode: string): Promise<boolean | 
   })
 }
 
+const BaseUserRepository = AppDataSource.getRepository(User)
 
-/**
- * updates entity in-place to have relations
- *
- * @param {User} user
- * @param {FindOptionsRelations<User>} relations
- */
-export async function loadRelations(
-  user: User,
-  relations: FindOptionsRelations<User>,
-) {
-  // find itself and load relations into a temporary variable
-  const res = await UserRepository.findOne({
-    where: {
-      id: user.id,
-    },
-    relations,
-  })
-  // iterate through the requested relations and mutate `this`
-  Object.keys(relations).map((key) => {
-    user[key] = res[key]
-  })
-}
-
-export const UserRepository = Repository.extend({
+export const UserRepository = BaseUserRepository.extend({
   initialize,
   canTakeModule,
   build,
-  loadRelations
+  loadRelations: useLoadRelations(BaseUserRepository),
 })
