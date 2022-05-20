@@ -32,9 +32,10 @@ export const pull: Config.InitialOptions = {
   testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
+const khang = ['user', 'degree', 'dag', 'module']
 export const k: Config.InitialOptions = {
   ...base,
-  testMatch: ['**/tests/**/khang.test.ts'],
+  testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
   silent: false,
 }
 
