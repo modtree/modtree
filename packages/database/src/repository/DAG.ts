@@ -93,8 +93,9 @@ export function DAGRepository(database?: DataSource): DAGRepository {
           return [Array.from(new Set(placed)), []]
         }
         // if passed in, then find the modules
+        const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
         return await Promise.all(
-          [props.modulesPlacedCodes, props.modulesHiddenCodes].map((list) =>
+          queryList.map((list) =>
             ModuleRepository(db).findBy({
               moduleCode: In(list),
             })

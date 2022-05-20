@@ -48,9 +48,9 @@ export function UserRepository(database?: DataSource): UserRepository {
   async function initialize(props: Init.UserProps): Promise<void> {
     await container(db, async () => {
       // find modules completed and modules doing, to create many-to-many relation
-      const findList = [props.modulesDone, props.modulesDoing]
+      const queryList = [props.modulesDone, props.modulesDoing]
       const modulesPromise = Promise.all(
-        findList.map((list) =>
+        queryList.map((list) =>
           ModuleRepository(db).findBy({
             moduleCode: In(list),
           })
