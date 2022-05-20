@@ -92,58 +92,60 @@ async function initialize(props: DAGInitProps): Promise<void> {
 
 /**
  * Toggle a Module's status between placed and hidden.
- * @param {DAG} thisDag
+ * @param {DAG} dag
  * @param {string} moduleCode
  * @returns {Promise<void>}
  */
-async function toggleModule(thisDag: DAG, moduleCode: string): Promise<void> {
+async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
   await container(async () => {
-    const dag = await DAGRepository.findOne({
+    const retrieved = await DAGRepository.findOne({
       where: {
-        id: thisDag.id,
+        id: dag.id,
       },
       relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
     })
 
-    const modulesPlacedCodes = dag.modulesPlaced.map(
+    const modulesPlacedCodes = retrieved.modulesPlaced.map(
       (one: Module) => one.moduleCode
     )
     const modulesPlacedIndex = modulesPlacedCodes.indexOf(moduleCode)
 
-    const modulesHiddenCodes = dag.modulesHidden.map(
+    const modulesHiddenCodes = retrieved.modulesHidden.map(
       (one: Module) => one.moduleCode
     )
     const modulesHiddenIndex = modulesHiddenCodes.indexOf(moduleCode)
 
     if (modulesPlacedIndex != -1) {
       // is a placed module
-      const module = dag.modulesPlaced[modulesPlacedIndex]
+      const module = retrieved.modulesPlaced[modulesPlacedIndex]
 
       // O(1) delete
-      if (dag.modulesPlaced.length > 1)
-        dag.modulesPlaced[modulesPlacedIndex] = dag.modulesPlaced.pop()
-      else dag.modulesPlaced = []
+      if (retrieved.modulesPlaced.length > 1)
+        retrieved.modulesPlaced[modulesPlacedIndex] =
+          retrieved.modulesPlaced.pop()
+      else retrieved.modulesPlaced = []
 
-      dag.modulesHidden.push(module)
+      retrieved.modulesHidden.push(module)
     } else if (modulesHiddenIndex != -1) {
       // is a hidden module
-      const module = dag.modulesHidden[modulesHiddenIndex]
+      const module = retrieved.modulesHidden[modulesHiddenIndex]
 
-      if (dag.modulesHidden.length > 1)
-        dag.modulesHidden[modulesHiddenIndex] = dag.modulesHidden.pop()
+      if (retrieved.modulesHidden.length > 1)
+        retrieved.modulesHidden[modulesHiddenIndex] =
+          retrieved.modulesHidden.pop()
       // O(1) delete
-      else dag.modulesHidden = []
+      else retrieved.modulesHidden = []
 
-      dag.modulesPlaced.push(module)
+      retrieved.modulesPlaced.push(module)
     } else {
       console.log('Module not found in DAG')
     }
 
-    // update thisDag so that devs don't need a second query
-    thisDag.modulesPlaced = dag.modulesPlaced
-    thisDag.modulesHidden = dag.modulesHidden
+    // update dag so that devs don't need a second query
+    dag.modulesPlaced = retrieved.modulesPlaced
+    dag.modulesHidden = retrieved.modulesHidden
 
-    return await DAGRepository.save(dag)
+    return await DAGRepository.save(retrieved)
   })
 }
 
