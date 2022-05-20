@@ -21,7 +21,6 @@ test('pull all modules from NUSMods', async () => {
     'degree_modules_module',
     'user_modules_done_module',
     'user_modules_doing_module',
-    'degree_modules_required_module',
     'module',
   ])
   const res = await endpoint(db, async () => await container(db, pull))
