@@ -40,10 +40,7 @@ export async function container<T>(
   // if not initialized, kickstart a new instance
   return await database
     .initialize()
-    .then(async () => {
-      // successfully initialize database connection
-      return await fn()
-    })
+    .then(fn)
     // failed to initialize database connection
     .catch((error) => {
       console.log(error)
