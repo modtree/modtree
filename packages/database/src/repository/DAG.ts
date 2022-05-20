@@ -138,7 +138,8 @@ async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
 
       retrieved.modulesPlaced.push(module)
     } else {
-      console.log('Module not found in DAG')
+      // throw error if module not found
+      throw new Error('Module not found in DAG')
     }
 
     // update dag so that devs don't need a second query
