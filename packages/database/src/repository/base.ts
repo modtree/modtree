@@ -11,7 +11,7 @@ type LoadRelationsMethod = (
  * as a repository method
  *
  * @param {Repository<ModtreeEntity>} repository
- * @returns {LoadRelationsMethod}
+ * @return {LoadRelationsMethod}
  */
 export function useLoadRelations(
   repository: Repository<ModtreeEntity>

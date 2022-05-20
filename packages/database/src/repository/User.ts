@@ -54,7 +54,7 @@ async function initialize(props: Init.UserProps): Promise<void> {
     }
 
     const user = build(userProps)
-    await AppDataSource.manager.save(user)
+    await BaseRepo.save(user)
   })
 }
 

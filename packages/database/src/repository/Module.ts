@@ -105,7 +105,7 @@ async function pull(): Promise<Module[]> {
       const n: NM = res.data
       const m = build(n)
       result.push(m)
-      writeQueue.push(AppDataSource.manager.save(m))
+      writeQueue.push(BaseRepo.save(m))
       return 'ok'
     }
     for (let i = 0; i < diff.length; i++) {
