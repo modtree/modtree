@@ -1,10 +1,10 @@
 import { container, endpoint } from '../src/data-source'
-import { Module } from '../src/entity'
+import { Module, ModuleCondensed } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, importChecks } from './setup'
 
 importChecks({
-  entities: [Module],
+  entities: [Module, ModuleCondensed],
   repositories: [ModuleRepository],
 })
 
@@ -60,5 +60,14 @@ test('get all modules in database', async () => {
   res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
   })
+  expect(res.length).toBeGreaterThan(6000)
+})
+
+test('get all module codes in database', async () => {
+  const res = await endpoint(() => container(() => ModuleRepository.getCodes()))
+  if (!res) {
+    return
+  }
+  expect(res).toBeInstanceOf(Array)
   expect(res.length).toBeGreaterThan(6000)
 })
