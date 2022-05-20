@@ -94,10 +94,10 @@ async function initialize(props: DAGInitProps): Promise<void> {
  * Toggle a Module's status between placed and hidden.
  * @param {DAG} thisDag
  * @param {string} moduleCode
- * @return {Promise<DAG>}
+ * @returns {Promise<void>}
  */
-async function toggleModule(thisDag: DAG, moduleCode: string): Promise<DAG> {
-  const res = await container(async () => {
+async function toggleModule(thisDag: DAG, moduleCode: string): Promise<void> {
+  await container(async () => {
     const dag = await DAGRepository.findOne({
       where: {
         id: thisDag.id,
@@ -145,13 +145,6 @@ async function toggleModule(thisDag: DAG, moduleCode: string): Promise<DAG> {
 
     return await DAGRepository.save(dag)
   })
-
-  if (!res) {
-    console.log('Error in DAG.toggleModule')
-    return
-  }
-
-  return res
 }
 
 export const DAGRepository = Repository.extend({
