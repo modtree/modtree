@@ -4,8 +4,6 @@ import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 
-const Repository = AppDataSource.getRepository(Degree)
-
 /**
  * Constructor for Degree
  * Note: the props here is slightly different from Init.DegreeProps
@@ -67,7 +65,8 @@ async function insertModules(degree: Degree, moduleCodes: string[]): Promise<voi
   })
 }
 
-export const DegreeRepository = Repository.extend({
+const BaseRepo = AppDataSource.getRepository(Degree)
+export const DegreeRepository = BaseRepo.extend({
   initialize,
   build,
   insertModules,

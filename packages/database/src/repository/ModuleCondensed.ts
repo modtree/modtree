@@ -4,8 +4,6 @@ import { nusmodsApi, getModuleLevel } from '../utils/string'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 
-const Repository = AppDataSource.getRepository(ModuleCondensed)
-
 /**
  * a drop-in replacement of a constructor
  * @param {NM} props
@@ -24,7 +22,7 @@ function build(props: NMC): ModuleCondensed {
  * @return {Promise<string[]>}
  */
 async function getCodes(): Promise<string[]> {
-  const modules = await Repository.find()
+  const modules = await BaseRepo.find()
   return modules.map((m) => m.moduleCode)
 }
 
@@ -54,7 +52,8 @@ async function pull(): Promise<ModuleCondensed[]> {
   return modulesToSave
 }
 
-export const ModuleCondensedRepository = Repository.extend({
+const BaseRepo = AppDataSource.getRepository(ModuleCondensed)
+export const ModuleCondensedRepository = BaseRepo.extend({
   build,
   getCodes,
   fetch,

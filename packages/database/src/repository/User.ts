@@ -98,11 +98,10 @@ async function canTakeModule(
   })
 }
 
-const BaseUserRepository = AppDataSource.getRepository(User)
-
-export const UserRepository = BaseUserRepository.extend({
+const BaseRepo = AppDataSource.getRepository(User)
+export const UserRepository = BaseRepo.extend({
   initialize,
   canTakeModule,
   build,
-  loadRelations: useLoadRelations(BaseUserRepository),
+  loadRelations: useLoadRelations(BaseRepo),
 })
