@@ -32,7 +32,7 @@ function build(props: DAGProps): DAG {
  */
 async function initialize(props: DAGInitProps): Promise<void> {
   await container(db, async () => {
-    const user = await UserRepository().findOne({
+    const user = await UserRepository(db).findOne({
       where: {
         id: props.userId,
       },

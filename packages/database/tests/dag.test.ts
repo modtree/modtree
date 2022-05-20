@@ -13,7 +13,7 @@ import { db } from '../src/config'
 
 importChecks({
   entities: [Module, Degree, User, DAG],
-  repositories: [UserRepository(), DegreeRepository, DAGRepository],
+  repositories: [UserRepository(db), DegreeRepository, DAGRepository],
 })
 
 jest.setTimeout(5000)
@@ -47,11 +47,11 @@ describe('DAG.initialize with pullAll = true', () => {
       userProps = init.user1
 
       await container(db, async () => {
-        await UserRepository().initialize(userProps)
+        await UserRepository(db).initialize(userProps)
       })
 
       const res = await container(db, () =>
-        UserRepository().findOne({
+        UserRepository(db).findOne({
           where: {
             username: userProps.username,
           },
@@ -179,11 +179,11 @@ describe('DAG.initialize with pullAll = false', () => {
 
     it('Saves a user', async () => {
       await container(db,async () => {
-        await UserRepository().initialize(userProps)
+        await UserRepository(db).initialize(userProps)
       })
 
       const res = await container(db,() =>
-        UserRepository().findOne({
+        UserRepository(db).findOne({
           where: {
             username: userProps.username,
           },
