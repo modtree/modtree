@@ -144,9 +144,9 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         invalid: -1,
       }
       const state: ModuleState =
-        index.placed === -1
+        index.placed !== -1
           ? 'placed'
-          : index.hidden === -1
+          : index.hidden !== -1
           ? 'hidden'
           : 'invalid'
 
@@ -154,18 +154,18 @@ export function DAGRepository(database?: DataSource): DAGRepository {
        * O(1) delete from unsorted array
        */
       function quickpop(arr: Module[], index: number): Module {
+        if (arr.length === 0) return
+        const res = arr[index]
         const elem = arr.pop()
-        if (arr.length > index + 1) arr[index] = elem
-        return elem
+        if (arr.length !== index) arr[index] = elem
+        return res
       }
 
       /**
        * toggles the modules between placed and hidden
        */
       function toggle(src: Module[], dest: Module[]) {
-        const i = index[state]
-        const module = quickpop(src, i)
-        dest.push(module)
+        dest.push(quickpop(src, index[state]))
       }
 
       /**
