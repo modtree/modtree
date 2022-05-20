@@ -77,22 +77,21 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         }
         // if passed in, then find the modules
         return await Promise.all(
-          [props.modulesPlacedCodes, props.modulesHiddenCodes].map((x) =>
+          [props.modulesPlacedCodes, props.modulesHiddenCodes].map((list) =>
             ModuleRepository(db).findBy({
-              moduleCode: In(x),
+              moduleCode: In(list),
             })
           )
         )
       }
 
       const [modulesPlaced, modulesHidden] = await getModules()
-      const dagProps = {
+      const dag = build({
         user,
         degree,
         modulesPlaced,
         modulesHidden,
-      }
-      const dag = build(dagProps)
+      })
       await BaseRepo.save(dag)
     })
   }
