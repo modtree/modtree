@@ -5,6 +5,7 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { db as DefaultSource } from '../config'
 import { LoadRelations, useLoadRelations } from './base'
+import { copy } from '../utils/object'
 
 interface DegreeRepository extends Repository<Degree> {
   build(props: DegreeProps): Degree
@@ -70,7 +71,7 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
         moduleCode: In(moduleCodes),
       })
       // find modules part of current degree
-      await BaseRepo.findOne({
+      const updatedDegree = await BaseRepo.findOne({
         where: {
           id: degree.id,
         },
@@ -78,9 +79,10 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
       }).then(async (degree) => {
         degree.modules.push(...newModules)
         await BaseRepo.save(degree)
+        return degree
       })
       // update the passed object
-      degree.modules.push(...newModules)
+      copy(updatedDegree, degree)
     })
   }
 
