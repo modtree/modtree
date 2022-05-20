@@ -10,6 +10,7 @@ import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
 import { db as DefaultSource } from '../config'
 import { LoadRelations, useLoadRelations } from './base'
+import { quickpop } from '../utils/array'
 
 interface DAGRepository extends Repository<DAG> {
   build(props: DAGProps): DAG
@@ -153,20 +154,6 @@ export function DAGRepository(database?: DataSource): DAGRepository {
           : index.hidden !== -1
           ? 'hidden'
           : 'invalid'
-
-      /**
-       * O(1) delete from unsorted array
-       * @param {Module[]} arr
-       * @param {number} index
-       * @return {Module}
-       */
-      function quickpop(arr: Module[], index: number): Module {
-        if (arr.length === 0) return
-        const res = arr[index]
-        const elem = arr.pop()
-        if (arr.length !== index) arr[index] = elem
-        return res
-      }
 
       /**
        * toggles the modules between placed and hidden
