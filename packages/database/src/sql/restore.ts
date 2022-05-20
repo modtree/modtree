@@ -23,12 +23,13 @@ type Answers = {
 export namespace restore {
   /**
    * restores SQL database from a file
+   * @param {string} database
    * @param {string} filename
    */
-  export async function file(filename: string) {
-    await wipe.database(config.database)
+  export async function file(database: string, filename: string) {
+    await wipe.database(database)
     const sqlFilepath = join(sqlDir, filename)
-    const cmd = `mysql -u ${config.username} -p"${config.password}" ${config.database} < ${sqlFilepath}`
+    const cmd = `mysql -u ${config.username} -p"${config.password}" ${database} < ${sqlFilepath}`
     await exec(cmd)
   }
 

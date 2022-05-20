@@ -1,5 +1,5 @@
-import { setup } from './setup'
-import { AppDataSource, container, endpoint } from '../src/data-source'
+import { setup, teardown } from './environment'
+import { container, endpoint, getSource } from '../src/data-source'
 import { Module, ModuleCondensed, Degree, User } from '../src/entity'
 import {
   ModuleRepository,
@@ -8,10 +8,14 @@ import {
   UserRepository,
 } from '../src/repository'
 
-beforeAll(setup)
+const dbName = 'test_base'
+const db = getSource(dbName)
+
+beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 test('AppDataSource is defined', () => {
-  expect(AppDataSource).toBeDefined()
+  expect(db).toBeDefined()
 })
 
 test('All entities are defined', () => {
@@ -22,54 +26,54 @@ test('All entities are defined', () => {
 })
 
 test('All repositories are defined', () => {
-  expect(ModuleRepository).toBeDefined()
-  expect(ModuleCondensedRepository).toBeDefined()
-  expect(DegreeRepository).toBeDefined()
-  expect(UserRepository).toBeDefined()
+  expect(ModuleRepository(db)).toBeDefined()
+  expect(ModuleCondensedRepository(db)).toBeDefined()
+  expect(DegreeRepository(db)).toBeDefined()
+  expect(UserRepository(db)).toBeDefined()
 })
 test('AppDataSource can be initialized and destroyed', async () => {
-  await AppDataSource.initialize()
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
-  expect(AppDataSource.isInitialized).toBe(false)
+  await db.initialize()
+  expect(db.isInitialized).toBe(true)
+  await db.destroy()
+  expect(db.isInitialized).toBe(false)
 })
 
 test('container is working', async () => {
-  const res = await container(async () => {
-    expect(AppDataSource.isInitialized).toBe(true)
+  const res = await container(db, async () => {
+    expect(db.isInitialized).toBe(true)
     return true
   })
   expect(res).toBe(true)
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
+  expect(db.isInitialized).toBe(true)
+  await db.destroy()
 })
 
 test('container can run repo function', async () => {
-  const res = await container(() =>
-    ModuleCondensedRepository.findOneBy({
+  const res = await container(db, () =>
+    ModuleCondensedRepository(db).findOneBy({
       moduleCode: 'CS1010S',
     })
   )
   expect(res).toBeInstanceOf(ModuleCondensed)
-  expect(AppDataSource.isInitialized).toBe(true)
-  await AppDataSource.destroy()
+  expect(db.isInitialized).toBe(true)
+  await db.destroy()
 })
 
 test('endpoint is working', async () => {
-  const res = await endpoint(() =>
-    container(async () => {
-      expect(AppDataSource.isInitialized).toBe(true)
+  const res = await endpoint(db, () =>
+    container(db, async () => {
+      expect(db.isInitialized).toBe(true)
       return true
     })
   )
   expect(res).toBe(true)
-  expect(AppDataSource.isInitialized).toBe(false)
+  expect(db.isInitialized).toBe(false)
 })
 
 test('endpoint can run repo function', async () => {
   // retrieve all modules from the Computing faculty
-  const res = await endpoint(() =>
-    container(() => ModuleRepository.findByFaculty('Computing'))
+  const res = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).findByFaculty('Computing'))
   )
   expect(res).toBeInstanceOf(Array)
   // check definition and ditch void to keep typescript happy
@@ -82,5 +86,5 @@ test('endpoint can run repo function', async () => {
     expect(m).toBeInstanceOf(Module)
   })
   expect(res.length).toBeGreaterThan(10)
-  expect(AppDataSource.isInitialized).toBe(false)
+  expect(db.isInitialized).toBe(false)
 })

@@ -6,7 +6,7 @@ export const initConfig = {
   password: config.password,
 }
 
-export const connectionConfig = {
+export const connectionConfig = (database?: string) => ({
   ...initConfig,
-  database: config.database,
-}
+  database: database || config.database,
+})

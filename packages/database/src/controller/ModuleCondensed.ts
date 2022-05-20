@@ -1,11 +1,11 @@
-import { AppDataSource } from '../data-source'
+import { db } from '../config'
 import { Request, Response } from 'express'
-import { ModuleCondensed } from '../entity'
 import { Like } from 'typeorm'
+import { ModuleCondensedRepository } from '../repository'
 
 /** ModuleCondensed api controller */
 export class moduleCondensedController {
-  private moduleRepo = AppDataSource.getRepository(ModuleCondensed)
+  private moduleRepo = ModuleCondensedRepository(db)
 
   /**
    * returns all the modules in the database

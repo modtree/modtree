@@ -1,22 +1,26 @@
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
-import { setup, importChecks } from './setup'
+import { setup, importChecks, teardown } from './environment'
+
+const dbName = 'test_module_condensed'
+const db = getSource(dbName)
+
+  beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [ModuleCondensed],
-  repositories: [ModuleCondensedRepository]
+  repositories: [ModuleCondensedRepository(db)]
 })
 
 const lowerBound = 6000
 
 let total = 0
 
-beforeAll(setup)
-
 test('moduleCondensed.get', async () => {
-  const moduleList = await endpoint(() =>
-    container(() => ModuleCondensedRepository.find())
+  const moduleList = await endpoint(db, () =>
+    container(db,() => ModuleCondensedRepository(db).find())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -34,8 +38,8 @@ test('moduleCondensed.get', async () => {
 })
 
 test('moduleCondensed.getCodes', async () => {
-  const moduleList = await endpoint(() =>
-    container(() => ModuleCondensedRepository.getCodes())
+  const moduleList = await endpoint(db, () =>
+    container(db,() => ModuleCondensedRepository(db).getCodes())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -50,8 +54,8 @@ test('moduleCondensed.getCodes', async () => {
 })
 
 test('moduleCondensed.fetch', async () => {
-  const moduleList = await endpoint(() =>
-    container(() => ModuleCondensedRepository.fetch())
+  const moduleList = await endpoint(db, () =>
+    container(db,() => ModuleCondensedRepository(db).fetch())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {

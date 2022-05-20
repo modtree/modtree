@@ -1,5 +1,6 @@
 import { config as dotenvConfig } from 'dotenv'
 import { resolve } from 'path'
+import { DataSource } from 'typeorm'
 import { box } from './cli'
 
 const env = process.env.NODE_ENV
@@ -30,3 +31,17 @@ export const config = {
   entities: ['src/entity/*.ts'],
   migrations: ['src/migrations/**/*.ts'],
 }
+
+export const db = new DataSource({
+  type: 'mysql',
+  host: config.host,
+  port: 3306,
+  username: config.username,
+  password: config.password,
+  database: config.database,
+  synchronize: true,
+  logging: false,
+  entities: config.entities,
+  migrations: config.migrations,
+  subscribers: [],
+})

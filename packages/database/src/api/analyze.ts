@@ -2,6 +2,7 @@ import { log } from '../cli'
 import { inspect } from 'util'
 import { endpoint } from '../data-source'
 import { ModtreeFunction } from '../../types/modtree'
+import { db } from '../config'
 
 type Verbosity = 'none' | 'verbose' | 'normal'
 
@@ -92,7 +93,7 @@ export async function analyze<T>(
   callback: ModtreeFunction<T>,
   verbosity: Verbosity = 'normal'
 ) {
-  const response = await endpoint(callback)
+  const response = await endpoint(db, callback)
   if (verbosity === 'none') {
     return
   }

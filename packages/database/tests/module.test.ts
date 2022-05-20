@@ -1,22 +1,24 @@
-import { container, endpoint } from '../src/data-source'
+import { container, endpoint, getSource } from '../src/data-source'
 import { Module, ModuleCondensed } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
-import { setup, importChecks } from './setup'
+import { setup, importChecks, teardown } from './environment'
+
+const dbName = 'test_module'
+const db = getSource(dbName)
+
+beforeAll(() => setup(dbName))
+afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [Module, ModuleCondensed],
-  repositories: [ModuleRepository],
+  repositories: [ModuleRepository(db)],
 })
 
-beforeAll(setup)
-
 test('find modules by faculty', async () => {
-  const res = await endpoint(() =>
-    container(() => ModuleRepository.findByFaculty('Computing'))
+  const res = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).findByFaculty('Computing'))
   )
-  if (!res) {
-    return
-  }
+  if (!res) return
   expect(res).toBeInstanceOf(Array)
   res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
@@ -25,14 +27,14 @@ test('find modules by faculty', async () => {
 })
 
 test('fetch one module from NUSMods', async () => {
-  const res = await endpoint(() =>
-    container(() => ModuleRepository.fetchOne('CS2040S'))
+  const res = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).fetchOne('CS2040S'))
   )
   expect(res).toBeInstanceOf(Module)
 })
 
 test('build a module from props', () => {
-  const module = ModuleRepository.build({
+  const module = ModuleRepository(db).build({
     acadYear: '2020',
     moduleCode: 'CS1010S',
     title: 'Winning',
@@ -52,10 +54,10 @@ test('build a module from props', () => {
 })
 
 test('get all modules in database', async () => {
-  const res = await endpoint(() => container(() => ModuleRepository.find()))
-  if (!res) {
-    return
-  }
+  const res = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).find())
+  )
+  if (!res) return
   expect(res).toBeInstanceOf(Array)
   res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
@@ -64,10 +66,10 @@ test('get all modules in database', async () => {
 })
 
 test('get all module codes in database', async () => {
-  const res = await endpoint(() => container(() => ModuleRepository.getCodes()))
-  if (!res) {
-    return
-  }
+  const res = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).getCodes())
+  )
+  if (!res) return
   expect(res).toBeInstanceOf(Array)
   expect(res.length).toBeGreaterThan(6000)
 })

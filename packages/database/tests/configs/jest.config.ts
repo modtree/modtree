@@ -11,9 +11,8 @@ const base: Config.InitialOptionsWithRootDir = {
   // clear mocks, calls, instances, contexts and results before every test
   clearMocks: true,
   preset: 'ts-jest',
-  globalTeardown: './tests/teardown.ts',
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: ['setup.ts', 'teardown.ts'],
+  testPathIgnorePatterns: ['environment.ts'],
   testSequencer: './tests/configs/sequencer.js',
 }
 
@@ -32,9 +31,10 @@ export const pull: Config.InitialOptions = {
   testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
+const khang = ['user', 'degree', 'dag', 'module']
 export const k: Config.InitialOptions = {
   ...base,
-  testMatch: ['**/tests/**/khang.test.ts'],
+  testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
   silent: false,
 }
 
