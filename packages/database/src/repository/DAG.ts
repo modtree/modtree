@@ -77,12 +77,12 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         modulesHidden = []
       } else {
         // if passed in, then find the modules
-        modulesPlaced = await ModuleRepository.find({
+        modulesPlaced = await ModuleRepository(db).find({
           where: {
             moduleCode: In(props.modulesPlacedCodes),
           },
         })
-        modulesHidden = await ModuleRepository.find({
+        modulesHidden = await ModuleRepository(db).find({
           where: {
             moduleCode: In(props.modulesHiddenCodes),
           },

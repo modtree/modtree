@@ -8,7 +8,7 @@ import { db } from '../src/config'
 beforeAll(setup)
 
 async function pull() {
-  const res = await ModuleRepository.pull()
+  const res = await ModuleRepository(db).pull()
   return res
 }
 

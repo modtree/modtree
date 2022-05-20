@@ -6,14 +6,14 @@ import { db } from '../src/config'
 
 importChecks({
   entities: [Module],
-  repositories: [ModuleRepository],
+  repositories: [ModuleRepository(db)],
 })
 
 beforeAll(setup)
 
 test('find modules by faculty', async () => {
   const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository.findByFaculty('Computing'))
+    container(db, () => ModuleRepository(db).findByFaculty('Computing'))
   )
   if (!res) {
     return
@@ -27,13 +27,13 @@ test('find modules by faculty', async () => {
 
 test('fetch one module from NUSMods', async () => {
   const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository.fetchOne('CS2040S'))
+    container(db, () => ModuleRepository(db).fetchOne('CS2040S'))
   )
   expect(res).toBeInstanceOf(Module)
 })
 
 test('build a module from props', () => {
-  const module = ModuleRepository.build({
+  const module = ModuleRepository(db).build({
     acadYear: '2020',
     moduleCode: 'CS1010S',
     title: 'Winning',
@@ -53,7 +53,7 @@ test('build a module from props', () => {
 })
 
 test('get all modules in database', async () => {
-  const res = await endpoint(db, () => container(db, () => ModuleRepository.find()))
+  const res = await endpoint(db, () => container(db, () => ModuleRepository(db).find()))
   if (!res) {
     return
   }

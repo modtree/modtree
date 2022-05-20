@@ -23,7 +23,7 @@ test('All entities are defined', () => {
 })
 
 test('All repositories are defined', () => {
-  expect(ModuleRepository).toBeDefined()
+  expect(ModuleRepository(db)).toBeDefined()
   expect(ModuleCondensedRepository).toBeDefined()
   expect(DegreeRepository(db)).toBeDefined()
   expect(UserRepository(db)).toBeDefined()
@@ -70,7 +70,7 @@ test('endpoint is working', async () => {
 test('endpoint can run repo function', async () => {
   // retrieve all modules from the Computing faculty
   const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository.findByFaculty('Computing'))
+    container(db, () => ModuleRepository(db).findByFaculty('Computing'))
   )
   expect(res).toBeInstanceOf(Array)
   // check definition and ditch void to keep typescript happy
