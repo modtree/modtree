@@ -75,7 +75,11 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         return await Promise.all([getUser, getDegree])
       }
 
-      async function getModules(): Promise<Module[][]> {
+      /**
+       * gets lists of modules placed and modules hidden
+       * @return {Promise<Array<Module[]>>}
+       */
+      async function getModules(): Promise<Array<Module[]>> {
         if (props.pullAll) {
           /* if don't pass in anything, then by default add ALL of
            * - user.modulesDoing
@@ -147,11 +151,14 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         index.placed !== -1
           ? 'placed'
           : index.hidden !== -1
-          ? 'hidden'
-          : 'invalid'
+            ? 'hidden'
+            : 'invalid'
 
       /**
        * O(1) delete from unsorted array
+       * @param {Module[]} arr
+       * @param {number} index
+       * @return {Module}
        */
       function quickpop(arr: Module[], index: number): Module {
         if (arr.length === 0) return
@@ -163,6 +170,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
 
       /**
        * toggles the modules between placed and hidden
+       * @param {Module[]} src
+       * @param {Module[]} dest
        */
       function toggle(src: Module[], dest: Module[]) {
         dest.push(quickpop(src, index[state]))

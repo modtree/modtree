@@ -55,6 +55,7 @@ export function container<T>(
  * meant to be an overall wrapper for all endpoint functions.
  * @param {DataSource} database
  * @param {ModtreeFunction<T>} callback
+ * @return {Promise<T | void>}
  */
 export function endpoint<T>(
   database: DataSource,
