@@ -8,8 +8,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { db as DefaultSource } from '../config'
-import { LoadRelations, useLoadRelations } from './base'
+import { getDataSource, LoadRelations, useLoadRelations } from './base'
 import { quickpop } from '../utils/array'
 
 interface DAGRepository extends Repository<DAG> {
@@ -26,7 +25,7 @@ type ModuleState = 'placed' | 'hidden' | 'invalid'
  * @return {DAGRepository}
  */
 export function DAGRepository(database?: DataSource): DAGRepository {
-  const db = database || DefaultSource
+  const db = getDataSource(database)
   const BaseRepo = db.getRepository(DAG)
   const loadRelations = useLoadRelations(BaseRepo)
 

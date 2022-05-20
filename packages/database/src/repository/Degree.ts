@@ -3,8 +3,7 @@ import { DataSource, In, Repository } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import { db as DefaultSource } from '../config'
-import { LoadRelations, useLoadRelations } from './base'
+import { getDataSource, LoadRelations, useLoadRelations } from './base'
 import { copy } from '../utils/object'
 
 interface DegreeRepository extends Repository<Degree> {
@@ -19,7 +18,7 @@ interface DegreeRepository extends Repository<Degree> {
  * @return {DegreeRepository}
  */
 export function DegreeRepository(database?: DataSource): DegreeRepository {
-  const db = database || DefaultSource
+  const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
   const loadRelations = useLoadRelations(BaseRepo)
 
