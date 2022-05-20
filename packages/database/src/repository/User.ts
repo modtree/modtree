@@ -49,13 +49,16 @@ export function UserRepository(database?: DataSource): UserRepository {
   async function initialize(props: Init.UserProps): Promise<void> {
     await container(db, async () => {
       // find modules completed and modules doing, to create many-to-many relation
-      const modulesDone = await ModuleRepository(db).findBy({
-        moduleCode: In(props.modulesDone),
-      })
-      const modulesDoing = await ModuleRepository(db).findBy({
-        moduleCode: In(props.modulesDoing),
-      })
+      const findList = [props.modulesDone, props.modulesDoing]
+      const modulesPromise = Promise.all(
+        findList.map((list) =>
+          ModuleRepository(db).findBy({
+            moduleCode: In(list),
+          })
+        )
+      )
       const user = build(props)
+      const [modulesDone, modulesDoing] = await modulesPromise
       user.modulesDone = modulesDone || []
       user.modulesDoing = modulesDoing || []
       await BaseRepo.save(user)
