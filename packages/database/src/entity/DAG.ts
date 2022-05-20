@@ -6,9 +6,7 @@ import {
   JoinTable,
 } from 'typeorm'
 import { container } from '../data-source'
-
 import { User, Degree, Module } from '.'
-import { ModuleRepository } from '../repository/Module'
 import { DAGRepository } from '../repository/DAG'
 
 @Entity({ name: 'DAG' })
