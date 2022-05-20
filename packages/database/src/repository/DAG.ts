@@ -63,18 +63,10 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         // - user.modulesDoing
         // - user.modulesDone
         // - degree.modules
-        const modulesPlacedSet = new Set<Module>()
-        degree.modules.forEach((one: Module) => {
-          modulesPlacedSet.add(one)
-        })
-        user.modulesDone.forEach((one: Module) => {
-          modulesPlacedSet.add(one)
-        })
-        user.modulesDoing.forEach((one: Module) => {
-          modulesPlacedSet.add(one)
-        })
-        modulesPlaced = Array.from(modulesPlacedSet)
-        modulesHidden = []
+        const m = [...degree.modules]
+        m.push(...user.modulesDone)
+        m.push(...user.modulesDoing)
+        modulesPlaced = Array.from(new Set(m))
       } else {
         // if passed in, then find the modules
         modulesPlaced = await ModuleRepository(db).find({
