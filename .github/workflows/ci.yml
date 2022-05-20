@@ -7,6 +7,7 @@ on:
     branches:
       - master
       - dev
+      - ci
       - k
       - w
 
@@ -80,7 +81,7 @@ jobs:
 
   telegram:
     needs: [pre_job, database_lint, database_tests]
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ubuntu-20.04
     steps: 
       - name: Logs
