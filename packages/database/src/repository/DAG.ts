@@ -56,26 +56,29 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         },
         relations: ['modules'],
       })
-      let modulesPlaced: Module[] = []
-      let modulesHidden: Module[] = []
-      if (props.pullAll) {
-        // if don't pass in anything, then by default add ALL of
-        // - user.modulesDoing
-        // - user.modulesDone
-        // - degree.modules
-        const m = [...degree.modules]
-        m.push(...user.modulesDone)
-        m.push(...user.modulesDoing)
-        modulesPlaced = Array.from(new Set(m))
-      } else {
-        // if passed in, then find the modules
-        modulesPlaced = await ModuleRepository(db).findBy({
-          moduleCode: In(props.modulesPlacedCodes),
-        })
-        modulesHidden = await ModuleRepository(db).findBy({
-          moduleCode: In(props.modulesHiddenCodes),
-        })
+
+      /* if don't pass in anything, then by default add ALL of
+       * - user.modulesDoing
+       * - user.modulesDone
+       * - degree.modules
+       */
+      async function getModules(): Promise<Module[][]> {
+        if (props.pullAll) {
+          const placed = [...degree.modules]
+          placed.push(...user.modulesDone)
+          placed.push(...user.modulesDoing)
+          return [Array.from(new Set(placed)), []]
+        }
+        return await Promise.all(
+          [props.modulesPlacedCodes, props.modulesHiddenCodes].map((x) =>
+            ModuleRepository(db).findBy({
+              moduleCode: In(x),
+            })
+          )
+        )
       }
+
+      const [modulesPlaced, modulesHidden] = await getModules()
       const dagProps = {
         user,
         degree,
