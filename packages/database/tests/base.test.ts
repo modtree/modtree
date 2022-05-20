@@ -24,7 +24,7 @@ test('All entities are defined', () => {
 
 test('All repositories are defined', () => {
   expect(ModuleRepository(db)).toBeDefined()
-  expect(ModuleCondensedRepository).toBeDefined()
+  expect(ModuleCondensedRepository(db)).toBeDefined()
   expect(DegreeRepository(db)).toBeDefined()
   expect(UserRepository(db)).toBeDefined()
 })
@@ -47,7 +47,7 @@ test('container is working', async () => {
 
 test('container can run repo function', async () => {
   const res = await container(db, () =>
-    ModuleCondensedRepository.findOneBy({
+    ModuleCondensedRepository(db).findOneBy({
       moduleCode: 'CS1010S',
     })
   )

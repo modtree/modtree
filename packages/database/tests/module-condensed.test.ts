@@ -6,7 +6,7 @@ import { db } from '../src/config'
 
 importChecks({
   entities: [ModuleCondensed],
-  repositories: [ModuleCondensedRepository]
+  repositories: [ModuleCondensedRepository(db)]
 })
 
 const lowerBound = 6000
@@ -17,7 +17,7 @@ beforeAll(setup)
 
 test('moduleCondensed.get', async () => {
   const moduleList = await endpoint(db, () =>
-    container(db,() => ModuleCondensedRepository.find())
+    container(db,() => ModuleCondensedRepository(db).find())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -36,7 +36,7 @@ test('moduleCondensed.get', async () => {
 
 test('moduleCondensed.getCodes', async () => {
   const moduleList = await endpoint(db, () =>
-    container(db,() => ModuleCondensedRepository.getCodes())
+    container(db,() => ModuleCondensedRepository(db).getCodes())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {
@@ -52,7 +52,7 @@ test('moduleCondensed.getCodes', async () => {
 
 test('moduleCondensed.fetch', async () => {
   const moduleList = await endpoint(db, () =>
-    container(db,() => ModuleCondensedRepository.fetch())
+    container(db,() => ModuleCondensedRepository(db).fetch())
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) {

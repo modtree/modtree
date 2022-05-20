@@ -102,7 +102,7 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
       httpsAgent: new Agent({ keepAlive: true }),
     })
     const moduleCodes = new Set(await getCodes())
-    const moduleCondesedCodes = await ModuleCondensedRepository.getCodes()
+    const moduleCondesedCodes = await ModuleCondensedRepository(db).getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
     let buffer = 0
     const result: Module[] = []
