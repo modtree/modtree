@@ -33,7 +33,7 @@ describe('Degree', () => {
             where: {
               title: props.title,
             },
-            relations: ['modules'],
+            relations: {modules: true},
           })
         )
       )
@@ -71,7 +71,7 @@ describe('Degree', () => {
             where: {
               title: props.title,
             },
-            relations: ['modules'],
+            relations: {modules: true},
           })
         )
       )

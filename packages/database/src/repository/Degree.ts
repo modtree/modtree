@@ -43,10 +43,8 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
   async function initialize(props: Init.DegreeProps): Promise<void> {
     await container(db, async () => {
       // find modules required, to create many-to-many relation
-      const modules = await ModuleRepository(db).find({
-        where: {
-          moduleCode: In(props.moduleCodes),
-        },
+      const modules = await ModuleRepository(db).findBy({
+        moduleCode: In(props.moduleCodes),
       })
       const degreeProps = {
         modules,
@@ -68,17 +66,15 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
   ): Promise<void> {
     await container(db, async () => {
       // find modules to add
-      const newModules = await ModuleRepository(db).find({
-        where: {
-          moduleCode: In(moduleCodes),
-        },
+      const newModules = await ModuleRepository(db).findBy({
+        moduleCode: In(moduleCodes),
       })
       // find modules part of current degree
       await BaseRepo.findOne({
         where: {
           id: degree.id,
         },
-        relations: ['modules'],
+        relations: { modules: true },
       }).then(async (degree) => {
         degree.modules.push(...newModules)
         await BaseRepo.save(degree)

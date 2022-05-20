@@ -39,7 +39,7 @@ describe('DAG.initialize with pullAll = true', () => {
           where: {
             title: degreeProps.title,
           },
-          relations: ['modules'],
+          relations: { modules: true },
         })
       )
       expect(res).toBeDefined()
@@ -80,12 +80,13 @@ describe('DAG.initialize with pullAll = true', () => {
 
       await container(db, () => DAGRepository(db).initialize(dagProps))
 
-      const res = await endpoint(db, 
+      const res = await endpoint(
+        db,
         async () =>
-          await container(db,
+          await container(
+            db,
             async () =>
               await DAGRepository(db).find({
-                relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
                 where: {
                   user: {
                     id: user.id,
@@ -93,6 +94,12 @@ describe('DAG.initialize with pullAll = true', () => {
                   degree: {
                     id: degree.id,
                   },
+                },
+                relations: {
+                  user: true,
+                  degree: true,
+                  modulesPlaced: true,
+                  modulesHidden: true,
                 },
               })
           )
@@ -143,7 +150,7 @@ describe('DAG.initialize with pullAll = true', () => {
     ]
 
     it("Correctly changes a module's state from placed to hidden", async () => {
-      await container(db,() => DAGRepository(db).toggleModule(dag, 'MA2001'))
+      await container(db, () => DAGRepository(db).toggleModule(dag, 'MA2001'))
 
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
       expect(dag.modulesHidden.length).toEqual(1)
@@ -151,16 +158,19 @@ describe('DAG.initialize with pullAll = true', () => {
     })
 
     it("Correctly changes a module's state from hidden to placed", async () => {
-      await endpoint(db, 
+      await endpoint(
+        db,
         async () =>
-          await container(db,async () => DAGRepository(db).toggleModule(dag, 'MA2001'))
+          await container(db, async () =>
+            DAGRepository(db).toggleModule(dag, 'MA2001')
+          )
       )
 
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
       expect(dag.modulesHidden.length).toEqual(0)
     })
 
-    it("Throws error if the module to be toggled is not part of the DAG", async () => {
+    it('Throws error if the module to be toggled is not part of the DAG', async () => {
       let error
       await db.initialize()
 
@@ -183,14 +193,14 @@ describe('DAG.initialize with pullAll = false', () => {
   beforeAll(() => setup(dbName))
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
-      await container(db,() => DegreeRepository(db).initialize(degreeProps))
+      await container(db, () => DegreeRepository(db).initialize(degreeProps))
 
-      const res = await container(db,() =>
+      const res = await container(db, () =>
         DegreeRepository(db).findOne({
           where: {
             title: degreeProps.title,
           },
-          relations: ['modules'],
+          relations: { modules: true },
         })
       )
       expect(res).toBeDefined()
@@ -200,11 +210,11 @@ describe('DAG.initialize with pullAll = false', () => {
     })
 
     it('Saves a user', async () => {
-      await container(db,async () => {
+      await container(db, async () => {
         await UserRepository(db).initialize(userProps)
       })
 
-      const res = await container(db,() =>
+      const res = await container(db, () =>
         UserRepository(db).findOne({
           where: {
             username: userProps.username,
@@ -228,14 +238,15 @@ describe('DAG.initialize with pullAll = false', () => {
         pullAll: false,
       }
 
-      await container(db,() => DAGRepository(db).initialize(dagProps))
+      await container(db, () => DAGRepository(db).initialize(dagProps))
 
-      const res = await endpoint(db, 
+      const res = await endpoint(
+        db,
         async () =>
-          await container(db,
+          await container(
+            db,
             async () =>
               await DAGRepository(db).find({
-                relations: ['user', 'degree', 'modulesPlaced', 'modulesHidden'],
                 where: {
                   user: {
                     id: user.id,
@@ -243,6 +254,12 @@ describe('DAG.initialize with pullAll = false', () => {
                   degree: {
                     id: degree.id,
                   },
+                },
+                relations: {
+                  user: true,
+                  degree: true,
+                  modulesPlaced: true,
+                  modulesHidden: true,
                 },
               })
           )
