@@ -7,14 +7,12 @@ import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 
-const Repository = AppDataSource.getRepository(Module)
-
 /**
  * @param {string} faculty
  * @return {Promise<Module[]>}
  */
 async function findByFaculty(faculty: string): Promise<Module[]> {
-  return Repository.createQueryBuilder('module')
+  return BaseRepo.createQueryBuilder('module')
     .where('module.faculty = :faculty', { faculty })
     .getMany()
 }
@@ -51,7 +49,7 @@ function build(props: NM): Module {
  */
 async function get(): Promise<Module[]> {
   const modules = await container(async () => {
-    const modules = await Repository.find().catch((err) => {
+    const modules = await BaseRepo.find().catch((err) => {
       log.warn('Warning: failed to get Modules from database.')
       console.log(err)
     })
@@ -107,7 +105,7 @@ async function pull(): Promise<Module[]> {
       const n: NM = res.data
       const m = build(n)
       result.push(m)
-      writeQueue.push(AppDataSource.manager.save(m))
+      writeQueue.push(BaseRepo.save(m))
       return 'ok'
     }
     for (let i = 0; i < diff.length; i++) {
@@ -138,7 +136,8 @@ async function pull(): Promise<Module[]> {
   return result
 }
 
-export const ModuleRepository = Repository.extend({
+const BaseRepo = AppDataSource.getRepository(Module)
+export const ModuleRepository = BaseRepo.extend({
   findByFaculty,
   build,
   getCodes,

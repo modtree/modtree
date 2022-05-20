@@ -12,9 +12,7 @@ const lowerBound = 6000
 
 let total = 0
 
-beforeAll(async () => {
-  await setup()
-})
+beforeAll(setup)
 
 test('moduleCondensed.get', async () => {
   const moduleList = await endpoint(() =>

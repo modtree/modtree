@@ -27,4 +27,6 @@ export const config = {
   server_ca: process.env.MYSQL_SERVER_CA,
   client_cert: process.env.MYSQL_CLIENT_CERT,
   client_key: process.env.MYSQL_CLIENT_KEY,
+  entities: ['src/entity/*.ts'],
+  migrations: ['src/migrations/**/*.ts'],
 }

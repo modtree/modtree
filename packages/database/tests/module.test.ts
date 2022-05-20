@@ -8,9 +8,7 @@ importChecks({
   repositories: [ModuleRepository],
 })
 
-beforeAll(async () => {
-  await setup()
-})
+beforeAll(setup)
 
 test('find modules by faculty', async () => {
   const res = await endpoint(() =>

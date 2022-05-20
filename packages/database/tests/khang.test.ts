@@ -8,9 +8,7 @@ importChecks({
   repositories: [UserRepository]
 })
 
-beforeAll(async () => {
-  await setup()
-})
+beforeAll(setup)
 
 jest.setTimeout(20000)
 

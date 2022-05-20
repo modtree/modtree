@@ -5,8 +5,7 @@ import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
-
-const Repository = AppDataSource.getRepository(User)
+import { useLoadRelations } from './base'
 
 /**
  * Constructor for User
@@ -55,20 +54,22 @@ async function initialize(props: Init.UserProps): Promise<void> {
     }
 
     const user = build(userProps)
-    await AppDataSource.manager.save(user)
+    await BaseRepo.save(user)
   })
 }
 
-
 /**
-   * Given a module code, checks if user has cleared sufficient pre-requisites.
-   * Currently does not check for preclusion.
-   *
-   * @param{User} user
-   * @param{string} moduleCode
-   * @return{Promise<boolean>}
-   */
-async function canTakeModule(user: User, moduleCode: string): Promise<boolean | void> {
+ * Given a module code, checks if user has cleared sufficient pre-requisites.
+ * Currently does not check for preclusion.
+ *
+ * @param{User} user
+ * @param{string} moduleCode
+ * @return{Promise<boolean>}
+ */
+async function canTakeModule(
+  user: User,
+  moduleCode: string
+): Promise<boolean | void> {
   return await container(async () => {
     // find module
     const module = await ModuleRepository.findOne({
@@ -76,17 +77,16 @@ async function canTakeModule(user: User, moduleCode: string): Promise<boolean | 
         moduleCode: moduleCode,
       },
     })
-
-    // Relations are not stored in the entity, so they must be explicitly
-    // asked for from the DB
+    /* Relations are not stored in the entity, so they must be explicitly
+     * asked for from the DB
+     */
     const retrieved = await UserRepository.findOne({
       where: {
         id: user.id,
       },
-      relations: ['modulesDone'],
     })
+    await UserRepository.loadRelations(retrieved, { modulesDone: true })
     const modulesDone = retrieved.modulesDone
-
     // check if PrereqTree is fulfilled
     const completedModulesCodes = modulesDone.map(
       (one: Module) => one.moduleCode
@@ -95,8 +95,11 @@ async function canTakeModule(user: User, moduleCode: string): Promise<boolean | 
     return utils.checkTree(module.prereqTree, completedModulesCodes)
   })
 }
-export const UserRepository = Repository.extend({
+
+const BaseRepo = AppDataSource.getRepository(User)
+export const UserRepository = BaseRepo.extend({
   initialize,
   canTakeModule,
   build,
+  loadRelations: useLoadRelations(BaseRepo),
 })

@@ -4,9 +4,7 @@ import { setup } from './setup'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 
-beforeAll(async () => {
-  await setup()
-})
+beforeAll(setup)
 
 async function pull() {
   const res = await ModuleRepository.pull()

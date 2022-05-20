@@ -94,7 +94,7 @@ async function initialize(props: DAGInitProps): Promise<void> {
  * Toggle a Module's status between placed and hidden.
  * @param {DAG} dag
  * @param {string} moduleCode
- * @returns {Promise<void>}
+ * @return {Promise<void>}
  */
 async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
   await container(async () => {
