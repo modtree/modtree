@@ -18,6 +18,8 @@ interface DAGRepository extends Repository<DAG> {
   loadRelations: LoadRelations<DAG>
 }
 
+type ModuleState = 'placed' | 'hidden' | 'invalid'
+
 /**
  * @param {DataSource} database
  * @return {DAGRepository}
@@ -136,37 +138,43 @@ export function DAGRepository(database?: DataSource): DAGRepository {
       /**
        * find the index of the given moduleCode to toggle
        */
-      const index = {
+      const index: Record<ModuleState, number> = {
         placed: modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
         hidden: modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
+        invalid: -1,
       }
-      const currentStatus = index.placed === -1 ? 'placed' : 'hidden'
+      const state: ModuleState =
+        index.placed === -1
+          ? 'placed'
+          : index.hidden === -1
+          ? 'hidden'
+          : 'invalid'
 
       /**
        * O(1) delete from unsorted array
        */
-      function quickpop(arr: Module[], index: number) {
+      function quickpop(arr: Module[], index: number): Module {
         const elem = arr.pop()
         if (arr.length > index + 1) arr[index] = elem
+        return elem
       }
 
-      if (index.placed != -1) {
-        // is a placed module
-        const module = retrieved.modulesPlaced[index.placed]
-        quickpop(retrieved.modulesPlaced, index.placed)
+      /**
+       * toggles the modules between placed and hidden
+       */
+      function toggle(src: Module[], dest: Module[]) {
+        const i = index[state]
+        const module = quickpop(src, i)
+        dest.push(module)
+      }
 
-        retrieved.modulesHidden.push(module)
-      } else if (index.hidden != -1) {
-        // is a hidden module
-        const module = retrieved.modulesHidden[index.hidden]
-
-        if (retrieved.modulesHidden.length > 1)
-          retrieved.modulesHidden[index.hidden] =
-            retrieved.modulesHidden.pop()
-        // O(1) delete
-        else retrieved.modulesHidden = []
-
-        retrieved.modulesPlaced.push(module)
+      /**
+       * toggles the modules between placed and hidden
+       */
+      if (state === 'placed') {
+        toggle(retrieved.modulesPlaced, retrieved.modulesHidden)
+      } else if (state === 'hidden') {
+        toggle(retrieved.modulesHidden, retrieved.modulesPlaced)
       } else {
         // throw error if module not found
         throw new Error('Module not found in DAG')
