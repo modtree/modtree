@@ -6,9 +6,7 @@ import { ModuleCondensedRepository } from '../src/repository'
 
 const lowerBound = 6000
 
-beforeAll(async () => {
-  await setup()
-})
+beforeAll(setup)
 
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {

@@ -8,9 +8,7 @@ import {
   UserRepository,
 } from '../src/repository'
 
-beforeAll(async () => {
-  await setup()
-})
+beforeAll(setup)
 
 test('AppDataSource is defined', () => {
   expect(AppDataSource).toBeDefined()

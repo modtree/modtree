@@ -17,14 +17,12 @@ importChecks({
 
 jest.setTimeout(5000)
 
-beforeAll(async () => {
-  await setup()
-})
-
 let degree: Degree, user: User, dag: DAG
 let degreeProps: Init.DegreeProps, userProps: Init.UserProps
 
 describe('DAG.initialize() is successful', () => {
+  beforeAll(setup)
+
   it('Saves a degree', async () => {
     degreeProps = init.degree1
 
@@ -157,9 +155,7 @@ describe('DAG.toggleModules()', () => {
 })
 
 describe('DAG.initialize() with pullAll = false is empty', () => {
-  beforeAll(async () => {
-    await setup()
-  })
+  beforeAll(setup)
   it('Saves a degree', async () => {
     await container(() => DegreeRepository.initialize(degreeProps))
 

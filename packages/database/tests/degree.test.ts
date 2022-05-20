@@ -14,9 +14,7 @@ importChecks({
 jest.setTimeout(5000)
 
 describe('Degree.initialize', () => {
-  beforeAll(async () => {
-    await setup()
-  })
+  beforeAll(setup)
 
   const props: Init.DegreeProps = init.degree1
   let degree: Degree
@@ -57,9 +55,7 @@ describe('Degree.initialize', () => {
 })
 
 describe('Degree.insertModules', () => {
-  beforeAll(async () => {
-    await setup()
-  })
+  beforeAll(setup)
 
   const props = init.degree1
   const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
