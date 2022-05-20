@@ -1,5 +1,5 @@
 import { AppDataSource, container } from '../data-source'
-import { In } from 'typeorm'
+import { FindOptionsRelations, In } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
@@ -83,8 +83,9 @@ async function canTakeModule(user: User, moduleCode: string): Promise<boolean | 
       where: {
         id: user.id,
       },
-      relations: ['modulesDone'],
+      // relations: ['modulesDone'],
     })
+    await UserRepository.loadRelations(retrieved, { modulesDone: true })
     const modulesDone = retrieved.modulesDone
 
     // check if PrereqTree is fulfilled
@@ -95,8 +96,34 @@ async function canTakeModule(user: User, moduleCode: string): Promise<boolean | 
     return utils.checkTree(module.prereqTree, completedModulesCodes)
   })
 }
+
+
+/**
+ * updates entity in-place to have relations
+ *
+ * @param {User} user
+ * @param {FindOptionsRelations<User>} relations
+ */
+export async function loadRelations(
+  user: User,
+  relations: FindOptionsRelations<User>,
+) {
+  // find itself and load relations into a temporary variable
+  const res = await UserRepository.findOne({
+    where: {
+      id: user.id,
+    },
+    relations,
+  })
+  // iterate through the requested relations and mutate `this`
+  Object.keys(relations).map((key) => {
+    user[key] = res[key]
+  })
+}
+
 export const UserRepository = Repository.extend({
   initialize,
   canTakeModule,
   build,
+  loadRelations
 })
