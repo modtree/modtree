@@ -47,11 +47,10 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
       const modules = await ModuleRepository(db).findBy({
         moduleCode: In(props.moduleCodes),
       })
-      const degreeProps = {
+      const degree = build({
         modules,
         title: props.title,
-      }
-      const degree = build(degreeProps)
+      })
       await BaseRepo.save(degree)
     })
   }
