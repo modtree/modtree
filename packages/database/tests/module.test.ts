@@ -1,7 +1,12 @@
 import { container, endpoint } from '../src/data-source'
-import { setup } from './setup'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
+import { setup, importChecks } from './setup'
+
+importChecks({
+  entities: [Module],
+  repositories: [ModuleRepository],
+})
 
 beforeAll(async () => {
   await setup()

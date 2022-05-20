@@ -41,7 +41,34 @@ async function initialize(props: Init.DegreeProps): Promise<void> {
   })
 }
 
+/**
+ * Adds Modules to a Degree
+ * @param {Degree} degree
+ * @param {string[]} moduleCodes
+ */
+async function insertModules(degree: Degree, moduleCodes: string[]): Promise<void> {
+  await container(async () => {
+    // find modules to add
+    const newModules = await ModuleRepository.find({
+      where: {
+        moduleCode: In(moduleCodes),
+      },
+    })
+    // find modules part of current degree
+    await DegreeRepository.findOne({
+      where: {
+        id: degree.id,
+      },
+      relations: ['modules'],
+    }).then(async (degree) => {
+      degree.modules.push(...newModules)
+      await DegreeRepository.save(degree)
+    })
+  })
+}
+
 export const DegreeRepository = Repository.extend({
   initialize,
   build,
+  insertModules,
 })

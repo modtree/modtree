@@ -1,12 +1,19 @@
 import { container, endpoint } from '../src/data-source'
-import { setup } from './setup'
 import { DAGInitProps } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
-import { DegreeRepository } from '../src/repository/Degree'
-import { UserRepository } from '../src/repository/User'
-import { DAGRepository } from '../src/repository/DAG'
+import {
+  DegreeRepository,
+  UserRepository,
+  DAGRepository,
+} from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
+import { setup, importChecks } from './setup'
+
+importChecks({
+  entities: [Module, Degree, User, DAG],
+  repositories: [UserRepository, DegreeRepository, DAGRepository],
+})
 
 jest.setTimeout(5000)
 
@@ -131,7 +138,7 @@ describe('DAG.toggleModules()', () => {
   ]
 
   it("Correctly changes a module's state from placed to hidden", async () => {
-    await container(() => dag.toggleModule('MA2001'))
+    await container(() => DAGRepository.toggleModule(dag, 'MA2001'))
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
     expect(dag.modulesHidden.length).toEqual(1)
@@ -140,7 +147,8 @@ describe('DAG.toggleModules()', () => {
 
   it("Correctly changes a module's state from hidden to placed", async () => {
     await endpoint(
-      async () => await container(async () => dag.toggleModule('MA2001'))
+      async () =>
+        await container(async () => DAGRepository.toggleModule(dag, 'MA2001'))
     )
 
     expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)

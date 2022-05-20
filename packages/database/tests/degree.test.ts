@@ -1,15 +1,24 @@
 import { container, endpoint } from '../src/data-source'
-import { setup } from './setup'
 import { Degree, Module } from '../src/entity'
 import { DegreeRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
+import { setup, importChecks } from './setup'
+
+importChecks({
+  entities: [Degree, Module],
+  repositories: [DegreeRepository]
+})
 
 beforeEach(async () => {
   await setup()
 })
 
 jest.setTimeout(5000)
+
+test('Module should be defined', () => {
+  expect(Module).toBeDefined()
+})
 
 test('Degree.initialize() is successful', async () => {
   const props: Init.DegreeProps = init.degree1
@@ -62,7 +71,7 @@ test('Degree.insertModules', async () => {
 
   // 2. Add modules to degree, and write the result to database
   const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
-  await first.insertModules(newModuleCodes)
+  await DegreeRepository.insertModules(first, newModuleCodes)
 
   // 3. Retrieve the degree from database
   const second = await endpoint(() =>
