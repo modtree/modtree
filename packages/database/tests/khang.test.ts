@@ -11,6 +11,10 @@ beforeEach(async () => {
 
 jest.setTimeout(5000)
 
+test('Module should be defined', () => {
+  expect(Module).toBeDefined()
+})
+
 test('Degree.initialize() is successful', async () => {
   const props: Init.DegreeProps = init.degree1
   // write the degree to database
