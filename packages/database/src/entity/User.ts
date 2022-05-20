@@ -4,6 +4,7 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  FindOptionsRelations,
 } from 'typeorm'
 import { container } from '../data-source'
 import { utils } from '../utils'
@@ -40,6 +41,25 @@ export class User {
   graduationSemester: number
 
   /**
+   * retrieve own relations
+   *
+   * @param {FindOptionsRelations<User>} relations
+   */
+  async loadRelations(relations: FindOptionsRelations<User>) {
+    // find itself and load relations into a temporary variable
+    const res = await UserRepository.findOne({
+      where: {
+        id: this.id,
+      },
+      relations,
+    })
+    // iterate through the requested relations and mutate `this`
+    Object.keys(relations).map((key) => {
+      this[key] = res[key]
+    })
+  }
+
+  /**
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
@@ -54,19 +74,10 @@ export class User {
           moduleCode: moduleCode,
         },
       })
-
-      // Relations are not stored in the entity, so they must be explicitly
-      // asked for from the DB
-      const user = await UserRepository.findOne({
-        where: {
-          id: this.id,
-        },
-        relations: ['modulesDone'],
-      })
-      const modulesDone = user.modulesDone
+      await this.loadRelations({ modulesDone: true })
 
       // check if PrereqTree is fulfilled
-      const completedModulesCodes = modulesDone.map(
+      const completedModulesCodes = this.modulesDone.map(
         (one: Module) => one.moduleCode
       )
 

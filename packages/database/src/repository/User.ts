@@ -26,10 +26,10 @@ function build(props: UserProps): User {
 /**
  * Adds a User to DB
  * @param {UserProps} props
- * @return {Promise<void>}
+ * @return {Promise<number | void>} the generated uuid
  */
-async function initialize(props: Init.UserProps): Promise<void> {
-  await container(async () => {
+async function initialize(props: Init.UserProps): Promise<number | void> {
+  const id = await container(async () => {
     // find modules completed and modules doing, to create many-to-many relation
     const modulesDone = await ModuleRepository.find({
       where: {
@@ -53,8 +53,10 @@ async function initialize(props: Init.UserProps): Promise<void> {
     }
 
     const user = build(userProps)
-    await AppDataSource.manager.save(user)
+    const saved = await AppDataSource.manager.save(user)
+    return saved.id
   })
+  return id
 }
 
 export const UserRepository = Repository.extend({
