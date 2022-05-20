@@ -2,9 +2,11 @@ import { container, endpoint } from '../src/data-source'
 import { setup } from './setup'
 import { DAGInitProps } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
-import { DegreeRepository } from '../src/repository/Degree'
-import { UserRepository } from '../src/repository/User'
-import { DAGRepository } from '../src/repository/DAG'
+import {
+  DegreeRepository,
+  UserRepository,
+  DAGRepository,
+} from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
 
@@ -16,6 +18,17 @@ beforeAll(async () => {
 
 let degree: Degree, user: User, dag: DAG
 let degreeProps: Init.DegreeProps, userProps: Init.UserProps
+
+test('all imports are defined', () => {
+  const entities = [Module, Degree, User, DAG]
+  const repos = [UserRepository, DegreeRepository, DAGRepository]
+  entities.forEach((e) => {
+    expect(e).toBeDefined()
+  })
+  repos.forEach((e) => {
+    expect(e).toBeDefined()
+  })
+})
 
 describe('DAG.initialize() is successful', () => {
   it('Saves a degree', async () => {
