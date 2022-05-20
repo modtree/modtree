@@ -7,7 +7,9 @@ type LoadRelationsMethod = (
 ) => Promise<void>
 
 /**
- * builds a repository.loadRelations
+ * takes in a repository, returns a function that is meant to be used
+ * as a repository method
+ *
  * @param {Repository<ModtreeEntity>} repository
  * @returns {LoadRelationsMethod}
  */
@@ -17,7 +19,7 @@ export function useLoadRelations(
   /**
    * updates entity in-place to have relations
    *
-   * @param {ModtreeEntity} entity
+   * @param {ModtreeEntity} entity to be updated
    * @param {FindOptionsRelations<ModtreeEntity>} relations
    */
   async function loadRelations(
@@ -31,7 +33,7 @@ export function useLoadRelations(
       },
       relations,
     })
-    // iterate through the requested relations and mutate `this`
+    // iterate through the requested relations and mutate the entity
     Object.keys(relations).map((key) => {
       entity[key] = res[key]
     })
