@@ -10,20 +10,65 @@ importChecks({
   repositories: [DegreeRepository]
 })
 
-beforeEach(async () => {
-  await setup()
-})
 
 jest.setTimeout(5000)
 
-test('Degree.initialize() is successful', async () => {
-  const props: Init.DegreeProps = init.degree1
-  // write the degree to database
-  await container(() => DegreeRepository.initialize(props))
+describe('Degree.initialize', () => {
+  beforeAll(async () => {
+    await setup()
+  })
 
-  // retrieve that degree again
-  const possiblyNull: Degree | void = await endpoint(() =>
-    container(() =>
+  const props: Init.DegreeProps = init.degree1
+  let degree: Degree
+
+  it('Saves a degree', async () => {
+    // write the degree to database
+    await container(() => DegreeRepository.initialize(props))
+
+    // retrieve that degree again
+    const possiblyNull: Degree | void = await endpoint(() =>
+      container(() =>
+        DegreeRepository.findOne({
+          where: {
+            title: props.title,
+          },
+          relations: ['modules'],
+        })
+      )
+    )
+    // expect degree to be not null, not undefined
+    expect(possiblyNull).toBeDefined()
+    if (!possiblyNull) return
+
+    degree = possiblyNull
+  })
+
+  it('Correctly saves modules', async () => {
+    const modules: Module[] = degree.modules
+
+    expect(modules).toBeDefined()
+    if (!modules) return
+
+    const moduleCodes = modules.map((m) => m.moduleCode)
+    // match relation's module codes to init props' modules codes
+    expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
+    expect(moduleCodes.length).toStrictEqual(9)
+  })
+})
+
+describe('Degree.insertModules', () => {
+  beforeAll(async () => {
+    await setup()
+  })
+
+  const props = init.degree1
+  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
+  let degree: Degree
+
+  it('Saves a degree', async () => {
+    await container(() => DegreeRepository.initialize(props))
+
+    const res = await container(() =>
       DegreeRepository.findOne({
         where: {
           title: props.title,
@@ -31,68 +76,44 @@ test('Degree.initialize() is successful', async () => {
         relations: ['modules'],
       })
     )
-  )
-  // expect degree to be not null, not undefined
-  expect(possiblyNull).toBeDefined()
-  if (!possiblyNull) return
 
-  const degree: Degree = possiblyNull
-  const modules: Module[] = degree.modules
+    expect(res).toBeDefined()
+    if (!res) return
 
-  expect(modules).toBeDefined()
-  if (!modules) return
+    degree = res
+  })
 
-  const moduleCodes = modules.map((m) => m.moduleCode)
-  // match relation's module codes to init props' modules codes
-  expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
-  expect(moduleCodes.length).toStrictEqual(9)
-})
+  it('Adds modules to a degree', async () => {
+    await DegreeRepository.insertModules(degree, newModuleCodes)
+  })
 
-test('Degree.insertModules', async () => {
-  const props = init.degree1
-  // 1. write the degree to database
-  await container(() => DegreeRepository.initialize(props))
-
-  const first = await container(() =>
-    DegreeRepository.findOne({
-      where: {
-        title: props.title,
-      },
-      relations: ['modules'],
-    })
-  )
-
-  expect(first).toBeDefined()
-  if (!first) return
-
-  // 2. Add modules to degree, and write the result to database
-  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
-  await DegreeRepository.insertModules(first, newModuleCodes)
-
-  // 3. Retrieve the degree from database
-  const second = await endpoint(() =>
-    container(() =>
-      DegreeRepository.find({
-        where: {
-          title: props.title,
-        },
-        relations: ['modules'],
-      })
+  it('Does not create a duplicate degree', async () => {
+    const res = await endpoint(() =>
+      container(() =>
+        DegreeRepository.find({
+          where: {
+            title: props.title,
+          },
+          relations: ['modules'],
+        })
+      )
     )
-  )
-  expect(second).toBeDefined()
-  if (!second) return
+    expect(res).toBeDefined()
+    if (!res) return
 
-  // Inserting modules to the degree should not create a new Degree
-  expect(second.length).toEqual(1)
+    // Inserting modules to the degree should not create a new Degree
+    expect(res.length).toEqual(1)
+  })
 
-  // 4. Confirm that the insert worked as expected
-  const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes)
+  it('Correctly saves newly inserted modules', async () => {
+    const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes)
 
-  const modules = second[0].modules
-  const moduleCodes = modules.map((m: Module) => m.moduleCode)
-  // match retrieved module codes to
-  // init props' module codes + added module codes
-  expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
-  expect(moduleCodes.length).toStrictEqual(12)
+    const modules = degree.modules
+    const moduleCodes = modules.map((m: Module) => m.moduleCode)
+
+    // match retrieved module codes to
+    // init props' module codes + added module codes
+    expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
+    expect(moduleCodes.length).toStrictEqual(12)
+  })
 })

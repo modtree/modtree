@@ -65,6 +65,9 @@ async function insertModules(
       degree.modules.push(...newModules)
       await DegreeRepository.save(degree)
     })
+
+    // update the passed object
+    degree.modules.push(...newModules)
   })
 }
 
