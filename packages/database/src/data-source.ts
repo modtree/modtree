@@ -19,6 +19,27 @@ export const AppDataSource = new DataSource({
 })
 
 /**
+ * custom source creator
+ * @param {string} database to use
+ * @return {DataSource}
+ */
+export function getSource(database: string): DataSource {
+  return new DataSource({
+    database,
+    type: 'mysql',
+    host: config.host,
+    port: 3306,
+    username: config.username,
+    password: config.password,
+    synchronize: true,
+    logging: false,
+    entities: config.entities,
+    migrations: config.migrations,
+    subscribers: [],
+  })
+}
+
+/**
  * a wrapper for typeorm-based database connections
  * @param {ModtreeFunction} fn
  * @return {Promise<T | void>}
