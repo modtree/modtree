@@ -86,7 +86,7 @@ async function initialize(props: DAGInitProps): Promise<void> {
       modulesHidden,
     }
     const dag = build(dagProps)
-    await DAGRepository.save(dag)
+    await BaseRepo.save(dag)
   })
 }
 
@@ -149,6 +149,7 @@ async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
   })
 }
 
+const BaseRepo = AppDataSource.getRepository(DAG)
 export const DAGRepository = Repository.extend({
   initialize,
   build,

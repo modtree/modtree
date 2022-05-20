@@ -35,7 +35,7 @@ async function initialize(props: Init.DegreeProps): Promise<void> {
       title: props.title,
     }
     const degree = build(degreeProps)
-    await DegreeRepository.save(degree)
+    await BaseRepo.save(degree)
   })
 }
 
