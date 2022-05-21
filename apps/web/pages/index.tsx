@@ -1,8 +1,8 @@
 import { ReactNode, useState } from 'react'
-import Search from '../components/Search'
-import { H1 } from '../components/Html'
+import Search from '@/components/Search'
+import { H1 } from '@/components/Html'
 import { ModuleCondensed } from 'database'
-import { ResultDisplay } from '../components/module-search/Results'
+import { ResultDisplay } from '@/components/module-search/Results'
 
 export default function SearchPage() {
   const [results, setResults] = useState<ModuleCondensed[]>([])

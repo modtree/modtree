@@ -1,5 +1,5 @@
 import { ModuleCondensed } from 'database'
-import { IoEllipseOutline, IoCheckmarkCircleSharp } from 'react-icons/io5'
+import { IoEllipseOutline, IoEllipse } from 'react-icons/io5'
 import colors from 'tailwindcss/colors'
 import { UseState } from '../../types'
 
@@ -14,19 +14,21 @@ function updateSelected(moduleCode: string, selectState: UseState<string[]>) {
   }
 }
 
+const Outline = () => <IoEllipseOutline color={colors.gray[400]} />
+const Filled = () => <IoEllipse color={colors.emerald[500]} />
+
 const CheckBox = (props: { moduleCode?: string; on: () => boolean }) => {
   return (
     <div className="flex flex-col h-full justify-center mr-2">
-      {props.on() ? (
-        <IoCheckmarkCircleSharp color={colors.emerald[500]} />
-      ) : (
-        <IoEllipseOutline color={colors.gray[400]} />
-      )}
+      {props.on() ? <Filled /> : <Outline />}
     </div>
   )
 }
 
-const ResultEntry = (props: { module: ModuleCondensed, selectState: UseState<string[]> }) => {
+const ResultEntry = (props: {
+  module: ModuleCondensed
+  selectState: UseState<string[]>
+}) => {
   const { module, selectState } = props
   const selected = selectState[0]
   const on = (): boolean => selected.includes(module.moduleCode)
