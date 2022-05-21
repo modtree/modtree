@@ -152,8 +152,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         index.placed !== -1
           ? 'placed'
           : index.hidden !== -1
-          ? 'hidden'
-          : 'invalid'
+            ? 'hidden'
+            : 'invalid'
 
       /**
        * toggles the modules between placed and hidden

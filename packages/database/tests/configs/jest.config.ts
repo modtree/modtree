@@ -40,7 +40,7 @@ export const k: Config.InitialOptions = {
   silent: false,
 }
 
-const wTest = 'module'
+const wTest = 'utils'
 export const w: Config.InitialOptions = {
   ...base,
   testMatch: [`**/tests/**/${wTest}.test.ts`],
