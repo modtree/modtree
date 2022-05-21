@@ -85,12 +85,13 @@ export default function SearchPage() {
     <>
       <H1>Search Page</H1>
       <Search setResults={setResults} />
-      <div className="mt-8 text-gray-600">List</div>
-      <div className="flex flex-row justify-center">
-        <ResultContainer>
-          <ResultDisplay />
-        </ResultContainer>
-      </div>
+      {results.length > 0 ? (
+        <div className="flex flex-row justify-center mt-12">
+          <ResultContainer>
+            <ResultDisplay />
+          </ResultContainer>
+        </div>
+      ) : null}
     </>
   )
 }

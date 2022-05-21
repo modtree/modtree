@@ -35,9 +35,6 @@ const Search = (props: {
           onChange={(e) => handleQuery(e.target.value)}
         />
         <div className="w-2" />
-        <button className="bg-blue-400 text-white py-1 px-2 rounded-md">
-          do nothing
-        </button>
       </div>
     </div>
   )
