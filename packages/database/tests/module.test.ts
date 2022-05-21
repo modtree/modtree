@@ -17,16 +17,27 @@ importChecks({
 
 const lowerBound = 6000
 
-test('find modules by faculty', async () => {
-  const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository(db).findByFaculty('Computing'))
-  )
-  if (!res) return
-  expect(res).toBeInstanceOf(Array)
-  res.forEach((module) => {
-    expect(module).toBeInstanceOf(Module)
+describe('ModuleRepository.findByFaculty', () => {
+  it('Valid faculty name', async () => {
+    const res = await endpoint(db, () =>
+      container(db, () => ModuleRepository(db).findByFaculty('Computing'))
+    )
+    if (!res) return
+    expect(res).toBeInstanceOf(Array)
+    res.forEach((module) => {
+      expect(module).toBeInstanceOf(Module)
+    })
+    expect(res.length).toBeGreaterThan(100)
   })
-  expect(res.length).toBeGreaterThan(100)
+
+  it('Invalid faculty name', async () => {
+    const res = await endpoint(db, () =>
+      container(db, () => ModuleRepository(db).findByFaculty('ABCDEFGH'))
+    )
+    if (!res) return
+    expect(res).toBeInstanceOf(Array)
+    expect(res.length).toBe(0)
+  })
 })
 
 test('fetch one module from NUSMods', async () => {
