@@ -4,7 +4,12 @@ import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
-import { useLoadRelations, LoadRelations, getDataSource, useBuild } from './base'
+import {
+  useLoadRelations,
+  LoadRelations,
+  getDataSource,
+  useBuild,
+} from './base'
 
 interface UserRepository extends Repository<User> {
   build(props: UserProps): User

@@ -11,6 +11,6 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
-  "include": ["src", "types"],
+  "include": ["src", "types", "tests"],
   "exclude": ["lib", "node_modules"]
 }

@@ -78,9 +78,7 @@ test('endpoint can run repo function', async () => {
   expect(res).toBeInstanceOf(Array)
   // check definition and ditch void to keep typescript happy
   expect(res).toBeDefined()
-  if (!res) {
-    return
-  }
+  if (!res) return
   // ensure that all elements are instances of Module
   res.forEach((m) => {
     expect(m).toBeInstanceOf(Module)

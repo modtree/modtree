@@ -19,10 +19,7 @@ const base: Config.InitialOptionsWithRootDir = {
 export const ci: Config.InitialOptions = {
   ...base,
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: [
-    ...base.testPathIgnorePatterns,
-    'module-pull',
-  ],
+  testPathIgnorePatterns: [...base.testPathIgnorePatterns, 'module-pull'],
 }
 
 export const pull: Config.InitialOptions = {

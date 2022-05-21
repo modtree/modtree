@@ -11,7 +11,7 @@ beforeAll(() => setup(dbName))
 afterAll(() => teardown(dbName))
 
 importChecks({
-  repositories: [UserRepository(db)]
+  repositories: [UserRepository(db)],
 })
 
 jest.setTimeout(20000)
@@ -22,7 +22,7 @@ test('canTakeModule is successful', async () => {
   props.modulesDoing.push('MA2219')
   await UserRepository(db).initialize(props)
   const res = await endpoint(db, () =>
-    container(db,async () => {
+    container(db, async () => {
       // find user
       const user = await UserRepository(db).findOne({
         where: {

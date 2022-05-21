@@ -15,16 +15,19 @@ afterAll(() => teardown(dbName))
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
   remove.tables(dbName, ['moduleCondensed'])
-  const pullOnEmpty = await container(db, () => ModuleCondensedRepository(db).pull())
-  const pullOnFull = await container(db, () => ModuleCondensedRepository(db).pull())
-  const written = await endpoint(db, 
+  const pullOnEmpty = await container(db, () =>
+    ModuleCondensedRepository(db).pull()
+  )
+  const pullOnFull = await container(db, () =>
+    ModuleCondensedRepository(db).pull()
+  )
+  const written = await endpoint(
+    db,
     async () => await container(db, () => ModuleCondensedRepository(db).find())
   )
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()
-  if (!pullOnFull || !pullOnEmpty || !written) {
-    return
-  }
+  if (!pullOnFull || !pullOnEmpty || !written) return
   /* make sure every element is a valid ModuleCondensed */
   written.forEach((module) => {
     expect(module).toBeInstanceOf(ModuleCondensed)
