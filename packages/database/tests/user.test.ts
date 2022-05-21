@@ -70,7 +70,7 @@ describe('User.canTakeModule', () => {
     await db.initialize()
     // uses user from previous test
     try {
-      await UserRepository(db).canTakeModule(user, init.fakeModuleCode)
+      await UserRepository(db).canTakeModule(user, init.invalidModuleCode)
     } catch (err) {
       error = err
     }

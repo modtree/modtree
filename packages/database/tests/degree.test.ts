@@ -92,7 +92,7 @@ describe('Degree', () => {
 
   describe('Degree.insertModules with invalid module code', () => {
     it('Does not add new modules if all module codes are invalid', async () => {
-      const newModuleCodes = [init.fakeModuleCode]
+      const newModuleCodes = [init.invalidModuleCode]
       await DegreeRepository(db).insertModules(degree, newModuleCodes)
       // match retrieved module codes to
       // init props' module codes + added module codes
@@ -101,7 +101,7 @@ describe('Degree', () => {
       expect(moduleCodes.length).toStrictEqual(combinedModuleCodes.length)
     })
     it('Adds some new modules if there is a mix of valid and invalid module codes', async () => {
-      const newModuleCodes = [init.fakeModuleCode, 'CS4269']
+      const newModuleCodes = [init.invalidModuleCode, 'CS4269']
       await endpoint(db, () =>
         container(db, () =>
           DegreeRepository(db).insertModules(degree, newModuleCodes)
