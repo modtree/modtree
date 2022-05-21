@@ -19,6 +19,7 @@ export default function SearchPage() {
   return (
     <>
       <H1>Search Page</H1>
+      <div className="bg-green-100">
       <Search setResults={setResults} />
       {results.length > 0 ? (
         <div className="flex flex-row justify-center mt-12">
@@ -27,6 +28,7 @@ export default function SearchPage() {
           </ResultContainer>
         </div>
       ) : null}
+      </div>
     </>
   )
 }
