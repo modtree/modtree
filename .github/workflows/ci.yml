@@ -17,7 +17,6 @@ env:
   DB_USER: root
   DB_PASSWORD: root
   RESTORE: .test.sql
-  TELEGRAM_GROUP: -1001647699011
 
 jobs:
   pre_job:
@@ -106,7 +105,7 @@ jobs:
         uses: appleboy/telegram-action@master
         with:
           disable_web_page_preview: true
-          to: ${{ env.TELEGRAM_GROUP }}
+          to: ${{ secrets.TELEGRAM_GROUP }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
