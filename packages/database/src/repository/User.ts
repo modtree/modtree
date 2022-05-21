@@ -74,23 +74,25 @@ export function UserRepository(database?: DataSource): UserRepository {
     moduleCode: string
   ): Promise<boolean | void> {
     return await container(db, async () => {
-      // find module
+      // 1. find module
       const module = await ModuleRepository(db).findOneBy({ moduleCode })
       // if module not found, assume invalid module code
       if (!module) {
         throw new Error('Invalid module code')
       }
-      /* Relations are not stored in the entity, so they must be explicitly
-       * asked for from the DB
-       */
-      const retrieved = await BaseRepo.findOne({
-        where: {
-          id: user.id,
-        },
-        relations: { modulesDone: true },
+      // 2. load modulesDone and modulesDoing relations
+      await UserRepository(db).loadRelations(user, {
+        modulesDone: true,
+        modulesDoing: true,
       })
+      // if module already taken, can't take module again
+      const modulesDoneCodes = user.modulesDone.map((one: Module) => one.moduleCode)
+      const modulesDoingCodes = user.modulesDoing.map((one: Module) => one.moduleCode)
+      if (modulesDoneCodes.includes(moduleCode) || modulesDoingCodes.includes(moduleCode)) {
+        return false
+      }
       // check if PrereqTree is fulfilled
-      const modulesDone = retrieved.modulesDone.map((m) => m.moduleCode)
+      const modulesDone = user.modulesDone.map((m) => m.moduleCode)
       return utils.checkTree(module.prereqTree, modulesDone)
     })
   }

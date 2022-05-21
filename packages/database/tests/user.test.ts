@@ -52,6 +52,19 @@ describe('User.canTakeModule', () => {
     expect(res).toStrictEqual([true, false, false, true])
   })
 
+  it('Returns false for modules taken before/currently', async () => {
+    const res = await endpoint(db, () =>
+      container(db, async () => {
+        // one done, one doing
+        const modulesTested = ['MA2001', 'MA2219']
+        return Promise.all(
+          modulesTested.map((x) => UserRepository(db).canTakeModule(user, x))
+        )
+      })
+    )
+    expect(res).toStrictEqual([false, false])
+  })
+
   it('Throws error if module code passed in does not exist', async () => {
     let error
     await db.initialize()
