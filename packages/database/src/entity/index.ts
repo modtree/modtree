@@ -5,5 +5,11 @@ import { User } from './User'
 import { DAG } from './DAG'
 
 export type ModtreeEntity = Module | ModuleCondensed | Degree | User | DAG
+export type ModtreeEntityConstructor =
+  | typeof Module
+  | typeof ModuleCondensed
+  | typeof Degree
+  | typeof User
+  | typeof DAG
 
 export { Module, ModuleCondensed, Degree, User, DAG }

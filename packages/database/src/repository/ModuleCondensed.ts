@@ -3,7 +3,12 @@ import { nusmodsApi, getModuleLevel } from '../utils/string'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { DataSource, Repository } from 'typeorm'
-import { getDataSource, LoadRelations, useLoadRelations } from './base'
+import {
+  getDataSource,
+  LoadRelations,
+  useBuild,
+  useLoadRelations,
+} from './base'
 
 interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
   pull(): Promise<ModuleCondensed[]>
@@ -30,11 +35,8 @@ export function ModuleCondensedRepository(
    * @return {Module}
    */
   function build(props: NMC): ModuleCondensed {
-    const m = new ModuleCondensed()
-    m.moduleCode = props.moduleCode
-    m.title = props.title
-    m.moduleLevel = getModuleLevel(props.moduleCode)
-    return m
+    const moduleLevel = getModuleLevel(props.moduleCode)
+    return useBuild(db, ModuleCondensed, { ...props, moduleLevel })
   }
 
   /**

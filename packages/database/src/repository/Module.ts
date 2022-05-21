@@ -7,7 +7,12 @@ import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { DataSource, Repository } from 'typeorm'
-import { getDataSource, LoadRelations, useLoadRelations } from './base'
+import {
+  getDataSource,
+  LoadRelations,
+  useLoadRelations,
+  useBuild,
+} from './base'
 
 interface ModuleRepository extends Repository<Module> {
   build(props: NM): Module
@@ -34,24 +39,7 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
    * @return {Module}
    */
   function build(props: NM): Module {
-    const m = new Module()
-    m.acadYear = props.acadYear || ''
-    m.moduleCode = props.moduleCode || ''
-    m.title = props.title || ''
-    m.description = props.description || ''
-    m.moduleCredit = props.moduleCredit || ''
-    m.department = props.department || ''
-    m.faculty = props.faculty || ''
-    m.workload = props.workload || ''
-    m.aliases = props.aliases || []
-    m.attributes = props.attributes || {}
-    m.prerequisite = props.prerequisite || ''
-    m.corequisite = props.corequisite || ''
-    m.preclusion = props.preclusion || ''
-    m.prereqTree = props.prereqTree || ''
-    m.semesterData = props.semesterData || []
-    m.fulfillRequirements = props.fulfillRequirements || []
-    return m
+    return useBuild(db, Module, props)
   }
 
   /**
