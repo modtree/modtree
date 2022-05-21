@@ -4,9 +4,6 @@
  * @return {number}
  */
 export function getModuleLevel(moduleCode: string): number {
-  if (moduleCode === undefined) {
-    return 0
-  }
   return parseInt(moduleCode.replace(/\D*([0-9]*)\D*.*$/, '$1')) || 0
 }
 
