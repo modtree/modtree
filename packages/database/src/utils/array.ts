@@ -5,9 +5,10 @@
  * @return {Module}
  */
 export function quickpop<T>(arr: T[], index: number): T {
-  if (arr.length === 0) return
+  if (arr.length === 0) throw new Error('Tried to quickpop an empty array')
   const res = arr[index]
   const elem = arr.pop()
+  if (!elem) throw new Error("Quickpop somehow popped an undefined element")
   if (arr.length !== index) arr[index] = elem
   return res
 }
