@@ -41,7 +41,7 @@ describe('Object.createEmpty', () => {
     expect(createEmpty(Number)).toEqual(0)
   })
   it ('Returns empty string for everything else', () => {
-    const tests: ColumnType[] = [String, 'longblob', 'text', 'json']
+    const tests: ColumnType[] = [String, 'longblob', 'text', 'json', 'mediumblob']
     tests.forEach(one => {
       expect(createEmpty(one)).toEqual('')
     })
