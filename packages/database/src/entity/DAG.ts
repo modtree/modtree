@@ -12,7 +12,7 @@ import { Module } from './Module'
 @Entity({ name: 'DAG' })
 export class DAG {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @ManyToOne(() => User)
   @JoinTable()
