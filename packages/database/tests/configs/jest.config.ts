@@ -16,6 +16,12 @@ const base: Config.InitialOptionsWithRootDir = {
   testSequencer: './tests/configs/sequencer.js',
 }
 
+export const all: Config.InitialOptions = {
+  ...base,
+  testMatch: ['**/tests/**/*.test.ts'],
+  testPathIgnorePatterns: [...base.testPathIgnorePatterns],
+}
+
 export const ci: Config.InitialOptions = {
   ...base,
   testMatch: ['**/tests/**/*.test.ts'],
