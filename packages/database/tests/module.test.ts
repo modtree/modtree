@@ -15,6 +15,8 @@ importChecks({
   repositories: [ModuleRepository(db)],
 })
 
+const lowerBound = 6000
+
 test('find modules by faculty', async () => {
   const res = await endpoint(db, () =>
     container(db, () => ModuleRepository(db).findByFaculty('Computing'))
@@ -63,7 +65,7 @@ test('get all modules in database', async () => {
   res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
   })
-  expect(res.length).toBeGreaterThan(6000)
+  expect(res.length).toBeGreaterThan(lowerBound)
 })
 
 test('fallback to default source', async () => {
@@ -76,7 +78,7 @@ test('fallback to default source', async () => {
   res.forEach((module) => {
     expect(module).toBeInstanceOf(Module)
   })
-  expect(res.length).toBeGreaterThan(6000)
+  expect(res.length).toBeGreaterThan(lowerBound)
   await teardown(config.database)
 })
 
@@ -86,5 +88,5 @@ test('get all module codes in database', async () => {
   )
   if (!res) return
   expect(res).toBeInstanceOf(Array)
-  expect(res.length).toBeGreaterThan(6000)
+  expect(res.length).toBeGreaterThan(lowerBound)
 })
