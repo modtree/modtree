@@ -1,6 +1,6 @@
 import { container } from '../data-source'
 import { DataSource, In, Repository } from 'typeorm'
-import { DAGInitProps, DAGProps } from '../../types/modtree'
+import { Init, DAGProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
 import { DAG } from '../entity/DAG'
 import { ModuleRepository } from './Module'
@@ -18,7 +18,7 @@ import { quickpop } from '../utils/array'
 
 interface DAGRepository extends Repository<DAG> {
   build(props: DAGProps): DAG
-  initialize(props: DAGInitProps): Promise<void>
+  initialize(props: Init.DAGProps): Promise<void>
   toggleModule(dag: DAG, moduleCode: string): Promise<void>
   loadRelations: LoadRelations<DAG>
 }
@@ -36,7 +36,7 @@ export function DAGRepository(database?: DataSource): DAGRepository {
 
   /**
    * Constructor for DAG
-   * Note: the props here is slightly different from DAGInitProps
+   * Note: the props here is slightly different from Init.DAGProps
    * @param {DAGProps} props
    * @return {DAG}
    */
@@ -46,10 +46,10 @@ export function DAGRepository(database?: DataSource): DAGRepository {
 
   /**
    * Adds a DAG to DB
-   * @param {DAGInitProps} props
+   * @param {Init.DAGProps} props
    * @return {Promise<void>}
    */
-  async function initialize(props: DAGInitProps): Promise<void> {
+  async function initialize(props: Init.DAGProps): Promise<void> {
     await container(db, async () => {
       /**
        * retrieves the degree and user with relations, without blocking each
