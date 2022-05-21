@@ -38,8 +38,8 @@ export type DegreeProps = {
 }
 
 export type DAGInitProps = {
-  userId: int
-  degreeId: Degree
+  userId: string
+  degreeId: string
   modulesPlacedCodes: string[]
   modulesHiddenCodes: string[]
   pullAll: boolean
