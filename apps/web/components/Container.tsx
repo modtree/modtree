@@ -13,7 +13,7 @@ export const Container = (props: { children: any }) => {
         <title>{meta.title}</title>
       </Head>
       <main
-        className={`contained flex flex-col justify-center max-w-2xl mx-auto ${padding}`}
+        className={`contained flex flex-col justify-center max-w-6xl mx-auto ${padding}`}
       >
         {props.children}
         <div className="flex-1" />
