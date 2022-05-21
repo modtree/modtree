@@ -16,7 +16,6 @@ importChecks({
 
 const lowerBound = 6000
 
-let total = 0
 
 test('moduleCondensed.get', async () => {
   const moduleList = await endpoint(db, () =>
@@ -34,7 +33,6 @@ test('moduleCondensed.get', async () => {
   const s = new Set(moduleList.map((m) => m.moduleCode))
   expect(s.size).toBe(moduleList.length)
   expect(s.size).toBeGreaterThan(lowerBound)
-  total = s.size
 })
 
 test('moduleCondensed.getCodes', async () => {
@@ -50,7 +48,6 @@ test('moduleCondensed.getCodes', async () => {
     expect(typeof moduleCode).toBe('string')
   })
   expect(moduleList.length).toBeGreaterThan(lowerBound)
-  expect(moduleList.length).toStrictEqual(total)
 })
 
 test('moduleCondensed.fetch', async () => {
@@ -68,5 +65,4 @@ test('moduleCondensed.fetch', async () => {
   const s = new Set(moduleList)
   expect(s.size).toBe(moduleList.length)
   expect(s.size).toBeGreaterThan(lowerBound)
-  expect(s.size).toStrictEqual(total)
 })

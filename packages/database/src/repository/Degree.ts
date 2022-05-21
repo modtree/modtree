@@ -3,8 +3,8 @@ import { DataSource, In, Repository } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import { db as DefaultSource } from '../config'
-import { LoadRelations, useLoadRelations } from './base'
+import { getDataSource, LoadRelations, useLoadRelations } from './base'
+import { copy } from '../utils/object'
 
 interface DegreeRepository extends Repository<Degree> {
   build(props: DegreeProps): Degree
@@ -18,7 +18,7 @@ interface DegreeRepository extends Repository<Degree> {
  * @return {DegreeRepository}
  */
 export function DegreeRepository(database?: DataSource): DegreeRepository {
-  const db = database || DefaultSource
+  const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
   const loadRelations = useLoadRelations(BaseRepo)
 
@@ -43,16 +43,13 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
   async function initialize(props: Init.DegreeProps): Promise<void> {
     await container(db, async () => {
       // find modules required, to create many-to-many relation
-      const modules = await ModuleRepository(db).find({
-        where: {
-          moduleCode: In(props.moduleCodes),
-        },
+      const modules = await ModuleRepository(db).findBy({
+        moduleCode: In(props.moduleCodes),
       })
-      const degreeProps = {
+      const degree = build({
         modules,
         title: props.title,
-      }
-      const degree = build(degreeProps)
+      })
       await BaseRepo.save(degree)
     })
   }
@@ -68,23 +65,22 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
   ): Promise<void> {
     await container(db, async () => {
       // find modules to add
-      const newModules = await ModuleRepository(db).find({
-        where: {
-          moduleCode: In(moduleCodes),
-        },
+      const newModules = await ModuleRepository(db).findBy({
+        moduleCode: In(moduleCodes),
       })
       // find modules part of current degree
-      await BaseRepo.findOne({
+      const updatedDegree = await BaseRepo.findOne({
         where: {
           id: degree.id,
         },
-        relations: ['modules'],
+        relations: { modules: true },
       }).then(async (degree) => {
         degree.modules.push(...newModules)
         await BaseRepo.save(degree)
+        return degree
       })
       // update the passed object
-      degree.modules.push(...newModules)
+      copy(updatedDegree, degree)
     })
   }
 
@@ -92,6 +88,6 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
     build,
     initialize,
     insertModules,
-    loadRelations
+    loadRelations,
   })
 }

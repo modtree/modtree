@@ -2,9 +2,8 @@ import axios from 'axios'
 import { nusmodsApi, getModuleLevel } from '../utils/string'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
-import { db as DefaultSource } from '../config'
 import { DataSource, Repository } from 'typeorm'
-import { LoadRelations, useLoadRelations } from './base'
+import { getDataSource, LoadRelations, useLoadRelations } from './base'
 
 interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
   pull(): Promise<ModuleCondensed[]>
@@ -21,7 +20,7 @@ interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
 export function ModuleCondensedRepository(
   database?: DataSource
 ): ModuleCondensedRepository {
-  const db = database || DefaultSource
+  const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
   const loadRelations = useLoadRelations(BaseRepo)
 
@@ -78,6 +77,6 @@ export function ModuleCondensedRepository(
     getCodes,
     fetch,
     pull,
-    loadRelations
+    loadRelations,
   })
 }

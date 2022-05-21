@@ -8,8 +8,8 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { db as DefaultSource } from '../config'
-import { LoadRelations, useLoadRelations } from './base'
+import { getDataSource, LoadRelations, useLoadRelations } from './base'
+import { quickpop } from '../utils/array'
 
 interface DAGRepository extends Repository<DAG> {
   build(props: DAGProps): DAG
@@ -25,7 +25,7 @@ type ModuleState = 'placed' | 'hidden' | 'invalid'
  * @return {DAGRepository}
  */
 export function DAGRepository(database?: DataSource): DAGRepository {
-  const db = database || DefaultSource
+  const db = getDataSource(database)
   const BaseRepo = db.getRepository(DAG)
   const loadRelations = useLoadRelations(BaseRepo)
 
@@ -92,8 +92,9 @@ export function DAGRepository(database?: DataSource): DAGRepository {
           return [Array.from(new Set(placed)), []]
         }
         // if passed in, then find the modules
+        const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
         return await Promise.all(
-          [props.modulesPlacedCodes, props.modulesHiddenCodes].map((list) =>
+          queryList.map((list) =>
             ModuleRepository(db).findBy({
               moduleCode: In(list),
             })
@@ -135,38 +136,24 @@ export function DAGRepository(database?: DataSource): DAGRepository {
           modulesHidden: true,
         },
       })
-      const [modulesPlaced, modulesHidden] = [
-        retrieved.modulesPlaced,
-        retrieved.modulesHidden,
-      ]
       /**
        * find the index of the given moduleCode to toggle
        */
       const index: Record<ModuleState, number> = {
-        placed: modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
-        hidden: modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
+        placed: retrieved.modulesPlaced
+          .map((m) => m.moduleCode)
+          .indexOf(moduleCode),
+        hidden: retrieved.modulesHidden
+          .map((m) => m.moduleCode)
+          .indexOf(moduleCode),
         invalid: -1,
       }
       const state: ModuleState =
         index.placed !== -1
           ? 'placed'
           : index.hidden !== -1
-            ? 'hidden'
-            : 'invalid'
-
-      /**
-       * O(1) delete from unsorted array
-       * @param {Module[]} arr
-       * @param {number} index
-       * @return {Module}
-       */
-      function quickpop(arr: Module[], index: number): Module {
-        if (arr.length === 0) return
-        const res = arr[index]
-        const elem = arr.pop()
-        if (arr.length !== index) arr[index] = elem
-        return res
-      }
+          ? 'hidden'
+          : 'invalid'
 
       /**
        * toggles the modules between placed and hidden

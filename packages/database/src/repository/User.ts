@@ -2,11 +2,9 @@ import { container } from '../data-source'
 import { DataSource, In, Repository } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
-import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
-import { useLoadRelations, LoadRelations } from './base'
-import { db as DefaultSource } from '../config'
+import { useLoadRelations, LoadRelations, getDataSource } from './base'
 
 interface UserRepository extends Repository<User> {
   build(props: UserProps): User
@@ -20,7 +18,7 @@ interface UserRepository extends Repository<User> {
  * @return {UserRepository}
  */
 export function UserRepository(database?: DataSource): UserRepository {
-  const db = database || DefaultSource
+  const db = getDataSource(database)
   const BaseRepo = db.getRepository(User)
   const loadRelations = useLoadRelations(BaseRepo)
 
@@ -35,9 +33,9 @@ export function UserRepository(database?: DataSource): UserRepository {
     user.username = props.username || ''
     user.modulesDone = props.modulesDone || []
     user.modulesDoing = props.modulesDoing || []
-    user.matriculationYear = props.matriculationYear || 2021
-    user.graduationYear = props.graduationYear || 2025
-    user.graduationSemester = props.graduationSemester || 2
+    user.matriculationYear = props.matriculationYear || 0
+    user.graduationYear = props.graduationYear || 0
+    user.graduationSemester = props.graduationSemester || 0
     return user
   }
 
@@ -49,26 +47,18 @@ export function UserRepository(database?: DataSource): UserRepository {
   async function initialize(props: Init.UserProps): Promise<void> {
     await container(db, async () => {
       // find modules completed and modules doing, to create many-to-many relation
-      const modulesDone = await ModuleRepository(db).find({
-        where: {
-          moduleCode: In(props.modulesDone),
-        },
-      })
-      const modulesDoing = await ModuleRepository(db).find({
-        where: {
-          moduleCode: In(props.modulesDoing),
-        },
-      })
-      const userProps: UserProps = {
-        displayName: props.displayName,
-        username: props.username,
-        modulesDone: modulesDone || [],
-        modulesDoing: modulesDoing || [],
-        matriculationYear: props.matriculationYear,
-        graduationYear: props.graduationYear,
-        graduationSemester: props.graduationSemester,
-      }
-      const user = build(userProps)
+      const queryList = [props.modulesDone, props.modulesDoing]
+      const modulesPromise = Promise.all(
+        queryList.map((list) =>
+          ModuleRepository(db).findBy({
+            moduleCode: In(list),
+          })
+        )
+      )
+      const user = build(props)
+      const [modulesDone, modulesDoing] = await modulesPromise
+      user.modulesDone = modulesDone || []
+      user.modulesDoing = modulesDoing || []
       await BaseRepo.save(user)
     })
   }
@@ -87,11 +77,7 @@ export function UserRepository(database?: DataSource): UserRepository {
   ): Promise<boolean | void> {
     return await container(db, async () => {
       // find module
-      const module = await ModuleRepository(db).findOne({
-        where: {
-          moduleCode: moduleCode,
-        },
-      })
+      const module = await ModuleRepository(db).findOneBy({ moduleCode })
       /* Relations are not stored in the entity, so they must be explicitly
        * asked for from the DB
        */
@@ -99,16 +85,14 @@ export function UserRepository(database?: DataSource): UserRepository {
         where: {
           id: user.id,
         },
+        relations: { modulesDone: true },
       })
-      await loadRelations(retrieved, { modulesDone: true })
-      const modulesDone = retrieved.modulesDone
       // check if PrereqTree is fulfilled
-      const completedModulesCodes = modulesDone.map(
-        (one: Module) => one.moduleCode
-      )
-      return utils.checkTree(module.prereqTree, completedModulesCodes)
+      const modulesDone = retrieved.modulesDone.map((m) => m.moduleCode)
+      return utils.checkTree(module.prereqTree, modulesDone)
     })
   }
+
   return BaseRepo.extend({
     canTakeModule,
     build,
