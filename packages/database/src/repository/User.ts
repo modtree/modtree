@@ -91,7 +91,7 @@ export function UserRepository(database?: DataSource): UserRepository {
       if (modulesDoneCodes.includes(moduleCode) || modulesDoingCodes.includes(moduleCode)) {
         return false
       }
-      // check if PrereqTree is fulfilled
+      // 3. check if PrereqTree is fulfilled
       const modulesDone = user.modulesDone.map((m) => m.moduleCode)
       return utils.checkTree(module.prereqTree, modulesDone)
     })
