@@ -2,6 +2,7 @@ import { container } from '../data-source'
 import { DataSource, In, Repository } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
+import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
 import {
@@ -75,6 +76,10 @@ export function UserRepository(database?: DataSource): UserRepository {
     return await container(db, async () => {
       // find module
       const module = await ModuleRepository(db).findOneBy({ moduleCode })
+      // if module not found, assume invalid module code
+      if (!module) {
+        throw new Error('Invalid module code')
+      }
       /* Relations are not stored in the entity, so they must be explicitly
        * asked for from the DB
        */
