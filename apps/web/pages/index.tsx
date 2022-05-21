@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react'
 import Search from '@/components/Search'
-import { H1 } from '@/components/Html'
+import { H1, H2 } from '@/components/Html'
 import { ModuleCondensed } from 'database'
 import { ResultDisplay } from '@/components/module-search/Results'
 
@@ -18,16 +18,21 @@ export default function SearchPage() {
 
   return (
     <>
-      <H1>Search Page</H1>
-      <div className="bg-green-100">
-      <Search setResults={setResults} />
-      {results.length > 0 ? (
-        <div className="flex flex-row justify-center mt-12">
-          <ResultContainer>
-            <ResultDisplay selectState={selectState} results={results} />
-          </ResultContainer>
+      <H1>modtree</H1>
+      <div className="flex flex-row overflow-y-hidden">
+        <div className='w-1/4 bg-gray-200 mr-4'>
+          <h2 className="px-4 py-3 text-xl tracking-tight font-medium text-gray-700">Module List</h2>
         </div>
-      ) : null}
+        <div className='flex-1 mb-4'>
+          <Search setResults={setResults} />
+          {results.length > 0 ? (
+            <div className="flex flex-row justify-center mt-12">
+              <ResultContainer>
+                <ResultDisplay selectState={selectState} results={results} />
+              </ResultContainer>
+            </div>
+          ) : null}
+        </div>
       </div>
     </>
   )
