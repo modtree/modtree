@@ -20,6 +20,13 @@ export namespace Init {
     moduleCodes: string[]
     title: string
   }
+  export type DAGProps = {
+    userId: string
+    degreeId: string
+    modulesPlacedCodes: string[]
+    modulesHiddenCodes: string[]
+    pullAll: boolean
+  }
 }
 
 export type UserProps = {
@@ -35,14 +42,6 @@ export type UserProps = {
 export type DegreeProps = {
   modules: Module[]
   title: string
-}
-
-export type DAGInitProps = {
-  userId: string
-  degreeId: string
-  modulesPlacedCodes: string[]
-  modulesHiddenCodes: string[]
-  pullAll: boolean
 }
 
 export type DAGProps = {

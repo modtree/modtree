@@ -1,5 +1,5 @@
 import { container, endpoint, getSource } from '../src/data-source'
-import { DAGInitProps, Init } from '../types/modtree'
+import { Init } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
 import {
   DegreeRepository,
@@ -70,7 +70,7 @@ describe('DAG.initialize with pullAll = true', () => {
   })
   describe('DAG.initialize', () => {
     it('Saves a dag', async () => {
-      const dagProps: DAGInitProps = {
+      const dagProps: Init.DAGProps = {
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -227,7 +227,7 @@ describe('DAG.initialize with pullAll = false', () => {
 
   describe('DAG.initialize', () => {
     it('Saves a dag', async () => {
-      const dagProps: DAGInitProps = {
+      const dagProps: Init.DAGProps = {
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
