@@ -4,7 +4,7 @@ import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
 import { ModuleRepository } from './Module'
 import { utils } from '../utils'
-import { useLoadRelations, LoadRelations, getDataSource } from './base'
+import { useLoadRelations, LoadRelations, getDataSource, useBuild } from './base'
 
 interface UserRepository extends Repository<User> {
   build(props: UserProps): User
@@ -28,15 +28,7 @@ export function UserRepository(database?: DataSource): UserRepository {
    * @return {User}
    */
   function build(props: UserProps): User {
-    const user = new User()
-    user.displayName = props.displayName || ''
-    user.username = props.username || ''
-    user.modulesDone = props.modulesDone || []
-    user.modulesDoing = props.modulesDoing || []
-    user.matriculationYear = props.matriculationYear || 0
-    user.graduationYear = props.graduationYear || 0
-    user.graduationSemester = props.graduationSemester || 0
-    return user
+    return useBuild(db, User, props)
   }
 
   /**

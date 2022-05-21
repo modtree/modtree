@@ -10,7 +10,7 @@ import { Module } from './Module'
 @Entity({ name: 'degree' })
 export class Degree {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @ManyToMany(() => Module)
   @JoinTable()

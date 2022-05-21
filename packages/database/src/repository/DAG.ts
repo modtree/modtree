@@ -8,7 +8,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, LoadRelations, useLoadRelations } from './base'
+import { getDataSource, LoadRelations, useBuild, useLoadRelations } from './base'
 import { quickpop } from '../utils/array'
 
 interface DAGRepository extends Repository<DAG> {
@@ -36,12 +36,7 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    * @return {DAG}
    */
   function build(props: DAGProps): DAG {
-    const dag = new DAG()
-    dag.user = props.user
-    dag.degree = props.degree
-    dag.modulesPlaced = props.modulesPlaced || []
-    dag.modulesHidden = props.modulesHidden || []
-    return dag
+    return useBuild(db, DAG, props)
   }
 
   /**
@@ -152,8 +147,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         index.placed !== -1
           ? 'placed'
           : index.hidden !== -1
-          ? 'hidden'
-          : 'invalid'
+            ? 'hidden'
+            : 'invalid'
 
       /**
        * toggles the modules between placed and hidden

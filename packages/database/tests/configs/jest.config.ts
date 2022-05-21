@@ -21,8 +21,7 @@ export const ci: Config.InitialOptions = {
   testMatch: ['**/tests/**/*.test.ts'],
   testPathIgnorePatterns: [
     ...base.testPathIgnorePatterns,
-    'pull',
-    'khang.test',
+    'module-pull',
   ],
 }
 
@@ -31,7 +30,7 @@ export const pull: Config.InitialOptions = {
   testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
-const khang = ['module']
+const khang = ['dag']
 export const k: Config.InitialOptions = {
   ...base,
   testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),

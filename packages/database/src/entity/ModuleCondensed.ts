@@ -4,7 +4,7 @@ import { ModuleCode, ModuleTitle } from '../../types/nusmods'
 @Entity({ name: 'moduleCondensed' })
 export class ModuleCondensed {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Column()
   moduleCode: ModuleCode

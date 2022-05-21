@@ -14,7 +14,7 @@ import {
 @Entity({ name: 'module' })
 export class Module {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Column({ type: 'text' })
   acadYear: AcadYear

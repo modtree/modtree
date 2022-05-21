@@ -1,6 +1,7 @@
 import { DataSource, FindOptionsRelations, Repository } from 'typeorm'
 import { db as DefaultSource } from '../config'
 import { ModtreeEntity } from '../entity'
+import { createEmpty } from '../utils/object'
 
 type LoadRelationsMethod = (
   entity: ModtreeEntity,
@@ -19,6 +20,37 @@ export type LoadRelations<T> = (
  */
 export function getDataSource(db: DataSource): DataSource {
   return db || DefaultSource
+}
+
+type EntityConstructor<T> = new () => T
+/**
+ * a drop-in replacement for a contructor, but for TypeORM entities
+ * @param {DataSource} database
+ * @param {EntityConstructor<T>} Entity
+ * @param {InitProps} props to init
+ * @return {T}
+ */
+export function useBuild<T, InitProps>(
+  database: DataSource,
+  Entity: EntityConstructor<T>,
+  props: InitProps
+): T {
+  const entity = new Entity()
+  const meta = database.getMetadata(Entity)
+  // handle columns first
+  meta.columns.forEach((c) => {
+    if (c.isGenerated) return
+    entity[c.propertyName] = props[c.propertyName] || createEmpty(c.type)
+  })
+  // handle relations next
+  meta.relations.forEach((r) => {
+    const prop = r.propertyName
+    // skip entirely if prop doesn't have relation
+    // because relations can easily afford to be empty
+    if (!props[prop]) return
+    entity[prop] = props[prop]
+  })
+  return entity
 }
 
 /**
