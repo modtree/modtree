@@ -10,7 +10,7 @@ export default function SearchPage() {
 
   const ResultContainer = (props: { children: ReactNode }) => {
     return (
-      <div className="px-2 py-1 bg-white rounded-md shadow-md w-full max-w-xl">
+      <div className="px-2 py-1 bg-white rounded-md shadow-md">
         {props.children}
       </div>
     )
@@ -18,15 +18,19 @@ export default function SearchPage() {
 
   return (
     <>
-      <H1>modtree</H1>
-      <div className="flex flex-row overflow-y-hidden">
-        <div className='w-1/4 bg-gray-200 mr-4'>
-          <h2 className="px-4 py-3 text-xl tracking-tight font-medium text-gray-700">Module List</h2>
+      <h1 className="text-4xl mt-12 mb-12 font-semibold tracking-normal text-gray-700">
+        modtree
+      </h1>
+      <div className="flex flex-row justify-center overflow-y-hidden">
+        <div className="w-1/4 bg-white mr-4 rounded-md shadow-md mb-4 min-h-[20rem]">
+          <h2 className="px-4 py-3 text-xl tracking-tight font-semibold text-gray-500">
+            Module List
+          </h2>
         </div>
-        <div className='flex-1 mb-4'>
+        <div className="mb-4 w-full max-w-xl">
           <Search setResults={setResults} />
           {results.length > 0 ? (
-            <div className="flex flex-row justify-center mt-12">
+            <div className="flex flex-row justify-center mt-6">
               <ResultContainer>
                 <ResultDisplay selectState={selectState} results={results} />
               </ResultContainer>
