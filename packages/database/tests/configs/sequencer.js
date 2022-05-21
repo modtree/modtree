@@ -1,6 +1,16 @@
+/* eslint @typescript-eslint/no-var-requires: 0 */
+
 const Sequencer = require('@jest/test-sequencer').default
+
 // source: https://jestjs.io/docs/configuration#testsequencer-string
+
+/** custom sequencer to always run base.test.ts first */
 class CustomSequencer extends Sequencer {
+  /**
+   * where the magic happens
+   * @param {any} tests
+   * @return {any[]}
+   */
   sort(tests) {
     const copyTests = Array.from(tests)
     /** put base test in front */

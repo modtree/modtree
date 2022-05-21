@@ -1,12 +1,11 @@
 import { container, endpoint, getSource } from '../src/data-source'
-import { DAGInitProps } from '../types/modtree'
+import { DAGInitProps, Init } from '../types/modtree'
 import { Degree, User, Module, DAG } from '../src/entity'
 import {
   DegreeRepository,
   UserRepository,
   DAGRepository,
 } from '../src/repository'
-import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks, teardown } from './environment'
 
@@ -23,8 +22,11 @@ importChecks({
 
 jest.setTimeout(5000)
 
-let degree: Degree, user: User, dag: DAG
-let degreeProps: Init.DegreeProps, userProps: Init.UserProps
+let degree: Degree
+let user: User
+let dag: DAG
+let degreeProps: Init.DegreeProps
+let userProps: Init.UserProps
 
 describe('DAG.initialize with pullAll = true', () => {
   beforeAll(() => setup(dbName))
@@ -44,7 +46,6 @@ describe('DAG.initialize with pullAll = true', () => {
       )
       expect(res).toBeDefined()
       if (!res) return
-
       degree = res
     })
 
@@ -64,7 +65,6 @@ describe('DAG.initialize with pullAll = true', () => {
       )
       expect(res).toBeDefined()
       if (!res) return
-
       user = res
     })
   })
@@ -106,7 +106,6 @@ describe('DAG.initialize with pullAll = true', () => {
       )
       expect(res).toBeDefined()
       if (!res) return
-
       expect(res.length).toEqual(1)
 
       dag = res[0]
@@ -205,7 +204,6 @@ describe('DAG.initialize with pullAll = false', () => {
       )
       expect(res).toBeDefined()
       if (!res) return
-
       degree = res
     })
 
@@ -223,7 +221,6 @@ describe('DAG.initialize with pullAll = false', () => {
       )
       expect(res).toBeDefined()
       if (!res) return
-
       user = res
     })
   })
@@ -266,9 +263,7 @@ describe('DAG.initialize with pullAll = false', () => {
       )
       expect(res).toBeDefined()
       if (!res) return
-
       expect(res.length).toEqual(1)
-
       dag = res[0]
     })
 

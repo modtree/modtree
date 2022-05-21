@@ -9,6 +9,7 @@
     "@types/jest": "^27.5.0",
     "@types/mysql": "^2.15.21",
     "@types/node": "^16.11.10",
+    "eslint-plugin-jest": "^26.2.2",
     "jest": "^28.1.0",
     "modtree-config": "*",
     "ts-jest": "^28.0.2",

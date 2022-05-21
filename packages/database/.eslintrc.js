@@ -6,10 +6,5 @@ module.exports = {
     node: true,
   },
   ...config,
-  ignorePatterns: [
-    ...config.ignorePatterns,
-    'types/*',
-    'tests/*',
-    'src/migrations/*',
-  ],
+  ignorePatterns: [...config.ignorePatterns, 'types/*', 'src/migrations/*'],
 }

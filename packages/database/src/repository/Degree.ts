@@ -3,7 +3,12 @@ import { DataSource, In, Repository } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import { getDataSource, LoadRelations, useBuild, useLoadRelations } from './base'
+import {
+  getDataSource,
+  LoadRelations,
+  useBuild,
+  useLoadRelations,
+} from './base'
 import { copy } from '../utils/object'
 
 interface DegreeRepository extends Repository<Degree> {

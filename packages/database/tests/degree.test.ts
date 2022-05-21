@@ -10,7 +10,7 @@ const db = getSource(dbName)
 
 importChecks({
   entities: [Degree, Module],
-  repositories: [DegreeRepository(db)]
+  repositories: [DegreeRepository(db)],
 })
 
 jest.setTimeout(5000)
@@ -24,23 +24,22 @@ describe('Degree', () => {
   describe('Degree.initialize', () => {
     it('Saves a degree', async () => {
       // write the degree to database
-      await container(db,() => DegreeRepository(db).initialize(props))
+      await container(db, () => DegreeRepository(db).initialize(props))
 
       // retrieve that degree again
       const possiblyNull: Degree | void = await endpoint(db, () =>
-        container(db,() =>
+        container(db, () =>
           DegreeRepository(db).findOne({
             where: {
               title: props.title,
             },
-            relations: {modules: true},
+            relations: { modules: true },
           })
         )
       )
       // expect degree to be not null, not undefined
       expect(possiblyNull).toBeDefined()
       if (!possiblyNull) return
-
       degree = possiblyNull
     })
 
@@ -49,7 +48,6 @@ describe('Degree', () => {
 
       expect(modules).toBeDefined()
       if (!modules) return
-
       const moduleCodes = modules.map((m) => m.moduleCode)
       // match relation's module codes to init props' modules codes
       expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
@@ -66,18 +64,17 @@ describe('Degree', () => {
 
     it('Does not create a duplicate degree', async () => {
       const res = await endpoint(db, () =>
-        container(db,() =>
+        container(db, () =>
           DegreeRepository(db).find({
             where: {
               title: props.title,
             },
-            relations: {modules: true},
+            relations: { modules: true },
           })
         )
       )
       expect(res).toBeDefined()
       if (!res) return
-
       // Inserting modules to the degree should not create a new Degree
       expect(res.length).toEqual(1)
     })

@@ -55,9 +55,7 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
       })
       return modules
     })
-    if (!modules) {
-      return []
-    }
+    if (!modules) return []
     return modules
   }
 
@@ -130,9 +128,7 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
       await Promise.all(writeQueue)
       return result
     })
-    if (!result) {
-      return []
-    }
+    if (!result) return []
     return result
   }
 
