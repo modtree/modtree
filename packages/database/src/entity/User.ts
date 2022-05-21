@@ -10,7 +10,7 @@ import { Module } from './Module'
 @Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Column()
   displayName: string

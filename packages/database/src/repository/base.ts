@@ -39,7 +39,7 @@ export function useBuild<T, InitProps>(
   const meta = database.getMetadata(Entity)
   // handle columns first
   meta.columns.forEach((c) => {
-    if (c.isPrimary) return
+    if (c.isGenerated) return
     entity[c.propertyName] = props[c.propertyName] || createEmpty(c.type)
   })
   // handle relations next
