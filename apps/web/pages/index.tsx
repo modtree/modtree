@@ -2,7 +2,8 @@ import { ReactNode, useState } from 'react'
 import Search from '../components/Search'
 import { H1 } from '../components/Html'
 import { ModuleCondensed } from 'database'
-import { IoEllipseOutline } from 'react-icons/io5'
+import { IoEllipseOutline, IoCheckmarkCircleSharp } from 'react-icons/io5'
+import colors from 'tailwindcss/colors'
 
 export default function SearchPage() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
@@ -19,11 +20,7 @@ export default function SearchPage() {
   const CheckBox = (props: { moduleCode?: string; on: () => boolean }) => {
     return (
       <div className="flex flex-col h-full justify-center mr-2">
-        {props.on() ? (
-          <div className="w-4 h-4 bg-emerald-500 rounded-full" />
-        ) : (
-          <IoEllipseOutline />
-        )}
+        {props.on() ? <IoCheckmarkCircleSharp color={colors.emerald[500]} /> : <IoEllipseOutline color={colors.gray[400]} />}
       </div>
     )
   }
