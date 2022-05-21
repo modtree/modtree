@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types'
 
-const base: Config.InitialOptionsWithRootDir = {
+export const all: Config.InitialOptionsWithRootDir = {
   rootDir: '../..',
   // lets console logs show
   silent: true,
@@ -16,35 +16,29 @@ const base: Config.InitialOptionsWithRootDir = {
   testSequencer: './tests/configs/sequencer.js',
 }
 
-export const all: Config.InitialOptions = {
-  ...base,
-  testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: [...base.testPathIgnorePatterns],
-}
-
 export const ci: Config.InitialOptions = {
-  ...base,
+  ...all,
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: [...base.testPathIgnorePatterns, 'module-pull'],
+  testPathIgnorePatterns: [...all.testPathIgnorePatterns, 'module-pull'],
 }
 
 export const pull: Config.InitialOptions = {
-  ...base,
+  ...all,
   testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
 const khang = ['dag']
 export const k: Config.InitialOptions = {
-  ...base,
+  ...all,
   testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
   silent: false,
 }
 
 const wTest = 'utils'
 export const w: Config.InitialOptions = {
-  ...base,
+  ...all,
   testMatch: [`**/tests/**/${wTest}.test.ts`],
   silent: false,
 }
 
-export default base
+export default all
