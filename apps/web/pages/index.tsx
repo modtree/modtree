@@ -4,21 +4,6 @@ import { H1 } from '../components/Html'
 import { ModuleCondensed } from 'database'
 import { IoEllipseOutline } from 'react-icons/io5'
 
-/**
- * O(1) delete from unsorted array
- * @param {T[]} arr
- * @param {number} index
- * @return {Module}
- */
-function quickpop<T>(arr: T[], index: number): T | void {
-  if (arr.length === 0) return
-  const res = arr[index]
-  const elem = arr.pop()
-  if (!res || !elem) return
-  if (arr.length !== index) arr[index] = elem
-  return res
-}
-
 export default function SearchPage() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
   const [selected, setSelected] = useState<string[]>(['meme'])
