@@ -2,63 +2,16 @@ import { ReactNode, useState } from 'react'
 import Search from '../components/Search'
 import { H1 } from '../components/Html'
 import { ModuleCondensed } from 'database'
-import { IoEllipseOutline, IoCheckmarkCircleSharp } from 'react-icons/io5'
-import colors from 'tailwindcss/colors'
+import { ResultDisplay } from '../components/module-search/Results'
 
 export default function SearchPage() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
-  const [selected, setSelected] = useState<string[]>(['meme'])
+  const selectState = useState<string[]>(['meme'])
 
   const ResultContainer = (props: { children: ReactNode }) => {
     return (
       <div className="px-2 py-1 bg-white rounded-md shadow-md w-full max-w-xl">
         {props.children}
-      </div>
-    )
-  }
-
-  const CheckBox = (props: { moduleCode?: string; on: () => boolean }) => {
-    return (
-      <div className="flex flex-col h-full justify-center mr-2">
-        {props.on() ? <IoCheckmarkCircleSharp color={colors.emerald[500]} /> : <IoEllipseOutline color={colors.gray[400]} />}
-      </div>
-    )
-  }
-
-  function updateSelected(moduleCode: string) {
-    const curr = [...selected]
-    if (curr.includes(moduleCode)) {
-      setSelected(curr.filter((x) => x !== moduleCode))
-    } else {
-      curr.push(moduleCode)
-      setSelected(curr)
-    }
-  }
-
-  const ResultEntry = (props: { module: ModuleCondensed }) => {
-    const { module } = props
-    const on = (): boolean => selected.includes(module.moduleCode)
-    return (
-      <div
-        className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
-        onClick={() => updateSelected(module.moduleCode)}
-      >
-        <CheckBox on={on} />
-        <div className="w-28 text-gray-600">{module.moduleCode}</div>
-        <div className="text-gray-400 flex-1 mr-2 whitespace-nowrap overflow-hidden text-ellipsis break-all">
-          {module.title}
-        </div>
-      </div>
-    )
-  }
-
-  const ResultDisplay = () => {
-    console.log('result display refresh')
-    return (
-      <div className="flex-col">
-        {results.slice(0, 10).map((m, index) => (
-          <ResultEntry module={m} key={index} />
-        ))}
       </div>
     )
   }
@@ -70,7 +23,7 @@ export default function SearchPage() {
       {results.length > 0 ? (
         <div className="flex flex-row justify-center mt-12">
           <ResultContainer>
-            <ResultDisplay />
+            <ResultDisplay selectState={selectState} results={results} />
           </ResultContainer>
         </div>
       ) : null}
