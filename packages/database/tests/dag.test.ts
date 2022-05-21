@@ -174,7 +174,7 @@ describe('DAG.initialize with pullAll = true', () => {
       await db.initialize()
 
       try {
-        await DAGRepository(db).toggleModule(dag, 'XXYYZZ')
+        await DAGRepository(db).toggleModule(dag, init.fakeModuleCode)
       } catch (err) {
         error = err
       }

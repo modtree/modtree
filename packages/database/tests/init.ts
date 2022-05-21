@@ -33,4 +33,5 @@ export namespace init {
     graduationYear: 2025,
     graduationSemester: 2,
   }
+  export const fakeModuleCode = 'XXYYZZ'
 }
