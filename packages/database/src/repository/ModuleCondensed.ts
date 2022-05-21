@@ -35,8 +35,10 @@ export function ModuleCondensedRepository(
    * @return {Module}
    */
   function build(props: NMC): ModuleCondensed {
-    const moduleLevel = getModuleLevel(props.moduleCode)
-    return useBuild(db, ModuleCondensed, { ...props, moduleLevel })
+    return useBuild(db, ModuleCondensed, {
+      ...props,
+      moduleLevel: getModuleLevel(props.moduleCode),
+    })
   }
 
   /**
