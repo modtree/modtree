@@ -31,17 +31,21 @@ function getDatabasePort(): number {
   return 3306
 }
 
+/**
+ * prints the blue box before each run
+ * @param {string} database
+ */
+function boxLog(database: string) {
+  const output = [`Env File: ${envFile}`, `Database: ${database}`]
+  box.blue(output.join('\n'))
+}
+
 function getConfig(type: SupportedDatabases) {
   const key = (e: string) => `${type.toUpperCase()}_${e}`
   const env = (e: string) => process.env[key(e)]
-  const shared = {
-    entities: ['src/entity/*.ts'],
-    migrations: ['src/migrations/**/*.ts'],
-  }
   const config = {
-    ...shared,
-    type,
     rootDir,
+    type,
     port: parseInt(env('PORT')) || base.port,
     username: env('USERNAME'),
     password: env('PASSWORD'),
@@ -51,11 +55,10 @@ function getConfig(type: SupportedDatabases) {
     server_ca: env('SERVER_CA'),
     client_cert: env('CLIENT_CERT'),
     client_key: env('CLIENT_KEY'),
+    entities: ['src/entity/*.ts'],
+    migrations: ['src/migrations/**/*.ts'],
   }
-  // show which env file was loaded
-  // which database is being used
-  const output = [`Env File: ${envFile}`, `Database: ${env('ACTIVE_DATABASE')}`]
-  box.blue(output.join('\n'))
+  boxLog(config.database)
   return config
 }
 
