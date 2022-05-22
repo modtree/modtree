@@ -1,7 +1,5 @@
 export { dump } from './dump'
 export { restore } from './restore'
-export { remove } from './remove'
-export { wipe } from './wipe'
 import { config } from '../config'
 import { createConnection, Connection } from 'mysql2/promise'
 import { DatabaseType } from 'typeorm'
