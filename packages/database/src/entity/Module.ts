@@ -16,8 +16,8 @@ const descriptionType: ColumnType =
   config.type == 'postgres'
     ? 'varchar'
     : config.type == 'mysql'
-    ? 'longblob'
-    : 'text'
+      ? 'longblob'
+      : 'text'
 
 @Entity({ name: 'module' })
 export class Module {

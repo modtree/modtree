@@ -23,7 +23,7 @@ function getDatabaseType(): SupportedDatabases {
 }
 
 /**
- * @returns {string} the default port of each database
+ * @return {string} the default port of each database
  */
 function getDatabasePort(): number {
   const env = process.env.DATABASE_TYPE
