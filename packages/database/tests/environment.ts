@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm'
 import { config } from '../src/config'
 import { sql } from '../src/sql'
-import { restore } from '../src/sql'
 
 /**
  * pre-test setup
@@ -9,7 +8,7 @@ import { restore } from '../src/sql'
  */
 export async function setup(database: string) {
   await sql.clearDatabase(database)
-  await restore.file(database, config.restoreSource)
+  await sql.restoreFromFile(database, config.restoreSource)
 }
 
 /**

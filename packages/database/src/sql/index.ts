@@ -6,7 +6,7 @@ import { config } from '../config'
 import { createConnection, Connection } from 'mysql2/promise'
 import { DatabaseType } from 'typeorm'
 import { join } from 'path'
-import { exec } from 'child_process'
+import { exec } from '../shell'
 // import fs from 'fs'
 // import inquirer from 'inquirer'
 // import { wipe } from '.'
@@ -99,9 +99,9 @@ class Sql {
     const file = join(config.rootDir, '.sql', filename)
     const [u, p, d, f] = [config.username, config.password, database, file]
     const username = u == '' ? '' : `-u ${u}`
-    const password = p == '' ? '' : `-p"${p}"`
-    const cmd = `mysql ${username} ${password}" ${d} < ${f}`
-    exec(cmd)
+    const password = p == '' ? '' : `-p\"${p}\"`
+    const cmd = `mysql ${username} ${password} ${d} < ${f}`
+    await exec(cmd)
   }
 }
 
