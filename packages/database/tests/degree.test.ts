@@ -18,7 +18,11 @@ jest.setTimeout(5000)
 describe('Degree', () => {
   beforeAll(() => setup(dbName))
   afterAll(() => teardown(dbName))
+
   const props: Init.DegreeProps = init.degree1
+  const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
+  const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes)
+
   let degree: Degree
 
   describe('Degree.initialize', () => {
@@ -56,8 +60,6 @@ describe('Degree', () => {
   })
 
   describe('Degree.insertModules', () => {
-    const newModuleCodes = ['MA1521', 'MA2001', 'ST2334']
-
     it('Adds modules to a degree', async () => {
       await DegreeRepository(db).insertModules(degree, newModuleCodes)
     })
@@ -80,15 +82,38 @@ describe('Degree', () => {
     })
 
     it('Correctly saves newly inserted modules', async () => {
-      const combinedModuleCodes = props.moduleCodes.concat(newModuleCodes)
-
-      const modules = degree.modules
-      const moduleCodes = modules.map((m: Module) => m.moduleCode)
-
       // match retrieved module codes to
       // init props' module codes + added module codes
+      const moduleCodes = degree.modules.map((m: Module) => m.moduleCode)
       expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
-      expect(moduleCodes.length).toStrictEqual(12)
+      expect(moduleCodes.length).toStrictEqual(combinedModuleCodes.length)
+    })
+  })
+
+  describe('Degree.insertModules with invalid module code', () => {
+    it('Does not add new modules if all module codes are invalid', async () => {
+      const newModuleCodes = [init.invalidModuleCode]
+      await DegreeRepository(db).insertModules(degree, newModuleCodes)
+      // match retrieved module codes to
+      // init props' module codes + added module codes
+      const moduleCodes = degree.modules.map((m: Module) => m.moduleCode)
+      expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
+      expect(moduleCodes.length).toStrictEqual(combinedModuleCodes.length)
+    })
+    it('Adds some new modules if there is a mix of valid and invalid module codes', async () => {
+      const newModuleCodes = [init.invalidModuleCode, 'CS4269']
+      await endpoint(db, () =>
+        container(db, () =>
+          DegreeRepository(db).insertModules(degree, newModuleCodes)
+        )
+      )
+      // add CS4269 to the module codes
+      combinedModuleCodes.push('CS4269')
+      // match retrieved module codes to
+      // init props' module codes + added module codes
+      const moduleCodes = degree.modules.map((m: Module) => m.moduleCode)
+      expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
+      expect(moduleCodes.length).toStrictEqual(combinedModuleCodes.length)
     })
   })
 })

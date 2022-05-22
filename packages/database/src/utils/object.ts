@@ -12,7 +12,7 @@ export function copy<T>(source: T, target: T) {
 }
 
 /**
- * creates an emtpy version of the type that is passed in
+ * creates an empty version of the type that is passed in
  * @param {ColumnType} type of TypeORM Column
  * @return {any}
  */

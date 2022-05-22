@@ -38,7 +38,7 @@
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.ts",
     "test:pull": "NODE_ENV=test jest --config ./tests/configs/pull.config.ts",
     "test:k": "NODE_ENV=test jest --config ./tests/configs/khang.config.ts --detectOpenHandles",
-    "test:all": "yarn test:ci && yarn test:pull",
+    "test:all": "NODE_ENV=test jest --config ./tests/configs/all.config.ts",
     "test:w": "NODE_ENV=test jest --config ./tests/configs/w.config.ts",
     "lint": "eslint --fix --ext .js,.ts .",
     "lint:prettier": "prettier --ignore-path .gitignore --write . && yarn lint",
