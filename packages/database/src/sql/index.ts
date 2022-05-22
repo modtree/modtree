@@ -6,23 +6,29 @@ import { config } from '../config'
 import { createConnection, Connection } from 'mysql2/promise'
 import { DatabaseType } from 'typeorm'
 
-const initConfig = {
+const noDatabaseConfig = {
   host: config.host,
   user: config.username,
   password: config.password,
 }
 
 const connectionConfig = (database: string) => ({
-  ...initConfig,
+  ...noDatabaseConfig,
   database,
 })
 
-class Sql {
-  type: DatabaseType
-
-  static async removeTableQuery(con: Connection, table: string) {
+class Query {
+  static async dropTable(con: Connection, table: string) {
     await con.query(`DROP TABLE IF EXISTS ${table}`)
   }
+
+  static async dropDatabase(con: Connection, database: string) {
+    await con.query(`DROP DATABASE ${database}`)
+  }
+}
+
+class Sql {
+  type: DatabaseType
 
   /** instantiate a new Sql class */
   constructor(type: DatabaseType) {
@@ -34,9 +40,9 @@ class Sql {
    * @param {string} database
    * @param {string} table
    */
-  async removeTable(database: string, table: string) {
+  async dropTable(database: string, table: string) {
     const con = await createConnection(connectionConfig(database))
-    await Sql.removeTableQuery(con, table)
+    await Query.dropTable(con, table)
     await con.end()
   }
 
@@ -45,9 +51,20 @@ class Sql {
    * @param {string} database
    * @param {string[]} tables
    */
-  async removeTables(database: string, tables: string[]) {
+  async dropTables(database: string, tables: string[]) {
     const con = await createConnection(connectionConfig(database))
-    await Promise.all(tables.map((table) => Sql.removeTableQuery(con, table)))
+    await Promise.all(tables.map((table) => Query.dropTable(con, table)))
+    await con.end()
+  }
+
+  /**
+   * drops the database
+   * @param {string} database
+   */
+  async dropDatabase(database: string) {
+    const con = await createConnection(noDatabaseConfig)
+    // drop the database if it exists
+    await Query.dropDatabase(con, database)
     await con.end()
   }
 }

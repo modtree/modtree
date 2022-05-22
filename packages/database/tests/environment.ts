@@ -1,5 +1,6 @@
 import { Repository } from 'typeorm'
 import { config } from '../src/config'
+import { sql } from '../src/sql'
 import { remove, restore, wipe } from '../src/sql'
 
 /**
