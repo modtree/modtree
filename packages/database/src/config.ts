@@ -3,20 +3,12 @@ import { resolve } from 'path'
 import { DataSource } from 'typeorm'
 import { box } from './cli'
 
-const env = process.env.NODE_ENV
-const suffix = env ? `.${env}` : ''
-const envFile = `.env${suffix}`
 const rootDir = process.cwd()
-const envPath = resolve(rootDir, envFile)
-dotenvConfig({ path: envPath })
+const env = process.env.NODE_ENV
+const envFile = `.env${env ? `.${env}` : ''}`
 
-// show which env file was loaded
-// which database is being used
-const output = [
-  `Env File: ${envFile}`,
-  `Database: ${process.env.MYSQL_ACTIVE_DATABASE}`,
-]
-box.blue(output.join('\n'))
+// read from the correct .env file based on NODE_ENV
+dotenvConfig({ path: resolve(rootDir, envFile) })
 
 type SupportedDatabases = 'mysql' | 'postgres'
 
@@ -40,12 +32,13 @@ function getDatabasePort(): number {
 }
 
 function getConfig(type: SupportedDatabases) {
-  const env = (value: string) => process.env[`${type.toUpperCase()}_${value}`]
+  const key = (e: string) => `${type.toUpperCase()}_${e}`
+  const env = (e: string) => process.env[key(e)]
   const shared = {
     entities: ['src/entity/*.ts'],
     migrations: ['src/migrations/**/*.ts'],
   }
-  return {
+  const config = {
     ...shared,
     type,
     rootDir,
@@ -59,6 +52,11 @@ function getConfig(type: SupportedDatabases) {
     client_cert: env('CLIENT_CERT'),
     client_key: env('CLIENT_KEY'),
   }
+  // show which env file was loaded
+  // which database is being used
+  const output = [`Env File: ${envFile}`, `Database: ${env('ACTIVE_DATABASE')}`]
+  box.blue(output.join('\n'))
+  return config
 }
 
 const base = {
