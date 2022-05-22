@@ -68,28 +68,14 @@ describe('DAG.initialize with pullAll = true', () => {
       await container(db, () => DAGRepository(db).initialize(dagProps))
       const res = await endpoint(db, () =>
         container(db, () =>
-          DAGRepository(db).find({
-            where: {
-              user: {
-                id: user.id,
-              },
-              degree: {
-                id: degree.id,
-              },
-            },
-            relations: {
-              user: true,
-              degree: true,
-              modulesPlaced: true,
-              modulesHidden: true,
-            },
-          })
+          DAGRepository(db).findManyByUserAndDegreeId(user.id, degree.id)
         )
       )
       expect(res).toBeDefined()
       if (!res) return
-      expect(res.length).toEqual(1)
-      dag = res[0]
+      const [dags, count] = res
+      expect(count).toEqual(1)
+      dag = dags[0]
     })
 
     it('Correctly populates modulesPlaced', async () => {

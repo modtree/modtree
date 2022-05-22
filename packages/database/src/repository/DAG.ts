@@ -21,6 +21,11 @@ interface DAGRepository extends Repository<DAG> {
   initialize(props: Init.DAGProps): Promise<void>
   toggleModule(dag: DAG, moduleCode: string): Promise<void>
   loadRelations: LoadRelations<DAG>
+  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<DAG>
+  findManyByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): Promise<[DAG[], number]>
 }
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
@@ -152,8 +157,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         index.placed !== -1
           ? 'placed'
           : index.hidden !== -1
-            ? 'hidden'
-            : 'invalid'
+          ? 'hidden'
+          : 'invalid'
 
       /**
        * toggles the modules between placed and hidden
@@ -184,10 +189,46 @@ export function DAGRepository(database?: DataSource): DAGRepository {
     })
   }
 
+  function queryByUserAndDegreeId(userId: string, degreeId: string) {
+    return BaseRepo.createQueryBuilder('DAG')
+      .where('DAG.degree.id = :degreeId', { degreeId })
+      .andWhere('DAG.user.id = :userId', { userId })
+      .leftJoinAndSelect('DAG.user', 'user')
+      .leftJoinAndSelect('DAG.degree', 'degree')
+      .leftJoinAndSelect('DAG.modulesPlaced', 'placed')
+      .leftJoinAndSelect('DAG.modulesHidden', 'hidden')
+  }
+
+  /**
+   * @param {string} userId
+   * @param {string} degreeId
+   * @return {Promise<DAG>}
+   */
+  async function findOneByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): Promise<DAG> {
+    return queryByUserAndDegreeId(userId, degreeId).getOneOrFail()
+  }
+
+  /**
+   * @param {string} userId
+   * @param {string} degreeId
+   * @return {Promise<DAG>}
+   */
+  async function findManyByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): Promise<[DAG[], number]> {
+    return queryByUserAndDegreeId(userId, degreeId).getManyAndCount()
+  }
+
   return BaseRepo.extend({
     build,
     initialize,
     toggleModule,
     loadRelations,
+    findOneByUserAndDegreeId,
+    findManyByUserAndDegreeId,
   })
 }

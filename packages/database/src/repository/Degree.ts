@@ -91,7 +91,7 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
     return BaseRepo.createQueryBuilder('degree')
       .where('degree.title = :title', { title })
       .leftJoinAndSelect('degree.modules', 'module')
-      .getOne()
+      .getOneOrFail()
   }
 
   return BaseRepo.extend({
