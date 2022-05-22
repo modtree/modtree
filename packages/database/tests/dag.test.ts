@@ -33,9 +33,7 @@ describe('DAG.initialize with pullAll = true', () => {
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
       degreeProps = init.degree1
-
       await container(db, () => DegreeRepository(db).initialize(degreeProps))
-
       const res = await container(db, () =>
         DegreeRepository(db).findOne({
           where: {
@@ -51,23 +49,18 @@ describe('DAG.initialize with pullAll = true', () => {
 
     it('Saves a user', async () => {
       userProps = init.user1
-
       await container(db, async () => {
         await UserRepository(db).initialize(userProps)
       })
-
       const res = await container(db, () =>
-        UserRepository(db).findOne({
-          where: {
-            username: userProps.username,
-          },
-        })
+        UserRepository(db).findOneByUsername(userProps.username)
       )
       expect(res).toBeDefined()
       if (!res) return
       user = res
     })
   })
+
   describe('DAG.initialize', () => {
     it('Saves a dag', async () => {
       const dagProps: Init.DAGProps = {
@@ -77,37 +70,30 @@ describe('DAG.initialize with pullAll = true', () => {
         modulesHiddenCodes: [],
         pullAll: true,
       }
-
       await container(db, () => DAGRepository(db).initialize(dagProps))
-
-      const res = await endpoint(
-        db,
-        async () =>
-          await container(
-            db,
-            async () =>
-              await DAGRepository(db).find({
-                where: {
-                  user: {
-                    id: user.id,
-                  },
-                  degree: {
-                    id: degree.id,
-                  },
-                },
-                relations: {
-                  user: true,
-                  degree: true,
-                  modulesPlaced: true,
-                  modulesHidden: true,
-                },
-              })
-          )
+      const res = await endpoint(db, () =>
+        container(db, () =>
+          DAGRepository(db).find({
+            where: {
+              user: {
+                id: user.id,
+              },
+              degree: {
+                id: degree.id,
+              },
+            },
+            relations: {
+              user: true,
+              degree: true,
+              modulesPlaced: true,
+              modulesHidden: true,
+            },
+          })
+        )
       )
       expect(res).toBeDefined()
       if (!res) return
       expect(res.length).toEqual(1)
-
       dag = res[0]
     })
 
@@ -148,23 +134,17 @@ describe('DAG.initialize with pullAll = true', () => {
       'MA2219',
     ]
 
-    it('Correctly changes a module\'s state from placed to hidden', async () => {
+    it("Correctly changes a module's state from placed to hidden", async () => {
       await container(db, () => DAGRepository(db).toggleModule(dag, 'MA2001'))
-
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
       expect(dag.modulesHidden.length).toEqual(1)
       expect(dag.modulesHidden[0].moduleCode).toEqual('MA2001')
     })
 
-    it('Correctly changes a module\'s state from hidden to placed', async () => {
-      await endpoint(
-        db,
-        async () =>
-          await container(db, async () =>
-            DAGRepository(db).toggleModule(dag, 'MA2001')
-          )
+    it("Correctly changes a module's state from hidden to placed", async () => {
+      await endpoint(db, () =>
+        container(db, () => DAGRepository(db).toggleModule(dag, 'MA2001'))
       )
-
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
       expect(dag.modulesHidden.length).toEqual(0)
     })
@@ -172,16 +152,13 @@ describe('DAG.initialize with pullAll = true', () => {
     it('Throws error if the module to be toggled is not part of the DAG', async () => {
       let error
       await db.initialize()
-
       try {
         await DAGRepository(db).toggleModule(dag, init.invalidModuleCode)
       } catch (err) {
         error = err
       }
-
       expect(error).toBeInstanceOf(Error)
       expect(error.message).toBe('Module not found in DAG')
-
       await db.destroy()
       await setup(dbName)
     })
@@ -193,7 +170,6 @@ describe('DAG.initialize with pullAll = false', () => {
   describe('setup DAG.initialize dependencies', () => {
     it('Saves a degree', async () => {
       await container(db, () => DegreeRepository(db).initialize(degreeProps))
-
       const res = await container(db, () =>
         DegreeRepository(db).findOne({
           where: {
@@ -211,13 +187,8 @@ describe('DAG.initialize with pullAll = false', () => {
       await container(db, async () => {
         await UserRepository(db).initialize(userProps)
       })
-
       const res = await container(db, () =>
-        UserRepository(db).findOne({
-          where: {
-            username: userProps.username,
-          },
-        })
+        UserRepository(db).findOneByUsername(userProps.username)
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -234,32 +205,26 @@ describe('DAG.initialize with pullAll = false', () => {
         modulesHiddenCodes: [],
         pullAll: false,
       }
-
       await container(db, () => DAGRepository(db).initialize(dagProps))
-
-      const res = await endpoint(
-        db,
-        async () =>
-          await container(
-            db,
-            async () =>
-              await DAGRepository(db).find({
-                where: {
-                  user: {
-                    id: user.id,
-                  },
-                  degree: {
-                    id: degree.id,
-                  },
-                },
-                relations: {
-                  user: true,
-                  degree: true,
-                  modulesPlaced: true,
-                  modulesHidden: true,
-                },
-              })
-          )
+      const res = await endpoint(db, () =>
+        container(db, () =>
+          DAGRepository(db).find({
+            where: {
+              user: {
+                id: user.id,
+              },
+              degree: {
+                id: degree.id,
+              },
+            },
+            relations: {
+              user: true,
+              degree: true,
+              modulesPlaced: true,
+              modulesHidden: true,
+            },
+          })
+        )
       )
       expect(res).toBeDefined()
       if (!res) return

@@ -17,6 +17,7 @@ interface UserRepository extends Repository<User> {
   initialize(props: Init.UserProps): Promise<void>
   canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
   loadRelations: LoadRelations<User>
+  findOneByUsername(username: string): Promise<User>
 }
 
 /**
@@ -47,11 +48,7 @@ export function UserRepository(database?: DataSource): UserRepository {
       // find modules completed and modules doing, to create many-to-many relation
       const queryList = [props.modulesDone, props.modulesDoing]
       const modulesPromise = Promise.all(
-        queryList.map((list) =>
-          ModuleRepository(db).findBy({
-            moduleCode: In(list),
-          })
-        )
+        queryList.map((list) => ModuleRepository(db).findByCodes(list))
       )
       const user = build(props)
       const [modulesDone, modulesDoing] = await modulesPromise
@@ -77,18 +74,23 @@ export function UserRepository(database?: DataSource): UserRepository {
       // 1. find module
       const module = await ModuleRepository(db).findOneBy({ moduleCode })
       // if module not found, assume invalid module code
-      if (!module) {
-        throw new Error('Invalid module code')
-      }
+      if (!module) throw new Error('Invalid module code')
       // 2. load modulesDone and modulesDoing relations
       await UserRepository(db).loadRelations(user, {
         modulesDone: true,
         modulesDoing: true,
       })
       // if module already taken, can't take module again
-      const modulesDoneCodes = user.modulesDone.map((one: Module) => one.moduleCode)
-      const modulesDoingCodes = user.modulesDoing.map((one: Module) => one.moduleCode)
-      if (modulesDoneCodes.includes(moduleCode) || modulesDoingCodes.includes(moduleCode)) {
+      const modulesDoneCodes = user.modulesDone.map(
+        (one: Module) => one.moduleCode
+      )
+      const modulesDoingCodes = user.modulesDoing.map(
+        (one: Module) => one.moduleCode
+      )
+      if (
+        modulesDoneCodes.includes(moduleCode) ||
+        modulesDoingCodes.includes(moduleCode)
+      ) {
         return false
       }
       // 3. check if PrereqTree is fulfilled
@@ -97,10 +99,21 @@ export function UserRepository(database?: DataSource): UserRepository {
     })
   }
 
+  /**
+   * @param {string} username
+   * @return {Promise<User>}
+   */
+  async function findOneByUsername(username: string): Promise<User> {
+    return BaseRepo.createQueryBuilder('user')
+      .where('user.username = :username', { username })
+      .getOneOrFail()
+  }
+
   return BaseRepo.extend({
     canTakeModule,
     build,
     initialize,
     loadRelations,
+    findOneByUsername,
   })
 }
