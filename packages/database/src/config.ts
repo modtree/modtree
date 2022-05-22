@@ -1,6 +1,6 @@
 import { config as dotenvConfig } from 'dotenv'
 import { resolve } from 'path'
-import { DataSource } from 'typeorm'
+import { DatabaseType, DataSource } from 'typeorm'
 import { box } from './cli'
 
 const rootDir = process.cwd()
@@ -10,11 +10,24 @@ const envFile = `.env${env ? `.${env}` : ''}`
 // read from the correct .env file based on NODE_ENV
 dotenvConfig({ path: resolve(rootDir, envFile) })
 
-type SupportedDatabases = 'mysql' | 'postgres'
+type SupportedDatabases = Extract<DatabaseType, 'mysql' | 'postgres'>
+type DataSourceOptions = {
+  type: SupportedDatabases
+  rootDir: string
+  restoreSource: string
+  port: number
+  database: string
+  username: string
+  password: string
+  host: string
+  migrations: string[]
+  entities: string[]
+}
 
 /**
  * gets project database type from .env
  * @param {string} env
+ * @return {DatabaseType}
  */
 function getDatabaseType(): SupportedDatabases {
   const env = process.env.DATABASE_TYPE
@@ -40,7 +53,12 @@ function boxLog(database: string) {
   box.blue(output.join('\n'))
 }
 
-function getConfig(type: SupportedDatabases) {
+/**
+ * generate a config based on the database type
+ * @param {SupportedDatabases} type
+ * @return {DataSourceOptions}
+ */
+function getConfig(type: SupportedDatabases): DataSourceOptions {
   const key = (e: string) => `${type.toUpperCase()}_${e}`
   const env = (e: string) => process.env[key(e)]
   const config = {
@@ -52,9 +70,6 @@ function getConfig(type: SupportedDatabases) {
     host: env('HOST'),
     database: env('ACTIVE_DATABASE'),
     restoreSource: env('RESTORE_SOURCE'),
-    server_ca: env('SERVER_CA'),
-    client_cert: env('CLIENT_CERT'),
-    client_key: env('CLIENT_KEY'),
     entities: ['src/entity/*.ts'],
     migrations: ['src/migrations/**/*.ts'],
   }
@@ -72,10 +87,10 @@ export const config = getConfig(base.type)
 export const db = new DataSource({
   type: config.type,
   host: config.host,
-  port: 3306,
+  port: config.port,
+  database: config.database,
   username: config.username,
   password: config.password,
-  database: config.database,
   synchronize: true,
   logging: false,
   entities: config.entities,
