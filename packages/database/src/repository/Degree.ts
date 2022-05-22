@@ -16,6 +16,7 @@ interface DegreeRepository extends Repository<Degree> {
   initialize(props: Init.DegreeProps): Promise<void>
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
   loadRelations: LoadRelations<Degree>
+  findOneByTitle(title: string): Promise<Degree>
 }
 
 /**
@@ -43,15 +44,11 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
    * @return {Promise<void>}
    */
   async function initialize(props: Init.DegreeProps): Promise<void> {
+    const { moduleCodes, title } = props
     await container(db, async () => {
       // find modules required, to create many-to-many relation
-      const modules = await ModuleRepository(db).findBy({
-        moduleCode: In(props.moduleCodes),
-      })
-      const degree = build({
-        modules,
-        title: props.title,
-      })
+      const modules = await ModuleRepository(db).findByCodes(moduleCodes)
+      const degree = build({ modules, title })
       await BaseRepo.save(degree)
     })
   }
@@ -86,10 +83,22 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
     })
   }
 
+  /**
+   * @param {string} title
+   * @return {Promise<Degree>}
+   */
+  async function findOneByTitle(title: string): Promise<Degree> {
+    return BaseRepo.createQueryBuilder('degree')
+      .where('degree.title = :title', { title })
+      .leftJoinAndSelect('degree.modules', 'module')
+      .getOneOrFail()
+  }
+
   return BaseRepo.extend({
     build,
     initialize,
     insertModules,
     loadRelations,
+    findOneByTitle,
   })
 }

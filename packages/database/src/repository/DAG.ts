@@ -1,5 +1,5 @@
 import { container } from '../data-source'
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In, Repository, SelectQueryBuilder } from 'typeorm'
 import { Init, DAGProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
 import { DAG } from '../entity/DAG'
@@ -21,6 +21,11 @@ interface DAGRepository extends Repository<DAG> {
   initialize(props: Init.DAGProps): Promise<void>
   toggleModule(dag: DAG, moduleCode: string): Promise<void>
   loadRelations: LoadRelations<DAG>
+  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<DAG>
+  findManyByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): Promise<[DAG[], number]>
 }
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
@@ -184,10 +189,55 @@ export function DAGRepository(database?: DataSource): DAGRepository {
     })
   }
 
+  /**
+   * preliminary function to build up bulk of this query
+   * @param {string} userId
+   * @param {string} degreeId
+   * @return {SelectQueryBuilder<DAG>}
+   */
+  function queryByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): SelectQueryBuilder<DAG> {
+    return BaseRepo.createQueryBuilder('DAG')
+      .where('DAG.degree.id = :degreeId', { degreeId })
+      .andWhere('DAG.user.id = :userId', { userId })
+      .leftJoinAndSelect('DAG.user', 'user')
+      .leftJoinAndSelect('DAG.degree', 'degree')
+      .leftJoinAndSelect('DAG.modulesPlaced', 'placed')
+      .leftJoinAndSelect('DAG.modulesHidden', 'hidden')
+  }
+
+  /**
+   * @param {string} userId
+   * @param {string} degreeId
+   * @return {Promise<DAG>}
+   */
+  async function findOneByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): Promise<DAG> {
+    return queryByUserAndDegreeId(userId, degreeId).getOneOrFail()
+  }
+
+  /**
+   * @param {string} userId
+   * @param {string} degreeId
+   * @return {Promise<DAG>}
+   */
+  async function findManyByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): Promise<[DAG[], number]> {
+    return queryByUserAndDegreeId(userId, degreeId).getManyAndCount()
+  }
+
   return BaseRepo.extend({
     build,
     initialize,
     toggleModule,
     loadRelations,
+    findOneByUserAndDegreeId,
+    findManyByUserAndDegreeId,
   })
 }
