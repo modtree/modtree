@@ -43,15 +43,11 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
    * @return {Promise<void>}
    */
   async function initialize(props: Init.DegreeProps): Promise<void> {
+    const { moduleCodes, title } = props
     await container(db, async () => {
       // find modules required, to create many-to-many relation
-      const modules = await ModuleRepository(db).findBy({
-        moduleCode: In(props.moduleCodes),
-      })
-      const degree = build({
-        modules,
-        title: props.title,
-      })
+      const modules = await ModuleRepository(db).findByCodes(moduleCodes)
+      const degree = build({ modules, title })
       await BaseRepo.save(degree)
     })
   }

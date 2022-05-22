@@ -27,7 +27,7 @@ export const pull: Config.InitialOptions = {
   testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
-const khang = ['dag']
+const khang = ['findByCode', 'module']
 export const k: Config.InitialOptions = {
   ...all,
   testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),

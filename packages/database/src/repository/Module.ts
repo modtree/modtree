@@ -22,6 +22,7 @@ interface ModuleRepository extends Repository<Module> {
   pull(): Promise<Module[]>
   findByFaculty(faculty: string): Promise<Module[]>
   loadRelations: LoadRelations<Module>
+  findByCodes(moduleCodes: string[]): Promise<Module[]>
 }
 
 /**
@@ -142,6 +143,16 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
       .getMany()
   }
 
+  /**
+   * @param {string[]} moduleCodes
+   * @return {Promise<Module[]>}
+   */
+  async function findByCodes(moduleCodes: string[]): Promise<Module[]> {
+    return BaseRepo.createQueryBuilder('module')
+      .where('module.moduleCode IN (:...moduleCodes)', { moduleCodes })
+      .getMany()
+  }
+
   return BaseRepo.extend({
     build,
     get,
@@ -150,5 +161,6 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
     pull,
     findByFaculty,
     loadRelations,
+    findByCodes,
   })
 }
