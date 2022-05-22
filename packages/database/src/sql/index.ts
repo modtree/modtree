@@ -4,9 +4,8 @@ import { DatabaseType } from 'typeorm'
 import { join } from 'path'
 import { exec } from '../shell'
 import input from '@inquirer/input'
-// import fs from 'fs'
-// import inquirer from 'inquirer'
-// import { wipe } from '.'
+import inquirer from 'inquirer'
+import fs from 'fs'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -28,6 +27,21 @@ class Query {
   }
   static async createDatabase(con: Connection, database: string) {
     await con.query(`CREATE DATABASE ${database}`)
+  }
+  static async restoreDatabase(database: string, filename: string) {
+    const file = join(config.rootDir, '.sql', filename)
+    const u = config.username == '' ? '' : `-u ${config.username}`
+    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const cmd = `mysqldump ${u} ${p} ${database} > ${file}`
+    await exec(cmd)
+  }
+  static async dumpDatabase(database: string, filename: string) {
+    const withExt = filename.concat('.sql')
+    const file = join(config.rootDir, '.sql', withExt)
+    const u = config.username == '' ? '' : `-u ${config.username}`
+    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const cmd = `mysqldump ${u} ${p} ${database} > ${file}`
+    await exec(cmd)
   }
 }
 
@@ -100,16 +114,46 @@ class Sql {
     await exec(cmd)
   }
 
+  /** interactive prompt to guide the user to restore an SQL database */
+  restorePrompted() {
+    type Answers = {
+      sql: string
+      confirm: 'yes' | 'no'
+    }
+    const sqlDir = join(config.rootDir, '.sql')
+    const sqlList = fs.readdirSync(sqlDir).filter((x) => x.endsWith('.sql'))
+    inquirer
+      .prompt([
+        {
+          type: 'list',
+          name: 'sql',
+          message: 'Restore from .sql file?',
+          choices: sqlList,
+        },
+        {
+          type: 'list',
+          name: 'confirm',
+          message: `Confirm overwrite database [${config.database}]?`,
+          choices: ['yes', 'no'],
+        },
+      ])
+      .then(async (answers: Answers) => {
+        if (answers.confirm === 'no') {
+          console.log('cancelled.')
+          return
+        }
+        await sql.clearDatabase(config.database)
+        const filename = join(sqlDir, answers.sql)
+        await Query.restoreDatabase(config.database, filename)
+      })
+  }
+
   async dump(database: string) {
     const filename = await input({
       message: 'Enter filename (without .sql):',
       default: 'backup',
     })
-    const file = join(config.rootDir, '.sql', `${filename}.sql`)
-    const u = config.username == '' ? '' : `-u ${config.username}`
-    const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `mysqldump ${u} ${p} ${database} > ${file}`
-    await exec(cmd)
+    await Query.dumpDatabase(database, filename)
   }
 }
 
