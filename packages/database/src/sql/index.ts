@@ -7,8 +7,7 @@ import input from '@inquirer/input'
 import inquirer from 'inquirer'
 import fs from 'fs'
 
-const noDatabaseConfig = {
-  host: config.host,
+const noDatabaseConfig = { host: config.host,
   user: config.username,
   password: config.password,
 }
@@ -30,9 +29,10 @@ class Query {
   }
   static async restoreDatabase(database: string, filename: string) {
     const file = join(config.rootDir, '.sql', filename)
+    console.log('--', file, '--')
     const u = config.username == '' ? '' : `-u ${config.username}`
     const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `mysqldump ${u} ${p} ${database} > ${file}`
+    const cmd = `mysql ${u} ${p} ${database} < ${file}`
     await exec(cmd)
   }
   static async dumpDatabase(database: string, filename: string) {
@@ -115,7 +115,7 @@ class Sql {
   }
 
   /** interactive prompt to guide the user to restore an SQL database */
-  restorePrompted() {
+  restorePrompted(database: string) {
     type Answers = {
       sql: string
       confirm: 'yes' | 'no'
@@ -133,7 +133,7 @@ class Sql {
         {
           type: 'list',
           name: 'confirm',
-          message: `Confirm overwrite database [${config.database}]?`,
+          message: `Confirm overwrite database [${database}]?`,
           choices: ['yes', 'no'],
         },
       ])
@@ -142,9 +142,8 @@ class Sql {
           console.log('cancelled.')
           return
         }
-        await sql.clearDatabase(config.database)
-        const filename = join(sqlDir, answers.sql)
-        await Query.restoreDatabase(config.database, filename)
+        await sql.clearDatabase(database)
+        await Query.restoreDatabase(database, answers.sql)
       })
   }
 

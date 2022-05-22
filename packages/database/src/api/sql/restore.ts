@@ -1,3 +1,4 @@
-import { restore } from '../../sql/restore'
+import { config } from '../../config'
+import { sql } from '../../sql'
 
-restore.prompted()
+sql.restorePrompted(config.database)
