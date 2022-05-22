@@ -152,12 +152,7 @@ describe('DAG.initialize with pullAll = false', () => {
     it('Saves a degree', async () => {
       await container(db, () => DegreeRepository(db).initialize(degreeProps))
       const res = await container(db, () =>
-        DegreeRepository(db).findOne({
-          where: {
-            title: degreeProps.title,
-          },
-          relations: { modules: true },
-        })
+        DegreeRepository(db).findOneByTitle(degreeProps.title)
       )
       expect(res).toBeDefined()
       if (!res) return
