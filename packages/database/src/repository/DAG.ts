@@ -1,5 +1,5 @@
 import { container } from '../data-source'
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In, Repository, SelectQueryBuilder } from 'typeorm'
 import { Init, DAGProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
 import { DAG } from '../entity/DAG'
@@ -157,8 +157,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
         index.placed !== -1
           ? 'placed'
           : index.hidden !== -1
-          ? 'hidden'
-          : 'invalid'
+            ? 'hidden'
+            : 'invalid'
 
       /**
        * toggles the modules between placed and hidden
@@ -189,7 +189,16 @@ export function DAGRepository(database?: DataSource): DAGRepository {
     })
   }
 
-  function queryByUserAndDegreeId(userId: string, degreeId: string) {
+  /**
+   * preliminary function to build up bulk of this query
+   * @param {string} userId
+   * @param {string} degreeId
+   * @return {SelectQueryBuilder<DAG>}
+   */
+  function queryByUserAndDegreeId(
+    userId: string,
+    degreeId: string
+  ): SelectQueryBuilder<DAG> {
     return BaseRepo.createQueryBuilder('DAG')
       .where('DAG.degree.id = :degreeId', { degreeId })
       .andWhere('DAG.user.id = :userId', { userId })

@@ -115,14 +115,14 @@ describe('DAG.initialize with pullAll = true', () => {
       'MA2219',
     ]
 
-    it("Correctly changes a module's state from placed to hidden", async () => {
+    it('Correctly changes a module\'s state from placed to hidden', async () => {
       await container(db, () => DAGRepository(db).toggleModule(dag, 'MA2001'))
       expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
       expect(dag.modulesHidden.length).toEqual(1)
       expect(dag.modulesHidden[0].moduleCode).toEqual('MA2001')
     })
 
-    it("Correctly changes a module's state from hidden to placed", async () => {
+    it('Correctly changes a module\'s state from hidden to placed', async () => {
       await endpoint(db, () =>
         container(db, () => DAGRepository(db).toggleModule(dag, 'MA2001'))
       )
