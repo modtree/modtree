@@ -4,27 +4,6 @@ import { ModtreeFunction } from '../types/modtree'
 import { log } from './cli'
 import { config } from './config'
 
-type SupportedDatabases = 'mysql' | 'postgres'
-
-/**
- * gets project database type from .env
- * @param {string} env
- */
-function getDatabaseType(): SupportedDatabases {
-  const env = process.env.DATABASE_TYPE
-  if (env === 'postgres') return env
-  return 'mysql'
-}
-
-/**
- * @returns {number} the default port of each database
- */
-function getDatabasePort(): number {
-  const env = process.env.DATABASE_TYPE
-  if (env === 'postgres') return 5432
-  return 3306
-}
-
 /**
  * custom source creator
  * @param {string} database to use
@@ -33,9 +12,9 @@ function getDatabasePort(): number {
 export function getSource(database: string): DataSource {
   return new DataSource({
     database,
-    type: getDatabaseType(),
+    type: config.type,
     host: config.host,
-    port: getDatabasePort(),
+    port: config.port,
     username: config.username,
     password: config.password,
     synchronize: true,

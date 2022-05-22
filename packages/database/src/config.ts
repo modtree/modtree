@@ -18,7 +18,34 @@ const output = [
 ]
 box.blue(output.join('\n'))
 
+type SupportedDatabases = 'mysql' | 'postgres'
+
+/**
+ * gets project database type from .env
+ * @param {string} env
+ */
+function getDatabaseType(): SupportedDatabases {
+  const env = process.env.DATABASE_TYPE
+  if (env === 'postgres') return env
+  return 'mysql'
+}
+
+/**
+ * @returns {number} the default port of each database
+ */
+function getDatabasePort(): number {
+  const env = process.env.DATABASE_TYPE
+  if (env === 'postgres') return 5432
+  return 3306
+}
+
+const base = {
+  type: getDatabaseType(),
+  port: getDatabasePort(),
+}
+
 export const config = {
+  ...base,
   rootDir,
   password: process.env.MYSQL_PASSWORD,
   username: process.env.MYSQL_USERNAME,

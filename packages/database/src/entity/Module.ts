@@ -25,7 +25,7 @@ export class Module {
   @Column({ type: 'text' })
   title: ModuleTitle
 
-  @Column({ type: 'longblob' })
+  @Column({ type: 'varchar', nullable: true })
   description: string
 
   @Column({ type: 'text' })
