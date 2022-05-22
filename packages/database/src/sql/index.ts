@@ -5,6 +5,11 @@ export { wipe } from './wipe'
 import { config } from '../config'
 import { createConnection, Connection } from 'mysql2/promise'
 import { DatabaseType } from 'typeorm'
+import { join } from 'path'
+import { exec } from 'child_process'
+// import fs from 'fs'
+// import inquirer from 'inquirer'
+// import { wipe } from '.'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -82,6 +87,21 @@ class Sql {
     await Query.dropDatabase(con, database)
     await Query.createDatabase(con, database)
     await con.end()
+  }
+
+  /**
+   * restores SQL database from a file
+   * @param {string} database
+   * @param {string} filename
+   */
+  async restoreFromFile(database: string, filename: string) {
+    await this.clearDatabase(database)
+    const file = join(config.rootDir, '.sql', filename)
+    const [u, p, d, f] = [config.username, config.password, database, file]
+    const username = u == '' ? '' : `-u ${u}`
+    const password = p == '' ? '' : `-p"${p}"`
+    const cmd = `mysql ${username} ${password}" ${d} < ${f}`
+    exec(cmd)
   }
 }
 
