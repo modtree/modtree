@@ -7,7 +7,8 @@ import input from '@inquirer/input'
 import inquirer from 'inquirer'
 import fs from 'fs'
 
-const noDatabaseConfig = { host: config.host,
+const noDatabaseConfig = {
+  host: config.host,
   user: config.username,
   password: config.password,
 }
@@ -18,15 +19,38 @@ const connectionConfig = (database: string) => ({
 })
 
 class Query {
+  /**
+   * drops a single table
+   * @param {Collection} con
+   * @param {string} table
+   */
   static async dropTable(con: Connection, table: string) {
     await con.query(`DROP TABLE IF EXISTS ${table}`)
   }
+
+  /**
+   * drops a database
+   * @param {Collection} con
+   * @param {string} database
+   */
   static async dropDatabase(con: Connection, database: string) {
     await con.query(`DROP DATABASE IF EXISTS ${database}`)
   }
+
+  /**
+   * creates a database
+   * @param {Collection} con
+   * @param {string} database
+   */
   static async createDatabase(con: Connection, database: string) {
     await con.query(`CREATE DATABASE ${database}`)
   }
+
+  /**
+   * restores a database from a file
+   * @param {string} database
+   * @param {string} filename with .sql extension
+   */
   static async restoreDatabase(database: string, filename: string) {
     const file = join(config.rootDir, '.sql', filename)
     console.log('--', file, '--')
@@ -35,7 +59,12 @@ class Query {
     const cmd = `mysql ${u} ${p} ${database} < ${file}`
     await exec(cmd)
   }
-  static async dumpDatabase(database: string, filename: string) {
+
+  /**
+   * dumps a database from a file
+   * @param {string} database
+   * @param {string} filename wit .sql extension
+   */ static async dumpDatabase(database: string, filename: string) {
     const withExt = filename.concat('.sql')
     const file = join(config.rootDir, '.sql', withExt)
     const u = config.username == '' ? '' : `-u ${config.username}`
