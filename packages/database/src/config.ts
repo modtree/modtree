@@ -31,7 +31,7 @@ function getDatabaseType(): SupportedDatabases {
 }
 
 /**
- * @returns {number} the default port of each database
+ * @returns {string} the default port of each database
  */
 function getDatabasePort(): number {
   const env = process.env.DATABASE_TYPE
@@ -39,50 +39,54 @@ function getDatabasePort(): number {
   return 3306
 }
 
+function getConfig(type: SupportedDatabases) {
+  const shared = {
+    entities: ['src/entity/*.ts'],
+    migrations: ['src/migrations/**/*.ts'],
+  }
+  console.log(process.env.MYSQL_USERNAME)
+  if (type === 'mysql') {
+    return {
+      ...shared,
+      type,
+      rootDir,
+      port: parseInt(process.env.MYSQL_PORT) || base.port,
+      username: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_PASSWORD,
+      host: process.env.MYSQL_HOST,
+      database: process.env.MYSQL_ACTIVE_DATABASE,
+      restoreSource: process.env.MYSQL_RESTORE_SOURCE,
+      server_ca: process.env.MYSQL_SERVER_CA,
+      client_cert: process.env.MYSQL_CLIENT_CERT,
+      client_key: process.env.MYSQL_CLIENT_KEY,
+    }
+  }
+  if (type === 'postgres') {
+    return {
+      ...shared,
+      type,
+      rootDir,
+      port: parseInt(process.env.POSTGRES_PORT) || base.port,
+      username: process.env.POSTGRES_USERNAME,
+      password: process.env.POSTGRES_PASSWORD,
+      host: process.env.POSTGRES_HOST,
+      database: process.env.POSTGRES_ACTIVE_DATABASE,
+      restoreSource: process.env.POSTGRES_RESTORE_SOURCE,
+      entities: ['src/entity/*.ts'],
+      migrations: ['src/migrations/**/*.ts'],
+    }
+  }
+}
+
 const base = {
   type: getDatabaseType(),
   port: getDatabasePort(),
 }
 
-function getConfig(type: SupportedDatabases) {
-  if (type === 'postgres') {
-    return {
-      ...base,
-      rootDir,
-      password: process.env.MYSQL_PASSWORD,
-      username: process.env.MYSQL_USERNAME,
-      host: process.env.MYSQL_HOST,
-      database: process.env.MYSQL_ACTIVE_DATABASE,
-      restoreSource: process.env.MYSQL_RESTORE_SOURCE,
-      server_ca: process.env.MYSQL_SERVER_CA,
-      client_cert: process.env.MYSQL_CLIENT_CERT,
-      client_key: process.env.MYSQL_CLIENT_KEY,
-      entities: ['src/entity/*.ts'],
-      migrations: ['src/migrations/**/*.ts'],
-    }
-  }
-  if (type === 'mysql') {
-    return {
-      ...base,
-      rootDir,
-      password: process.env.MYSQL_PASSWORD,
-      username: process.env.MYSQL_USERNAME,
-      host: process.env.MYSQL_HOST,
-      database: process.env.MYSQL_ACTIVE_DATABASE,
-      restoreSource: process.env.MYSQL_RESTORE_SOURCE,
-      server_ca: process.env.MYSQL_SERVER_CA,
-      client_cert: process.env.MYSQL_CLIENT_CERT,
-      client_key: process.env.MYSQL_CLIENT_KEY,
-      entities: ['src/entity/*.ts'],
-      migrations: ['src/migrations/**/*.ts'],
-    }
-  }
-}
-
 export const config = getConfig(base.type)
 
 export const db = new DataSource({
-  type: 'mysql',
+  type: config.type,
   host: config.host,
   port: 3306,
   username: config.username,
@@ -94,3 +98,4 @@ export const db = new DataSource({
   migrations: config.migrations,
   subscribers: [],
 })
+
