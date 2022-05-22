@@ -1,14 +1,14 @@
 import { Repository } from 'typeorm'
 import { config } from '../src/config'
 import { sql } from '../src/sql'
-import { remove, restore, wipe } from '../src/sql'
+import { restore } from '../src/sql'
 
 /**
  * pre-test setup
  * @param {string} database
  */
 export async function setup(database: string) {
-  await wipe.database(database)
+  await sql.clearDatabase(database)
   await restore.file(database, config.restoreSource)
 }
 

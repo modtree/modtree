@@ -22,7 +22,7 @@ class Query {
     await con.query(`DROP TABLE IF EXISTS ${table}`)
   }
   static async dropDatabase(con: Connection, database: string) {
-    await con.query(`DROP DATABASE ${database}`)
+    await con.query(`DROP DATABASE IF EXISTS ${database}`)
   }
   static async createDatabase(con: Connection, database: string) {
     await con.query(`CREATE DATABASE ${database}`)
