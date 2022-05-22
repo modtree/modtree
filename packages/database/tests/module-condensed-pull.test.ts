@@ -1,6 +1,6 @@
 import { container, endpoint, getSource } from '../src/data-source'
 import { setup, teardown } from './environment'
-import { remove } from '../src/sql'
+import { sql } from '../src/sql'
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
 
@@ -14,16 +14,15 @@ afterAll(() => teardown(dbName))
 
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
-  remove.tables(dbName, ['moduleCondensed'])
+  await sql.dropTables(dbName, ['moduleCondensed'])
   const pullOnEmpty = await container(db, () =>
     ModuleCondensedRepository(db).pull()
   )
   const pullOnFull = await container(db, () =>
     ModuleCondensedRepository(db).pull()
   )
-  const written = await endpoint(
-    db,
-    async () => await container(db, () => ModuleCondensedRepository(db).find())
+  const written = await endpoint(db, () =>
+    container(db, () => ModuleCondensedRepository(db).find())
   )
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()

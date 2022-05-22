@@ -1,7 +1,7 @@
-import { remove } from '../../../sql/remove'
 import { config } from '../../../config'
+import { sql } from '../../../sql'
 
-remove.tables(config.database, [
+sql.dropTables(config.database, [
   'dag_modules_placed_module',
   'dag_modules_hidden_module',
   'dag_modules_hidden_module',

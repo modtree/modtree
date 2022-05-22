@@ -1,4 +1,4 @@
-import { remove } from '../../../sql/remove'
 import { config } from '../../../config'
+import { sql } from '../../../sql'
 
-remove.tables(config.database, ['degree_modules_module', 'degree'])
+sql.dropTables(config.database, ['degree_modules_module', 'degree'])
