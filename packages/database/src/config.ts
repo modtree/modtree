@@ -40,41 +40,24 @@ function getDatabasePort(): number {
 }
 
 function getConfig(type: SupportedDatabases) {
+  const env = (value: string) => process.env[`${type.toUpperCase()}_${value}`]
   const shared = {
     entities: ['src/entity/*.ts'],
     migrations: ['src/migrations/**/*.ts'],
   }
-  console.log(process.env.MYSQL_USERNAME)
-  if (type === 'mysql') {
-    return {
-      ...shared,
-      type,
-      rootDir,
-      port: parseInt(process.env.MYSQL_PORT) || base.port,
-      username: process.env.MYSQL_USERNAME,
-      password: process.env.MYSQL_PASSWORD,
-      host: process.env.MYSQL_HOST,
-      database: process.env.MYSQL_ACTIVE_DATABASE,
-      restoreSource: process.env.MYSQL_RESTORE_SOURCE,
-      server_ca: process.env.MYSQL_SERVER_CA,
-      client_cert: process.env.MYSQL_CLIENT_CERT,
-      client_key: process.env.MYSQL_CLIENT_KEY,
-    }
-  }
-  if (type === 'postgres') {
-    return {
-      ...shared,
-      type,
-      rootDir,
-      port: parseInt(process.env.POSTGRES_PORT) || base.port,
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      host: process.env.POSTGRES_HOST,
-      database: process.env.POSTGRES_ACTIVE_DATABASE,
-      restoreSource: process.env.POSTGRES_RESTORE_SOURCE,
-      entities: ['src/entity/*.ts'],
-      migrations: ['src/migrations/**/*.ts'],
-    }
+  return {
+    ...shared,
+    type,
+    rootDir,
+    port: parseInt(env('PORT')) || base.port,
+    username: env('USERNAME'),
+    password: env('PASSWORD'),
+    host: env('HOST'),
+    database: env('ACTIVE_DATABASE'),
+    restoreSource: env('RESTORE_SOURCE'),
+    server_ca: env('SERVER_CA'),
+    client_cert: env('CLIENT_CERT'),
+    client_key: env('CLIENT_KEY'),
   }
 }
 
@@ -98,4 +81,3 @@ export const db = new DataSource({
   migrations: config.migrations,
   subscribers: [],
 })
-
