@@ -19,6 +19,15 @@ const connectionConfig = (database: string) => ({
 })
 
 class Query {
+  static dumpCmd: Partial<Record<DatabaseType, string>> = {
+    mysql: 'mysqldump',
+    postgres: 'pg_dump',
+  }
+  static coreCmd: Partial<Record<DatabaseType, string>> = {
+    mysql: 'mysql',
+    postgres: 'psql',
+  }
+
   /**
    * drops a single table
    * @param {Collection} con
@@ -51,12 +60,16 @@ class Query {
    * @param {string} database
    * @param {string} filename with .sql extension
    */
-  static async restoreDatabase(database: string, filename: string) {
+  static async restoreDatabase(
+    type: DatabaseType,
+    database: string,
+    filename: string
+  ) {
     const file = join(config.rootDir, '.sql', filename)
     console.log('--', file, '--')
     const u = config.username == '' ? '' : `-u ${config.username}`
     const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `mysql ${u} ${p} ${database} < ${file}`
+    const cmd = `${this.coreCmd[type]} ${u} ${p} ${database} < ${file}`
     await exec(cmd)
   }
 
@@ -64,12 +77,17 @@ class Query {
    * dumps a database from a file
    * @param {string} database
    * @param {string} filename wit .sql extension
-   */ static async dumpDatabase(database: string, filename: string) {
+   */
+  static async dumpDatabase(
+    type: DatabaseType,
+    database: string,
+    filename: string
+  ) {
     const withExt = filename.concat('.sql')
     const file = join(config.rootDir, '.sql', withExt)
     const u = config.username == '' ? '' : `-u ${config.username}`
     const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `mysqldump ${u} ${p} ${database} > ${file}`
+    const cmd = `${this.dumpCmd[type]} ${u} ${p} ${database} > ${file}`
     await exec(cmd)
   }
 }
@@ -172,7 +190,7 @@ class Sql {
           return
         }
         await sql.clearDatabase(database)
-        await Query.restoreDatabase(database, answers.sql)
+        await Query.restoreDatabase(this.type, database, answers.sql)
       })
   }
 
@@ -181,7 +199,7 @@ class Sql {
       message: 'Enter filename (without .sql):',
       default: 'backup',
     })
-    await Query.dumpDatabase(database, filename)
+    await Query.dumpDatabase(this.type, database, filename)
   }
 }
 
