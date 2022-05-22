@@ -17,6 +17,15 @@ function getDatabaseType(): SupportedDatabases {
 }
 
 /**
+ * @returns {number} the default port of each database
+ */
+function getDatabasePort(): number {
+  const env = process.env.DATABASE_TYPE
+  if (env === 'postgres') return 5432
+  return 3306
+}
+
+/**
  * custom source creator
  * @param {string} database to use
  * @return {DataSource}
@@ -26,7 +35,7 @@ export function getSource(database: string): DataSource {
     database,
     type: getDatabaseType(),
     host: config.host,
-    port: 3306,
+    port: getDatabasePort(),
     username: config.username,
     password: config.password,
     synchronize: true,
