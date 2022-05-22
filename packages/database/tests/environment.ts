@@ -17,7 +17,8 @@ export async function setup(database: string) {
  * @param {string} database
  */
 export async function teardown(database: string) {
-  await remove.database(database)
+  // await remove.database(database)
+  await sql.dropDatabase(database)
 }
 
 type ImportCheckProps = { entities?: any[]; repositories?: Repository<any>[] }

@@ -21,9 +21,11 @@ class Query {
   static async dropTable(con: Connection, table: string) {
     await con.query(`DROP TABLE IF EXISTS ${table}`)
   }
-
   static async dropDatabase(con: Connection, database: string) {
     await con.query(`DROP DATABASE ${database}`)
+  }
+  static async createDatabase(con: Connection, database: string) {
+    await con.query(`CREATE DATABASE ${database}`)
   }
 }
 
@@ -65,6 +67,20 @@ class Sql {
     const con = await createConnection(noDatabaseConfig)
     // drop the database if it exists
     await Query.dropDatabase(con, database)
+    await con.end()
+  }
+
+  /**
+   * a very aggressive function that drops the database
+   * and then recreates it for a completely fresh start
+   * so ensure .env.test has the corrent database name.
+   * @param {string} database
+   */
+  async clearDatabase(database: string) {
+    const con = await createConnection(noDatabaseConfig)
+    // drop the database if it exists
+    await Query.dropDatabase(con, database)
+    await Query.createDatabase(con, database)
     await con.end()
   }
 }
