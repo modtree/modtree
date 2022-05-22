@@ -1,10 +1,9 @@
-export { dump } from './dump'
-export { restore } from './restore'
 import { config } from '../config'
 import { createConnection, Connection } from 'mysql2/promise'
 import { DatabaseType } from 'typeorm'
 import { join } from 'path'
 import { exec } from '../shell'
+import input from '@inquirer/input'
 // import fs from 'fs'
 // import inquirer from 'inquirer'
 // import { wipe } from '.'
@@ -95,10 +94,21 @@ class Sql {
   async restoreFromFile(database: string, filename: string) {
     await this.clearDatabase(database)
     const file = join(config.rootDir, '.sql', filename)
-    const [u, p, d, f] = [config.username, config.password, database, file]
-    const username = u == '' ? '' : `-u ${u}`
-    const password = p == '' ? '' : `-p\"${p}\"`
-    const cmd = `mysql ${username} ${password} ${d} < ${f}`
+    const u = config.username == '' ? '' : `-u ${config.username}`
+    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const cmd = `mysql ${u} ${p} ${database} < ${file}`
+    await exec(cmd)
+  }
+
+  async dump(database: string) {
+    const filename = await input({
+      message: 'Enter filename (without .sql):',
+      default: 'backup',
+    })
+    const file = join(config.rootDir, '.sql', `${filename}.sql`)
+    const u = config.username == '' ? '' : `-u ${config.username}`
+    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const cmd = `mysqldump ${u} ${p} ${database} > ${file}`
     await exec(cmd)
   }
 }
