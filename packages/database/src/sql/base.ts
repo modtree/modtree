@@ -1,41 +1,51 @@
-import { config } from '../config'
 import { DatabaseType } from 'typeorm'
+import { BaseSqlInterface } from './types'
 
-export const noDatabaseConfig = {
-  host: config.host,
-  user: config.username,
-  password: config.password,
+const coreCmdMap: Partial<Record<DatabaseType, string>> = {
+  mysql: 'mysql',
+  postgres: 'psql',
 }
 
-export const connectionConfig = (database: string) => ({
-  ...noDatabaseConfig,
-  database,
-})
+const dumpCmdMap: Partial<Record<DatabaseType, string>> = {
+  mysql: 'mysqldump',
+  postgres: 'pg_dump',
+}
 
-export interface BaseSqlInterface {
+export class BaseSql implements BaseSqlInterface {
   type: DatabaseType
   coreCmd: string
   dumpCmd: string
 
+  /** instantiate a new Sql class */
+  constructor(type: DatabaseType) {
+    this.type = type
+    this.coreCmd = coreCmdMap[type]
+    this.dumpCmd = dumpCmdMap[type]
+  }
+
   /**
    * removes a single table from a mysql database
-   * @param {string} database
-   * @param {string} table
    */
-  dropTable(database: string, table: string): Promise<void>
+  async dropTable(database: string, table: string) {
+    console.log('params', database, table)
+    console.log('Not implemented yet')
+  }
 
   /**
    * removes a list of tables from a mysql database
-   * @param {string} database
-   * @param {string[]} tables
    */
-  dropTables(database: string, tables: string[]): Promise<void>
+  async dropTables(database: string, tables: string[]) {
+    console.log('params', database, tables)
+    console.log('Not implemented yet')
+  }
 
   /**
    * drops the database
-   * @param {string} database
    */
-  dropDatabase(database: string): Promise<void>
+  async dropDatabase(database: string) {
+    console.log('params', database)
+    console.log('Not implemented yet')
+  }
 
   /**
    * a very aggressive function that drops the database
@@ -43,25 +53,29 @@ export interface BaseSqlInterface {
    * so ensure .env.test has the corrent database name.
    * @param {string} database
    */
-  clearDatabase(database: string): Promise<void>
+  async clearDatabase(database: string) {
+    console.log('params', database)
+    console.log('Not implemented yet')
+  }
 
   /**
    * restores SQL database from a file
    * @param {string} database
    * @param {string} filename
    */
-  restoreFromFile(database: string, filename: string): Promise<void>
+  async restoreFromFile(database: string, filename: string) {
+    console.log('params', database, filename)
+    console.log('Not implemented yet')
+  }
 
-  /**
-   * interactive prompt to guide the user to restore an SQL database
-   * @param {string} database
-   */
-  restorePrompted(database: string): void
+  /** interactive prompt to guide the user to restore an SQL database */
+  restorePrompted(database: string) {
+    console.log('params', database)
+    console.log('Not implemented yet')
+  }
 
-
-  /**
-   * dumps a database snapshot to a .sql file
-   * @param {database}
-   */
-  dump(database: string): Promise<void>
+  async dump(database: string) {
+    console.log('params', database)
+    console.log('Not implemented yet')
+  }
 }

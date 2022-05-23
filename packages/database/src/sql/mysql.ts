@@ -1,12 +1,11 @@
 import { config } from '../config'
-import { createConnection, Connection } from 'mysql2/promise'
-import { DatabaseType } from 'typeorm'
+import { createConnection } from 'mysql2/promise'
 import { join } from 'path'
 import { exec } from '../shell'
 import input from '@inquirer/input'
 import inquirer from 'inquirer'
 import fs from 'fs'
-import { BaseSql } from '.'
+import { BaseSql } from './base'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -19,11 +18,10 @@ const connectionConfig = (database: string) => ({
   database,
 })
 
-class Mysql extends BaseSql {
-
+export class Mysql extends BaseSql {
   /** instantiate a new Sql class */
-  constructor(type: DatabaseType) {
-    super(type)
+  constructor() {
+    super('mysql')
   }
 
   /**
@@ -134,5 +132,3 @@ class Mysql extends BaseSql {
     await exec(cmd)
   }
 }
-
-export const sql = new Sql(config.type)
