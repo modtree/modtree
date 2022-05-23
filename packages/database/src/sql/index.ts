@@ -26,21 +26,24 @@ export class BaseSql implements BaseSqlInterface {
   /**
    * removes a single table from a mysql database
    */
-  async dropTable() {
+  async dropTable(database: string, table: string) {
+    console.log('params', database, table)
     console.log('Not implemented yet')
   }
 
   /**
    * removes a list of tables from a mysql database
    */
-  async dropTables() {
+  async dropTables(database: string, tables: string[]) {
+    console.log('params', database, tables)
     console.log('Not implemented yet')
   }
 
   /**
    * drops the database
    */
-  async dropDatabase() {
+  async dropDatabase(database: string) {
+    console.log('params', database)
     console.log('Not implemented yet')
   }
 
@@ -50,7 +53,8 @@ export class BaseSql implements BaseSqlInterface {
    * so ensure .env.test has the corrent database name.
    * @param {string} database
    */
-  async clearDatabase() {
+  async clearDatabase(database: string) {
+    console.log('params', database)
     console.log('Not implemented yet')
   }
 
@@ -59,16 +63,19 @@ export class BaseSql implements BaseSqlInterface {
    * @param {string} database
    * @param {string} filename
    */
-  async restoreFromFile() {
+  async restoreFromFile(database: string, filename: string) {
+    console.log('params', database, filename)
     console.log('Not implemented yet')
   }
 
   /** interactive prompt to guide the user to restore an SQL database */
-  async restorePrompted() {
+  restorePrompted(database: string) {
+    console.log('params', database)
     console.log('Not implemented yet')
   }
 
-  async dump() {
+  async dump(database: string) {
+    console.log('params', database)
     console.log('Not implemented yet')
   }
 }

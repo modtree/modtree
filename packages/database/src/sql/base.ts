@@ -56,7 +56,7 @@ export interface BaseSqlInterface {
    * interactive prompt to guide the user to restore an SQL database
    * @param {string} database
    */
-  restorePrompted(database: string): Promise<void>
+  restorePrompted(database: string): void
 
 
   /**

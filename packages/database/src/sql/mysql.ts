@@ -6,6 +6,7 @@ import { exec } from '../shell'
 import input from '@inquirer/input'
 import inquirer from 'inquirer'
 import fs from 'fs'
+import { BaseSql } from '.'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -18,20 +19,11 @@ const connectionConfig = (database: string) => ({
   database,
 })
 
-class Sql {
-  type: DatabaseType
-  dumpCmd: Partial<Record<DatabaseType, string>> = {
-    mysql: 'mysqldump',
-    postgres: 'pg_dump',
-  }
-  coreCmd: Partial<Record<DatabaseType, string>> = {
-    mysql: 'mysql',
-    postgres: 'psql',
-  }
+class Mysql extends BaseSql {
 
   /** instantiate a new Sql class */
   constructor(type: DatabaseType) {
-    this.type = type
+    super(type)
   }
 
   /**
