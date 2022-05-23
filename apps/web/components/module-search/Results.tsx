@@ -15,13 +15,11 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
   /**
    * checkbox
    */
-  const CheckBox = (props: { module: ModuleCondensed }) => {
-    return (
-      <div className="flex flex-col h-full justify-center mr-2">
-        {codes.has(props.module.moduleCode) ? <Filled /> : <Outline />}
-      </div>
-    )
-  }
+  const CheckBox = (props: { moduleCode: string }) => (
+    <div className="flex flex-col h-full justify-center mr-2">
+      {codes.has(props.moduleCode) ? <Filled /> : <Outline />}
+    </div>
+  )
 
   /**
    * updater function
@@ -30,8 +28,8 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
     let copy
     if (codes.has(module.moduleCode)) {
       codes.delete(module.moduleCode)
-      copy = selected.filter(x => x.moduleCode !== module.moduleCode)
-    } else { 
+      copy = selected.filter((x) => x.moduleCode !== module.moduleCode)
+    } else {
       codes.add(module.moduleCode)
       copy = [...selected, module]
     }
@@ -44,15 +42,16 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
    */
   const ResultEntry = (props: { module: ModuleCondensed }) => {
     const { module } = props
+    const { moduleCode, title } = module
     return (
       <div
         className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
         onClick={() => updateSelected(module)}
       >
-        <CheckBox module={module} />
-        <div className="w-28 text-gray-600">{module.moduleCode}</div>
+        <CheckBox moduleCode={moduleCode} />
+        <div className="w-28 text-gray-600">{moduleCode}</div>
         <div className="text-gray-400 flex-1 mr-2 whitespace-nowrap overflow-hidden text-ellipsis break-all">
-          {module.title}
+          {title}
         </div>
       </div>
     )

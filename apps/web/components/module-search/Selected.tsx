@@ -28,23 +28,20 @@ export const SelectedDisplay = () => {
    */
   const SelectedEntry = (props: { module: ModuleCondensed }) => {
     const { module } = props
+    const { moduleCode, title } = module
     function removeSelected() {
-      console.log('remove', module.moduleCode)
-      console.log(selected, codes)
-      const code = module.moduleCode
-      codes.delete(code)
-      const copy = selected.filter((x) => x.moduleCode !== code)
+      codes.delete(moduleCode)
       setCodes(new Set(codes))
-      setSelected(copy)
+      setSelected(selected.filter((x) => x.moduleCode !== moduleCode))
     }
     return (
       <div
         className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
-        onClick={() => removeSelected()}
+        onClick={removeSelected}
       >
-        <div className="w-28 text-gray-600">{module.moduleCode}</div>
+        <div className="w-28 text-gray-600">{moduleCode}</div>
         <div className="text-gray-400 flex-1 mr-2 whitespace-nowrap overflow-hidden text-ellipsis break-all">
-          {module.title}
+          {title}
         </div>
       </div>
     )
