@@ -7,8 +7,7 @@ import inquirer from 'inquirer'
 import fs from 'fs'
 import { BaseSql } from './base'
 import { Client } from 'pg'
-
-const adminDb = 'modtree_admin'
+import { log } from '../cli'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -78,6 +77,7 @@ export class Postgresql extends BaseSql {
    * @param {string} filename
    */
   async restoreFromFile(database: string, filename: string) {
+    console.log('GOT HERE')
     await this.clearDatabase(database)
     const file = join(config.rootDir, '.sql', filename)
     const u = config.username ? `-u ${config.username}` : ''
@@ -128,6 +128,7 @@ export class Postgresql extends BaseSql {
     const u = config.username ? `-u ${config.username}` : ''
     const p = config.password ? `-p\"${config.password}\"` : ''
     const cmd = `${this.dumpCmd[this.type]} ${u} ${p} ${database} > ${file}`
-    await exec(cmd)
+    log.yellow(cmd)
+    // await exec(cmd)
   }
 }
