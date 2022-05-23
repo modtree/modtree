@@ -22,7 +22,7 @@ export const SelectedDisplay = () => {
     }
     return (
       <div
-        className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
+        className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10"
         onMouseEnter={() => setCloseVisible(true)}
         onMouseLeave={() => setCloseVisible(false)}
       >
@@ -32,7 +32,7 @@ export const SelectedDisplay = () => {
         </div>
         <div className="flex flex-row justify-end items-center h-full w-10">
           {closeVisible ? (
-            <div className="h-5 w-5 rounded-sm hover:bg-gray-200 active:bg-gray-300">
+            <div className="h-5 w-5 rounded-sm hover:bg-gray-200 active:bg-gray-300 cursor-pointer">
               <IoCloseSharp
                 size={20}
                 color={colors.gray[400]}
