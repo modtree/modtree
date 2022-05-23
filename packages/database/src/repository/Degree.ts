@@ -1,4 +1,3 @@
-import { container } from '../data-source'
 import { DataSource, In, Repository } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
@@ -45,12 +44,10 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
    */
   async function initialize(props: Init.DegreeProps): Promise<void> {
     const { moduleCodes, title } = props
-    await container(db, async () => {
-      // find modules required, to create many-to-many relation
-      const modules = await ModuleRepository(db).findByCodes(moduleCodes)
-      const degree = build({ modules, title })
-      await BaseRepo.save(degree)
-    })
+    // find modules required, to create many-to-many relation
+    const modules = await ModuleRepository(db).findByCodes(moduleCodes)
+    const degree = build({ modules, title })
+    await BaseRepo.save(degree)
   }
 
   /**
@@ -62,25 +59,23 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
     degree: Degree,
     moduleCodes: string[]
   ): Promise<void> {
-    await container(db, async () => {
-      // find modules to add
-      const newModules = await ModuleRepository(db).findBy({
-        moduleCode: In(moduleCodes),
-      })
-      // find modules part of current degree
-      const updatedDegree = await BaseRepo.findOne({
-        where: {
-          id: degree.id,
-        },
-        relations: { modules: true },
-      }).then(async (degree) => {
-        degree.modules.push(...newModules)
-        await BaseRepo.save(degree)
-        return degree
-      })
-      // update the passed object
-      copy(updatedDegree, degree)
+    // find modules to add
+    const newModules = await ModuleRepository(db).findBy({
+      moduleCode: In(moduleCodes),
     })
+    // find modules part of current degree
+    const updatedDegree = await BaseRepo.findOne({
+      where: {
+        id: degree.id,
+      },
+      relations: { modules: true },
+    }).then(async (degree) => {
+      degree.modules.push(...newModules)
+      await BaseRepo.save(degree)
+      return degree
+    })
+    // update the passed object
+    copy(updatedDegree, degree)
   }
 
   /**

@@ -47,7 +47,7 @@ describe('Degree.initialize', () => {
 
 describe('Degree.insertModules', () => {
   it('Adds modules to a degree', async () => {
-    await DegreeRepository(db).insertModules(degree, newModuleCodes)
+    await container(db, () => DegreeRepository(db).insertModules(degree, newModuleCodes))
   })
 
   it('Correctly saves newly inserted modules', async () => {
