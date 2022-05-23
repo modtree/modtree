@@ -19,6 +19,7 @@ interface UserRepository extends Repository<User> {
   canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
+  eligibleModules(user: User): Promise<Module[] | void>
 }
 
 /**

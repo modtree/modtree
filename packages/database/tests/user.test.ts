@@ -1,6 +1,6 @@
 import { container, endpoint, getSource } from '../src/data-source'
-import { User } from '../src/entity'
-import { UserRepository } from '../src/repository'
+import { Module, User } from '../src/entity'
+import { ModuleRepository, UserRepository } from '../src/repository'
 import { Init } from '../types/modtree'
 import { init } from './init'
 import { setup, importChecks, teardown } from './environment'
@@ -12,8 +12,8 @@ beforeAll(() => setup(dbName))
 afterAll(() => teardown(dbName))
 
 importChecks({
-  entities: [User],
-  repositories: [UserRepository(db)],
+  entities: [Module, User],
+  repositories: [ModuleRepository(db), UserRepository(db)],
 })
 
 jest.setTimeout(20000)
@@ -79,5 +79,52 @@ describe('User.canTakeModule', () => {
 
     await db.destroy()
     await setup(dbName)
+  })
+})
+
+describe('User.eligibleModules', () => {
+  let user: User
+  it('Saves a user', async () => {
+    const props: Init.UserProps = init.emptyUser
+    props.modulesDone.push('MA2001')
+    props.modulesDoing.push('MA2219')
+    await UserRepository(db).initialize(props)
+    const res = await endpoint(db, () =>
+      container(db, async () => {
+        // find user
+        return await UserRepository(db).findOne({
+          where: {
+            username: props.username,
+          },
+        })
+      })
+    )
+    expect(res).toBeDefined()
+    if (!res) return
+    user = res
+  })
+
+  it('Adds only all post-requisites of modules done', async () => {
+    // Get eligible modules
+    const eligibleModules = await container(db, async () => {
+      return await UserRepository(db).eligibleModules(user)
+    })
+    expect(eligibleModules).toBeDefined()
+    if (!eligibleModules) return
+    // Get fulfillRequirements of MA2001 (the only module done)
+    const module = await endpoint(db, () =>
+      container(db, async () => {
+        // find user
+        return await ModuleRepository(db).findOneBy({
+          moduleCode: 'MA2001',
+        })
+      })
+    )
+    expect(module).toBeDefined()
+    if (!module) return
+    // compare module codes
+    const eligibleModuleCodes = eligibleModules.map((one: Module) => one.moduleCode)
+    expect(eligibleModuleCodes.sort()).toEqual(module.fulfillRequirements.sort())
+    expect(eligibleModuleCodes.length).toEqual(module.fulfillRequirements.length)
   })
 })
