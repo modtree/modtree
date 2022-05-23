@@ -27,12 +27,7 @@ describe('User.canTakeModule', () => {
     await UserRepository(db).initialize(props)
     const res = await endpoint(db, () =>
       container(db, async () => {
-        // find user
-        return await UserRepository(db).findOne({
-          where: {
-            username: props.username,
-          },
-        })
+        return await UserRepository(db).findOneByUsername(props.username)
       })
     )
     expect(res).toBeDefined()
@@ -91,12 +86,7 @@ describe('User.eligibleModules', () => {
     await UserRepository(db).initialize(props)
     const res = await endpoint(db, () =>
       container(db, async () => {
-        // find user
-        return await UserRepository(db).findOne({
-          where: {
-            username: props.username,
-          },
-        })
+        return await UserRepository(db).findOneByUsername(props.username)
       })
     )
     expect(res).toBeDefined()
@@ -112,17 +102,18 @@ describe('User.eligibleModules', () => {
     expect(eligibleModules).toBeDefined()
     if (!eligibleModules) return
     // Get fulfillRequirements of MA2001 (the only module done)
-    const module = await endpoint(db, () =>
+    const modules = await endpoint(db, () =>
       container(db, async () => {
         // find user
-        return await ModuleRepository(db).findOneBy({
-          moduleCode: 'MA2001',
-        })
+        return await ModuleRepository(db).findByCodes(['MA2001'])
       })
     )
-    expect(module).toBeDefined()
-    if (!module) return
-    // compare module codes
+    expect(modules).toBeDefined()
+    if (!modules) return
+    expect(modules).toBeInstanceOf(Array)
+    expect(modules.length).toEqual(1)
+    const module = modules[0]
+    // Compare module codes
     const eligibleModuleCodes = eligibleModules.map((one: Module) => one.moduleCode)
     expect(eligibleModuleCodes.sort()).toEqual(module.fulfillRequirements.sort())
     expect(eligibleModuleCodes.length).toEqual(module.fulfillRequirements.length)
