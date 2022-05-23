@@ -7,23 +7,35 @@ import colors from 'tailwindcss/colors'
 const Outline = () => <IoEllipseOutline color={colors.gray[400]} />
 const Filled = () => <IoEllipse color={colors.emerald[500]} />
 
-const CheckBox = (props: { moduleCode?: string; on: () => boolean }) => {
-  return (
-    <div className="flex flex-col h-full justify-center mr-2">
-      {props.on() ? <Filled /> : <Outline />}
-    </div>
-  )
-}
-
 export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
-  const { selectedState } = useContext(ModuleContext)
+  const { selectedState, codesState } = useContext(ModuleContext)
   const [selected, setSelected] = selectedState
+  const [codes, setCodes] = codesState
+  const disp = (selected: Set<ModuleCondensed>) =>
+    Array.from(selected).map((x) => x.moduleCode)
+
+  /**
+   * checkbox
+   */
+  const CheckBox = (props: { module: ModuleCondensed }) => {
+    console.log(codes)
+    return (
+      <div className="flex flex-col h-full justify-center mr-2">
+        {codes.has(props.module.moduleCode) ? <Filled /> : <Outline />}
+      </div>
+    )
+  }
 
   /**
    * updater function
    */
   function updateSelected(module: ModuleCondensed) {
-    console.log('clicked on', module.moduleCode)
+    if (codes.has(module.moduleCode)) {
+      codes.delete(module.moduleCode)
+    } else { 
+      codes.add(module.moduleCode)
+    }
+    setCodes(new Set(codes))
     if (selected.has(module)) {
       selected.delete(module)
     } else {
@@ -37,13 +49,13 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
    */
   const ResultEntry = (props: { module: ModuleCondensed }) => {
     const { module } = props
-    const on = (): boolean => selected.has(module)
+    const on: boolean = selected.has(module)
     return (
       <div
         className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
         onClick={() => updateSelected(module)}
       >
-        <CheckBox on={on} />
+        <CheckBox module={module} />
         <div className="w-28 text-gray-600">{module.moduleCode}</div>
         <div className="text-gray-400 flex-1 mr-2 whitespace-nowrap overflow-hidden text-ellipsis break-all">
           {module.title}
