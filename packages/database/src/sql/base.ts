@@ -18,16 +18,82 @@ const connectionConfig = (database: string) => ({
   database,
 })
 
-class Sql {
-  type: DatabaseType
-  dumpCmd: Partial<Record<DatabaseType, string>> = {
+class Query {
+  static dumpCmd: Partial<Record<DatabaseType, string>> = {
     mysql: 'mysqldump',
     postgres: 'pg_dump',
   }
-  coreCmd: Partial<Record<DatabaseType, string>> = {
+  static coreCmd: Partial<Record<DatabaseType, string>> = {
     mysql: 'mysql',
     postgres: 'psql',
   }
+
+  /**
+   * drops a single table
+   * @param {Collection} con
+   * @param {string} table
+   */
+  static async dropTable(con: Connection, table: string) {
+    await con.query(`DROP TABLE IF EXISTS ${table}`)
+  }
+
+  /**
+   * drops a database
+   * @param {Collection} con
+   * @param {string} database
+   */
+  static async dropDatabase(con: Connection, database: string) {
+    await con.query(`DROP DATABASE IF EXISTS ${database}`)
+  }
+
+  /**
+   * creates a database
+   * @param {Collection} con
+   * @param {string} database
+   */
+  static async createDatabase(con: Connection, database: string) {
+    await con.query(`CREATE DATABASE ${database}`)
+  }
+
+  /**
+   * restores a database from a file
+   * @param {string} database
+   * @param {string} filename with .sql extension
+   */
+  static async restoreDatabase(
+    type: DatabaseType,
+    database: string,
+    filename: string
+  ) {
+    const file = join(config.rootDir, '.sql', filename)
+    console.log('--', file, '--')
+    const u = config.username == '' ? '' : `-u ${config.username}`
+    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const cmd = `${this.coreCmd[type]} ${u} ${p} ${database} < ${file}`
+    await exec(cmd)
+  }
+
+  /**
+   * dumps a database from a file
+   * @param {string} database
+   * @param {string} filename wit .sql extension
+   */
+  static async dumpDatabase(
+    type: DatabaseType,
+    database: string,
+    filename: string
+  ) {
+    const withExt = filename.concat('.sql')
+    const file = join(config.rootDir, '.sql', withExt)
+    const u = config.username == '' ? '' : `-u ${config.username}`
+    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const cmd = `${this.dumpCmd[type]} ${u} ${p} ${database} > ${file}`
+    await exec(cmd)
+  }
+}
+
+class Sql {
+  type: DatabaseType
 
   /** instantiate a new Sql class */
   constructor(type: DatabaseType) {
@@ -41,7 +107,7 @@ class Sql {
    */
   async dropTable(database: string, table: string) {
     const con = await createConnection(connectionConfig(database))
-    await con.query(`DROP TABLE IF EXISTS ${table}`)
+    await Query.dropTable(con, table)
     await con.end()
   }
 
@@ -52,9 +118,7 @@ class Sql {
    */
   async dropTables(database: string, tables: string[]) {
     const con = await createConnection(connectionConfig(database))
-    await Promise.all(
-      tables.map((table) => con.query(`DROP TABLE IF EXISTS ${table}`))
-    )
+    await Promise.all(tables.map((table) => Query.dropTable(con, table)))
     await con.end()
   }
 
@@ -65,7 +129,7 @@ class Sql {
   async dropDatabase(database: string) {
     const con = await createConnection(noDatabaseConfig)
     // drop the database if it exists
-    await con.query(`DROP DATABASE IF EXISTS ${database}`)
+    await Query.dropDatabase(con, database)
     await con.end()
   }
 
@@ -78,8 +142,8 @@ class Sql {
   async clearDatabase(database: string) {
     const con = await createConnection(noDatabaseConfig)
     // drop the database if it exists
-    await con.query(`DROP DATABASE IF EXISTS ${database}`)
-    await con.query(`CREATE DATABASE ${database}`)
+    await Query.dropDatabase(con, database)
+    await Query.createDatabase(con, database)
     await con.end()
   }
 
@@ -125,7 +189,8 @@ class Sql {
           console.log('cancelled.')
           return
         }
-        await this.restoreFromFile(database, answers.sql)
+        await sql.clearDatabase(database)
+        await Query.restoreDatabase(this.type, database, answers.sql)
       })
   }
 
@@ -134,12 +199,7 @@ class Sql {
       message: 'Enter filename (without .sql):',
       default: 'backup',
     })
-    const withExt = filename.concat('.sql')
-    const file = join(config.rootDir, '.sql', withExt)
-    const u = config.username == '' ? '' : `-u ${config.username}`
-    const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `${this.dumpCmd[this.type]} ${u} ${p} ${database} > ${file}`
-    await exec(cmd)
+    await Query.dumpDatabase(this.type, database, filename)
   }
 }
 
