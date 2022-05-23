@@ -24,7 +24,7 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
   /**
    * updater function
    */
-  function updateSelected(module: ModuleCondensed) {
+  function toggleSelected(module: ModuleCondensed) {
     let copy
     if (codes.has(module.moduleCode)) {
       codes.delete(module.moduleCode)
@@ -46,7 +46,7 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
     return (
       <div
         className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer hover:bg-gray-100"
-        onClick={() => updateSelected(module)}
+        onClick={() => toggleSelected(module)}
       >
         <CheckBox moduleCode={moduleCode} />
         <div className="w-28 text-gray-600">{moduleCode}</div>
