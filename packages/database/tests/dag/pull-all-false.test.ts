@@ -6,7 +6,6 @@ import {
   UserRepository,
   DAGRepository,
 } from '../../src/repository'
-import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
 import { setupDAG } from './setup'
 

@@ -88,6 +88,14 @@ export function useLoadRelations(
   return loadRelations
 }
 
+/**
+ * Returns the relation names of an entity,
+ * in the format for loadRelations.
+ *
+ * @param {DataSource} database
+ * @param {EntityConstructor<T>} Entity
+ * @return {Record<string, boolean>}
+ */
 export function getRelationNames<T>(
   database: DataSource,
   Entity: EntityConstructor<T>,
