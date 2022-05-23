@@ -64,16 +64,12 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
       moduleCode: In(moduleCodes),
     })
     // find modules part of current degree
-    const updatedDegree = await BaseRepo.findOne({
-      where: {
-        id: degree.id,
-      },
-      relations: { modules: true },
-    }).then(async (degree) => {
-      degree.modules.push(...newModules)
-      await BaseRepo.save(degree)
-      return degree
+    await DegreeRepository(db).loadRelations(degree, {
+      modules: true,
     })
+    // update the degree
+    degree.modules.push(...newModules)
+    const updatedDegree = await BaseRepo.save(degree)
     // update the passed object
     copy(updatedDegree, degree)
   }
