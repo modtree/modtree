@@ -81,8 +81,8 @@ export class Mysql extends BaseSql {
   async restoreFromFile(database: string, filename: string) {
     await this.clearDatabase(database)
     const file = join(config.rootDir, '.sql', filename)
-    const u = config.username == '' ? '' : `-u ${config.username}`
-    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const u = config.username ? `-u ${config.username}` : ''
+    const p = config.password ? `-p\"${config.password}\"` : ''
     const cmd = `mysql ${u} ${p} ${database} < ${file}`
     await exec(cmd)
   }
@@ -126,8 +126,8 @@ export class Mysql extends BaseSql {
     })
     const withExt = filename.concat('.sql')
     const file = join(config.rootDir, '.sql', withExt)
-    const u = config.username == '' ? '' : `-u ${config.username}`
-    const p = config.password == '' ? '' : `-p\"${config.password}\"`
+    const u = config.username ? `-u ${config.username}` : ''
+    const p = config.password ? `-p\"${config.password}\"` : ''
     const cmd = `${this.dumpCmd[this.type]} ${u} ${p} ${database} > ${file}`
     await exec(cmd)
   }
