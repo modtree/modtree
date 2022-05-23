@@ -126,25 +126,20 @@ export function DAGRepository(database?: DataSource): DAGRepository {
     /**
      * retrieve a DAG from database given its id
      */
-    const retrieved = await BaseRepo.findOne({
-      where: {
-        id: dag.id,
-      },
-      relations: {
-        user: true,
-        degree: true,
-        modulesPlaced: true,
-        modulesHidden: true,
-      },
+    await DAGRepository(db).loadRelations(dag, {
+      user: true,
+      degree: true,
+      modulesPlaced: true,
+      modulesHidden: true,
     })
     /**
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: retrieved.modulesPlaced
+      placed: dag.modulesPlaced
         .map((m) => m.moduleCode)
         .indexOf(moduleCode),
-      hidden: retrieved.modulesHidden
+      hidden: dag.modulesHidden
         .map((m) => m.moduleCode)
         .indexOf(moduleCode),
       invalid: -1,
@@ -169,19 +164,15 @@ export function DAGRepository(database?: DataSource): DAGRepository {
      * toggles the modules between placed and hidden
      */
     if (state === 'placed') {
-      toggle(retrieved.modulesPlaced, retrieved.modulesHidden)
+      toggle(dag.modulesPlaced, dag.modulesHidden)
     } else if (state === 'hidden') {
-      toggle(retrieved.modulesHidden, retrieved.modulesPlaced)
+      toggle(dag.modulesHidden, dag.modulesPlaced)
     } else {
       // throw error if module not found
       throw new Error('Module not found in DAG')
     }
 
-    // update dag so that devs don't need a second query
-    dag.modulesPlaced = retrieved.modulesPlaced
-    dag.modulesHidden = retrieved.modulesHidden
-
-    await BaseRepo.save(retrieved)
+    await BaseRepo.save(dag)
   }
 
   /**
