@@ -4,8 +4,9 @@ import ReactFlow, {
   applyNodeChanges,
   applyEdgeChanges,
 } from 'react-flow-renderer'
-import initialEdges from './edges'
-import initialNodes from './nodes'
+import { initialNodes, initialEdges, ModuleNode } from './dag'
+
+const nodeTypes = { moduleNode: ModuleNode }
 
 export default function Modtree() {
   const [nodes, setNodes] = useState(initialNodes)
@@ -21,12 +22,13 @@ export default function Modtree() {
   )
 
   return (
-    <div className="h-screen w-screen bg-green-100">
+    <div className="h-screen w-screen bg-gray-50">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
       >
         <Controls />
       </ReactFlow>
