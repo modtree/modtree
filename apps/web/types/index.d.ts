@@ -1,3 +1,4 @@
 import { Dispatch, SetStateAction } from 'react'
 
-export type UseState<Type> = [Type, Dispatch<SetStateAction<Type>>]
+export type SetState<Type> = Dispatch<SetStateAction<Type>>
+export type UseState<Type> = [Type, SetState<Type>]
