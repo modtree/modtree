@@ -9,7 +9,7 @@ const Filled = () => <IoEllipse color={colors.emerald[500]} />
 
 export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
   const { moduleCondensedState, moduleCodeState } = useContext(ModuleContext)
-  const [selected, setSelected] = moduleCondensedState
+  const [modules, setModules] = moduleCondensedState
   const [codes, setCodes] = moduleCodeState
 
   /**
@@ -28,12 +28,12 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
     let copy
     if (codes.has(module.moduleCode)) {
       codes.delete(module.moduleCode)
-      copy = selected.filter((x) => x.moduleCode !== module.moduleCode)
+      copy = modules.filter((x) => x.moduleCode !== module.moduleCode)
     } else {
       codes.add(module.moduleCode)
-      copy = [...selected, module]
+      copy = [...modules, module]
     }
-    setSelected(copy)
+    setModules(copy)
     setCodes(new Set(codes))
   }
 

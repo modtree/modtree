@@ -3,25 +3,9 @@ import { ModuleCondensed } from 'database'
 import { useContext } from 'react'
 // import colors from 'tailwindcss/colors'
 
-/**
- * O(1) delete from unsorted array
- * @param {T[]} arr
- * @param {number} index
- * @return {Module}
- */
-export function quickpop<T>(arr: T[], index: number): T {
-  if (arr.length === 0) throw new Error('Tried to quickpop an empty array')
-  if (index >= arr.length || index < 0) throw new Error('Out of bounds')
-  const res = arr[index]
-  const elem = arr.pop()
-  if (!elem) throw new Error('Quickpop somehow popped an undefined element')
-  if (arr.length !== index) arr[index] = elem
-  return res
-}
-
 export const SelectedDisplay = () => {
   const { moduleCondensedState, moduleCodeState } = useContext(ModuleContext)
-  const [selected, setSelected] = moduleCondensedState
+  const [modules, setModules] = moduleCondensedState
   const [codes, setCodes] = moduleCodeState
   /**
    * one selected entry
@@ -32,7 +16,7 @@ export const SelectedDisplay = () => {
     function removeSelected() {
       codes.delete(moduleCode)
       setCodes(new Set(codes))
-      setSelected(selected.filter((x) => x.moduleCode !== moduleCode))
+      setModules(modules.filter((m) => m.moduleCode !== moduleCode))
     }
     return (
       <div
