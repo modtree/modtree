@@ -11,14 +11,11 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
   const { selectedState, codesState } = useContext(ModuleContext)
   const [selected, setSelected] = selectedState
   const [codes, setCodes] = codesState
-  const disp = (selected: Set<ModuleCondensed>) =>
-    Array.from(selected).map((x) => x.moduleCode)
 
   /**
    * checkbox
    */
   const CheckBox = (props: { module: ModuleCondensed }) => {
-    console.log(codes)
     return (
       <div className="flex flex-col h-full justify-center mr-2">
         {codes.has(props.module.moduleCode) ? <Filled /> : <Outline />}
@@ -30,18 +27,16 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
    * updater function
    */
   function updateSelected(module: ModuleCondensed) {
+    let copy
     if (codes.has(module.moduleCode)) {
       codes.delete(module.moduleCode)
+      copy = selected.filter(x => x.moduleCode !== module.moduleCode)
     } else { 
       codes.add(module.moduleCode)
+      copy = [...selected, module]
     }
+    setSelected(copy)
     setCodes(new Set(codes))
-    if (selected.has(module)) {
-      selected.delete(module)
-    } else {
-      selected.add(module)
-    }
-    setSelected(new Set(selected))
   }
 
   /**
@@ -49,7 +44,6 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
    */
   const ResultEntry = (props: { module: ModuleCondensed }) => {
     const { module } = props
-    const on: boolean = selected.has(module)
     return (
       <div
         className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"

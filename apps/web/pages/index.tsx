@@ -7,7 +7,6 @@ import { ModuleProvider } from 'contexts/ModuleContext'
 
 export default function SearchPage() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
-  const selectState = useState<ModuleCondensed[]>([])
 
   const ResultContainer = (props: { children: ReactNode }) => {
     return (
@@ -36,7 +35,7 @@ export default function SearchPage() {
             Module List
           </h2>
           <SelectedContainer>
-            <SelectedDisplay selectState={selectState} />
+            <SelectedDisplay />
           </SelectedContainer>
         </div>
         <div className="mb-4 w-full max-w-xl">

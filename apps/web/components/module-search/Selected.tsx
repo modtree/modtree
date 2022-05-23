@@ -1,7 +1,6 @@
 import { ModuleContext } from 'contexts/ModuleContext'
 import { ModuleCondensed } from 'database'
 import { useContext } from 'react'
-import { UseState } from '../../types'
 // import colors from 'tailwindcss/colors'
 
 /**
@@ -21,18 +20,22 @@ export function quickpop<T>(arr: T[], index: number): T {
 }
 
 export const SelectedDisplay = () => {
-  const { selectedState } = useContext(ModuleContext)
+  const { selectedState, codesState } = useContext(ModuleContext)
   const [selected, setSelected] = selectedState
+  const [codes, setCodes] = codesState
   /**
    * one selected entry
    */
-  const SelectedEntry = (props: {
-    module: ModuleCondensed
-  }) => {
+  const SelectedEntry = (props: { module: ModuleCondensed }) => {
     const { module } = props
     function removeSelected() {
-      selected.delete(module)
-      setSelected(new Set(selected))
+      console.log('remove', module.moduleCode)
+      console.log(selected, codes)
+      const code = module.moduleCode
+      codes.delete(code)
+      const copy = selected.filter((x) => x.moduleCode !== code)
+      setCodes(new Set(codes))
+      setSelected(copy)
     }
     return (
       <div
@@ -52,7 +55,7 @@ export const SelectedDisplay = () => {
    */
   return (
     <div className="flex-col">
-      {Array.from(selectedState[0]).map((m, index) => (
+      {selectedState[0].map((m, index) => (
         <SelectedEntry module={m} key={index} />
       ))}
     </div>
