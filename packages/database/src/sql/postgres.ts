@@ -58,11 +58,7 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async dropDatabase(database: string) {
-    const psql = new Client(connectionConfig('modtree_admin'))
-    await psql.connect()
-    // drop the database if it exists
-    await psql.query(`DROP DATABASE IF EXISTS ${database}`)
-    await psql.end()
+    await exec(`dropdb ${database}`)
   }
 
   /**
@@ -72,12 +68,8 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    const psql = new Client(connectionConfig('modtree_admin'))
-    await psql.connect()
-    // drop the database if it exists
-    await psql.query(`DROP DATABASE IF EXISTS ${database}`)
-    await psql.query(`CREATE DATABASE ${database}`)
-    await psql.end()
+    await exec(`dropdb ${database}`)
+    await exec(`createdb ${database}`)
   }
 
   /**
