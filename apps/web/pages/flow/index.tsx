@@ -1,32 +1,11 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ReactFlow, {
   Controls,
-  ReactFlowProps,
   applyNodeChanges,
   applyEdgeChanges,
 } from 'react-flow-renderer'
 import initialEdges from './edges'
 import initialNodes from './nodes'
-
-function Flow({
-  nodes,
-  edges,
-  onNodesChange,
-  onEdgesChange,
-  onConnect,
-}: ReactFlowProps) {
-  return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-    >
-      <Controls />
-    </ReactFlow>
-  )
-}
 
 export default function Modtree() {
   const [nodes, setNodes] = useState(initialNodes)
@@ -39,15 +18,29 @@ export default function Modtree() {
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   )
+  const [ctxCoord, setCtxCoord] = useState(['', ''])
+
+  useEffect(() => {
+    document.addEventListener('contextmenu', (event) => {
+      event.preventDefault()
+      const xPos = event.pageX + 'px'
+      const yPos = event.pageY + 'px'
+      setCtxCoord([xPos, yPos])
+      console.log('right clikced!', [xPos, yPos])
+    })
+  }, [])
 
   return (
     <div className="h-screen w-screen bg-green-100">
-      <Flow
+      <div style={{ top: ctxCoord[0], left: ctxCoord[1] }}>what is up</div>
+      <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-      />
+      >
+        <Controls />
+      </ReactFlow>
     </div>
   )
 }
