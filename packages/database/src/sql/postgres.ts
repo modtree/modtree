@@ -1,10 +1,7 @@
 import { config } from '../config'
 import { join } from 'path'
 import { exec } from '../shell'
-import input from '@inquirer/input'
-import inquirer from 'inquirer'
-import fs from 'fs'
-import { BaseSql } from './base'
+import { BaseSql, promptDump, promptRestore } from './base'
 import { Client } from 'pg'
 
 const noDatabaseConfig = {
@@ -66,13 +63,6 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    // await exec(`createdb ${adminDb}`).catch(() => true)
-    // const psql = new Client(connectionConfig(adminDb))
-    // await psql.connect()
-    // await psql.query(`DROP DATABASE "${database}";`).catch(() => true)
-    // await psql.query(`CREATE DATABASE "${database}";`).catch(() => true)
-    // await psql.end()
-    // await exec(`dropdb ${adminDb}`).catch(() => true)
     await exec(`dropdb ${database}`).catch(() => true)
     await exec(`createdb ${database}`).catch(() => true)
   }
@@ -96,34 +86,13 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   restorePrompted(database: string) {
-    type Answers = {
-      sql: string
-      confirm: 'yes' | 'no'
-    }
-    const sqlDir = join(config.rootDir, '.sql')
-    const sqlList = fs.readdirSync(sqlDir).filter((x) => x.endsWith('.sql'))
-    inquirer
-      .prompt([
-        {
-          type: 'list',
-          name: 'sql',
-          message: 'Restore from .sql file?',
-          choices: sqlList,
-        },
-        {
-          type: 'list',
-          name: 'confirm',
-          message: `Confirm overwrite database [${database}]?`,
-          choices: ['yes', 'no'],
-        },
-      ])
-      .then(async (answers: Answers) => {
-        if (answers.confirm === 'no') {
-          console.log('cancelled.')
-          return
-        }
-        await this.restoreFromFile(database, answers.sql)
-      })
+    promptRestore(database).then(async (answers) => {
+      if (answers.confirm === 'no') {
+        console.log('cancelled.')
+        return
+      }
+      await this.restoreFromFile(database, answers.sql)
+    })
   }
 
   /**
@@ -131,10 +100,7 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async dump(database: string) {
-    const filename = await input({
-      message: 'Enter filename (without .sql):',
-      default: 'backup',
-    })
+    const filename = await promptDump()
     const withExt = filename.concat('.sql')
     const file = join(config.rootDir, '.sql', withExt)
     const u = config.username ? `-u ${config.username}` : ''

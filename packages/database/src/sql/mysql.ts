@@ -102,7 +102,6 @@ export class Mysql extends BaseSql {
 
   async dump(database: string) {
     const filename = await promptDump()
-    log.yellow(filename)
     const withExt = filename.concat('.sql')
     const file = join(config.rootDir, '.sql', withExt)
     const u = config.username ? `-u ${config.username}` : ''
