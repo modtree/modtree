@@ -1,4 +1,6 @@
+import { ModuleContext } from 'contexts/ModuleContext'
 import { ModuleCondensed } from 'database'
+import { useContext } from 'react'
 import { UseState } from '../../types'
 // import colors from 'tailwindcss/colors'
 
@@ -18,36 +20,40 @@ export function quickpop<T>(arr: T[], index: number): T {
   return res
 }
 
-const SelectedEntry = (props: {
-  module: ModuleCondensed
-  selectState: UseState<ModuleCondensed[]>
-}) => {
-  const { module, selectState } = props
-  const [selected, setSelected] = selectState
-  function removeSelected() {
-    const i = selected.indexOf(module)
-    quickpop(selected, i)
-    setSelected([...selected])
-  }
-  return (
-    <div
-      className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
-      onClick={() => removeSelected()}
-    >
-      <div className="w-28 text-gray-600">{module.moduleCode}</div>
-      <div className="text-gray-400 flex-1 mr-2 whitespace-nowrap overflow-hidden text-ellipsis break-all">
-        {module.title}
+export const SelectedDisplay = () => {
+  const { selectedState } = useContext(ModuleContext)
+  const [selected, setSelected] = selectedState
+  /**
+   * one selected entry
+   */
+  const SelectedEntry = (props: {
+    module: ModuleCondensed
+  }) => {
+    const { module } = props
+    function removeSelected() {
+      selected.delete(module)
+      setSelected(new Set(selected))
+    }
+    return (
+      <div
+        className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
+        onClick={() => removeSelected()}
+      >
+        <div className="w-28 text-gray-600">{module.moduleCode}</div>
+        <div className="text-gray-400 flex-1 mr-2 whitespace-nowrap overflow-hidden text-ellipsis break-all">
+          {module.title}
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
-export const SelectedDisplay = (props: { selectState: UseState<ModuleCondensed[]> }) => {
-  const selected = props.selectState[0]
+  /**
+   * final return
+   */
   return (
     <div className="flex-col">
-      {selected.map((m, index) => (
-        <SelectedEntry module={m} key={index} selectState={props.selectState} />
+      {Array.from(selectedState[0]).map((m, index) => (
+        <SelectedEntry module={m} key={index} />
       ))}
     </div>
   )
