@@ -9,6 +9,7 @@ import {
   LoadRelations,
   getDataSource,
   useBuild,
+  getRelationNames,
 } from './base'
 
 interface UserRepository extends Repository<User> {
@@ -18,6 +19,7 @@ interface UserRepository extends Repository<User> {
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
   eligibleModules(user: User): Promise<Module[] | void>
+  findOneById(id: string): Promise<User>
 }
 
 /**
@@ -130,6 +132,22 @@ export function UserRepository(database?: DataSource): UserRepository {
       .getOneOrFail()
   }
 
+  /**
+   * Returns a User with all relations loaded
+   * @param {string} id
+   * @return {Promise<User>}
+   */
+  async function findOneById(id: string): Promise<User> {
+    // get user by id
+    const user = await BaseRepo.createQueryBuilder('user')
+      .where('user.id = :id', { id })
+      .getOneOrFail()
+    // get relation names
+    const relationNames = getRelationNames(db, User)
+    await UserRepository(db).loadRelations(user, relationNames)
+    return user
+  }
+
   return BaseRepo.extend({
     canTakeModule,
     build,
@@ -137,5 +155,6 @@ export function UserRepository(database?: DataSource): UserRepository {
     loadRelations,
     findOneByUsername,
     eligibleModules,
+    findOneById,
   })
 }
