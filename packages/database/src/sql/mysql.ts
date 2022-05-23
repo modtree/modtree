@@ -3,7 +3,6 @@ import { createConnection } from 'mysql2/promise'
 import { join } from 'path'
 import { exec } from '../shell'
 import { BaseSql, promptDump, promptRestore } from './base'
-import { log } from '../cli'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -100,6 +99,10 @@ export class Mysql extends BaseSql {
     })
   }
 
+  /**
+   * dump a database snapshot to an .sql file
+   * @param {string} database
+   */
   async dump(database: string) {
     const filename = await promptDump()
     const withExt = filename.concat('.sql')
