@@ -8,24 +8,18 @@ import {
 } from '../../src/repository'
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
-import { setupDAG } from './base'
+import { setupDAG } from './setup'
 
 const dbName = 'test_dag_pull_all_true'
 const db = getSource(dbName)
-
-beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+let degree: Degree
+let user: User
+let dag: DAG
 
 importChecks({
   entities: [Module, Degree, User, DAG],
   repositories: [UserRepository(db), DegreeRepository(db), DAGRepository(db)],
 })
-
-jest.setTimeout(5000)
-
-let degree: Degree
-let user: User
-let dag: DAG
 
 beforeAll(async () => {
   await setup(dbName)
@@ -33,6 +27,7 @@ beforeAll(async () => {
   if (!res) throw new Error('Unable to setup DAG test.')
   ;[user, degree] = res
 })
+afterAll(() => teardown(dbName))
 
 describe('DAG.initialize', () => {
   it('Saves a dag', async () => {
