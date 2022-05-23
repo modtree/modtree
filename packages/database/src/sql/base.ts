@@ -1,137 +1,44 @@
 import { config } from '../config'
-import { createConnection, Connection } from 'mysql2/promise'
 import { DatabaseType } from 'typeorm'
-import { join } from 'path'
-import { exec } from '../shell'
-import input from '@inquirer/input'
-import inquirer from 'inquirer'
-import fs from 'fs'
 
-const noDatabaseConfig = {
+export const noDatabaseConfig = {
   host: config.host,
   user: config.username,
   password: config.password,
 }
 
-const connectionConfig = (database: string) => ({
+export const connectionConfig = (database: string) => ({
   ...noDatabaseConfig,
   database,
 })
 
-class Query {
-  static dumpCmd: Partial<Record<DatabaseType, string>> = {
-    mysql: 'mysqldump',
-    postgres: 'pg_dump',
-  }
-  static coreCmd: Partial<Record<DatabaseType, string>> = {
-    mysql: 'mysql',
-    postgres: 'psql',
-  }
-
-  /**
-   * drops a single table
-   * @param {Collection} con
-   * @param {string} table
-   */
-  static async dropTable(con: Connection, table: string) {
-    await con.query(`DROP TABLE IF EXISTS ${table}`)
-  }
-
-  /**
-   * drops a database
-   * @param {Collection} con
-   * @param {string} database
-   */
-  static async dropDatabase(con: Connection, database: string) {
-    await con.query(`DROP DATABASE IF EXISTS ${database}`)
-  }
-
-  /**
-   * creates a database
-   * @param {Collection} con
-   * @param {string} database
-   */
-  static async createDatabase(con: Connection, database: string) {
-    await con.query(`CREATE DATABASE ${database}`)
-  }
-
-  /**
-   * restores a database from a file
-   * @param {string} database
-   * @param {string} filename with .sql extension
-   */
-  static async restoreDatabase(
-    type: DatabaseType,
-    database: string,
-    filename: string
-  ) {
-    const file = join(config.rootDir, '.sql', filename)
-    console.log('--', file, '--')
-    const u = config.username == '' ? '' : `-u ${config.username}`
-    const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `${this.coreCmd[type]} ${u} ${p} ${database} < ${file}`
-    await exec(cmd)
-  }
-
-  /**
-   * dumps a database from a file
-   * @param {string} database
-   * @param {string} filename wit .sql extension
-   */
-  static async dumpDatabase(
-    type: DatabaseType,
-    database: string,
-    filename: string
-  ) {
-    const withExt = filename.concat('.sql')
-    const file = join(config.rootDir, '.sql', withExt)
-    const u = config.username == '' ? '' : `-u ${config.username}`
-    const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `${this.dumpCmd[type]} ${u} ${p} ${database} > ${file}`
-    await exec(cmd)
-  }
-}
-
-class Sql {
+export interface BaseSqlInterface {
   type: DatabaseType
+  dumpCmd: string
+  coreCmd: string
 
   /** instantiate a new Sql class */
-  constructor(type: DatabaseType) {
-    this.type = type
-  }
+  constructor(type: DatabaseType) : void
 
   /**
    * removes a single table from a mysql database
    * @param {string} database
    * @param {string} table
    */
-  async dropTable(database: string, table: string) {
-    const con = await createConnection(connectionConfig(database))
-    await Query.dropTable(con, table)
-    await con.end()
-  }
+  dropTable(database: string, table: string): Promise<void>
 
   /**
    * removes a list of tables from a mysql database
    * @param {string} database
    * @param {string[]} tables
    */
-  async dropTables(database: string, tables: string[]) {
-    const con = await createConnection(connectionConfig(database))
-    await Promise.all(tables.map((table) => Query.dropTable(con, table)))
-    await con.end()
-  }
+  dropTables(database: string, tables: string[]): Promise<void>
 
   /**
    * drops the database
    * @param {string} database
    */
-  async dropDatabase(database: string) {
-    const con = await createConnection(noDatabaseConfig)
-    // drop the database if it exists
-    await Query.dropDatabase(con, database)
-    await con.end()
-  }
+  dropDatabase(database: string): Promise<void>
 
   /**
    * a very aggressive function that drops the database
@@ -139,68 +46,25 @@ class Sql {
    * so ensure .env.test has the corrent database name.
    * @param {string} database
    */
-  async clearDatabase(database: string) {
-    const con = await createConnection(noDatabaseConfig)
-    // drop the database if it exists
-    await Query.dropDatabase(con, database)
-    await Query.createDatabase(con, database)
-    await con.end()
-  }
+  clearDatabase(database: string): Promise<void>
 
   /**
    * restores SQL database from a file
    * @param {string} database
    * @param {string} filename
    */
-  async restoreFromFile(database: string, filename: string) {
-    await this.clearDatabase(database)
-    const file = join(config.rootDir, '.sql', filename)
-    const u = config.username == '' ? '' : `-u ${config.username}`
-    const p = config.password == '' ? '' : `-p\"${config.password}\"`
-    const cmd = `mysql ${u} ${p} ${database} < ${file}`
-    await exec(cmd)
-  }
+  restoreFromFile(database: string, filename: string): Promise<void>
 
-  /** interactive prompt to guide the user to restore an SQL database */
-  restorePrompted(database: string) {
-    type Answers = {
-      sql: string
-      confirm: 'yes' | 'no'
-    }
-    const sqlDir = join(config.rootDir, '.sql')
-    const sqlList = fs.readdirSync(sqlDir).filter((x) => x.endsWith('.sql'))
-    inquirer
-      .prompt([
-        {
-          type: 'list',
-          name: 'sql',
-          message: 'Restore from .sql file?',
-          choices: sqlList,
-        },
-        {
-          type: 'list',
-          name: 'confirm',
-          message: `Confirm overwrite database [${database}]?`,
-          choices: ['yes', 'no'],
-        },
-      ])
-      .then(async (answers: Answers) => {
-        if (answers.confirm === 'no') {
-          console.log('cancelled.')
-          return
-        }
-        await sql.clearDatabase(database)
-        await Query.restoreDatabase(this.type, database, answers.sql)
-      })
-  }
+  /**
+   * interactive prompt to guide the user to restore an SQL database
+   * @param {string} database
+   */
+  restorePrompted(database: string): Promise<void>
 
-  async dump(database: string) {
-    const filename = await input({
-      message: 'Enter filename (without .sql):',
-      default: 'backup',
-    })
-    await Query.dumpDatabase(this.type, database, filename)
-  }
+
+  /**
+   * dumps a database snapshot to a .sql file
+   * @param {database}
+   */
+  dump(database: string): Promise<void>
 }
-
-export const sql = new Sql(config.type)
