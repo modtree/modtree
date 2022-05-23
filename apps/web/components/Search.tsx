@@ -39,7 +39,6 @@ const Search = (props: { setResults: SetState<ModuleCondensed[]> }) => {
           value={display}
           onChange={(e) => handleQuery(e.target.value)}
         />
-        <div className="w-2" />
       </div>
     </div>
   )
