@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { Agent } from 'https'
 import { log } from '../cli'
-import { container } from '../data-source'
 import { nusmodsApi } from '../utils/string'
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
@@ -48,15 +47,11 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
    * @return {Promise<Module[]>}
    */
   async function get(): Promise<Module[]> {
-    const modules = await container(db, async () => {
-      const modules = await BaseRepo.find().catch((err) => {
-        log.warn('Warning: failed to get Modules from database.')
-        console.log(err)
-        return []
-      })
-      return modules
+    const modules = await BaseRepo.find().catch((err) => {
+      log.warn('Warning: failed to get Modules from database.')
+      console.log(err)
+      return []
     })
-    if (!modules) return []
     return modules
   }
 
@@ -94,42 +89,39 @@ export function ModuleRepository(database?: DataSource): ModuleRepository {
     const moduleCodes = new Set(await getCodes())
     const moduleCondesedCodes = await ModuleCondensedRepository(db).getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
+    // begin pull
     let buffer = 0
     const result: Module[] = []
-    await container(db, async () => {
-      const fetchQueue = []
-      const writeQueue = []
-      const test = async (moduleCode: string) => {
-        const res = await client.get(`${moduleCode}.json`)
-        const n: NM = res.data
-        const m = build(n)
-        result.push(m)
-        writeQueue.push(BaseRepo.save(m))
-        return 'ok'
+    const fetchQueue = []
+    const writeQueue = []
+    const test = async (moduleCode: string) => {
+      const res = await client.get(`${moduleCode}.json`)
+      const n: NM = res.data
+      const m = build(n)
+      result.push(m)
+      writeQueue.push(BaseRepo.save(m))
+      return 'ok'
+    }
+    for (let i = 0; i < diff.length; i++) {
+      const moduleCode = diff[i]
+      while (buffer > 100) {
+        await new Promise((resolve) => setTimeout(resolve, 0.1))
       }
-      for (let i = 0; i < diff.length; i++) {
-        const moduleCode = diff[i]
-        while (buffer > 100) {
-          await new Promise((resolve) => setTimeout(resolve, 0.1))
-        }
-        buffer += 1
-        fetchQueue.push(
-          test(moduleCode)
-            .then(() => {
-              buffer -= 1
-            })
-            .catch(() => {
-              buffer -= 1
-              log.red(moduleCode)
-              throw new Error(`failed loading ${moduleCode}`)
-            })
-        )
-      }
-      await Promise.all(fetchQueue)
-      await Promise.all(writeQueue)
-      return result
-    })
-    if (!result) return []
+      buffer += 1
+      fetchQueue.push(
+        test(moduleCode)
+          .then(() => {
+            buffer -= 1
+          })
+          .catch(() => {
+            buffer -= 1
+            log.red(moduleCode)
+            throw new Error(`failed loading ${moduleCode}`)
+          })
+      )
+    }
+    await Promise.all(fetchQueue)
+    await Promise.all(writeQueue)
     return result
   }
 

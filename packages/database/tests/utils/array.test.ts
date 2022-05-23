@@ -1,5 +1,4 @@
-import { ColumnType } from 'typeorm'
-import { quickpop, getModuleLevel, createEmpty } from '../src/utils'
+import { quickpop } from '../../src/utils'
 
 describe('Array.quickpop', () => {
   it('Removes an element in an unordered array', () => {
@@ -59,7 +58,7 @@ describe('Array.quickpop', () => {
     expect(error2.message).toEqual('Out of bounds')
   })
 
-  it ('Throws error when running on an empty array', () => {
+  it ('Throws error when running on an array of undefined', () => {
     let error
     const arr = [undefined, undefined]
     try {
@@ -69,26 +68,5 @@ describe('Array.quickpop', () => {
     }
     expect(error).toBeInstanceOf(Error)
     expect(error.message).toEqual('Quickpop somehow popped an undefined element')
-  })
-})
-
-describe('String.getModuleLevel', () => {
-  it('Correctly extracts the 4-digit code', () => {
-    const input = ['MA2001', 'CS2040S', 'DAO1704X', 'DMX1501CT']
-    const output = [2001, 2040, 1704, 1501]
-    const mapped = input.map((moduleCode: string) => getModuleLevel(moduleCode))
-    expect(mapped).toEqual(output)
-  })
-})
-
-describe('Object.createEmpty', () => {
-  it ('Returns 0 for number', () => {
-    expect(createEmpty(Number)).toEqual(0)
-  })
-  it ('Returns empty string for everything else', () => {
-    const tests: ColumnType[] = [String, 'longblob', 'text', 'json', 'mediumblob']
-    tests.forEach(one => {
-      expect(createEmpty(one)).toEqual('')
-    })
   })
 })

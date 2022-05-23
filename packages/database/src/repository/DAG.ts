@@ -1,4 +1,3 @@
-import { container } from '../data-source'
 import { DataSource, In, Repository, SelectQueryBuilder } from 'typeorm'
 import { Init, DAGProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
@@ -55,68 +54,52 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    * @return {Promise<void>}
    */
   async function initialize(props: Init.DAGProps): Promise<void> {
-    await container(db, async () => {
-      /**
-       * retrieves the degree and user with relations, without blocking each
-       * other.
-       */
-      async function getUserAndDegree(): Promise<[User, Degree]> {
-        const getUser = UserRepository(db).findOne({
-          where: {
-            id: props.userId,
-          },
-          relations: {
-            modulesDoing: true,
-            modulesDone: true,
-          },
-        })
-        const getDegree = DegreeRepository(db).findOne({
-          where: {
-            id: props.degreeId,
-          },
-          relations: { modules: true },
-        })
-        // return [user, degree]
-        return await Promise.all([getUser, getDegree])
-      }
+    /**
+     * retrieves the degree and user with relations, without blocking each
+     * other.
+     */
+    async function getUserAndDegree(): Promise<[User, Degree]> {
+      const getUser = UserRepository(db).findOneById(props.userId)
+      const getDegree = DegreeRepository(db).findOneById(props.degreeId)
+      return await Promise.all([getUser, getDegree])
+    }
 
-      /**
-       * gets lists of modules placed and modules hidden
-       * @return {Promise<Array<Module[]>>}
-       */
-      async function getModules(): Promise<Array<Module[]>> {
-        if (props.pullAll) {
-          /* if don't pass in anything, then by default add ALL of
-           * - user.modulesDoing
-           * - user.modulesDone
-           * - degree.modules
-           */
-          const placed = [...degree.modules]
-          placed.push(...user.modulesDone)
-          placed.push(...user.modulesDoing)
-          return [Array.from(new Set(placed)), []]
-        }
-        // if passed in, then find the modules
-        const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
-        return await Promise.all(
-          queryList.map((list) =>
-            ModuleRepository(db).findBy({
-              moduleCode: In(list),
-            })
-          )
+    /**
+     * gets lists of modules placed and modules hidden
+     * @return {Promise<Array<Module[]>>}
+     */
+    async function getModules(): Promise<Array<Module[]>> {
+      if (props.pullAll) {
+        /* if don't pass in anything, then by default add ALL of
+         * - user.modulesDoing
+         * - user.modulesDone
+         * - degree.modules
+         */
+        const placed = [...degree.modules]
+        placed.push(...user.modulesDone)
+        placed.push(...user.modulesDoing)
+        return [Array.from(new Set(placed)), []]
+      }
+      // if passed in, then find the modules
+      const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
+      return await Promise.all(
+        queryList.map((list) =>
+          ModuleRepository(db).findBy({
+            moduleCode: In(list),
+          })
         )
-      }
+      )
+    }
 
-      const [user, degree] = await getUserAndDegree()
-      const [modulesPlaced, modulesHidden] = await getModules()
-      const dag = build({
-        user,
-        degree,
-        modulesPlaced,
-        modulesHidden,
-      })
-      await BaseRepo.save(dag)
+    const [user, degree] = await getUserAndDegree()
+    const [modulesPlaced, modulesHidden] = await getModules()
+    const dag = build({
+      user,
+      degree,
+      modulesPlaced,
+      modulesHidden,
     })
+    await BaseRepo.save(dag)
   }
 
   /**
@@ -126,67 +109,56 @@ export function DAGRepository(database?: DataSource): DAGRepository {
    * @return {Promise<void>}
    */
   async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
-    await container(db, async () => {
-      /**
-       * retrieve a DAG from database given its id
-       */
-      const retrieved = await BaseRepo.findOne({
-        where: {
-          id: dag.id,
-        },
-        relations: {
-          user: true,
-          degree: true,
-          modulesPlaced: true,
-          modulesHidden: true,
-        },
-      })
-      /**
-       * find the index of the given moduleCode to toggle
-       */
-      const index: Record<ModuleState, number> = {
-        placed: retrieved.modulesPlaced
-          .map((m) => m.moduleCode)
-          .indexOf(moduleCode),
-        hidden: retrieved.modulesHidden
-          .map((m) => m.moduleCode)
-          .indexOf(moduleCode),
-        invalid: -1,
-      }
-      const state: ModuleState =
-        index.placed !== -1
-          ? 'placed'
-          : index.hidden !== -1
-            ? 'hidden'
-            : 'invalid'
-
-      /**
-       * toggles the modules between placed and hidden
-       * @param {Module[]} src
-       * @param {Module[]} dest
-       */
-      function toggle(src: Module[], dest: Module[]) {
-        dest.push(quickpop(src, index[state]))
-      }
-
-      /**
-       * toggles the modules between placed and hidden
-       */
-      if (state === 'placed') {
-        toggle(retrieved.modulesPlaced, retrieved.modulesHidden)
-      } else if (state === 'hidden') {
-        toggle(retrieved.modulesHidden, retrieved.modulesPlaced)
-      } else {
-        // throw error if module not found
-        throw new Error('Module not found in DAG')
-      }
-
-      // update dag so that devs don't need a second query
-      dag.modulesPlaced = retrieved.modulesPlaced
-      dag.modulesHidden = retrieved.modulesHidden
-
-      return await BaseRepo.save(retrieved)
+    /**
+     * retrieve a DAG from database given its id
+     */
+    await DAGRepository(db).loadRelations(dag, {
+      user: true,
+      degree: true,
+      modulesPlaced: true,
+      modulesHidden: true,
     })
+    /**
+     * find the index of the given moduleCode to toggle
+     */
+    const index: Record<ModuleState, number> = {
+      placed: dag.modulesPlaced
+        .map((m) => m.moduleCode)
+        .indexOf(moduleCode),
+      hidden: dag.modulesHidden
+        .map((m) => m.moduleCode)
+        .indexOf(moduleCode),
+      invalid: -1,
+    }
+    const state: ModuleState =
+      index.placed !== -1
+        ? 'placed'
+        : index.hidden !== -1
+          ? 'hidden'
+          : 'invalid'
+
+    /**
+     * toggles the modules between placed and hidden
+     * @param {Module[]} src
+     * @param {Module[]} dest
+     */
+    function toggle(src: Module[], dest: Module[]) {
+      dest.push(quickpop(src, index[state]))
+    }
+
+    /**
+     * toggles the modules between placed and hidden
+     */
+    if (state === 'placed') {
+      toggle(dag.modulesPlaced, dag.modulesHidden)
+    } else if (state === 'hidden') {
+      toggle(dag.modulesHidden, dag.modulesPlaced)
+    } else {
+      // throw error if module not found
+      throw new Error('Module not found in DAG')
+    }
+
+    await BaseRepo.save(dag)
   }
 
   /**

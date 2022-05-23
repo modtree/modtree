@@ -1,4 +1,3 @@
-import { container } from '../data-source'
 import { DataSource, In, Repository } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
@@ -8,6 +7,7 @@ import {
   LoadRelations,
   useBuild,
   useLoadRelations,
+  getRelationNames,
 } from './base'
 import { copy } from '../utils/object'
 
@@ -45,12 +45,10 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
    */
   async function initialize(props: Init.DegreeProps): Promise<void> {
     const { moduleCodes, title } = props
-    await container(db, async () => {
-      // find modules required, to create many-to-many relation
-      const modules = await ModuleRepository(db).findByCodes(moduleCodes)
-      const degree = build({ modules, title })
-      await BaseRepo.save(degree)
-    })
+    // find modules required, to create many-to-many relation
+    const modules = await ModuleRepository(db).findByCodes(moduleCodes)
+    const degree = build({ modules, title })
+    await BaseRepo.save(degree)
   }
 
   /**
@@ -62,25 +60,19 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
     degree: Degree,
     moduleCodes: string[]
   ): Promise<void> {
-    await container(db, async () => {
-      // find modules to add
-      const newModules = await ModuleRepository(db).findBy({
-        moduleCode: In(moduleCodes),
-      })
-      // find modules part of current degree
-      const updatedDegree = await BaseRepo.findOne({
-        where: {
-          id: degree.id,
-        },
-        relations: { modules: true },
-      }).then(async (degree) => {
-        degree.modules.push(...newModules)
-        await BaseRepo.save(degree)
-        return degree
-      })
-      // update the passed object
-      copy(updatedDegree, degree)
+    // find modules to add
+    const newModules = await ModuleRepository(db).findBy({
+      moduleCode: In(moduleCodes),
     })
+    // find modules part of current degree
+    await DegreeRepository(db).loadRelations(degree, {
+      modules: true,
+    })
+    // update the degree
+    degree.modules.push(...newModules)
+    const updatedDegree = await BaseRepo.save(degree)
+    // update the passed object
+    copy(updatedDegree, degree)
   }
 
   /**
@@ -94,11 +86,28 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
       .getOneOrFail()
   }
 
+  /**
+   * Returns a Degree with all relations loaded
+   * @param {string} id
+   * @return {Promise<Degree>}
+   */
+  async function findOneById(id: string): Promise<Degree> {
+    // get user by id
+    const degree = await BaseRepo.createQueryBuilder('degree')
+      .where('degree.id = :id', { id })
+      .getOneOrFail()
+    // get relation names
+    const relationNames = getRelationNames(db, Degree)
+    await DegreeRepository(db).loadRelations(degree, relationNames)
+    return degree
+  }
+
   return BaseRepo.extend({
     build,
     initialize,
     insertModules,
     loadRelations,
     findOneByTitle,
+    findOneById,
   })
 }
