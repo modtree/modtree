@@ -11,12 +11,16 @@ const dumpCmdMap: Partial<Record<DatabaseType, string>> = {
   postgres: 'pg_dump',
 }
 
+/** base class of SQL interface */
 export class BaseSql implements BaseSqlInterface {
   type: DatabaseType
   coreCmd: string
   dumpCmd: string
 
-  /** instantiate a new Sql class */
+  /**
+   * instantiate a new Sql class
+   * @param {DatabaseType} type
+   */
   constructor(type: DatabaseType) {
     this.type = type
     this.coreCmd = coreCmdMap[type]
@@ -25,6 +29,8 @@ export class BaseSql implements BaseSqlInterface {
 
   /**
    * removes a single table from a mysql database
+   * @param {string} database
+   * @param {string} table
    */
   async dropTable(database: string, table: string) {
     console.log('params', database, table)
@@ -33,6 +39,8 @@ export class BaseSql implements BaseSqlInterface {
 
   /**
    * removes a list of tables from a mysql database
+   * @param {string} database
+   * @param {string[]} tables
    */
   async dropTables(database: string, tables: string[]) {
     console.log('params', database, tables)
@@ -41,6 +49,7 @@ export class BaseSql implements BaseSqlInterface {
 
   /**
    * drops the database
+   * @param {string} database
    */
   async dropDatabase(database: string) {
     console.log('params', database)
@@ -68,12 +77,19 @@ export class BaseSql implements BaseSqlInterface {
     console.log('Not implemented yet')
   }
 
-  /** interactive prompt to guide the user to restore an SQL database */
+  /**
+   * interactive prompt to guide the user to restore an SQL database
+   * @param {string} database
+   */
   restorePrompted(database: string) {
     console.log('params', database)
     console.log('Not implemented yet')
   }
 
+  /**
+   * dump a database snapshot to an .sql file
+   * @param {string} database
+   */
   async dump(database: string) {
     console.log('params', database)
     console.log('Not implemented yet')

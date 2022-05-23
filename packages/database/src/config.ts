@@ -47,6 +47,7 @@ function getDatabasePort(): number {
 /**
  * prints the blue box before each run
  * @param {string} database
+ * @param {string} type
  */
 function boxLog(database: string, type: string) {
   const output = [
