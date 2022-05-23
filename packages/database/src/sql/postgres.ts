@@ -23,7 +23,7 @@ export class Postgresql extends BaseSql {
   }
 
   /**
-   * removes a single table from a mysql database
+   * removes a single table from a postgres database
    * @param {string} database
    * @param {string} table
    */
@@ -35,7 +35,7 @@ export class Postgresql extends BaseSql {
   }
 
   /**
-   * removes a list of tables from a mysql database
+   * removes a list of tables from a postgres database
    * @param {string} database
    * @param {string[]} tables
    */
