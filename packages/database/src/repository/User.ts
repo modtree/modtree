@@ -108,23 +108,21 @@ export function UserRepository(database?: DataSource): UserRepository {
    * @return {Promise<Module[]>}
    */
   async function eligibleModules(user: User): Promise<Module[] | void> {
-    return await container(db, async () => {
-      // 1. load modulesDone relations
-      await UserRepository(db).loadRelations(user, {
-        modulesDone: true,
-      })
-      // 2. get array of module codes of post-reqs (fulfillRequirements)
-      const postReqCodesSet = new Set<string>()
-      user.modulesDone.forEach((module: Module) => {
-        module.fulfillRequirements.forEach((moduleCode: string) => {
-          postReqCodesSet.add(moduleCode)
-        })
-      })
-      const postReqCodesArr = Array.from(postReqCodesSet)
-      // 3. get modules
-      const postReqArr = await ModuleRepository(db).findByCodes(postReqCodesArr)
-      return postReqArr
+    // 1. load modulesDone relations
+    await UserRepository(db).loadRelations(user, {
+      modulesDone: true,
     })
+    // 2. get array of module codes of post-reqs (fulfillRequirements)
+    const postReqCodesSet = new Set<string>()
+    user.modulesDone.forEach((module: Module) => {
+      module.fulfillRequirements.forEach((moduleCode: string) => {
+        postReqCodesSet.add(moduleCode)
+      })
+    })
+    const postReqCodesArr = Array.from(postReqCodesSet)
+    // 3. get modules
+    const postReqArr = await ModuleRepository(db).findByCodes(postReqCodesArr)
+    return postReqArr
   }
 
   /**
