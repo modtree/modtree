@@ -56,23 +56,6 @@ describe('Degree.insertModules', () => {
     await DegreeRepository(db).insertModules(degree, newModuleCodes)
   })
 
-  it('Does not create a duplicate degree', async () => {
-    const res = await endpoint(db, () =>
-      container(db, () =>
-        DegreeRepository(db).find({
-          where: {
-            title: props.title,
-          },
-          relations: { modules: true },
-        })
-      )
-    )
-    expect(res).toBeDefined()
-    if (!res) return
-    // Inserting modules to the degree should not create a new Degree
-    expect(res.length).toEqual(1)
-  })
-
   it('Correctly saves newly inserted modules', async () => {
     // match retrieved module codes to
     // init props' module codes + added module codes
