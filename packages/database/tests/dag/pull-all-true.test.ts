@@ -8,6 +8,7 @@ import {
 } from '../../src/repository'
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
+import { setupDAG } from './base'
 
 const dbName = 'test_dag_pull_all_true'
 const db = getSource(dbName)
@@ -25,34 +26,12 @@ jest.setTimeout(5000)
 let degree: Degree
 let user: User
 let dag: DAG
-let degreeProps: Init.DegreeProps
-let userProps: Init.UserProps
 
-beforeAll(() => setup(dbName))
-describe('setup DAG.initialize dependencies', () => {
-  it('Saves a degree', async () => {
-    degreeProps = init.degree1
-    await container(db, () => DegreeRepository(db).initialize(degreeProps))
-    const res = await container(db, () =>
-      DegreeRepository(db).findOneByTitle(degreeProps.title)
-    )
-    expect(res).toBeDefined()
-    if (!res) return
-    degree = res
-  })
-
-  it('Saves a user', async () => {
-    userProps = init.user1
-    await container(db, async () => {
-      await UserRepository(db).initialize(userProps)
-    })
-    const res = await container(db, () =>
-      UserRepository(db).findOneByUsername(userProps.username)
-    )
-    expect(res).toBeDefined()
-    if (!res) return
-    user = res
-  })
+beforeAll(async () => {
+  await setup(dbName)
+  const res = await setupDAG(db)
+  if (!res) throw new Error('Unable to setup DAG test.')
+  ;[user, degree] = res
 })
 
 describe('DAG.initialize', () => {
