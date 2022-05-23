@@ -3,20 +3,20 @@ import React, { createContext, useState } from 'react'
 import { UseState } from 'types'
 
 type UserContextProps = {
-  selectedState: UseState<ModuleCondensed[]>
-  codesState: UseState<Set<string>>
+  moduleCondensedState: UseState<ModuleCondensed[]>
+  moduleCodeState: UseState<Set<string>>
 }
 
 const ModuleContext = createContext<UserContextProps>({
-  selectedState: [[], ()=> true],
-  codesState: [new Set(), () => true],
+  moduleCondensedState: [[], () => true],
+  moduleCodeState: [new Set(), () => true],
 })
 
 const ModuleProvider = (props: React.PropsWithChildren<{}>) => {
-  const selectedState = useState<ModuleCondensed[]>([])
-  const codesState = useState(new Set<string>())
+  const moduleCondensedState = useState<ModuleCondensed[]>([])
+  const moduleCodeState = useState(new Set<string>())
   return (
-    <ModuleContext.Provider value={{ selectedState, codesState }} {...props} />
+    <ModuleContext.Provider value={{ moduleCondensedState, moduleCodeState }} {...props} />
   )
 }
 

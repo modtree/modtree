@@ -20,9 +20,9 @@ export function quickpop<T>(arr: T[], index: number): T {
 }
 
 export const SelectedDisplay = () => {
-  const { selectedState, codesState } = useContext(ModuleContext)
-  const [selected, setSelected] = selectedState
-  const [codes, setCodes] = codesState
+  const { moduleCondensedState, moduleCodeState } = useContext(ModuleContext)
+  const [selected, setSelected] = moduleCondensedState
+  const [codes, setCodes] = moduleCodeState
   /**
    * one selected entry
    */
@@ -52,7 +52,7 @@ export const SelectedDisplay = () => {
    */
   return (
     <div className="flex-col">
-      {selectedState[0].map((m, index) => (
+      {moduleCondensedState[0].map((m, index) => (
         <SelectedEntry module={m} key={index} />
       ))}
     </div>

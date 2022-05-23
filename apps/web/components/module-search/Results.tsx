@@ -8,9 +8,9 @@ const Outline = () => <IoEllipseOutline color={colors.gray[400]} />
 const Filled = () => <IoEllipse color={colors.emerald[500]} />
 
 export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
-  const { selectedState, codesState } = useContext(ModuleContext)
-  const [selected, setSelected] = selectedState
-  const [codes, setCodes] = codesState
+  const { moduleCondensedState, moduleCodeState } = useContext(ModuleContext)
+  const [selected, setSelected] = moduleCondensedState
+  const [codes, setCodes] = moduleCodeState
 
   /**
    * checkbox
