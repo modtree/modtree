@@ -18,6 +18,7 @@ interface UserRepository extends Repository<User> {
   canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
+  eligibleModules(user: User): Promise<Module[] | void>
 }
 
 /**
@@ -62,9 +63,9 @@ export function UserRepository(database?: DataSource): UserRepository {
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
-   * @param{User} user
-   * @param{string} moduleCode
-   * @return{Promise<boolean>}
+   * @param {User} user
+   * @param {string} moduleCode
+   * @return {Promise<boolean>}
    */
   async function canTakeModule(
     user: User,
@@ -100,6 +101,31 @@ export function UserRepository(database?: DataSource): UserRepository {
   }
 
   /**
+   * List mods a user can take, based on what the user has completed.
+   *
+   * @param {User} user
+   * @param {boolean} includeModsWithoutPrereqs
+   * @return {Promise<Module[]>}
+   */
+  async function eligibleModules(user: User): Promise<Module[] | void> {
+    // 1. load modulesDone relations
+    await UserRepository(db).loadRelations(user, {
+      modulesDone: true,
+    })
+    // 2. get array of module codes of post-reqs (fulfillRequirements)
+    const postReqCodesSet = new Set<string>()
+    user.modulesDone.forEach((module: Module) => {
+      module.fulfillRequirements.forEach((moduleCode: string) => {
+        postReqCodesSet.add(moduleCode)
+      })
+    })
+    const postReqCodesArr = Array.from(postReqCodesSet)
+    // 3. get modules
+    const postReqArr = await ModuleRepository(db).findByCodes(postReqCodesArr)
+    return postReqArr
+  }
+
+  /**
    * @param {string} username
    * @return {Promise<User>}
    */
@@ -115,5 +141,6 @@ export function UserRepository(database?: DataSource): UserRepository {
     initialize,
     loadRelations,
     findOneByUsername,
+    eligibleModules,
   })
 }
