@@ -14,11 +14,8 @@ export const connectionConfig = (database: string) => ({
 
 export interface BaseSqlInterface {
   type: DatabaseType
-  dumpCmd: string
   coreCmd: string
-
-  /** instantiate a new Sql class */
-  constructor(type: DatabaseType) : void
+  dumpCmd: string
 
   /**
    * removes a single table from a mysql database
