@@ -24,6 +24,7 @@ export class Postgresql extends BaseSql {
   /** instantiate a new Sql class */
   constructor() {
     super('postgres')
+    console.log(this.dumpCmd)
   }
 
   /**
@@ -127,8 +128,7 @@ export class Postgresql extends BaseSql {
     const file = join(config.rootDir, '.sql', withExt)
     const u = config.username ? `-u ${config.username}` : ''
     const p = config.password ? `-p\"${config.password}\"` : ''
-    const cmd = `${this.dumpCmd[this.type]} ${u} ${p} ${database} > ${file}`
-    log.yellow(cmd)
-    // await exec(cmd)
+    const cmd = `${this.dumpCmd} ${u} ${p} ${database} > ${file}`
+    await exec(cmd)
   }
 }
