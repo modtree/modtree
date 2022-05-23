@@ -16,17 +16,18 @@ const dumpCmdMap: Partial<Record<DatabaseType, string>> = {
   postgres: 'pg_dump',
 }
 
-export const promptDump = input({
-  message: 'Enter filename (without .sql):',
-  default: 'backup',
-})
+export const promptDump = () =>
+  input({
+    message: 'Enter filename (without .sql):',
+    default: 'backup',
+  })
 
 type Answers = {
   sql: string
   confirm: 'yes' | 'no'
 }
 
-export const promptRestore = (database: string): Promise<Answers> =>
+export const promptRestore = async (database: string): Promise<Answers> =>
   inquirer.prompt([
     {
       type: 'list',

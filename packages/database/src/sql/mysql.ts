@@ -3,6 +3,7 @@ import { createConnection } from 'mysql2/promise'
 import { join } from 'path'
 import { exec } from '../shell'
 import { BaseSql, promptDump, promptRestore } from './base'
+import { log } from '../cli'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -81,7 +82,7 @@ export class Mysql extends BaseSql {
     const file = join(config.rootDir, '.sql', filename)
     const u = config.username ? `-u ${config.username}` : ''
     const p = config.password ? `-p\"${config.password}\"` : ''
-    const cmd = `mysql ${u} ${p} ${database} < ${file}`
+    const cmd = `${this.coreCmd} ${u} ${p} ${database} < ${file}`
     await exec(cmd)
   }
 
@@ -101,11 +102,12 @@ export class Mysql extends BaseSql {
 
   async dump(database: string) {
     const filename = await promptDump()
+    log.yellow(filename)
     const withExt = filename.concat('.sql')
     const file = join(config.rootDir, '.sql', withExt)
     const u = config.username ? `-u ${config.username}` : ''
     const p = config.password ? `-p\"${config.password}\"` : ''
-    const cmd = `${this.dumpCmd[this.type]} ${u} ${p} ${database} > ${file}`
+    const cmd = `${this.dumpCmd} ${u} ${p} ${database} > ${file}`
     await exec(cmd)
   }
 }
