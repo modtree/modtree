@@ -8,6 +8,8 @@ import { BaseSql } from './base'
 import { Client } from 'pg'
 import { log } from '../cli'
 
+const adminDb = 'modtree_admin'
+
 const noDatabaseConfig = {
   host: config.host,
   user: config.username,
@@ -66,7 +68,16 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    await exec(`dropdb ${database}; createdb ${database}`)
+    // const psql = new Client(connectionConfig(adminDb))
+    // await psql.connect()
+    // console.log("CLEARING DATABASE...")
+    // await psql.query(`DROP DATABASE \"${database}\";`)
+    // await psql.query(`CREATE DATABASE \"${database}\";`).then(() => {
+    //   log.green(`created database ${database}`)
+    // }).catch(() => {log.red(`failed to create database ${database}`)})
+    // await psql.end()
+    await exec(`dropdb ${database}`)
+    await exec(`createdb ${database}`)
   }
 
   /**
@@ -75,7 +86,6 @@ export class Postgresql extends BaseSql {
    * @param {string} filename
    */
   async restoreFromFile(database: string, filename: string) {
-    console.log('GOT HERE')
     await this.clearDatabase(database)
     const file = join(config.rootDir, '.sql', filename)
     const u = config.username ? `-u ${config.username}` : ''

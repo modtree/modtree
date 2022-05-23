@@ -1,3 +1,4 @@
+import { log } from '../src/cli'
 import { Repository } from 'typeorm'
 import { config } from '../src/config'
 import { sql } from '../src/sql'
@@ -7,7 +8,9 @@ import { sql } from '../src/sql'
  * @param {string} database
  */
 export async function setup(database: string) {
+  log.yellow('SETUP: before clear database')
   await sql.clearDatabase(database)
+  log.yellow('SETUP: after clear database')
   await sql.restoreFromFile(database, config.restoreSource)
 }
 

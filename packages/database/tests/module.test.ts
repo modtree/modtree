@@ -1,14 +1,18 @@
+import { log } from '../src/cli'
 import { container, endpoint, getSource } from '../src/data-source'
 import { Module, ModuleCondensed } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, importChecks, teardown } from './environment'
-import { config, db as DefaultSource } from '../src/config'
+
+beforeAll(async () => {
+  console.log('got here')
+  await setup(dbName)
+})
+
+afterAll(() => teardown(dbName))
 
 const dbName = 'test_module'
 const db = getSource(dbName)
-
-beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [Module, ModuleCondensed],
@@ -18,6 +22,7 @@ importChecks({
 const lowerBound = 6000
 
 describe('ModuleRepository.findByFaculty', () => {
+  log.green('first test')
   it('Valid faculty name', async () => {
     const res = await endpoint(db, () =>
       container(db, () => ModuleRepository(db).findByFaculty('Computing'))
@@ -77,20 +82,6 @@ test('get all modules in database', async () => {
     expect(module).toBeInstanceOf(Module)
   })
   expect(res.length).toBeGreaterThan(lowerBound)
-})
-
-test('fallback to default source', async () => {
-  await setup(config.database)
-  const res = await endpoint(DefaultSource, () =>
-    container(DefaultSource, () => ModuleRepository().find())
-  )
-  expect(res).toBeInstanceOf(Array)
-  if (!res) return
-  res.forEach((module) => {
-    expect(module).toBeInstanceOf(Module)
-  })
-  expect(res.length).toBeGreaterThan(lowerBound)
-  await teardown(config.database)
 })
 
 test('get all module codes in database', async () => {
