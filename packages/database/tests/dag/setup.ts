@@ -6,6 +6,13 @@ import { container } from '../../src/data-source'
 
 type Response = [User, Degree]
 
+/**
+ * Performs the setup to initialize a DAG
+ * init user, init degree
+ *
+ * @param {DataSource} db
+ * @return {Promise<Response | void>}
+ */
 export async function setupDAG(db: DataSource): Promise<Response | void> {
   const degreeProps = init.degree1
   const userProps = init.user1

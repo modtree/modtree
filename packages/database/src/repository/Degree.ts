@@ -7,6 +7,7 @@ import {
   LoadRelations,
   useBuild,
   useLoadRelations,
+  getRelationNames,
 } from './base'
 import { copy } from '../utils/object'
 
@@ -85,11 +86,28 @@ export function DegreeRepository(database?: DataSource): DegreeRepository {
       .getOneOrFail()
   }
 
+  /**
+   * Returns a Degree with all relations loaded
+   * @param {string} id
+   * @return {Promise<Degree>}
+   */
+  async function findOneById(id: string): Promise<Degree> {
+    // get user by id
+    const degree = await BaseRepo.createQueryBuilder('degree')
+      .where('degree.id = :id', { id })
+      .getOneOrFail()
+    // get relation names
+    const relationNames = getRelationNames(db, Degree)
+    await DegreeRepository(db).loadRelations(degree, relationNames)
+    return degree
+  }
+
   return BaseRepo.extend({
     build,
     initialize,
     insertModules,
     loadRelations,
     findOneByTitle,
+    findOneById,
   })
 }

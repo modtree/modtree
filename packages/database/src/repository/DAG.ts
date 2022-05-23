@@ -59,22 +59,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
      * other.
      */
     async function getUserAndDegree(): Promise<[User, Degree]> {
-      const getUser = UserRepository(db).findOne({
-        where: {
-          id: props.userId,
-        },
-        relations: {
-          modulesDoing: true,
-          modulesDone: true,
-        },
-      })
-      const getDegree = DegreeRepository(db).findOne({
-        where: {
-          id: props.degreeId,
-        },
-        relations: { modules: true },
-      })
-      // return [user, degree]
+      const getUser = UserRepository(db).findOneById(props.userId)
+      const getDegree = DegreeRepository(db).findOneById(props.degreeId)
       return await Promise.all([getUser, getDegree])
     }
 
