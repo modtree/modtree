@@ -1,5 +1,10 @@
 import { DatabaseType } from 'typeorm'
 import { BaseSqlInterface } from './types'
+import inquirer from 'inquirer'
+import { join } from 'path'
+import fs from 'fs'
+import { config } from '../config'
+import input from '@inquirer/input'
 
 const coreCmdMap: Partial<Record<DatabaseType, string>> = {
   mysql: 'mysql',
@@ -10,6 +15,34 @@ const dumpCmdMap: Partial<Record<DatabaseType, string>> = {
   mysql: 'mysqldump',
   postgres: 'pg_dump',
 }
+
+export const promptDump = input({
+  message: 'Enter filename (without .sql):',
+  default: 'backup',
+})
+
+type Answers = {
+  sql: string
+  confirm: 'yes' | 'no'
+}
+
+export const promptRestore = (database: string): Promise<Answers> =>
+  inquirer.prompt([
+    {
+      type: 'list',
+      name: 'sql',
+      message: 'Restore from .sql file?',
+      choices: fs
+        .readdirSync(join(config.rootDir, '.sql'))
+        .filter((x) => x.endsWith('.sql')),
+    },
+    {
+      type: 'list',
+      name: 'confirm',
+      message: `Confirm overwrite database [${database}]?`,
+      choices: ['yes', 'no'],
+    },
+  ])
 
 /** base class of SQL interface */
 export class BaseSql implements BaseSqlInterface {
