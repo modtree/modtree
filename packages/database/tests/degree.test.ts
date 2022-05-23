@@ -33,12 +33,7 @@ describe('Degree', () => {
       // retrieve that degree again
       const possiblyNull: Degree | void = await endpoint(db, () =>
         container(db, () =>
-          DegreeRepository(db).findOne({
-            where: {
-              title: props.title,
-            },
-            relations: { modules: true },
-          })
+          DegreeRepository(db).findOneByTitle(props.title)
         )
       )
       // expect degree to be not null, not undefined
