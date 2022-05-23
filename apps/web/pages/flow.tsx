@@ -27,7 +27,7 @@ function Flow({
   )
 }
 
-export default function FlowPage() {
+export default function Modtree() {
   const defaultNodes: Node[] = [
     {
       id: '1',
@@ -35,6 +35,8 @@ export default function FlowPage() {
       data: { label: 'Node 1' },
       position: { x: 250, y: 5 },
       className: 'light',
+      draggable: true,
+      selectable: true
     },
     {
       id: '2',
@@ -61,9 +63,8 @@ export default function FlowPage() {
     { id: 'e1-3', source: '1', target: '3' },
   ]
   return (
-    <div style={{ height: 1000, width: 1000 }}>
+    <div className='h-screen w-screen bg-green-100'>
       <Flow nodes={defaultNodes} edges={defaultEdges} />
-      <div className="text-red-300">Hello</div>
     </div>
   )
 }
