@@ -1,5 +1,5 @@
 import { container, endpoint, getSource } from '../src/data-source'
-import { remove } from '../src/sql'
+import { sql } from '../src/sql'
 import { Module } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, teardown, importChecks } from './environment'
@@ -17,10 +17,12 @@ afterAll(() => teardown(dbName))
 
 jest.setTimeout(60000)
 test('pull all modules from NUSMods', async () => {
-  await remove.tables(dbName, [
-    'degree_modules_module',
-    'user_modules_done_module',
+  await sql.dropTables(dbName, [
+    'dag_modules_placed_module',
+    'dag_modules_hidden_module',
     'user_modules_doing_module',
+    'user_modules_done_module',
+    'degree_modules_module',
     'module',
   ])
   const res = await endpoint(db, () =>

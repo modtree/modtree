@@ -2,13 +2,13 @@ import { container, endpoint, getSource } from '../src/data-source'
 import { Module, ModuleCondensed } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, importChecks, teardown } from './environment'
-import { config, db as DefaultSource } from '../src/config'
+
+beforeAll(() => setup(dbName))
+
+afterAll(() => teardown(dbName))
 
 const dbName = 'test_module'
 const db = getSource(dbName)
-
-beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [Module, ModuleCondensed],
@@ -77,20 +77,6 @@ test('get all modules in database', async () => {
     expect(module).toBeInstanceOf(Module)
   })
   expect(res.length).toBeGreaterThan(lowerBound)
-})
-
-test('fallback to default source', async () => {
-  await setup(config.database)
-  const res = await endpoint(DefaultSource, () =>
-    container(DefaultSource, () => ModuleRepository().find())
-  )
-  expect(res).toBeInstanceOf(Array)
-  if (!res) return
-  res.forEach((module) => {
-    expect(module).toBeInstanceOf(Module)
-  })
-  expect(res.length).toBeGreaterThan(lowerBound)
-  await teardown(config.database)
 })
 
 test('get all module codes in database', async () => {

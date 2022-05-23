@@ -1,4 +1,4 @@
-import { remove } from '../../../sql/remove'
+import { sql } from '../../../sql'
 import { config } from '../../../config'
 
-remove.tables(config.database, ['moduleCondensed'])
+sql.dropTables(config.database, ['moduleCondensed'])

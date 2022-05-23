@@ -1,3 +1,4 @@
-import { dump } from '../../sql/dump'
+import { sql } from '../../sql'
+import { config } from '../../config'
 
-dump()
+sql.dump(config.database)

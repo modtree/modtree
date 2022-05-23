@@ -12,9 +12,9 @@ import { config } from './config'
 export function getSource(database: string): DataSource {
   return new DataSource({
     database,
-    type: 'mysql',
+    type: config.type,
     host: config.host,
-    port: 3306,
+    port: config.port,
     username: config.username,
     password: config.password,
     synchronize: true,

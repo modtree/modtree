@@ -1,44 +1,101 @@
 import { config as dotenvConfig } from 'dotenv'
 import { resolve } from 'path'
-import { DataSource } from 'typeorm'
+import { DatabaseType, DataSource } from 'typeorm'
 import { box } from './cli'
 
-const env = process.env.NODE_ENV
-const suffix = env ? `.${env}` : ''
-const envFile = `.env${suffix}`
 const rootDir = process.cwd()
-const envPath = resolve(rootDir, envFile)
-dotenvConfig({ path: envPath })
+const env = process.env.NODE_ENV
+const envFile = `.env${env ? `.${env}` : ''}`
 
-// show which env file was loaded
-// which database is being used
-const output = [
-  `Env File: ${envFile}`,
-  `Database: ${process.env.MYSQL_ACTIVE_DATABASE}`,
-]
-box.blue(output.join('\n'))
+// read from the correct .env file based on NODE_ENV
+dotenvConfig({ path: resolve(rootDir, envFile) })
 
-export const config = {
-  rootDir,
-  password: process.env.MYSQL_PASSWORD,
-  username: process.env.MYSQL_USERNAME,
-  host: process.env.MYSQL_HOST,
-  database: process.env.MYSQL_ACTIVE_DATABASE,
-  restoreSource: process.env.MYSQL_RESTORE_SOURCE,
-  server_ca: process.env.MYSQL_SERVER_CA,
-  client_cert: process.env.MYSQL_CLIENT_CERT,
-  client_key: process.env.MYSQL_CLIENT_KEY,
-  entities: ['src/entity/*.ts'],
-  migrations: ['src/migrations/**/*.ts'],
+type SupportedDatabases = Extract<DatabaseType, 'mysql' | 'postgres'>
+type DataSourceOptions = {
+  type: SupportedDatabases
+  rootDir: string
+  restoreSource: string
+  port: number
+  database: string
+  username: string
+  password: string
+  host: string
+  migrations: string[]
+  entities: string[]
 }
 
+/**
+ * gets project database type from .env
+ * @param {string} env
+ * @return {DatabaseType}
+ */
+function getDatabaseType(): SupportedDatabases {
+  const env = process.env.DATABASE_TYPE
+  if (env === 'postgres') return env
+  return 'mysql'
+}
+
+/**
+ * @return {string} the default port of each database
+ */
+function getDatabasePort(): number {
+  const env = process.env.DATABASE_TYPE
+  if (env === 'postgres') return 5432
+  return 3306
+}
+
+/**
+ * prints the blue box before each run
+ * @param {string} database
+ * @param {string} type
+ */
+function boxLog(database: string, type: string) {
+  const output = [
+    `Env File: ${envFile}`,
+    `Database: ${database}`,
+    `Engine:   ${type}`,
+  ]
+  box.blue(output.join('\n'))
+}
+
+/**
+ * generate a config based on the database type
+ * @param {SupportedDatabases} type
+ * @return {DataSourceOptions}
+ */
+function getConfig(type: SupportedDatabases): DataSourceOptions {
+  const key = (e: string) => `${type.toUpperCase()}_${e}`
+  const env = (e: string) => process.env[key(e)]
+  const config = {
+    rootDir,
+    type,
+    port: parseInt(env('PORT')) || base.port,
+    username: env('USERNAME'),
+    password: env('PASSWORD'),
+    host: env('HOST'),
+    database: env('ACTIVE_DATABASE'),
+    restoreSource: env('RESTORE_SOURCE'),
+    entities: ['src/entity/*.ts'],
+    migrations: ['src/migrations/**/*.ts'],
+  }
+  boxLog(config.database, config.type)
+  return config
+}
+
+const base = {
+  type: getDatabaseType(),
+  port: getDatabasePort(),
+}
+
+export const config = getConfig(base.type)
+
 export const db = new DataSource({
-  type: 'mysql',
+  type: config.type,
   host: config.host,
-  port: 3306,
+  port: config.port,
+  database: config.database,
   username: config.username,
   password: config.password,
-  database: config.database,
   synchronize: true,
   logging: false,
   entities: config.entities,

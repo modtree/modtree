@@ -1,5 +1,5 @@
 import { config } from '../../../config'
-import { wipe } from '../../../sql/wipe'
+import { sql } from '../../../sql'
 import { analyze } from '../../analyze'
 
-analyze(() => wipe.database(config.database))
+analyze(() => sql.dropDatabase(config.database))

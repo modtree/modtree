@@ -1,14 +1,14 @@
 import { Repository } from 'typeorm'
 import { config } from '../src/config'
-import { remove, restore, wipe } from '../src/sql'
+import { sql } from '../src/sql'
 
 /**
  * pre-test setup
  * @param {string} database
  */
 export async function setup(database: string) {
-  await wipe.database(database)
-  await restore.file(database, config.restoreSource)
+  await sql.clearDatabase(database)
+  await sql.restoreFromFile(database, config.restoreSource)
 }
 
 /**
@@ -16,7 +16,7 @@ export async function setup(database: string) {
  * @param {string} database
  */
 export async function teardown(database: string) {
-  await remove.database(database)
+  await sql.dropDatabase(database)
 }
 
 type ImportCheckProps = { entities?: any[]; repositories?: Repository<any>[] }

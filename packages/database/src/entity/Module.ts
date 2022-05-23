@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, ColumnType } from 'typeorm'
 import {
   AcadYear,
   ModuleCode,
@@ -10,6 +10,14 @@ import {
   Faculty,
   NUSModuleAttributes,
 } from '../../types/nusmods'
+import { config } from '../config'
+
+const descriptionType: ColumnType =
+  config.type == 'postgres'
+    ? 'varchar'
+    : config.type == 'mysql'
+      ? 'longblob'
+      : 'text'
 
 @Entity({ name: 'module' })
 export class Module {
@@ -25,7 +33,7 @@ export class Module {
   @Column({ type: 'text' })
   title: ModuleTitle
 
-  @Column({ type: 'longblob' })
+  @Column({ type: descriptionType, nullable: true })
   description: string
 
   @Column({ type: 'text' })

@@ -6,9 +6,11 @@
   "main": "src/index.ts",
   "type": "commonjs",
   "devDependencies": {
+    "@types/inquirer": "^8.2.1",
     "@types/jest": "^27.5.0",
     "@types/mysql": "^2.15.21",
     "@types/node": "^16.11.10",
+    "@types/pg": "^8.6.5",
     "eslint-plugin-jest": "^26.2.2",
     "jest": "^28.1.0",
     "modtree-config": "*",
@@ -28,6 +30,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.16",
+    "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "0.3.6"
   },
@@ -35,6 +38,7 @@
     "build": "tsc",
     "dev": "nodemon src/server.ts",
     "test": "yarn test:ci --detectOpenHandles",
+    "test:v": "yarn test:ci --detectOpenHandles --silent=false",
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.ts",
     "test:pull": "NODE_ENV=test jest --config ./tests/configs/pull.config.ts",
     "test:k": "NODE_ENV=test jest --config ./tests/configs/khang.config.ts --detectOpenHandles",
