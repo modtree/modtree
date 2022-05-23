@@ -1,5 +1,4 @@
 import { config } from '../config'
-import { createConnection } from 'mysql2/promise'
 import { join } from 'path'
 import { exec } from '../shell'
 import input from '@inquirer/input'
@@ -24,7 +23,6 @@ export class Postgresql extends BaseSql {
   /** instantiate a new Sql class */
   constructor() {
     super('postgres')
-    console.log(this.dumpCmd)
   }
 
   /**
@@ -68,8 +66,7 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    await exec(`dropdb ${database}`)
-    await exec(`createdb ${database}`)
+    await exec(`dropdb ${database}; createdb ${database}`)
   }
 
   /**
