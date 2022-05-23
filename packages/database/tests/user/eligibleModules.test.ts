@@ -23,9 +23,9 @@ it('Saves a user', async () => {
   const props: Init.UserProps = init.emptyUser
   props.modulesDone.push('MA2001')
   props.modulesDoing.push('MA2219')
-  await UserRepository(db).initialize(props)
   const res = await endpoint(db, () =>
     container(db, async () => {
+      await UserRepository(db).initialize(props)
       return await UserRepository(db).findOneByUsername(props.username)
     })
   )

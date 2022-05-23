@@ -1,4 +1,3 @@
-import { container } from '../data-source'
 import { DataSource, Repository } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
@@ -45,18 +44,16 @@ export function UserRepository(database?: DataSource): UserRepository {
    * @return {Promise<void>}
    */
   async function initialize(props: Init.UserProps): Promise<void> {
-    await container(db, async () => {
-      // find modules completed and modules doing, to create many-to-many relation
-      const queryList = [props.modulesDone, props.modulesDoing]
-      const modulesPromise = Promise.all(
-        queryList.map((list) => ModuleRepository(db).findByCodes(list))
-      )
-      const user = build(props)
-      const [modulesDone, modulesDoing] = await modulesPromise
-      user.modulesDone = modulesDone || []
-      user.modulesDoing = modulesDoing || []
-      await BaseRepo.save(user)
-    })
+    // find modules completed and modules doing, to create many-to-many relation
+    const queryList = [props.modulesDone, props.modulesDoing]
+    const modulesPromise = Promise.all(
+      queryList.map((list) => ModuleRepository(db).findByCodes(list))
+    )
+    const user = build(props)
+    const [modulesDone, modulesDoing] = await modulesPromise
+    user.modulesDone = modulesDone || []
+    user.modulesDoing = modulesDoing || []
+    await BaseRepo.save(user)
   }
 
   /**
@@ -71,33 +68,31 @@ export function UserRepository(database?: DataSource): UserRepository {
     user: User,
     moduleCode: string
   ): Promise<boolean | void> {
-    return await container(db, async () => {
-      // 1. find module
-      const module = await ModuleRepository(db).findOneBy({ moduleCode })
-      // if module not found, assume invalid module code
-      if (!module) throw new Error('Invalid module code')
-      // 2. load modulesDone and modulesDoing relations
-      await UserRepository(db).loadRelations(user, {
-        modulesDone: true,
-        modulesDoing: true,
-      })
-      // if module already taken, can't take module again
-      const modulesDoneCodes = user.modulesDone.map(
-        (one: Module) => one.moduleCode
-      )
-      const modulesDoingCodes = user.modulesDoing.map(
-        (one: Module) => one.moduleCode
-      )
-      if (
-        modulesDoneCodes.includes(moduleCode) ||
-        modulesDoingCodes.includes(moduleCode)
-      ) {
-        return false
-      }
-      // 3. check if PrereqTree is fulfilled
-      const modulesDone = user.modulesDone.map((m) => m.moduleCode)
-      return utils.checkTree(module.prereqTree, modulesDone)
+    // 1. find module
+    const module = await ModuleRepository(db).findOneBy({ moduleCode })
+    // if module not found, assume invalid module code
+    if (!module) throw new Error('Invalid module code')
+    // 2. load modulesDone and modulesDoing relations
+    await UserRepository(db).loadRelations(user, {
+      modulesDone: true,
+      modulesDoing: true,
     })
+    // if module already taken, can't take module again
+    const modulesDoneCodes = user.modulesDone.map(
+      (one: Module) => one.moduleCode
+    )
+    const modulesDoingCodes = user.modulesDoing.map(
+      (one: Module) => one.moduleCode
+    )
+    if (
+      modulesDoneCodes.includes(moduleCode) ||
+      modulesDoingCodes.includes(moduleCode)
+    ) {
+      return false
+    }
+    // 3. check if PrereqTree is fulfilled
+    const modulesDone = user.modulesDone.map((m) => m.moduleCode)
+    return utils.checkTree(module.prereqTree, modulesDone)
   }
 
   /**
