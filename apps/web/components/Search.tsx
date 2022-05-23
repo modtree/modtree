@@ -35,7 +35,7 @@ const Search = (props: { setResults: SetState<ModuleCondensed[]> }) => {
       <div className="flex flex-row">
         <input
           spellCheck={false}
-          className="flex-1 rounded-md shadow-md py-2 px-3 font-medium"
+          className="flex-1 rounded-md shadow-md py-2 px-3 font-medium border border-gray-200"
           value={display}
           onChange={(e) => handleQuery(e.target.value)}
         />

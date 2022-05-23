@@ -27,7 +27,7 @@ function SearchPage() {
 
   const ResultContainer = (props: { children: ReactNode }) => {
     return (
-      <div className="px-2 py-1 bg-white rounded-md shadow-md w-full">
+      <div className="bg-white rounded-md shadow-md w-full rounded-md overflow-hidden">
         {props.children}
       </div>
     )

@@ -45,7 +45,7 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
     const { moduleCode, title } = module
     return (
       <div
-        className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer"
+        className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10 cursor-pointer hover:bg-gray-100"
         onClick={() => updateSelected(module)}
       >
         <CheckBox moduleCode={moduleCode} />
