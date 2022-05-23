@@ -48,8 +48,12 @@ function getDatabasePort(): number {
  * prints the blue box before each run
  * @param {string} database
  */
-function boxLog(database: string) {
-  const output = [`Env File: ${envFile}`, `Database: ${database}`]
+function boxLog(database: string, type: string) {
+  const output = [
+    `Env File: ${envFile}`,
+    `Database: ${database}`,
+    `Engine:   ${type}`,
+  ]
   box.blue(output.join('\n'))
 }
 
@@ -73,7 +77,7 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     entities: ['src/entity/*.ts'],
     migrations: ['src/migrations/**/*.ts'],
   }
-  boxLog(config.database)
+  boxLog(config.database, config.type)
   return config
 }
 

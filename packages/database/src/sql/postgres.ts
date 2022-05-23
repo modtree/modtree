@@ -68,13 +68,15 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    await exec(`createdb ${adminDb}`).catch(() => true)
-    const psql = new Client(connectionConfig(adminDb))
-    await psql.connect()
-    await psql.query(`DROP DATABASE "${database}";`).catch(() => true)
-    await psql.query(`CREATE DATABASE "${database}";`).catch(() => true)
-    await psql.end()
-    await exec(`dropdb ${adminDb}`).catch(() => true)
+    // await exec(`createdb ${adminDb}`).catch(() => true)
+    // const psql = new Client(connectionConfig(adminDb))
+    // await psql.connect()
+    // await psql.query(`DROP DATABASE "${database}";`).catch(() => true)
+    // await psql.query(`CREATE DATABASE "${database}";`).catch(() => true)
+    // await psql.end()
+    // await exec(`dropdb ${adminDb}`).catch(() => true)
+    await exec(`dropdb ${database}`).catch(() => true)
+    await exec(`createdb ${database}`).catch(() => true)
   }
 
   /**

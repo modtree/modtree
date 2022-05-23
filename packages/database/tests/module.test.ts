@@ -1,13 +1,9 @@
-import { log } from '../src/cli'
 import { container, endpoint, getSource } from '../src/data-source'
 import { Module, ModuleCondensed } from '../src/entity'
 import { ModuleRepository } from '../src/repository'
 import { setup, importChecks, teardown } from './environment'
 
-beforeAll(async () => {
-  console.log('got here')
-  await setup(dbName)
-})
+beforeAll(() => setup(dbName))
 
 afterAll(() => teardown(dbName))
 
@@ -22,7 +18,6 @@ importChecks({
 const lowerBound = 6000
 
 describe('ModuleRepository.findByFaculty', () => {
-  log.green('first test')
   it('Valid faculty name', async () => {
     const res = await endpoint(db, () =>
       container(db, () => ModuleRepository(db).findByFaculty('Computing'))
