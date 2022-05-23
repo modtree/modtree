@@ -1,7 +1,6 @@
 import { container } from '../data-source'
 import { DataSource, Repository } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
-import { ModuleCode } from '../../types/nusmods'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { ModuleRepository } from './Module'
@@ -115,9 +114,9 @@ export function UserRepository(database?: DataSource): UserRepository {
         modulesDone: true,
       })
       // 2. get array of module codes of post-reqs (fulfillRequirements)
-      const postReqCodesSet = new Set<ModuleCode>()
+      const postReqCodesSet = new Set<string>()
       user.modulesDone.forEach((module: Module) => {
-        module.fulfillRequirements.forEach((moduleCode: ModuleCode) => {
+        module.fulfillRequirements.forEach((moduleCode: string) => {
           postReqCodesSet.add(moduleCode)
         })
       })
