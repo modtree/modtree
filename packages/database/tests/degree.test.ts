@@ -28,9 +28,8 @@ describe('Degree.initialize', () => {
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () => DegreeRepository(db).initialize(props))
-
     // retrieve that degree again
-    const possiblyNull: Degree | void = await endpoint(db, () =>
+    const possiblyNull = await endpoint(db, () =>
       container(db, () => DegreeRepository(db).findOneByTitle(props.title))
     )
     // expect degree to be not null, not undefined
@@ -40,14 +39,9 @@ describe('Degree.initialize', () => {
   })
 
   it('Correctly saves modules', async () => {
-    const modules: Module[] = degree.modules
-
-    expect(modules).toBeDefined()
-    if (!modules) return
-    const moduleCodes = modules.map((m) => m.moduleCode)
+    const moduleCodes = degree.modules.map((m) => m.moduleCode)
     // match relation's module codes to init props' modules codes
     expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
-    expect(moduleCodes.length).toStrictEqual(9)
   })
 })
 
@@ -59,9 +53,8 @@ describe('Degree.insertModules', () => {
   it('Correctly saves newly inserted modules', async () => {
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = degree.modules.map((m: Module) => m.moduleCode)
+    const moduleCodes = degree.modules.map((m) => m.moduleCode)
     expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
-    expect(moduleCodes.length).toStrictEqual(combinedModuleCodes.length)
   })
 })
 
@@ -71,9 +64,8 @@ describe('Degree.insertModules with invalid module code', () => {
     await DegreeRepository(db).insertModules(degree, newModuleCodes)
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = degree.modules.map((m: Module) => m.moduleCode)
+    const moduleCodes = degree.modules.map((m) => m.moduleCode)
     expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
-    expect(moduleCodes.length).toStrictEqual(combinedModuleCodes.length)
   })
   it('Adds some new modules if there is a mix of valid and invalid module codes', async () => {
     const newModuleCodes = [init.invalidModuleCode, 'CS4269']
@@ -86,8 +78,7 @@ describe('Degree.insertModules with invalid module code', () => {
     combinedModuleCodes.push('CS4269')
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = degree.modules.map((m: Module) => m.moduleCode)
+    const moduleCodes = degree.modules.map((m) => m.moduleCode)
     expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
-    expect(moduleCodes.length).toStrictEqual(combinedModuleCodes.length)
   })
 })
