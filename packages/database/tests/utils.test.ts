@@ -59,7 +59,7 @@ describe('Array.quickpop', () => {
     expect(error2.message).toEqual('Out of bounds')
   })
 
-  it ('Throws error when running on an empty array', () => {
+  it ('Throws error when running on an array of undefined', () => {
     let error
     const arr = [undefined, undefined]
     try {
