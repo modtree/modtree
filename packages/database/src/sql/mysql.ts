@@ -18,6 +18,7 @@ const connectionConfig = (database: string) => ({
   database,
 })
 
+/** Sql interface for MYSQL */
 export class Mysql extends BaseSql {
   /** instantiate a new Sql class */
   constructor() {
@@ -87,7 +88,10 @@ export class Mysql extends BaseSql {
     await exec(cmd)
   }
 
-  /** interactive prompt to guide the user to restore an SQL database */
+  /**
+   * interactive prompt to guide the user to restore an SQL database
+   * @param {string} database
+   */
   restorePrompted(database: string) {
     type Answers = {
       sql: string
@@ -119,6 +123,10 @@ export class Mysql extends BaseSql {
       })
   }
 
+  /**
+   * dump a database snapshot to an .sql file
+   * @param {string} database
+   */
   async dump(database: string) {
     const filename = await input({
       message: 'Enter filename (without .sql):',

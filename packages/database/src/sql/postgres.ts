@@ -6,9 +6,6 @@ import inquirer from 'inquirer'
 import fs from 'fs'
 import { BaseSql } from './base'
 import { Client } from 'pg'
-import { log } from '../cli'
-
-const adminDb = 'modtree_admin'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -21,6 +18,7 @@ const connectionConfig = (database: string) => ({
   database,
 })
 
+/** Sql interface for POSTGRESQL */
 export class Postgresql extends BaseSql {
   /** instantiate a new Sql class */
   constructor() {
@@ -93,7 +91,10 @@ export class Postgresql extends BaseSql {
     await exec(cmd)
   }
 
-  /** interactive prompt to guide the user to restore an SQL database */
+  /**
+   * interactive prompt to guide the user to restore an SQL database
+   * @param {string} database
+   */
   restorePrompted(database: string) {
     type Answers = {
       sql: string
@@ -125,6 +126,10 @@ export class Postgresql extends BaseSql {
       })
   }
 
+  /**
+   * dump a database snapshot to an .sql file
+   * @param {string} database
+   */
   async dump(database: string) {
     const filename = await input({
       message: 'Enter filename (without .sql):',
