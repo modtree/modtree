@@ -23,7 +23,7 @@ function makeHeader(Tag: HtmlTag) {
     const _props = {
       className: composeCss(htmlConfig[Tag], props.className),
       children: props.children,
-      displayName: Tag,
+      displayname: Tag,
     }
     return <Tag {..._props} />
   }
