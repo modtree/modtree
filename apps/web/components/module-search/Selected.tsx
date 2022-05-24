@@ -1,4 +1,4 @@
-import { ModuleContext } from 'contexts/ModuleContext'
+import { ModuleContext } from 'store/ModuleContext'
 import { ModuleCondensed } from 'database'
 import { useContext, useState } from 'react'
 import { IoCloseSharp } from 'react-icons/io5'

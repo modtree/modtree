@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import { Container } from '@/components/Container'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import store from '@/contexts/redux'
+import store from '@/store/redux'
 import { Provider } from 'react-redux'
 
 function MyApp({ Component, pageProps }: { Component: FC; pageProps: any }) {

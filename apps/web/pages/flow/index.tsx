@@ -6,7 +6,7 @@ import ReactFlow, {
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges, ModuleNode } from './dag'
 import { useSelector, useDispatch } from 'react-redux'
-import { setTreeSelection } from '@/contexts/treeSelection'
+import { setTreeSelection } from '@/store/treeSelection'
 
 const nodeTypes = { moduleNode: ModuleNode }
 

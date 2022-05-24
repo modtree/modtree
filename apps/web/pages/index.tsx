@@ -3,7 +3,7 @@ import Search from '@/components/Search'
 import { ModuleCondensed } from 'database'
 import { ResultDisplay } from '@/components/module-search/Results'
 import { SelectedDisplay } from '@/components/module-search/Selected'
-import { ModuleContext, ModuleProvider } from 'contexts/ModuleContext'
+import { ModuleContext, ModuleProvider } from 'store/ModuleContext'
 
 export default function Wrapper() {
   return (

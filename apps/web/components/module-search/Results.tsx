@@ -1,7 +1,7 @@
 import { ModuleCondensed } from 'database'
 import { IoEllipseOutline, IoEllipse } from 'react-icons/io5'
 import { useContext } from 'react'
-import { ModuleContext } from 'contexts/ModuleContext'
+import { ModuleContext } from '@/store/ModuleContext'
 import colors from 'tailwindcss/colors'
 
 const Outline = () => <IoEllipseOutline color={colors.gray[400]} />
