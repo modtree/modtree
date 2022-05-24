@@ -6,13 +6,7 @@ import { SelectedDisplay } from '@/components/module-search/Selected'
 import { useSelector, useDispatch } from 'react-redux'
 import { BuilderState, clearBuilderModules } from '@/store/builder'
 
-export default function Wrapper() {
-  return (
-      <SearchPage />
-  )
-}
-
-function SearchPage() {
+export default function SearchPage() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
   const builderSelection = useSelector<BuilderState, ModuleCondensed[]>(
     (state) => state.builder.moduleCondensed

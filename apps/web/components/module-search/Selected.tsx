@@ -29,6 +29,7 @@ export const SelectedDisplay = () => {
       <div
         className="border-b last:border-b-0 bg-white flex flex-row py-2 px-3 font-medium h-10"
         onMouseEnter={() => setCloseVisible(true)}
+        onMouseOver={() => setCloseVisible(true)}
         onMouseLeave={() => setCloseVisible(false)}
       >
         <div className="w-28 text-gray-600">{moduleCode}</div>
