@@ -1,15 +1,11 @@
 import { HeaderOverlay } from '@/components/Views'
 import { useState } from 'react'
+import { Input } from '@/components/Html'
 
 function SearchBar() {
-  const [display, setDisplay] = useState('')
+  const displayState = useState('')
   return (
-    <input
-      spellCheck={false}
-      className="px-4 w-96 h-12 mx-2 bg-white rounded-md border border-gray-200 focus:outline-none shadow-md focus:shadow-none transition ease-out"
-      value={display}
-      onChange={(e) => setDisplay(e.target.value)}
-    />
+    <Input displayState={displayState} className="w-48"/>
   )
 }
 

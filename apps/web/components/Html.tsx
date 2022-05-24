@@ -1,4 +1,5 @@
-import { ReactElement } from "react";
+import { ReactElement } from 'react'
+import { UseState } from 'types'
 
 function composeCss(base: string, added: string | undefined): string {
   return added ? `${base} ${added}` : base
@@ -19,7 +20,7 @@ type HeaderProps = { className?: string; children: string }
 
 const makeHeader =
   (Tag: HtmlTag) =>
-(props: HeaderProps): ReactElement => {
+  (props: HeaderProps): ReactElement => {
     const _props = {
       className: composeCss(htmlConfig[Tag], props.className),
       children: props.children,
@@ -33,3 +34,22 @@ export const H3 = makeHeader('h3')
 export const H4 = makeHeader('h4')
 export const H5 = makeHeader('h5')
 export const H6 = makeHeader('h6')
+
+export const Input = (props: {
+  displayState: UseState<string>
+  callback?: (e: string) => string
+  className?: string
+}) => {
+  const [display, setDisplay] = props.displayState
+  const identity = (x: string) => x
+  const callback = props.callback || identity
+  const style = "px-4 w-96 h-12 mx-2 bg-white rounded-md border border-gray-200 focus:outline-none shadow-md focus:shadow-none transition ease-out"
+  return (
+    <input
+      spellCheck={false}
+      className={composeCss(style, props.className)}
+      value={display}
+      onChange={(e) => setDisplay(callback(e.target.value))}
+    />
+  )
+}
