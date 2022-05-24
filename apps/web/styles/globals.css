@@ -5,11 +5,15 @@
 @tailwind utilities;
 
 html {
-  @apply bg-gray-50;
+  @apply bg-gray-50 select-none;
 }
 
 body {
   @apply tracking-tight;
+}
+
+span {
+  @apply select-text;
 }
 
 .react-flow__node{

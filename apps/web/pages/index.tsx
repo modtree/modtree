@@ -60,13 +60,11 @@ export default function Modtree() {
       >
         <Controls showInteractive={false} />
       </ReactFlow>
-      <HeaderOverlay>
-        <Header/>
-      </HeaderOverlay>
-      {/* <FullScreenOverlay> */}
-      {/*   <FloatingActionButton /> */}
-      {/*   {showBuilder ? <BuilderModal /> : null} */}
-      {/* </FullScreenOverlay> */}
+      <Header/>
+      <FullScreenOverlay>
+        <FloatingActionButton />
+        {showBuilder ? <BuilderModal /> : null}
+      </FullScreenOverlay>
     </div>
   )
 }
