@@ -4,6 +4,7 @@ import { Module, ModuleCondensed } from 'database'
 type State = {
   moduleCondensed: ModuleCondensed[]
   module: Module[]
+  hasResults: boolean
 }
 
 export type SearchState = {
@@ -13,6 +14,7 @@ export type SearchState = {
 const initialState: State = {
   moduleCondensed: [],
   module: [],
+  hasResults: false,
 }
 
 export const search = createSlice({
@@ -24,13 +26,16 @@ export const search = createSlice({
       action: PayloadAction<ModuleCondensed[]>
     ) => {
       state.moduleCondensed = action.payload
+      state.hasResults = action.payload.length > 0
     },
     setSearchedModule: (state, action: PayloadAction<Module[]>) => {
       state.module = action.payload
+      state.hasResults = action.payload.length > 0
     },
     clearSearches: (state) => {
       state.moduleCondensed = []
       state.module = []
+      state.hasResults = false
     },
   },
 })

@@ -5,8 +5,16 @@ import { ReactElement } from 'react'
 
 const ResultContainer = (props: {
   children: ReactElement[] | ReactElement
+  hasResults: boolean
 }) => {
-  return <div className="flex-col shadow-md rounded-md overflow-hidden">{props.children}</div>
+  const border = 'border border-gray-200'
+  return props.hasResults ? (
+    <div
+      className={`flex-col shadow-md rounded-b-md overflow-hidden ${border}`}
+    >
+      {props.children}
+    </div>
+  ) : null
 }
 
 /**
@@ -26,16 +34,20 @@ const ResultEntry = (props: { module: ModuleCondensed }) => {
 }
 
 export default function ResultDisplay() {
-  const searchedModuleCondensed = useSelector<SearchState, ModuleCondensed[]>(
-    (state) => state.search.moduleCondensed
-  )
+  const { moduleCondensed, hasResults } = useSelector<
+    SearchState,
+    {
+      moduleCondensed: ModuleCondensed[]
+      hasResults: boolean
+    }
+  >((state) => state.search)
 
   /**
    * default return
    */
   return (
-    <ResultContainer>
-      {searchedModuleCondensed.slice(0, 8).map((m, index) => (
+    <ResultContainer hasResults={hasResults}>
+      {moduleCondensed.slice(0, 8).map((m, index) => (
         <ResultEntry module={m} key={index} />
       ))}
     </ResultContainer>
