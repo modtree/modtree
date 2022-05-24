@@ -12,7 +12,6 @@ export default function Header() {
     <HeaderOverlay>
       <SearchArea>
         <SearchBar />
-        <div className='h-1'/>
         <Results />
       </SearchArea>
     </HeaderOverlay>

@@ -76,12 +76,23 @@ export default function SearchBar() {
       dispatch(clearSearches())
     }
   }, [reload[0]])
+
+  function onFocus() {
+    setFocused(false)
+    handleQuery(dispatch, displayState[0], reload)
+  }
+
+  function onBlur() {
+    setFocused(false)
+    dispatch(clearSearches())
+  }
+
   return (
     <Base focused={focused} bg={bg} hasResults={hasResults}>
       <Prompt />
       <Input
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onFocus={onFocus}
+        onBlur={onBlur}
         displayState={displayState}
         className={flatten('flex-1 text-sm h-12', bg)}
         callback={(e) => handleQuery(dispatch, e, reload)}
