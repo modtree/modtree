@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 function MyApp({ Component, pageProps }: { Component: FC; pageProps: any }) {
   const router = useRouter()
   console.log(router.route)
-  const noContainerList = ['/flow']
+  const noContainerList = ['/']
   const noContainer = noContainerList.includes(router.route)
   return (
     <Provider store={store}>
