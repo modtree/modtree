@@ -45,10 +45,11 @@ export const Input = (props: {
   const [display, setDisplay] = props.displayState
   const identity = (x: string) => x
   const callback = props.callback || identity
+  const style = 'focus:outline-none'
   return (
     <input
       spellCheck={false}
-      className={props.className || ""}
+      className={composeCss(style, props.className)}
       value={display}
       onChange={(e) => setDisplay(callback(e.target.value))}
     />
