@@ -16,10 +16,11 @@ const SearchButton = () => (
 )
 
 const Base = (props: { focused: boolean, children: ReactElement[]; bg: string }) => {
-  const shadow = 'shadow-md focus:shadow-none transition ease-out'
+  const transition = 'transition ease-out delay-100'
+  const shadow = props.focused ? 'shadow-md' : ''
   const border = 'border border-gray-200'
   const container = 'flex flex-row items-center rounded-md'
-  const style = `${container} ${border} ${shadow} ${props.bg}`
+  const style = `${container} ${border} ${shadow} ${transition} ${props.bg}`
   return <div className={style}>{props.children}</div>
 }
 
@@ -53,6 +54,8 @@ export default function SearchBar() {
     <Base focused={focused} bg={bg}>
       <Prompt />
       <Input
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         displayState={displayState}
         className={flatten('flex-1 text-sm h-12', bg)}
         callback={handleQuery}
