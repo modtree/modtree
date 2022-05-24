@@ -23,13 +23,15 @@ export function Modal(props: { children: any; onDismiss: any }) {
    */
   const handleClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const target = e.target as HTMLDivElement
-    if (target.className.split(' ').includes('dismiss-modal')) {
-      props.onDismiss()
-    }
+    try {
+      if (target.className.split(' ').includes('dismiss-modal')) {
+        props.onDismiss()
+      }
+    } catch {}
   }
   return (
     <div
-      className="z-10 absolute left-0 top-0 h-screen w-screen select-none"
+      className="z-10 absolute left-0 top-0 h-screen w-screen select-none bg-gray-900/10"
       onClick={(e) => handleClick(e)}
     >
       <div className="flex flex-row justify-center items-center h-full dismiss-modal">
