@@ -7,7 +7,7 @@ import { BuilderState, clearBuilderModules, hideBuilder } from '@/store/builder'
 import Search from '@/components/Search'
 import { Modal } from './Views'
 
-export function BuilderLogic() {
+export function Builder() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
   const dispatch = useDispatch()
   const builderSelection = useSelector<BuilderState, ModuleCondensed[]>(
@@ -70,11 +70,14 @@ export function BuilderLogic() {
   )
 }
 
-export default function Builder() {
+export default function BuilderModal() {
   const dispatch = useDispatch()
   return (
     <Modal onDismiss={() => dispatch(hideBuilder())}>
-      <div className="h-screen w-screen max-w-[50%] max-h-[60%] bg-white rounded-lg shadow-lg">builder</div>
+      <div className="h-screen w-screen max-w-[50%] max-h-[60%] bg-white rounded-lg shadow-lg p-6">
+        <h1 className='text-2xl font-semibold text-gray-600'>Degree Builder</h1>
+        <Builder/>
+      </div>
     </Modal>
   )
 }

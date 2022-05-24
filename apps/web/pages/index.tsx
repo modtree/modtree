@@ -10,8 +10,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setFlowSelection, FlowState } from '@/store/flow'
 import { FloatingActionButton } from '@/components/buttons'
 import { BuilderState } from '@/store/builder'
-import Builder from '@/components/Builder'
 import { FullScreenOverlay } from '@/components/Views'
+import BuilderModal from '@/components/Builder'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -61,7 +61,7 @@ export default function Modtree() {
       </ReactFlow>
       <FullScreenOverlay>
         <FloatingActionButton />
-        {showBuilder ? <Builder /> : null}
+        {showBuilder ? <BuilderModal /> : null}
       </FullScreenOverlay>
     </div>
   )
