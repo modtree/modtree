@@ -43,7 +43,6 @@ Once done, copy it into `.env` and `.env.test`
 
 ```bash
 yarn
-# Fill in MYSQL_USERNAME and MYSQL_PASSWORD before cp 
 cp .env.example .env
 cp .env.example .env.test
 ```
