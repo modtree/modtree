@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { BuilderState, clearBuilderModules } from '@/store/builder'
 import Search from '@/components/Search'
 
-export default function Builder() {
+export function BuilderLogic() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
   const dispatch = useDispatch()
   const builderSelection = useSelector<BuilderState, ModuleCondensed[]>(
@@ -66,5 +66,11 @@ export default function Builder() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function Builder() {
+  return (
+    <div className='h-96 w-96 bg-white'>builder</div>
   )
 }

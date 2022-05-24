@@ -5,7 +5,7 @@ import colors from 'tailwindcss/colors'
 export default function FloatingActionButton() {
   const [showTooltip, setShowTooltip] = useState(false)
   return (
-    <div className="absolute right-10 bottom-10 z-10 select-none">
+    <div className="absolute right-10 bottom-10 select-none">
       <div className="flex flex-row">
         <div className="flex flex-col justify-center">
           {showTooltip ? (

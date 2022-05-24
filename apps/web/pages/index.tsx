@@ -9,6 +9,9 @@ import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useSelector, useDispatch } from 'react-redux'
 import { setFlowSelection, FlowState } from '@/store/flow'
 import { FloatingActionButton } from '@/components/buttons'
+import { BuilderState } from '@/store/builder'
+import Builder from '@/components/Builder'
+import { FullScreenOverlay } from '@/components/Views'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -16,6 +19,9 @@ export default function Modtree() {
   const dispatch = useDispatch()
   const treeSelection = useSelector<FlowState, string>(
     (state) => state.flow.moduleCode
+  )
+  const showBuilder = useSelector<BuilderState, boolean>(
+    (state) => state.builder.showBuilder
   )
   const [nodes, setNodes] = useState(initialNodes)
   const [edges, setEdges] = useState(initialEdges)
@@ -53,7 +59,10 @@ export default function Modtree() {
       >
         <Controls showInteractive={false} />
       </ReactFlow>
-      <FloatingActionButton />
+      <FullScreenOverlay>
+        <FloatingActionButton />
+        {showBuilder ? <Builder /> : null}
+      </FullScreenOverlay>
     </div>
   )
 }
