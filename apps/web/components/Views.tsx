@@ -28,7 +28,7 @@ export function HeaderOverlay(props: {
   children: ReactElement[] | ReactElement
 }) {
   return (
-    <div className="z-10 absolute left-0 top-0 h-16 w-screen py-2 pointer-events-none border border-emerald-300 select-none">
+    <div className="z-10 absolute left-0 top-0 h-16 w-screen py-2 pointer-events-none select-none">
       {clickify(props.children)}
     </div>
   )
