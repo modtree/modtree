@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const treeSelectionSlice = createSlice({
+export const flow = createSlice({
   name: 'flow',
   initialState: { moduleCode: [] },
   reducers: {
@@ -16,5 +16,5 @@ export type FlowState = {
   }
 }
 
-export const { setFlowSelection } = treeSelectionSlice.actions
-export default treeSelectionSlice.reducer
+export const { setFlowSelection } = flow.actions
+export default flow.reducer
