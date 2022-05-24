@@ -7,4 +7,4 @@ files: # in descending order of creation time
     desc: 6189x module + moduleCondensed
 
   - name: 6189-update-property-names.sql
-    desc: up to DAG, corresponds to init migration
+    desc: up to before DAG, corresponds to init migration
