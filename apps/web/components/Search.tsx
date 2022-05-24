@@ -33,7 +33,7 @@ const Search = () => {
    * Search Component
    */
   return (
-    <div>
+    <div className='border border-emerald-400'>
       <div className="text-gray-600 mb-2">Search for a module:</div>
       <div className="flex flex-row">
         <input

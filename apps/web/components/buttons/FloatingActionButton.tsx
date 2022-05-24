@@ -22,7 +22,8 @@ export default function FloatingActionButton() {
           onMouseEnter={() => setShowTooltip(true)}
           onMouseLeave={() => setShowTooltip(false)}
           onMouseDown={() => setShowTooltip(false)}
-          onClick={() => dispatch(showBuilder())}
+          // TODO: re-enable this button after fixing search
+          // onClick={() => dispatch(showBuilder())}
         >
           <IoReceiptOutline color={colors.gray[800]} size={22} />
         </div>
