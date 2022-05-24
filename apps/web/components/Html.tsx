@@ -20,13 +20,13 @@ type HeaderProps = { className?: string; children: string }
 
 const makeHeader =
   (Tag: HtmlTag) =>
-  (props: HeaderProps): ReactElement => {
-    const _props = {
-      className: composeCss(htmlConfig[Tag], props.className),
-      children: props.children,
+    (props: HeaderProps): ReactElement => {
+      const _props = {
+        className: composeCss(htmlConfig[Tag], props.className),
+        children: props.children,
+      }
+      return <Tag {..._props} />
     }
-    return <Tag {..._props} />
-  }
 
 export const H1 = makeHeader('h1')
 export const H2 = makeHeader('h2')
@@ -43,7 +43,7 @@ export const Input = (props: {
   const [display, setDisplay] = props.displayState
   const identity = (x: string) => x
   const callback = props.callback || identity
-  const style = "px-4 w-96 h-12 mx-2 bg-white rounded-md border border-gray-200 focus:outline-none shadow-md focus:shadow-none transition ease-out"
+  const style = 'px-4 w-96 h-12 mx-2 bg-white rounded-md border border-gray-200 focus:outline-none shadow-md focus:shadow-none transition ease-out'
   return (
     <input
       spellCheck={false}
