@@ -3,7 +3,6 @@ import ReactFlow, {
   Controls,
   applyNodeChanges,
   applyEdgeChanges,
-  ControlButton,
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges } from '@/flow/dag'
 import { ModuleNode } from '@/components/flow/ModuleNode'
@@ -45,14 +44,14 @@ export default function Modtree() {
         nodeTypes={nodeTypes}
         fitView={true}
         onSelectionChange={(e) => {
-        const moduleCodes = e.nodes.map((x) => x.data.moduleCode)
-        dispatch(setFlowSelection(moduleCodes))
+          const moduleCodes = e.nodes.map((x) => x.data.moduleCode)
+          dispatch(setFlowSelection(moduleCodes))
         }}
         fitViewOptions={{ maxZoom: 1 }}
         defaultZoom={1}
         maxZoom={2}
-        >
-        <Controls showInteractive={false}/>
+      >
+        <Controls showInteractive={false} />
       </ReactFlow>
       <FloatingActionButton />
     </div>

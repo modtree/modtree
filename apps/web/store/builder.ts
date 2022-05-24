@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ModuleCondensed } from 'database'
-import { partition } from "@/utils/array"
+import { partition } from '@/utils/array'
 
 type State = {
   moduleCondensed: ModuleCondensed[]
+  showBuilder: boolean
 }
 
 export type BuilderState = {
@@ -12,15 +13,25 @@ export type BuilderState = {
 
 const initialState: State = {
   moduleCondensed: [],
+  showBuilder: false,
 }
 
 export const builder = createSlice({
   name: 'builder',
   initialState,
   reducers: {
+    showBuilder: (state) => {
+      state.showBuilder = true
+    },
+    hideBuilder: (state) => {
+      state.showBuilder = false
+    },
     toggleBuilderModule: (state, action: PayloadAction<ModuleCondensed>) => {
       const p = action.payload
-      const [match, noMatch] = partition(state.moduleCondensed, x => x.moduleCode === p.moduleCode)
+      const [match, noMatch] = partition(
+        state.moduleCondensed,
+        (x) => x.moduleCode === p.moduleCode
+      )
       if (match.length === 0) {
         noMatch.push(p)
       }
@@ -28,9 +39,14 @@ export const builder = createSlice({
     },
     clearBuilderModules: (state) => {
       state.moduleCondensed = []
-    }
+    },
   },
 })
 
-export const { toggleBuilderModule, clearBuilderModules } = builder.actions
+export const {
+  toggleBuilderModule,
+  clearBuilderModules,
+  showBuilder,
+  hideBuilder,
+} = builder.actions
 export default builder.reducer
