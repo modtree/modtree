@@ -5,7 +5,7 @@ import { Input } from '@/components/Html'
 function SearchBar() {
   const displayState = useState('')
   return (
-    <Input displayState={displayState} className="w-48"/>
+    <Input displayState={displayState} className="w-96"/>
   )
 }
 
