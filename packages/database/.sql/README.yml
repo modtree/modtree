@@ -1,0 +1,10 @@
+files: # in descending order of creation time
+
+  - name: .test.sql
+    desc: latest state, used for testing
+
+  - name: post-dag.sql
+    desc: up to DAG, corresponds to init migration
+
+  - name: modules-only.sql
+    desc: 6189x module + moduleCondensed
