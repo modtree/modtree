@@ -5,6 +5,7 @@ import { SetState } from 'types'
 const Search = (props: { setResults: SetState<ModuleCondensed[]> }) => {
   // the text that shows up in the search bar
   const [display, setDisplay] = useState('')
+
   /**
    * talk to backend
    */
@@ -27,7 +28,7 @@ const Search = (props: { setResults: SetState<ModuleCondensed[]> }) => {
   }
 
   /**
-   * final return
+   * Search Component
    */
   return (
     <div>
