@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useState } from 'react'
 import Search from '@/components/Search'
 import { ModuleCondensed } from 'database'
-import { ResultDisplay } from '@/components/module-search/Results'
-import { SelectedDisplay } from '@/components/module-search/Selected'
+import { ResultDisplay } from '@/components/builder/Results'
+import { SelectedDisplay } from '@/components/builder/Selected'
 import { useSelector, useDispatch } from 'react-redux'
 import { BuilderState, clearBuilderModules } from '@/store/builder'
 
