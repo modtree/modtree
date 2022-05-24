@@ -1,18 +1,5 @@
 import { Node, Edge, Position, Handle } from 'react-flow-renderer'
 
-export const PrettyNode = (props: { moduleCode: string; title: string }) => {
-  return (
-    <div className="bg-blue-200">
-      <div className="text-2xl font-semibold text-gray-700">
-        {props.moduleCode}
-      </div>
-      <div className="font-medium tracking-tight text-gray-400">
-        {props.title}
-      </div>
-    </div>
-  )
-}
-
 export function ModuleNode({ data }: any) {
   return (
     <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md border-2 border-gray-300">
@@ -52,7 +39,6 @@ const initialNodes: Node[] = modules.map((m) => ({
   id: m.moduleCode,
   type: 'moduleNode',
   data: {
-    label: <PrettyNode moduleCode={m.moduleCode} title={m.title} />,
     title: m.title,
     moduleCode: m.moduleCode,
   },
