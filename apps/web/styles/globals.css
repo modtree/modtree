@@ -19,3 +19,7 @@ body {
 .react-flow__node.selected {
   @apply bg-gradient-to-r from-orange-400 to-pink-400;
 }
+
+.react-flow__attribution {
+  @apply hidden;
+}

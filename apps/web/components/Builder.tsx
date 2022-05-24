@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { BuilderState, clearBuilderModules } from '@/store/builder'
 import Search from '@/components/Search'
 
-export default function SearchPage() {
+export default function Builder() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
   const dispatch = useDispatch()
   const builderSelection = useSelector<BuilderState, ModuleCondensed[]>(
