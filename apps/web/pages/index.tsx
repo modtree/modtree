@@ -11,7 +11,7 @@ import { setFlowSelection, FlowState } from '@/store/flow'
 import { FloatingActionButton } from '@/components/buttons'
 import { BuilderState } from '@/store/builder'
 import { FullScreenOverlay } from '@/components/Views'
-import BuilderModal from '@/components/Builder'
+import BuilderModal from '@/components/builder'
 
 const nodeTypes = { moduleNode: ModuleNode }
 

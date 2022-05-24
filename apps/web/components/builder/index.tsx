@@ -2,10 +2,10 @@ import { Dispatch, ReactNode, useEffect } from 'react'
 import { ModuleCondensed } from 'database'
 import { SelectedDisplay } from '@/components/builder/Selected'
 import { useSelector, useDispatch } from 'react-redux'
-import { BuilderState, clearBuilderModules, hideBuilder } from '@/store/builder'
+import { clearBuilderModules, hideBuilder } from '@/store/builder'
 import Search from '@/components/Search'
-import { Modal } from './Views'
-import { H1 } from './Html'
+import { Modal } from '@/components/Views'
+import { H1 } from '@/components/Html'
 import { AnyAction } from 'redux'
 import { SearchState } from '@/store/search'
 
@@ -14,7 +14,6 @@ export function Builder(props: {
   builderSelection: ModuleCondensed[]
 }) {
   const dispatch = props.dispatch
-
   const SelectedContainer = (props: { children: ReactNode }) => {
     return (
       <div className="bg-white rounded-md shadow-md w-full overflow-y-scroll">
