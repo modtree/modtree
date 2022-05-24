@@ -18,7 +18,7 @@ const SearchButton = () => (
 const Base = (props: { children: ReactElement[]; bg: string }) => {
   const shadow = 'shadow-md focus:shadow-none transition ease-out'
   const border = 'border border-gray-200'
-  const container = 'flex flex-row items-center mx-2 w-96 rounded-md'
+  const container = 'flex flex-row items-center rounded-md'
   const style = flatten(shadow, border, container, props.bg)
   return <div className={style}>{props.children}</div>
 }
