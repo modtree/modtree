@@ -11,3 +11,11 @@ html {
 body {
   @apply tracking-tight;
 }
+
+.react-flow__node{
+  @apply bg-transparent rounded-lg p-0.5;
+}
+
+.react-flow__node.selected {
+  @apply bg-gradient-to-r from-orange-400 to-pink-400;
+}

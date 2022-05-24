@@ -29,6 +29,10 @@ export default function Modtree() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
+        fitView={true}
+        fitViewOptions={{maxZoom: 1}}
+        defaultZoom={1}
+        maxZoom={2}
       >
         <Controls />
       </ReactFlow>

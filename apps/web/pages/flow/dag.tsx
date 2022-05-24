@@ -2,15 +2,17 @@ import { Node, Edge, Position, Handle } from 'react-flow-renderer'
 
 export function ModuleNode({ data }: any) {
   return (
-    <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md border-2 border-gray-300">
-      <Handle type="target" position={Position.Left} />
-      <Handle type="source" position={Position.Right} />
-      <div className="h-min">
-        <div className="text-2xl font-semibold text-gray-700 text-center">
-          {data.moduleCode}
-        </div>
-        <div className="text-sm font-medium tracking-tight text-gray-400 text-center leading-5">
-          {data.title}
+    <div>
+      <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md border-2 border-gray-300">
+        <Handle type="target" position={Position.Left} />
+        <Handle type="source" position={Position.Right} />
+        <div className="h-min">
+          <div className="text-2xl font-semibold text-gray-700 text-center">
+            {data.moduleCode}
+          </div>
+          <div className="text-sm font-medium tracking-tight text-gray-400 text-center leading-5">
+            {data.title}
+          </div>
         </div>
       </div>
     </div>
@@ -21,17 +23,17 @@ const modules = [
   {
     moduleCode: 'CS1010',
     title: 'Programming Methodology',
-    position: { x: 250, y: 25 },
+    position: { x: 100, y: 200 },
   },
   {
     moduleCode: 'CS2030S',
     title: 'Programming Methodology II',
-    position: { x: 100, y: 125 },
+    position: { x: 450, y: 100 },
   },
   {
     moduleCode: 'CS2040S',
     title: 'Data Structures and Algorithms',
-    position: { x: 250, y: 250 },
+    position: { x: 450, y: 300 },
   },
 ]
 
@@ -43,6 +45,7 @@ const initialNodes: Node[] = modules.map((m) => ({
     moduleCode: m.moduleCode,
   },
   position: m.position,
+  selectable: true,
 }))
 
 const initialEdges: Edge[] = [
