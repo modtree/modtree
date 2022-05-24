@@ -1,31 +1,19 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { Dispatch, ReactNode, useEffect } from 'react'
 import { ModuleCondensed } from 'database'
-import { ResultDisplay } from '@/components/builder/Results'
 import { SelectedDisplay } from '@/components/builder/Selected'
 import { useSelector, useDispatch } from 'react-redux'
 import { BuilderState, clearBuilderModules, hideBuilder } from '@/store/builder'
 import Search from '@/components/Search'
 import { Modal } from './Views'
 import { H1 } from './Html'
+import { AnyAction } from 'redux'
+import { SearchState } from '@/store/search'
 
-export function Builder() {
-  const [results, setResults] = useState<ModuleCondensed[]>([])
-  const dispatch = useDispatch()
-  const builderSelection = useSelector<BuilderState, ModuleCondensed[]>(
-    (state) => state.builder.moduleCondensed
-  )
-
-  useEffect(() => {
-    console.log('builder selection:', builderSelection)
-  }, [builderSelection])
-
-  const ResultContainer = (props: { children: ReactNode }) => {
-    return (
-      <div className="bg-white rounded-md shadow-md w-full rounded-md overflow-hidden">
-        {props.children}
-      </div>
-    )
-  }
+export function Builder(props: {
+  dispatch: Dispatch<AnyAction>
+  builderSelection: ModuleCondensed[]
+}) {
+  const dispatch = props.dispatch
 
   const SelectedContainer = (props: { children: ReactNode }) => {
     return (
@@ -70,13 +58,6 @@ export function Builder() {
         <Selected />
         <div className="mb-4 w-full max-w-xl">
           <Search />
-          {results.length > 0 ? (
-            <div className="flex flex-row justify-center mt-6">
-              <ResultContainer>
-                <ResultDisplay/>
-              </ResultContainer>
-            </div>
-          ) : null}
         </div>
       </div>
     </div>
@@ -85,11 +66,19 @@ export function Builder() {
 
 export default function BuilderModal() {
   const dispatch = useDispatch()
+  const builderSelection = useSelector<SearchState, ModuleCondensed[]>(
+    (state) => state.search.moduleCondensed
+  )
+
+  useEffect(() => {
+    console.log('builder selection:', builderSelection)
+  }, [builderSelection])
+
   return (
     <Modal onDismiss={() => dispatch(hideBuilder())}>
       <div className="h-screen w-screen max-w-[50%] max-h-[60%] bg-white rounded-lg shadow-lg p-6">
         <H1 className="mb-2">Degree Builder</H1>
-        <Builder />
+        <Builder dispatch={dispatch} builderSelection={builderSelection} />
       </div>
     </Modal>
   )
