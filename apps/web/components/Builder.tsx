@@ -69,11 +69,11 @@ export function Builder() {
       <div className="flex flex-row justify-center overflow-y-hidden">
         <Selected />
         <div className="mb-4 w-full max-w-xl">
-          <Search setResults={setResults} />
+          <Search />
           {results.length > 0 ? (
             <div className="flex flex-row justify-center mt-6">
               <ResultContainer>
-                <ResultDisplay results={results} />
+                <ResultDisplay/>
               </ResultContainer>
             </div>
           ) : null}

@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 function composeCss(base: string, added: string | undefined): string {
   return added ? `${base} ${added}` : base
 }
@@ -15,14 +17,9 @@ const htmlConfig: Record<HtmlTag, string> = {
 
 type HeaderProps = { className?: string; children: string }
 
-type Header = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLHeadingElement>,
-  HTMLHeadingElement
->
-
 const makeHeader =
   (Tag: HtmlTag) =>
-  (props: HeaderProps): Header => {
+(props: HeaderProps): ReactElement => {
     const _props = {
       className: composeCss(htmlConfig[Tag], props.className),
       children: props.children,

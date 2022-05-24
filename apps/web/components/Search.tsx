@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { ModuleCondensed } from 'database'
-import { SetState } from 'types'
+import { useDispatch } from 'react-redux'
+import { clearSearches, setSearchedModuleCondesned } from '@/store/search'
 
-const Search = (props: { setResults: SetState<ModuleCondensed[]> }) => {
+const Search = () => {
   // the text that shows up in the search bar
   const [display, setDisplay] = useState('')
+  const dispatch = useDispatch()
 
   /**
    * talk to backend
@@ -13,7 +15,7 @@ const Search = (props: { setResults: SetState<ModuleCondensed[]> }) => {
     setDisplay(value.toUpperCase())
     if (value.length === 0) {
       // empty queries are really slow
-      props.setResults([])
+      dispatch(clearSearches())
       return
     }
     const upper = value.toUpperCase()
@@ -22,7 +24,7 @@ const Search = (props: { setResults: SetState<ModuleCondensed[]> }) => {
     fetch(url).then((res) => {
       res.json().then((json) => {
         const moduleList: ModuleCondensed[] = json.result
-        props.setResults(moduleList)
+        dispatch(setSearchedModuleCondesned(moduleList))
       })
     })
   }

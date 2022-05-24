@@ -3,15 +3,24 @@ import { IoEllipseOutline, IoEllipse } from 'react-icons/io5'
 import { BuilderState, toggleBuilderModule } from '@/store/builder'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from 'tailwindcss/colors'
+import { SearchState } from '@/store/search'
+import { useEffect } from 'react'
 
 const Outline = () => <IoEllipseOutline color={colors.gray[400]} />
 const Filled = () => <IoEllipse color={colors.emerald[500]} />
 
-export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
+export const ResultDisplay = () => {
   const dispatch = useDispatch()
   const selectedCodes = useSelector<BuilderState, ModuleCondensed[]>(
     (state) => state.builder.moduleCondensed
   ).map((x) => x.moduleCode)
+  const searchedModuleCondensed = useSelector<SearchState, ModuleCondensed[]>(
+    (state) => state.search.moduleCondensed
+  )
+  console.log('got here')
+  useEffect(() => {
+    console.log('results component', searchedModuleCondensed[0])
+  }, [searchedModuleCondensed])
 
   /**
    * checkbox
@@ -47,7 +56,7 @@ export const ResultDisplay = (props: { results: ModuleCondensed[] }) => {
    */
   return (
     <div className="flex-col">
-      {props.results.slice(0, 10).map((m, index) => (
+      {searchedModuleCondensed.slice(0, 10).map((m, index) => (
         <ResultEntry module={m} key={index} />
       ))}
     </div>

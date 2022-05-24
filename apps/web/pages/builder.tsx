@@ -1,16 +1,19 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { ModuleCondensed } from 'database'
 import { ResultDisplay } from '@/components/builder/Results'
 import { SelectedDisplay } from '@/components/builder/Selected'
 import { useSelector, useDispatch } from 'react-redux'
 import { BuilderState, clearBuilderModules } from '@/store/builder'
 import Search from '@/components/Search'
+import { SearchState } from '@/store/search'
 
 export default function SearchPage() {
-  const [results, setResults] = useState<ModuleCondensed[]>([])
   const dispatch = useDispatch()
   const builderSelection = useSelector<BuilderState, ModuleCondensed[]>(
     (state) => state.builder.moduleCondensed
+  )
+  const searchedModuleCondensed = useSelector<SearchState, ModuleCondensed[]>(
+    (state) => state.search.moduleCondensed
   )
 
   useEffect(() => {
@@ -55,11 +58,11 @@ export default function SearchPage() {
           </SelectedContainer>
         </div>
         <div className="mb-4 w-full max-w-xl">
-          <Search setResults={setResults} />
-          {results.length > 0 ? (
+          <Search />
+          {searchedModuleCondensed.length > 0 ? (
             <div className="flex flex-row justify-center mt-6">
               <ResultContainer>
-                <ResultDisplay results={results} />
+                <ResultDisplay />
               </ResultContainer>
             </div>
           ) : null}
