@@ -1,4 +1,10 @@
-import React from 'react'
+import { ReactElement, Children } from 'react'
+
+function clickify(children: ReactElement[] | ReactElement) {
+  return Children.map(children, (child) => (
+    <div className="pointer-events-auto w-min h-min">{child}</div>
+  ))
+}
 
 /**
  * a full-screen overlay that doesn't take any clicks on itself,
@@ -7,7 +13,21 @@ import React from 'react'
 export function FullScreenOverlay(props: { children: any }) {
   return (
     <div className="z-10 absolute left-0 top-0 h-screen w-screen pointer-events-none">
-      <div className="pointer-events-auto">{props.children}</div>
+      {clickify(props.children)}
+    </div>
+  )
+}
+
+/**
+ * a header overlay that doesn't take any clicks on itself,
+ * but still passes on click events to its children
+ */
+export function HeaderOverlay(props: {
+  children: ReactElement[] | ReactElement
+}) {
+  return (
+    <div className="z-10 absolute left-0 top-0 h-16 w-screen py-2 pointer-events-none bg-green-100">
+      {clickify(props.children)}
     </div>
   )
 }
