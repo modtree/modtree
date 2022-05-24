@@ -28,14 +28,10 @@ export const builder = createSlice({
     },
     toggleBuilderModule: (state, action: PayloadAction<ModuleCondensed>) => {
       const p = action.payload
-      const [match, noMatch] = partition(
-        state.moduleCondensed,
-        (x) => x.moduleCode === p.moduleCode
-      )
-      if (match.length === 0) {
-        noMatch.push(p)
-      }
-      state.moduleCondensed = noMatch
+      const copy = state.moduleCondensed
+      const match = copy.filter(x => x.moduleCode === p.moduleCode)
+      if (match.length === 0) copy.push(p)
+      state.moduleCondensed = copy
     },
     clearBuilderModules: (state) => {
       state.moduleCondensed = []
