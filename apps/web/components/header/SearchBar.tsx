@@ -28,10 +28,10 @@ const Base = (props: {
   bg: string
 }) => {
   const transition = 'transition ease-out delay-50'
-  const shadow = props.focused ? 'shadow-md' : ''
+  const shadow = props.focused && !props.hasResults ? 'shadow-md' : ''
   const container = 'flex flex-row items-center'
   const border = 'border border-gray-200'
-  const round = props.hasResults ? 'rounded-md' : 'rounded-t-md'
+  const round = props.hasResults ? 'rounded-t-md' : 'rounded-md' 
   const style = `${container} ${border} ${shadow} ${transition} ${round} ${props.bg}`
   return <div className={style}>{props.children}</div>
 }
@@ -74,11 +74,12 @@ export default function SearchBar() {
   useEffect(() => {
     if (displayState[0].length === 0) {
       dispatch(clearSearches())
+      return
     }
   }, [reload[0]])
 
   function onFocus() {
-    setFocused(false)
+    setFocused(true)
     handleQuery(dispatch, displayState[0], reload)
   }
 
