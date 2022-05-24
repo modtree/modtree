@@ -3,8 +3,9 @@ import { ModuleCondensed } from 'database'
 import { ResultDisplay } from '@/components/builder/Results'
 import { SelectedDisplay } from '@/components/builder/Selected'
 import { useSelector, useDispatch } from 'react-redux'
-import { BuilderState, clearBuilderModules } from '@/store/builder'
+import { BuilderState, clearBuilderModules, hideBuilder } from '@/store/builder'
 import Search from '@/components/Search'
+import { Modal } from './Views'
 
 export function BuilderLogic() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
@@ -70,7 +71,10 @@ export function BuilderLogic() {
 }
 
 export default function Builder() {
+  const dispatch = useDispatch()
   return (
-    <div className='h-96 w-96 bg-white'>builder</div>
+    <Modal onDismiss={() => dispatch(hideBuilder())}>
+      <div className="h-96 w-96 bg-white">builder</div>
+    </Modal>
   )
 }
