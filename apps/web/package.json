@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.2",
     "@types/tailwindcss": "^3.0.10",
@@ -19,6 +20,8 @@
     "react-dom": "17.0.2",
     "react-flow-renderer": "^10.2.1",
     "react-icons": "^4.3.1",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
     "typeorm": "^0.3.6",
     "ui": "*"
   },
