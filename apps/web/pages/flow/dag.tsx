@@ -3,8 +3,8 @@ import { Node, Edge, Position, Handle } from 'react-flow-renderer'
 export function ModuleNode({ data }: any) {
   return (
     <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md border-2 border-gray-300">
-      <Handle type="target" position={Position.Top} />
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="target" position={Position.Left} />
+      <Handle type="source" position={Position.Right} />
       <div className="h-min">
         <div className="text-2xl font-semibold text-gray-700 text-center">
           {data.moduleCode}
