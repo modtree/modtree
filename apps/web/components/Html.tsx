@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement } from 'react'
+import { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, ReactElement } from 'react'
 import { UseState } from 'types'
 
 function composeCss(base: string, added: string | undefined): string {
@@ -37,13 +37,15 @@ export const H4 = makeHeader('h4')
 export const H5 = makeHeader('h5')
 export const H6 = makeHeader('h6')
 
-type BaseInputProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
+type BaseInputProps = DetailedHTMLProps<
+  InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 >
 
+
 type InputProps = BaseInputProps & {
   displayState: UseState<string>
+  /*eslint no-unused-vars: ["error", { "args": "none" }]*/
   callback?: (value: string) => any | void
   className?: string
 }

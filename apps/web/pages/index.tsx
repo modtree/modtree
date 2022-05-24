@@ -14,6 +14,7 @@ import { FullScreenOverlay } from '@/components/Views'
 import BuilderModal from '@/components/builder'
 import Header from '@/components/header'
 import { SearchState } from '@/store/search'
+import { ModuleCondensed } from 'database'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
