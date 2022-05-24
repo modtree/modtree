@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import { Container } from '../components/Container'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
+import { store } from '../contexts/redux'
 
 function MyApp({
   Component,
