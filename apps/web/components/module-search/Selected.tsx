@@ -1,13 +1,15 @@
-import { ModuleContext } from 'store/ModuleContext'
 import { ModuleCondensed } from 'database'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { IoCloseSharp } from 'react-icons/io5'
+import { BuilderState, toggleBuilderModule } from '@/store/builder'
+import { useDispatch, useSelector } from 'react-redux'
 import colors from 'tailwindcss/colors'
 
 export const SelectedDisplay = () => {
-  const { moduleCondensedState, moduleCodeState } = useContext(ModuleContext)
-  const [modules, setModules] = moduleCondensedState
-  const [codes, setCodes] = moduleCodeState
+  const selectedModules = useSelector<BuilderState, ModuleCondensed[]>(
+    (state) => state.builder.moduleCondensed
+  )
+  const dispatch = useDispatch()
 
   /**
    * one selected entry
@@ -17,9 +19,7 @@ export const SelectedDisplay = () => {
     const { moduleCode, title } = module
     const [closeVisible, setCloseVisible] = useState(false)
     function removeSelected() {
-      codes.delete(moduleCode)
-      setCodes(new Set(codes))
-      setModules(modules.filter((m) => m.moduleCode !== moduleCode))
+      dispatch(toggleBuilderModule(module))
     }
 
     /**
@@ -55,7 +55,7 @@ export const SelectedDisplay = () => {
    */
   return (
     <div className="flex-col">
-      {moduleCondensedState[0].map((m, index) => (
+      {selectedModules.map((m, index) => (
         <SelectedEntry module={m} key={index} />
       ))}
     </div>

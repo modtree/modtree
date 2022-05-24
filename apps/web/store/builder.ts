@@ -41,8 +41,11 @@ export const builder = createSlice({
       }
       state.moduleCondensed = noMatch
     },
+    clearBuilderModules: (state) => {
+      state.moduleCondensed = []
+    }
   },
 })
 
-export const { toggleBuilderModule } = builder.actions
+export const { toggleBuilderModule, clearBuilderModules } = builder.actions
 export default builder.reducer
