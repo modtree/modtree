@@ -12,7 +12,7 @@ import { FloatingActionButton } from '@/components/buttons'
 import { BuilderState } from '@/store/builder'
 import { FullScreenOverlay } from '@/components/Views'
 import BuilderModal from '@/components/builder'
-import Header from '@/components/Header'
+import Header from '@/components/header'
 import { SearchState } from '@/store/search'
 
 const nodeTypes = { moduleNode: ModuleNode }

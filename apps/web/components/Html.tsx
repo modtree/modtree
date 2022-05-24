@@ -37,11 +37,19 @@ export const H4 = makeHeader('h4')
 export const H5 = makeHeader('h5')
 export const H6 = makeHeader('h6')
 
-export const Input = (props: {
+type BaseInputProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>
+
+type InputProps = BaseInputProps & {
   displayState: UseState<string>
-  callback?: (value: string) => any
+  callback?: (value: string) => any | void
   className?: string
-}) => {
+}
+
+
+export const Input = (props: InputProps) => {
   const [display, setDisplay] = props.displayState
   const yes = () => true
   const callback = props.callback || yes
@@ -50,12 +58,19 @@ export const Input = (props: {
     setDisplay(value)
     callback(value)
   }
+  const customKeys = ['callback', 'displayState', 'className']
+  const vanillaProps: Partial<Record<string, any>> = {}
+  Object.entries(props).forEach(([key, value]) => {
+    if (customKeys.includes(key)) return
+    vanillaProps[key] = value
+  })
   return (
     <input
       spellCheck={false}
       className={composeCss('focus:outline-none', props.className)}
       value={display}
-      onChange={e => onChange(e)}
+      onChange={(e) => onChange(e)}
+      {...vanillaProps}
     />
   )
 }

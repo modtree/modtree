@@ -3,7 +3,7 @@ import { IoChevronForwardSharp, IoSearchSharp } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 import colors from 'tailwindcss/colors'
-import { Input } from './Html'
+import { Input } from '@/components/Html'
 import { ModuleCondensed } from 'database'
 import { flatten } from '@/utils/tailwind'
 
@@ -15,11 +15,11 @@ const SearchButton = () => (
   <IoSearchSharp color={colors.gray[400]} size={20} className="mx-4" />
 )
 
-const Base = (props: { children: ReactElement[]; bg: string }) => {
+const Base = (props: { focused: boolean, children: ReactElement[]; bg: string }) => {
   const shadow = 'shadow-md focus:shadow-none transition ease-out'
   const border = 'border border-gray-200'
   const container = 'flex flex-row items-center rounded-md'
-  const style = flatten(shadow, border, container, props.bg)
+  const style = `${container} ${border} ${shadow} ${props.bg}`
   return <div className={style}>{props.children}</div>
 }
 
@@ -48,8 +48,9 @@ export default function SearchBar() {
   }
 
   const bg = 'bg-white'
+  const [focused, setFocused] = useState(false)
   return (
-    <Base bg={bg}>
+    <Base focused={focused} bg={bg}>
       <Prompt />
       <Input
         displayState={displayState}
