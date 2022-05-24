@@ -74,7 +74,7 @@ export default function Builder() {
   const dispatch = useDispatch()
   return (
     <Modal onDismiss={() => dispatch(hideBuilder())}>
-      <div className="h-96 w-96 bg-white">builder</div>
+      <div className="h-screen w-screen max-w-[50%] max-h-[60%] bg-white rounded-lg shadow-lg">builder</div>
     </Modal>
   )
 }
