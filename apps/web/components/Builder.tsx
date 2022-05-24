@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { BuilderState, clearBuilderModules, hideBuilder } from '@/store/builder'
 import Search from '@/components/Search'
 import { Modal } from './Views'
+import { H1 } from './Html'
 
 export function Builder() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
@@ -87,9 +88,7 @@ export default function BuilderModal() {
   return (
     <Modal onDismiss={() => dispatch(hideBuilder())}>
       <div className="h-screen w-screen max-w-[50%] max-h-[60%] bg-white rounded-lg shadow-lg p-6">
-        <h1 className="text-2xl font-semibold text-gray-600 mb-2">
-          Degree Builder
-        </h1>
+        <H1 className="mb-2">Degree Builder</H1>
         <Builder />
       </div>
     </Modal>
