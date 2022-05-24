@@ -8,25 +8,27 @@ function composeCss(base: string, added: string | undefined): string {
 type HtmlTag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
 const htmlConfig: Record<HtmlTag, string> = {
-  h1: 'text-2xl font-semibold text-gray-600',
-  h2: 'text-2xl font-semibold text-gray-600',
+  h1: 'text-4xl font-semibold text-gray-600',
+  h2: 'text-3xl font-semibold text-gray-600',
   h3: 'text-2xl font-semibold text-gray-600',
-  h4: 'text-2xl font-semibold text-gray-600',
-  h5: 'text-2xl font-semibold text-gray-600',
-  h6: 'text-2xl font-semibold text-gray-600',
+  h4: 'text-xl font-semibold text-gray-600',
+  h5: 'text-lg font-semibold text-gray-500',
+  h6: 'text-md font-semibold text-gray-500',
 }
 
 type HeaderProps = { className?: string; children: string }
 
-const makeHeader =
-  (Tag: HtmlTag) =>
-    (props: HeaderProps): ReactElement => {
-      const _props = {
-        className: composeCss(htmlConfig[Tag], props.className),
-        children: props.children,
-      }
-      return <Tag {..._props} />
+function makeHeader(Tag: HtmlTag) {
+  const Component = (props: HeaderProps): ReactElement => {
+    const _props = {
+      className: composeCss(htmlConfig[Tag], props.className),
+      children: props.children,
+      displayName: Tag
     }
+    return <Tag {..._props} />
+  }
+  return Component
+}
 
 export const H1 = makeHeader('h1')
 export const H2 = makeHeader('h2')
@@ -37,7 +39,7 @@ export const H6 = makeHeader('h6')
 
 export const Input = (props: {
   displayState: UseState<string>
-  callback?: (e: string) => string
+  callback?: () => string
   className?: string
 }) => {
   const [display, setDisplay] = props.displayState

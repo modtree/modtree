@@ -1,12 +1,10 @@
-import { ReactElement, Children } from 'react'
-
+import React, { ReactElement, Children } from 'react'
 
 export function clickify(children: ReactElement[] | ReactElement) {
   return Children.map(children, (child) => (
     <div className="pointer-events-auto w-min h-min">{child}</div>
   ))
 }
-
 
 /**
  * a full-screen overlay that doesn't take any clicks on itself,
@@ -44,12 +42,17 @@ export function Modal(props: { children: any; onDismiss: any }) {
    * dismiss-modal
    */
   const handleClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const trigger = 'dismiss-modal'
     const target = e.target as HTMLDivElement
-    try {
-      if (target.className.split(' ').includes('dismiss-modal')) {
-        props.onDismiss()
-      }
-    } catch {}
+    if (target.className !== trigger && !target.className.includes(' ')) return
+    if (target.className === trigger) {
+      props.onDismiss()
+      return
+    }
+    if (target.className.split(' ').includes('dismiss-modal')) {
+      props.onDismiss()
+      return
+    }
   }
   return (
     <div

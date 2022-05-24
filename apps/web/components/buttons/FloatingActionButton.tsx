@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { IoReceiptOutline } from 'react-icons/io5'
-import { useDispatch } from 'react-redux'
-import { showBuilder } from '@/store/builder'
+// import { useDispatch } from 'react-redux'
+// import { showBuilder } from '@/store/builder'
 import colors from 'tailwindcss/colors'
 
 export default function FloatingActionButton() {
   const [showTooltip, setShowTooltip] = useState(false)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   return (
     <div className="absolute right-10 bottom-10 select-none">
       <div className="flex flex-row">

@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setFlowSelection, FlowState } from '@/store/flow'
 import { FloatingActionButton } from '@/components/buttons'
 import { BuilderState } from '@/store/builder'
-import { FullScreenOverlay, HeaderOverlay } from '@/components/Views'
+import { FullScreenOverlay } from '@/components/Views'
 import BuilderModal from '@/components/builder'
 import Header from '@/components/Header'
 
