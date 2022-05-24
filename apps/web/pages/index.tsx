@@ -1,78 +1,76 @@
-import { ReactNode, useContext, useState } from 'react'
-import Search from '@/components/Search'
+import { useCallback, useEffect, useState } from 'react'
+import ReactFlow, {
+  Controls,
+  applyNodeChanges,
+  applyEdgeChanges,
+} from 'react-flow-renderer'
+import { initialNodes, initialEdges } from '@/flow/dag'
+import { ModuleNode } from '@/components/flow/ModuleNode'
+import { useSelector, useDispatch } from 'react-redux'
+import { setFlowSelection, FlowState } from '@/store/flow'
+import { FloatingActionButton } from '@/components/buttons'
+import { BuilderState } from '@/store/builder'
+import { FullScreenOverlay } from '@/components/Views'
+import BuilderModal from '@/components/builder'
+import Header from '@/components/header'
+import { SearchState } from '@/store/search'
 import { ModuleCondensed } from 'database'
-import { ResultDisplay } from '@/components/module-search/Results'
-import { SelectedDisplay } from '@/components/module-search/Selected'
-import { ModuleContext, ModuleProvider } from 'contexts/ModuleContext'
 
-export default function Wrapper() {
-  return (
-    <ModuleProvider>
-      <SearchPage />
-    </ModuleProvider>
+const nodeTypes = { moduleNode: ModuleNode }
+
+export default function Modtree() {
+  const dispatch = useDispatch()
+  const treeSelection = useSelector<FlowState, string>(
+    (state) => state.flow.moduleCode
   )
-}
+  const showBuilder = useSelector<BuilderState, boolean>(
+    (state) => state.builder.showBuilder
+  )
+  const searchResults = useSelector<SearchState, ModuleCondensed[]>(
+    (state) => state.search.moduleCondensed
+  )
+  const [nodes, setNodes] = useState(initialNodes)
+  const [edges, setEdges] = useState(initialEdges)
 
-function SearchPage() {
-  const [results, setResults] = useState<ModuleCondensed[]>([])
-  const { moduleCondensedState, moduleCodeState } = useContext(ModuleContext)
-  const setModules = moduleCondensedState[1]
-  const setCodes = moduleCodeState[1]
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes]
+  )
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    [setEdges]
+  )
 
-  const clearModules = () => {
-    console.log('clearModules')
-    setModules([])
-    setCodes(new Set())
-  }
-
-  const ResultContainer = (props: { children: ReactNode }) => {
-    return (
-      <div className="bg-white rounded-md shadow-md w-full rounded-md overflow-hidden">
-        {props.children}
-      </div>
-    )
-  }
-
-  const SelectedContainer = (props: { children: ReactNode }) => {
-    return (
-      <div className="bg-white rounded-md shadow-md w-full overflow-y-scroll h-[40rem]">
-        {props.children}
-      </div>
-    )
-  }
+  useEffect(() => {
+    console.log(treeSelection)
+    console.log(searchResults)
+  }, [treeSelection, searchResults])
 
   return (
-    <div>
-      <h1 className="text-4xl mt-12 mb-12 font-semibold tracking-normal text-gray-700">
-        modtree
-      </h1>
-      <div className="flex flex-row justify-center overflow-y-hidden">
-        <div className="w-1/4 bg-white mr-6 rounded-md shadow-md mb-4">
-          <div className="flex flex-row">
-            <h2 className="px-4 py-3 text-xl tracking-tight font-semibold text-gray-500 flex-1">
-              Module List
-            </h2>
-            <div className="flex flex-col justify-center mr-4 tracking-normal">
-              <div className="text-gray-400 rounded-md px-1.5 hover:bg-gray-200 cursor-pointer active:bg-gray-300" onClick={clearModules}>
-                clear
-              </div>
-            </div>
-          </div>
-          <SelectedContainer>
-            <SelectedDisplay />
-          </SelectedContainer>
-        </div>
-        <div className="mb-4 w-full max-w-xl">
-          <Search setResults={setResults} />
-          {results.length > 0 ? (
-            <div className="flex flex-row justify-center mt-6">
-              <ResultContainer>
-                <ResultDisplay results={results} />
-              </ResultContainer>
-            </div>
-          ) : null}
-        </div>
-      </div>
+    <div className="h-screen w-screen bg-gray-50">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        zoomOnDoubleClick={false}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        fitView={true}
+        onSelectionChange={(e) => {
+          const moduleCodes = e.nodes.map((x) => x.data.moduleCode)
+          dispatch(setFlowSelection(moduleCodes))
+        }}
+        fitViewOptions={{ maxZoom: 1 }}
+        defaultZoom={1}
+        maxZoom={2}
+      >
+        <Controls showInteractive={false} />
+      </ReactFlow>
+      <Header/>
+      <FullScreenOverlay>
+        <FloatingActionButton />
+        {showBuilder ? <BuilderModal /> : null}
+      </FullScreenOverlay>
     </div>
   )
 }

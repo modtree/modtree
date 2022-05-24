@@ -46,7 +46,7 @@ jobs:
         run: yarn
       
       - name: 📦 Build & lint database functions
-        run: yarn build:db
+        run: yarn build
 
   database_tests:
     needs: pre_job

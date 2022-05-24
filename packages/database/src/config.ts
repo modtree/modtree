@@ -69,12 +69,12 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
   const config = {
     rootDir,
     type,
-    port: parseInt(env('PORT')) || base.port,
-    username: env('USERNAME'),
-    password: env('PASSWORD'),
-    host: env('HOST'),
-    database: env('ACTIVE_DATABASE'),
-    restoreSource: env('RESTORE_SOURCE'),
+    port: parseInt(env('PORT') || '') || base.port,
+    username: env('USERNAME') || '',
+    password: env('PASSWORD') || '',
+    host: env('HOST') || '',
+    database: env('ACTIVE_DATABASE') || '',
+    restoreSource: env('RESTORE_SOURCE') || '',
     entities: ['src/entity/*.ts'],
     migrations: ['src/migrations/**/*.ts'],
   }

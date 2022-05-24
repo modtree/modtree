@@ -1,0 +1,84 @@
+import { Dispatch, ReactNode, useEffect } from 'react'
+import { ModuleCondensed } from 'database'
+import { SelectedDisplay } from '@/components/builder/Selected'
+import { useSelector, useDispatch } from 'react-redux'
+import { clearBuilderModules, hideBuilder } from '@/store/builder'
+import Search from '@/components/Search'
+import { Modal } from '@/components/Views'
+import { H1 } from '@/components/Html'
+import { AnyAction } from 'redux'
+import { SearchState } from '@/store/search'
+
+export function Builder(props: {
+  dispatch: Dispatch<AnyAction>
+  builderSelection: ModuleCondensed[]
+}) {
+  const dispatch = props.dispatch
+  const SelectedContainer = (props: { children: ReactNode }) => {
+    return (
+      <div className="bg-white rounded-md shadow-md w-full overflow-y-scroll">
+        {props.children}
+      </div>
+    )
+  }
+
+  const TitleAndClearButton = () => {
+    return (
+      <div className="flex flex-row">
+        <h2 className="px-4 py-3 text-xl tracking-tight font-semibold text-gray-500 flex-1">
+          Module List
+        </h2>
+        <div className="flex flex-col justify-center mr-4 tracking-normal">
+          <div
+            className="text-gray-400 rounded-md px-1.5 hover:bg-gray-200 cursor-pointer active:bg-gray-300"
+            onClick={() => dispatch(clearBuilderModules())}
+          >
+            clear
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const Selected = () => {
+    return (
+      <div className="w-1/4 bg-white mr-6 rounded-md shadow-md mb-4">
+        <TitleAndClearButton />
+        <SelectedContainer>
+          <SelectedDisplay />
+        </SelectedContainer>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <div className="flex flex-row justify-center overflow-y-hidden">
+        <Selected />
+        <div className="mb-4 w-full max-w-xl">
+          <Search />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function BuilderModal() {
+  const dispatch = useDispatch()
+  const builderSelection = useSelector<SearchState, ModuleCondensed[]>(
+    (state) => state.search.moduleCondensed
+  )
+
+  useEffect(() => {
+    console.log('builder selection:', builderSelection)
+  }, [builderSelection])
+
+  return (
+    <Modal onDismiss={() => dispatch(hideBuilder())}>
+      <div className="h-screen w-screen max-w-[50%] max-h-[60%] bg-white rounded-lg shadow-lg p-6">
+        <H1 className="mb-2">Degree Builder</H1>
+        <Builder dispatch={dispatch} builderSelection={builderSelection} />
+      </div>
+    </Modal>
+  )
+}

@@ -1,12 +1,13 @@
 import { ColumnType } from 'typeorm'
 
+type StrRecord = Record<string, any>
 /**
  * copies props from source entity to the target entity
- * @param {T} source
- * @param {T} target
+ * @param {StrRecord} source
+ * @param {StrRecord} target
  */
-export function copy<T>(source: T, target: T) {
-  Object.keys(source).forEach((key) => {
+export function copy(source: StrRecord, target: StrRecord) {
+  Object.keys(source).forEach(key => {
     target[key] = source[key]
   })
 }

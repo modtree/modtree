@@ -5,11 +5,15 @@
 @tailwind utilities;
 
 html {
-  @apply bg-gray-50;
+  @apply bg-gray-50 select-none;
 }
 
 body {
   @apply tracking-tight;
+}
+
+span {
+  @apply select-text;
 }
 
 .react-flow__node{
@@ -18,4 +22,8 @@ body {
 
 .react-flow__node.selected {
   @apply bg-gradient-to-r from-orange-400 to-pink-400;
+}
+
+.react-flow__attribution {
+  @apply hidden;
 }
