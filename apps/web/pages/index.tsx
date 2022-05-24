@@ -1,29 +1,26 @@
-import { ReactNode, useContext, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import Search from '@/components/Search'
 import { ModuleCondensed } from 'database'
 import { ResultDisplay } from '@/components/module-search/Results'
 import { SelectedDisplay } from '@/components/module-search/Selected'
-import { ModuleContext, ModuleProvider } from 'store/ModuleContext'
+import { useSelector } from 'react-redux'
+import { BuilderState } from '@/store/builder'
 
 export default function Wrapper() {
   return (
-    <ModuleProvider>
       <SearchPage />
-    </ModuleProvider>
   )
 }
 
 function SearchPage() {
   const [results, setResults] = useState<ModuleCondensed[]>([])
-  const { moduleCondensedState, moduleCodeState } = useContext(ModuleContext)
-  const setModules = moduleCondensedState[1]
-  const setCodes = moduleCodeState[1]
+  const builderSelection = useSelector<BuilderState, ModuleCondensed[]>(
+    (state) => state.builder.moduleCondensed
+  )
 
-  const clearModules = () => {
-    console.log('clearModules')
-    setModules([])
-    setCodes(new Set())
-  }
+  useEffect(() => {
+    console.log('builder selection:', builderSelection)
+  }, [builderSelection])
 
   const ResultContainer = (props: { children: ReactNode }) => {
     return (
@@ -53,7 +50,9 @@ function SearchPage() {
               Module List
             </h2>
             <div className="flex flex-col justify-center mr-4 tracking-normal">
-              <div className="text-gray-400 rounded-md px-1.5 hover:bg-gray-200 cursor-pointer active:bg-gray-300" onClick={clearModules}>
+              <div
+                className="text-gray-400 rounded-md px-1.5 hover:bg-gray-200 cursor-pointer active:bg-gray-300"
+              >
                 clear
               </div>
             </div>
