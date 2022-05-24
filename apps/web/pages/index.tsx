@@ -13,6 +13,7 @@ import { BuilderState } from '@/store/builder'
 import { FullScreenOverlay } from '@/components/Views'
 import BuilderModal from '@/components/builder'
 import Header from '@/components/Header'
+import { SearchState } from '@/store/search'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -23,6 +24,9 @@ export default function Modtree() {
   )
   const showBuilder = useSelector<BuilderState, boolean>(
     (state) => state.builder.showBuilder
+  )
+  const searchResults = useSelector<SearchState, ModuleCondensed[]>(
+    (state) => state.search.moduleCondensed
   )
   const [nodes, setNodes] = useState(initialNodes)
   const [edges, setEdges] = useState(initialEdges)
@@ -38,7 +42,8 @@ export default function Modtree() {
 
   useEffect(() => {
     console.log(treeSelection)
-  }, [treeSelection])
+    console.log(searchResults)
+  }, [treeSelection, searchResults])
 
   return (
     <div className="h-screen w-screen bg-gray-50">

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ModuleCondensed } from 'database'
 import { useDispatch } from 'react-redux'
-import { clearSearches, setSearchedModuleCondesned } from '@/store/search'
+import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 
 const Search = () => {
   // the text that shows up in the search bar
@@ -24,7 +24,7 @@ const Search = () => {
     fetch(url).then((res) => {
       res.json().then((json) => {
         const moduleList: ModuleCondensed[] = json.result
-        dispatch(setSearchedModuleCondesned(moduleList))
+        dispatch(setSearchedModuleCondensed(moduleList))
       })
     })
   }

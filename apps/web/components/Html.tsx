@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import { ChangeEvent, ReactElement } from 'react'
 import { UseState } from 'types'
 
 function composeCss(base: string, added: string | undefined): string {
@@ -23,7 +23,7 @@ function makeHeader(Tag: HtmlTag) {
     const _props = {
       className: composeCss(htmlConfig[Tag], props.className),
       children: props.children,
-      displayName: Tag
+      displayName: Tag,
     }
     return <Tag {..._props} />
   }
@@ -39,19 +39,23 @@ export const H6 = makeHeader('h6')
 
 export const Input = (props: {
   displayState: UseState<string>
-  callback?: () => string
+  callback?: (value: string) => any
   className?: string
 }) => {
   const [display, setDisplay] = props.displayState
-  const identity = (x: string) => x
-  const callback = props.callback || identity
-  const style = 'focus:outline-none'
+  const yes = () => true
+  const callback = props.callback || yes
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setDisplay(value)
+    callback(value)
+  }
   return (
     <input
       spellCheck={false}
-      className={composeCss(style, props.className)}
+      className={composeCss('focus:outline-none', props.className)}
       value={display}
-      onChange={(e) => setDisplay(callback(e.target.value))}
+      onChange={e => onChange(e)}
     />
   )
 }

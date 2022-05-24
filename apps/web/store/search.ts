@@ -19,7 +19,7 @@ export const search = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    setSearchedModuleCondesned: (
+    setSearchedModuleCondensed: (
       state,
       action: PayloadAction<ModuleCondensed[]>
     ) => {
@@ -35,6 +35,6 @@ export const search = createSlice({
   },
 })
 
-export const { setSearchedModule, setSearchedModuleCondesned, clearSearches } =
+export const { setSearchedModule, setSearchedModuleCondensed, clearSearches } =
   search.actions
 export default search.reducer
