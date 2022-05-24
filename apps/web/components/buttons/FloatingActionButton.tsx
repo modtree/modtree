@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IoSettingsOutline } from 'react-icons/io5'
+import { IoReceiptOutline } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { showBuilder } from '@/store/builder'
 import colors from 'tailwindcss/colors'
@@ -24,7 +24,7 @@ export default function FloatingActionButton() {
           onMouseDown={() => setShowTooltip(false)}
           onClick={() => dispatch(showBuilder())}
         >
-          <IoSettingsOutline color={colors.gray[800]} size={22} />
+          <IoReceiptOutline color={colors.gray[800]} size={22} />
         </div>
       </div>
     </div>
