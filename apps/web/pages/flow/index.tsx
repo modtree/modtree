@@ -6,23 +6,14 @@ import ReactFlow, {
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges, ModuleNode } from './dag'
 import { useSelector, useDispatch } from 'react-redux'
-import { setTreeSelection } from '@/store/treeSelection'
+import { setFlowSelection, FlowState } from '@/store/flow'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
-type ReduxState = {
-  counter: {
-    value: number
-  }
-  treeSelection: {
-    moduleCode: string
-  }
-}
-
 export default function Modtree() {
   const dispatch = useDispatch()
-  const treeSelection = useSelector<ReduxState, string>(
-    (state) => state.treeSelection.moduleCode
+  const treeSelection = useSelector<FlowState, string>(
+    (state) => state.flow.moduleCode
   )
   const [nodes, setNodes] = useState(initialNodes)
   const [edges, setEdges] = useState(initialEdges)
@@ -52,7 +43,7 @@ export default function Modtree() {
         fitView={true}
         onSelectionChange={(e) => {
           const moduleCodes = e.nodes.map((x) => x.data.moduleCode)
-          dispatch(setTreeSelection(moduleCodes))
+          dispatch(setFlowSelection(moduleCodes))
         }}
         fitViewOptions={{ maxZoom: 1 }}
         defaultZoom={1}

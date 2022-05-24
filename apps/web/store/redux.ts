@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './moduleSlice'
-import treeSelection from './treeSelection'
+import flowReducer from './flow'
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
-    treeSelection,
+    flow: flowReducer,
   },
 })
