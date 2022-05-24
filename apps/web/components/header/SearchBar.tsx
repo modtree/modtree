@@ -1,10 +1,4 @@
-import {
-  Dispatch as ReactDispatch,
-  ReactElement,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react'
+import { ReactElement, useEffect, useState } from 'react'
 import { IoChevronForwardSharp, IoSearchSharp } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -69,10 +63,9 @@ async function handleQuery(
 export default function SearchBar() {
   const dispatch = useDispatch()
   const displayState = useState('')
-  const hasResults =
-    useSelector<SearchState, ModuleCondensed[]>(
-      (state) => state.search.moduleCondensed
-    ).length === 0
+  const hasResults = useSelector<SearchState, boolean>(
+    (state) => state.search.hasResults
+  )
 
   const bg = 'bg-white'
   const [focused, setFocused] = useState(false)
