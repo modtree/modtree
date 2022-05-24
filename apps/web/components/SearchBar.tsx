@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { IoChevronForwardSharp, IoSearchSharp } from 'react-icons/io5'
 import { useDispatch } from 'react-redux'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 import colors from 'tailwindcss/colors'
 import { Input } from './Html'
 import { ModuleCondensed } from 'database'
+import { flatten } from '@/utils/tailwind'
 
 const Prompt = () => (
   <IoChevronForwardSharp color={colors.gray[400]} size={20} className="mx-4" />
@@ -13,6 +14,14 @@ const Prompt = () => (
 const SearchButton = () => (
   <IoSearchSharp color={colors.gray[400]} size={20} className="mx-4" />
 )
+
+const Base = (props: { children: ReactElement[]; bg: string }) => {
+  const shadow = 'shadow-md focus:shadow-none transition ease-out'
+  const border = 'border border-gray-200'
+  const container = 'flex flex-row items-center mx-2 w-96 rounded-md'
+  const style = flatten(shadow, border, container, props.bg)
+  return <div className={style}>{props.children}</div>
+}
 
 export default function SearchBar() {
   const dispatch = useDispatch()
@@ -39,18 +48,15 @@ export default function SearchBar() {
   }
 
   const bg = 'bg-white'
-  const shadow = 'shadow-md focus:shadow-none transition ease-out'
   return (
-    <div
-      className={`flex flex-row items-center mx-2 w-96 rounded-md border border-gray-200 ${shadow} ${bg}`}
-    >
+    <Base bg={bg}>
       <Prompt />
       <Input
         displayState={displayState}
-        className={`flex-1 text-sm h-12 ${bg}`}
+        className={flatten('flex-1 text-sm h-12', bg)}
         callback={handleQuery}
       />
       <SearchButton />
-    </div>
+    </Base>
   )
 }
