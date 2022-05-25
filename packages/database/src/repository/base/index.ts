@@ -1,14 +1,15 @@
 import { DataSource, FindOptionsRelations, Repository } from 'typeorm'
-import { db as DefaultSource } from '../config'
-import { ModtreeEntity } from '../entity'
-import { createEmpty } from '../utils/object'
+import { db as DefaultSource } from '../../config'
+import { ModtreeEntity } from '../../entity'
+import { createEmpty } from '../../utils/object'
 
-type EntityConstructor<T> = new () => T
+/**
+ * standards:
+ * - entity refers to an instance
+ * - Entity refers to the class name
+ */
 
-type LoadRelationsMethod = (
-  entity: ModtreeEntity,
-  relations: FindOptionsRelations<ModtreeEntity>
-) => Promise<void>
+type EntityType<T> = new () => T
 
 export type DeleteAll = () => Promise<void>
 
@@ -29,13 +30,13 @@ export function getDataSource(db: DataSource): DataSource {
 /**
  * a drop-in replacement for a contructor, but for TypeORM entities
  * @param {DataSource} database
- * @param {EntityConstructor<T>} Entity
+ * @param {EntityTarget<T>} Entity
  * @param {InitProps} props to init
  * @return {T}
  */
 export function useBuild<T, InitProps>(
   database: DataSource,
-  Entity: EntityConstructor<T>,
+  Entity: EntityType<T>,
   props: InitProps
 ): T {
   const entity = new Entity()
@@ -55,6 +56,11 @@ export function useBuild<T, InitProps>(
   })
   return entity
 }
+
+type LoadRelationsMethod = (
+  entity: ModtreeEntity,
+  relations: FindOptionsRelations<ModtreeEntity>
+) => Promise<void>
 
 /**
  * takes in a repository, returns a function that is meant to be used
@@ -96,12 +102,12 @@ export function useLoadRelations(
  * in the format for loadRelations.
  *
  * @param {DataSource} database
- * @param {EntityConstructor<T>} Entity
+ * @param {EntityType<T>} Entity
  * @return {Record<string, boolean>}
  */
 export function getRelationNames<T>(
   database: DataSource,
-  Entity: EntityConstructor<T>
+  Entity: EntityType<T>
 ): Record<string, boolean> {
   const meta = database.getMetadata(Entity)
   const relationNames = meta.relations.map((r) => r.propertyName)
@@ -114,7 +120,7 @@ export function getRelationNames<T>(
 /**
  * takes in a repository, returns a function that deletes all entities in that repository
  *
- * @param {Repository<EntityConstructor<T>>} repository
+ * @param {Repository<EntityType<T>>} repository
  * @return {DeleteAllMethod}
  */
 export function useDeleteAll<Entity>(
