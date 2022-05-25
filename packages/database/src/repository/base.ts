@@ -134,7 +134,7 @@ export function useDeleteAll<Entity>(
   async function deleteAll<T>(
     Entity: EntityConstructor<T>,
   ) {
-    await repository.createQueryBuilder().delete().from(Entity).execute()
+    await repository.createQueryBuilder().delete().execute()
   }
   return deleteAll
 }

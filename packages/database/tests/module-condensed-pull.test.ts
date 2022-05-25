@@ -33,7 +33,7 @@ test('moduleCondensed.pull', async () => {
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()
   if (!pullOnFull || !pullOnEmpty || !written) return
   /* make sure every element is a valid ModuleCondensed */
-  expect(pullOnEmpty.length).toBeGreaterThan(0)
+  expect(pullOnEmpty.length).toBeGreaterThan(lowerBound)
   written.forEach((module) => {
     expect(module).toBeInstanceOf(ModuleCondensed)
   })
