@@ -1,6 +1,5 @@
 import { Repository } from 'typeorm'
-
-export type DeleteAll = () => Promise<void>
+import { DeleteAll } from '../../../types/repository'
 
 /**
  * takes in a repository, returns a function that deletes all entities in that repository

@@ -1,17 +1,17 @@
-import { DataSource } from 'typeorm'
-type EntityType<T> = new () => T
+import { DataSource, EntityTarget } from 'typeorm'
+import { Base } from '../../entity'
 
 /**
  * Returns the relation names of an entity,
  * in the format for loadRelations.
  *
  * @param {DataSource} database
- * @param {EntityType<T>} Entity
+ * @param {T} Entity
  * @return {Record<string, boolean>}
  */
-export function getRelationNames<T>(
+export function getRelationNames<T extends EntityTarget<Base>>(
   database: DataSource,
-  Entity: EntityType<T>
+  Entity: T
 ): Record<string, boolean> {
   const meta = database.getMetadata(Entity)
   const relationNames = meta.relations.map((r) => r.propertyName)
