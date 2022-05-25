@@ -6,6 +6,7 @@ import {
   JoinTable,
 } from 'typeorm'
 import { Module } from './Module'
+import { Degree } from './Degree'
 
 @Entity({ name: 'user' })
 export class User {
@@ -34,4 +35,8 @@ export class User {
 
   @Column()
   graduationSemester: number
+
+  @ManyToMany(() => Degree)
+  @JoinTable()
+  savedDegrees: Degree[]
 }
