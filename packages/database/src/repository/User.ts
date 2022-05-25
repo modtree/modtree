@@ -2,6 +2,7 @@ import { DataSource, Repository } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
+import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { utils } from '../utils'
@@ -22,6 +23,7 @@ interface UserRepository extends Repository<User> {
   eligibleModules(user: User): Promise<Module[] | void>
   findOneById(id: string): Promise<User>
   addDegree(user: User, degreeId: string): Promise<void>
+  findDegree(user: User, degreeId: string): Promise<Degree>
 }
 
 /**
@@ -161,11 +163,29 @@ export function UserRepository(database?: DataSource): UserRepository {
     await UserRepository(db).loadRelations(user, {
       savedDegrees: true,
     })
-    // 2. find degree
+    // 2. find degree in DB
     const degree = await DegreeRepository(db).findOneById(degreeId)
     // 3. append degree
     user.savedDegrees.push(degree)
     await BaseRepo.save(user)
+  }
+
+  /**
+   * Finds a degree among saved degrees of a user.
+   * @param {User} user
+   * @param {string} degreeId
+   * @return {Promise<Degree>}
+   */
+  async function findDegree(user: User, degreeId: string): Promise<Degree> {
+    // 1. load savedDegrees relations
+    await UserRepository(db).loadRelations(user, {
+      savedDegrees: true,
+    })
+    // 2. find degree among user's savedDegrees
+    const filtered = user.savedDegrees.filter((degree) => degree.id == degreeId)
+    if (filtered.length == 0)
+      throw new Error('Degree not found in User')
+    return filtered[0]
   }
 
   return BaseRepo.extend({
@@ -177,5 +197,6 @@ export function UserRepository(database?: DataSource): UserRepository {
     eligibleModules,
     findOneById,
     addDegree,
+    findDegree,
   })
 }

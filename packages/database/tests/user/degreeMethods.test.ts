@@ -3,6 +3,7 @@ import { User, Degree } from '../../src/entity'
 import { UserRepository } from '../../src/repository'
 import { setup, importChecks, teardown } from '../environment'
 import { setupUser } from './setup'
+import { init } from '../init'
 
 const dbName = 'test_user_degreeMethods'
 const db = getSource(dbName)
@@ -40,5 +41,35 @@ describe('User.addDegree', () => {
     expect(user.savedDegrees).toBeInstanceOf(Array)
     expect(user.savedDegrees.length).toEqual(1)
     expect(user.savedDegrees[0].id).toEqual(degree.id)
+  })
+})
+
+describe('User.findDegree', () => {
+  it('Successfully finds a saved degree', async () => {
+    const res = await endpoint(db, () =>
+      container(db, () => UserRepository(db).findDegree(user, degree.id))
+    )
+    expect(res).toBeDefined()
+    if (!res)
+      return;
+    const foundDegree = res
+    expect(foundDegree).toBeInstanceOf(Degree)
+    expect(foundDegree.id).toEqual(degree.id)
+  })
+
+  it('Throws error if degree not found', async () => {
+    let error
+    await db.initialize()
+    // uses user from previous test
+    try {
+      await UserRepository(db).findDegree(user, init.invalidUUID)
+    } catch (err) {
+      error = err
+    }
+    expect(error).toBeInstanceOf(Error)
+    expect(error.message).toBe('Degree not found in User')
+
+    await db.destroy()
+    await setup(dbName)
   })
 })

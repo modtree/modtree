@@ -34,4 +34,5 @@ export namespace init {
     graduationSemester: 2,
   }
   export const invalidModuleCode = 'XXYYZZ'
+  export const invalidUUID = 'invalid-uuid'
 }
