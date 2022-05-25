@@ -1,9 +1,9 @@
 import { DataSource, FindOptionsRelations, Repository } from 'typeorm'
-import { db as DefaultSource } from '../../config'
 import { ModtreeEntity } from '../../entity'
 export * from './build'
 export * from './load-relations'
 export * from './delete-all'
+export * from './get-source'
 
 /**
  * standards:
@@ -17,15 +17,6 @@ export type LoadRelations<T> = (
   entity: T,
   relations: FindOptionsRelations<T>
 ) => Promise<void>
-
-/**
- * ensures a fallback database
- * @param {DataSource} db
- * @return {DataSource}
- */
-export function getDataSource(db: DataSource): DataSource {
-  return db || DefaultSource
-}
 
 type LoadRelationsMethod = (
   entity: ModtreeEntity,
