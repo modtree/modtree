@@ -8,7 +8,8 @@
     "outDir": "./lib",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["@types/jest"]
   },
   "include": ["src", "types", "tests"],
   "exclude": ["lib", "node_modules"]
