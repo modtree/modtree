@@ -17,6 +17,7 @@ interface DegreeRepository extends Repository<Degree> {
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
   loadRelations: LoadRelations<Degree>
   findOneByTitle(title: string): Promise<Degree>
+  findOneById(id: string): Promise<Degree>
 }
 
 /**
