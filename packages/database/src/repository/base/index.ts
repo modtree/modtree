@@ -3,6 +3,7 @@ import { db as DefaultSource } from '../../config'
 import { ModtreeEntity } from '../../entity'
 export * from './build'
 export * from './load-relations'
+export * from './delete-all'
 
 /**
  * standards:
@@ -11,8 +12,6 @@ export * from './load-relations'
  */
 
 type EntityType<T> = new () => T
-
-export type DeleteAll = () => Promise<void>
 
 export type LoadRelations<T> = (
   entity: T,
@@ -86,19 +85,4 @@ export function getRelationNames<T>(
   const res: Record<string, boolean> = {}
   relationNames.forEach((r) => (res[r] = true))
   return res
-}
-
-/**
- * takes in a repository, returns a function that deletes all entities in that repository
- *
- * @param {Repository<EntityType<T>>} repository
- * @return {DeleteAllMethod}
- */
-export function useDeleteAll<Entity>(
-  repository: Repository<Entity>
-): DeleteAll {
-  const deleteAll = async () => {
-    await repository.createQueryBuilder().delete().execute()
-  }
-  return deleteAll
 }
