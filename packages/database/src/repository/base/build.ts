@@ -7,7 +7,7 @@ import { EntityConstructor } from '../../../types/typeorm'
  * @param {DataSource} database
  * @param {EntityConstructor<Entity>} Entity
  * @param {InitProps} props to init
- * @return {T}
+ * @return {Entity}
  */
 export function useBuild<Entity, P>(
   database: DataSource,

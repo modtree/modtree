@@ -2,11 +2,7 @@ import { Repository } from 'typeorm'
 import { Init, DAGProps, UserProps, DegreeProps } from './modtree'
 import type { DAG, User, Degree, Module, ModuleCondensed } from '../src/entity'
 import type { Module as NM, ModuleCondensed as NMC } from './nusmods'
-import { ObjectLiteral, FindOptionsRelations } from 'typeorm'
-
-type EntityConstructor<T extends ObjectLiteral> = new () => T
-
-type EntityInstance<T> = EntityConstructor<T> & { id: string }
+import { FindOptionsRelations } from 'typeorm'
 
 type LoadRelations<Entity> = (
   entity: Entity,
@@ -14,10 +10,6 @@ type LoadRelations<Entity> = (
 ) => Promise<void>
 
 type DeleteAll = () => Promise<void>
-
-export namespace base {
-
-}
 
 /**
  * BaseRepository, but for now only in types

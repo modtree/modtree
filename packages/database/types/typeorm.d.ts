@@ -4,5 +4,3 @@
  */
 
 export type EntityConstructor<T> = new () => T
-
-export type EntityInstance<T> = EntityConstructor<T> & { id: string }
