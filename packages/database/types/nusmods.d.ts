@@ -40,22 +40,9 @@ export type Day =
   | 'Saturday'
   | 'Sunday'
 
-export const WorkingDaysOfWeek: Day[] = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-]
-
-export const DaysOfWeek: Day[] = [...WorkingDaysOfWeek, 'Sunday']
-
 export type Time = 'Morning' | 'Afternoon' | 'Evening'
-export const TimesOfDay: Time[] = ['Morning', 'Afternoon', 'Evening']
 
 export type ModuleLevel = 1 | 2 | 3 | 4 | 5 | 6 | 8
-export const Semesters = [1, 2, 3, 4]
 
 export type WorkloadComponent =
   | 'Lecture'
