@@ -41,19 +41,18 @@ export interface DAGRepository extends BaseRepo<DAG, DAGProps, Init.DAGProps> {
 
 export interface UserRepository
   extends BaseRepo<User, UserProps, Init.UserProps> {
-  build(props: UserProps): User
-  initialize(props: Init.UserProps): Promise<void>
   canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
   eligibleModules(user: User): Promise<Module[] | void>
   findOneById(id: string): Promise<User>
+  addDegree(user: User, degreeId: string): Promise<void>
+  findDegree(user: User, degreeId: string): Promise<Degree>
+  removeDegree(user: User, degreeId: string): Promise<void>
 }
 
 export interface DegreeRepository
   extends BaseRepo<Degree, DegreeProps, Init.DegreeProps> {
-  build(props: DegreeProps): Degree
-  initialize(props: Init.DegreeProps): Promise<void>
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
   loadRelations: LoadRelations<Degree>
   findOneByTitle(title: string): Promise<Degree>
@@ -61,7 +60,6 @@ export interface DegreeRepository
 }
 
 export interface ModuleRepository extends BaseRepo<Module, NM> {
-  build(props: NM): Module
   get(): Promise<Module[]>
   fetchOne(moduleCode: string): Promise<Module>
   getCodes(): Promise<string[]>
@@ -73,7 +71,6 @@ export interface ModuleRepository extends BaseRepo<Module, NM> {
 
 export interface ModuleCondensedRepository
   extends BaseRepo<ModuleCondensed, NMC> {
-  build(props: NMC): ModuleCondensed
   pull(): Promise<ModuleCondensed[]>
   fetch(): Promise<ModuleCondensed[]>
   getCodes(): Promise<string[]>
