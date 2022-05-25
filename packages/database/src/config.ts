@@ -47,8 +47,7 @@ function getDatabasePort(): number {
 
 /**
  * prints the blue box before each run
- * @param {string} database
- * @param {string} type
+ * @param {DataSourceOptions} config
  */
 function boxLog(config: DataSourceOptions) {
   const output = [
