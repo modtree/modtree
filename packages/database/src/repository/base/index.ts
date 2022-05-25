@@ -1,4 +1,3 @@
-import { FindOptionsRelations } from 'typeorm'
 export * from './build'
 export * from './load-relations'
 export * from './delete-all'
@@ -10,8 +9,3 @@ export * from './get-relation-names'
  * - entity refers to an instance
  * - Entity refers to the class name
  */
-
-export type LoadRelations<T> = (
-  entity: T,
-  relations: FindOptionsRelations<T>
-) => Promise<void>
