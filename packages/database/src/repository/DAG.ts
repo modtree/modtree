@@ -9,7 +9,7 @@ import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
 import { getDataSource, useBuild, useLoadRelations } from './base'
 import { quickpop } from '../utils/array'
-import { DAGRepository as Repository } from '../../types/repository'
+import type { DAGRepository as Repository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
 
