@@ -1,30 +1,21 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import { Init, DegreeProps } from '../../types/modtree'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import {
   getDataSource,
-  LoadRelations,
   useBuild,
   useLoadRelations,
   getRelationNames,
 } from './base'
 import { copy } from '../utils/object'
-
-interface DegreeRepository extends Repository<Degree> {
-  build(props: DegreeProps): Degree
-  initialize(props: Init.DegreeProps): Promise<void>
-  insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
-  loadRelations: LoadRelations<Degree>
-  findOneByTitle(title: string): Promise<Degree>
-  findOneById(id: string): Promise<Degree>
-}
+import type { DegreeRepository as Repository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @return {DegreeRepository}
  */
-export function DegreeRepository(database?: DataSource): DegreeRepository {
+export function DegreeRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
   const loadRelations = useLoadRelations(BaseRepo)
