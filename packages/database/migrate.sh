@@ -45,7 +45,7 @@ function migrate() {
 }
 
 # CONFIGS
-RESTORE_SOURCE=.test.sql
+RESTORE_SOURCE=modules-only.sql
 OVERRIDE_ALL=true
 NAME="migration"
 
