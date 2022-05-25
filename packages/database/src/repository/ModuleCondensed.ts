@@ -8,6 +8,8 @@ import {
   LoadRelations,
   useBuild,
   useLoadRelations,
+  useDeleteAll,
+  DeleteAll,
 } from './base'
 
 interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
@@ -16,6 +18,7 @@ interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
   getCodes(): Promise<string[]>
   build(props: NMC): ModuleCondensed
   loadRelations: LoadRelations<ModuleCondensed>
+  deleteAll: DeleteAll<ModuleCondensed>
 }
 
 /**
@@ -28,6 +31,7 @@ export function ModuleCondensedRepository(
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
   const loadRelations = useLoadRelations(BaseRepo)
+  const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
 
   /**
    * a drop-in replacement of a constructor
@@ -82,5 +86,6 @@ export function ModuleCondensedRepository(
     fetch,
     pull,
     loadRelations,
+    deleteAll
   })
 }
