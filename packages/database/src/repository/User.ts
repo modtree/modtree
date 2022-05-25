@@ -24,6 +24,7 @@ interface UserRepository extends Repository<User> {
   findOneById(id: string): Promise<User>
   addDegree(user: User, degreeId: string): Promise<void>
   findDegree(user: User, degreeId: string): Promise<Degree>
+  removeDegree(user: User, degreeId: string): Promise<void>
 }
 
 /**
@@ -188,6 +189,27 @@ export function UserRepository(database?: DataSource): UserRepository {
     return filtered[0]
   }
 
+  /**
+   * Removes a degree among saved degrees of a user.
+   * @param {User} user
+   * @param {string} degreeId
+   * @return {Promise<Degree>}
+   */
+  async function removeDegree(user: User, degreeId: string): Promise<void> {
+    // 1. load savedDegrees relations
+    await UserRepository(db).loadRelations(user, {
+      savedDegrees: true,
+    })
+    // 2. find degree among user's savedDegrees
+    const filtered = user.savedDegrees.filter((degree) => degree.id != degreeId)
+    // 3. find degree among user's savedDegrees
+    if (filtered.length == user.savedDegrees.length)
+      throw new Error('Degree not found in User')
+    // 4. update entity and save
+    user.savedDegrees = filtered
+    await BaseRepo.save(user)
+  }
+
   return BaseRepo.extend({
     canTakeModule,
     build,
@@ -198,5 +220,6 @@ export function UserRepository(database?: DataSource): UserRepository {
     findOneById,
     addDegree,
     findDegree,
+    removeDegree,
   })
 }

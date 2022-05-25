@@ -45,7 +45,7 @@ describe('User.addDegree', () => {
 })
 
 describe('User.findDegree', () => {
-  it('Successfully finds a saved degree', async () => {
+  it('Successfully finds a saved degree of a user', async () => {
     const res = await endpoint(db, () =>
       container(db, () => UserRepository(db).findDegree(user, degree.id))
     )
@@ -63,6 +63,31 @@ describe('User.findDegree', () => {
     // uses user from previous test
     try {
       await UserRepository(db).findDegree(user, init.invalidUUID)
+    } catch (err) {
+      error = err
+    }
+    expect(error).toBeInstanceOf(Error)
+    expect(error.message).toBe('Degree not found in User')
+
+    await db.destroy()
+  })
+})
+
+describe('User.removeDegree', () => {
+  it('Successfully removes a saved degree', async () => {
+    await endpoint(db, () =>
+      container(db, () => UserRepository(db).removeDegree(user, degree.id))
+    )
+    expect(user.savedDegrees).toBeInstanceOf(Array)
+    expect(user.savedDegrees.length).toEqual(0)
+  })
+
+  it('Throws error if degree not found', async () => {
+    let error
+    await db.initialize()
+    // uses user from previous test
+    try {
+      await UserRepository(db).removeDegree(user, init.invalidUUID)
     } catch (err) {
       error = err
     }
