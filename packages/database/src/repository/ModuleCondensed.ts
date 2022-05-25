@@ -18,7 +18,7 @@ interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
   getCodes(): Promise<string[]>
   build(props: NMC): ModuleCondensed
   loadRelations: LoadRelations<ModuleCondensed>
-  deleteAll: DeleteAll<ModuleCondensed>
+  deleteAll: DeleteAll
 }
 
 /**

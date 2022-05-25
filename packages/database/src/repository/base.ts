@@ -10,13 +10,7 @@ type LoadRelationsMethod = (
   relations: FindOptionsRelations<ModtreeEntity>
 ) => Promise<void>
 
-type DeleteAllMethod<T> = (
-  Entity: EntityConstructor<T>
-) => Promise<void>
-
-export type DeleteAll<T> = (
-  Entity: EntityConstructor<T>
-) => Promise<void>
+export type DeleteAll = () => Promise<void>
 
 export type LoadRelations<T> = (
   entity: T,
@@ -125,15 +119,13 @@ export function getRelationNames<T>(
  */
 export function useDeleteAll<Entity>(
   repository: Repository<Entity>
-): DeleteAllMethod<Entity> {
+): DeleteAll {
   /**
    * updates entity in-place to have relations
    *
    * @param {EntityConstructor<T>} entity to be updated
    */
-  async function deleteAll<T>(
-    Entity: EntityConstructor<T>,
-  ) {
+  async function deleteAll() {
     await repository.createQueryBuilder().delete().execute()
   }
   return deleteAll
