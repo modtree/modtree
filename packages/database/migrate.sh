@@ -18,17 +18,35 @@ function setup() {
   rm -rf $TMP
   mkdir -p $TMP
   # grab the date
-  DATE=$(date +'%Y-%m-%d_%R')
+  DATE=$(date +'%Y-%m-%d_%R:%S')
+}
+
+# to use in development, to override all existing migration .ts files
+# with just one big one
+function destructive_migrate() {
+  echo "destructive_migrate"
+  RESTORE_SOURCE=$RESTORE_SOURCE yarn restore:file
+  rm $MIGRATION_DIR/*.ts
+  yarn typeorm:ds migration:generate $TMP/$NAME
+  mv $TMP/* $MIGRATION_DIR/${NAME}_${DATE}.ts
+}
+
+# to use in production
+function incremental_migrate() {
+  echo 'incremental_migrate'
+  yarn typeorm:ds migration:generate $TMP/$NAME
+  mv $TMP/* $MIGRATION_DIR/${NAME}_${DATE}.ts
 }
 
 function migrate() {
-  RESTORE_SOURCE=$RESTORE_SOURCE yarn restore:file
-  SYNCHRONIZE=true yarn typeorm_ds migration:generate $TMP/$NAME
-  mv $TMP/* $MIGRATION_DIR/${NAME}_${DATE}.ts
+  [[ "$OVERRIDE_ALL" == "true" ]] \
+    && destructive_migrate \
+    || incremental_migrate
 }
 
 # CONFIGS
 RESTORE_SOURCE=.test.sql
+OVERRIDE_ALL=true
 NAME="migration"
 
 # MAIN
