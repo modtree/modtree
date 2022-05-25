@@ -1,4 +1,3 @@
-const Search = require('./components/docsearch').default
 // theme.config.js
 export default {
   projectLink: "https://github.com/modtree/modtree", // GitHub link in the navbar
