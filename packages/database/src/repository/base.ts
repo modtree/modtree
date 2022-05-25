@@ -120,14 +120,8 @@ export function getRelationNames<T>(
 export function useDeleteAll<Entity>(
   repository: Repository<Entity>
 ): DeleteAll {
-  /**
-   * updates entity in-place to have relations
-   *
-   * @param {EntityConstructor<T>} entity to be updated
-   */
-  async function deleteAll() {
+  const deleteAll = async () => {
     await repository.createQueryBuilder().delete().execute()
   }
   return deleteAll
 }
-
