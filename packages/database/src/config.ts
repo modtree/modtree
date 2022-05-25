@@ -20,7 +20,7 @@ type DataSourceOptions = {
   username: string
   password: string
   host: string
-  migrations: string[] | any[]
+  migrations: string[]
   entities: string[]
   synchronize: boolean
 }
