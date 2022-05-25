@@ -11,6 +11,7 @@ import {
   NUSModuleAttributes,
 } from '../../types/nusmods'
 import { config } from '../config'
+import { Base } from './Base'
 
 const descriptionType: ColumnType =
   config.type == 'postgres'
@@ -20,7 +21,7 @@ const descriptionType: ColumnType =
       : 'text'
 
 @Entity({ name: 'module' })
-export class Module {
+export class Module extends Base {
   @PrimaryGeneratedColumn('uuid')
   id: string
 

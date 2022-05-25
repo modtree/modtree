@@ -5,11 +5,12 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
+import { Base } from './Base'
 import { Module } from './Module'
 import { Degree } from './Degree'
 
 @Entity({ name: 'user' })
-export class User {
+export class User extends Base {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
