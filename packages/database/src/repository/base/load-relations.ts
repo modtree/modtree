@@ -1,5 +1,5 @@
 import { FindOptionsRelations, Repository } from 'typeorm'
-import { EntityInstance, LoadRelations } from './types'
+import { EntityConstructor, EntityInstance, LoadRelations } from './types'
 
 /**
  * takes in a repository, returns a function that is meant to be used
@@ -9,7 +9,7 @@ import { EntityInstance, LoadRelations } from './types'
  * @return {LoadRelationsMethod}
  */
 export function useLoadRelations<T>(
-  repository: Repository<EntityInstance<T>>
+  repository: Repository<EntityConstructor<T>>
 ): LoadRelations<EntityInstance<T>> {
   /**
    * updates entity in-place to have relations
