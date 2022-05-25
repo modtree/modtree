@@ -92,15 +92,8 @@ const base = {
 export const config = getConfig(base.type)
 
 export const db = new DataSource({
-  type: config.type,
-  host: config.host,
-  port: config.port,
-  database: config.database,
-  username: config.username,
-  password: config.password,
-  synchronize: config.synchronize,
+  ...config,
+  migrationsRun: !config.synchronize,
   logging: false,
-  entities: config.entities,
-  migrations: config.migrations,
   subscribers: [],
 })
