@@ -22,6 +22,7 @@ type DataSourceOptions = {
   host: string
   migrations: string[]
   entities: string[]
+  synchronize: boolean
 }
 
 /**
@@ -49,11 +50,12 @@ function getDatabasePort(): number {
  * @param {string} database
  * @param {string} type
  */
-function boxLog(database: string, type: string) {
+function boxLog(config: DataSourceOptions) {
   const output = [
-    `Env File: ${envFile}`,
-    `Database: ${database}`,
-    `Engine:   ${type}`,
+    `Env File:    ${envFile}`,
+    `Database:    ${config.database}`,
+    `Engine:      ${config.type}`,
+    `Synchronize: ${config.synchronize}`,
   ]
   box.blue(output.join('\n'))
 }
@@ -77,8 +79,9 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     restoreSource: env('RESTORE_SOURCE') || '',
     entities: ['src/entity/*.ts'],
     migrations: ['src/migrations/**/*.ts'],
+    synchronize: process.env.SYNCHRONIZE === 'true',
   }
-  boxLog(config.database, config.type)
+  boxLog(config)
   return config
 }
 
@@ -96,7 +99,7 @@ export const db = new DataSource({
   database: config.database,
   username: config.username,
   password: config.password,
-  synchronize: true,
+  synchronize: config.synchronize,
   logging: false,
   entities: config.entities,
   migrations: config.migrations,
