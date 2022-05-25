@@ -1,30 +1,26 @@
 import { FindOptionsRelations, Repository } from 'typeorm'
-import { ModtreeEntity } from '../../entity'
-
-type LoadRelationsMethod = (
-  entity: ModtreeEntity,
-  relations: FindOptionsRelations<ModtreeEntity>
-) => Promise<void>
+import { LoadRelations } from '../../../types/repository'
+import { Base } from '../../entity'
 
 /**
  * takes in a repository, returns a function that is meant to be used
  * as a repository method
  *
- * @param {Repository<ModtreeEntity>} repository
+ * @param {Repository<Base>} repository
  * @return {LoadRelationsMethod}
  */
 export function useLoadRelations(
-  repository: Repository<ModtreeEntity>
-): LoadRelationsMethod {
+  repository: Repository<Base>
+): LoadRelations<Base> {
   /**
    * updates entity in-place to have relations
    *
-   * @param {ModtreeEntity} entity to be updated
-   * @param {FindOptionsRelations<ModtreeEntity>} relations
+   * @param {Base} entity to be updated
+   * @param {FindOptionsRelations<Base>} relations
    */
   async function loadRelations(
-    entity: ModtreeEntity,
-    relations: FindOptionsRelations<ModtreeEntity>
+    entity: Base,
+    relations: FindOptionsRelations<Base>
   ) {
     // find itself and load relations into a temporary variable
     const res = await repository.findOne({
