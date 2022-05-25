@@ -56,10 +56,13 @@ export function UserRepository(database?: DataSource): UserRepository {
     const modulesPromise = Promise.all(
       queryList.map((list) => ModuleRepository(db).findByCodes(list))
     )
-    const user = build(props)
     const [modulesDone, modulesDoing] = await modulesPromise
-    user.modulesDone = modulesDone || []
-    user.modulesDoing = modulesDoing || []
+    const userProps: UserProps = {
+      ...props,
+      modulesDone: modulesDone || [],
+      modulesDoing: modulesDoing || [],
+    }
+    const user = build(userProps)
     await BaseRepo.save(user)
   }
 
