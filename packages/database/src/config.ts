@@ -2,7 +2,6 @@ import { config as dotenvConfig } from 'dotenv'
 import { resolve } from 'path'
 import { DatabaseType, DataSource } from 'typeorm'
 import { box } from './cli'
-import { migration1653462233865 } from './migrations/migration_2022-05-25_15:03:51'
 
 const rootDir = process.cwd()
 const env = process.env.NODE_ENV
@@ -79,7 +78,7 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     database: env('ACTIVE_DATABASE') || '',
     restoreSource: env('RESTORE_SOURCE') || '',
     entities: ['src/entity/*.ts'],
-    migrations: [migration1653462233865],
+    migrations: ['src/migrations/*.ts'],
     synchronize: sync,
     migrationsRun: !sync,
   }
