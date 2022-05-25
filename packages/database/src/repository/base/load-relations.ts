@@ -22,16 +22,17 @@ export function useLoadRelations<T>(
     relations: FindOptionsRelations<EntityInstance<T>>
   ) {
     // find itself and load relations into a temporary variable
-    const res = await repository.findOne({
-      where: {
-        id: entity.id,
-      },
-      relations,
-    })
-    // iterate through the requested relations and mutate the entity
-    Object.keys(relations).map((key) => {
-      entity[key] = res[key]
-    })
+    await repository
+      .findOne({
+        where: { id: entity.id },
+        relations,
+      })
+      .then((res) => {
+        // iterate through the requested relations and mutate the entity
+        Object.keys(relations).map((key) => {
+          entity[key] = res[key]
+        })
+      })
   }
   return loadRelations
 }
