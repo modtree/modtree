@@ -1,19 +1,19 @@
 import { DataSource } from 'typeorm'
 import { createEmpty } from '../../utils/object'
-import { EntityConstructor } from './types'
+import { EntityConstructor } from '../../../types/typeorm'
 
 /**
  * a drop-in replacement for a contructor, but for TypeORM entities
  * @param {DataSource} database
- * @param {EntityConstructor<T>} Entity
+ * @param {EntityConstructor<Entity>} Entity
  * @param {InitProps} props to init
  * @return {T}
  */
-export function useBuild<T, P>(
+export function useBuild<Entity, P>(
   database: DataSource,
-  Entity: EntityConstructor<T>,
+  Entity: EntityConstructor<Entity>,
   props: P
-): T {
+): Entity {
   const entity = new Entity()
   const meta = database.getMetadata(Entity)
   /**
