@@ -2,6 +2,7 @@ import { config as dotenvConfig } from 'dotenv'
 import { resolve } from 'path'
 import { DatabaseType, DataSource } from 'typeorm'
 import { box } from './cli'
+import { migration1653462233865 } from './migrations/migration_2022-05-25_15:03:51'
 
 const rootDir = process.cwd()
 const env = process.env.NODE_ENV
@@ -20,7 +21,7 @@ type DataSourceOptions = {
   username: string
   password: string
   host: string
-  migrations: string[]
+  migrations: string[] | any[]
   entities: string[]
   synchronize: boolean
 }
@@ -67,6 +68,7 @@ function boxLog(config: DataSourceOptions) {
 function getConfig(type: SupportedDatabases): DataSourceOptions {
   const key = (e: string) => `${type.toUpperCase()}_${e}`
   const env = (e: string) => process.env[key(e)]
+  const sync = process.env.SYNCHRONIZE === 'true'
   const config = {
     rootDir,
     type,
@@ -77,8 +79,9 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     database: env('ACTIVE_DATABASE') || '',
     restoreSource: env('RESTORE_SOURCE') || '',
     entities: ['src/entity/*.ts'],
-    migrations: ['src/migrations/**/*.ts'],
-    synchronize: process.env.SYNCHRONIZE === 'true',
+    migrations: [migration1653462233865],
+    synchronize: sync,
+    migrationsRun: !sync,
   }
   boxLog(config)
   return config
@@ -93,7 +96,6 @@ export const config = getConfig(base.type)
 
 export const db = new DataSource({
   ...config,
-  migrationsRun: !config.synchronize,
   logging: false,
   subscribers: [],
 })
