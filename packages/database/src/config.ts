@@ -22,6 +22,7 @@ type DataSourceOptions = {
   host: string
   migrations: string[]
   entities: string[]
+  synchronize: boolean
 }
 
 /**
@@ -46,14 +47,14 @@ function getDatabasePort(): number {
 
 /**
  * prints the blue box before each run
- * @param {string} database
- * @param {string} type
+ * @param {DataSourceOptions} config
  */
-function boxLog(database: string, type: string) {
+function boxLog(config: DataSourceOptions) {
   const output = [
-    `Env File: ${envFile}`,
-    `Database: ${database}`,
-    `Engine:   ${type}`,
+    `Env File:    ${envFile}`,
+    `Database:    ${config.database}`,
+    `Engine:      ${config.type}`,
+    `Synchronize: ${config.synchronize}`,
   ]
   box.blue(output.join('\n'))
 }
@@ -66,6 +67,7 @@ function boxLog(database: string, type: string) {
 function getConfig(type: SupportedDatabases): DataSourceOptions {
   const key = (e: string) => `${type.toUpperCase()}_${e}`
   const env = (e: string) => process.env[key(e)]
+  const sync = process.env.SYNCHRONIZE === 'true'
   const config = {
     rootDir,
     type,
@@ -76,9 +78,11 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     database: env('ACTIVE_DATABASE') || '',
     restoreSource: env('RESTORE_SOURCE') || '',
     entities: ['src/entity/*.ts'],
-    migrations: ['src/migrations/**/*.ts'],
+    migrations: ['src/migrations/*.ts'],
+    synchronize: sync,
+    migrationsRun: !sync,
   }
-  boxLog(config.database, config.type)
+  boxLog(config)
   return config
 }
 
@@ -90,15 +94,7 @@ const base = {
 export const config = getConfig(base.type)
 
 export const db = new DataSource({
-  type: config.type,
-  host: config.host,
-  port: config.port,
-  database: config.database,
-  username: config.username,
-  password: config.password,
-  synchronize: true,
+  ...config,
   logging: false,
-  entities: config.entities,
-  migrations: config.migrations,
   subscribers: [],
 })

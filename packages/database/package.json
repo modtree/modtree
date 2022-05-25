@@ -48,14 +48,14 @@
     "lint:prettier": "prettier --ignore-path .gitignore --write . && yarn lint",
     "dump": "ts-node ./src/api/sql/dump.ts",
     "restore": "ts-node ./src/api/sql/restore.ts",
-    "restore:t": "ts-node ./src/api/sql/restoreTest.ts",
+    "restore:file": "ts-node ./src/api/sql/restore-from-file.ts",
     "reset:all": "ts-node ./src/api/sql/reset/all.ts",
     "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed.ts",
     "reset:m": "ts-node ./src/api/sql/reset/module.ts",
     "reset:d": "ts-node ./src/api/sql/reset/degree.ts",
-    "typeorm_ds": "typeorm-ts-node-esm -d ./src/data-source.ts",
-    "mc": "yarn typeorm_ds schema:log",
-    "mg": "yarn typeorm_ds migration:generate ./src/migrations/migration-name",
-    "mr": "yarn typeorm_ds migration:run"
+    "typeorm:ds": "typeorm-ts-node-esm -d ./src/config.ts",
+    "mc": "yarn typeorm:ds schema:log",
+    "mg": "yarn typeorm:ds migration:generate ./src/migrations/migration-name",
+    "mr": "yarn typeorm:ds migration:run"
   }
 }

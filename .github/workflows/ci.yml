@@ -16,7 +16,7 @@ env:
   MYSQL_DATABASE: test_db
   DB_USER: root
   DB_PASSWORD: root
-  RESTORE: .test.sql
+  RESTORE: modules-only.sql
 
 jobs:
   pre_job:

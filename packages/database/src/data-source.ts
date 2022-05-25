@@ -11,22 +11,10 @@ import { config } from './config'
  */
 export function getSource(database: string): DataSource {
   return new DataSource({
+    ...config,
     database,
-    type: config.type,
-    host: config.host,
-    port: config.port,
-    username: config.username,
-    password: config.password,
-    synchronize: true,
-    logging: false,
-    entities: config.entities,
-    migrations: config.migrations,
-    subscribers: [],
   })
 }
-
-// Required for TypeORM migrations
-export const dataSource = getSource(config.database)
 
 /**
  * a wrapper for typeorm-based database connections
