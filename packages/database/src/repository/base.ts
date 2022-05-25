@@ -3,9 +3,19 @@ import { db as DefaultSource } from '../config'
 import { ModtreeEntity } from '../entity'
 import { createEmpty } from '../utils/object'
 
+type EntityConstructor<T> = new () => T
+
 type LoadRelationsMethod = (
   entity: ModtreeEntity,
   relations: FindOptionsRelations<ModtreeEntity>
+) => Promise<void>
+
+type DeleteAllMethod<T> = (
+  Entity: EntityConstructor<T>
+) => Promise<void>
+
+export type DeleteAll<T> = (
+  Entity: EntityConstructor<T>
 ) => Promise<void>
 
 export type LoadRelations<T> = (
@@ -22,7 +32,6 @@ export function getDataSource(db: DataSource): DataSource {
   return db || DefaultSource
 }
 
-type EntityConstructor<T> = new () => T
 /**
  * a drop-in replacement for a contructor, but for TypeORM entities
  * @param {DataSource} database
@@ -98,12 +107,35 @@ export function useLoadRelations(
  */
 export function getRelationNames<T>(
   database: DataSource,
-  Entity: EntityConstructor<T>,
+  Entity: EntityConstructor<T>
 ): Record<string, boolean> {
   const meta = database.getMetadata(Entity)
   const relationNames = meta.relations.map((r) => r.propertyName)
   // make into Record for loadRelations
   const res: Record<string, boolean> = {}
-  relationNames.forEach((r) => res[r] = true)
+  relationNames.forEach((r) => (res[r] = true))
   return res
 }
+
+/**
+ * takes in a repository, returns a function that deletes all entities in that repository
+ *
+ * @param {Repository<EntityConstructor<T>>} repository
+ * @return {DeleteAllMethod}
+ */
+export function useDeleteAll<Entity>(
+  repository: Repository<Entity>
+): DeleteAllMethod<Entity> {
+  /**
+   * updates entity in-place to have relations
+   *
+   * @param {EntityConstructor<T>} entity to be updated
+   */
+  async function deleteAll<T>(
+    Entity: EntityConstructor<T>,
+  ) {
+    await repository.createQueryBuilder().delete().from(Entity).execute()
+  }
+  return deleteAll
+}
+
