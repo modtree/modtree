@@ -1,4 +1,4 @@
-import { ObjectLiteral } from 'typeorm'
+import { ObjectLiteral, FindOptionsRelations } from 'typeorm'
 
 export type EntityConstructor<T extends ObjectLiteral> = new () => T
 
