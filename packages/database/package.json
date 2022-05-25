@@ -53,7 +53,7 @@
     "reset:mc": "ts-node ./src/api/sql/reset/moduleCondensed.ts",
     "reset:m": "ts-node ./src/api/sql/reset/module.ts",
     "reset:d": "ts-node ./src/api/sql/reset/degree.ts",
-    "typeorm_ds": "typeorm-ts-node-esm -d ./src/data-source.ts",
+    "typeorm_ds": "typeorm-ts-node-esm -d ./src/config.ts",
     "mc": "yarn typeorm_ds schema:log",
     "mg": "yarn typeorm_ds migration:generate ./src/migrations/migration-name",
     "mr": "yarn typeorm_ds migration:run"

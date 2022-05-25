@@ -16,9 +16,6 @@ export function getSource(database: string): DataSource {
   })
 }
 
-// Required for TypeORM migrations
-export const dataSource = getSource(config.database)
-
 /**
  * a wrapper for typeorm-based database connections
  * @param {DataSource} database
