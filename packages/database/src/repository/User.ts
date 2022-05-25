@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { Init, UserProps } from '../../types/modtree'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
@@ -8,30 +8,17 @@ import { DegreeRepository } from './Degree'
 import { utils } from '../utils'
 import {
   useLoadRelations,
-  LoadRelations,
   getDataSource,
   useBuild,
   getRelationNames,
 } from './base'
-
-interface UserRepository extends Repository<User> {
-  build(props: UserProps): User
-  initialize(props: Init.UserProps): Promise<void>
-  canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
-  loadRelations: LoadRelations<User>
-  findOneByUsername(username: string): Promise<User>
-  eligibleModules(user: User): Promise<Module[] | void>
-  findOneById(id: string): Promise<User>
-  addDegree(user: User, degreeId: string): Promise<void>
-  findDegree(user: User, degreeId: string): Promise<Degree>
-  removeDegree(user: User, degreeId: string): Promise<void>
-}
+import type { UserRepository as Repository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @return {UserRepository}
  */
-export function UserRepository(database?: DataSource): UserRepository {
+export function UserRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(User)
   const loadRelations = useLoadRelations(BaseRepo)
@@ -56,10 +43,13 @@ export function UserRepository(database?: DataSource): UserRepository {
     const modulesPromise = Promise.all(
       queryList.map((list) => ModuleRepository(db).findByCodes(list))
     )
-    const user = build(props)
     const [modulesDone, modulesDoing] = await modulesPromise
-    user.modulesDone = modulesDone || []
-    user.modulesDoing = modulesDoing || []
+    const userProps: UserProps = {
+      ...props,
+      modulesDone: modulesDone || [],
+      modulesDoing: modulesDoing || [],
+    }
+    const user = build(userProps)
     await BaseRepo.save(user)
   }
 

@@ -8,9 +8,10 @@ import {
 import { User } from './User'
 import { Degree } from './Degree'
 import { Module } from './Module'
+import { Base } from './Base'
 
 @Entity({ name: 'DAG' })
-export class DAG {
+export class DAG extends Base {
   @PrimaryGeneratedColumn('uuid')
   id: string
 

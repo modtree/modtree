@@ -1,4 +1,4 @@
-import { DataSource, In, Repository, SelectQueryBuilder } from 'typeorm'
+import { DataSource, In, SelectQueryBuilder } from 'typeorm'
 import { Init, DAGProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
 import { DAG } from '../entity/DAG'
@@ -7,25 +7,9 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import {
-  getDataSource,
-  LoadRelations,
-  useBuild,
-  useLoadRelations,
-} from './base'
+import { getDataSource, useBuild, useLoadRelations } from './base'
 import { quickpop } from '../utils/array'
-
-interface DAGRepository extends Repository<DAG> {
-  build(props: DAGProps): DAG
-  initialize(props: Init.DAGProps): Promise<void>
-  toggleModule(dag: DAG, moduleCode: string): Promise<void>
-  loadRelations: LoadRelations<DAG>
-  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<DAG>
-  findManyByUserAndDegreeId(
-    userId: string,
-    degreeId: string
-  ): Promise<[DAG[], number]>
-}
+import type { DAGRepository as Repository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
 
@@ -33,7 +17,7 @@ type ModuleState = 'placed' | 'hidden' | 'invalid'
  * @param {DataSource} database
  * @return {DAGRepository}
  */
-export function DAGRepository(database?: DataSource): DAGRepository {
+export function DAGRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(DAG)
   const loadRelations = useLoadRelations(BaseRepo)
@@ -122,12 +106,8 @@ export function DAGRepository(database?: DataSource): DAGRepository {
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: dag.modulesPlaced
-        .map((m) => m.moduleCode)
-        .indexOf(moduleCode),
-      hidden: dag.modulesHidden
-        .map((m) => m.moduleCode)
-        .indexOf(moduleCode),
+      placed: dag.modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
+      hidden: dag.modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
       invalid: -1,
     }
     const state: ModuleState =

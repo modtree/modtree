@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "lib": ["es5", "es6"],
-    "skipLibCheck": true,
     "target": "es5",
     "module": "commonjs",
     "esModuleInterop": true,
@@ -9,7 +8,8 @@
     "outDir": "./lib",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["@types/jest"]
   },
   "include": ["src", "types", "tests"],
   "exclude": ["lib", "node_modules"]

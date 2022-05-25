@@ -5,30 +5,15 @@ import { nusmodsApi } from '../utils/string'
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
-import { DataSource, Repository } from 'typeorm'
-import {
-  getDataSource,
-  LoadRelations,
-  useLoadRelations,
-  useBuild,
-} from './base'
-
-interface ModuleRepository extends Repository<Module> {
-  build(props: NM): Module
-  get(): Promise<Module[]>
-  fetchOne(moduleCode: string): Promise<Module>
-  getCodes(): Promise<string[]>
-  pull(): Promise<Module[]>
-  findByFaculty(faculty: string): Promise<Module[]>
-  loadRelations: LoadRelations<Module>
-  findByCodes(moduleCodes: string[]): Promise<Module[]>
-}
+import { DataSource } from 'typeorm'
+import { getDataSource, useLoadRelations, useBuild } from './base'
+import type { ModuleRepository as Repository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @return {ModuleRepository}
  */
-export function ModuleRepository(database?: DataSource): ModuleRepository {
+export function ModuleRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Module)
   const loadRelations = useLoadRelations(BaseRepo)

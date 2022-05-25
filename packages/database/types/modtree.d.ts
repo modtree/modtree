@@ -1,3 +1,5 @@
+import type { Module, Degree, User } from "../src/entity"
+
 export type ModtreeFunction<T> = () => Promise<T>
 type Data = string | number | boolean
 type BaseArgs = Partial<Record<string, Data>>

@@ -2,32 +2,19 @@ import axios from 'axios'
 import { nusmodsApi, getModuleLevel } from '../utils/string'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
-import { DataSource, Repository } from 'typeorm'
-import {
-  getDataSource,
-  LoadRelations,
-  useBuild,
-  useLoadRelations,
-} from './base'
-
-interface ModuleCondensedRepository extends Repository<ModuleCondensed> {
-  pull(): Promise<ModuleCondensed[]>
-  fetch(): Promise<ModuleCondensed[]>
-  getCodes(): Promise<string[]>
-  build(props: NMC): ModuleCondensed
-  loadRelations: LoadRelations<ModuleCondensed>
-}
+import { DataSource } from 'typeorm'
+import { getDataSource, useBuild, useLoadRelations, useDeleteAll } from './base'
+import type { ModuleCondensedRepository as Repository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @return {ModuleCondensedRepository}
  */
-export function ModuleCondensedRepository(
-  database?: DataSource
-): ModuleCondensedRepository {
+export function ModuleCondensedRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
   const loadRelations = useLoadRelations(BaseRepo)
+  const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
 
   /**
    * a drop-in replacement of a constructor
@@ -82,5 +69,6 @@ export function ModuleCondensedRepository(
     fetch,
     pull,
     loadRelations,
+    deleteAll,
   })
 }
