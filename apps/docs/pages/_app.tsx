@@ -1,4 +1,6 @@
 import 'nextra-theme-docs/style.css'
+import '../style.css'
+
 import { FC } from 'react'
 
 export default function Nextra({

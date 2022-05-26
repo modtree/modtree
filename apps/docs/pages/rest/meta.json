@@ -1,0 +1,8 @@
+{
+  "index": "API",
+  "dag": "DAG",
+  "degree": "Degree",
+  "user": "User",
+  "module": "Module",
+  "module-condensed": "Module Condensed"
+}
