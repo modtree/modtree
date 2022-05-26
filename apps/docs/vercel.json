@@ -5,5 +5,7 @@
       "FORCE_RUNTIME_TAG": "canary"
     }
   },
-  "silent": true
+  "github": {
+    "silent": true
+  }
 }
