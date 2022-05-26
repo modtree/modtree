@@ -22,6 +22,7 @@ const header: any = {
 }
 
 const name: any = {
+  fontWeight: 'bold',
   marginRight: '8px'
 };
 
