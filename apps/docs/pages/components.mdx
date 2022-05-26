@@ -1,5 +1,6 @@
 import Parameter from "../components/Parameter"
 import ParameterSummary from "../components/ParameterSummary"
+import Response from "../components/Response"
 
 # Components
 
@@ -16,7 +17,7 @@ This is a list of frontend components for the docs.
 <Parameter
     name="id"
     type="string"
-    required=true
+    required={true}
 >
     This is a required parameter.
 </Parameter>
@@ -40,4 +41,17 @@ This is a list of frontend components for the docs.
             content: "The ID of a user"
         }
     ]}
+/>
+
+## Response
+
+<Response
+response={`{
+    code: 200,
+    message: "Success",
+}`}
+schema={`{
+    code: "int",
+    message: "string",
+}`}
 />
