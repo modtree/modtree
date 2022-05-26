@@ -4,6 +4,7 @@
     "title": "Getting Started",
     "hidden": true
   },
+  "components": "Components",
   "entities": "Entities",
   "developers": "Developers",
   "rest": "REST API"
