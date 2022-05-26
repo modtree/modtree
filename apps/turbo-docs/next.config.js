@@ -10,6 +10,9 @@ module.exports = withNextra({
   experiments: {
     esmExternals: true,
   },
+  images: {
+    domains: ['avatars.githubusercontent.com']
+  },
   async redirects() {
     return [
       {

@@ -2,35 +2,13 @@ import {
   ShareIcon,
   ArrowsExpandIcon,
   BeakerIcon,
-  MapIcon,
-  ChartBarIcon,
-  SwitchHorizontalIcon,
   BellIcon,
-  ChartPieIcon,
-  ChipIcon,
   CloudUploadIcon,
-  DuplicateIcon,
   FingerPrintIcon,
-  LightningBoltIcon,
-  RefreshIcon,
 } from "@heroicons/react/outline";
-import copy from "copy-to-clipboard";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import toast, { Toaster } from "react-hot-toast";
-import edelman from "../../images/edelman.jpeg";
-import elad from "../../images/elad.jpeg";
-import flavio from "../../images/flavio.jpeg";
-import jongold from "../../images/jongold.jpeg";
-import ollermi from "../../images/ollermi.jpeg";
-import shadcn from "../../images/shadcn.jpeg";
-import christian from "../../images/christian.jpeg";
-import yangshunz from "../../images/yangshunz.jpeg";
-import nmoore from "../../images/nmoore.jpeg";
-import joshlarson from "../../images/joshlarson.jpeg";
-import paularmstrong from "../../images/paularmstrong.jpeg";
-import { Container } from "../Container";
 
 const features = [
   {
@@ -65,11 +43,22 @@ const features = [
   },
 ];
 
+const members = [
+  {
+    name: "Nguyen Vu Khang",
+    role: "Faculty of Science",
+    href: "https://github.com/nguyenvukhang",
+    src: "/images/people/khang_headshot.jpg",
+  },
+  {
+    name: "Tan Wei Seng",
+    role: "Faculty of Computing",
+    href: "https://github.com/weiseng18",
+    src: "https://avatars.githubusercontent.com/u/20338724",
+  },
+];
+
 function Page() {
-  const onClick = () => {
-    copy("npx create-turbo@latest");
-    toast.success("Copied to clipboard");
-  };
   return (
     <>
       <Head>
@@ -169,34 +158,47 @@ function Page() {
               world class planning experience.
             </p>
           </div>
-          <div className="flex items-center max-w-2xl py-4 mx-auto space-x-4">
-            <div className="mt-4">
-              <Image
-                src="/images/people/khang_headshot.jpg"
-                height={72}
-                width={72}
-                className="block mr-6 rounded-full"
-                alt="Nguyen Vu Khang"
-              />
-            </div>
-            <div className="flex flex-col h-full space-y-3">
-              <div className="inline-flex items-center ">
-                <a
-                  href="https://github.com/nguyenvukhang"
-                  target="_blank"
-                  className="font-bold text-gray-400 no-underline"
-                  rel="noopener noreferrer"
-                >
-                  Nguyen Vu Khang
-                </a>
-                <div className="ml-2 text-gray-500">Modtree Junior Developer</div>
-              </div>
-            </div>
-          </div>
+          {members.map((props) => (
+            <Person {...props} />
+          ))}
         </div>
       </div>
-      <Toaster position="bottom-right" />
     </>
+  );
+}
+
+// src="https://avatars.githubusercontent.com/u/20338724?v=4"
+function Person(props: {
+  name: string;
+  href: string;
+  role: string;
+  src: string;
+}) {
+  return (
+    <div className="flex items-center max-w-2xl py-2 mx-auto space-x-4">
+      <div className="mt-4">
+        <Image
+          height={56}
+          width={56}
+          className="block mr-6 rounded-full"
+          src={props.src}
+          alt={props.name}
+        />
+      </div>
+      <div className="flex flex-col h-full space-y-3">
+        <div className="inline-flex items-center ">
+          <a
+            href={props.href}
+            target="_blank"
+            className="font-bold text-gray-400 no-underline"
+            rel="noopener noreferrer"
+          >
+            {props.name}
+          </a>
+          <div className="ml-2 text-gray-500">{props.role}</div>
+        </div>
+      </div>
+    </div>
   );
 }
 
