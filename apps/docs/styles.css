@@ -11,3 +11,19 @@ body {
 sub > p {
   @apply text-xl text-gray-500;
 }
+
+.logo {
+  background-size: auto;
+  background-repeat: no-repeat;
+  height: 42px;
+  width: 200px;
+  background-image: url("/logo-light.svg");
+}
+
+.dark .logo {
+  background-size: auto;
+  background-repeat: no-repeat;
+  height: 42px;
+  width: 200px;
+  background-image: url("/logo-dark.svg");
+}

@@ -1,18 +1,10 @@
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { Footer } from "./components/Footer";
-
-function getMode(classList) {
-  if (classList.contains("dark")) {
-    return "dark";
-  }
-  return "light";
-}
+import { useRouter } from 'next/router'
+import { Footer } from './components/Footer'
 
 const theme = {
-  github: "https://github.com/modtree/modtree",
-  projectLink: "https://github.com/modtree/modtree",
-  titleSuffix: " | modtree",
+  github: 'https://github.com/modtree/modtree',
+  projectLink: 'https://github.com/modtree/modtree',
+  titleSuffix: ' | modtree',
   search: false,
   unstable_flexsearch: false,
   unstable_staticImage: false,
@@ -20,25 +12,9 @@ const theme = {
   darkMode: true,
   font: false,
   banner: null,
-  logo: () => {
-    const [mode, setMode] = useState("light");
-    useEffect(() => {
-      const node = document.getElementsByTagName("html")[0];
-      const observer = new MutationObserver(() =>
-        setMode(getMode(document.documentElement.classList))
-      );
-      observer.observe(node, {
-        attributes: true,
-      });
-    }, []);
-    return mode === "light" ? (
-      <img src="/logo.svg" width={160} />
-    ) : (
-      <img src="/logo-dark.svg" width={160} />
-    );
-  },
+  logo: <div className="logo" />,
   head: function Head({ title, meta }) {
-    const router = useRouter();
+    const router = useRouter()
     return (
       <>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -77,22 +53,22 @@ const theme = {
         <meta
           property="og:image"
           content={`https://modtree-docs.vercel.app${
-            meta.ogImage ?? "/og-image.png"
+            meta.ogImage ?? '/og-image.png'
           }`}
         />
         <meta property="og:locale" content="en_IE" />
         <meta property="og:site_name" content="Modtree" />
       </>
-    );
+    )
   },
   footerEditLink: () => {
-    return "Edit this page on GitHub";
+    return 'Edit this page on GitHub'
   },
   footerText: () => {
-    return <Footer />;
+    return <Footer />
   },
   nextThemes: {
-    defaultTheme: "system",
+    defaultTheme: 'system',
   },
-};
-export default theme;
+}
+export default theme
