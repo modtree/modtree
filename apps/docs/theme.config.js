@@ -1,17 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-function getMode(className) {
-  if (className.includes(' ')) {
-    const split = className.split(' ')
-    if (split.includes('light')) {
-      return 'light'
-    } else if (split.includes('dark')) {
-      return 'dark'
-    }
-  } else if (className === 'light') {
-    return 'light'
-  } else if (className === 'dark') {
-    return dark
+function getMode(classList) {
+  if (classList.contains('dark')) {
+    return 'dark'
   }
   return 'light'
 }
@@ -29,15 +20,20 @@ export default {
   footerText: `MIT ${new Date().getFullYear()} © modtree.`,
   footerEditLink: '',
   logo: () => {
+    const [mode, setMode] = useState('light')
     useEffect(() => {
-      if (document) {
-        console.log(getMode(document.documentElement.className))
-      }
+      const node = document.getElementsByTagName('html')[0]
+      const observer = new MutationObserver(() =>
+        setMode(getMode(document.documentElement.classList))
+      )
+      observer.observe(node, {
+        attributes: true,
+      })
     }, [])
-    return (
-      <div className="bg-blue-200">
-        <img src="/logo.png" width={160} />
-      </div>
+    return mode === 'light' ? (
+      <img src="/logo.svg" width={160} />
+    ) : (
+      <img src="/logo-dark.svg" width={160} />
     )
   },
   head: (
