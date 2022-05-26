@@ -1,6 +1,4 @@
-import Parameter from "../components/Parameter"
-import ParameterSummary from "../components/ParameterSummary"
-import Response from "../components/Response"
+import { ParameterUsage, ParameterSummaryUsage, ResponseUsage } from "./instances"
 
 # Components
 
@@ -8,50 +6,12 @@ This is a list of frontend components for the docs.
 
 ## Parameter
 
-<Parameter
-    name="paramName"
-    type="string"
->
-    This is where you can write your description for this parameter. Supports inline code like <code>src/</code> as expected.
-</Parameter>
-<Parameter
-    name="id"
-    type="string"
-    required={true}
->
-    This is a required parameter.
-</Parameter>
+<ParameterUsage/>
 
 ## ParameterSummary
 
-<ParameterSummary
-    method="GET"
-    path="/user/{userId}/degree/{degreeId}/modules"
-    pathParams={[
-        {
-            name: "degreeId",
-            type: "string",
-            required: "true",
-            content: "The ID of a degree"
-        },
-        {
-            name: "userId",
-            type: "string",
-            required: "true",
-            content: "The ID of a user"
-        }
-    ]}
-/>
+<ParameterSummaryUsage/>
 
 ## Response
 
-<Response
-response={`{
-    code: 200,
-    message: "Success",
-}`}
-schema={`{
-    code: "int",
-    message: "string",
-}`}
-/>
+<ResponseUsage/>

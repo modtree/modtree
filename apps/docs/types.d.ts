@@ -25,7 +25,6 @@ type Header = {
 }
 
 type ParameterSummaryProps = {
-  name: string
   method: string
   path: string
   pathParams: Header[]
