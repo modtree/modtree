@@ -1,28 +1,41 @@
 import { useRouter } from "next/router";
+import { useState, useEffect } from 'react'
 import { Footer } from "./components/Footer";
 
+function getMode(classList) {
+  if (classList.contains('dark')) {
+    return 'dark'
+  }
+  return 'light'
+}
+
 const theme = {
-  github: "https://github.com/vercel/turborepo",
-  projectLink: "https://github.com/vercel/turborepo",
-  docsRepositoryBase:
-    "https://github.com/vercel/turborepo/blob/main/docs/pages",
-  titleSuffix: " | Turborepo",
+  github: "https://github.com/modtree/modtree",
+  projectLink: "https://github.com/modtree/modtree",
+  titleSuffix: " | modtree",
   search: false,
   unstable_flexsearch: false,
   unstable_staticImage: false,
   floatTOC: true,
   darkMode: true,
   font: false,
-  projectChatLink: "https://turborepo.org/discord",
-  feedbackLink: "Question? Give us feedback →",
   banner: null,
-  logo: function LogoActual() {
-    return (
-      <>
-        <img src="/logo-light.svg" width={160} />
-        <span className="sr-only">Turborepo</span>
-      </>
-    );
+  logo: () => {
+    const [mode, setMode] = useState('light')
+    useEffect(() => {
+      const node = document.getElementsByTagName('html')[0]
+      const observer = new MutationObserver(() =>
+        setMode(getMode(document.documentElement.classList))
+      )
+      observer.observe(node, {
+        attributes: true,
+      })
+    }, [])
+    return mode === 'light' ? (
+      <img src="/logo.svg" width={160} />
+    ) : (
+      <img src="/logo-dark.svg" width={160} />
+    )
   },
   head: function Head({ title, meta }) {
     const router = useRouter();

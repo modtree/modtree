@@ -43,7 +43,20 @@ module.exports = {
         lg: "1024px",
         betterhover: { raw: "(hover: hover)" },
       },
+      theme: {
+        backgroundImage: (theme) => ({
+          "logo-light":
+            "url('/logo-dark.svg')",
+          "logo-dark":
+            "url('/logo-light.svg')",
+        }),
+      },
     },
+  },
+  variants: {
+    extend: {
+      backgroundImage: ['dark']
+    }
   },
   darkMode: "class",
 };
