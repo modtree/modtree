@@ -1,10 +1,3 @@
-type Header = {
-  name: string
-  type: string
-  description: string
-  required?: boolean
-}
-
 type PathParameter = Header
 
 type ApiReferenceProps = {
@@ -15,4 +8,25 @@ type ApiReferenceProps = {
     headers: Header[]
     pathParameters: PathParameter[]
   }
+}
+
+type ParameterProps = {
+  name: string
+  type: string
+  required: string | boolean
+  children: ReactElement[] | ReactElement
+}
+
+type Header = {
+  name: string
+  type: string
+  required: string
+  content: string
+}
+
+type ParameterSummaryProps = {
+  name: string
+  method: string
+  path: string
+  pathParams: Header[]
 }
