@@ -7,3 +7,7 @@ body {
 
 .dark body {
 }
+
+sub > p {
+  @apply text-xl text-gray-500;
+}
