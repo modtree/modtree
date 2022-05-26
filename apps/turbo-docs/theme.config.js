@@ -7,10 +7,11 @@ const theme = {
   docsRepositoryBase:
     "https://github.com/vercel/turborepo/blob/main/docs/pages",
   titleSuffix: " | Turborepo",
-  search: true,
-  unstable_flexsearch: true,
-  unstable_staticImage: true,
+  search: false,
+  unstable_flexsearch: false,
+  unstable_staticImage: false,
   floatTOC: true,
+  darkMode: true,
   font: false,
   projectChatLink: "https://turborepo.org/discord",
   feedbackLink: "Question? Give us feedback →",
@@ -18,7 +19,7 @@ const theme = {
   logo: function LogoActual() {
     return (
       <>
-        <img src="/logo-dark.svg" width={160} />
+        <img src="/logo-light.svg" width={160} />
         <span className="sr-only">Turborepo</span>
       </>
     );
@@ -79,7 +80,7 @@ const theme = {
     return <Footer />;
   },
   nextThemes: {
-    defaultTheme: "dark",
+    defaultTheme: "light",
   },
 };
 export default theme;
