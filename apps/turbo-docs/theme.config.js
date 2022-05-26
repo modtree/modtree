@@ -80,7 +80,7 @@ const theme = {
     return <Footer />;
   },
   nextThemes: {
-    defaultTheme: "light",
+    defaultTheme: "system",
   },
 };
 export default theme;
