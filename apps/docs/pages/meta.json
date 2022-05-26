@@ -1,11 +1,14 @@
 {
-  "index": "Introduction",
-  "getting-started": {
-    "title": "Getting Started",
-    "hidden": true
+  "*": {
+    "type": "page"
   },
-  "components": "Components",
-  "entities": "Entities",
-  "developers": "Developers",
-  "rest": "REST API"
+  "index": {
+    "title": "Home",
+    "hidden": true,
+    "theme": {
+      "layout": "raw"
+    }
+  },
+  "docs": "Docs",
+  "reference": "API"
 }
