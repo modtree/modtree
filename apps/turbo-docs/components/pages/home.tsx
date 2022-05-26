@@ -158,8 +158,8 @@ function Page() {
               world class planning experience.
             </p>
           </div>
-          {members.map((props) => (
-            <Person {...props} />
+          {members.map((props, i) => (
+            <Person {...props} key={i} />
           ))}
         </div>
       </div>
@@ -167,7 +167,6 @@ function Page() {
   );
 }
 
-// src="https://avatars.githubusercontent.com/u/20338724?v=4"
 function Person(props: {
   name: string;
   href: string;
