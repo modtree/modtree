@@ -1,7 +1,11 @@
 import {
+  ShareIcon,
   ArrowsExpandIcon,
   BeakerIcon,
+  MapIcon,
   ChartBarIcon,
+  SwitchHorizontalIcon,
+  BellIcon,
   ChartPieIcon,
   ChipIcon,
   CloudUploadIcon,
@@ -27,52 +31,37 @@ import nmoore from "../../images/nmoore.jpeg";
 import joshlarson from "../../images/joshlarson.jpeg";
 import paularmstrong from "../../images/paularmstrong.jpeg";
 import { Container } from "../Container";
-import { Footer } from "../Footer";
+
 const features = [
   {
-    name: "Incremental builds",
-    description: `Building once is painful enough, Turborepo will remember what you've built and skip the stuff that's already been computed.`,
-    icon: RefreshIcon,
+    name: "Smart Reminders",
+    description: `Modtree will remind you to take pre-requisites so you don't have to check yourself.`,
+    icon: BellIcon,
   },
   {
-    name: "Content-aware hashing",
-    description: `Turborepo looks at the contents of your files, not timestamps to figure out what needs to be built.`,
+    name: "Easy Authentication",
+    description: `Modtree offers an option of passwordless, OTP-only authentication.`,
     icon: FingerPrintIcon,
   },
   {
-    name: "Remote Caching",
-    description: `Share a remote build cache with your teammates and CI/CD for even faster builds.`,
+    name: "Remote Storage",
+    description: `Save your degree and module plans online.`,
     icon: CloudUploadIcon,
   },
   {
-    name: "Parallel execution",
-    description: `Execute builds using every core at maximum parallelism without wasting idle CPUs.`,
-    icon: LightningBoltIcon,
-  },
-  {
-    name: "Zero runtime overhead",
-    description: `Turborepo won’t interfere with your runtime code or touch your sourcemaps. `,
-    icon: ChipIcon,
-  },
-  {
-    name: "Pruned subsets",
-    description: `Speed up PaaS deploys by generating a subset of your monorepo with only what's needed to build a specific target.`,
-    icon: ChartPieIcon,
-  },
-  {
-    name: "Task pipelines",
-    description: `Define the relationships between your tasks and then let Turborepo optimize what to build and when.`,
-    icon: ArrowsExpandIcon,
-  },
-  {
-    name: "Meets you where you’re at",
-    description: `Using Lerna? Keep your package publishing workflow and use Turborepo to turbocharge task running.`,
+    name: "Switch it up",
+    description: `Efficiently trial-and-error many possible ways of completing your degree.`,
     icon: BeakerIcon,
   },
   {
-    name: `Profile in your browser`,
-    description: `Generate build profiles and import them in Chrome or Edge to understand which tasks are taking the longest.`,
-    icon: ChartBarIcon,
+    name: "Power of overview",
+    description: `Modtree lets you visualize your entire degree all the way through, while giving you the flexibility to make it truly your own.`,
+    icon: ArrowsExpandIcon,
+  },
+  {
+    name: "Community templates",
+    description: `Pick from one of many existing templates that your friends created to jumpstart your degree planning.`,
+    icon: ShareIcon,
   },
 ];
 
