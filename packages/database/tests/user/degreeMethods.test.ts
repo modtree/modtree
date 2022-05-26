@@ -51,7 +51,7 @@ describe('User.findDegree', () => {
     )
     expect(res).toBeDefined()
     if (!res)
-      return;
+      return
     const foundDegree = res
     expect(foundDegree).toBeInstanceOf(Degree)
     expect(foundDegree.id).toEqual(degree.id)

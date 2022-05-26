@@ -49,8 +49,8 @@ export function Footer() {
               <div className="mt-12 md:!mt-0">
                 <FooterHeader>General</FooterHeader>
                 <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
-                  {navigation.general.map((item) => (
-                    <li key={item.name}>
+                  {navigation.general.map((item, i) => (
+                    <li key={i}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
                     </li>
                   ))}
@@ -59,8 +59,8 @@ export function Footer() {
               <div className="mt-12 md:!mt-0">
                 <FooterHeader>Support</FooterHeader>
                 <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
-                  {navigation.support.map((item) => (
-                    <li key={item.name}>
+                  {navigation.support.map((item, i) => (
+                    <li key={i}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
                     </li>
                   ))}

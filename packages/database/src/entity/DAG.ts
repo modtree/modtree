@@ -13,21 +13,21 @@ import { Base } from './Base'
 @Entity({ name: 'DAG' })
 export class DAG extends Base {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @ManyToOne(() => User)
   @JoinTable()
-  user: User
+    user: User
 
   @ManyToOne(() => Degree)
   @JoinTable()
-  degree: Degree
+    degree: Degree
 
   @ManyToMany(() => Module)
   @JoinTable()
-  modulesPlaced: Module[]
+    modulesPlaced: Module[]
 
   @ManyToMany(() => Module)
   @JoinTable()
-  modulesHidden: Module[]
+    modulesHidden: Module[]
 }
