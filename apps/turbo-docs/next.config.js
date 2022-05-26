@@ -9,6 +9,6 @@ module.exports = withNextra({
     esmExternals: true,
   },
   images: {
-    domains: ['avatars.githubusercontent.com']
+    domains: ["avatars.githubusercontent.com"],
   },
 });

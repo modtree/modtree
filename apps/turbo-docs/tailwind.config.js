@@ -45,18 +45,16 @@ module.exports = {
       },
       theme: {
         backgroundImage: (theme) => ({
-          "logo-light":
-            "url('/logo-dark.svg')",
-          "logo-dark":
-            "url('/logo-light.svg')",
+          "logo-light": "url('/logo-dark.svg')",
+          "logo-dark": "url('/logo-light.svg')",
         }),
       },
     },
   },
   variants: {
     extend: {
-      backgroundImage: ['dark']
-    }
+      backgroundImage: ["dark"],
+    },
   },
   darkMode: "class",
 };

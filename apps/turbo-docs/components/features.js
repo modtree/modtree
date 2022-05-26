@@ -45,10 +45,7 @@ function Features() {
     <>
       <div className="grid grid-cols-2 gap-6 my-12 sm:grid-cols-3 ">
         {features.map(({ icon: Icon, ...feature }, i) => (
-          <div
-            className="flex items-center space-x-4"
-            key={i}
-          >
+          <div className="flex items-center space-x-4" key={i}>
             <div>
               <Icon
                 className="block w-8 h-8"

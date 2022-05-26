@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 import { Footer } from "./components/Footer";
 
 function getMode(classList) {
-  if (classList.contains('dark')) {
-    return 'dark'
+  if (classList.contains("dark")) {
+    return "dark";
   }
-  return 'light'
+  return "light";
 }
 
 const theme = {
@@ -21,21 +21,21 @@ const theme = {
   font: false,
   banner: null,
   logo: () => {
-    const [mode, setMode] = useState('light')
+    const [mode, setMode] = useState("light");
     useEffect(() => {
-      const node = document.getElementsByTagName('html')[0]
+      const node = document.getElementsByTagName("html")[0];
       const observer = new MutationObserver(() =>
         setMode(getMode(document.documentElement.classList))
-      )
+      );
       observer.observe(node, {
         attributes: true,
-      })
-    }, [])
-    return mode === 'light' ? (
+      });
+    }, []);
+    return mode === "light" ? (
       <img src="/logo.svg" width={160} />
     ) : (
       <img src="/logo-dark.svg" width={160} />
-    )
+    );
   },
   head: function Head({ title, meta }) {
     const router = useRouter();
@@ -76,7 +76,9 @@ const theme = {
         />
         <meta
           property="og:image"
-          content={`https://modtree-docs.vercel.app${meta.ogImage ?? "/og-image.png"}`}
+          content={`https://modtree-docs.vercel.app${
+            meta.ogImage ?? "/og-image.png"
+          }`}
         />
         <meta property="og:locale" content="en_IE" />
         <meta property="og:site_name" content="Modtree" />

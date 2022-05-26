@@ -76,7 +76,8 @@ function Page() {
           </span>
         </h1>
         <p className="max-w-lg mx-auto mt-6 text-xl font-medium leading-tight text-center text-gray-400 sm:max-w-4xl sm:text-2xl md:text-3xl lg:text-4xl">
-          Modtree is a graph-oriented interactive visualization tool for planning out university degrees.
+          Modtree is a graph-oriented interactive visualization tool for
+          planning out university degrees.
         </p>
         <div className="max-w-xl mx-auto mt-5 sm:flex sm:justify-center md:mt-8">
           <div className="rounded-md ">
@@ -134,9 +135,10 @@ function Page() {
               Degrees are incredibly useful in getting a job, even in a world
               that heavily memes on how useless going to college supposedly is.
               However, knowing what to do in these last few years in school
-              academically can be daunting. It&apos;s become completely normal to
-              waste entire careers just because people didn&apos;t really care for
-              how they chose their path when they were still in university.
+              academically can be daunting. It&apos;s become completely normal
+              to waste entire careers just because people didn&apos;t really
+              care for how they chose their path when they were still in
+              university.
             </p>
             <p className="mb-6 text-lg leading-normal text-current lg:text-xl">
               We need something else.
