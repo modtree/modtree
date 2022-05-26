@@ -13,7 +13,7 @@ import Link from "next/link";
 const features = [
   {
     name: "Smart Reminders",
-    description: `Modtree will remind you to take pre-requisites so you don't have to check yourself.`,
+    description: `Modtree will remind you to take pre-requisites so you don&apos;t have to check yourself.`,
     icon: BellIcon,
   },
   {
@@ -134,8 +134,8 @@ function Page() {
               Degrees are incredibly useful in getting a job, even in a world
               that heavily memes on how useless going to college supposedly is.
               However, knowing what to do in these last few years in school
-              academically can be daunting. It's become completely normal to
-              waste entire careers just because people didn't really care for
+              academically can be daunting. It&apos;s become completely normal to
+              waste entire careers just because people didn&apos;t really care for
               how they chose their path when they were still in university.
             </p>
             <p className="mb-6 text-lg leading-normal text-current lg:text-xl">
