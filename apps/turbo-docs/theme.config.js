@@ -67,22 +67,19 @@ const theme = {
         <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="theme-color" content="#000" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@turborepo" />
-        <meta name="twitter:creator" content="@turborepo" />
         <meta property="og:type" content="website" />
         <meta name="og:title" content={title} />
         <meta name="og:description" content={meta.description} />
         <meta
           property="og:url"
-          content={`https://turborepo.org${router.asPath}`}
+          content={`https://modtree-docs.vercel.app${router.asPath}`}
         />
         <meta
           property="og:image"
-          content={`https://turborepo.org${meta.ogImage ?? "/og-image.png"}`}
+          content={`https://modtree-docs.vercel.app${meta.ogImage ?? "/og-image.png"}`}
         />
         <meta property="og:locale" content="en_IE" />
-        <meta property="og:site_name" content="Turborepo" />
+        <meta property="og:site_name" content="Modtree" />
       </>
     );
   },

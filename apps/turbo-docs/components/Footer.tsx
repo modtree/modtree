@@ -24,7 +24,7 @@ function FooterHeader({ children }) {
 const navigation = {
   general: [
     { name: "Documentation", href: "/docs" },
-    { name: "API Reference", href: "/docs/reference/command-line-reference" },
+    { name: "API Reference", href: "/reference" },
     { name: "Releases", href: "https://github.com/modtree/modtree/releases" },
     { name: "FAQ", href: "/docs/faq" },
   ],
@@ -33,18 +33,6 @@ const navigation = {
       name: "GitHub",
       href: "https://github.com/modtree/modtree",
     },
-  ],
-  company: [
-    {
-      name: "Open Source Software",
-      href: "https://vercel.com/oss?utm_source=turborepo.org&utm_medium=referral&utm_campaign=footer-ossLink",
-    },
-    { name: "GitHub", href: "https://github.com/vercel" },
-    { name: "Twitter", href: "https://twitter.com/vercel" },
-  ],
-  legal: [
-    { name: "Privacy Policy", href: "/privacy" },
-    { name: "Terms of Use", href: "/terms" },
   ],
 };
 

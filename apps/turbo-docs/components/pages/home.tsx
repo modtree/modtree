@@ -62,11 +62,10 @@ function Page() {
   return (
     <>
       <Head>
-        <title>Turborepo</title>
+        <title>Modtree</title>
         <meta
           name="og:description"
-          content="Turborepo is a high-performance build system for JavaScript and
-          TypeScript codebases"
+          content="Modtree is a graph-oriented interactive visualization tool for planning out university degrees."
         />
       </Head>
       <div className="w-auto px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8">
@@ -77,8 +76,7 @@ function Page() {
           </span>
         </h1>
         <p className="max-w-lg mx-auto mt-6 text-xl font-medium leading-tight text-center text-gray-400 sm:max-w-4xl sm:text-2xl md:text-3xl lg:text-4xl">
-          Modtree is a graph-oriented interactive visualization tool for
-          planning out university degrees.
+          Modtree is a graph-oriented interactive visualization tool for planning out university degrees.
         </p>
         <div className="max-w-xl mx-auto mt-5 sm:flex sm:justify-center md:mt-8">
           <div className="rounded-md ">
