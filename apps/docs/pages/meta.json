@@ -1,6 +1,9 @@
 {
   "index": "Introduction",
-  "getting-started": "Getting Started",
+  "getting-started": {
+    "title": "Getting Started",
+    "hidden": true
+  },
   "entities": "Entities",
   "developers": "Developers",
   "rest": "REST API"
