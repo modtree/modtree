@@ -5,9 +5,9 @@ const withNextra = require("nextra")({
 
 module.exports = withNextra({
   reactStrictMode: true,
-  // experiments: {
-  //   esmExternals: true,
-  // },
+  experiments: {
+    esmExternals: true,
+  },
   images: {
     domains: ["avatars.githubusercontent.com"],
   },
