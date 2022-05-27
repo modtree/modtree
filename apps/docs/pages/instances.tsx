@@ -1,5 +1,5 @@
 import Parameter from '../components/Parameter'
-import ParameterSummary from '../components/ParameterSummary'
+import ParameterList from '../components/ParameterList'
 import Response from '../components/Response'
 
 export const ParameterUsage = () => {
@@ -25,7 +25,7 @@ export const ParameterUsage = () => {
 
 export const ParameterSummaryUsage = () => {
   return (
-    <ParameterSummary
+    <ParameterList
       method="GET"
       path="/user/{userId}/degree/{degreeId}/modules"
       pathParams={[

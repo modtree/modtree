@@ -1,6 +1,6 @@
 import Parameter from "./Parameter"
 
-export default function ParameterSummary(props: ParameterList) {
+export default function ParameterList(props: ParameterList) {
   return (
     <div>
       <div style={header}>
