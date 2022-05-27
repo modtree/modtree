@@ -680,7 +680,7 @@ export const MethodUsage = () => {
       pathParams,
       queryParams: [],
     },
-    description: 'yes',
+    description: 'Lists all artifacts for a repository. Anyone with read access to the repository can use this endpoint. If the repository is private you must use an access token with the repo scope. GitHub Apps must have the actions:read permission to use this endpoint.',
     response: {
       fulfilled: response,
       schema,

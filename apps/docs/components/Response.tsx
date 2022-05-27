@@ -19,7 +19,7 @@ export default function Response(props: ResponseProps) {
     const border = selected ? 'border-b-orange-400' : 'border-b-transparent'
     return (
       <div
-        className={`p-2 border-b-2 ${border} cursor-pointer`}
+        className={`p-4 border-b-2 ${border} cursor-pointer`}
         onClick={() => setShowSchema(props.target)}
         children={props.title}
       />
@@ -30,19 +30,19 @@ export default function Response(props: ResponseProps) {
     <div>
       <h3 className="mt-0 mb-4">Response</h3>
       <div>
-        <div className="flex flex-row text-sm gap-x-1">
+        <div className="flex flex-row text-sm gap-x-1 border border-gray-300 rounded-t-lg">
           <ResponseTab
             target={ResponseState.fulfilled}
             title="Example response"
           />
           <ResponseTab target={ResponseState.schema} title="Response schema" />
         </div>
-        <div className='h-96 overflow-y-auto'>
-        <pre className="m-0 rounded-sm border border-gray-300 text-sm overflow-x-scroll">
-          <code className="language-js">
-          {JSON.stringify(props[showSchema], null, 4)}
-          </code>
-        </pre>
+        <div className="max-h-96 overflow-y-auto border border-gray-300">
+          <pre className="m-0 text-sm overflow-x-scroll">
+            <code className="language-js">
+              {JSON.stringify(props[showSchema], null, 4)}
+            </code>
+          </pre>
         </div>
       </div>
     </div>

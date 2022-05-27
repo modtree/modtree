@@ -18,11 +18,11 @@ function parseMarkdown(markdownText: string) {
 
 export default function Parameter(props: Parameter) {
   return (
-    <div>
-      <div style={header}>
-        <div>
+    <div className='border-t border-t-gray-300 mt-4 pt-4'>
+      <div className='flex flex-row mb-2'>
+        <div className='flex-1'>
           <code style={name}>{props.name}</code>
-          <span>{props.dataType}</span>
+          <span className='text-gray-600 text-sm'>{props.dataType}</span>
         </div>
         {props.required == true && <div className='text-yellow-600'>Required</div>}
       </div>
@@ -31,14 +31,6 @@ export default function Parameter(props: Parameter) {
       />
     </div>
   )
-}
-
-const header: any = {
-  margin: '8px 0',
-  padding: '8px 0',
-  display: 'flex',
-  justifyContent: 'space-between',
-  borderTop: '1px solid #aaa',
 }
 
 const name: any = {

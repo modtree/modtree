@@ -42,7 +42,6 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
 pre[class*="language-"] {
 	padding: 1em;
 	overflow: auto;
-	border: 1px solid #dddddd;
 	background-color: #fbfbfb;
 }
 
@@ -52,7 +51,6 @@ pre[class*="language-"] {
 	padding-top: 1px;
 	padding-bottom: 1px;
 	background: #f8f8f8;
-	border: 1px solid #dddddd;
 }
 
 .token.comment,

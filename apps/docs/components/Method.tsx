@@ -10,6 +10,7 @@ const Left = (props: MethodProps) => {
   }
   return (
     <div className="flex-1">
+      <p className='mb-6'>{props.description}</p>
       <ParameterList {...params} />
     </div>
   )
