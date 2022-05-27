@@ -62,6 +62,8 @@
     "module:get-codes": "ts-node ./src/api/module/get-codes.ts",
     "module:get": "ts-node ./src/api/module/get.ts",
     "module:pull": "ts-node ./src/api/module/pull.ts",
-    "module:fetch-one": "ts-node ./src/api/module/fetch-one.ts"
+    "module:fetch-one": "ts-node ./src/api/module/fetch-one.ts",
+    "module:fb-codes": "ts-node ./src/api/module/find-by-code.ts",
+    "module:fb-faculty": "ts-node ./src/api/module/find-by-faculty.ts"
   }
 }
