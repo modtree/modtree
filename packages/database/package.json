@@ -60,6 +60,7 @@
     "mg": "yarn typeorm:ds migration:generate ./src/migrations/migration-name",
     "mr": "yarn typeorm:ds migration:run",
     "module:get-codes": "ts-node ./src/api/module/get-codes.ts",
-    "module:get": "ts-node ./src/api/module/get.ts"
+    "module:get": "ts-node ./src/api/module/get.ts",
+    "module:fetch-one": "ts-node ./src/api/module/fetch-one.ts"
   }
 }
