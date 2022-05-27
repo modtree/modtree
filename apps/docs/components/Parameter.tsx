@@ -1,4 +1,4 @@
-export default function Parameter(props: ParameterProps) {
+export default function Parameter(props: any) {
   return (
     <div>
       <div style={header}>

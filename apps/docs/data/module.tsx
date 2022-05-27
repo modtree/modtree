@@ -1,4 +1,4 @@
-const module: ApiReferenceProps[] = [
+const module: any[] = [
   {
     title: 'Get a module',
     description: 'Retrieve detailed information about one module',

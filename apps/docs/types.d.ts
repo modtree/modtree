@@ -1,31 +1,30 @@
-type PathParameter = Header
+type Error =
+  | 'Not found'
+  | 'Database Error'
 
 type ApiReferenceProps = {
-  title: string
+  base: string
+  action: string // short description
   description: string
+  type: 'POST' | 'GET' | 'DELETE'
   endpoint: string
   parameters: {
-    headers: Header[]
-    pathParameters: PathParameter[]
+    pathParams: Parameter[]
+    queryParams: Parameter[]
+  }
+  response: {
+    fulfilled: Record<string, any>
+    schema: Record<string, any>
+    rejected: {
+      message: string
+      error: Error
+    }
   }
 }
 
-type ParameterProps = {
+type Parameter = {
   name: string
   type: string
-  required: string | boolean
-  children: ReactElement[] | ReactElement
-}
-
-type Header = {
-  name: string
-  type: string
-  required: string
-  content: string
-}
-
-type ParameterSummaryProps = {
-  method: string
-  path: string
-  pathParams: Header[]
+  required: boolean
+  description: string
 }
