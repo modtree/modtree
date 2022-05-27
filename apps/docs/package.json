@@ -14,12 +14,11 @@
   "dependencies": {
     "@heroicons/react": "1.0.5",
     "@react-aria/ssr": "3.1.2",
-    "highlight.js": "^11.5.1",
+    "database": "*",
     "next": "12.1.0",
     "nextra": "2.0.0-alpha.50",
     "nextra-theme-docs": "2.0.0-alpha.53",
     "prismjs": "^1.28.0",
-    "database": "*",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
