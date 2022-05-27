@@ -9,8 +9,8 @@ type MethodProps = {
   requestType: RequestType
   endpoint: string
   parameters: {
-    pathParams: Parameter[]
-    queryParams: Parameter[]
+    pathParams?: Parameter[]
+    queryParams?: Parameter[]
   }
   response: ResponseProps
 }
@@ -18,10 +18,6 @@ type MethodProps = {
 type ResponseProps = {
   fulfilled: Record<string, any>
   schema: Record<string, any>
-  rejected: {
-    message: string
-    error: CustomError
-  }
 }
 
 type Parameter = {
