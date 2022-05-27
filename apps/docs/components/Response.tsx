@@ -8,11 +8,8 @@ enum ResponseState {
 }
 
 export default function Response(props: ResponseProps) {
+  Prism.manual = true
   const [showSchema, setShowSchema] = useState(ResponseState.fulfilled)
-
-  useEffect(() => {
-    Prism.highlightAll()
-  }, [showSchema])
 
   const ResponseTab = (props: { title: string; target: ResponseState }) => {
     const selected = showSchema === props.target
@@ -40,9 +37,17 @@ export default function Response(props: ResponseProps) {
         </div>
         <div className="max-h-96 overflow-y-auto border border-gray-300">
           <pre className="m-0 text-sm overflow-x-scroll">
-            <code className="language-js">
-              {JSON.stringify(props[showSchema], null, 4)}
-            </code>
+            <code
+              className="lang-ts"
+              data-manual
+              dangerouslySetInnerHTML={{
+                __html: Prism.highlight(
+                  JSON.stringify(props[showSchema], null, 4),
+                  Prism.languages.js,
+                  'js'
+                ),
+              }}
+            ></code>
           </pre>
         </div>
       </div>
