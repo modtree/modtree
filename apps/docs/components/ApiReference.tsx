@@ -1,4 +1,4 @@
-import { moduleCondensedMethods } from "../data/module-condensed"
+import getAModuleCondensed from "../data/module-condensed"
 import Method from "./Method"
 
 export default function ApiReference(props: {data: MethodProps[]}) {
@@ -13,6 +13,6 @@ export default function ApiReference(props: {data: MethodProps[]}) {
 
 export const ModuleCondensedMethods = () => {
   return (
-    <ApiReference data={moduleCondensedMethods}/>
+    <Method {...getAModuleCondensed}/>
   )
 }

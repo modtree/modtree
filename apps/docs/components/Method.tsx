@@ -27,7 +27,6 @@ const Right = (props: MethodProps) => {
 export default function Method(props: MethodProps) {
   return (
     <>
-      <h2>{props.method}</h2>
       <div className="flex flex-row my-4 mx-2">
         <div>
           <span className="text-sm rounded-full bg-blue-500 text-white px-2.5 py-1 font-mono font-semibold mr-2">
