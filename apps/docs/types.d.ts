@@ -34,5 +34,6 @@ type Parameter = {
 type ParameterList = {
   requestType: RequestType
   path: string
-  pathParams: Parameter[]
+  pathParams?: Parameter[]
+  queryParams?: Parameter[]
 }

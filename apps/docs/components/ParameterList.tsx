@@ -1,33 +1,50 @@
-import Parameter from "./Parameter"
+import Parameter from './Parameter'
 
 export default function ParameterList(props: ParameterList) {
+
+  const PathParams = () => {
+    return (
+      <>
+        <h5>Path Parameters</h5>
+        {props.pathParams.map((one) => (
+          <Parameter
+            name={one.name}
+            dataType={one.dataType}
+            required={one.required}
+            description={one.description}
+          />
+        ))}
+      </>
+    )
+  }
+
+  const QueryParams = () => {
+    return (
+      <>
+        <h5>Query Parameters</h5>
+        {props.queryParams.map((one) => (
+          <Parameter
+            name={one.name}
+            dataType={one.dataType}
+            required={one.required}
+            description={one.description}
+          />
+        ))}
+      </>
+    )
+  }
+
+  function has(arr: any[]) {
+    if (!arr) return false
+    if (arr.length === 0) return false
+    return true
+  }
+
   return (
     <div>
-      <div style={header}>
-        <span style={requestType}>{props.requestType}</span>
-        <code>{props.path}</code>
-      </div>
-      <h4>Parameters</h4>
-      <h5>Path parameters</h5>
-      {props.pathParams && props.pathParams.map((one) =>
-        <Parameter
-          name={one.name}
-          dataType={one.dataType}
-          required={one.required}
-          description={one.description}
-        />
-      )}
+      <h3 className="mt-0 mb-4">Parameters</h3>
+      {has(props.pathParams) && <PathParams/>}
+      {has(props.queryParams) && <QueryParams/>}
     </div>
   )
-}
-
-const header: any = {
-  margin: "8px 0"
-}
-
-const requestType: any = {
-  border: "solid 1px black",
-  borderRadius: "25px",
-  padding: "4px",
-  marginRight: "4px"
 }

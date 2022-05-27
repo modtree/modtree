@@ -24,7 +24,7 @@ export default function Parameter(props: Parameter) {
           <code style={name}>{props.name}</code>
           <span>{props.dataType}</span>
         </div>
-        {props.required == true && <div style={required}>Required</div>}
+        {props.required == true && <div className='text-yellow-600'>Required</div>}
       </div>
       <div
         dangerouslySetInnerHTML={{ __html: parseMarkdown(props.description) }}
@@ -44,8 +44,4 @@ const header: any = {
 const name: any = {
   fontWeight: 'bold',
   marginRight: '8px',
-}
-
-const required: any = {
-  color: 'red',
 }
