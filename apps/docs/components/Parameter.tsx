@@ -1,4 +1,4 @@
-function parseMarkdown(markdownText) {
+function parseMarkdown(markdownText: string) {
   if (!markdownText) {
     return ''
   }
@@ -22,7 +22,7 @@ export default function Parameter(props: Parameter) {
       <div style={header}>
         <div>
           <code style={name}>{props.name}</code>
-          <span>{props.type}</span>
+          <span>{props.dataType}</span>
         </div>
         {props.required == true && <div style={required}>Required</div>}
       </div>

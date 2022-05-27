@@ -4,7 +4,7 @@ export default function ParameterList(props: ParameterList) {
   return (
     <div>
       <div style={header}>
-        <span style={method}>{props.method}</span>
+        <span style={requestType}>{props.requestType}</span>
         <code>{props.path}</code>
       </div>
       <h4>Parameters</h4>
@@ -12,7 +12,7 @@ export default function ParameterList(props: ParameterList) {
       {props.pathParams && props.pathParams.map((one) =>
         <Parameter
           name={one.name}
-          type={one.type}
+          dataType={one.dataType}
           required={one.required}
           description={one.description}
         />
@@ -25,7 +25,7 @@ const header: any = {
   margin: "8px 0"
 }
 
-const method: any = {
+const requestType: any = {
   border: "solid 1px black",
   borderRadius: "25px",
   padding: "4px",

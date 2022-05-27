@@ -1,16 +1,18 @@
-type Error = 'Not found' | 'Database Error'
+type CustomError = 'Not found' | 'Database Error'
 
-type Method = {
+type RequestType = 'POST' | 'GET' | 'DELETE'
+
+type MethodProps = {
   base: string
-  action: string // short description
+  method: string // short description
   description: string
-  type: 'POST' | 'GET' | 'DELETE'
+  requestType: RequestType
   endpoint: string
   parameters: {
     pathParams: Parameter[]
     queryParams: Parameter[]
   }
-  response: Response
+  response: ResponseProps
 }
 
 type ResponseProps = {
@@ -18,19 +20,19 @@ type ResponseProps = {
   schema: Record<string, any>
   rejected: {
     message: string
-    error: Error
+    error: CustomError
   }
 }
 
 type Parameter = {
   name: string
-  type: string
+  dataType: string
   required: boolean
   description: string
 }
 
 type ParameterList = {
-  method: string
+  requestType: RequestType
   path: string
   pathParams: Parameter[]
 }

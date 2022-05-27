@@ -1,6 +1,7 @@
 import "../styles.css";
 import "nextra-theme-docs/style.css";
 import "../custom.css";
+import '../prism-github.css'
 
 import { SSRProvider } from "@react-aria/ssr";
 
