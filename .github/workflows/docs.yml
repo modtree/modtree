@@ -25,7 +25,7 @@ jobs:
           git config --local user.email "docs-deploy@modtree.nus"
           git checkout docs
           git checkout -b docs-deploy
-          git push https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git docs-deploy
+          git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git docs-deploy
         env:
           USERNAME: docs-deploy[bot]
           REPO_KEY: ${{ secrets.PUSH_TOKEN }}
