@@ -1,29 +1,13 @@
 import Parameter from './Parameter'
 
 export default function ParameterList(props: ParameterList) {
-
-  const PathParams = () => {
+  const SomeParams = (props: { title: string; data: Parameter[] }) => {
     return (
       <>
-        <h5 className='mt-6'>Path Parameters</h5>
-        {props.pathParams.map((one) => (
+        <h5 className="mt-6">{props.title}</h5>
+        {props.data.map((one, i) => (
           <Parameter
-            name={one.name}
-            dataType={one.dataType}
-            required={one.required}
-            description={one.description}
-          />
-        ))}
-      </>
-    )
-  }
-
-  const QueryParams = () => {
-    return (
-      <>
-        <h5 className='mt-6'>Query Parameters</h5>
-        {props.queryParams.map((one) => (
-          <Parameter
+            key={`${one.name}-${i}`}
             name={one.name}
             dataType={one.dataType}
             required={one.required}
@@ -43,8 +27,12 @@ export default function ParameterList(props: ParameterList) {
   return (
     <div>
       <h3 className="mt-0 mb-0">Parameters</h3>
-      {has(props.pathParams) && <PathParams/>}
-      {has(props.queryParams) && <QueryParams/>}
+      {has(props.pathParams) && (
+        <SomeParams title="Path Parameters" data={props.pathParams} />
+      )}
+      {has(props.queryParams) && (
+        <SomeParams title="Query Parameters" data={props.queryParams} />
+      )}
     </div>
   )
 }

@@ -21,8 +21,9 @@ export default function Response(props: ResponseProps) {
       <div
         className={`p-4 border-b-2 ${border} cursor-pointer`}
         onClick={() => setShowSchema(props.target)}
-        children={props.title}
-      />
+      >
+        {props.title}
+      </div>
     )
   }
 
