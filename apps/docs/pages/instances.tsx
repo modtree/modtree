@@ -1,24 +1,26 @@
-import Parameter from "../components/Parameter"
-import ParameterSummary from "../components/ParameterSummary"
-import Response from "../components/Response"
+import Parameter from '../components/Parameter'
+import ParameterSummary from '../components/ParameterSummary'
+import Response from '../components/Response'
 
 export const ParameterUsage = () => {
-  return (<>
-    <Parameter
-      name="paramName"
-      type="string"
-      required={false}
-    >
-      This is where you can write your description for this parameter. Supports inline code like <code>src/</code> as expected.
-    </Parameter>
-    <Parameter
+  return (
+    <>
+      <Parameter
+        name="paramName"
+        type="string"
+        required={false}
+        description={
+          'This is where you can write your description for this parameter. Supports inline code like `src/` as expected.'
+        }
+      />
+      <Parameter
         name="id"
         type="string"
         required={true}
-    >
-        This is a required parameter.
-    </Parameter>
-  </>)
+        description="This is a required parameter."
+      />
+    </>
+  )
 }
 
 export const ParameterSummaryUsage = () => {
@@ -28,41 +30,36 @@ export const ParameterSummaryUsage = () => {
       path="/user/{userId}/degree/{degreeId}/modules"
       pathParams={[
         {
-          name: "degreeId",
-          type: "string",
-          required: "true",
-          content: "The ID of a degree"
+          name: 'degreeId',
+          type: 'string',
+          required: true,
+          description: 'The ID of a degree',
         },
         {
-          name: "userId",
-          type: "string",
-          required: "true",
-          content: "The ID of a user"
-        }
+          name: 'userId',
+          type: 'string',
+          required: true,
+          description: 'The ID of a user',
+        },
       ]}
     />
   )
 }
 
-export const ResponseUsage = () => {
+export const ResponseUsage = (props: ResponseProps) => {
   const response = {
     code: 200,
-    message: "Success",
+    message: 'Success',
   }
   const schema = {
-    code: "int",
-    message: "string",
+    code: 'int',
+    message: 'string',
   }
   return (
     <Response
-response={`{
-    code: 200,
-    message: "Success",
-}`}
-schema={`{
-    code: "int",
-    message: "string",
-}`}
+      fulfilled={response}
+      schema={schema}
+      rejected={props.rejected}
     />
   )
 }

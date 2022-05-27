@@ -32,7 +32,7 @@ const module: any[] = [
   },
 ]
 
-export const getModule = {
+export const getModule: Parameter = {
   title: 'Get a module',
   description: 'Retrieve detailed information about one module',
   endpoint: '/repos/{owner}/{repo}',

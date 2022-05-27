@@ -1,8 +1,6 @@
-type Error =
-  | 'Not found'
-  | 'Database Error'
+type Error = 'Not found' | 'Database Error'
 
-type ApiReferenceProps = {
+type Method = {
   base: string
   action: string // short description
   description: string
@@ -12,13 +10,15 @@ type ApiReferenceProps = {
     pathParams: Parameter[]
     queryParams: Parameter[]
   }
-  response: {
-    fulfilled: Record<string, any>
-    schema: Record<string, any>
-    rejected: {
-      message: string
-      error: Error
-    }
+  response: Response
+}
+
+type ResponseProps = {
+  fulfilled: Record<string, any>
+  schema: Record<string, any>
+  rejected: {
+    message: string
+    error: Error
   }
 }
 
@@ -27,4 +27,10 @@ type Parameter = {
   type: string
   required: boolean
   description: string
+}
+
+type ParameterList = {
+  method: string
+  path: string
+  pathParams: Parameter[]
 }
