@@ -13,6 +13,7 @@
     "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",
     "dev": "turbo run dev --filter=database --filter=web --parallel",
+    "dev:docs": "turbo run dev --filter=docs",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "rm:logs": "find . -name *.log | xargs rm",
     "setup": "yarn && yarn build:db && yarn"
