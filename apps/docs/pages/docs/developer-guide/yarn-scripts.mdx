@@ -1,1 +1,53 @@
 # Yarn Scripts
+
+Here's a list of database functions that are exposed as yarn scripts
+that can be ran after navigating to `packages/database`
+
+```
+cd packages/database
+```
+
+In terms of interactions with [NUSMods API][nusmods-api], we're using
+AY21-22.
+
+## Module Condensed commands
+
+`yarn modcon:fetch` fetches every module (condensed) from NUSMods
+API's [moduleList endpoint][modulelist].
+
+`yarn modcon:pull` does a fetch and writes fetched data into the
+database.
+
+`yarn modcon:get-codes` lists all module codes of modules (condensed)
+in the database.
+
+`yarn reset:mc` clears the table containing modules (condensed) while
+retaining the schema.
+
+## Module commands
+
+`yarn module:fetch-one` fetches exactly one module's full details from
+NUSMods API's [moduleCode endpoint][moduleCode].
+
+`yarn module:pull` does a fetch for every module (condensed) that
+exists in the database that doesn't yet have corresponding full module
+data.
+
+`yarn module:get-codes` lists all module codes of modules in the
+database.  
+(NOTE: this reads from a different table than `yarn
+modcon:get-codes`)
+
+`yarn module:get` lists all modules in the database
+
+`yarn module:find-by-codes` searches the modules in database by their
+code (hard-coded to look for "MA2001" in this script)
+
+`yarn module:find-by-faculty` searches the modules in database by
+their listed faculty (hard-coded to look for "Computing" in this
+script)
+
+[nusmods-api]: https://api.nusmods.com/v2/
+[modulelist]: https://api.nusmods.com/v2/#/Modules/get__acadYear__moduleList_json
+[moduleinfo]: https://api.nusmods.com/v2/#/Modules/get__acadYear__moduleInfo_json
+[moduleCode]: https://api.nusmods.com/v2/#/Modules/get__acadYear__modules__moduleCode__json
