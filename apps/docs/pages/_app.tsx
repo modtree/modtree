@@ -4,6 +4,7 @@ import '@/styles/custom.css'
 import '@/styles/prism-github.css'
 
 import { SSRProvider } from '@react-aria/ssr'
+import { ReactElement } from 'react'
 
 // Shim requestIdleCallback in Safari
 if (typeof window !== 'undefined' && !('requestIdleCallback' in window)) {
@@ -12,7 +13,7 @@ if (typeof window !== 'undefined' && !('requestIdleCallback' in window)) {
 }
 
 export default function Nextra({ Component, pageProps }) {
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = Component.getLayout || ((page: ReactElement) => page)
 
   return getLayout(
     <>
