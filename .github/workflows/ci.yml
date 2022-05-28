@@ -44,28 +44,12 @@ jobs:
     steps:
       - name: 🍺 Check out repository code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          repository: modtree/modtree
-          path: other_repo
-          token: ${{secrets.PUSH_TOKEN}}
 
       - name: 🧶 Install yarn
-        run: yarn
+        run: yarn install --frozen-lockfile
 
       - name: 📦 Build & lint database functions
         run: yarn build
-
-      - name: Hack Git
-        run: |
-          cd other_repo
-          git config --local user.name "docs-deploy[bot]"
-          git config --local user.email "docs-deploy@modtree.nus"
-          git checkout docs
-          git push https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git -f
-        env:
-          USERNAME: docs-deploy[bot]
-          REPO_KEY: ${{ secrets.PUSH_TOKEN }}
 
   database_tests:
     needs: pre_job
