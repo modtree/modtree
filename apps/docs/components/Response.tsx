@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Prism from 'prismjs'
 
 enum ResponseState {
@@ -38,7 +38,7 @@ export default function Response(props: ResponseProps) {
         <div className="max-h-96 overflow-y-auto border border-gray-300">
           <pre className="m-0 text-sm overflow-x-auto rounded-none bg-neutral-50">
             <code
-              className="lang-ts"
+              className="lang-js"
               data-manual
               dangerouslySetInnerHTML={{
                 __html: Prism.highlight(
