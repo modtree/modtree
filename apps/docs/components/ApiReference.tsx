@@ -1,8 +1,8 @@
-import ModuleCondensed from '@/data/module-condensed'
-import Module from '@/data/module'
-import Degree from '@/data/degree'
-import DAG from '@/data/dag'
-import User from '@/data/user'
+import * as ModuleCondensed from '@/data/module-condensed'
+import * as Module from '@/data/module'
+import * as Degree from '@/data/degree'
+import * as DAG from '@/data/dag'
+import * as User from '@/data/user'
 import Method from './Method'
 
 type EntityName = 'Module' | 'ModuleCondensed' | 'Degree' | 'DAG' | 'User'

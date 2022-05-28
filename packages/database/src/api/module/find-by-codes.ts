@@ -3,4 +3,10 @@ import { container } from '../..'
 import { db } from '../../config'
 import { analyze } from '../analyze'
 
-analyze(() => container(db, () => ModuleRepository(db).findByCodes(['MA2001'])))
+analyze(() =>
+  container(db, async () => {
+    const res = await ModuleRepository(db).findByCodes(['MA2001'])
+    console.log(res[0].description.toString())
+    return res
+  })
+)

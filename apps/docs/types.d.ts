@@ -3,7 +3,6 @@ type CustomError = 'Not found' | 'Database Error'
 type RequestType = 'POST' | 'GET' | 'DELETE'
 
 type MethodProps = {
-  base: string
   method: string // short description
   description: string
   requestType: RequestType

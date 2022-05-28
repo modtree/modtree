@@ -1,8 +1,7 @@
 export const get: MethodProps = {
   method: 'Get a module condensed',
-  base: 'Module Condensed',
   description: 'Retrieve basic information about one module',
-  endpoint: '/moduleCondensed/moduleCode/{moduleCode}',
+  endpoint: '/moduleCondensed/{moduleCode}',
   requestType: 'GET',
   parameters: {
     pathParams: [

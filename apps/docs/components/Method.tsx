@@ -6,11 +6,11 @@ const Left = (props: MethodProps) => {
     requestType: props.requestType,
     path: props.endpoint,
     pathParams: props.parameters.pathParams,
-    queryParams: props.parameters.queryParams
+    queryParams: props.parameters.queryParams,
   }
   return (
     <div className="flex-1">
-      <p className='mb-6'>{props.description}</p>
+      <p className="mb-6">{props.description}</p>
       <ParameterList {...params} />
     </div>
   )
@@ -29,11 +29,16 @@ export default function Method(props: MethodProps) {
     <>
       <div className="flex flex-row my-4 mx-2">
         <div>
-          <span className="text-sm rounded-full bg-blue-500 text-white px-2.5 py-1 font-mono font-semibold mr-2">
+          <span
+            style={{
+              backgroundColor: 'hsl(var(--nextra-primary-hue), 100%, 60%)',
+            }}
+            className="text-sm rounded-full text-white px-2.5 py-1 font-mono font-semibold mr-2"
+          >
             {props.requestType}
           </span>
         </div>
-        <code className="break-all">{props.endpoint}/foo-bar-baz</code>
+        <code className="break-all">{props.endpoint}</code>
       </div>
       <div className="flex flex-row w-full gap-x-8">
         <Left {...props} />

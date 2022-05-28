@@ -42,7 +42,7 @@ export default function Response(props: ResponseProps) {
               data-manual
               dangerouslySetInnerHTML={{
                 __html: Prism.highlight(
-                  JSON.stringify(props[showSchema], null, 4),
+                  JSON.stringify(props[showSchema], null, 2),
                   Prism.languages.js,
                   'js'
                 ),
