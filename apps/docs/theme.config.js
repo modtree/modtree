@@ -61,9 +61,7 @@ const theme = {
       </>
     )
   },
-  footerEditLink: () => {
-    return 'Edit this page on GitHub'
-  },
+  footerEditLink: null, // () => { return <a href="">Edit this page on GitHub</a> },
   footerText: () => {
     return <Footer />
   },

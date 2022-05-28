@@ -1,47 +1,7 @@
-import {
-  ShareIcon,
-  ArrowsExpandIcon,
-  BeakerIcon,
-  BellIcon,
-  CloudUploadIcon,
-  FingerPrintIcon,
-} from "@heroicons/react/outline";
+import { features } from '../features'
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-
-const features = [
-  {
-    name: "Smart Reminders",
-    description: `Modtree will remind you to take pre-requisites so you don&apos;t have to check yourself.`,
-    icon: BellIcon,
-  },
-  {
-    name: "Easy Authentication",
-    description: `Modtree offers an option of passwordless, OTP-only authentication.`,
-    icon: FingerPrintIcon,
-  },
-  {
-    name: "Remote Storage",
-    description: `Save your degree and module plans online.`,
-    icon: CloudUploadIcon,
-  },
-  {
-    name: "Switch it up",
-    description: `Efficiently trial-and-error many possible ways of completing your degree.`,
-    icon: BeakerIcon,
-  },
-  {
-    name: "Power of overview",
-    description: `Modtree lets you visualize your entire degree all the way through, while giving you the flexibility to make it truly your own.`,
-    icon: ArrowsExpandIcon,
-  },
-  {
-    name: "Community templates",
-    description: `Pick from one of many existing templates that your friends created to jumpstart your degree planning.`,
-    icon: ShareIcon,
-  },
-];
 
 const members = [
   {
@@ -81,7 +41,7 @@ function Page() {
         </p>
         <div className="max-w-xl mx-auto mt-5 sm:flex sm:justify-center md:mt-8">
           <div className="rounded-md ">
-            <Link href="/docs/getting-started">
+            <Link href="/docs/developer-guide/build">
               <a className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
                 Get Started →
               </a>
