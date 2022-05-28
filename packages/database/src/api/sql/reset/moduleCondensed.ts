@@ -1,4 +1,6 @@
-import { sql } from '../../../sql'
-import { config } from '../../../config'
+import { ModuleCondensedRepository } from '../../../repository'
+import { db } from '../../../config'
+import { analyze } from '../../analyze'
+import { container } from '../../..'
 
-sql.dropTables(config.database, ['moduleCondensed'])
+analyze(() => container(db, () => ModuleCondensedRepository(db).deleteAll()))
