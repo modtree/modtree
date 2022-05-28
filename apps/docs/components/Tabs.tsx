@@ -44,7 +44,6 @@ const TabSelectArea = (props: {
 }
 
 export const Tabs = (props: { items: string[]; children: ReactElement[] }) => {
-  console.log(props.children)
   const [selected, setSelected] = useState(0)
   return (
     <div>
