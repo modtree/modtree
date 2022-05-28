@@ -1,4 +1,5 @@
 {
   "build": "Build",
+  "tests": "Tests",
   "yarn-scripts": "Yarn Scripts"
 }

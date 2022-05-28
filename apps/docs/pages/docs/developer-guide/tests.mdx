@@ -1,0 +1,30 @@
+# Tests
+
+Currently, only database functions have tests written.
+
+## Running database tests
+
+The database source is located at `packages/database` from project root.
+
+```
+cd packages/database
+```
+
+To run all tests:
+
+```
+yarn test:all
+```
+
+Note that test files that end with `pull.test.ts` require an internet
+connection to run, since they test pulling data from [NUSMods
+API][nusmods-api]
+
+[nusmods-api]: https://api.nusmods.com/v2/
+
+To exclude the test that pulls all 6000+ module details from NUSMods,
+run
+
+```
+yarn test:ci
+```
