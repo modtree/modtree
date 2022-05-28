@@ -1,8 +1,10 @@
-import getAModuleCondensed from "../data/module-condensed"
-import Method from "./Method"
+import ModuleCondensedDocs from '../data/module-condensed'
+import Method from './Method'
 
-export const ModuleCondensedMethods = () => {
-  return (
-    <Method {...getAModuleCondensed}/>
-  )
-}
+const ModuleCondensed: Partial<Record<string, any>> = {}
+
+Object.keys(ModuleCondensedDocs).forEach((key) => {
+  ModuleCondensed[key] = () => <Method {...ModuleCondensedDocs[key]} />
+})
+
+export { ModuleCondensed }

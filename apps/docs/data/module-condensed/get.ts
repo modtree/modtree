@@ -1,4 +1,4 @@
-const data: MethodProps = {
+export const get: MethodProps = {
   method: 'Get a module condensed',
   base: 'Module Condensed',
   description: 'Retrieve basic information about one module',
@@ -29,5 +29,3 @@ const data: MethodProps = {
     },
   },
 }
-
-export default data
