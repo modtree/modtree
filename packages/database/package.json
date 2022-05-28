@@ -65,6 +65,7 @@
     "module:fetch-one": "ts-node ./src/api/module/fetch-one.ts",
     "module:fb-codes": "ts-node ./src/api/module/find-by-code.ts",
     "module:fb-faculty": "ts-node ./src/api/module/find-by-faculty.ts",
+    "modcon:fetch": "ts-node ./src/api/module-condensed/fetch.ts",
     "modcon:get-codes": "ts-node ./src/api/module-condensed/get-codes.ts"
   }
 }
