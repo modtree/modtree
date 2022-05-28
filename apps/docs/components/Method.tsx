@@ -9,7 +9,7 @@ const Left = (props: MethodProps) => {
     queryParams: props.parameters.queryParams,
   }
   return (
-    <div className="flex-1">
+    <div>
       <p className="mb-6">{props.description}</p>
       <ParameterList {...params} />
     </div>
@@ -18,7 +18,7 @@ const Left = (props: MethodProps) => {
 
 const Right = (props: MethodProps) => {
   return (
-    <div className="w-1/2">
+    <div className="lg:mt-0 mt-10">
       <Response {...props.response} />
     </div>
   )
@@ -40,7 +40,7 @@ export default function Method(props: MethodProps) {
         </div>
         <code className="break-all">{props.endpoint}</code>
       </div>
-      <div className="flex flex-row w-full gap-x-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-x-8">
         <Left {...props} />
         <Right {...props} />
       </div>
