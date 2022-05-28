@@ -1,8 +1,13 @@
 {
   "index": "Introduction",
-  "getting-started": "Getting Started",
+  "getting-started": {
+    "title": "Getting Started",
+    "hidden": true
+  },
   "core-concepts": "Core Concepts",
+  "developer-guide": "Developer Guide",
   "troubleshooting": "Troubleshooting",
   "glossary": "Glossary",
   "faq": "FAQ"
 }
+
