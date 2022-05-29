@@ -19,6 +19,15 @@ export class moduleCondensedController {
   }
 
   /**
+   * returns all the modules in the database
+   * @param {Request} _
+   * @param {Response} res
+   */
+  async hello(_: Request, res: Response) {
+    res.json({ message: 'helloworld' })
+  }
+
+  /**
    * searches the modules in the database (using a substring)
    * @param {Request} req
    * @param {Response} res

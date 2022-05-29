@@ -21,8 +21,6 @@
     "ts-jest": "^28.0.2"
   },
   "dependencies": {
-    "typescript": "4.5.2",
-    "ts-node": "10.7.0",
     "@inquirer/input": "^0.0.20-alpha.0",
     "axios": "^0.27.2",
     "boxen": "^5.1.2",
@@ -36,7 +34,9 @@
     "nodemon": "^2.0.16",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "0.3.6"
+    "ts-node": "10.7.0",
+    "typeorm": "0.3.6",
+    "typescript": "4.5.2"
   },
   "scripts": {
     "start": "yarn ts-node src/server.ts",
