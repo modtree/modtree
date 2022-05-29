@@ -29,8 +29,8 @@ jobs:
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
           cp -r ./packages/database ../database_deploy
           cd ../database_deploy
+          git config --global init.defaultBranch backend-deployment
           git init
-          git branch -m backend-deployment
           git add --all
           git commit -m "first try"
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
