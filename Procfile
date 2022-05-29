@@ -1,1 +1,1 @@
-web: yarn start:server
+web: yarn --cwd ./packages/database start
