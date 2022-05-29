@@ -7,7 +7,7 @@ import { db } from './config'
 const corsOpts: CorsOptions = {
   origin:
     process.env.NODE_ENV === 'production'
-      ? 'https://modtree.vercel.app/'
+      ? 'https://modtree.vercel.app'
       : 'http://localhost:3000',
 }
 
