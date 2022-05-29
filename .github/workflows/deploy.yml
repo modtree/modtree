@@ -57,6 +57,7 @@ jobs:
           elif [[ ${{ github.ref_name }} == "dep/docs" ]]; then
             echo "[ deploying docs... ]"
             git checkout -b docs-deployment
+            git push $REMOTE || git push --force $REMOTE
 
           fi
         env:
