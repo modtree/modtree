@@ -6,7 +6,8 @@ on:
       - docs
       - dev
       - ci
-      - deploy
+      - dep/front
+      - dep/back
 
 jobs:
   deploy_frontends:
@@ -25,17 +26,19 @@ jobs:
           cd other_repo
           git config --global user.name $USERNAME
           git config --global user.email "$USERNAME@modtree.nus"
+
+      - name: Deploy Frontend
+        if: ${{ GITHUB_REF == "dep/front" }}
+        run: |
           git checkout -b continuous-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
+
+      - name: Deploy Backend
+        if: ${{ GITHUB_REF == "dep/front" }}
+        run: |
           git checkout -b backend-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
-          # cp -r ./packages/database ../database_deploy
-          # cd ../database_deploy
-          # git config --global init.defaultBranch backend-deployment
-          # git init
-          # git add --all
-          # git commit -m "first try"
-          # git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
+
         env:
           USERNAME: auto-deploy[bot]
           REPO_KEY: ${{ secrets.PUSH_TOKEN }}
