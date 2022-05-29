@@ -26,7 +26,6 @@ jobs:
           git config --local user.email "$USERNAME@modtree.nus"
           git checkout -b continuous-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-docs.git
-          git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-web.git
         env:
           USERNAME: auto-deploy[bot]
           REPO_KEY: ${{ secrets.PUSH_TOKEN }}
