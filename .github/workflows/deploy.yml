@@ -28,13 +28,13 @@ jobs:
           git config --global user.email "$USERNAME@modtree.nus"
 
       - name: Deploy Frontend
-        if: ${{ GITHUB_REF == "dep/front" }}
+        if: ${{ env.GITHUB_REF == "dep/front" }}
         run: |
           git checkout -b continuous-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
 
       - name: Deploy Backend
-        if: ${{ GITHUB_REF == "dep/front" }}
+        if: ${{ env.GITHUB_REF == "dep/front" }}
         run: |
           git checkout -b backend-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
