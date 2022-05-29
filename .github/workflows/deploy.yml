@@ -24,29 +24,39 @@ jobs:
           path: other_repo
           token: ${{secrets.PUSH_TOKEN}}
 
-      - name: 🚀 Send it.
+      - name: Setup git user
         run: |
-          cd other_repo
           git config --global user.name $USERNAME
           git config --global user.email "$USERNAME@modtree.nus"
         env:
           USERNAME: ${{ env.USERNAME }}
 
-      - name: deploys
+      - name: 🚀 Send it.
         run: |
           cd other_repo
           echo "── BRANCH ──────────────"
           echo ${{ github.ref_name }}
           echo "────────────────────────"
-          ls; pwd;
+          REMOTE=https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
+
+          function SEND() {
+            git push $REMOTE || git push --force $REMOTE
+          }
+
           if [[ ${{ github.ref_name }} == "dep/front" ]]; then
             echo "[ deploying frontend... ]"
-            git checkout -b continuous-deployment
-            git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
+            git checkout -b frontend-deployment
+            git push $REMOTE || git push --force $REMOTE
+
           elif [[ ${{ github.ref_name }} == "dep/back" ]]; then
             echo "[ deploying backend... ]"
-            git checkout -b continuous-deployment
-            git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
+            git checkout -b backend-deployment
+            git push $REMOTE || git push --force $REMOTE
+
+          elif [[ ${{ github.ref_name }} == "dep/docs" ]]; then
+            echo "[ deploying docs... ]"
+            git checkout -b docs-deployment
+
           fi
         env:
           USERNAME: ${{ env.USERNAME }}
