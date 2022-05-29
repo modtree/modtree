@@ -27,13 +27,15 @@ jobs:
           git config --global user.email "$USERNAME@modtree.nus"
           git checkout -b continuous-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
-          cp -r ./packages/database ../database_deploy
-          cd ../database_deploy
-          git config --global init.defaultBranch backend-deployment
-          git init
-          git add --all
-          git commit -m "first try"
+          git checkout -b backend-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
+          # cp -r ./packages/database ../database_deploy
+          # cd ../database_deploy
+          # git config --global init.defaultBranch backend-deployment
+          # git init
+          # git add --all
+          # git commit -m "first try"
+          # git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
         env:
           USERNAME: auto-deploy[bot]
           REPO_KEY: ${{ secrets.PUSH_TOKEN }}
