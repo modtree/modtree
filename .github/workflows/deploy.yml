@@ -8,6 +8,7 @@ on:
       - ci
       - dep/front
       - dep/back
+      - dep/docs
 
 env:
   USERNAME: auto-deploy[bot]
