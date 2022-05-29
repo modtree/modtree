@@ -35,13 +35,16 @@ jobs:
       - name: deploys
         run: |
           cd other_repo
-          echo "=================================="
+          echo "── BRANCH ──────────────"
           echo ${{ github.ref_name }}
-          echo "=================================="
+          echo "────────────────────────"
+          ls; pwd;
           if [[ ${{ github.ref_name }} == "dep/front" ]]; then
+            echo "[ deploying frontend... ]"
             git checkout -b continuous-deployment
             git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
           elif [[ ${{ github.ref_name }} == "dep/back" ]]; then
+            echo "[ deploying backend... ]"
             git checkout -b continuous-deployment
             git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
           fi
