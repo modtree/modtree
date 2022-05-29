@@ -3,12 +3,10 @@ name: auto deploy
 on:
   push:
     branches:
-      - docs
-      - dev
-      - ci
       - dep/front
       - dep/back
       - dep/docs
+      - dep/app
 
 env:
   USERNAME: auto-deploy[bot]
@@ -46,18 +44,20 @@ jobs:
 
           if [[ ${{ github.ref_name }} == "dep/front" ]]; then
             echo "[ deploying frontend... ]"
-            git checkout -b frontend-deployment
-            git push $REMOTE || git push --force $REMOTE
+            git checkout -b frontend-deployment; SEND
 
           elif [[ ${{ github.ref_name }} == "dep/back" ]]; then
             echo "[ deploying backend... ]"
-            git checkout -b backend-deployment
-            git push $REMOTE || git push --force $REMOTE
+            git checkout -b backend-deployment; SEND
 
           elif [[ ${{ github.ref_name }} == "dep/docs" ]]; then
             echo "[ deploying docs... ]"
-            git checkout -b docs-deployment
-            git push $REMOTE || git push --force $REMOTE
+            git checkout -b docs-deployment; SEND
+
+          elif [[ ${{ github.ref_name }} == "dep/app" ]]; then
+            echo "[ deploying front + back... ]"
+            git checkout -b frontend-deployment; SEND
+            git checkout -b backend-deployment; SEND
 
           fi
         env:
