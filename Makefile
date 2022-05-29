@@ -9,6 +9,10 @@ yarn:
 	@if [[ $$USER == "khang" ]]; then make k; fi
 	@if [[ $$USER == "weiseng" ]]; then make w; fi
 
+i:
+	@if [[ $$USER == "khang" ]]; then make k-inv; fi
+	@if [[ $$USER == "weiseng" ]]; then make w-inv; fi
+
 w:
 	cp $$REPOS/orbital/env/.env.local ./apps/web/.env.local
 	cp $$REPOS/orbital/env/.env.test ./packages/database/.env.test
@@ -21,6 +25,7 @@ w-inv:
 k:
 	@cp $(khang)/web/.env* $(web)
 	@cp $(khang)/database/.env* $(database)
+	@echo "[installing env files]"
 	@echo "source: $(khang)"
 	@echo "consider it done."
 
@@ -35,5 +40,6 @@ k-inv:
 		$(database)/.env.test \
 	  $(database)/.env.heroku \
 		$(khang)/database
+	@echo "[saving env files]"
 	@echo "target: $(khang)"
 	@echo "consider it done."
