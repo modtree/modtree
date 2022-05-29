@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "cd ./packages/database && ts-node ./src/server.ts",
+    "start:server": "cd ./packages/database && ts-node ./src/server.ts",
     "build": "turbo run build --filter=database --filter=web",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
@@ -25,7 +25,7 @@
   },
   "engines": {
     "npm": ">=7.0.0",
-    "node": ">=14.0.0"
+    "node": "16.x"
   },
   "heroku-run-build-script": false,
   "packageManager": "yarn@1.22.18"
