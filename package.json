@@ -26,6 +26,6 @@
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
   },
-  "packageManager": "yarn@1.22.18",
-  "heroku-run-build-script": false
+  "heroku-run-build-script": false,
+  "packageManager": "yarn@1.22.18"
 }
