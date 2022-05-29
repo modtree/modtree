@@ -23,8 +23,8 @@ jobs:
       - name: 🚀 Send it.
         run: |
           cd other_repo
-          git config --local user.name "$USERNAME[bot]"
-          git config --local user.email "$USERNAME@modtree.nus"
+          git config --global user.name "$USERNAME[bot]"
+          git config --global user.email "$USERNAME@modtree.nus"
           git checkout -b continuous-deployment
           git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
           cp -r ./packages/database ../database_deploy
