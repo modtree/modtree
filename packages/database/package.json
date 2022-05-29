@@ -19,10 +19,10 @@
     "jest": "^28.1.0",
     "modtree-config": "*",
     "ts-jest": "^28.0.2",
-    "ts-node": "10.7.0",
     "typescript": "4.5.2"
   },
   "dependencies": {
+    "ts-node": "10.7.0",
     "@inquirer/input": "^0.0.20-alpha.0",
     "axios": "^0.27.2",
     "boxen": "^5.1.2",
