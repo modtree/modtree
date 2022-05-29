@@ -26,7 +26,7 @@ export default function ParameterList(props: ParameterList) {
 
   return (
     <div>
-      <h3 className="mt-0 mb-0">Parameters</h3>
+      <h3 className="my-0">Parameters</h3>
       {has(props.pathParams) && (
         <SomeParams title="Path Parameters" data={props.pathParams} />
       )}

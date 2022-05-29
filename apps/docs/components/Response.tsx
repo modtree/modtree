@@ -4,7 +4,6 @@ import Prism from 'prismjs'
 enum ResponseState {
   fulfilled = 'fulfilled',
   schema = 'schema',
-  // rejected = 'rejected',
 }
 
 export default function Response(props: ResponseProps) {
