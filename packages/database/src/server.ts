@@ -5,16 +5,17 @@ import cors, { CorsOptions } from 'cors'
 import { db } from './config'
 
 const corsOpts: CorsOptions = {
-  origin: 'http://localhost:3000',
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? 'https://modtree.vercel.app/'
+      : 'http://localhost:3000',
 }
 
 db.initialize()
   .then(async () => {
     // create express app
     const app = express()
-    if (process.env.NODE_ENV !== 'production') {
-      app.use(cors(corsOpts))
-    }
+    app.use(cors(corsOpts))
     app.use(bodyParser.json())
 
     // register express routes from defined application routes
