@@ -1,3 +1,7 @@
+database := ./packages/database
+web := ./apps/web
+khang := ~/dots/personal/.secrets/modtree
+
 yarn:
 	@yarn
 	@find . -name *.log | xargs rm
@@ -15,11 +19,23 @@ w-inv:
 	cp ./packages/database/.env $$REPOS/orbital/env/.env
 
 k:
-	cp ~/dots/personal/.secrets/modtree/.env .env
-	cp ~/dots/personal/.secrets/modtree/.env.test .env.test
-	cp ~/dots/personal/.secrets/modtree/.env.local ./apps/web
-	mv .env* ./packages/database
+	@cp $(khang)/web/.env* $(web)
+	@cp $(khang)/database/.env* $(database)
+	@echo "source: $(khang)"
+	@echo "consider it done."
 
 k-inv:
-	cp ./packages/database/.env* ~/dots/personal/.secrets/modtree
-	cp ./apps/web/.env.local ~/dots/personal/.secrets/modtree
+	@mkdir -p $(khang)/web
+	@mkdir -p $(khang)/database
+	@cp \
+		${web}/.env.example \
+		${web}/.env.local \
+		$(khang)/web
+	@cp \
+	  $(database)/.env.example \
+		$(database)/.env \
+		$(database)/.env.test \
+	  $(database)/.env.heroku \
+		$(khang)/database
+	@echo "target: $(khang)"
+	@echo "consider it done."
