@@ -12,7 +12,9 @@ db.initialize()
   .then(async () => {
     // create express app
     const app = express()
-    app.use(cors(corsOpts))
+    if (process.env.NODE_ENV !== 'production') {
+      app.use(cors(corsOpts))
+    }
     app.use(bodyParser.json())
 
     // register express routes from defined application routes
@@ -37,6 +39,6 @@ db.initialize()
         }
       )
     })
-    app.listen(8080)
+    app.listen(process.env.PORT || 8080)
   })
   .catch((error) => console.log(error))
