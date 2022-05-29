@@ -27,12 +27,12 @@ jobs:
           git config --global user.name $USERNAME
           git config --global user.email "$USERNAME@modtree.nus"
           echo "=================================="
-          echo "$GITHUB_REF"
+          echo ${{ github.ref_name }}
           echo "=================================="
-          if [[ $GITHUB_REF == "dep/front" ]]; then
+          if [[ ${{ github.ref_name }} == "dep/front" ]]; then
             git checkout -b continuous-deployment
             git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
-          elif [[ $GITHUB_REF == "dep/back" ]]; then
+          elif [[ ${{ github.ref_name }} == "dep/back" ]]; then
             git checkout -b continuous-deployment
             git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
           fi
