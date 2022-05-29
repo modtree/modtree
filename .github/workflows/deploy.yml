@@ -26,6 +26,10 @@ jobs:
           cd other_repo
           git config --global user.name $USERNAME
           git config --global user.email "$USERNAME@modtree.nus"
+
+      - name: deploys
+        run: |
+          cd other_repo
           echo "=================================="
           echo ${{ github.ref_name }}
           echo "=================================="
