@@ -9,12 +9,6 @@ export const Routes = [
   },
   {
     method: 'get',
-    route: '/hello',
-    controller: moduleCondensedController,
-    action: 'hello',
-  },
-  {
-    method: 'get',
     route: '/modules/:moduleCode',
     controller: moduleCondensedController,
     action: 'one',
