@@ -9,6 +9,9 @@ on:
       - dep/front
       - dep/back
 
+env:
+  USERNAME: auto-deploy[bot]
+
 jobs:
   deploy_frontends:
     runs-on: ubuntu-20.04
@@ -26,6 +29,8 @@ jobs:
           cd other_repo
           git config --global user.name $USERNAME
           git config --global user.email "$USERNAME@modtree.nus"
+        env:
+          USERNAME: ${{ env.USERNAME }}
 
       - name: deploys
         run: |
@@ -40,7 +45,6 @@ jobs:
             git checkout -b continuous-deployment
             git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
           fi
-
         env:
-          USERNAME: auto-deploy[bot]
+          USERNAME: ${{ env.USERNAME }}
           REPO_KEY: ${{ secrets.PUSH_TOKEN }}
