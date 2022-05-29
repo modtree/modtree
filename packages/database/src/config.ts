@@ -95,8 +95,6 @@ export const config = getConfig(base.type)
 
 export const db = new DataSource({
   ...config,
-  synchronize: false,
-  migrationsRun: false,
   logging: false,
   subscribers: [],
   extra: {
