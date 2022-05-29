@@ -26,6 +26,7 @@ jobs:
           cd other_repo
           git config --global user.name $USERNAME
           git config --global user.email "$USERNAME@modtree.nus"
+          return 0
 
       - name: Deploy Frontend
         if: ${{ env.GITHUB_REF == 'dep/front' }}
