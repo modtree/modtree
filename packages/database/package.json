@@ -39,7 +39,7 @@
     "typeorm": "0.3.6"
   },
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "yarn ts-node src/server.ts",
     "build": "tsc",
     "dev": "nodemon src/server.ts",
     "test": "yarn test:ci --detectOpenHandles",

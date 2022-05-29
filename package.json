@@ -24,8 +24,9 @@
     "turbo": "latest"
   },
   "engines": {
-    "npm": ">=7.0.0",
-    "node": "16.x"
+    "npm": "8.x",
+    "node": "16.x",
+    "yarn": "1.x"
   },
   "packageManager": "yarn@1.22.18",
   "heroku-run-build-script": false
