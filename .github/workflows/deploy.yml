@@ -6,6 +6,7 @@ on:
       - docs
       - dev
       - ci
+      - deploy
 
 jobs:
   deploy_frontends:
