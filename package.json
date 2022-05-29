@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "start:server": "cd ./packages/database && ts-node ./src/server.ts",
+    "start:server": "cd ./packages/database && yarn start",
     "build:ci": "turbo run build --filter=database --filter=web",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
