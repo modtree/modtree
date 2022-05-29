@@ -8,6 +8,7 @@
     "packages/*"
   ],
   "scripts": {
+    "start": "cd ./packages/database && ts-node ./src/server.ts",
     "build": "turbo run build --filter=database --filter=web",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
