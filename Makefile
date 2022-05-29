@@ -28,11 +28,9 @@ k-inv:
 	@mkdir -p $(khang)/web
 	@mkdir -p $(khang)/database
 	@cp \
-		${web}/.env.example \
 		${web}/.env.local \
 		$(khang)/web
 	@cp \
-	  $(database)/.env.example \
 		$(database)/.env \
 		$(database)/.env.test \
 	  $(database)/.env.heroku \
