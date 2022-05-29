@@ -26,6 +26,9 @@ jobs:
           cd other_repo
           git config --global user.name $USERNAME
           git config --global user.email "$USERNAME@modtree.nus"
+          echo "=================================="
+          echo "$GITHUB_REF"
+          echo "=================================="
           if [[ $GITHUB_REF == "dep/front" ]]; then
             git checkout -b continuous-deployment
             git push --force https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
