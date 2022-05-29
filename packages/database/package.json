@@ -6,6 +6,9 @@
   "description": "modtree database with MySQL",
   "main": "src/index.ts",
   "type": "commonjs",
+  "engines": {
+    "node": "16.x"
+  },
   "devDependencies": {
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^27.5.0",
