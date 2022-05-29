@@ -1,0 +1,32 @@
+export const get: MethodProps = {
+  method: 'Get a DAG',
+  description: 'Retrieve information about one Directed Acyclic Graph.',
+  endpoint: '/dag/{dagId}',
+  requestType: 'GET',
+  parameters: {
+    pathParams: [
+      {
+        name: 'dagId',
+        dataType: 'string',
+        description: 'The id of the DAG.',
+        required: true,
+      },
+    ],
+  },
+  response: {
+    fulfilled: {
+      id: 'ab0b6e0d-19cc-4c2e-ad7b-7e840cb04f38',
+      user: 'nguyenvukhang',
+      degree: 'Mathematics',
+      modulesPlaced: ['MA2001', 'MA2002'],
+      modulesHidden: ['CS2040S'],
+    },
+    schema: {
+      id: 'string',
+      user: 'string',
+      degree: 'string',
+      modulesPlaced: 'string[]',
+      modulesHidden: 'string[]',
+    },
+  },
+}

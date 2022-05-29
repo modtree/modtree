@@ -12,32 +12,32 @@ import { Degree } from './Degree'
 @Entity({ name: 'user' })
 export class User extends Base {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @Column()
-  displayName: string
+    displayName: string
 
   @Column()
-  username: string
+    username: string
 
   @ManyToMany(() => Module)
   @JoinTable()
-  modulesDone: Module[]
+    modulesDone: Module[]
 
   @ManyToMany(() => Module)
   @JoinTable()
-  modulesDoing: Module[]
+    modulesDoing: Module[]
 
   @Column()
-  matriculationYear: number
+    matriculationYear: number
 
   @Column()
-  graduationYear: number
+    graduationYear: number
 
   @Column()
-  graduationSemester: number
+    graduationSemester: number
 
   @ManyToMany(() => Degree)
   @JoinTable()
-  savedDegrees: Degree[]
+    savedDegrees: Degree[]
 }

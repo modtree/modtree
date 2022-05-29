@@ -11,12 +11,12 @@ import { Module } from './Module'
 @Entity({ name: 'degree' })
 export class Degree extends Base {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @ManyToMany(() => Module)
   @JoinTable()
-  modules: Module[]
+    modules: Module[]
 
   @Column()
-  title: string
+    title: string
 }

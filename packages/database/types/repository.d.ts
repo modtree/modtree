@@ -19,6 +19,7 @@ interface BaseRepo<Entity, BuildProps, InitProps = BuildProps>
   extends Repository<Entity> {
   build(props: BuildProps): Entity
   initialize?(props: InitProps): Promise<void>
+  deleteAll?: DeleteAll
 }
 
 export interface DAGRepository extends BaseRepo<DAG, DAGProps, Init.DAGProps> {

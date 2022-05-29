@@ -1,5 +1,14 @@
-const withTM = require('next-transpile-modules')(['ui'])
+const withNextra = require("nextra")({
+  theme: "nextra-theme-docs",
+  themeConfig: "./theme.config.js",
+});
 
-module.exports = withTM({
+module.exports = withNextra({
   reactStrictMode: true,
-})
+  experiments: {
+    esmExternals: true,
+  },
+  images: {
+    domains: ["avatars.githubusercontent.com"],
+  },
+});

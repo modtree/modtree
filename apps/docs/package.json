@@ -1,26 +1,40 @@
 {
   "name": "docs",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
+  "description": "Modtree docs",
   "scripts": {
-    "dev": "next dev --port 3001",
-    "build": "next build",
+    "dev": "next --port=3001",
     "start": "next start",
-    "lint": "next lint --fix"
+    "build": "next build ",
+    "lint": "next lint"
   },
+  "author": "Modtree",
+  "license": "MIT",
   "dependencies": {
-    "next": "12.0.8",
+    "@heroicons/react": "1.0.5",
+    "@react-aria/ssr": "3.1.2",
+    "database": "*",
+    "next": "12.1.0",
+    "nextra": "2.0.0-alpha.50",
+    "nextra-theme-docs": "2.0.0-alpha.53",
+    "prismjs": "^1.28.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "ui": "*"
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "eslint": "7.32.0",
-    "next-transpile-modules": "9.0.0",
-    "config": "*",
-    "tsconfig": "*",
-    "@types/node": "^17.0.12",
+    "@babel/core": "7.16.7",
+    "@types/prismjs": "^1.26.0",
     "@types/react": "17.0.37",
-    "typescript": "^4.5.3"
+    "autoprefixer": "10.2.6",
+    "csstype": "2.6.2",
+    "eslint": "8.10.0",
+    "eslint-config-next": "12.1.0",
+    "eslint-config-prettier": "8.4.0",
+    "modtree-config": "*",
+    "postcss": "8.3.5",
+    "tailwindcss": "3.0.15",
+    "typescript": "4.5.5",
+    "webpack": "5.65.0"
   }
 }

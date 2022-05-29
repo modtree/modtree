@@ -10,5 +10,6 @@ module.exports = {
   rules: {
     ...config.rules,
     'no-useless-escape': 'off', // some seemingly useless escapes are actually required
+    'new-cap': 'off',
   },
 }

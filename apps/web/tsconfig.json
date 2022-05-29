@@ -3,7 +3,7 @@
   "include": ["next-env.d.ts", "pages", "store", "components", "flow"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
+    "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "baseUrl": ".",

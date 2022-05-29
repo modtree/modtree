@@ -1,0 +1,67 @@
+import { Tabs, Tab } from '../../../components/Tabs.tsx'
+
+# Building Modtree
+
+## Quick start
+
+1. Install [build prerequisites](#build-prerequisites) on your system
+2. `git clone https://github.com/modtree/modtree.git`
+3. `cd modtree && yarn`
+4. `yarn build`
+
+## Run commands
+
+After a successful build, you can do some things:
+
+1. Serve a local version of modtree
+
+<Tabs items={['turbo', 'manual']}>
+  <Tab>
+    ```
+    yarn dev
+    ```
+  </Tab>
+  <Tab>
+    ```
+    cd packages/database && yarn dev
+    cd ../../apps/web && yarn dev
+    ```
+  </Tab>
+</Tabs>
+
+2. Serve a local version of the documentation site
+
+<Tabs items={['turbo', 'manual']}>
+  <Tab>
+    ```
+    yarn dev:docs
+    ```
+  </Tab>
+  <Tab>
+    ```
+    cd apps/docs && yarn dev
+    ```
+  </Tab>
+</Tabs>
+
+3. Run some [Yarn Scripts](/docs/developer-guide/yarn-scripts)
+4. Run [Tests](/docs/developer-guide/tests)
+
+## Build prerequisites
+
+1. [Node v16][node]
+2. [Yarn v1][yarn]
+
+## Runtime requirements
+
+1. [MySQL v8][mysql]
+
+[node]: https://nodejs.org
+[yarn]: https://classic.yarnpkg.com/lang/en/docs/install/
+[mysql]: https://dev.mysql.com/doc/mysql-installation-excerpt
+
+## Uninstall
+
+Modtree doesn't install anything outside of the project root
+directory. To clear out all Modtree data, simply delete the project
+directory.

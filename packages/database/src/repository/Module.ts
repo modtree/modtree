@@ -6,7 +6,7 @@ import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { DataSource } from 'typeorm'
-import { getDataSource, useLoadRelations, useBuild } from './base'
+import { getDataSource, useLoadRelations, useBuild, useDeleteAll } from './base'
 import type { ModuleRepository as Repository } from '../../types/repository'
 
 /**
@@ -17,6 +17,7 @@ export function ModuleRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Module)
   const loadRelations = useLoadRelations(BaseRepo)
+  const deleteAll = useDeleteAll<Module>(BaseRepo)
 
   /**
    * a drop-in replacement of a constructor
@@ -74,6 +75,7 @@ export function ModuleRepository(database?: DataSource): Repository {
     const moduleCodes = new Set(await getCodes())
     const moduleCondesedCodes = await ModuleCondensedRepository(db).getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
+    console.log(`fetching ${diff.length} modules from NUSMods...`)
     // begin pull
     let buffer = 0
     const result: Module[] = []
@@ -139,5 +141,6 @@ export function ModuleRepository(database?: DataSource): Repository {
     findByFaculty,
     loadRelations,
     findByCodes,
+    deleteAll
   })
 }

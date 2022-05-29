@@ -5,15 +5,15 @@ import { Base } from './Base'
 @Entity({ name: 'moduleCondensed' })
 export class ModuleCondensed extends Base {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @Column()
-  moduleCode: ModuleCode
+    moduleCode: ModuleCode
 
   // Numeric part of moduleCode
   @Column()
-  moduleLevel: number
+    moduleLevel: number
 
   @Column()
-  title: ModuleTitle
+    title: ModuleTitle
 }
