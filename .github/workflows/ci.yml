@@ -49,7 +49,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: 📦 Build & lint database functions
-        run: yarn build
+        run: yarn build:ci
 
   database_tests:
     needs: pre_job

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "start:server": "cd ./packages/database && ts-node ./src/server.ts",
-    "build": "turbo run build --filter=database --filter=web",
+    "build:ci": "turbo run build --filter=database --filter=web",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",
