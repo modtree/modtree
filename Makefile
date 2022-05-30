@@ -34,10 +34,12 @@ k-inv:
 	@mkdir -p $(khang)/database
 	@cp \
 		${web}/.env.local \
+		${web}/.env.example \
 		$(khang)/web
 	@cp \
 		$(database)/.env \
 		$(database)/.env.test \
+		${database}/.env.example \
 	  $(database)/.env.heroku \
 		$(khang)/database
 	@echo "[saving env files]"
