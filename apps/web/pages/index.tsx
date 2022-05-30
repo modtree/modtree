@@ -8,7 +8,7 @@ import { initialNodes, initialEdges } from '@/flow/dag'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useSelector, useDispatch } from 'react-redux'
 import { setFlowSelection, FlowState } from '@/store/flow'
-import { FloatingActionButton } from '@/components/buttons'
+import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { BuilderState } from '@/store/builder'
 import { FullScreenOverlay } from '@/components/Views'
 import BuilderModal from '@/components/builder'
@@ -97,6 +97,7 @@ export default function Modtree() {
       </ReactFlow>
       <Header />
       <FullScreenOverlay>
+        <FloatingUserButton />
         <FloatingActionButton />
         {showBuilder ? <BuilderModal /> : null}
       </FullScreenOverlay>
