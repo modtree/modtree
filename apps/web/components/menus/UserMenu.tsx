@@ -1,4 +1,5 @@
 import { UserProfile, useUser } from '@auth0/nextjs-auth0'
+import Link from 'next/link'
 
 const Separator = () => <hr className="border-gray-200 my-3" />
 
@@ -8,7 +9,7 @@ const SignedInAs = (props: { user: UserProfile | undefined }) => {
       <div className="mx-4">
         <div>Signed in as</div>
         <div className="font-bold text-ellipsis overflow-hidden">
-          {props.user.name}alskdfjlasdjfkladsfj
+          {props.user.name}
         </div>
       </div>
       <Separator />
@@ -16,16 +17,22 @@ const SignedInAs = (props: { user: UserProfile | undefined }) => {
   ) : null
 }
 
-const MenuItem = (props: { text: string; onClick: () => void }) => {
+const MenuItem = (props: {
+  href?: string
+  text: string
+  onClick?: () => void
+}) => {
   const transition = 'transition ease-out'
   const hover = 'hover:bg-blue-500 hover:text-white'
   return (
-    <div
-      className={`cursor-pointer ${hover} ${transition}`}
-      onClick={props.onClick}
-    >
-      <div className="mx-4 py-1.5">{props.text}</div>
-    </div>
+    <Link href={props.href || '#'}>
+      <div
+        className={`cursor-pointer ${hover} ${transition}`}
+        onClick={props.onClick}
+      >
+        <div className="mx-4 py-1.5">{props.text}</div>
+      </div>
+    </Link>
   )
 }
 
@@ -39,7 +46,7 @@ export default function UserMenu() {
       <SignedInAs user={user} />
       <MenuItem text="Your Profile" onClick={() => alert('Open Profile')} />
       <MenuItem text="Settings" onClick={() => alert('Open settings')} />
-      <MenuItem text="Sign out" onClick={() => alert('Logout')} />
+      <MenuItem text="Sign out" href="/api/auth/logout" />
     </div>
   )
 }
