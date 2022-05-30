@@ -1,0 +1,11 @@
+#!/bin/bash
+
+mv apps/docs/data/dag apps/docs/data/graph
+mv apps/docs/pages/reference/dag.mdx apps/docs/pages/reference/graph.mdx
+
+mv apps/web/flow/dag.tsx apps/web/flow/graph.tsx
+
+mv packages/database/src/entity/DAG.ts packages/database/src/entity/Graph.ts
+mv packages/database/src/repository/DAG.ts packages/database/src/repository/Graph.ts
+
+mv packages/database/tests/dag packages/database/tests/graph
