@@ -1,7 +1,7 @@
 import { DataSource, In, SelectQueryBuilder } from 'typeorm'
-import { Init, DAGProps } from '../../types/modtree'
+import { Init, GraphProps } from '../../types/modtree'
 import { Module } from '../entity/Module'
-import { DAG } from '../entity/DAG'
+import { Graph } from '../entity/Graph'
 import { ModuleRepository } from './Module'
 import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
@@ -9,35 +9,35 @@ import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
 import { getDataSource, useBuild, useLoadRelations } from './base'
 import { quickpop } from '../utils/array'
-import type { DAGRepository as Repository } from '../../types/repository'
+import type { GraphRepository as Repository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
 
 /**
  * @param {DataSource} database
- * @return {DAGRepository}
+ * @return {GraphRepository}
  */
-export function DAGRepository(database?: DataSource): Repository {
+export function GraphRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
-  const BaseRepo = db.getRepository(DAG)
+  const BaseRepo = db.getRepository(Graph)
   const loadRelations = useLoadRelations(BaseRepo)
 
   /**
-   * Constructor for DAG
-   * Note: the props here is slightly different from Init.DAGProps
-   * @param {DAGProps} props
-   * @return {DAG}
+   * Constructor for Graph
+   * Note: the props here is slightly different from Init.GraphProps
+   * @param {GraphProps} props
+   * @return {Graph}
    */
-  function build(props: DAGProps): DAG {
-    return useBuild(db, DAG, props)
+  function build(props: GraphProps): Graph {
+    return useBuild(db, Graph, props)
   }
 
   /**
-   * Adds a DAG to DB
-   * @param {Init.DAGProps} props
+   * Adds a Graph to DB
+   * @param {Init.GraphProps} props
    * @return {Promise<void>}
    */
-  async function initialize(props: Init.DAGProps): Promise<void> {
+  async function initialize(props: Init.GraphProps): Promise<void> {
     /**
      * retrieves the degree and user with relations, without blocking each
      * other.
@@ -88,15 +88,15 @@ export function DAGRepository(database?: DataSource): Repository {
 
   /**
    * Toggle a Module's status between placed and hidden.
-   * @param {DAG} dag
+   * @param {Graph} dag
    * @param {string} moduleCode
    * @return {Promise<void>}
    */
-  async function toggleModule(dag: DAG, moduleCode: string): Promise<void> {
+  async function toggleModule(dag: Graph, moduleCode: string): Promise<void> {
     /**
-     * retrieve a DAG from database given its id
+     * retrieve a Graph from database given its id
      */
-    await DAGRepository(db).loadRelations(dag, {
+    await GraphRepository(db).loadRelations(dag, {
       user: true,
       degree: true,
       modulesPlaced: true,
@@ -135,7 +135,7 @@ export function DAGRepository(database?: DataSource): Repository {
       toggle(dag.modulesHidden, dag.modulesPlaced)
     } else {
       // throw error if module not found
-      throw new Error('Module not found in DAG')
+      throw new Error('Module not found in Graph')
     }
 
     await BaseRepo.save(dag)
@@ -145,42 +145,42 @@ export function DAGRepository(database?: DataSource): Repository {
    * preliminary function to build up bulk of this query
    * @param {string} userId
    * @param {string} degreeId
-   * @return {SelectQueryBuilder<DAG>}
+   * @return {SelectQueryBuilder<Graph>}
    */
   function queryByUserAndDegreeId(
     userId: string,
     degreeId: string
-  ): SelectQueryBuilder<DAG> {
-    return BaseRepo.createQueryBuilder('DAG')
-      .where('DAG.degree.id = :degreeId', { degreeId })
-      .andWhere('DAG.user.id = :userId', { userId })
-      .leftJoinAndSelect('DAG.user', 'user')
-      .leftJoinAndSelect('DAG.degree', 'degree')
-      .leftJoinAndSelect('DAG.modulesPlaced', 'placed')
-      .leftJoinAndSelect('DAG.modulesHidden', 'hidden')
+  ): SelectQueryBuilder<Graph> {
+    return BaseRepo.createQueryBuilder('Graph')
+      .where('Graph.degree.id = :degreeId', { degreeId })
+      .andWhere('Graph.user.id = :userId', { userId })
+      .leftJoinAndSelect('Graph.user', 'user')
+      .leftJoinAndSelect('Graph.degree', 'degree')
+      .leftJoinAndSelect('Graph.modulesPlaced', 'placed')
+      .leftJoinAndSelect('Graph.modulesHidden', 'hidden')
   }
 
   /**
    * @param {string} userId
    * @param {string} degreeId
-   * @return {Promise<DAG>}
+   * @return {Promise<Graph>}
    */
   async function findOneByUserAndDegreeId(
     userId: string,
     degreeId: string
-  ): Promise<DAG> {
+  ): Promise<Graph> {
     return queryByUserAndDegreeId(userId, degreeId).getOneOrFail()
   }
 
   /**
    * @param {string} userId
    * @param {string} degreeId
-   * @return {Promise<DAG>}
+   * @return {Promise<Graph>}
    */
   async function findManyByUserAndDegreeId(
     userId: string,
     degreeId: string
-  ): Promise<[DAG[], number]> {
+  ): Promise<[Graph[], number]> {
     return queryByUserAndDegreeId(userId, degreeId).getManyAndCount()
   }
 

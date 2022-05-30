@@ -1,5 +1,5 @@
 export const get: MethodProps = {
-  method: 'Get a DAG',
+  method: 'Get a Graph',
   description: 'Retrieve information about one Directed Acyclic Graph.',
   endpoint: '/dag/{dagId}',
   requestType: 'GET',
@@ -8,7 +8,7 @@ export const get: MethodProps = {
       {
         name: 'dagId',
         dataType: 'string',
-        description: 'The id of the DAG.',
+        description: 'The id of the Graph.',
         required: true,
       },
     ],

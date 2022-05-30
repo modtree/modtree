@@ -1,13 +1,13 @@
 import { container, endpoint, getSource } from '../../src/data-source'
 import { Init } from '../../types/modtree'
-import { Degree, User, Module, DAG } from '../../src/entity'
+import { Degree, User, Module, Graph } from '../../src/entity'
 import {
   DegreeRepository,
   UserRepository,
-  DAGRepository,
+  GraphRepository,
 } from '../../src/repository'
 import { setup, importChecks, teardown } from '../environment'
-import { setupDAG } from './setup'
+import { setupGraph } from './setup'
 
 const dbName = 'test_dag_pull_all_false'
 const db = getSource(dbName)
@@ -16,35 +16,35 @@ beforeAll(() => setup(dbName))
 afterAll(() => teardown(dbName))
 
 importChecks({
-  entities: [Module, Degree, User, DAG],
-  repositories: [UserRepository(db), DegreeRepository(db), DAGRepository(db)],
+  entities: [Module, Degree, User, Graph],
+  repositories: [UserRepository(db), DegreeRepository(db), GraphRepository(db)],
 })
 
 let degree: Degree
 let user: User
-let dag: DAG
+let dag: Graph
 
 beforeAll(async () => {
   await setup(dbName)
-  const res = await setupDAG(db)
-  if (!res) throw new Error('Unable to setup DAG test.')
+  const res = await setupGraph(db)
+  if (!res) throw new Error('Unable to setup Graph test.')
   ;[user, degree] = res
 })
 
 
-describe('DAG.initialize', () => {
+describe('Graph.initialize', () => {
   it('Saves a dag', async () => {
-    const dagProps: Init.DAGProps = {
+    const dagProps: Init.GraphProps = {
       userId: user.id,
       degreeId: degree.id,
       modulesPlacedCodes: [],
       modulesHiddenCodes: [],
       pullAll: false,
     }
-    await container(db, () => DAGRepository(db).initialize(dagProps))
+    await container(db, () => GraphRepository(db).initialize(dagProps))
     const res = await endpoint(db, () =>
       container(db, () =>
-        DAGRepository(db).findOneByUserAndDegreeId(user.id, degree.id)
+        GraphRepository(db).findOneByUserAndDegreeId(user.id, degree.id)
       )
     )
     expect(res).toBeDefined()
