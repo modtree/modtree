@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
-import { Init, DAGProps, UserProps, DegreeProps } from './modtree'
-import type { DAG, User, Degree, Module, ModuleCondensed } from '../src/entity'
+import { Init, GraphProps, UserProps, DegreeProps } from './modtree'
+import type { Graph, User, Degree, Module, ModuleCondensed } from '../src/entity'
 import type { Module as NM, ModuleCondensed as NMC } from './nusmods'
 import { FindOptionsRelations } from 'typeorm'
 
@@ -22,14 +22,14 @@ interface BaseRepo<Entity, BuildProps, InitProps = BuildProps>
   deleteAll?: DeleteAll
 }
 
-export interface DAGRepository extends BaseRepo<DAG, DAGProps, Init.DAGProps> {
-  toggleModule(dag: DAG, moduleCode: string): Promise<void>
-  loadRelations: LoadRelations<DAG>
-  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<DAG>
+export interface GraphRepository extends BaseRepo<Graph, GraphProps, Init.GraphProps> {
+  toggleModule(graph: Graph, moduleCode: string): Promise<void>
+  loadRelations: LoadRelations<Graph>
+  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
   findManyByUserAndDegreeId(
     userId: string,
     degreeId: string
-  ): Promise<[DAG[], number]>
+  ): Promise<[Graph[], number]>
 }
 
 export interface UserRepository

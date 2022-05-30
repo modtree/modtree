@@ -22,7 +22,7 @@ export namespace Init {
     moduleCodes: string[]
     title: string
   }
-  export type DAGProps = {
+  export type GraphProps = {
     userId: string
     degreeId: string
     modulesPlacedCodes: string[]
@@ -46,7 +46,7 @@ export type DegreeProps = {
   title: string
 }
 
-export type DAGProps = {
+export type GraphProps = {
   user: User
   degree: Degree
   modulesPlaced: Module[]
