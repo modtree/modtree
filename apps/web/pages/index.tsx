@@ -3,7 +3,6 @@ import ReactFlow, {
   Controls,
   applyNodeChanges,
   applyEdgeChanges,
-  Edge,
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges } from '@/flow/dag'
 import { ModuleNode } from '@/components/flow/ModuleNode'
