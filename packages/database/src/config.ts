@@ -97,4 +97,10 @@ export const db = new DataSource({
   ...config,
   logging: false,
   subscribers: [],
+  migrationsRun: false,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 })

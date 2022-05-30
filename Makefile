@@ -1,9 +1,17 @@
+database := ./packages/database
+web := ./apps/web
+khang := ~/dots/personal/.secrets/modtree
+
 yarn:
 	@yarn
 	@find . -name *.log | xargs rm
 	@mkdir -p ./packages/database/.logs
 	@if [[ $$USER == "khang" ]]; then make k; fi
 	@if [[ $$USER == "weiseng" ]]; then make w; fi
+
+i:
+	@if [[ $$USER == "khang" ]]; then make k-inv; fi
+	@if [[ $$USER == "weiseng" ]]; then make w-inv; fi
 
 w:
 	cp $$REPOS/orbital/env/.env.local ./apps/web/.env.local
@@ -15,11 +23,23 @@ w-inv:
 	cp ./packages/database/.env $$REPOS/orbital/env/.env
 
 k:
-	cp ~/dots/personal/.secrets/modtree/.env .env
-	cp ~/dots/personal/.secrets/modtree/.env.test .env.test
-	cp ~/dots/personal/.secrets/modtree/.env.local ./apps/web
-	mv .env* ./packages/database
+	@cp $(khang)/web/.env* $(web)
+	@cp $(khang)/database/.env* $(database)
+	@echo "[installing env files]"
+	@echo "source: $(khang)"
+	@echo "consider it done."
 
 k-inv:
-	cp ./packages/database/.env* ~/dots/personal/.secrets/modtree
-	cp ./apps/web/.env.local ~/dots/personal/.secrets/modtree
+	@mkdir -p $(khang)/web
+	@mkdir -p $(khang)/database
+	@cp \
+		${web}/.env.local \
+		$(khang)/web
+	@cp \
+		$(database)/.env \
+		$(database)/.env.test \
+	  $(database)/.env.heroku \
+		$(khang)/database
+	@echo "[saving env files]"
+	@echo "target: $(khang)"
+	@echo "consider it done."

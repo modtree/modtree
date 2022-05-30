@@ -5,7 +5,10 @@ import cors, { CorsOptions } from 'cors'
 import { db } from './config'
 
 const corsOpts: CorsOptions = {
-  origin: 'http://localhost:3000',
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? 'https://modtree.vercel.app'
+      : 'http://localhost:3000',
 }
 
 db.initialize()
@@ -37,6 +40,6 @@ db.initialize()
         }
       )
     })
-    app.listen(8080)
+    app.listen(process.env.PORT || 8080)
   })
   .catch((error) => console.log(error))

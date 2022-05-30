@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build --filter=database --filter=web",
+    "build:ci": "turbo run build --filter=database --filter=web",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",
@@ -23,8 +23,9 @@
     "turbo": "latest"
   },
   "engines": {
-    "npm": ">=7.0.0",
-    "node": ">=14.0.0"
+    "npm": "8.x",
+    "node": "16.x",
+    "yarn": "1.x"
   },
   "packageManager": "yarn@1.22.18"
 }

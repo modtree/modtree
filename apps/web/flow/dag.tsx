@@ -16,6 +16,16 @@ const modules = [
     title: 'Data Structures and Algorithms',
     position: { x: 450, y: 300 },
   },
+  {
+    moduleCode: 'CS2103T',
+    title: 'Software Engineering',
+    position: { x: 800, y: 200 },
+  },
+  {
+    moduleCode: 'CS2102',
+    title: 'Database Systems',
+    position: { x: 800, y: 0 },
+  },
 ]
 
 const initialNodes: Node[] = modules.map((m) => ({
@@ -37,6 +47,13 @@ const initialEdges: Edge[] = [
     animated: true,
   },
   { id: 'CS1010-CS2030S', source: 'CS1010', target: 'CS2030S', animated: true },
+  {
+    id: 'CS2030S-CS2103T',
+    source: 'CS2030S',
+    target: 'CS2103T',
+    animated: true,
+  },
+  { id: 'yes', source: 'CS2030S', target: 'CS2102', animated: true },
 ]
 
 export { initialEdges, initialNodes }

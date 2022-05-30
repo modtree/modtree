@@ -41,10 +41,38 @@ export default function Modtree() {
     [setEdges]
   )
 
+  const hide = (hidden: boolean) => (nodeOrEdge: any) => {
+    nodeOrEdge.hidden = hidden
+    return nodeOrEdge
+  }
+
   useEffect(() => {
     console.log(treeSelection)
     console.log(searchResults)
   }, [treeSelection, searchResults])
+
+  const [hidden, setHidden] = useState(false)
+
+  useEffect(() => {
+    setNodes((nds) =>
+      nds.map((x) => {
+        const whack = hide(hidden)
+        if (x.id === 'CS2103T' || x.id === 'CS2102') {
+          whack(x)
+        }
+        return x
+      })
+    )
+    setEdges((eds) =>
+      eds.map((x) => {
+        const whack = hide(hidden)
+        if (x.id === 'CS2030S-CS2103T' || x.id === 'yes') {
+          whack(x)
+        }
+        return x
+      })
+    )
+  }, [hidden])
 
   return (
     <div className="h-screen w-screen bg-gray-50">
@@ -58,6 +86,7 @@ export default function Modtree() {
         fitView={true}
         onSelectionChange={(e) => {
           const moduleCodes = e.nodes.map((x) => x.data.moduleCode)
+          setHidden(!hidden)
           dispatch(setFlowSelection(moduleCodes))
         }}
         fitViewOptions={{ maxZoom: 1 }}
@@ -66,7 +95,7 @@ export default function Modtree() {
       >
         <Controls showInteractive={false} />
       </ReactFlow>
-      <Header/>
+      <Header />
       <FullScreenOverlay>
         <FloatingActionButton />
         {showBuilder ? <BuilderModal /> : null}
