@@ -1,6 +1,6 @@
 export const get: MethodProps = {
   method: 'Get a Graph',
-  description: 'Retrieve information about one Directed Acyclic Graph.',
+  description: 'Retrieve information about one Graph.',
   endpoint: '/graph/{graphId}',
   requestType: 'GET',
   parameters: {
