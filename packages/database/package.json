@@ -70,6 +70,7 @@
     "module:find-by-faculty": "ts-node ./src/api/module/find-by-faculty.ts",
     "modcon:fetch": "ts-node ./src/api/module-condensed/fetch.ts",
     "modcon:pull": "ts-node ./src/api/module-condensed/pull.ts",
-    "modcon:get-codes": "ts-node ./src/api/module-condensed/get-codes.ts"
+    "modcon:get-codes": "ts-node ./src/api/module-condensed/get-codes.ts",
+    "modcon:json": "ts-node ./src/api/module-condensed/json.ts"
   }
 }
