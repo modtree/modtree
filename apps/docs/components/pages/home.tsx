@@ -12,9 +12,9 @@ const members = [
   },
   {
     name: "Tan Wei Seng",
-    role: "Faculty of Computing",
+    role: "School of Computing",
     href: "https://github.com/weiseng18",
-    src: "https://avatars.githubusercontent.com/u/20338724",
+    src: "/images/people/weiseng_headshot.jpg",
   },
 ];
 
