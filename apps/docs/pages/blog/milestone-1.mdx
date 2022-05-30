@@ -1,0 +1,294 @@
+---
+title: "Milestone 1: Ideation"
+date: 2022/05/30
+description: 'Ideation: problem motivation, proposed core features, and user stories, along with a 1-month roadmap'
+tag: milestone
+---
+
+import Authors from '@/components/Authors'
+
+# Milestone 1: Ideation
+
+<div className="text-sm mt-2 text-center text-gray-500 dark:text-gray-400">
+  Monday, May 30th, 2022
+</div>
+
+<Authors authors={['khang', 'weiseng']} />
+
+<div className="flex justify-center mt-8">
+
+[Repository][repo] · [Documentation][docs] · [Proof of Concept][web]
+
+</div>
+
+## Problem
+
+6000+ modules to choose from, but each student is only going to do 40+
+each. There are many ways to go about completing the same degree.
+
+Module relations are complicated. Students don't immediately know what
+modules unlock what set of modules.
+
+## Target audience
+
+All NUS undergraduates, and possibly pre-university students.
+
+## Motivation
+
+### General target audience
+
+When you're stuck not knowing what mods to take next semester, or just
+want general recommendations about what modules to take, your current
+alternatives are friends, seniors and perhaps the NUSMods Planner.
+
+Many may have reached the point where either they don't know what
+modules they are eligible for, or they lose track of what modules are
+required for them to graduate. This problem is made worse by the
+ever-changing graduation requirements, so reaching out to seniors may
+not be helpful at all.
+
+Some students start a new semester not having enough module choices as
+a result of not taking enough prerequisites, forcing them to take
+unrelated modules for the upcoming semester.
+
+### Students considering specializations/double degree/major/minor
+
+Some students might be interested in multiple different
+specializations, and they might not be sure what to pick. The overhead
+of having to keep track of what modules are completed for a certain
+specialization makes it troublesome to consider different
+specializations.
+
+---
+
+## Core features
+
+Instead of planning out your future modules in a bullet list or a
+checkbox list, you put them out on a graph. On this graph, nodes are
+the modules you take, and the edges are the relations between these
+modules (requirements / pre-requisite).
+
+You can plan out a degree path by drawing out a graph.
+
+To find out what modules you can take after a module placed down,
+simply click on it to see top suggestions.
+
+To find out overall what modules to do next, you can click on a
+floating action button that will always be at the bottom right corner.
+Modtree will intelligently suggest to you the top 5 modules for you to
+do next. This suggestion will be such that you're on track to
+completing your degree while keeping the most options open to you
+based on the pre-requisites that these suggested modules fulfil.
+
+---
+
+## User stories
+
+### Current undergrad not sure what to choose at ModReg
+
+He can go on modtree and draw up a graph of the modules he's already
+taken, and fill in his current degree requirements. Modtree will then
+be able to suggest to him what to do next in order to keep his options
+the most open (i.e. the modules that satisfy the most number of other
+module's pre-requisites).
+
+### Current undergrad thinking of switching majors
+
+He can fill in his current degree requirements, and then also the
+requirements of the degree he's thinking of switching to. He can then
+draw out multiple graphs to try and see how his current modules done
+fits into either degree. Of course, he can also create, save, and even
+duplicate graphs as he modifies them, preventing the need to write
+everything from scratch.
+
+### Current undergrad unsure of how to fit in desired modules into
+
+their curriculum
+
+Some modules are offered during particular semesters, and they could
+be pre-requisites for other desired modules. By building a degree in
+modtree and drawing up a graph, modtree will calculate the latest
+semester that the pre-requisite must be taken, in order to take the
+desired module before graduation.
+
+### Current undergrad wants to see if it is possible to graduate
+
+before the expected date
+
+Some students might want to graduate in less than 4 years, or they
+might be double degree students who want to graduate within 4 years.
+By indicating the desired graduation date, modtree will assist in
+creating an overall degree plan, so the student knows how much and
+when to overload, and which modules to prioritize, so that there is no
+issue in clearing pre-requisites in time.
+
+---
+
+## Roadmap
+
+The bulk of our progress in Milestone 1 is in our database functions.
+We chose to focus development here at the start because we wanted a
+solid foundation to build things from.
+
+With this solid foundation, in Milestone 2 we aim to push for more
+frontend development to make use of our database functions. In
+particular, we will be implementing the features mentioned in the next
+section. By the end of Milestone 2, users should be able to interact
+with the graph of a degree plan, such as adding modules and getting
+suggestions. They should also have access to user settings. As of
+Milestone 2, we do not intend to allow users to customize their degree
+plan yet. This will be implemented in Milestone 3, unless we have
+sufficient time before Milestone 2. For this reason, we will likely
+fix the degree plan to be that of Computer Science for all users.
+
+In Milestone 3, apart from being able to customize degree plans, we
+aim to push for social features in modtree. This includes having a
+friends list, and being able to see and make use of all users' public
+degree templates. We will also be offering module details' pages and
+comments on these pages. Additionally, we will implement admin
+functionality, to allow admins to hide comments, and also to create
+official degree templates for students to use.
+
+---
+
+## Features for the next milestone
+
+### Module suggestions (for a single module)
+
+By clicking on a module's node in the graph, the user will get
+recommended what modules to take next, based on the importance of
+completing a module, and their degree requirements. Core modules would
+have the highest priority, and within core modules, the one that
+unlocks more modules will have a higher priority. For example, having
+completed CS1101S, a possible priority ranking would be CS2030S >
+CS2100 > CS2107. Here, CS2107 is ranked the lowest among the three
+because it is not a core module, unlike CS2030S and CS2100. Next,
+CS2030S is ranked higher because it unlocks more modules than CS2100.
+
+### Module suggestions (overall)
+
+By clicking on a button on the graph page, the user will get
+recommended what modules to take next, based on all modules completed
+(instead of just one), and their degree requirements. This is an
+extension of the above feature.
+
+### Insert modules into graph
+
+Users should be able to insert modules into the graph by
+
+- Dragging in an entry from the search results
+- Clicking on an entry in the search results
+- Double-clicking on a suggested module
+
+### Classify and style modules according to type
+
+With more modules taken, the user's graph can get complicated, so we
+will style the module nodes according to the status (Taken, Taking,
+Plan to take) or (Core, Elective, UE). The choice of the
+classification will be an option for the user. On top of helping users
+visualize their graph better, this classification will also help to
+identify which modules can be swapped for other modules if necessary.
+
+### Various alerts to inform user that certain degree planning choices
+
+might not be desirable
+
+1. When a core module is removed, the degree cannot be completed.
+   Thus, a warning is shown to the user that they are removing a core
+   module.
+2. When a pre-requisite for a core module is removed (same scenario as
+   1.
+3. When a selected module may not be helpful to user's degree
+   completion
+
+### User profile page
+
+We will have a user profile page to allow the user to view/edit their
+basic information related to their profile (email, display name). They
+will also be able to view/add new degrees/graphs. We also intend to
+support different color schemes, and the user will be able to change
+color schemes on this page. This is modelled after Github's user
+profile page.
+
+### User settings page
+
+On the settings page, the user will be able to change their password.
+
+### Add module exemptions to a user
+
+Many students have module exemptions like for ES1103 or for MA1301.
+These modules are not actually taken so it would be strange to see it
+in the graph, so they will add these modules to a list of exemptions.
+
+---
+
+## Key technologies used
+
+The frontend is written in TypeScript. Aside from all the libraries
+contained within frontend, it speaks to the backend using
+authenticated HTTP requests.
+
+The backend is also written in TypeScript. It takes requests from the
+frontend and sends a response that is generally in JSON format. Given
+the right authentication token, it can be accessed by anyone.
+Therefore, it is not a requirement that users interact with our data
+only through our default frontend. They can create their own
+apps/scripts if they want to.
+
+The database runs on Postgres. It only talks to the backend and will
+not be exposed publicly in any way. The backend sends commands to it
+through an ORM, for which we use TypeORM in particular.
+
+Since all services link back to using TypeScript, we have one source
+of truth for all types defined in this project. This is made possible
+by structuring the source code as a monorepo, where all services read
+from one central source of truth for the types. Similarly, code
+linting and formatting rules are all read from one base set of rules.
+
+The overall decision to stick to TypeScript as much as possible is a
+time-saving decision, since it's relatively high level and easy to
+write. If we had ample resources for this project, we would have
+chosen a faster language that supports parallel execution natively,
+such as Golang or Rustlang for the backend, and write custom database
+functions in SQL directly.
+
+---
+
+## Software engineering practices
+
+### Keys
+
+No API keys are exposed on our public repo. We use `.env` files to
+safe-keep our keys, and we only commit an `.env.example` file to show
+what keys we're expecting a developer to have.
+
+### Unit tests
+
+To enable major code refactoring should the need arise, it's far more
+comforting to have a reliable set of unit tests to let you know that
+your code does in fact still perform in the same way as it used to.
+
+### Continuous Integration
+
+Unit tests are ran on every key event. Pushes to particular branches,
+whenever a pull request is opened, whenever someone requests for a PR
+review, etc. Test results are also sent to a telegram group so that we
+don't have to check Github Actions all the time.
+
+### Continuous Delivery
+
+Frontend, backend, and documentation deployments are automatic. If
+certain particular branches are pushed to, a deployment would
+automatically trigger.
+
+### Branch protection rules
+
+master and dev branches require all CI checks to pass before being
+able to merge. This helps ensure a higher base level for the standard
+of production code.
+
+[youtube]: https://youtu.be/Nx2Jnj8cCcA
+[poster]: https://raw.githubusercontent.com/wiki/modtree/modtree/5012.png
+[repo]: https://github.com/modtree/modtree
+[docs]: https://modtree-docs.vercel.app
+[web]: https://modtree.vercel.app
