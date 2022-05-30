@@ -5,12 +5,13 @@ import { UserMenu } from '@/components/menus'
 import { UseState } from 'types'
 
 const UserCircleArea = (props: { userMenuState: UseState<boolean> }) => {
+  const [userMenu, setUserMenu] = props.userMenuState
   const Circle = () => {
     const bg = 'bg-gradient-to-r from-pink-400 to-orange-400'
     return (
       <div
         className={`flex justify-center items-center w-10 h-10 rounded-full hover:bg-gray-50 active:bg-gray-200 cursor-pointer shadow-xl ${bg}`}
-        onClick={() => props.userMenuState[1](!props.userMenuState[0])}
+        onClick={() => setUserMenu(!userMenu)}
       >
         <IoPerson color={colors.gray[50]} size={20} />
       </div>
