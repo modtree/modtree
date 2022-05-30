@@ -23,8 +23,7 @@ export const Avatar = ({ name, picture, githubUsername }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            @{/* */}
-            {githubUsername}
+            @{githubUsername}
           </a>
         </dd>
       </dl>
