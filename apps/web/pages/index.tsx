@@ -4,7 +4,7 @@ import ReactFlow, {
   applyNodeChanges,
   applyEdgeChanges,
 } from 'react-flow-renderer'
-import { initialNodes, initialEdges } from '@/flow/dag'
+import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useSelector, useDispatch } from 'react-redux'
 import { setFlowSelection, FlowState } from '@/store/flow'

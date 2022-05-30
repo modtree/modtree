@@ -77,26 +77,26 @@ export function GraphRepository(database?: DataSource): Repository {
 
     const [user, degree] = await getUserAndDegree()
     const [modulesPlaced, modulesHidden] = await getModules()
-    const dag = build({
+    const graph = build({
       user,
       degree,
       modulesPlaced,
       modulesHidden,
     })
-    await BaseRepo.save(dag)
+    await BaseRepo.save(graph)
   }
 
   /**
    * Toggle a Module's status between placed and hidden.
-   * @param {Graph} dag
+   * @param {Graph} graph
    * @param {string} moduleCode
    * @return {Promise<void>}
    */
-  async function toggleModule(dag: Graph, moduleCode: string): Promise<void> {
+  async function toggleModule(graph: Graph, moduleCode: string): Promise<void> {
     /**
      * retrieve a Graph from database given its id
      */
-    await GraphRepository(db).loadRelations(dag, {
+    await GraphRepository(db).loadRelations(graph, {
       user: true,
       degree: true,
       modulesPlaced: true,
@@ -106,8 +106,8 @@ export function GraphRepository(database?: DataSource): Repository {
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: dag.modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
-      hidden: dag.modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
+      placed: graph.modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
+      hidden: graph.modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
       invalid: -1,
     }
     const state: ModuleState =
@@ -130,15 +130,15 @@ export function GraphRepository(database?: DataSource): Repository {
      * toggles the modules between placed and hidden
      */
     if (state === 'placed') {
-      toggle(dag.modulesPlaced, dag.modulesHidden)
+      toggle(graph.modulesPlaced, graph.modulesHidden)
     } else if (state === 'hidden') {
-      toggle(dag.modulesHidden, dag.modulesPlaced)
+      toggle(graph.modulesHidden, graph.modulesPlaced)
     } else {
       // throw error if module not found
       throw new Error('Module not found in Graph')
     }
 
-    await BaseRepo.save(dag)
+    await BaseRepo.save(graph)
   }
 
   /**

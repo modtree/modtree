@@ -1,7 +1,7 @@
 import * as ModuleCondensed from '@/data/module-condensed'
 import * as Module from '@/data/module'
 import * as Degree from '@/data/degree'
-import * as Graph from '@/data/dag'
+import * as Graph from '@/data/graph'
 import * as User from '@/data/user'
 import Method from './Method'
 

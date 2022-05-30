@@ -1,12 +1,12 @@
 export const get: MethodProps = {
   method: 'Get a Graph',
   description: 'Retrieve information about one Directed Acyclic Graph.',
-  endpoint: '/dag/{dagId}',
+  endpoint: '/graph/{graphId}',
   requestType: 'GET',
   parameters: {
     pathParams: [
       {
-        name: 'dagId',
+        name: 'graphId',
         dataType: 'string',
         description: 'The id of the Graph.',
         required: true,

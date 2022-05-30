@@ -2,7 +2,7 @@
   "index": "API Overview",
   "user": "User",
   "degree": "Degree",
-  "dag": "Graph",
+  "graph": "Graph",
   "module": "Module",
   "module-condensed": "Module Condensed"
 }

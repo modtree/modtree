@@ -9,7 +9,7 @@ import {
 import { setup, importChecks, teardown } from '../environment'
 import { setupGraph } from './setup'
 
-const dbName = 'test_dag_pull_all_false'
+const dbName = 'test_graph_pull_all_false'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
@@ -22,7 +22,7 @@ importChecks({
 
 let degree: Degree
 let user: User
-let dag: Graph
+let graph: Graph
 
 beforeAll(async () => {
   await setup(dbName)
@@ -33,15 +33,15 @@ beforeAll(async () => {
 
 
 describe('Graph.initialize', () => {
-  it('Saves a dag', async () => {
-    const dagProps: Init.GraphProps = {
+  it('Saves a graph', async () => {
+    const graphProps: Init.GraphProps = {
       userId: user.id,
       degreeId: degree.id,
       modulesPlacedCodes: [],
       modulesHiddenCodes: [],
       pullAll: false,
     }
-    await container(db, () => GraphRepository(db).initialize(dagProps))
+    await container(db, () => GraphRepository(db).initialize(graphProps))
     const res = await endpoint(db, () =>
       container(db, () =>
         GraphRepository(db).findOneByUserAndDegreeId(user.id, degree.id)
@@ -49,11 +49,11 @@ describe('Graph.initialize', () => {
     )
     expect(res).toBeDefined()
     if (!res) return
-    dag = res
+    graph = res
   })
 
   it('modulesPlaced and modulesHidden are blank', async () => {
-    expect(dag.modulesPlaced.length).toEqual(0)
-    expect(dag.modulesHidden.length).toEqual(0)
+    expect(graph.modulesPlaced.length).toEqual(0)
+    expect(graph.modulesHidden.length).toEqual(0)
   })
 })

@@ -23,7 +23,7 @@ interface BaseRepo<Entity, BuildProps, InitProps = BuildProps>
 }
 
 export interface GraphRepository extends BaseRepo<Graph, GraphProps, Init.GraphProps> {
-  toggleModule(dag: Graph, moduleCode: string): Promise<void>
+  toggleModule(graph: Graph, moduleCode: string): Promise<void>
   loadRelations: LoadRelations<Graph>
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
   findManyByUserAndDegreeId(

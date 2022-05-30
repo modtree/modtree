@@ -11,8 +11,8 @@ export class migration1653468825334 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE \`user_modules_done_module\` (\`userId\` varchar(36) NOT NULL, \`moduleId\` varchar(36) NOT NULL, INDEX \`IDX_6e9ccdc3f581b4d4ef99d82f37\` (\`userId\`), INDEX \`IDX_d41a87d35a5c1008452c44bea3\` (\`moduleId\`), PRIMARY KEY (\`userId\`, \`moduleId\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`user_modules_doing_module\` (\`userId\` varchar(36) NOT NULL, \`moduleId\` varchar(36) NOT NULL, INDEX \`IDX_4b333af5e5071937f7eba70c5d\` (\`userId\`), INDEX \`IDX_a0ac2a1563d827af2e4ccf2442\` (\`moduleId\`), PRIMARY KEY (\`userId\`, \`moduleId\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`user_saved_degrees_degree\` (\`userId\` varchar(36) NOT NULL, \`degreeId\` varchar(36) NOT NULL, INDEX \`IDX_91e37244f0527c73cc12851262\` (\`userId\`), INDEX \`IDX_cf0eb0d66da9f2076f42d15fcc\` (\`degreeId\`), PRIMARY KEY (\`userId\`, \`degreeId\`)) ENGINE=InnoDB`);
-        await queryRunner.query(`CREATE TABLE \`dag_modules_placed_module\` (\`dAGId\` varchar(36) NOT NULL, \`moduleId\` varchar(36) NOT NULL, INDEX \`IDX_0ca97d3434421eaf55b79847ce\` (\`dAGId\`), INDEX \`IDX_67d9d483ba4bf496707d9854c0\` (\`moduleId\`), PRIMARY KEY (\`dAGId\`, \`moduleId\`)) ENGINE=InnoDB`);
-        await queryRunner.query(`CREATE TABLE \`dag_modules_hidden_module\` (\`dAGId\` varchar(36) NOT NULL, \`moduleId\` varchar(36) NOT NULL, INDEX \`IDX_35c5c4280161e424db957793de\` (\`dAGId\`), INDEX \`IDX_895b5f150255b9fb18d992a479\` (\`moduleId\`), PRIMARY KEY (\`dAGId\`, \`moduleId\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`graph_modules_placed_module\` (\`graphId\` varchar(36) NOT NULL, \`moduleId\` varchar(36) NOT NULL, INDEX \`IDX_0ca97d3434421eaf55b79847ce\` (\`graphId\`), INDEX \`IDX_67d9d483ba4bf496707d9854c0\` (\`moduleId\`), PRIMARY KEY (\`graphId\`, \`moduleId\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`graph_modules_hidden_module\` (\`graphId\` varchar(36) NOT NULL, \`moduleId\` varchar(36) NOT NULL, INDEX \`IDX_35c5c4280161e424db957793de\` (\`graphId\`), INDEX \`IDX_895b5f150255b9fb18d992a479\` (\`moduleId\`), PRIMARY KEY (\`graphId\`, \`moduleId\`)) ENGINE=InnoDB`);
         await queryRunner.query(`ALTER TABLE \`module\` CHANGE \`description\` \`description\` longblob NULL`);
         await queryRunner.query(`ALTER TABLE \`Graph\` ADD CONSTRAINT \`FK_95dbfc73ce5055ca2b136f5c9c3\` FOREIGN KEY (\`userId\`) REFERENCES \`user\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`Graph\` ADD CONSTRAINT \`FK_bf1c2e3f57314b27dc5d5ac790c\` FOREIGN KEY (\`degreeId\`) REFERENCES \`degree\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
@@ -24,17 +24,17 @@ export class migration1653468825334 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`user_modules_doing_module\` ADD CONSTRAINT \`FK_a0ac2a1563d827af2e4ccf24420\` FOREIGN KEY (\`moduleId\`) REFERENCES \`module\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE \`user_saved_degrees_degree\` ADD CONSTRAINT \`FK_91e37244f0527c73cc128512626\` FOREIGN KEY (\`userId\`) REFERENCES \`user\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE \`user_saved_degrees_degree\` ADD CONSTRAINT \`FK_cf0eb0d66da9f2076f42d15fcc5\` FOREIGN KEY (\`degreeId\`) REFERENCES \`degree\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
-        await queryRunner.query(`ALTER TABLE \`dag_modules_placed_module\` ADD CONSTRAINT \`FK_0ca97d3434421eaf55b79847cee\` FOREIGN KEY (\`dAGId\`) REFERENCES \`Graph\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
-        await queryRunner.query(`ALTER TABLE \`dag_modules_placed_module\` ADD CONSTRAINT \`FK_67d9d483ba4bf496707d9854c0f\` FOREIGN KEY (\`moduleId\`) REFERENCES \`module\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
-        await queryRunner.query(`ALTER TABLE \`dag_modules_hidden_module\` ADD CONSTRAINT \`FK_35c5c4280161e424db957793de0\` FOREIGN KEY (\`dAGId\`) REFERENCES \`Graph\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
-        await queryRunner.query(`ALTER TABLE \`dag_modules_hidden_module\` ADD CONSTRAINT \`FK_895b5f150255b9fb18d992a4799\` FOREIGN KEY (\`moduleId\`) REFERENCES \`module\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_placed_module\` ADD CONSTRAINT \`FK_0ca97d3434421eaf55b79847cee\` FOREIGN KEY (\`graphId\`) REFERENCES \`Graph\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_placed_module\` ADD CONSTRAINT \`FK_67d9d483ba4bf496707d9854c0f\` FOREIGN KEY (\`moduleId\`) REFERENCES \`module\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_hidden_module\` ADD CONSTRAINT \`FK_35c5c4280161e424db957793de0\` FOREIGN KEY (\`graphId\`) REFERENCES \`Graph\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_hidden_module\` ADD CONSTRAINT \`FK_895b5f150255b9fb18d992a4799\` FOREIGN KEY (\`moduleId\`) REFERENCES \`module\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE \`dag_modules_hidden_module\` DROP FOREIGN KEY \`FK_895b5f150255b9fb18d992a4799\``);
-        await queryRunner.query(`ALTER TABLE \`dag_modules_hidden_module\` DROP FOREIGN KEY \`FK_35c5c4280161e424db957793de0\``);
-        await queryRunner.query(`ALTER TABLE \`dag_modules_placed_module\` DROP FOREIGN KEY \`FK_67d9d483ba4bf496707d9854c0f\``);
-        await queryRunner.query(`ALTER TABLE \`dag_modules_placed_module\` DROP FOREIGN KEY \`FK_0ca97d3434421eaf55b79847cee\``);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_hidden_module\` DROP FOREIGN KEY \`FK_895b5f150255b9fb18d992a4799\``);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_hidden_module\` DROP FOREIGN KEY \`FK_35c5c4280161e424db957793de0\``);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_placed_module\` DROP FOREIGN KEY \`FK_67d9d483ba4bf496707d9854c0f\``);
+        await queryRunner.query(`ALTER TABLE \`graph_modules_placed_module\` DROP FOREIGN KEY \`FK_0ca97d3434421eaf55b79847cee\``);
         await queryRunner.query(`ALTER TABLE \`user_saved_degrees_degree\` DROP FOREIGN KEY \`FK_cf0eb0d66da9f2076f42d15fcc5\``);
         await queryRunner.query(`ALTER TABLE \`user_saved_degrees_degree\` DROP FOREIGN KEY \`FK_91e37244f0527c73cc128512626\``);
         await queryRunner.query(`ALTER TABLE \`user_modules_doing_module\` DROP FOREIGN KEY \`FK_a0ac2a1563d827af2e4ccf24420\``);
@@ -46,12 +46,12 @@ export class migration1653468825334 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE \`Graph\` DROP FOREIGN KEY \`FK_bf1c2e3f57314b27dc5d5ac790c\``);
         await queryRunner.query(`ALTER TABLE \`Graph\` DROP FOREIGN KEY \`FK_95dbfc73ce5055ca2b136f5c9c3\``);
         await queryRunner.query(`ALTER TABLE \`module\` CHANGE \`description\` \`description\` longblob NOT NULL`);
-        await queryRunner.query(`DROP INDEX \`IDX_895b5f150255b9fb18d992a479\` ON \`dag_modules_hidden_module\``);
-        await queryRunner.query(`DROP INDEX \`IDX_35c5c4280161e424db957793de\` ON \`dag_modules_hidden_module\``);
-        await queryRunner.query(`DROP TABLE \`dag_modules_hidden_module\``);
-        await queryRunner.query(`DROP INDEX \`IDX_67d9d483ba4bf496707d9854c0\` ON \`dag_modules_placed_module\``);
-        await queryRunner.query(`DROP INDEX \`IDX_0ca97d3434421eaf55b79847ce\` ON \`dag_modules_placed_module\``);
-        await queryRunner.query(`DROP TABLE \`dag_modules_placed_module\``);
+        await queryRunner.query(`DROP INDEX \`IDX_895b5f150255b9fb18d992a479\` ON \`graph_modules_hidden_module\``);
+        await queryRunner.query(`DROP INDEX \`IDX_35c5c4280161e424db957793de\` ON \`graph_modules_hidden_module\``);
+        await queryRunner.query(`DROP TABLE \`graph_modules_hidden_module\``);
+        await queryRunner.query(`DROP INDEX \`IDX_67d9d483ba4bf496707d9854c0\` ON \`graph_modules_placed_module\``);
+        await queryRunner.query(`DROP INDEX \`IDX_0ca97d3434421eaf55b79847ce\` ON \`graph_modules_placed_module\``);
+        await queryRunner.query(`DROP TABLE \`graph_modules_placed_module\``);
         await queryRunner.query(`DROP INDEX \`IDX_cf0eb0d66da9f2076f42d15fcc\` ON \`user_saved_degrees_degree\``);
         await queryRunner.query(`DROP INDEX \`IDX_91e37244f0527c73cc12851262\` ON \`user_saved_degrees_degree\``);
         await queryRunner.query(`DROP TABLE \`user_saved_degrees_degree\``);

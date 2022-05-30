@@ -10,11 +10,11 @@ import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
 import { setupGraph } from './setup'
 
-const dbName = 'test_dag_pull_all_true'
+const dbName = 'test_graph_pull_all_true'
 const db = getSource(dbName)
 let degree: Degree
 let user: User
-let dag: Graph
+let graph: Graph
 
 importChecks({
   entities: [Module, Degree, User, Graph],
@@ -30,15 +30,15 @@ beforeAll(async () => {
 afterAll(() => teardown(dbName))
 
 describe('Graph.initialize', () => {
-  it('Saves a dag', async () => {
-    const dagProps: Init.GraphProps = {
+  it('Saves a graph', async () => {
+    const graphProps: Init.GraphProps = {
       userId: user.id,
       degreeId: degree.id,
       modulesPlacedCodes: [],
       modulesHiddenCodes: [],
       pullAll: true,
     }
-    await container(db, () => GraphRepository(db).initialize(dagProps))
+    await container(db, () => GraphRepository(db).initialize(graphProps))
     const res = await endpoint(db, () =>
       container(db, () =>
         GraphRepository(db).findManyByUserAndDegreeId(user.id, degree.id)
@@ -46,9 +46,9 @@ describe('Graph.initialize', () => {
     )
     expect(res).toBeDefined()
     if (!res) return
-    const [dags, count] = res
+    const [graphs, count] = res
     expect(count).toEqual(1)
-    dag = dags[0]
+    graph = graphs[0]
   })
 
   it('Correctly populates modulesPlaced', async () => {
@@ -65,11 +65,11 @@ describe('Graph.initialize', () => {
       'MA2001',
       'MA2219',
     ]
-    const modulesPlacedCodes = dag.modulesPlaced.map(
+    const modulesPlacedCodes = graph.modulesPlaced.map(
       (one: Module) => one.moduleCode
     )
     expect(moduleCodes.sort()).toEqual(modulesPlacedCodes.sort())
-    expect(dag.modulesHidden.length).toEqual(0)
+    expect(graph.modulesHidden.length).toEqual(0)
   })
 })
 
@@ -89,25 +89,25 @@ describe('Graph.toggleModules', () => {
   ]
 
   it('Correctly changes a module\'s state from placed to hidden', async () => {
-    await container(db, () => GraphRepository(db).toggleModule(dag, 'MA2001'))
-    expect(dag.modulesPlaced.length).toEqual(moduleCodes.length - 1)
-    expect(dag.modulesHidden.length).toEqual(1)
-    expect(dag.modulesHidden[0].moduleCode).toEqual('MA2001')
+    await container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
+    expect(graph.modulesPlaced.length).toEqual(moduleCodes.length - 1)
+    expect(graph.modulesHidden.length).toEqual(1)
+    expect(graph.modulesHidden[0].moduleCode).toEqual('MA2001')
   })
 
   it('Correctly changes a module\'s state from hidden to placed', async () => {
     await endpoint(db, () =>
-      container(db, () => GraphRepository(db).toggleModule(dag, 'MA2001'))
+      container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
     )
-    expect(dag.modulesPlaced.length).toEqual(moduleCodes.length)
-    expect(dag.modulesHidden.length).toEqual(0)
+    expect(graph.modulesPlaced.length).toEqual(moduleCodes.length)
+    expect(graph.modulesHidden.length).toEqual(0)
   })
 
   it('Throws error if the module to be toggled is not part of the Graph', async () => {
     let error
     await db.initialize()
     try {
-      await GraphRepository(db).toggleModule(dag, init.invalidModuleCode)
+      await GraphRepository(db).toggleModule(graph, init.invalidModuleCode)
     } catch (err) {
       error = err
     }
