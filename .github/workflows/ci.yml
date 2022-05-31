@@ -76,10 +76,11 @@ jobs:
       - name: 📦 Run tests
         working-directory: ./packages/database
         run: |
-          MYSQL_RESTORE_SOURCE=$RESTORE \
+          DATABASE_TYPE=MYSQL \
           MYSQL_USERNAME=$DB_USER \
           MYSQL_PASSWORD=$DB_PASSWORD \
           MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
+          MYSQL_RESTORE_SOURCE=$RESTORE \
           yarn test:ci
 
   telegram:
