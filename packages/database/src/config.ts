@@ -1,7 +1,8 @@
 import { config as dotenvConfig } from 'dotenv'
 import { resolve } from 'path'
-import { DatabaseType, DataSource } from 'typeorm'
+import { DatabaseType, DataSource, EntitySchema, MixedList } from 'typeorm'
 import { box } from './cli'
+import { ModuleCondensed, Module, User, Degree, Graph } from './entity'
 
 const rootDir = process.cwd()
 const env = process.env.NODE_ENV
@@ -19,12 +20,11 @@ const envFile = `.env${env ? `.${env}` : ''}`
  * dev -> running yarn dev from root
  *   - database: default (.env)
  */
-const src = process.env.NODE_ENV === 'production' ? 'dist' : 'src'
 const base = {
   type: getDatabaseType(),
   port: getDatabasePort(),
-  entities: [`${src}/entity/*.{js,ts}`],
-  migrations: [`${src}/migrations/*.{js,ts}`],
+  entities: [ModuleCondensed, Module, User, Degree, Graph],
+  migrations: ['dist/migrations/*.{js,ts}'],
 }
 
 // read from the correct .env file based on NODE_ENV
@@ -41,7 +41,7 @@ type DataSourceOptions = {
   password: string
   host: string
   migrations: string[]
-  entities: string[]
+  entities: MixedList<string | Function>
   synchronize: boolean
 }
 
