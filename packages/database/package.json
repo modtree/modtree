@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "description": "modtree database with MySQL",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
   "type": "commonjs",
   "devDependencies": {
     "@types/express": "^4.17.13",
@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc",
+    "build": "tsc --declaration",
     "dev": "nodemon src/server.ts",
     "test": "yarn test:ci --detectOpenHandles",
     "test:v": "yarn test:ci --detectOpenHandles --silent=false",
