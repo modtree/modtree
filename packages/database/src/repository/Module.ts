@@ -127,6 +127,9 @@ export function ModuleRepository(database?: DataSource): Repository {
    * @return {Promise<Module[]>}
    */
   async function findByCodes(moduleCodes: string[]): Promise<Module[]> {
+    if (moduleCodes.length === 0) {
+      return []
+    }
     return BaseRepo.createQueryBuilder('module')
       .where('module.moduleCode IN (:...moduleCodes)', { moduleCodes })
       .getMany()
@@ -141,6 +144,6 @@ export function ModuleRepository(database?: DataSource): Repository {
     findByFaculty,
     loadRelations,
     findByCodes,
-    deleteAll
+    deleteAll,
   })
 }

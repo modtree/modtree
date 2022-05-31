@@ -57,7 +57,7 @@ async function handleQuery(
       dispatch(setSearchedModuleCondensed(moduleList))
       reload[1](!reload[0])
     })
-  })
+  }).catch(() => true)
 }
 
 export default function SearchBar() {

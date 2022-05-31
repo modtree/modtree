@@ -1,14 +1,11 @@
-import express, { Request, Response, NextFunction } from 'express'
 import * as bodyParser from 'body-parser'
-import { Routes } from './routes'
 import cors, { CorsOptions } from 'cors'
-import { db } from './config'
+import express, { NextFunction, Request, Response } from 'express'
+import { db } from '../config'
+import { Routes } from './routes'
 
 const corsOpts: CorsOptions = {
-  origin:
-    process.env.NODE_ENV === 'production'
-      ? 'https://modtree.vercel.app'
-      : 'http://localhost:3000',
+  origin: ['https://modtree.vercel.app', 'http://localhost:3000'],
 }
 
 db.initialize()
@@ -20,7 +17,7 @@ db.initialize()
 
     // register express routes from defined application routes
     Routes.forEach((route) => {
-      ;(app as any)[route.method](
+      app[route.method](
         route.route,
         (req: Request, res: Response, next: NextFunction) => {
           const result = new (route.controller as any)()[route.action](

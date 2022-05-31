@@ -38,9 +38,9 @@
     "typeorm": "0.3.6"
   },
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node dist/server",
     "build": "rm -rf ./dist && tsc --declaration",
-    "dev": "nodemon --exec \"yarn build && node dist/server.js\" -e js --ignore dist/",
+    "dev": "nodemon --exec \"yarn build && yarn start\" -e js --ignore dist/",
     "test": "yarn test:ci --detectOpenHandles",
     "test:v": "yarn test:ci --detectOpenHandles --silent=false",
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.ts",
@@ -71,6 +71,7 @@
     "modcon:fetch": "ts-node ./src/api/module-condensed/fetch.ts",
     "modcon:pull": "ts-node ./src/api/module-condensed/pull.ts",
     "modcon:get-codes": "ts-node ./src/api/module-condensed/get-codes.ts",
-    "modcon:json": "ts-node ./src/api/module-condensed/json.ts"
+    "modcon:json": "ts-node ./src/api/module-condensed/json.ts",
+    "graph": "madge --image graph.png"
   }
 }
