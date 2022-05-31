@@ -10,7 +10,7 @@ export class userController {
   private userRepo = UserRepository(db)
 
   /**
-   * returns all the modules in the database
+   * creates a User
    * @param {Request} req
    * @param {Response} res
    */
@@ -30,9 +30,7 @@ export class userController {
       res.json({ message: 'insufficient keys', requestKeys, requiredKeys })
       return
     }
-    console.log(req.body)
     copy(req.body, props)
-    console.log(req.body, props)
     const a = await this.userRepo.initialize(props)
     res.json({ message: 'done', result: a })
   }
