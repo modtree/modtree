@@ -1,21 +1,11 @@
-import express, { Request, Response, NextFunction } from 'express'
-import { json } from 'body-parser'
-import { Routes } from './routes'
+import * as bodyParser from 'body-parser'
 import cors, { CorsOptions } from 'cors'
+import express, { NextFunction, Request, Response } from 'express'
 import { db } from '../config'
-
-const whitelist = ['https://modtree.vercel.app', 'http://localhost:3000', 'http://localhost:8080/']
+import { Routes } from './routes'
 
 const corsOpts: CorsOptions = {
-  origin: (origin, callback) => {
-    console.log(origin)
-    if (whitelist.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(null, true)
-      // callback(new Error('Not allowed by CORS'))
-    }
-  },
+  origin: ['https://modtree.vercel.app', 'http://localhost:3000'],
 }
 
 db.initialize()
@@ -23,11 +13,11 @@ db.initialize()
     // create express app
     const app = express()
     app.use(cors(corsOpts))
-    app.use(json)
+    app.use(bodyParser.json())
 
     // register express routes from defined application routes
     Routes.forEach((route) => {
-      ;(app as any)[route.method](
+      app[route.method](
         route.route,
         (req: Request, res: Response, next: NextFunction) => {
           const result = new (route.controller as any)()[route.action](
