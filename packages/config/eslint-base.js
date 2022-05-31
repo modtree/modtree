@@ -12,6 +12,7 @@ module.exports = {
   },
   ignorePatterns: [
     "/lib/**/*", // Ignore built files.
+    "/dist/**/*", // Ignore built files.
     ".eslintrc.js", // Ignore this file.
     "/coverage/**/*", // Ignore coverage files
   ],

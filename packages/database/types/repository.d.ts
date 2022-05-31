@@ -1,8 +1,7 @@
-import { Repository } from 'typeorm'
+import { Repository , FindOptionsRelations } from 'typeorm'
 import { Init, GraphProps, UserProps, DegreeProps } from './modtree'
 import type { Graph, User, Degree, Module, ModuleCondensed } from '../src/entity'
 import type { Module as NM, ModuleCondensed as NMC } from './nusmods'
-import { FindOptionsRelations } from 'typeorm'
 
 type LoadRelations<Entity> = (
   entity: Entity,
