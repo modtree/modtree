@@ -2,7 +2,7 @@ import { config as dotenvConfig } from 'dotenv'
 import { DataSource } from 'typeorm'
 import { DataSourceOptions } from '../../types/modtree'
 import { ModuleCondensed, Module, User, Degree, Graph } from '../entity'
-import { getDatabaseType, getDatabasePort, boxLog, getPrefix } from './utils'
+import { getDatabaseType, getDatabasePort, getPrefix, boxLog } from './utils'
 
 /** read from .env file (no matter what NODE_ENV) */
 dotenvConfig()
@@ -13,22 +13,20 @@ dotenvConfig()
  * @return {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
-  const prefix = getPrefix()
-  console.log(prefix)
-  const env = (e: string): string => process.env[prefix + e] || ''
+  const prefix = (e: string): string => process.env[getPrefix() + e] || ''
   const almostDataSourceOptions = {
-    type: getDatabaseType(env('DATABASE_TYPE')),
+    type: getDatabaseType(prefix('DATABASE_TYPE')),
     rootDir: process.cwd(),
     port: getDatabasePort(),
     entities: [ModuleCondensed, Module, User, Degree, Graph],
     migrations: ['dist/migrations/*.{js,ts}'],
-    username: env('USERNAME'),
-    password: env('PASSWORD'),
-    host: env('HOST'),
-    database: env('ACTIVE_DATABASE'),
-    restoreSource: env('RESTORE_SOURCE'),
-    synchronize: env('SYNC') === 'true',
-    migrationsRun: env('MIGRATIONS_RUN') === 'true',
+    username: prefix('USERNAME'),
+    password: prefix('PASSWORD'),
+    host: prefix('HOST'),
+    database: prefix('ACTIVE_DATABASE'),
+    restoreSource: prefix('RESTORE_SOURCE'),
+    synchronize: prefix('SYNC') === 'true',
+    migrationsRun: prefix('MIGRATIONS_RUN') === 'true',
   }
   boxLog(almostDataSourceOptions)
   return almostDataSourceOptions
@@ -38,9 +36,7 @@ export const config = getConfig()
 
 export const db = new DataSource({
   ...config,
-  migrationsRun: false,
-  logging: false,
-  subscribers: [],
+  // required for Postgres deployment
   extra: {
     ssl: {
       rejectUnauthorized: false,
