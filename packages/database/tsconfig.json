@@ -5,12 +5,12 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "outDir": "./lib",
+    "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "types": ["@types/jest"]
   },
-  "include": ["src", "types", "tests"],
-  "exclude": ["lib", "node_modules"]
+  "include": ["src", "types"],
+  "exclude": ["dist", "node_modules"]
 }

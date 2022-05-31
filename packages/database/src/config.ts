@@ -7,6 +7,26 @@ const rootDir = process.cwd()
 const env = process.env.NODE_ENV
 const envFile = `.env${env ? `.${env}` : ''}`
 
+/* env states
+ * [dist]
+ * production -> heroku
+ *   - database: heroku
+ * [src]
+ * test -> testing with jest
+ *   - database: test (.env.test)
+ * empty -> accessing default db
+ *   - database: default (.env)
+ * dev -> running yarn dev from root
+ *   - database: default (.env)
+ */
+const src = process.env.NODE_ENV === 'production' ? 'dist' : 'src'
+const base = {
+  type: getDatabaseType(),
+  port: getDatabasePort(),
+  entities: [`${src}/entity/*.{js,ts}`],
+  migrations: [`${src}/migrations/*.{js,ts}`],
+}
+
 // read from the correct .env file based on NODE_ENV
 dotenvConfig({ path: resolve(rootDir, envFile) })
 
@@ -77,8 +97,8 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     host: env('HOST') || '',
     database: env('ACTIVE_DATABASE') || '',
     restoreSource: env('RESTORE_SOURCE') || '',
-    entities: ['src/entity/*.ts'],
-    migrations: ['src/migrations/*.ts'],
+    entities: base.entities,
+    migrations: base.migrations,
     synchronize: sync,
     migrationsRun: !sync,
   }
@@ -86,18 +106,13 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
   return config
 }
 
-const base = {
-  type: getDatabaseType(),
-  port: getDatabasePort(),
-}
-
 export const config = getConfig(base.type)
 
 export const db = new DataSource({
   ...config,
+  migrationsRun: false,
   logging: false,
   subscribers: [],
-  migrationsRun: false,
   extra: {
     ssl: {
       rejectUnauthorized: false,

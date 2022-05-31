@@ -1,4 +1,4 @@
-import type { Module, Degree, User } from "../src/entity"
+import type { Module, Degree, User } from '../src/entity'
 
 export type ModtreeFunction<T> = () => Promise<T>
 type Data = string | number | boolean
@@ -54,6 +54,7 @@ export type GraphProps = {
 }
 
 declare namespace modtree {
+  /** Module Class */
   export class Module {
     static get(): Promise<Module[]>
     static getCodes(): Promise<Set<string>>

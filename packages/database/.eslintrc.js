@@ -6,7 +6,11 @@ module.exports = {
     node: true,
   },
   ...config,
-  ignorePatterns: [...config.ignorePatterns, 'types/*', 'src/migrations/*'],
+  parserOptions: {
+    project: "eslint.tsconfig.json",
+    sourceType: "module",
+  },
+  ignorePatterns: [...config.ignorePatterns, 'src/migrations/*'],
   rules: {
     ...config.rules,
     'no-useless-escape': 'off', // some seemingly useless escapes are actually required

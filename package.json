@@ -16,7 +16,8 @@
     "dev:docs": "turbo run dev --filter=docs",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "rm:logs": "find . -name *.log | xargs rm",
-    "setup": "yarn && yarn build:db && yarn"
+    "setup": "yarn && yarn build:db && yarn",
+    "heroku-postbuild": "turbo run build --filter=database"
   },
   "devDependencies": {
     "prettier": "latest",
