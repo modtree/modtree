@@ -77,8 +77,8 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     host: env('HOST') || '',
     database: env('ACTIVE_DATABASE') || '',
     restoreSource: env('RESTORE_SOURCE') || '',
-    entities: ['dist/entity/*.js'],
-    migrations: ['dist/migrations/*.js'],
+    entities: base.entities,
+    migrations: base.migrations,
     synchronize: sync,
     migrationsRun: !sync,
   }
@@ -86,18 +86,22 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
   return config
 }
 
+const src = process.env.NODE_ENV === 'test' ? 'src' : 'dist'
+
 const base = {
   type: getDatabaseType(),
   port: getDatabasePort(),
+  entities: [`${src}/entity/*.{js,ts}`],
+  migrations: [`${src}/migrations/*.{js,ts}`],
 }
 
 export const config = getConfig(base.type)
 
 export const db = new DataSource({
   ...config,
+  migrationsRun: false,
   logging: false,
   subscribers: [],
-  migrationsRun: false,
   extra: {
     ssl: {
       rejectUnauthorized: false,
