@@ -54,6 +54,7 @@ export type GraphProps = {
 }
 
 declare namespace modtree {
+  /** Module Class */
   export class Module {
     static get(): Promise<Module[]>
     static getCodes(): Promise<Set<string>>
