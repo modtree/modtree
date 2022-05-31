@@ -1,4 +1,4 @@
-import { DatabaseType, MixedList } from 'typeorm'
+import { DatabaseType } from 'typeorm'
 import type { Module, Degree, User } from '../src/entity'
 
 export type ModtreeFunction<T> = () => Promise<T>
@@ -76,7 +76,7 @@ type DataSourceOptions = {
   password: string
   host: string
   migrations: string[]
-  entities: MixedList<string | Function>
+  entities: any[]
   synchronize: boolean
   migrationsRun: boolean
 }

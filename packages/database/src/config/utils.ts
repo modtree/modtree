@@ -3,7 +3,7 @@ import { box } from '../cli'
 
 /**
  * gets project database type from .env
- * @param {string} env
+ * @param {string} value
  * @return {DatabaseType}
  */
 export function getDatabaseType(value: string): SupportedDatabases {
