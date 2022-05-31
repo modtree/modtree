@@ -81,6 +81,7 @@ jobs:
           TEST_MYSQL_PASSWORD=$DB_PASSWORD \
           TEST_MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
           TEST_MYSQL_RESTORE_SOURCE=$RESTORE \
+          TEST_MYSQL_MIGRATIONS_RUN=true \
           yarn test:ci
 
   telegram:
