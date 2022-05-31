@@ -15,53 +15,53 @@ import { Base } from './Base'
 @Entity({ name: 'module' })
 export class Module extends Base {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @Column({ type: 'text' })
-  acadYear: AcadYear
+    acadYear: AcadYear
 
   @Column({ type: 'text' })
-  moduleCode: ModuleCode
+    moduleCode: ModuleCode
 
   @Column({ type: 'text' })
-  title: ModuleTitle
+    title: ModuleTitle
 
   @Column({ type: 'varchar', nullable: true })
-  description: string
+    description: string
 
   @Column({ type: 'text' })
-  moduleCredit: string
+    moduleCredit: string
 
   @Column({ type: 'text' })
-  department: Department
+    department: Department
 
   @Column({ type: 'text' })
-  faculty: Faculty
+    faculty: Faculty
 
   @Column({ type: 'json' })
-  aliases: ModuleCode[]
+    aliases: ModuleCode[]
 
   @Column({ type: 'json' })
-  attributes: NUSModuleAttributes
+    attributes: NUSModuleAttributes
 
   @Column({ type: 'text' })
-  prerequisite: string
+    prerequisite: string
 
   @Column({ type: 'text' })
-  corequisite: string
+    corequisite: string
 
   @Column({ type: 'text' })
-  preclusion: string
+    preclusion: string
 
   @Column({ type: 'json' })
-  fulfillRequirements: ModuleCode[]
+    fulfillRequirements: ModuleCode[]
 
   @Column({ type: 'json' })
-  semesterData: SemesterData[]
+    semesterData: SemesterData[]
 
   @Column({ type: 'json' })
-  prereqTree: PrereqTree
+    prereqTree: PrereqTree
 
   @Column({ type: 'json' })
-  workload: Workload
+    workload: Workload
 }

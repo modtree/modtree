@@ -13,8 +13,8 @@ dotenvConfig()
  * @return {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
-  const prefix = (e: string): string | undefined => process.env[getPrefix() + e]
-  const almostDataSourceOptions = {
+  const prefix = (e: string) => process.env[getPrefix() + e]
+  const almost = {
     type: getDatabaseType(),
     rootDir: process.cwd(),
     port: getDatabasePort(),
@@ -28,8 +28,8 @@ function getConfig(): DataSourceOptions {
     synchronize: prefix('SYNC') === 'true',
     migrationsRun: prefix('MIGRATIONS_RUN') === 'true',
   }
-  boxLog(almostDataSourceOptions)
-  return almostDataSourceOptions
+  boxLog(almost)
+  return almost
 }
 
 export const config = getConfig()
