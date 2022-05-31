@@ -13,14 +13,16 @@
     "@types/mysql": "^2.15.21",
     "@types/node": "^16.11.10",
     "@types/pg": "^8.6.5",
+    "@types/cors": "^2.8.12",
     "eslint-plugin-jest": "^26.2.2",
     "jest": "^28.1.0",
     "modtree-config": "*",
+    "ts-node": "10.7.0",
+    "typescript": "4.5.2",
     "ts-jest": "^28.0.2"
   },
   "dependencies": {
     "@inquirer/input": "^0.0.20-alpha.0",
-    "@types/cors": "^2.8.12",
     "axios": "^0.27.2",
     "boxen": "^5.1.2",
     "chalk": "^4.1.2",
@@ -33,9 +35,7 @@
     "nodemon": "^2.0.16",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
-    "ts-node": "10.7.0",
-    "typeorm": "0.3.6",
-    "typescript": "4.5.2"
+    "typeorm": "0.3.6"
   },
   "scripts": {
     "start": "yarn ts-node src/server.ts",
