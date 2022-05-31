@@ -5,7 +5,8 @@ import { db } from '../config'
 import { Routes } from './routes'
 
 const corsOpts: CorsOptions = {
-  origin: ['https://modtree.vercel.app', 'http://localhost:3000'],
+  // origin: ['https://modtree.vercel.app', 'http://localhost:3000', '127.0.0.1'],
+  origin: '*',
 }
 
 db.initialize()

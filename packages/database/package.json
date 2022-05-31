@@ -71,6 +71,7 @@
     "modcon:fetch": "ts-node ./src/api/module-condensed/fetch.ts",
     "modcon:pull": "ts-node ./src/api/module-condensed/pull.ts",
     "modcon:get-codes": "ts-node ./src/api/module-condensed/get-codes.ts",
-    "modcon:json": "ts-node ./src/api/module-condensed/json.ts"
+    "modcon:json": "ts-node ./src/api/module-condensed/json.ts",
+    "graph": "madge --image graph.png"
   }
 }

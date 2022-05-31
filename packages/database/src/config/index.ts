@@ -37,6 +37,7 @@ export const config = getConfig()
 export const db = new DataSource({
   ...config,
   // required for Postgres deployment
+  synchronize: true,
   extra: {
     ssl: {
       rejectUnauthorized: false,

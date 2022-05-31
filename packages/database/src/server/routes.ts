@@ -1,4 +1,4 @@
-import { moduleCondensedController } from '../controller/ModuleCondensed'
+import { moduleCondensedController, userController } from '../controller'
 
 export const Routes = [
   {
@@ -12,5 +12,11 @@ export const Routes = [
     route: '/modules/:moduleCode',
     controller: moduleCondensedController,
     action: 'one',
+  },
+  {
+    method: 'post',
+    route: '/user/create',
+    controller: userController,
+    action: 'create',
   },
 ]
