@@ -1,3 +1,4 @@
+import { DatabaseType, MixedList } from 'typeorm'
 import type { Module, Degree, User } from '../src/entity'
 
 export type ModtreeFunction<T> = () => Promise<T>
@@ -61,4 +62,21 @@ declare namespace modtree {
     static fetchOne(moduleCode: string): Promise<Module>
     static pull(): Promise<Module[]>
   }
+}
+
+type SupportedDatabases = Extract<DatabaseType, 'mysql' | 'postgres'>
+
+type DataSourceOptions = {
+  type: SupportedDatabases
+  rootDir: string
+  restoreSource: string
+  port: number
+  database: string
+  username: string
+  password: string
+  host: string
+  migrations: string[]
+  entities: MixedList<string | Function>
+  synchronize: boolean
+  migrationsRun: boolean
 }
