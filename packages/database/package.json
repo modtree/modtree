@@ -39,7 +39,7 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc --declaration",
+    "build": "rm -rf ./dist && tsc --declaration",
     "dev": "nodemon src/server.ts",
     "test": "yarn test:ci --detectOpenHandles",
     "test:v": "yarn test:ci --detectOpenHandles --silent=false",

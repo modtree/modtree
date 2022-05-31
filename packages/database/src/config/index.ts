@@ -13,9 +13,10 @@ dotenvConfig()
  * @return {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
-  const prefix = (e: string): string => process.env[getPrefix() + e] || ''
+  const prefix = (e: string): string | undefined => process.env[getPrefix() + e]
+  console.log([prefix('HOST')])
   const almostDataSourceOptions = {
-    type: getDatabaseType(prefix('DATABASE_TYPE')),
+    type: getDatabaseType(),
     rootDir: process.cwd(),
     port: getDatabasePort(),
     entities: [ModuleCondensed, Module, User, Degree, Graph],

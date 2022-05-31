@@ -3,11 +3,10 @@ import { box } from '../cli'
 
 /**
  * gets project database type from .env
- * @param {string} value
  * @return {DatabaseType}
  */
-export function getDatabaseType(value: string): SupportedDatabases {
-  const env = value.toLowerCase()
+export function getDatabaseType(): SupportedDatabases {
+  const env = process.env.DATABASE_TYPE.toLowerCase()
   if (env === 'postgres') return env
   return 'mysql'
 }
@@ -17,7 +16,7 @@ export function getDatabaseType(value: string): SupportedDatabases {
  */
 export function getDatabasePort(): number {
   const env = process.env.DATABASE_TYPE
-  if (env === 'postgres') return 5432
+  if (env === 'POSTGRES') return 5432
   return 3306
 }
 
@@ -40,6 +39,7 @@ export function getPrefix(): string {
 export function boxLog(config: DataSourceOptions) {
   const output = [
     `Environment: ${process.env.NODE_ENV}`,
+    `type:        ${process.env.DATABASE_TYPE}`,
     `Database:    ${config.database}`,
     `Engine:      ${config.type}`,
     `Synchronize: ${config.synchronize}`,

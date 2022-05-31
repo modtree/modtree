@@ -38,9 +38,7 @@ k-inv:
 		$(khang)/web
 	@cp \
 		$(database)/.env \
-		$(database)/.env.test \
 		${database}/.env.example \
-	  $(database)/.env.heroku \
 		$(khang)/database
 	@echo "[saving env files]"
 	@echo "target: $(khang)"
