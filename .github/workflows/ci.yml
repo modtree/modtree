@@ -82,7 +82,7 @@ jobs:
       - name: 📦 Run tests
         working-directory: ./packages/database
         run: |
-          DATABASE_TYPE=MYSQL \
+          TEST_DATABASE_TYPE=MYSQL \
           TEST_MYSQL_USERNAME=$DB_USER \
           TEST_MYSQL_PASSWORD=$DB_PASSWORD \
           TEST_MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \

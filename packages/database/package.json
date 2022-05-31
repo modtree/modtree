@@ -40,7 +40,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "build": "rm -rf ./dist && tsc --declaration",
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --exec \"yarn build && node dist/server.js\" -e js --ignore dist/",
     "test": "yarn test:ci --detectOpenHandles",
     "test:v": "yarn test:ci --detectOpenHandles --silent=false",
     "test:ci": "NODE_ENV=test jest --config ./tests/configs/ci.config.ts",
