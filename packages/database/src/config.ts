@@ -77,8 +77,8 @@ function getConfig(type: SupportedDatabases): DataSourceOptions {
     host: env('HOST') || '',
     database: env('ACTIVE_DATABASE') || '',
     restoreSource: env('RESTORE_SOURCE') || '',
-    entities: ['lib/entity/*.js'],
-    migrations: ['lib/migrations/*.js'],
+    entities: ['dist/entity/*.js'],
+    migrations: ['dist/migrations/*.js'],
     synchronize: sync,
     migrationsRun: !sync,
   }
