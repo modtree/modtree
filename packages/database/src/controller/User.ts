@@ -45,4 +45,17 @@ export class userController {
     const users = await this.userRepo.find()
     res.json({ message: 'done', result: users })
   }
+
+  /**
+   * get one User
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async one(req: Request, res: Response) {
+    const user = await this.userRepo.findOneBy({ ...req.body })
+    if (user)
+      res.json({ message: 'done', result: user })
+    else
+      res.json({ message: 'not found' })
+  }
 }

@@ -1,5 +1,7 @@
 import { UserProfile, useUser } from '@auth0/nextjs-auth0'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import axios, {AxiosResponse} from 'axios'
 
 const Separator = () => <hr className="border-gray-200 my-3" />
 
@@ -39,11 +41,31 @@ const MenuItem = (props: {
 export default function UserMenu() {
   const { user } = useUser()
   const spacing = 'py-3 mt-1'
+
+  const [username, setUsername] = useState('')
+
+  const getUsername = async (email: string) => {
+    const res = await axios.get("http://localhost:8080/user", {
+      params: {
+        email,
+      }
+    })
+    const username = res.data.result.username
+    setUsername(username)
+  }
+
+  // email @ user.email
+  useEffect(() => {
+    if (user && user.email)
+      getUsername(user.email)
+  }, [user])
+
   return (
     <div
       className={`w-48 bg-white rounded-md border shadow-md text-sm tracking-normal ${spacing}`}
     >
       <SignedInAs user={user} />
+      <div>Username: {username}</div>
       <MenuItem text="Your Profile" onClick={() => alert('Open Profile')} />
       <MenuItem text="Settings" onClick={() => alert('Open settings')} />
       <MenuItem text="Sign out" href="/api/auth/logout" />
