@@ -1,5 +1,3 @@
-import type { Module, Degree, User } from '../src/entity'
-
 export namespace Init {
   export type UserProps = {
     displayName: string
@@ -22,26 +20,3 @@ export namespace Init {
     pullAll: boolean
   }
 }
-
-export type UserProps = {
-  displayName: string
-  username: string
-  modulesDone: Module[]
-  modulesDoing: Module[]
-  matriculationYear: number
-  graduationYear: number
-  graduationSemester: number
-}
-
-export type DegreeProps = {
-  modules: Module[]
-  title: string
-}
-
-export type GraphProps = {
-  user: User
-  degree: Degree
-  modulesPlaced: Module[]
-  modulesHidden: Module[]
-}
-
