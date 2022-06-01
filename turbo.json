@@ -11,6 +11,9 @@
     "deploy": {
       "dependsOn": ["build", "lint"]
     },
+    "default:env": {
+      "dependsOn": ["^default:env"]
+    },
     "lint": {
       "outputs": []
     },

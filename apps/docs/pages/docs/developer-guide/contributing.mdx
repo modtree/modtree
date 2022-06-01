@@ -111,6 +111,6 @@ yarn lint
 [pr-ready]: https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/changing-the-stage-of-a-pull-request
 [commit-types]: https://github.com/commitizen/conventional-commit-types/blob/master/index.json
 [github actions]: https://github.com/modtree/modtree/actions
-[modtree-faq]: http://modtree.vercel.app/docs/faq
-[modtree-tests]: http://modtree.vercel.app/docs/developer-guide/tests
+[modtree-faq]: http://modtree-docs.vercel.app/docs/faq
+[modtree-tests]: http://modtree-docs.vercel.app/docs/developer-guide/tests
 [prettier]: https://prettier.io/
