@@ -18,6 +18,7 @@ export class userController {
     const props: Init.UserProps = {
       displayName: '',
       username: '',
+      email: '',
       modulesDone: [],
       modulesDoing: [],
       matriculationYear: 0,

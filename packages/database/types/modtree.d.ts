@@ -13,6 +13,7 @@ export namespace Init {
   export type UserProps = {
     displayName: string
     username: string
+    email: string
     modulesDone: string[]
     modulesDoing: string[]
     matriculationYear: number
@@ -35,6 +36,7 @@ export namespace Init {
 export type UserProps = {
   displayName: string
   username: string
+  email: string
   modulesDone: Module[]
   modulesDoing: Module[]
   matriculationYear: number
