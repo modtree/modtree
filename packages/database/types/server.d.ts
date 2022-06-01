@@ -65,6 +65,6 @@ export namespace response {
   /**
    * already-flat entities
    */
-  export interface Module extends ModuleEntity {}
-  export interface ModuleCondensed extends ModuleCondensedEntity {}
+  export type Module = ModuleEntity
+  export type ModuleCondensed = ModuleCondensedEntity
 }

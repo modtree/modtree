@@ -37,7 +37,7 @@ export const pull: Config.InitialOptions = {
 
 export const server: Config.InitialOptions = {
   ...all,
-  testMatch: [`**/tests/server/**/*.test.ts`],
+  testMatch: ['**/tests/server/**/*.test.ts'],
   silent: false,
 }
 

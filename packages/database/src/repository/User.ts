@@ -22,6 +22,10 @@ export function UserRepository(database?: DataSource): Repository {
   const BaseRepo = db.getRepository(User)
   const loadRelations = useLoadRelations(BaseRepo)
 
+  /**
+   * returns an empty User
+   * @return {User}
+   */
   function getEmpty(): User {
     return BaseRepo.create()
   }
