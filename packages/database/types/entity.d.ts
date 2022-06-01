@@ -7,6 +7,7 @@ export namespace Init {
     matriculationYear: number
     graduationYear: number
     graduationSemester: number
+    email: string
   }
   export type DegreeProps = {
     moduleCodes: string[]

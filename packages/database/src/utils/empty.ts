@@ -12,6 +12,7 @@ export namespace emptyInit {
     matriculationYear: 0,
     graduationYear: 0,
     graduationSemester: 0,
+    email: ''
   }
 
   /**
