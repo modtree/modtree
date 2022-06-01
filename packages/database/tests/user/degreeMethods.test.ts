@@ -95,6 +95,5 @@ describe('User.removeDegree', () => {
     expect(error.message).toBe('Degree not found in User')
 
     await db.destroy()
-    await setup(dbName)
   })
 })

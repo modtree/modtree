@@ -72,5 +72,4 @@ it('Throws error if module code passed in does not exist', async () => {
   expect(error.message).toBe('Invalid module code')
 
   await db.destroy()
-  await setup(dbName)
 })
