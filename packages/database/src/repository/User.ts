@@ -12,6 +12,7 @@ import {
   useBuild,
   getRelationNames,
 } from './base'
+import { emptyInit } from '../utils/empty'
 import type { UserRepository as Repository } from '../../types/repository'
 
 /**
@@ -29,7 +30,13 @@ export function UserRepository(database?: DataSource): Repository {
    * @return {User}
    */
   function build(props: UserProps): User {
+    // this doesn't write to the database.
+    // db is passed in to be able to access the metadata
     return useBuild(db, User, props)
+  }
+
+  function getEmpty(): User {
+    return useBuild(db, User, emptyInit.User)
   }
 
   /**
@@ -174,8 +181,7 @@ export function UserRepository(database?: DataSource): Repository {
     })
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter((degree) => degree.id == degreeId)
-    if (filtered.length == 0)
-      throw new Error('Degree not found in User')
+    if (filtered.length == 0) throw new Error('Degree not found in User')
     return filtered[0]
   }
 
@@ -211,5 +217,6 @@ export function UserRepository(database?: DataSource): Repository {
     addDegree,
     findDegree,
     removeDegree,
+    getEmpty,
   })
 }

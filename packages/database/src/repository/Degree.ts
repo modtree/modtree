@@ -10,6 +10,7 @@ import {
 } from './base'
 import { copy } from '../utils/object'
 import type { DegreeRepository as Repository } from '../../types/repository'
+import { emptyInit } from '../utils/empty'
 
 /**
  * @param {DataSource} database
@@ -28,6 +29,10 @@ export function DegreeRepository(database?: DataSource): Repository {
    */
   function build(props: DegreeProps): Degree {
     return useBuild(db, Degree, props)
+  }
+
+  function getEmpty(): Degree {
+    return useBuild(db, Degree, emptyInit.Degree)
   }
 
   /**
@@ -101,5 +106,6 @@ export function DegreeRepository(database?: DataSource): Repository {
     loadRelations,
     findOneByTitle,
     findOneById,
+    getEmpty,
   })
 }

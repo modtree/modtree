@@ -18,7 +18,8 @@ interface BaseRepo<Entity, BuildProps, InitProps = BuildProps>
   extends Repository<Entity> {
   build(props: BuildProps): Entity
   initialize?(props: InitProps): Promise<void>
-  deleteAll?: DeleteAll
+  deleteAll?(): DeleteAll
+  getEmpty?(): Entity
 }
 
 export interface GraphRepository extends BaseRepo<Graph, GraphProps, Init.GraphProps> {
