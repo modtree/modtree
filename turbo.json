@@ -1,11 +1,18 @@
 {
   "pipeline": {
+    "ci": {
+      "dependsOn": ["^ci"],
+      "outputs": ["dist/**", ".next/**", "lib/**"]
+    },
     "build": {
       "dependsOn": ["^build", "lint"],
       "outputs": ["dist/**", ".next/**", "lib/**"]
     },
     "deploy": {
       "dependsOn": ["build", "lint"]
+    },
+    "default:env": {
+      "dependsOn": ["^default:env"]
     },
     "lint": {
       "outputs": []

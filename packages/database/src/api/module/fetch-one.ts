@@ -3,4 +3,4 @@ import { container } from '../..'
 import { db } from '../../config'
 import { analyze } from '../analyze'
 
-analyze(() => container(db, () => ModuleRepository(db).fetchOne('CS1010S')))
+analyze(() => container(db, () => ModuleRepository(db).fetchOne('LL4004V')))

@@ -8,7 +8,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build:ci": "turbo run build --filter=database --filter=web",
+    "ci": "turbo run ci",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",
@@ -16,8 +16,9 @@
     "dev:docs": "turbo run dev --filter=docs",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "rm:logs": "find . -name *.log | xargs rm",
-    "setup": "yarn && yarn build:db && yarn",
-    "heroku-postbuild": "turbo run build --filter=database"
+    "setup": "yarn && yarn build:db && yarn default:env",
+    "heroku-postbuild": "yarn build:db",
+    "default:env": "turbo run default:env"
   },
   "devDependencies": {
     "prettier": "latest",
