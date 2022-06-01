@@ -23,7 +23,11 @@ export const all: Config.InitialOptionsWithRootDir = {
 export const ci: Config.InitialOptions = {
   ...all,
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: [...all.testPathIgnorePatterns, 'module-pull'],
+  testPathIgnorePatterns: [
+    ...all.testPathIgnorePatterns,
+    'module-pull',
+    'server',
+  ],
 }
 
 export const pull: Config.InitialOptions = {
@@ -34,7 +38,7 @@ export const pull: Config.InitialOptions = {
 export const server: Config.InitialOptions = {
   ...all,
   testMatch: [`**/tests/server/**/*.test.ts`],
-  silent: false
+  silent: false,
 }
 
 const khang = ['module-condensed-pull']
