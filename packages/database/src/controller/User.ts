@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-
 import { copy } from '..'
 import { db } from '../config'
 import { User } from '../entity'
