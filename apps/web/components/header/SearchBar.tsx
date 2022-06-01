@@ -54,7 +54,8 @@ async function handleQuery(
   fetch(url).then((res) => {
     res.json().then((json) => {
       const moduleList: ModuleCondensed[] = json.result
-      dispatch(setSearchedModuleCondensed(moduleList))
+      console.log(moduleList)
+      // dispatch(setSearchedModuleCondensed(moduleList))
       reload[1](!reload[0])
     })
   }).catch(() => true)
