@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+
 import { copy } from '..'
 import { db } from '../config'
 import { User } from '../entity'
@@ -35,9 +36,16 @@ export class userController {
   async get(req: Request, res: Response) {
     const user: User = await this.userRepo.findOne({
       where: { id: req.params.userId },
-      loadRelationIds: true,
+      relations: {
+        modulesDone: true,
+        modulesDoing: true,
+      },
     })
-    res.json(user)
+    res.json({
+      ...user,
+      modulesDone: user.modulesDone.map((m) => m.moduleCode),
+      modulesDoing: user.modulesDoing.map((m) => m.moduleCode),
+    })
   }
 
   /**
