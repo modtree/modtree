@@ -4,7 +4,7 @@ Before you file this pull request, please read these guidelines:
 
 ### Discussion
 
-  * Read the contribution guidelines (CONTRIBUTING.md).
+  * Read the [contribution guidelines](CONTRIBUTING.md).
   * If this has been discussed in an issue, make sure to link to the issue here. 
     If not, go file an issue about this **before creating a pull request** to discuss.
 
@@ -16,5 +16,5 @@ Before you file this pull request, please read these guidelines:
 ### API Changes
 
   * At this time we cannot accept changes that affect the public API.  If you'd like to help 
-    us make Firebase APIs better, please propose your change in an issue so that we 
+    us make Modtree APIs better, please propose your change in an issue so that we 
     can discuss it together.
