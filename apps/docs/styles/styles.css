@@ -21,7 +21,7 @@ sub > p {
   background-repeat: no-repeat;
   height: 42px;
   width: 200px;
-  background-image: url("/logo-light.svg");
+  background-image: url('/logo-light.svg');
 }
 
 .dark .logo {
@@ -29,5 +29,16 @@ sub > p {
   background-repeat: no-repeat;
   height: 42px;
   width: 200px;
-  background-image: url("/logo-dark.svg");
+  background-image: url('/logo-dark.svg');
+}
+
+ol > li > ol,
+ul > li > ol,
+ol > li > ul,
+ul > li > ul {
+  @apply my-0;
+}
+
+main > ul > li:last-child {
+  /* @apply mb-2 bg-blue-100; */
 }
