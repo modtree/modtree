@@ -3,7 +3,7 @@ import { nusmodsApi, getModuleLevel } from '../utils/string'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { DataSource } from 'typeorm'
-import { getDataSource, useBuild, useLoadRelations, useDeleteAll } from './base'
+import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleCondensedRepository as Repository } from '../../types/repository'
 
 /**
@@ -15,18 +15,6 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
   const BaseRepo = db.getRepository(ModuleCondensed)
   const loadRelations = useLoadRelations(BaseRepo)
   const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
-
-  /**
-   * a drop-in replacement of a constructor
-   * @param {NM} props
-   * @return {Module}
-   */
-  function build(props: NMC): ModuleCondensed {
-    return useBuild(db, ModuleCondensed, {
-      ...props,
-      moduleLevel: getModuleLevel(props.moduleCode),
-    })
-  }
 
   /**
    * get all module codes from the module table
@@ -44,7 +32,9 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
   async function fetch(): Promise<ModuleCondensed[]> {
     const res = await axios.get(nusmodsApi('moduleList'))
     const data: NMC[] = res.data
-    return data.map((n) => build(n))
+    return data.map((n) =>
+      BaseRepo.create({ ...n, moduleLevel: getModuleLevel(n.moduleCode) })
+    )
   }
 
   /**
@@ -64,7 +54,6 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
   }
 
   return BaseRepo.extend({
-    build,
     getCodes,
     fetch,
     pull,

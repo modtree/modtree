@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { Init, UserProps } from '../../types/modtree'
+import { Init } from '../../types/entity'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
@@ -9,7 +9,6 @@ import { utils } from '../utils'
 import {
   useLoadRelations,
   getDataSource,
-  useBuild,
   getRelationNames,
 } from './base'
 import type { UserRepository as Repository } from '../../types/repository'
@@ -24,33 +23,25 @@ export function UserRepository(database?: DataSource): Repository {
   const loadRelations = useLoadRelations(BaseRepo)
 
   /**
-   * Constructor for User
-   * @param {UserProps} props
-   * @return {User}
-   */
-  function build(props: UserProps): User {
-    return useBuild(db, User, props)
-  }
-
-  /**
    * Adds a User to DB
    * @param {UserProps} props
-   * @return {Promise<void>}
+   * @return {Promise<User>}
    */
-  async function initialize(props: Init.UserProps): Promise<void> {
+  async function initialize(props: Init.UserProps): Promise<User> {
     // find modules completed and modules doing, to create many-to-many relation
     const queryList = [props.modulesDone, props.modulesDoing]
     const modulesPromise = Promise.all(
       queryList.map((list) => ModuleRepository(db).findByCodes(list))
     )
     const [modulesDone, modulesDoing] = await modulesPromise
-    const userProps: UserProps = {
+    const userProps = {
       ...props,
       modulesDone: modulesDone || [],
       modulesDoing: modulesDoing || [],
     }
-    const user = build(userProps)
+    const user = BaseRepo.create(userProps)
     await BaseRepo.save(user)
+    return user
   }
 
   /**
@@ -174,8 +165,7 @@ export function UserRepository(database?: DataSource): Repository {
     })
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter((degree) => degree.id == degreeId)
-    if (filtered.length == 0)
-      throw new Error('Degree not found in User')
+    if (filtered.length == 0) throw new Error('Degree not found in User')
     return filtered[0]
   }
 
@@ -202,7 +192,6 @@ export function UserRepository(database?: DataSource): Repository {
 
   return BaseRepo.extend({
     canTakeModule,
-    build,
     initialize,
     loadRelations,
     findOneByUsername,

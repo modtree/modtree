@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { copy } from '..'
-
-import { Init } from '../../types/modtree'
 import { db } from '../config'
+import { User } from '../entity'
 import { UserRepository } from '../repository'
+import { emptyInit } from '../utils/empty'
 
 /** ModuleCondensed api controller */
 export class userController {
@@ -15,16 +15,7 @@ export class userController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props: Init.UserProps = {
-      displayName: '',
-      username: '',
-      email: '',
-      modulesDone: [],
-      modulesDoing: [],
-      matriculationYear: 0,
-      graduationYear: 0,
-      graduationSemester: 0,
-    }
+    const props = emptyInit.User
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
@@ -32,8 +23,28 @@ export class userController {
       return
     }
     copy(req.body, props)
-    const a = await this.userRepo.initialize(props)
-    res.json({ message: 'done', result: a })
+    const user: User = await this.userRepo.initialize(props)
+    res.json(user)
+  }
+
+  /**
+   * finds one User by id
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async get(req: Request, res: Response) {
+    const user: User = await this.userRepo.findOne({
+      where: { id: req.params.userId },
+      relations: {
+        modulesDone: true,
+        modulesDoing: true,
+      },
+    })
+    res.json({
+      ...user,
+      modulesDone: user.modulesDone.map((m) => m.moduleCode),
+      modulesDoing: user.modulesDoing.map((m) => m.moduleCode),
+    })
   }
 
   /**

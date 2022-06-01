@@ -14,8 +14,8 @@ export class moduleCondensedController {
    */
   async all(req: Request, res: Response) {
     console.log(Object.keys(req).length)
-    const a = await this.moduleRepo.find()
-    res.json({ message: 'done', result: a })
+    const all = await this.moduleRepo.find()
+    res.json(all)
   }
 
   /**
@@ -31,10 +31,10 @@ export class moduleCondensedController {
         },
       })
       .then((result) => {
-        res.json({ message: 'done', result })
+        res.json(result)
       })
-      .catch((err) => {
-        res.json({ message: 'error', error: err })
+      .catch((error) => {
+        res.status(500).json({ error })
       })
   }
 }

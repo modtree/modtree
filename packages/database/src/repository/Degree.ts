@@ -1,13 +1,8 @@
 import { DataSource, In } from 'typeorm'
-import { Init, DegreeProps } from '../../types/modtree'
+import { Init } from '../../types/entity'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import {
-  getDataSource,
-  useBuild,
-  useLoadRelations,
-  getRelationNames,
-} from './base'
+import { getDataSource, useLoadRelations, getRelationNames } from './base'
 import { copy } from '../utils/object'
 import type { DegreeRepository as Repository } from '../../types/repository'
 
@@ -21,26 +16,17 @@ export function DegreeRepository(database?: DataSource): Repository {
   const loadRelations = useLoadRelations(BaseRepo)
 
   /**
-   * Constructor for Degree
-   * Note: the props here is slightly different from Init.DegreeProps
-   * @param {DegreeProps} props
-   * @return {Degree}
-   */
-  function build(props: DegreeProps): Degree {
-    return useBuild(db, Degree, props)
-  }
-
-  /**
    * Adds a Degree to DB
    * @param {DegreeInitProps} props
-   * @return {Promise<void>}
+   * @return {Promise<Degree>}
    */
-  async function initialize(props: Init.DegreeProps): Promise<void> {
+  async function initialize(props: Init.DegreeProps): Promise<Degree> {
     const { moduleCodes, title } = props
     // find modules required, to create many-to-many relation
     const modules = await ModuleRepository(db).findByCodes(moduleCodes)
-    const degree = build({ modules, title })
+    const degree = BaseRepo.create({ modules, title })
     await BaseRepo.save(degree)
+    return degree
   }
 
   /**
@@ -95,7 +81,6 @@ export function DegreeRepository(database?: DataSource): Repository {
   }
 
   return BaseRepo.extend({
-    build,
     initialize,
     insertModules,
     loadRelations,

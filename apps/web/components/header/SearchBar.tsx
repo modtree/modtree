@@ -52,8 +52,8 @@ async function handleQuery(
   const backend = process.env.NEXT_PUBLIC_BACKEND
   const url = `${backend}/modules/${upper}`
   fetch(url).then((res) => {
-    res.json().then((json) => {
-      const moduleList: ModuleCondensed[] = json.result
+    res.json().then((result) => {
+      const moduleList: ModuleCondensed[] = result
       dispatch(setSearchedModuleCondensed(moduleList))
       reload[1](!reload[0])
     })

@@ -1,5 +1,5 @@
 import { DataSource, In, SelectQueryBuilder } from 'typeorm'
-import { Init, GraphProps } from '../../types/modtree'
+import { Init } from '../../types/entity'
 import { Module } from '../entity/Module'
 import { Graph } from '../entity/Graph'
 import { ModuleRepository } from './Module'
@@ -7,7 +7,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, useBuild, useLoadRelations } from './base'
+import { getDataSource, useLoadRelations } from './base'
 import { quickpop } from '../utils/array'
 import type { GraphRepository as Repository } from '../../types/repository'
 
@@ -23,21 +23,11 @@ export function GraphRepository(database?: DataSource): Repository {
   const loadRelations = useLoadRelations(BaseRepo)
 
   /**
-   * Constructor for Graph
-   * Note: the props here is slightly different from Init.GraphProps
-   * @param {GraphProps} props
-   * @return {Graph}
-   */
-  function build(props: GraphProps): Graph {
-    return useBuild(db, Graph, props)
-  }
-
-  /**
    * Adds a Graph to DB
    * @param {Init.GraphProps} props
-   * @return {Promise<void>}
+   * @return {Promise<Graph>}
    */
-  async function initialize(props: Init.GraphProps): Promise<void> {
+  async function initialize(props: Init.GraphProps): Promise<Graph> {
     /**
      * retrieves the degree and user with relations, without blocking each
      * other.
@@ -77,13 +67,14 @@ export function GraphRepository(database?: DataSource): Repository {
 
     const [user, degree] = await getUserAndDegree()
     const [modulesPlaced, modulesHidden] = await getModules()
-    const graph = build({
+    const graph = BaseRepo.create({
       user,
       degree,
       modulesPlaced,
       modulesHidden,
     })
     await BaseRepo.save(graph)
+    return graph
   }
 
   /**
@@ -185,7 +176,6 @@ export function GraphRepository(database?: DataSource): Repository {
   }
 
   return BaseRepo.extend({
-    build,
     initialize,
     toggleModule,
     loadRelations,

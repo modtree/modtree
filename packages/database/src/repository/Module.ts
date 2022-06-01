@@ -6,7 +6,7 @@ import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { DataSource } from 'typeorm'
-import { getDataSource, useLoadRelations, useBuild, useDeleteAll } from './base'
+import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleRepository as Repository } from '../../types/repository'
 
 /**
@@ -18,15 +18,6 @@ export function ModuleRepository(database?: DataSource): Repository {
   const BaseRepo = db.getRepository(Module)
   const loadRelations = useLoadRelations(BaseRepo)
   const deleteAll = useDeleteAll<Module>(BaseRepo)
-
-  /**
-   * a drop-in replacement of a constructor
-   * @param {NM} props
-   * @return {Module}
-   */
-  function build(props: NM): Module {
-    return useBuild(db, Module, props)
-  }
 
   /**
    * get all modules in the database
@@ -58,7 +49,7 @@ export function ModuleRepository(database?: DataSource): Repository {
   async function fetchOne(moduleCode: string): Promise<Module> {
     const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
     const n: NM = res.data
-    const m = build(n)
+    const m = BaseRepo.create(n)
     return m
   }
 
@@ -84,7 +75,7 @@ export function ModuleRepository(database?: DataSource): Repository {
     const test = async (moduleCode: string) => {
       const res = await client.get(`${moduleCode}.json`)
       const n: NM = res.data
-      const m = build(n)
+      const m = BaseRepo.create(n)
       result.push(m)
       writeQueue.push(BaseRepo.save(m))
       return 'ok'
@@ -136,7 +127,6 @@ export function ModuleRepository(database?: DataSource): Repository {
   }
 
   return BaseRepo.extend({
-    build,
     get,
     getCodes,
     fetchOne,
