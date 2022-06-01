@@ -1,7 +1,7 @@
 import { UserProfile, useUser } from '@auth0/nextjs-auth0'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import axios, {AxiosResponse} from 'axios'
+import axios from 'axios'
 
 const Separator = () => <hr className="border-gray-200 my-3" />
 
@@ -45,7 +45,7 @@ export default function UserMenu() {
   const [username, setUsername] = useState('')
 
   const getUsername = async (email: string) => {
-    const res = await axios.post("http://localhost:8080/user", {
+    const res = await axios.post('http://localhost:8080/user', {
       email,
     })
     const username = res.data.result.username
@@ -62,8 +62,8 @@ export default function UserMenu() {
       className={`w-48 bg-white rounded-md border shadow-md text-sm tracking-normal ${spacing}`}
     >
       <SignedInAs user={user} />
-      <div className={`text-sm mx-4`}>
-        Username: <span className={`font-bold`}>{username}</span>
+      <div className={'text-sm mx-4'}>
+        Username: <span className={'font-bold'}>{username}</span>
       </div>
       <Separator/>
       <MenuItem text="Your Profile" onClick={() => alert('Open Profile')} />
