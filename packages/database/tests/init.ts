@@ -18,6 +18,7 @@ export namespace init {
   export const user1: Init.UserProps = {
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
+    email: 'khang@modtree.com',
     modulesDone: ['MA2001'],
     modulesDoing: ['MA2219'],
     matriculationYear: 2021,
@@ -27,6 +28,7 @@ export namespace init {
   export const emptyUser: Init.UserProps = {
     displayName: 'Khang Vu Nguyen',
     username: 'definitelynotkhang',
+    email: 'user@modtree.com',
     modulesDone: [],
     modulesDoing: [],
     matriculationYear: 2021,

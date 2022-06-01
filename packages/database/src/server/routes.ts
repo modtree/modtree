@@ -19,4 +19,16 @@ export const Routes = [
     controller: userController,
     action: 'create',
   },
+  {
+    method: 'get',
+    route: '/user/all',
+    controller: userController,
+    action: 'all',
+  },
+  {
+    method: 'post',
+    route: '/user',
+    controller: userController,
+    action: 'one',
+  },
 ]
