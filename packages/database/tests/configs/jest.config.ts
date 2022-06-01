@@ -10,6 +10,10 @@ export const all: Config.InitialOptionsWithRootDir = {
   bail: 1,
   // clear mocks, calls, instances, contexts and results before every test
   clearMocks: true,
+  // postgres problems
+  maxConcurrency: 1,
+  maxWorkers: 1,
+  // actual stuff
   preset: 'ts-jest',
   testMatch: ['**/tests/**/*.test.ts'],
   testPathIgnorePatterns: ['environment.ts'],

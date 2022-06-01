@@ -27,6 +27,14 @@ function getConfig(): DataSourceOptions {
     restoreSource: prefix('RESTORE_SOURCE'),
     synchronize: prefix('SYNC') === 'true',
     migrationsRun: prefix('MIGRATIONS_RUN') === 'true',
+    extra:
+      prefix('USE_SSL') === 'true'
+        ? {
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          }
+        : undefined,
   }
   boxLog(almost)
   return almost
@@ -36,10 +44,4 @@ export const config = getConfig()
 
 export const db = new DataSource({
   ...config,
-  // required for Postgres deployment
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
 })

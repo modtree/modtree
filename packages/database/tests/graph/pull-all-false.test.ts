@@ -12,7 +12,12 @@ import { setupGraph } from './setup'
 const dbName = 'test_graph_pull_all_false'
 const db = getSource(dbName)
 
-beforeAll(() => setup(dbName))
+beforeAll(async () => {
+  await setup(dbName)
+  const res = await setupGraph(db)
+  if (!res) throw new Error('Unable to setup Graph test.')
+  ;[user, degree] = res
+})
 afterAll(() => teardown(dbName))
 
 importChecks({
@@ -23,14 +28,6 @@ importChecks({
 let degree: Degree
 let user: User
 let graph: Graph
-
-beforeAll(async () => {
-  await setup(dbName)
-  const res = await setupGraph(db)
-  if (!res) throw new Error('Unable to setup Graph test.')
-  ;[user, degree] = res
-})
-
 
 describe('Graph.initialize', () => {
   it('Saves a graph', async () => {

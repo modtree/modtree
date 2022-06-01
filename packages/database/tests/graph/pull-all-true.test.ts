@@ -114,6 +114,5 @@ describe('Graph.toggleModules', () => {
     expect(error).toBeInstanceOf(Error)
     expect(error.message).toBe('Module not found in Graph')
     await db.destroy()
-    await setup(dbName)
   })
 })
