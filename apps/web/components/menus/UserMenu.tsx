@@ -45,10 +45,8 @@ export default function UserMenu() {
   const [username, setUsername] = useState('')
 
   const getUsername = async (email: string) => {
-    const res = await axios.get("http://localhost:8080/user", {
-      params: {
-        email,
-      }
+    const res = await axios.post("http://localhost:8080/user", {
+      email,
     })
     const username = res.data.result.username
     setUsername(username)

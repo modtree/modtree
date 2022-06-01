@@ -26,7 +26,7 @@ export const Routes = [
     action: 'all',
   },
   {
-    method: 'get',
+    method: 'post',
     route: '/user',
     controller: userController,
     action: 'one',
