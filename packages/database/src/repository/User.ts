@@ -29,9 +29,9 @@ export function UserRepository(database?: DataSource): Repository {
   /**
    * Adds a User to DB
    * @param {UserProps} props
-   * @return {Promise<void>}
+   * @return {Promise<User>}
    */
-  async function initialize(props: Init.UserProps): Promise<void> {
+  async function initialize(props: Init.UserProps): Promise<User> {
     // find modules completed and modules doing, to create many-to-many relation
     const queryList = [props.modulesDone, props.modulesDoing]
     const modulesPromise = Promise.all(
@@ -45,6 +45,7 @@ export function UserRepository(database?: DataSource): Repository {
     }
     const user = BaseRepo.create(userProps)
     await BaseRepo.save(user)
+    return user
   }
 
   /**

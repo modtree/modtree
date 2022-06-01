@@ -22,14 +22,15 @@ export function DegreeRepository(database?: DataSource): Repository {
   /**
    * Adds a Degree to DB
    * @param {DegreeInitProps} props
-   * @return {Promise<void>}
+   * @return {Promise<Degree>}
    */
-  async function initialize(props: Init.DegreeProps): Promise<void> {
+  async function initialize(props: Init.DegreeProps): Promise<Degree> {
     const { moduleCodes, title } = props
     // find modules required, to create many-to-many relation
     const modules = await ModuleRepository(db).findByCodes(moduleCodes)
     const degree = BaseRepo.create({ modules, title })
     await BaseRepo.save(degree)
+    return degree
   }
 
   /**

@@ -25,9 +25,9 @@ export function GraphRepository(database?: DataSource): Repository {
   /**
    * Adds a Graph to DB
    * @param {Init.GraphProps} props
-   * @return {Promise<void>}
+   * @return {Promise<Graph>}
    */
-  async function initialize(props: Init.GraphProps): Promise<void> {
+  async function initialize(props: Init.GraphProps): Promise<Graph> {
     /**
      * retrieves the degree and user with relations, without blocking each
      * other.
@@ -74,6 +74,7 @@ export function GraphRepository(database?: DataSource): Repository {
       modulesHidden,
     })
     await BaseRepo.save(graph)
+    return graph
   }
 
   /**

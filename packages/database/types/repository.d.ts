@@ -19,7 +19,7 @@ type LoadRelations<Entity> = (
  * it is a interface that will be extended to form the final Repositories of modtree
  */
 interface BaseRepo<Entity, InitProps> extends Repository<Entity> {
-  initialize?(props: InitProps): Promise<void>
+  initialize?(props: InitProps): Promise<Entity>
   deleteAll?(): Promise<void>
   getEmpty?(): Entity
 }
