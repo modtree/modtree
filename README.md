@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/wiki/modtree/modtree/logo.png" alt="modtree">
+  <img src="https://raw.githubusercontent.com/wiki/modtree/modtree/logo-light.png" alt="modtree">
 </h1>
 
 Modtree is a project that seeks to leverage [existing
