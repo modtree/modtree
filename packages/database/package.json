@@ -44,7 +44,7 @@
     "dev": "yarn build && yarn start",
     "graph": "madge --image graph.png",
     "ci": "yarn build && yarn lint:no-fix",
-    "default:env": "cp .env.example .env && createdb modtree 2>/dev/null && yarn restore:default",
+    "default:env": "sh setup.sh",
     "": "──────────────────────────────────────────────────────────",
     "jest": "NODE_ENV=test jest",
     "tconf:ci": "yarn jest -c ./tests/configs/ci.config.ts",
