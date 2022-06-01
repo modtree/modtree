@@ -41,7 +41,7 @@
     "": "──────────────────────────────────────────────────────────",
     "start": "node dist/server",
     "build": "rm -rf ./dist && tsc --declaration",
-    "dev": "nodemon --exec \"yarn build && yarn start\" -e js --ignore dist/",
+    "dev": "yarn build && yarn start",
     "graph": "madge --image graph.png",
     "": "──────────────────────────────────────────────────────────",
     "jest": "NODE_ENV=test jest",

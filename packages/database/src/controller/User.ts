@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { copy } from '..'
 import { db } from '../config'
+import { User } from '../entity'
 import { UserRepository } from '../repository'
 import { emptyInit } from '../utils/empty'
 
@@ -22,8 +23,19 @@ export class userController {
       return
     }
     copy(req.body, props)
-    const a = await this.userRepo.initialize(props)
-    res.json({ message: 'done', result: a })
+    const user: User = await this.userRepo.initialize(props)
+    res.json(user)
+  }
+
+
+  /**
+   * finds one User by id
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async get(req: Request, res: Response) {
+    const user: User = await this.userRepo.findOneById(req.params.userId)
+    res.json(user)
   }
 
   /**
