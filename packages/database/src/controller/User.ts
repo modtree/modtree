@@ -35,4 +35,14 @@ export class userController {
     const a = await this.userRepo.initialize(props)
     res.json({ message: 'done', result: a })
   }
+
+  /**
+   * get all Users
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async all(req: Request, res: Response) {
+    const users = await this.userRepo.find()
+    res.json({ message: 'done', result: users })
+  }
 }
