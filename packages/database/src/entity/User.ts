@@ -20,6 +20,9 @@ export class User extends Base {
   @Column()
     username: string
 
+  @Column()
+    email: string
+
   @ManyToMany(() => Module)
   @JoinTable()
     modulesDone: Module[]
