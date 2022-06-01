@@ -21,7 +21,6 @@ type LoadRelations<Entity> = (
 interface BaseRepo<Entity, InitProps> extends Repository<Entity> {
   initialize?(props: InitProps): Promise<Entity>
   deleteAll?(): Promise<void>
-  getEmpty?(): Entity
 }
 
 export interface GraphRepository extends BaseRepo<Graph, Init.GraphProps> {

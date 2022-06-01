@@ -16,14 +16,6 @@ export function DegreeRepository(database?: DataSource): Repository {
   const loadRelations = useLoadRelations(BaseRepo)
 
   /**
-   * returns an empty Degree
-   * @return {Degree}
-   */
-  function getEmpty(): Degree {
-    return BaseRepo.create()
-  }
-
-  /**
    * Adds a Degree to DB
    * @param {DegreeInitProps} props
    * @return {Promise<Degree>}
@@ -94,6 +86,5 @@ export function DegreeRepository(database?: DataSource): Repository {
     loadRelations,
     findOneByTitle,
     findOneById,
-    getEmpty,
   })
 }

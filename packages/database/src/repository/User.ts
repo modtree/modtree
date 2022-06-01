@@ -23,14 +23,6 @@ export function UserRepository(database?: DataSource): Repository {
   const loadRelations = useLoadRelations(BaseRepo)
 
   /**
-   * returns an empty User
-   * @return {User}
-   */
-  function getEmpty(): User {
-    return BaseRepo.create()
-  }
-
-  /**
    * Adds a User to DB
    * @param {UserProps} props
    * @return {Promise<User>}
@@ -208,6 +200,5 @@ export function UserRepository(database?: DataSource): Repository {
     addDegree,
     findDegree,
     removeDegree,
-    getEmpty,
   })
 }
