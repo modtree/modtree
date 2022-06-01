@@ -9,10 +9,8 @@ import { utils } from '../utils'
 import {
   useLoadRelations,
   getDataSource,
-  useBuild,
   getRelationNames,
 } from './base'
-import { emptyInit } from '../utils/empty'
 import type { UserRepository as Repository } from '../../types/repository'
 
 /**
@@ -25,7 +23,7 @@ export function UserRepository(database?: DataSource): Repository {
   const loadRelations = useLoadRelations(BaseRepo)
 
   function getEmpty(): User {
-    return useBuild(db, User, emptyInit.User)
+    return BaseRepo.create()
   }
 
   /**
@@ -45,7 +43,7 @@ export function UserRepository(database?: DataSource): Repository {
       modulesDone: modulesDone || [],
       modulesDoing: modulesDoing || [],
     }
-    const user = useBuild(db, User, userProps)
+    const user = BaseRepo.create(userProps)
     await BaseRepo.save(user)
   }
 

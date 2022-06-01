@@ -7,7 +7,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, useBuild, useLoadRelations } from './base'
+import { getDataSource, useLoadRelations } from './base'
 import { quickpop } from '../utils/array'
 import type { GraphRepository as Repository } from '../../types/repository'
 
@@ -67,7 +67,7 @@ export function GraphRepository(database?: DataSource): Repository {
 
     const [user, degree] = await getUserAndDegree()
     const [modulesPlaced, modulesHidden] = await getModules()
-    const graph = useBuild(db, Graph, {
+    const graph = BaseRepo.create({
       user,
       degree,
       modulesPlaced,

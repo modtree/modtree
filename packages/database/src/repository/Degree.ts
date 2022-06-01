@@ -2,15 +2,9 @@ import { DataSource, In } from 'typeorm'
 import { Init } from '../../types/entity'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import {
-  getDataSource,
-  useBuild,
-  useLoadRelations,
-  getRelationNames,
-} from './base'
+import { getDataSource, useLoadRelations, getRelationNames } from './base'
 import { copy } from '../utils/object'
 import type { DegreeRepository as Repository } from '../../types/repository'
-import { emptyInit } from '../utils/empty'
 
 /**
  * @param {DataSource} database
@@ -22,7 +16,7 @@ export function DegreeRepository(database?: DataSource): Repository {
   const loadRelations = useLoadRelations(BaseRepo)
 
   function getEmpty(): Degree {
-    return useBuild(db, Degree, emptyInit.Degree)
+    return BaseRepo.create()
   }
 
   /**
@@ -34,7 +28,7 @@ export function DegreeRepository(database?: DataSource): Repository {
     const { moduleCodes, title } = props
     // find modules required, to create many-to-many relation
     const modules = await ModuleRepository(db).findByCodes(moduleCodes)
-    const degree = useBuild(db, Degree, { modules, title })
+    const degree = BaseRepo.create({ modules, title })
     await BaseRepo.save(degree)
   }
 

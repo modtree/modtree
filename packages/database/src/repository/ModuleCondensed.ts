@@ -3,7 +3,7 @@ import { nusmodsApi, getModuleLevel } from '../utils/string'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { DataSource } from 'typeorm'
-import { getDataSource, useBuild, useLoadRelations, useDeleteAll } from './base'
+import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleCondensedRepository as Repository } from '../../types/repository'
 
 /**
@@ -33,10 +33,7 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
     const res = await axios.get(nusmodsApi('moduleList'))
     const data: NMC[] = res.data
     return data.map((n) =>
-      useBuild(db, ModuleCondensed, {
-        ...n,
-        moduleLevel: getModuleLevel(n.moduleCode),
-      })
+      BaseRepo.create({ ...n, moduleLevel: getModuleLevel(n.moduleCode) })
     )
   }
 

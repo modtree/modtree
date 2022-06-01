@@ -1,4 +1,3 @@
-export * from './build'
 export * from './load-relations'
 export * from './delete-all'
 export * from './get-source'
