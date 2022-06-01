@@ -8,8 +8,6 @@ type LoadRelations<Entity> = (
   relations: FindOptionsRelations<Entity>
 ) => Promise<void>
 
-type DeleteAll = () => Promise<void>
-
 /**
  * BaseRepository, but for now only in types
  * it is a interface that will be extended to form the final Repositories of modtree
@@ -18,7 +16,7 @@ interface BaseRepo<Entity, BuildProps, InitProps = BuildProps>
   extends Repository<Entity> {
   build(props: BuildProps): Entity
   initialize?(props: InitProps): Promise<void>
-  deleteAll?(): DeleteAll
+  deleteAll?(): Promise<void>
   getEmpty?(): Entity
 }
 
@@ -68,5 +66,5 @@ export interface ModuleCondensedRepository
   fetch(): Promise<ModuleCondensed[]>
   getCodes(): Promise<string[]>
   loadRelations: LoadRelations<ModuleCondensed>
-  deleteAll: DeleteAll
+  deleteAll(): Promise<void>
 }

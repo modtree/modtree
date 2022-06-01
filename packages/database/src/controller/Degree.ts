@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { copy } from '..'
-import { Init } from '../../types/modtree'
 import { db } from '../config'
 import { DegreeRepository } from '../repository'
+import { emptyInit } from '../utils/empty'
 
 /** ModuleCondensed api controller */
 export class userController {
@@ -14,15 +14,7 @@ export class userController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props: Init.UserProps = {
-      displayName: '',
-      username: '',
-      modulesDone: [],
-      modulesDoing: [],
-      matriculationYear: 0,
-      graduationYear: 0,
-      graduationSemester: 0,
-    }
+    const props = emptyInit.Degree
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
@@ -30,7 +22,7 @@ export class userController {
       return
     }
     copy(req.body, props)
-    const a = await this.userRepo.initialize(props)
+    const a = await this.degreeRepo.initialize(props)
     res.json({ message: 'done', result: a })
   }
 }

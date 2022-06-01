@@ -1,9 +1,8 @@
 import { Request, Response } from 'express'
 import { copy } from '..'
-
-import { Init } from '../../types/modtree'
 import { db } from '../config'
 import { UserRepository } from '../repository'
+import { emptyInit } from '../utils/empty'
 
 /** ModuleCondensed api controller */
 export class userController {
@@ -15,16 +14,7 @@ export class userController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props: Init.UserProps = {
-      displayName: '',
-      username: '',
-      email: '',
-      modulesDone: [],
-      modulesDoing: [],
-      matriculationYear: 0,
-      graduationYear: 0,
-      graduationSemester: 0,
-    }
+    const props = emptyInit.User
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
