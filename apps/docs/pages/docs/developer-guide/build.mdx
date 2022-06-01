@@ -7,7 +7,12 @@ import { Tabs, Tab } from '../../../components/Tabs.tsx'
 1. Install [build prerequisites](#build-prerequisites) on your system
 2. `git clone https://github.com/modtree/modtree.git`
 3. `cd modtree && yarn`
-4. `yarn build:db`
+4. `yarn build:db`  
+   this compiles the database functions from TypeScript to JavaScript
+5. `yarn default:env`  
+   this setups up your `.env` files with the basic environment
+   variables to be able to serve a local Modtree website (without
+   user authentication)
 
 ## Run commands
 
@@ -54,14 +59,14 @@ After a successful build, you can do some things:
 
 ## Runtime requirements
 
-1. [MySQL v8][mysql]
-
-[node]: https://nodejs.org
-[yarn]: https://classic.yarnpkg.com/lang/en/docs/install/
-[mysql]: https://dev.mysql.com/doc/mysql-installation-excerpt
+1. [PostgreSQL][postgres]
 
 ## Uninstall
 
 Modtree doesn't install anything outside of the project root
 directory. To clear out all Modtree data, simply delete the project
 directory.
+
+[node]: https://nodejs.org
+[yarn]: https://classic.yarnpkg.com/lang/en/docs/install/
+[postgres]: https://www.postgresql.org/
