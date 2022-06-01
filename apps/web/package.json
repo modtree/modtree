@@ -6,7 +6,8 @@
     "dev": "next dev --port=3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint --fix"
+    "lint": "next lint --fix",
+    "ci": "next lint && next build"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.0",

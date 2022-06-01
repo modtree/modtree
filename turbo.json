@@ -1,5 +1,9 @@
 {
   "pipeline": {
+    "ci": {
+      "dependsOn": ["^ci"],
+      "outputs": ["dist/**", ".next/**", "lib/**"]
+    },
     "build": {
       "dependsOn": ["^build", "lint"],
       "outputs": ["dist/**", ".next/**", "lib/**"]
