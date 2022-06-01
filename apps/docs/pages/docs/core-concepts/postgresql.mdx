@@ -1,0 +1,19 @@
+# PostgreSQL
+
+Modtree's database is currently supported by PostgreSQL, using TypeORM to assist us in managing our relations.
+
+## Seed file
+
+Our only seed file is `postgres-modules-only.sql`. This seed file contains 6189 entries in the `Module` and `ModuleCondensed` tables, which corresponds to 6189 NUS modules at the time of pulling data from NUSMods.
+
+## Migrations
+
+As we are not in production currently, we group all migrations into one migration from the only seed file.
+
+If we make changes to the properties of entities, we run `packages/database/migrate.sh`, which
+
+1. Restores from our only seed
+2. Deletes all present migrations
+3. Generates a new migration
+
+and as such, there will only be one final migration.
