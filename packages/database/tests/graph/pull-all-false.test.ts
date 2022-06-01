@@ -1,5 +1,5 @@
 import { container, endpoint, getSource } from '../../src/data-source'
-import { Init } from '../../types/modtree'
+import { Init } from '../../types/entity'
 import { Degree, User, Module, Graph } from '../../src/entity'
 import {
   DegreeRepository,

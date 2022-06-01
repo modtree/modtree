@@ -31,6 +31,12 @@ export const pull: Config.InitialOptions = {
   testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
+export const server: Config.InitialOptions = {
+  ...all,
+  testMatch: [`**/tests/server/**/*.test.ts`],
+  silent: false
+}
+
 const khang = ['module-condensed-pull']
 export const k: Config.InitialOptions = {
   ...all,

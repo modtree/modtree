@@ -1,5 +1,5 @@
 import { DataSource, In, SelectQueryBuilder } from 'typeorm'
-import { Init, GraphProps } from '../../types/modtree'
+import { Init } from '../../types/entity'
 import { Module } from '../entity/Module'
 import { Graph } from '../entity/Graph'
 import { ModuleRepository } from './Module'
@@ -21,16 +21,6 @@ export function GraphRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Graph)
   const loadRelations = useLoadRelations(BaseRepo)
-
-  /**
-   * Constructor for Graph
-   * Note: the props here is slightly different from Init.GraphProps
-   * @param {GraphProps} props
-   * @return {Graph}
-   */
-  function build(props: GraphProps): Graph {
-    return useBuild(db, Graph, props)
-  }
 
   /**
    * Adds a Graph to DB
@@ -77,7 +67,7 @@ export function GraphRepository(database?: DataSource): Repository {
 
     const [user, degree] = await getUserAndDegree()
     const [modulesPlaced, modulesHidden] = await getModules()
-    const graph = build({
+    const graph = useBuild(db, Graph, {
       user,
       degree,
       modulesPlaced,
@@ -114,8 +104,8 @@ export function GraphRepository(database?: DataSource): Repository {
       index.placed !== -1
         ? 'placed'
         : index.hidden !== -1
-          ? 'hidden'
-          : 'invalid'
+        ? 'hidden'
+        : 'invalid'
 
     /**
      * toggles the modules between placed and hidden
@@ -185,7 +175,6 @@ export function GraphRepository(database?: DataSource): Repository {
   }
 
   return BaseRepo.extend({
-    build,
     initialize,
     toggleModule,
     loadRelations,

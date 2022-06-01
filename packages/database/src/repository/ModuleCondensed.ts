@@ -17,18 +17,6 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
   const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
 
   /**
-   * a drop-in replacement of a constructor
-   * @param {NM} props
-   * @return {Module}
-   */
-  function build(props: NMC): ModuleCondensed {
-    return useBuild(db, ModuleCondensed, {
-      ...props,
-      moduleLevel: getModuleLevel(props.moduleCode),
-    })
-  }
-
-  /**
    * get all module codes from the module table
    * @return {Promise<string[]>}
    */
@@ -44,7 +32,12 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
   async function fetch(): Promise<ModuleCondensed[]> {
     const res = await axios.get(nusmodsApi('moduleList'))
     const data: NMC[] = res.data
-    return data.map((n) => build(n))
+    return data.map((n) =>
+      useBuild(db, ModuleCondensed, {
+        ...n,
+        moduleLevel: getModuleLevel(n.moduleCode),
+      })
+    )
   }
 
   /**
@@ -64,7 +57,6 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
   }
 
   return BaseRepo.extend({
-    build,
     getCodes,
     fetch,
     pull,

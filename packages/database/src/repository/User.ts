@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { Init, UserProps } from '../../types/modtree'
+import { Init } from '../../types/entity'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
@@ -24,17 +24,6 @@ export function UserRepository(database?: DataSource): Repository {
   const BaseRepo = db.getRepository(User)
   const loadRelations = useLoadRelations(BaseRepo)
 
-  /**
-   * Constructor for User
-   * @param {UserProps} props
-   * @return {User}
-   */
-  function build(props: UserProps): User {
-    // this doesn't write to the database.
-    // db is passed in to be able to access the metadata
-    return useBuild(db, User, props)
-  }
-
   function getEmpty(): User {
     return useBuild(db, User, emptyInit.User)
   }
@@ -51,12 +40,12 @@ export function UserRepository(database?: DataSource): Repository {
       queryList.map((list) => ModuleRepository(db).findByCodes(list))
     )
     const [modulesDone, modulesDoing] = await modulesPromise
-    const userProps: UserProps = {
+    const userProps = {
       ...props,
       modulesDone: modulesDone || [],
       modulesDoing: modulesDoing || [],
     }
-    const user = build(userProps)
+    const user = useBuild(db, User, userProps)
     await BaseRepo.save(user)
   }
 
@@ -208,7 +197,6 @@ export function UserRepository(database?: DataSource): Repository {
 
   return BaseRepo.extend({
     canTakeModule,
-    build,
     initialize,
     loadRelations,
     findOneByUsername,

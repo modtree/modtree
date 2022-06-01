@@ -1,4 +1,4 @@
-import { Init } from '../../types/modtree'
+import { Init } from '../../types/entity'
 
 export namespace emptyInit {
   /**

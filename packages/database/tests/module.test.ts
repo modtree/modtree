@@ -48,7 +48,7 @@ test('fetch one module from NUSMods', async () => {
 })
 
 test('build a module from props', () => {
-  const module = ModuleRepository(db).build({
+  const module = ModuleRepository(db).create({
     acadYear: '2020',
     moduleCode: 'CS1010S',
     title: 'Winning',
