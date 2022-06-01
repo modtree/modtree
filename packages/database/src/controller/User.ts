@@ -27,14 +27,16 @@ export class userController {
     res.json(user)
   }
 
-
   /**
    * finds one User by id
    * @param {Request} req
    * @param {Response} res
    */
   async get(req: Request, res: Response) {
-    const user: User = await this.userRepo.findOneById(req.params.userId)
+    const user: User = await this.userRepo.findOne({
+      where: { id: req.params.userId },
+      loadRelationIds: true,
+    })
     res.json(user)
   }
 
