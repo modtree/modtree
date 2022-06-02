@@ -36,9 +36,7 @@ it('Saves a user', async () => {
 it('Adds only modules which have pre-reqs cleared', async () => {
   // Get eligible modules
   const eligibleModules = await endpoint(db, () =>
-    container(db, async () => {
-      return await UserRepository(db).eligibleModules(user)
-    })
+    container(db, () => UserRepository(db).eligibleModules(user))
   )
   expect(eligibleModules).toBeDefined()
   if (!eligibleModules) return

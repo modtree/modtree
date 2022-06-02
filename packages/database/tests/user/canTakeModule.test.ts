@@ -61,9 +61,7 @@ it('Returns false for modules taken before/currently', async () => {
 
 it('Returns false if module code passed in does not exist', async () => {
   const res = await endpoint(db, () =>
-    container(db, async () => {
-      return await UserRepository(db).canTakeModule(user, init.invalidModuleCode)
-    })
+    container(db, () => UserRepository(db).canTakeModule(user, init.invalidModuleCode))
   )
   expect(res).toStrictEqual(false)
 })
