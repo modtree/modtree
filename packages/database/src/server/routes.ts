@@ -7,7 +7,7 @@ import {
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
 
 type Route<T> = {
-  method: string
+  method: 'post' | 'put' | 'patch' | 'get' | 'delete'
   route: string
   action: keyof T
 }
@@ -86,8 +86,18 @@ const degreeRoutes: Route<degreeController>[] = [
   },
   {
     method: 'get',
-    route: '/degree/:degreeId',
+    route: '/degree/get/:degreeId',
     action: 'get',
+  },
+  {
+    method: 'delete',
+    route: '/degree/delete/:degreeId',
+    action: 'delete',
+  },
+  {
+    method: 'get',
+    route: '/degree/list',
+    action: 'list',
   },
 ]
 
