@@ -87,8 +87,7 @@ export function UserRepository(database?: DataSource): Repository {
    * List mods a user can take, based on what the user has completed.
    *
    * @param {User} user
-   * @param {boolean} includeModsWithoutPrereqs
-   * @return {Promise<Module[]>}
+   * @return {Promise<Module[] | void>}
    */
   async function eligibleModules(user: User): Promise<Module[] | void> {
     // 1. load modulesDone relations
