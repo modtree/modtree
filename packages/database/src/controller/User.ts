@@ -80,14 +80,7 @@ export class userController implements UserController {
    */
   async get(req: Request, res: Response) {
     this.userRepo
-      .findOne({
-        where: { id: req.params.userId },
-        relations: {
-          modulesDone: true,
-          modulesDoing: true,
-          savedDegrees: true,
-        },
-      })
+      .findOneById(req.params.userId)
       .then((user) => {
         res.json(flatten(user))
       })
@@ -109,7 +102,7 @@ export class userController implements UserController {
           modulesDone: true,
           modulesDoing: true,
           savedDegrees: {
-            modules: true
+            modules: true,
           },
         },
       })
