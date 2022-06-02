@@ -113,6 +113,38 @@ export function UserRepository(database?: DataSource): Repository {
   }
 
   /**
+   * List all post-reqs of a user.
+   * This is a union of all post-reqs, subtract modulesDone and modulesDoing.
+   *
+   * @param {User} user
+   * @return {Promise<Module[] | void>}
+   */
+  async function getPostReqs(user: User): Promise<Module[] | void> {
+    // 1. load modulesDone and modulesDoing relations
+    await UserRepository(db).loadRelations(user, {
+      modulesDone: true,
+      modulesDoing: true,
+    })
+    // 2. get array of module codes of post-reqs (fulfillRequirements)
+    const postReqCodesSet = new Set<string>()
+    user.modulesDone.forEach((module: Module) => {
+      module.fulfillRequirements.forEach((moduleCode: string) => {
+        postReqCodesSet.add(moduleCode)
+      })
+    })
+    const postReqCodesArr = Array.from(postReqCodesSet)
+    // 3. filter modulesDone and modulesDoing
+    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
+    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    const filtered = postReqCodesArr.filter(
+      (one) => !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
+    )
+    // 4. get modules
+    const modules = await ModuleRepository(db).findByCodes(filtered)
+    return modules
+  }
+
+  /**
    * @param {string} username
    * @return {Promise<User>}
    */
@@ -200,6 +232,7 @@ export function UserRepository(database?: DataSource): Repository {
     loadRelations,
     findOneByUsername,
     eligibleModules,
+    getPostReqs,
     findOneById,
     addDegree,
     findDegree,
