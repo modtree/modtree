@@ -104,9 +104,9 @@ export function UserRepository(database?: DataSource): Repository {
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
     // 3. filter post-reqs
-    const filtered = await filter(postReqCodesArr,
-      async (one) => await UserRepository(db).canTakeModule(user, one)
-    )
+    const promises = postReqCodesArr.map((one) => UserRepository(db).canTakeModule(user, one))
+    const results = await Promise.all(promises)
+    const filtered = postReqCodesArr.filter((_, idx) => results[idx])
     // 4. get modules
     const postReqArr = await ModuleRepository(db).findByCodes(filtered)
     return postReqArr
