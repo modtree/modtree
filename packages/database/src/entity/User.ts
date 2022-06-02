@@ -8,7 +8,7 @@ import {
 import { Base } from './Base'
 import { Module } from './Module'
 import { Degree } from './Degree'
-import { Graph } from '.'
+import { Graph } from './Graph'
 
 @Entity({ name: 'user' })
 export class User extends Base {
