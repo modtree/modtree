@@ -82,7 +82,7 @@ export function DegreeRepository(database?: DataSource): Repository {
   }
 
   /**
-   * @param {string[]} moduleCodes
+   * @param {string[]} degreeIds
    * @return {Promise<Module[]>}
    */
   async function findByIds(degreeIds: string[]): Promise<Degree[]> {

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { copy } from '../utils'
 import { db } from '../config'
-import { User, Degree } from '../entity'
+import { User } from '../entity'
 import { DegreeRepository, UserRepository } from '../repository'
 import { emptyInit } from '../utils/empty'
 import type { UserController } from '../../types/controller'
