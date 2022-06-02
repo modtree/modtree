@@ -64,6 +64,11 @@ const userRoutes: Route<userController>[] = [
     action: 'create',
   },
   {
+    method: 'patch',
+    route: '/user/update',
+    action: 'update',
+  },
+  {
     method: 'get',
     route: '/user/list',
     action: 'list',

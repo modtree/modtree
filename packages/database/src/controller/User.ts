@@ -47,6 +47,20 @@ export class userController implements UserController {
   }
 
   /**
+   * creates a Degree
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async update(req: Request, res: Response) {
+    const id = req.params.userId
+    const props = req.body
+    copy(req.body, props)
+    this.userRepo.update({ id }, props).then((updateResult) => {
+      res.json(updateResult)
+    })
+  }
+
+  /**
    * gets one User by id
    * @param {Request} req
    * @param {Response} res
@@ -59,7 +73,7 @@ export class userController implements UserController {
         relations: {
           modulesDone: true,
           modulesDoing: true,
-          savedDegrees: true
+          savedDegrees: true,
         },
       })
       .then((user) => {
