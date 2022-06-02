@@ -21,8 +21,7 @@ jest.setTimeout(20000)
 let user: User
 it('Saves a user', async () => {
   const props: Init.UserProps = init.emptyUser
-  props.modulesDone.push('MA2001')
-  props.modulesDoing.push('MA2219')
+  props.modulesDone.push('CS1101S')
   const res = await endpoint(db, () =>
     container(db, async () => {
       await UserRepository(db).initialize(props)
@@ -34,27 +33,18 @@ it('Saves a user', async () => {
   user = res
 })
 
-it('Adds only all post-requisites of modules done', async () => {
+it('Adds only modules which have pre-reqs cleared', async () => {
   // Get eligible modules
-  const eligibleModules = await container(db, async () => {
-    return await UserRepository(db).eligibleModules(user)
-  })
-  expect(eligibleModules).toBeDefined()
-  if (!eligibleModules) return
-  // Get fulfillRequirements of MA2001 (the only module done)
-  const modules = await endpoint(db, () =>
+  const eligibleModules = await endpoint(db, () =>
     container(db, async () => {
-      // find user
-      return await ModuleRepository(db).findByCodes(['MA2001'])
+      return await UserRepository(db).eligibleModules(user)
     })
   )
-  expect(modules).toBeDefined()
-  if (!modules) return
-  expect(modules).toBeInstanceOf(Array)
-  expect(modules.length).toEqual(1)
-  const module = modules[0]
+  expect(eligibleModules).toBeDefined()
+  if (!eligibleModules) return
+  const expected = ['CS2109S']
   // Compare module codes
   const eligibleModuleCodes = eligibleModules.map((one: Module) => one.moduleCode)
-  expect(eligibleModuleCodes.sort()).toEqual(module.fulfillRequirements.sort())
-  expect(eligibleModuleCodes.length).toEqual(module.fulfillRequirements.length)
+  expect(eligibleModuleCodes.sort()).toEqual(expected.sort())
+  expect(eligibleModuleCodes.length).toEqual(expected.length)
 })

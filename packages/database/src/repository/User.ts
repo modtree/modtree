@@ -6,6 +6,7 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { utils } from '../utils'
+import { filter } from '../utils/array'
 import {
   useLoadRelations,
   getDataSource,
@@ -102,8 +103,12 @@ export function UserRepository(database?: DataSource): Repository {
       })
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
-    // 3. get modules
-    const postReqArr = await ModuleRepository(db).findByCodes(postReqCodesArr)
+    // 3. filter post-reqs
+    const filtered = await filter(postReqCodesArr,
+      async (one) => await UserRepository(db).canTakeModule(user, one)
+    )
+    // 4. get modules
+    const postReqArr = await ModuleRepository(db).findByCodes(filtered)
     return postReqArr
   }
 
