@@ -2,6 +2,7 @@ import {
   moduleCondensedController,
   userController,
   degreeController,
+  graphController,
 } from '../controller'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
@@ -39,19 +40,20 @@ function getRoutes(): RouteWithController<any>[] {
   addRoutes(Routes, moduleCondensedRoutes, moduleCondensedController)
   addRoutes(Routes, userRoutes, userController)
   addRoutes(Routes, degreeRoutes, degreeController)
+  addRoutes(Routes, graphRoutes, graphController)
   return Routes
 }
 
 const moduleCondensedRoutes: Route<moduleCondensedController>[] = [
   {
     method: 'get',
-    route: '/modules',
-    action: 'all',
+    route: '/modules/list',
+    action: 'list',
   },
   {
     method: 'get',
-    route: '/modules/:moduleCode',
-    action: 'one',
+    route: '/modules/find/:moduleCode',
+    action: 'find',
   },
 ]
 
@@ -63,18 +65,18 @@ const userRoutes: Route<userController>[] = [
   },
   {
     method: 'get',
-    route: '/user/all',
-    action: 'all',
-  },
-  {
-    method: 'post',
-    route: '/user',
-    action: 'one',
+    route: '/user/list',
+    action: 'list',
   },
   {
     method: 'get',
-    route: '/user/:userId',
+    route: '/user/get/:userId',
     action: 'get',
+  },
+  {
+    method: 'delete',
+    route: '/user/delete/:userId',
+    action: 'delete',
   },
 ]
 
@@ -97,6 +99,29 @@ const degreeRoutes: Route<degreeController>[] = [
   {
     method: 'get',
     route: '/degree/list',
+    action: 'list',
+  },
+]
+
+const graphRoutes: Route<graphController>[] = [
+  {
+    method: 'post',
+    route: '/graph/create',
+    action: 'create',
+  },
+  {
+    method: 'get',
+    route: '/graph/get/:graphId',
+    action: 'get',
+  },
+  {
+    method: 'delete',
+    route: '/graph/delete/:graphId',
+    action: 'delete',
+  },
+  {
+    method: 'get',
+    route: '/graph/list',
     action: 'list',
   },
 ]

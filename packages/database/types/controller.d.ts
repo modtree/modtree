@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 
 interface Controller {
-  all(req: Request, res: Response): Promise<void>
-  one(req: Request, res: Response): Promise<void>
+  list(req: Request, res: Response): Promise<void>
 }
 
 export interface UserController extends Controller {

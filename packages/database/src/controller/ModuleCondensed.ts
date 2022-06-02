@@ -13,7 +13,7 @@ export class moduleCondensedController implements ModuleCondensedController {
    * @param {Request} req
    * @param {Response} res
    */
-  async all(req: Request, res: Response) {
+  async list(req: Request, res: Response) {
     console.log(Object.keys(req).length)
     const all = await this.moduleRepo.find()
     res.json(all)
@@ -24,7 +24,7 @@ export class moduleCondensedController implements ModuleCondensedController {
    * @param {Request} req
    * @param {Response} res
    */
-  async one(req: Request, res: Response) {
+  async find(req: Request, res: Response) {
     this.moduleRepo
       .find({
         where: {

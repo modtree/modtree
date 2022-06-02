@@ -35,8 +35,9 @@ export class degreeController {
       return
     }
     copy(req.body, props)
-    const degree = await this.degreeRepo.initialize(props)
-    res.json(degree)
+    this.degreeRepo.initialize(props).then((degree) => {
+      res.json(degree)
+    })
   }
 
   /**
