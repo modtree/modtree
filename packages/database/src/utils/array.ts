@@ -13,3 +13,13 @@ export function quickpop<T>(arr: T[], index: number): T {
   if (arr.length !== index) arr[index] = elem
   return res
 }
+
+/**
+ * async filter promise all
+ */
+export async function filter(arr: string[], callback) {
+  const fail: string = 'abcd' // temp
+  return (await Promise.all(arr.map(
+    async item => (await callback(item)) ? item : fail
+  ))).filter(i => i !== fail)
+}
