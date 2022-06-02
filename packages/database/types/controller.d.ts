@@ -10,4 +10,4 @@ export interface UserController extends Controller {
   get(req: Request, res: Response): Promise<void>
 }
 
-export interface ModuleCondensedController extends Controller {}
+export type ModuleCondensedController = Controller

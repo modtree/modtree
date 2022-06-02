@@ -1,4 +1,3 @@
-import { Repository } from 'typeorm'
 import type {
   User as UserEntity,
   Degree as DegreeEntity,

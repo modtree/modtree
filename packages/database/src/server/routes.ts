@@ -14,6 +14,12 @@ type Route<T> = {
 
 type RouteWithController<T> = Route<T> & { controller: Class<T> }
 
+/**
+ * a factory function that adds routes to an existing route list
+ * @param {RouteWithController<T>} arr
+ * @param {Route<T>} routes
+ * @param {Class<T>} controller
+ */
 function addRoutes<T>(
   arr: RouteWithController<T>[],
   routes: Route<T>[],
@@ -24,8 +30,12 @@ function addRoutes<T>(
   })
 }
 
-function getRoutes() {
-  const Routes: RouteWithController<any>[] = []
+/**
+ * gets all the routes for modtree's API
+ * @return {RouteWithController<any>[]}
+ */
+function getRoutes(): RouteWithController<any>[] {
+  const Routes = []
   addRoutes(Routes, moduleCondensedRoutes, moduleCondensedController)
   addRoutes(Routes, userRoutes, userController)
   addRoutes(Routes, degreeRoutes, degreeController)
