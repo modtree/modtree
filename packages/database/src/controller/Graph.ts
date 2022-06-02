@@ -17,7 +17,7 @@ function flatten(graph: Graph): response.Graph {
     user: graph.user.id,
     degree: graph.degree.id,
     modulesHidden: graph.modulesHidden.map((m) => m.moduleCode),
-    modulesPlaced: graph.modulesHidden.map((m) => m.moduleCode),
+    modulesPlaced: graph.modulesPlaced.map((m) => m.moduleCode),
   }
 }
 
