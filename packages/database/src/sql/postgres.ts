@@ -63,8 +63,14 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    await exec(`dropdb ${database}`).catch(() => true)
-    await exec(`createdb ${database}`).catch(() => true)
+    await exec(`dropdb ${database}`).catch((err) => {
+      console.log("Clear DB: Drop DB")
+      console.log(err)
+    })
+    await exec(`createdb ${database}`).catch((err) => {
+      console.log("Clear DB: Create DB")
+      console.log(err)
+    })
   }
 
   /**
@@ -75,10 +81,13 @@ export class Postgresql extends BaseSql {
   async restoreFromFile(database: string, filename: string) {
     await this.clearDatabase(database)
     const file = join(config.rootDir, '.sql', filename)
-    const u = config.username ? `-u ${config.username}` : ''
-    const p = config.password ? `-p\"${config.password}\"` : ''
-    const cmd = `${this.coreCmd} ${u} ${p} ${database} < ${file}`
-    await exec(cmd)
+    const u = config.username ? `--username=${config.username}` : ''
+    const p = config.password ? `PGPASSWORD=${config.password}` : ''
+    const cmd = `${p} ${this.coreCmd} ${u} ${database} < ${file}`
+    await exec(cmd).catch((err) => {
+      console.log("Restore from file error")
+      console.log(err)
+    })
   }
 
   /**
