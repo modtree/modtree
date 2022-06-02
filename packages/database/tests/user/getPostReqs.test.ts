@@ -5,7 +5,7 @@ import { Init } from '../../types/entity'
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
 
-const dbName = 'test_user_eligibleModules'
+const dbName = 'test_user_getPostReqs'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
@@ -19,9 +19,12 @@ importChecks({
 jest.setTimeout(20000)
 
 let user: User
+let postReqsCodes: string[]
+
 it('Saves a user', async () => {
   const props: Init.UserProps = init.emptyUser
-  props.modulesDone.push('CS1101S')
+  props.modulesDone.push('MA2001')
+  props.modulesDoing.push('MA2101')
   const res = await endpoint(db, () =>
     container(db, async () => {
       await UserRepository(db).initialize(props)
@@ -33,15 +36,22 @@ it('Saves a user', async () => {
   user = res
 })
 
-it('Adds only modules which have pre-reqs cleared', async () => {
-  // Get eligible modules
-  const eligibleModules = await endpoint(db, () =>
-    container(db, () => UserRepository(db).eligibleModules(user))
+it('Gets all post-reqs', async () => {
+  // Get post reqs
+  const postReqs = await container(db, () => UserRepository(db).getPostReqs(user))
+  expect(postReqs).toBeDefined()
+  if (!postReqs) return
+  // Get fulfillRequirements for MA2001
+  const mod = await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).findOneBy({
+      moduleCode: 'MA2001'
+    }))
   )
-  expect(eligibleModules).toBeDefined()
-  if (!eligibleModules) return
-  const expected = ['CS2109S']
+  expect(mod).toBeDefined()
+  if (!mod) return
+  // Remove modules doing
+  const expected = mod.fulfillRequirements.filter((one) => one !== 'MA2101')
   // Compare module codes
-  const eligibleModuleCodes = eligibleModules.map((one: Module) => one.moduleCode)
-  expect(eligibleModuleCodes.sort()).toEqual(expected.sort())
+  postReqsCodes = postReqs.map((one: Module) => one.moduleCode)
+  expect(postReqsCodes.sort()).toEqual(expected.sort())
 })

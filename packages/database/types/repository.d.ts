@@ -38,6 +38,7 @@ export interface UserRepository extends BaseRepo<User, Init.UserProps> {
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
   eligibleModules(user: User): Promise<Module[] | void>
+  getPostReqs(user: User): Promise<Module[] | void>
   findOneById(id: string): Promise<User>
   addDegree(user: User, degreeId: string): Promise<void>
   findDegree(user: User, degreeId: string): Promise<Degree>

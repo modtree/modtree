@@ -59,17 +59,9 @@ it('Returns false for modules taken before/currently', async () => {
   expect(res).toStrictEqual([false, false])
 })
 
-it('Throws error if module code passed in does not exist', async () => {
-  let error
-  await db.initialize()
-  // uses user from previous test
-  try {
-    await UserRepository(db).canTakeModule(user, init.invalidModuleCode)
-  } catch (err) {
-    error = err
-  }
-  expect(error).toBeInstanceOf(Error)
-  expect(error.message).toBe('Invalid module code')
-
-  await db.destroy()
+it('Returns false if module code passed in does not exist', async () => {
+  const res = await endpoint(db, () =>
+    container(db, () => UserRepository(db).canTakeModule(user, init.invalidModuleCode))
+  )
+  expect(res).toStrictEqual(false)
 })

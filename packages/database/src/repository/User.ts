@@ -59,7 +59,7 @@ export function UserRepository(database?: DataSource): Repository {
     // 1. find module
     const module = await ModuleRepository(db).findOneBy({ moduleCode })
     // if module not found, assume invalid module code
-    if (!module) throw new Error('Invalid module code')
+    if (!module) return false
     // 2. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
@@ -87,13 +87,34 @@ export function UserRepository(database?: DataSource): Repository {
    * List mods a user can take, based on what the user has completed.
    *
    * @param {User} user
-   * @param {boolean} includeModsWithoutPrereqs
-   * @return {Promise<Module[]>}
+   * @return {Promise<Module[] | void>}
    */
   async function eligibleModules(user: User): Promise<Module[] | void> {
-    // 1. load modulesDone relations
+    // 1. get post-reqs
+    const postReqs = await UserRepository(db).getPostReqs(user)
+    if (!postReqs)
+      return []
+    // 2. filter post-reqs
+    const promises = postReqs.map(
+      (one) => UserRepository(db).canTakeModule(user, one.moduleCode)
+    )
+    const results = await Promise.all(promises)
+    const filtered = postReqs.filter((_, idx) => results[idx])
+    return filtered
+  }
+
+  /**
+   * List all post-reqs of a user.
+   * This is a union of all post-reqs, subtract modulesDone and modulesDoing.
+   *
+   * @param {User} user
+   * @return {Promise<Module[] | void>}
+   */
+  async function getPostReqs(user: User): Promise<Module[] | void> {
+    // 1. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
+      modulesDoing: true,
     })
     // 2. get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodesSet = new Set<string>()
@@ -103,9 +124,15 @@ export function UserRepository(database?: DataSource): Repository {
       })
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
-    // 3. get modules
-    const postReqArr = await ModuleRepository(db).findByCodes(postReqCodesArr)
-    return postReqArr
+    // 3. filter modulesDone and modulesDoing
+    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
+    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    const filtered = postReqCodesArr.filter(
+      (one) => !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
+    )
+    // 4. get modules
+    const modules = await ModuleRepository(db).findByCodes(filtered)
+    return modules
   }
 
   /**
@@ -196,6 +223,7 @@ export function UserRepository(database?: DataSource): Repository {
     loadRelations,
     findOneByUsername,
     eligibleModules,
+    getPostReqs,
     findOneById,
     addDegree,
     findDegree,
