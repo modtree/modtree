@@ -14,7 +14,6 @@ export class moduleCondensedController implements ModuleCondensedController {
    * @param {Response} res
    */
   async list(req: Request, res: Response) {
-    console.log(Object.keys(req).length)
     const all = await this.moduleRepo.find()
     res.json(all)
   }

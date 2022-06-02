@@ -15,7 +15,7 @@ import { response } from '../../types/api-response'
 function flatten(user: User): response.User {
   return {
     ...user,
-    moduleDoing: user.modulesDoing.map((m) => m.moduleCode),
+    modulesDoing: user.modulesDoing.map((m) => m.moduleCode),
     modulesDone: user.modulesDone.map((m) => m.moduleCode),
     savedDegrees: user.savedDegrees.map((d) => d.id),
   }
@@ -48,7 +48,7 @@ export class userController implements UserController {
   }
 
   /**
-   * creates a Degree
+   * creates a User
    * @param {Request} req
    * @param {Response} res
    */
@@ -68,7 +68,6 @@ export class userController implements UserController {
       where: { id },
       relations: { savedDegrees: true },
     })
-    console.log(degrees)
     user.savedDegrees.push(...degrees)
     const result = this.userRepo.save(user)
     res.json(result)
