@@ -4,9 +4,10 @@ import { db } from '../config'
 import { User } from '../entity'
 import { UserRepository } from '../repository'
 import { emptyInit } from '../utils/empty'
+import type { UserController } from '../../types/controller'
 
 /** ModuleCondensed api controller */
-export class userController {
+export class userController implements UserController {
   private userRepo = UserRepository(db)
 
   /**
@@ -64,9 +65,7 @@ export class userController {
    */
   async one(req: Request, res: Response) {
     const user = await this.userRepo.findOneBy({ ...req.body })
-    if (user)
-      res.json({ message: 'done', result: user })
-    else
-      res.json({ message: 'not found' })
+    if (user) res.json({ message: 'done', result: user })
+    else res.json({ message: 'not found' })
   }
 }
