@@ -1,0 +1,41 @@
+{
+  "name": "postman",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "": "───────────────────────────────────────────────────────────",
+    "user:get": "ts-node ./user/get.ts",
+    "user:get-full": "ts-node ./user/get-full.ts",
+    "user:list": "ts-node ./user/list.ts",
+    "user:create": "ts-node ./user/create.ts",
+    "user:delete": "ts-node ./user/delete.ts",
+    "user:insert-degree": "ts-node ./user/insert-degree.ts",
+    "degree:create": "ts-node ./degree/create.ts",
+    "degree:list": "ts-node ./degree/list.ts",
+    "degree:delete": "ts-node ./degree/delete.ts",
+    "graph:create": "ts-node ./graph/create.ts",
+    "graph:list": "ts-node ./graph/list.ts",
+    "graph:delete": "ts-node ./graph/delete.ts",
+    "": "───────────────────────────────────────────────────────────",
+    "ug": "yarn user:get",
+    "ugf": "yarn user:get-full",
+    "uc": "yarn user:create",
+    "ul": "yarn user:list",
+    "ud": "yarn user:delete",
+    "uid": "yarn user:insert-degree",
+    "dc": "yarn degree:create",
+    "dl": "yarn degree:list",
+    "dd": "yarn degree:delete",
+    "gc": "yarn graph:create",
+    "gl": "yarn graph:list",
+    "gd": "yarn graph:delete"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "chalk": "^4.1.2",
+    "boxen": "^5.1.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  }
+}
