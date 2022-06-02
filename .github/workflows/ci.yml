@@ -10,12 +10,6 @@ on:
       - k
       - w
 
-env:
-  MYSQL_DATABASE: test_db
-  DB_USER: root
-  DB_PASSWORD: root
-  RESTORE: modules-only.sql
-
 jobs:
   pre_job:
     # skip duplicate checks
@@ -31,14 +25,13 @@ jobs:
           paths_ignore: '["**/README.md", "**/docs/**"]'
 
   database_lint:
-    needs: pre_job
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    if: always()
     runs-on: ubuntu-20.04
+    outputs:
+      status: ${{ job.status }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    outputs:
-      status: ${{ job.status }}
     steps:
       - name: 🍺 Check out repository code
         uses: actions/checkout@v3
@@ -50,42 +43,39 @@ jobs:
         run: yarn ci
 
   database_tests:
-    needs: pre_job
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    if: always()
     runs-on: ubuntu-20.04
+    outputs:
+      status: ${{ job.status }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    outputs:
-      status: ${{ job.status }}
     steps:
-      - name: 🔥 Initialize MySQL
-        run: sudo systemctl start mysql.service
-
-      - name: 🚀 Boost user
+      - name: 🔥 Initialize PostgreSQL
         run: |
-          mysql -e "ALTER USER '${{ env.DB_USER }}'@'localhost' \
-          IDENTIFIED WITH mysql_native_password BY 'root';" \
-          -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+          sudo systemctl start postgresql.service
+          echo "CREATE USER runner PASSWORD 'runner';" > /tmp/create_user.sql
+          echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/create_user.sql
+          echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/create_user.sql
+          sudo su postgres -c "psql --file=/tmp/create_user.sql"
+          createdb base
 
       - name: 🍺 Check out repository code
         uses: actions/checkout@v3
 
       - name: 🧶 Install yarn
         run: yarn install --frozen-lockfile
-
-      - name: 📦 Build database
-        run: yarn build:db
-
+      
       - name: 📦 Run tests
         working-directory: ./packages/database
         run: |
-          TEST_DATABASE_TYPE=MYSQL \
-          TEST_MYSQL_USERNAME=$DB_USER \
-          TEST_MYSQL_PASSWORD=$DB_PASSWORD \
-          TEST_MYSQL_ACTIVE_DATABASE=$MYSQL_DATABASE \
-          TEST_MYSQL_RESTORE_SOURCE=$RESTORE \
-          TEST_MYSQL_MIGRATIONS_RUN="true" \
+          TEST_DATABASE_TYPE=POSTGRES \
+          TEST_POSTGRES_USERNAME=runner \
+          TEST_POSTGRES_PASSWORD=runner \
+          TEST_POSTGRES_HOST=localhost \
+          TEST_POSTGRES_ACTIVE_DATABASE=base \
+          TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
+          TEST_POSTGRES_SYNC="true" \
           yarn test:ci
 
   telegram:

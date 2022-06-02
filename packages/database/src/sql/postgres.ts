@@ -64,11 +64,11 @@ export class Postgresql extends BaseSql {
    */
   async clearDatabase(database: string) {
     await exec(`dropdb ${database}`).catch((err) => {
-      console.log("Clear DB: Drop DB")
+      console.log('Clear DB: Drop DB')
       console.log(err)
     })
     await exec(`createdb ${database}`).catch((err) => {
-      console.log("Clear DB: Create DB")
+      console.log('Clear DB: Create DB')
       console.log(err)
     })
   }
@@ -85,7 +85,7 @@ export class Postgresql extends BaseSql {
     const p = config.password ? `PGPASSWORD=${config.password}` : ''
     const cmd = `${p} ${this.coreCmd} ${u} ${database} < ${file}`
     await exec(cmd).catch((err) => {
-      console.log("Restore from file error")
+      console.log('Restore from file error')
       console.log(err)
     })
   }
