@@ -47,12 +47,7 @@ export class degreeController {
    */
   async get(req: Request, res: Response) {
     this.degreeRepo
-      .findOne({
-        where: { id: req.params.degreeId },
-        relations: {
-          modules: true,
-        },
-      })
+      .findOneById(req.params.degreeId)
       .then((degree) => {
         res.json(flatten(degree))
       })
