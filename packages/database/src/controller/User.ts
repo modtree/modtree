@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { copy } from '..'
+import { copy } from '../utils'
 import { db } from '../config'
 import { User } from '../entity'
 import { UserRepository } from '../repository'
 import { emptyInit } from '../utils/empty'
 import type { UserController } from '../../types/controller'
 
-/** ModuleCondensed api controller */
+/** User api controller */
 export class userController implements UserController {
   private userRepo = UserRepository(db)
 
