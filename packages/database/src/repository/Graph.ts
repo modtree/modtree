@@ -49,10 +49,10 @@ export function GraphRepository(database?: DataSource): Repository {
          * - user.modulesDone
          * - degree.modules
          */
-        const placed = [...degree.modules]
-        placed.push(...user.modulesDone)
-        placed.push(...user.modulesDoing)
-        return [Array.from(new Set(placed)), []]
+        const hidden = [...degree.modules]
+        hidden.push(...user.modulesDone)
+        hidden.push(...user.modulesDoing)
+        return [Array.from(new Set(hidden)), []]
       }
       // if passed in, then find the modules
       const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
@@ -66,7 +66,7 @@ export function GraphRepository(database?: DataSource): Repository {
     }
 
     const [user, degree] = await getUserAndDegree()
-    const [modulesPlaced, modulesHidden] = await getModules()
+    const [modulesHidden, modulesPlaced] = await getModules()
     const graph = BaseRepo.create({
       user,
       degree,

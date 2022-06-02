@@ -2,9 +2,10 @@ import { db } from '../config'
 import { Request, Response } from 'express'
 import { Like } from 'typeorm'
 import { ModuleCondensedRepository } from '../repository'
+import type { ModuleCondensedController } from '../../types/controller'
 
 /** ModuleCondensed api controller */
-export class moduleCondensedController {
+export class moduleCondensedController implements ModuleCondensedController {
   private moduleRepo = ModuleCondensedRepository(db)
 
   /**
@@ -12,8 +13,7 @@ export class moduleCondensedController {
    * @param {Request} req
    * @param {Response} res
    */
-  async all(req: Request, res: Response) {
-    console.log(Object.keys(req).length)
+  async list(req: Request, res: Response) {
     const all = await this.moduleRepo.find()
     res.json(all)
   }
@@ -23,7 +23,7 @@ export class moduleCondensedController {
    * @param {Request} req
    * @param {Response} res
    */
-  async one(req: Request, res: Response) {
+  async find(req: Request, res: Response) {
     this.moduleRepo
       .find({
         where: {

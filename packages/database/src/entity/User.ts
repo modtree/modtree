@@ -8,6 +8,7 @@ import {
 import { Base } from './Base'
 import { Module } from './Module'
 import { Degree } from './Degree'
+import { Graph } from './Graph'
 
 @Entity({ name: 'user' })
 export class User extends Base {
@@ -43,4 +44,8 @@ export class User extends Base {
   @ManyToMany(() => Degree)
   @JoinTable()
     savedDegrees: Degree[]
+
+  @ManyToMany(() => Graph)
+  @JoinTable()
+    savedGraphs: Graph[]
 }

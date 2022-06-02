@@ -51,7 +51,7 @@ describe('Graph.initialize', () => {
     graph = graphs[0]
   })
 
-  it('Correctly populates modulesPlaced', async () => {
+  it('Correctly populates modulesHidden', async () => {
     const moduleCodes = [
       'CS1101S',
       'CS1231S',
@@ -65,11 +65,11 @@ describe('Graph.initialize', () => {
       'MA2001',
       'MA2219',
     ]
-    const modulesPlacedCodes = graph.modulesPlaced.map(
+    const modulesHiddenCodes = graph.modulesHidden.map(
       (one: Module) => one.moduleCode
     )
-    expect(moduleCodes.sort()).toEqual(modulesPlacedCodes.sort())
-    expect(graph.modulesHidden.length).toEqual(0)
+    expect(moduleCodes.sort()).toEqual(modulesHiddenCodes.sort())
+    expect(graph.modulesPlaced.length).toEqual(0)
   })
 })
 
@@ -90,17 +90,17 @@ describe('Graph.toggleModules', () => {
 
   it('Correctly changes a module\'s state from placed to hidden', async () => {
     await container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
-    expect(graph.modulesPlaced.length).toEqual(moduleCodes.length - 1)
-    expect(graph.modulesHidden.length).toEqual(1)
-    expect(graph.modulesHidden[0].moduleCode).toEqual('MA2001')
+    expect(graph.modulesHidden.length).toEqual(moduleCodes.length - 1)
+    expect(graph.modulesPlaced.length).toEqual(1)
+    expect(graph.modulesPlaced[0].moduleCode).toEqual('MA2001')
   })
 
   it('Correctly changes a module\'s state from hidden to placed', async () => {
     await endpoint(db, () =>
       container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
     )
-    expect(graph.modulesPlaced.length).toEqual(moduleCodes.length)
-    expect(graph.modulesHidden.length).toEqual(0)
+    expect(graph.modulesHidden.length).toEqual(moduleCodes.length)
+    expect(graph.modulesPlaced.length).toEqual(0)
   })
 
   it('Throws error if the module to be toggled is not part of the Graph', async () => {
