@@ -7,7 +7,6 @@ import { sql } from '../src/sql'
  * @param {string} database
  */
 export async function setup(database: string) {
-  await sql.clearDatabase(database)
   await sql.restoreFromFile(database, config.restoreSource)
 }
 
