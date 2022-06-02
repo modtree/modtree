@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - ci
       - k
       - w
 
@@ -67,6 +68,17 @@ jobs:
           TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
           TEST_POSTGRES_SYNC="true" \
           yarn test:ci
+      - name: Summary
+        run: |
+          A="${{ steps.project_build.outcome }}"
+          B="${{ steps.database_tests.outcome }}"
+          echo $A
+          echo $B
+          if [[ $A == "success" && $B == "success" ]]; then
+            exit 0
+          else
+            exit 1
+          fi
 
   telegram:
     needs: [pre_job, ci]
