@@ -1,18 +1,22 @@
-import { moduleCondensedController, userController } from '../controller'
-import { degreeController } from '../controller/Degree'
+import {
+  moduleCondensedController,
+  userController,
+  degreeController,
+} from '../controller'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
 
 type Route<T> = {
   method: string
   route: string
-  controller: Class<T>
-  action: string
+  action: keyof T
 }
 
+type RouteWithController<T> = Route<T> & { controller: Class<T> }
+
 function addRoutes<T>(
-  arr: Route<T>[],
-  routes: Omit<Route<T>, 'controller'>[],
+  arr: RouteWithController<T>[],
+  routes: Route<T>[],
   controller: Class<T>
 ) {
   routes.forEach((route) => {
@@ -21,14 +25,14 @@ function addRoutes<T>(
 }
 
 function getRoutes() {
-  const Routes: Route<any>[] = []
+  const Routes: RouteWithController<any>[] = []
   addRoutes(Routes, moduleCondensedRoutes, moduleCondensedController)
   addRoutes(Routes, userRoutes, userController)
   addRoutes(Routes, degreeRoutes, degreeController)
   return Routes
 }
 
-const moduleCondensedRoutes = [
+const moduleCondensedRoutes: Route<moduleCondensedController>[] = [
   {
     method: 'get',
     route: '/modules',
@@ -41,7 +45,7 @@ const moduleCondensedRoutes = [
   },
 ]
 
-const userRoutes = [
+const userRoutes: Route<userController>[] = [
   {
     method: 'post',
     route: '/user/create',
@@ -64,7 +68,7 @@ const userRoutes = [
   },
 ]
 
-const degreeRoutes = [
+const degreeRoutes: Route<degreeController>[] = [
   {
     method: 'post',
     route: '/degree/create',

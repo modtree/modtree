@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { copy } from '..'
+import { copy } from '../utils'
 import { db } from '../config'
 import { Degree } from '../entity'
 import { DegreeRepository } from '../repository'
@@ -19,10 +19,11 @@ export class degreeController {
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
-      res.json({ message: 'insufficient keys', requestKeys, requiredKeys })
+      res.status(400).json({ message: 'insufficient keys', requestKeys, requiredKeys })
       return
     }
     copy(req.body, props)
+    console.log(props)
     const degree = await this.degreeRepo.initialize(props)
     res.json(degree)
   }

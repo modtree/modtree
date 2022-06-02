@@ -14,17 +14,12 @@ db.initialize()
     const app = express()
     app.use(cors(corsOpts))
     app.use(bodyParser.json())
-
     // register express routes from defined application routes
     Routes.forEach((route) => {
       app[route.method](
         route.route,
         (req: Request, res: Response, next: NextFunction) => {
-          const result = new (route.controller as any)()[route.action](
-            req,
-            res,
-            next
-          )
+          const result = new route.controller()[route.action](req, res, next)
           if (result instanceof Promise) {
             result.then((result) =>
               result !== null && result !== undefined
@@ -39,4 +34,7 @@ db.initialize()
     })
     app.listen(process.env.PORT || 8080)
   })
-  .catch((error) => console.log(error))
+  .catch((error) => {
+    console.log('Server unable to establish connection to database.')
+    console.log(error)
+  })

@@ -10,7 +10,7 @@ import { Degree } from './Degree'
 import { Module } from './Module'
 import { Base } from './Base'
 
-@Entity({ name: 'Graph' })
+@Entity({ name: 'graph' })
 export class Graph extends Base {
   @PrimaryGeneratedColumn('uuid')
     id: string
