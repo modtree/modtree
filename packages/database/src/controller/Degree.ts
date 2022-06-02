@@ -8,6 +8,8 @@ import { response } from '../../types/api-response'
 
 /**
  * flattens a degree to response shape
+ * @param {Degree} degree
+ * @return {response.Degree}
  */
 function flatten(degree: Degree): response.Degree {
   return { ...degree, modules: degree.modules.map((m) => m.moduleCode) }
