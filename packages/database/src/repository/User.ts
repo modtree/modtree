@@ -6,7 +6,6 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { utils } from '../utils'
-import { filter } from '../utils/array'
 import {
   useLoadRelations,
   getDataSource,
