@@ -24,50 +24,40 @@ jobs:
           concurrent_skipping: same_content_newer
           paths_ignore: '["**/README.md", "**/docs/**"]'
 
-  database_lint:
+  ci:
     if: always()
     runs-on: ubuntu-20.04
     outputs:
-      status: ${{ job.status }}
+      project_build: ${{ steps.project_build.outcome }}
+      database_tests: ${{ steps.database_tests.outcome }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
+      # lint then build the entire codebase as a base method
+      # to check code quality
       - name: 🍺 Check out repository code
         uses: actions/checkout@v3
-
       - name: 🧶 Install yarn
         run: yarn install --frozen-lockfile
-
       - name: 📦 Build & lint database functions
+        id: project_build
+        continue-on-error: true
         run: yarn ci
-
-  database_tests:
-    if: always()
-    runs-on: ubuntu-20.04
-    outputs:
-      status: ${{ job.status }}
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    steps:
+      # run database tests using a PostgreSQL instance
+      # on Github Actions
       - name: 🔥 Initialize PostgreSQL
         run: |
           sudo systemctl start postgresql.service
-          echo "CREATE USER runner PASSWORD 'runner';" > /tmp/create_user.sql
-          echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/create_user.sql
-          echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/create_user.sql
-          sudo su postgres -c "psql --file=/tmp/create_user.sql"
+          echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql
+          echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql
+          echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql
+          sudo su postgres -c "psql --file=/tmp/setup.sql"
           createdb base
-
-      - name: 🍺 Check out repository code
-        uses: actions/checkout@v3
-
-      - name: 🧶 Install yarn
-        run: yarn install --frozen-lockfile
-      
       - name: 📦 Run tests
+        id: database_tests
         working-directory: ./packages/database
+        continue-on-error: true
         run: |
           TEST_DATABASE_TYPE=POSTGRES \
           TEST_POSTGRES_USERNAME=runner \
@@ -79,26 +69,26 @@ jobs:
           yarn test:ci
 
   telegram:
-    needs: [pre_job, database_lint, database_tests]
+    needs: [pre_job, ci]
     if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ubuntu-20.04
     steps:
-      - name: Logs
-        run: |
-          echo ${{ needs.database_lint.outputs.status }}; \
-          echo ${{ needs.database_tests.outputs.status }}; \
-          echo ${GITHUB_SHA::7};
+      - name: "Logs: project build"
+        run: echo ${{ needs.ci.outputs.database_tests }}
+
+      - name: "Logs: database tests"
+        run: echo ${{ needs.ci.outputs.project_build }}
 
       - name: Environment prep
         run: |
           echo "RUN_URL=https://github.com/modtree/modtree/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV; \
           echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV; \
-          [[ "${{ needs.database_lint.outputs.status }}" == "success" ]] \
-          && echo "LINT_STATUS=✅" >> $GITHUB_ENV \
-          || echo "LINT_STATUS=❌" >> $GITHUB_ENV; \
-          [[ "${{ needs.database_tests.outputs.status }}" == "success" ]] \
-          && echo "TESTS_STATUS=✅" >> $GITHUB_ENV \
-          || echo "TESTS_STATUS=❌" >> $GITHUB_ENV;
+          [[ "${{ needs.ci.outputs.project_build }}" == "success" ]] \
+          && echo "PROJECT_BUILD=✅" >> $GITHUB_ENV \
+          || echo "PROJECT_BUILD=❌" >> $GITHUB_ENV; \
+          [[ "${{ needs.ci.outputs.database_tests }}" == "success" ]] \
+          && echo "DATABASE_TESTS=✅" >> $GITHUB_ENV \
+          || echo "DATABASE_TESTS=❌" >> $GITHUB_ENV;
 
       - name: Send message
         uses: appleboy/telegram-action@master
@@ -109,6 +99,6 @@ jobs:
           format: markdown
           message: |
             `${{ env.SHORT_SHA }}` ${{ github.event.head_commit.message }}
-            ${{ env.LINT_STATUS }} lint
-            ${{ env.TESTS_STATUS }} tests
+            ${{ env.PROJECT_BUILD }} lint + build
+            ${{ env.DATABASE_TESTS }} tests
             [view logs](${{ env.RUN_URL }})
