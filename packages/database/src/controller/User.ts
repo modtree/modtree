@@ -98,6 +98,31 @@ export class userController implements UserController {
   }
 
   /**
+   * gets one User by id
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async getFull(req: Request, res: Response) {
+    this.userRepo
+      .findOne({
+        where: { id: req.params.userId },
+        relations: {
+          modulesDone: true,
+          modulesDoing: true,
+          savedDegrees: {
+            modules: true
+          },
+        },
+      })
+      .then((user) => {
+        res.json(user)
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'User not found' })
+      })
+  }
+
+  /**
    * get all Users
    * @param {Request} req
    * @param {Response} res

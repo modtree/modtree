@@ -8,9 +8,9 @@ import {
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
 
 type Route<T> = {
-  method: 'post' | 'put' | 'patch' | 'get' | 'delete'
-  route: string
   action: keyof T
+  route: string
+  method: 'post' | 'put' | 'patch' | 'get' | 'delete'
 }
 
 type RouteWithController<T> = Route<T> & { controller: Class<T> }
@@ -46,88 +46,93 @@ function getRoutes(): RouteWithController<any>[] {
 
 const moduleCondensedRoutes: Route<moduleCondensedController>[] = [
   {
-    method: 'get',
-    route: '/modules/list',
     action: 'list',
+    route: '/modules/list',
+    method: 'get',
   },
   {
-    method: 'get',
-    route: '/modules/find/:moduleCode',
     action: 'find',
+    route: '/modules/find/:moduleCode',
+    method: 'get',
   },
 ]
 
 const userRoutes: Route<userController>[] = [
   {
-    method: 'post',
-    route: '/user/create',
     action: 'create',
-  },
-  {
+    route: '/user/create',
     method: 'post',
-    route: '/user/insert-degree/:userId',
+  },
+  {
     action: 'insertDegree',
+    route: '/user/insert-degree/:userId',
+    method: 'post',
   },
   {
-    method: 'get',
-    route: '/user/list',
     action: 'list',
-  },
-  {
+    route: '/user/list',
     method: 'get',
-    route: '/user/get/:userId',
-    action: 'get',
   },
   {
-    method: 'delete',
-    route: '/user/delete/:userId',
+    action: 'getFull',
+    route: '/user/get-full/:userId',
+    method: 'get',
+  },
+  {
+    action: 'get',
+    route: '/user/get/:userId',
+    method: 'get',
+  },
+  {
     action: 'delete',
+    route: '/user/delete/:userId',
+    method: 'delete',
   },
 ]
 
 const degreeRoutes: Route<degreeController>[] = [
   {
-    method: 'post',
-    route: '/degree/create',
     action: 'create',
+    route: '/degree/create',
+    method: 'post',
   },
   {
-    method: 'get',
-    route: '/degree/get/:degreeId',
     action: 'get',
-  },
-  {
-    method: 'delete',
-    route: '/degree/delete/:degreeId',
-    action: 'delete',
-  },
-  {
+    route: '/degree/get/:degreeId',
     method: 'get',
-    route: '/degree/list',
+  },
+  {
+    action: 'delete',
+    route: '/degree/delete/:degreeId',
+    method: 'delete',
+  },
+  {
     action: 'list',
+    route: '/degree/list',
+    method: 'get',
   },
 ]
 
 const graphRoutes: Route<graphController>[] = [
   {
-    method: 'post',
-    route: '/graph/create',
     action: 'create',
+    route: '/graph/create',
+    method: 'post',
   },
   {
-    method: 'get',
-    route: '/graph/get/:graphId',
     action: 'get',
-  },
-  {
-    method: 'delete',
-    route: '/graph/delete/:graphId',
-    action: 'delete',
-  },
-  {
+    route: '/graph/get/:graphId',
     method: 'get',
-    route: '/graph/list',
+  },
+  {
+    action: 'delete',
+    route: '/graph/delete/:graphId',
+    method: 'delete',
+  },
+  {
     action: 'list',
+    route: '/graph/list',
+    method: 'get',
   },
 ]
 
