@@ -59,7 +59,7 @@ export function UserRepository(database?: DataSource): Repository {
     // 1. find module
     const module = await ModuleRepository(db).findOneBy({ moduleCode })
     // if module not found, assume invalid module code
-    if (!module) throw new Error('Invalid module code')
+    if (!module) return false
     // 2. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
