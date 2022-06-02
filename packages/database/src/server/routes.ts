@@ -64,9 +64,9 @@ const userRoutes: Route<userController>[] = [
     action: 'create',
   },
   {
-    method: 'patch',
-    route: '/user/update',
-    action: 'update',
+    method: 'post',
+    route: '/user/insert-degree/:userId',
+    action: 'insertDegree',
   },
   {
     method: 'get',

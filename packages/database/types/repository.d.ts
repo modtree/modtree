@@ -49,6 +49,7 @@ export interface DegreeRepository extends BaseRepo<Degree, Init.DegreeProps> {
   loadRelations: LoadRelations<Degree>
   findOneByTitle(title: string): Promise<Degree>
   findOneById(id: string): Promise<Degree>
+  findByIds(id: string[]): Promise<Degree[]>
 }
 
 export interface ModuleRepository extends BaseRepo<Module, NM> {

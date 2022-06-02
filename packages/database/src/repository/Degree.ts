@@ -81,11 +81,26 @@ export function DegreeRepository(database?: DataSource): Repository {
     return degree
   }
 
+  /**
+   * @param {string[]} moduleCodes
+   * @return {Promise<Module[]>}
+   */
+  async function findByIds(degreeIds: string[]): Promise<Degree[]> {
+    if (degreeIds.length === 0) {
+      return []
+    }
+    return BaseRepo.createQueryBuilder('degree')
+      .where('degree.id IN (:...degreeIds)', { degreeIds })
+      .leftJoinAndSelect('degree.modules', 'module')
+      .getMany()
+  }
+
   return BaseRepo.extend({
     initialize,
     insertModules,
     loadRelations,
     findOneByTitle,
     findOneById,
+    findByIds,
   })
 }

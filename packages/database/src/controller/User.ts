@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { copy } from '../utils'
 import { db } from '../config'
-import { User } from '../entity'
-import { UserRepository } from '../repository'
+import { User, Degree } from '../entity'
+import { DegreeRepository, UserRepository } from '../repository'
 import { emptyInit } from '../utils/empty'
 import type { UserController } from '../../types/controller'
 import { response } from '../../types/api-response'
@@ -24,6 +24,7 @@ function flatten(user: User): response.User {
 /** User api controller */
 export class userController implements UserController {
   private userRepo = UserRepository(db)
+  private degreeRepo = DegreeRepository(db)
 
   /**
    * creates a Degree
@@ -51,13 +52,26 @@ export class userController implements UserController {
    * @param {Request} req
    * @param {Response} res
    */
-  async update(req: Request, res: Response) {
+  async insertDegree(req: Request, res: Response) {
     const id = req.params.userId
-    const props = req.body
-    copy(req.body, props)
-    this.userRepo.update({ id }, props).then((updateResult) => {
-      res.json(updateResult)
+    const requestKeys = Object.keys(req.body)
+    const requiredKeys = ['degreeIds']
+    if (!requiredKeys.every((val) => requestKeys.includes(val))) {
+      res
+        .status(400)
+        .json({ message: 'insufficient keys', requestKeys, requiredKeys })
+      return
+    }
+    const degreeIds: string[] = req.body.degreeIds
+    const degrees = await this.degreeRepo.findByIds(degreeIds)
+    const user = await this.userRepo.findOne({
+      where: { id },
+      relations: { savedDegrees: true },
     })
+    console.log(degrees)
+    user.savedDegrees.push(...degrees)
+    const result = this.userRepo.save(user)
+    res.json(result)
   }
 
   /**
@@ -66,7 +80,6 @@ export class userController implements UserController {
    * @param {Response} res
    */
   async get(req: Request, res: Response) {
-    console.log('getting user by id:', req.params.userId)
     this.userRepo
       .findOne({
         where: { id: req.params.userId },
