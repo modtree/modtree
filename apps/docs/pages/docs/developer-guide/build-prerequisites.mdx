@@ -1,0 +1,137 @@
+# Build Prerequisites
+
+This guide is written specially those who have never installed any of
+the build pre-requisites before, and need to go through the tussle of
+the first-time setup.
+
+- [Mac OS](#mac-os)
+
+## Mac OS
+
+The Mac OS guide is targeted at a fresh Mac installation. Note that
+this particular guide is an opinionated route of getting things
+installed. To our knowledge, it's the perfect balance between
+speed-running Modtree's install and putting you in a the best position
+for any future projects.
+
+Overall steps needed:
+
+1. [Install git](#install-git)
+2. [Install homebrew](#install-homebrew)
+3. [Install node](#install-node)
+4. [Install yarn](#install-yarn)
+5. [Install postgresql](#install-postgresql)
+
+### Install git
+
+Open a terminal window and run `git`. A window should pop up prompting
+you to install standard xcode tools. Follow those instructions, and
+you will end up with `git` installed.
+
+To check if you have `git` installed, run `git`. You should see the
+`git` help text.
+
+### Install homebrew
+
+Head over to [brew.sh](https://brew.sh/) and follow their install
+instructions.
+
+Be sure to read the final output for any post-installation actions.
+
+To check if you have `brew` installed, run `brew`. You should see the
+`brew` help text.
+
+### Install node
+
+Instead of installing `node` directly, this guide will show you how to
+install `n`, a node version manager, and then `node` itself.
+
+```
+brew install n
+```
+
+```bash
+sudo n 16 # modtree uses node v16
+```
+
+To check if you have `node` installed correctly, run `node --version`.
+Make sure the output starts with a "v16".
+
+```bash
+$ node --version
+# v16.15.0
+```
+
+### Install yarn
+
+To install `yarn` using the following method, you need to have `node`
+installed first.
+
+```bash
+corepack enable
+```
+
+If that fails and requires elevated permissions:
+
+```bash
+sudo corepack enable
+```
+
+To check if you have `yarn` installed correctly, run `yarn --version`.
+Make sure the output starts with a "1".
+
+```bash
+$ yarn --version
+# 1.22.18
+```
+
+### Install postgresql
+
+You can install postgresql using homebrew with:
+
+```bash
+brew install postgresql
+```
+
+Upon completion, postgresql is installed, but not started by default.
+If you try to open a connection to postgresql, it will throw an error.
+
+To start it, run:
+
+```bash
+brew services start postgresql
+```
+
+To check if postgres is working, you can run:
+
+```bash
+psql postgres
+```
+
+It should replace your command prompt with postgresql's command
+prompt.
+
+```bash
+$ psql postgres
+# psql (14.3)
+# Type "help" for help.
+# 
+# postgres=#
+```
+
+You can exit the postgresql prompt by running `exit`.
+
+`psql` is a command that opens a connection to the database.
+
+`postgres` is the name of the database you want to open.
+
+The database you want to open needs to exist in order for the
+connection to be established.
+
+You can try running `psql some_cool_db`. There will be an error saying
+that `some_cool_db` doesn't exist yet, rightfully so.
+
+To solve that, you can run `createdb some_cool_db` first, and only
+then connect to it with `psql some_cool_db`
+
+To delete a database, run `dropdb some_cool_db`. 

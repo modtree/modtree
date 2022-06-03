@@ -1,6 +1,7 @@
 {
   "build": "Build",
+  "build-prerequisites": "Build prerequisites",
   "tests": "Tests",
-  "yarn-scripts": "Yarn Scripts",
+  "yarn-scripts": "Yarn scripts",
   "contributing": "Contributing"
 }
