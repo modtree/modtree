@@ -2,7 +2,7 @@ import { container, getSource } from '../../src/data-source'
 import { User, Degree } from '../../src/entity'
 import { UserRepository } from '../../src/repository'
 import { setup, importChecks, teardown } from '../environment'
-import { setupUser } from './setup'
+import { mockup } from '../mockup'
 import { init } from '../init'
 import { oneUp } from '../../src/utils'
 
@@ -15,7 +15,7 @@ const t: Partial<{
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => setupUser(db))
+    .then(() => mockup.user(db))
     .then((res) => {
       t.user = res.user
       t.degree = res.degree

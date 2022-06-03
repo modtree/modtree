@@ -4,7 +4,7 @@ import { DegreeRepository } from '../../src/repository'
 import { init } from '../init'
 import { setup, teardown } from '../environment'
 import { flatten, oneUp } from '../../src/utils'
-import { setupDegree } from './setup'
+import { mockup } from '../mockup'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -12,10 +12,10 @@ const t: Partial<{ degree: Degree; combinedModuleCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => setupDegree(db))
-    .then((degree) => {
-      t.degree = degree
-      t.combinedModuleCodes = degree.modules.map(flatten.module)
+    .then(() => mockup.degree(db))
+    .then((res) => {
+      t.degree = res.degree
+      t.combinedModuleCodes = res.degree.modules.map(flatten.module)
     })
     .catch(() => {
       throw new Error('Unable to setup Degree test.')
