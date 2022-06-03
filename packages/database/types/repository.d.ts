@@ -31,6 +31,7 @@ export interface GraphRepository extends BaseRepo<Graph, Init.GraphProps> {
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]>
+  suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]>
 }
 
 export interface UserRepository extends BaseRepo<User, Init.UserProps> {

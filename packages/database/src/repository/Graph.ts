@@ -175,11 +175,78 @@ export function GraphRepository(database?: DataSource): Repository {
     return queryByUserAndDegreeId(userId, degreeId).getManyAndCount()
   }
 
+    /**
+   * Suggests modules from a single module.
+   * Returns a subset of post-reqs for this module.
+   * @param {Graph} graph
+   * @param {string} moduleCode
+   * @return {Promise<Module[]>}
+   */
+  async function suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]> {
+    // Load relations
+    await GraphRepository(db).loadRelations(graph, {
+      user: true,
+      degree: true,
+    })
+    await DegreeRepository(db).loadRelations(graph.degree, {
+      modules: true,
+    })
+
+    // 1. Get all post-reqs for this mod
+    const module = await ModuleRepository(db).findOneBy({ moduleCode,
+    })
+    const postReqs = module.fulfillRequirements
+    if (postReqs.length == 0) // deal with empty array gracefully
+      return []
+
+    // 2. Filter for eligible modules
+    const allEligibleModules = await UserRepository(db).eligibleModules(graph.user)
+    if (!allEligibleModules) return [] // temp fix
+    const filtered = allEligibleModules.filter((one) => postReqs.includes(one.moduleCode))
+
+    // 3. Transform filtered into data with fields to sort by
+    const degreeModulesCodes = graph.degree.modules.map((one) => one.moduleCode)
+    type Data = {
+      moduleCode: string,
+      inDegree: boolean,
+      origIdx: number,
+    }
+    const data = filtered.map((one, origIdx): Data => {
+      return {
+        moduleCode: one.moduleCode,
+        inDegree: degreeModulesCodes.includes(one.moduleCode),
+        origIdx,
+      }
+    })
+
+    /**
+     * Sorting comparator
+     * higher priority => want smaller final index in the array
+     * - if a higher priority, return -1
+     * - elif a lower priority, return 1
+     * - else return 0
+     * @param {Data} a
+     * @param {Data} b
+     * @return {number}
+     */
+    function cmp(a: Data, b: Data): number {
+      if (a.inDegree != b.inDegree)
+        return a.inDegree ? -1 : 1
+      return a.moduleCode < b.moduleCode ? -1 : 1
+    }
+
+    // 4. Sort and rebuild original array
+    data.sort(cmp)
+    const final = data.map((one) => filtered[one.origIdx])
+    return final
+  }
+
   return BaseRepo.extend({
     initialize,
     toggleModule,
     loadRelations,
     findOneByUserAndDegreeId,
     findManyByUserAndDegreeId,
+    suggestModulesFromOne,
   })
 }
