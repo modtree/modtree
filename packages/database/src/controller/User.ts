@@ -1,25 +1,8 @@
 import { Request, Response } from 'express'
-import { copy } from '../utils'
 import { db } from '../config'
-import { User } from '../entity'
 import { DegreeRepository, UserRepository } from '../repository'
-import { emptyInit } from '../utils/empty'
+import { emptyInit, flatten, copy } from '../utils'
 import type { UserController } from '../../types/controller'
-import { response } from '../../types/api-response'
-
-/**
- * flattens a user to response shape
- * @param {User} user
- * @return {response.User}
- */
-function flatten(user: User): response.User {
-  return {
-    ...user,
-    modulesDoing: user.modulesDoing.map((m) => m.moduleCode),
-    modulesDone: user.modulesDone.map((m) => m.moduleCode),
-    savedDegrees: user.savedDegrees.map((d) => d.id),
-  }
-}
 
 /** User api controller */
 export class userController implements UserController {
@@ -82,7 +65,7 @@ export class userController implements UserController {
     this.userRepo
       .findOneById(req.params.userId)
       .then((user) => {
-        res.json(flatten(user))
+        res.json(flatten.user(user))
       })
       .catch(() => {
         res.status(404).json({ message: 'User not found' })
@@ -127,7 +110,7 @@ export class userController implements UserController {
         savedDegrees: true,
       },
     })
-    const flat = users.map((u) => flatten(u))
+    const flat = users.map((u) => flatten.user(u))
     res.json(flat)
   }
 

@@ -1,19 +1,8 @@
 import { Request, Response } from 'express'
 import { copy } from '../utils'
 import { db } from '../config'
-import { Degree } from '../entity'
 import { DegreeRepository } from '../repository'
-import { emptyInit } from '../utils/empty'
-import { response } from '../../types/api-response'
-
-/**
- * flattens a degree to response shape
- * @param {Degree} degree
- * @return {response.Degree}
- */
-function flatten(degree: Degree): response.Degree {
-  return { ...degree, modules: degree.modules.map((m) => m.moduleCode) }
-}
+import { emptyInit, flatten } from '../utils'
 
 /** Degree API controller */
 export class degreeController {
@@ -49,7 +38,7 @@ export class degreeController {
     this.degreeRepo
       .findOneById(req.params.degreeId)
       .then((degree) => {
-        res.json(flatten(degree))
+        res.json(flatten.degree(degree))
       })
       .catch(() => {
         res.status(404).json({ message: 'Degree not found' })
@@ -75,7 +64,7 @@ export class degreeController {
    */
   async list(req: Request, res: Response) {
     const results = await this.degreeRepo.find({ relations: { modules: true } })
-    const flat = results.map((degree) => flatten(degree))
+    const flat = results.map((degree) => flatten.degree(degree))
     res.json(flat)
   }
 }

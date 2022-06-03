@@ -1,25 +1,8 @@
 import { Request, Response } from 'express'
 import { copy } from '../utils'
 import { db } from '../config'
-import { Graph } from '../entity'
 import { GraphRepository } from '../repository'
-import { emptyInit } from '../utils/empty'
-import { response } from '../../types/api-response'
-
-/**
- * flattens a graph to response shape
- * @param {Graph} graph
- * @return {response.Graph}
- */
-function flatten(graph: Graph): response.Graph {
-  return {
-    id: graph.id,
-    user: graph.user.id,
-    degree: graph.degree.id,
-    modulesHidden: graph.modulesHidden.map((m) => m.moduleCode),
-    modulesPlaced: graph.modulesPlaced.map((m) => m.moduleCode),
-  }
-}
+import { emptyInit, flatten } from '../utils'
 
 /** Graph API controller */
 export class graphController {
@@ -62,7 +45,7 @@ export class graphController {
         },
       })
       .then((graph) => {
-        res.json(flatten(graph))
+        res.json(flatten.graph(graph))
       })
       .catch(() => {
         res.status(404).json({ message: 'Graph not found' })
@@ -95,7 +78,7 @@ export class graphController {
         modulesPlaced: true,
       },
     })
-    const flat = results.map((graph) => flatten(graph))
+    const flat = results.map((graph) => flatten.graph(graph))
     res.json(flat)
   }
 }

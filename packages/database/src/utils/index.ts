@@ -2,6 +2,8 @@ import { PrereqTree } from '../../types/nusmods'
 export * from './array'
 export * from './object'
 export * from './string'
+export * from './entity'
+export * from './empty'
 
 export namespace utils {
   /**
