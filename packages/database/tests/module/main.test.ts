@@ -1,19 +1,14 @@
 import { container, getSource } from '../../src/data-source'
-import { Module, ModuleCondensed } from '../../src/entity'
+import { Module } from '../../src/entity'
 import { ModuleRepository } from '../../src/repository'
 import { oneUp } from '../../src/utils'
-import { setup, importChecks, teardown } from '../environment'
-
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+import { setup, teardown } from '../environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-importChecks({
-  entities: [Module, ModuleCondensed],
-  repositories: [ModuleRepository(db)],
-})
+beforeAll(() => setup(dbName))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 const lowerBound = 6000
 

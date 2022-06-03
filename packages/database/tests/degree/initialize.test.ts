@@ -9,11 +9,7 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ degree: Degree }> = {}
 
-beforeAll(() =>
-  setup(dbName).catch(() => {
-    throw new Error('Unable to setup Degree test.')
-  })
-)
+beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 describe('Degree.initialize', () => {

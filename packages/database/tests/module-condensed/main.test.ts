@@ -2,18 +2,13 @@ import { flatten, oneUp } from '../../src/utils'
 import { container, getSource } from '../../src/data-source'
 import { ModuleCondensed } from '../../src/entity'
 import { ModuleCondensedRepository } from '../../src/repository'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, teardown } from '../environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
-
-importChecks({
-  entities: [ModuleCondensed],
-  repositories: [ModuleCondensedRepository(db)],
-})
 
 const lowerBound = 6000
 

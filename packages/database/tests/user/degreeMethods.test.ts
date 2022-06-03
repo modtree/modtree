@@ -1,7 +1,7 @@
 import { container, getSource } from '../../src/data-source'
 import { User, Degree } from '../../src/entity'
 import { UserRepository } from '../../src/repository'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, teardown } from '../environment'
 import { mockup } from '../mockup'
 import { init } from '../init'
 import { oneUp } from '../../src/utils'
@@ -22,11 +22,6 @@ beforeAll(() =>
     })
 )
 afterAll(() => db.destroy().then(() => teardown(dbName)))
-
-importChecks({
-  entities: [User, Degree],
-  repositories: [UserRepository(db)],
-})
 
 describe('User.addDegree', () => {
   it('Successfully adds a degree to a user', async () => {

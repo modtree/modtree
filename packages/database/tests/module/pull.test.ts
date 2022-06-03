@@ -2,15 +2,11 @@ import { container, getSource } from '../../src/data-source'
 import { sql } from '../../src/sql'
 import { Module } from '../../src/entity'
 import { ModuleRepository } from '../../src/repository'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, teardown } from '../environment'
+import { oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-
-importChecks({
-  entities: [Module],
-  repositories: [ModuleRepository(db)],
-})
 
 beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))

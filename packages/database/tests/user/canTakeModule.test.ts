@@ -1,8 +1,8 @@
 import { container, getSource } from '../../src/data-source'
-import { Module, User } from '../../src/entity'
-import { ModuleRepository, UserRepository } from '../../src/repository'
+import { User } from '../../src/entity'
+import { UserRepository } from '../../src/repository'
 import { init } from '../init'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, teardown } from '../environment'
 import { oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -11,11 +11,6 @@ const t: Partial<{ user: User }> = {}
 
 beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
-
-importChecks({
-  entities: [Module, User],
-  repositories: [ModuleRepository(db), UserRepository(db)],
-})
 
 it('Saves a user', async () => {
   expect.assertions(1)
