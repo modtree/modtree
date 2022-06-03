@@ -1,12 +1,8 @@
 import { flatten } from '../../../src/utils'
 import { container, endpoint, getSource } from '../../../src/data-source'
-import { Degree, Graph, Module, User } from '../../../src/entity'
-import {
-  DegreeRepository,
-  GraphRepository,
-  UserRepository,
-} from '../../../src/repository'
-import { importChecks, setup, teardown } from '../../environment'
+import { Degree, Graph, User } from '../../../src/entity'
+import { GraphRepository } from '../../../src/repository'
+import { setup, teardown } from '../../environment'
 import { init } from '../../init'
 import { setupGraph } from '../setup'
 
@@ -18,11 +14,6 @@ const t: Partial<{
   graph: Graph
   moduleCodes: string[]
 }> = {}
-
-importChecks({
-  entities: [Module, Degree, User, Graph],
-  repositories: [UserRepository(db), DegreeRepository(db), GraphRepository(db)],
-})
 
 beforeAll(() =>
   setup(dbName)
@@ -78,7 +69,7 @@ describe('Graph.initialize', () => {
 })
 
 describe('Graph.toggleModules', () => {
-  it('Correctly changes a module\'s state from placed to hidden', async () => {
+  it("Correctly changes a module's state from placed to hidden", async () => {
     const toggled = 'MA2001'
     /**
      * execute the toggle
@@ -100,7 +91,7 @@ describe('Graph.toggleModules', () => {
     expect(t.graph.modulesPlaced[0].moduleCode).toEqual(toggled)
   })
 
-  it('Correctly changes a module\'s state from hidden to placed', async () => {
+  it("Correctly changes a module's state from hidden to placed", async () => {
     /**
      * simple the inverse of the above
      */

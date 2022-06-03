@@ -1,11 +1,7 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
-import { Degree, Graph, Module, User } from '../../../src/entity'
-import {
-  DegreeRepository,
-  GraphRepository,
-  UserRepository,
-} from '../../../src/repository'
-import { importChecks, setup, teardown } from '../../environment'
+import { Degree, Graph, User } from '../../../src/entity'
+import { GraphRepository } from '../../../src/repository'
+import { setup, teardown } from '../../environment'
 import { setupGraph } from '../setup'
 
 const dbName = 'test_graph_initialize_no_pull_all'
@@ -16,11 +12,6 @@ const t: Partial<{
   degree: Degree
   graph: Graph
 }> = {}
-
-importChecks({
-  entities: [Module, Degree, User, Graph],
-  repositories: [UserRepository(db), DegreeRepository(db), GraphRepository(db)],
-})
 
 beforeAll(() =>
   setup(dbName)
