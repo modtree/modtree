@@ -3,7 +3,7 @@ import { Init } from '../../types/entity'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { getDataSource, useLoadRelations, getRelationNames } from './base'
-import { copy } from '../utils/object'
+import { copy } from '../utils'
 import type { DegreeRepository as Repository } from '../../types/repository'
 
 /**
