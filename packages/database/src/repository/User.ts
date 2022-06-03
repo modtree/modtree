@@ -121,7 +121,7 @@ export function UserRepository(database?: DataSource): Repository {
     const postReqCodesSet = new Set<string>()
     user.modulesDone.forEach((module: Module) => {
       // can be empty string
-      if (module.fulfillRequirements.length > 0)
+      if (module.fulfillRequirements instanceof Array)
         module.fulfillRequirements.forEach((moduleCode: string) => {
           postReqCodesSet.add(moduleCode)
         })
