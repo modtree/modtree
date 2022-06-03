@@ -1,14 +1,13 @@
 import axios from 'axios'
 import { Agent } from 'https'
 import { log } from '../cli'
-import { nusmodsApi } from '../utils/string'
+import { nusmodsApi, flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { DataSource } from 'typeorm'
 import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleRepository as Repository } from '../../types/repository'
-import { flatten } from '..'
 
 /**
  * @param {DataSource} database

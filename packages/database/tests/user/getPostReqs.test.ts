@@ -4,7 +4,7 @@ import { ModuleRepository, UserRepository } from '../../src/repository'
 import { Init } from '../../types/entity'
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
-import { flatten } from '../../src'
+import { flatten } from '../../src/utils'
 
 const dbName = 'test_user_getPostReqs'
 const db = getSource(dbName)

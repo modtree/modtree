@@ -58,12 +58,13 @@ export const w: Config.InitialOptions = {
 /**
  * a flexible config for running categorized tests
  * @param {string} group
- * @returns {Config.InitialOptionsWithRootDir}
+ * @return {any}
  */
-export function group(group: string): Config.InitialOptionsWithRootDir {
+export function group(): any {
+  const last = process.argv.pop()
   return {
     ...all,
-    testMatch: [`**/tests/${group}/**/*.test.ts`],
+    testMatch: [`**/tests/${last}/**/*.test.ts`],
   }
 }
 
