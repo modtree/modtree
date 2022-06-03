@@ -49,30 +49,38 @@ export function UserRepository(database?: DataSource): Repository {
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
+   * If optional string[] addedModuleCodes is specified, then each of the module
+   * codes is added to modulesDoneCodes.
+   *
    * @param {User} user
    * @param {string} moduleCode
+   * @param {string[]} addedModuleCodes
    * @return {Promise<boolean>}
    */
   async function canTakeModule(
     user: User,
-    moduleCode: string
+    moduleCode: string,
+    addedModuleCodes?: string[]
   ): Promise<boolean | void> {
     // 1. find module
     const module = await ModuleRepository(db).findOneBy({ moduleCode })
-    // if module not found, assume invalid module code
+    // -- if module not found, assume invalid module code
     if (!module) return false
     // 2. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
       modulesDoing: true,
     })
-    // if module already taken, can't take module again
-    const modulesDoneCodes = user.modulesDone.map(
-      (one: Module) => one.moduleCode
-    )
-    const modulesDoingCodes = user.modulesDoing.map(
-      (one: Module) => one.moduleCode
-    )
+    // -- if module already taken, can't take module again
+    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
+    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    // -- add some module codes to done modules
+    if (addedModuleCodes && addedModuleCodes.length > 0)
+      addedModuleCodes.forEach((one) => {
+        // ignore duplicates
+        if (!modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one))
+          modulesDoneCodes.push(one)
+      })
     if (
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)

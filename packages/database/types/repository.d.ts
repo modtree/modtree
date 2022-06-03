@@ -35,7 +35,7 @@ export interface GraphRepository extends BaseRepo<Graph, Init.GraphProps> {
 }
 
 export interface UserRepository extends BaseRepo<User, Init.UserProps> {
-  canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
+  canTakeModule(user: User, moduleCode: string, addModuleCodes?: string[]): Promise<boolean | void>
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
   eligibleModules(user: User): Promise<Module[] | void>
