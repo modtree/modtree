@@ -25,7 +25,7 @@ export const ci: Config.InitialOptions = {
   testMatch: ['**/tests/**/*.test.ts'],
   testPathIgnorePatterns: [
     ...all.testPathIgnorePatterns,
-    'module-pull',
+    'module/pull',
     'server',
   ],
 }
@@ -53,6 +53,18 @@ export const w: Config.InitialOptions = {
   ...all,
   testMatch: [`**/tests/**/${wTest}.test.ts`],
   silent: false,
+}
+
+/**
+ * a flexible config for running categorized tests
+ * @param {string} group
+ * @returns {Config.InitialOptionsWithRootDir}
+ */
+export function group(group: string): Config.InitialOptionsWithRootDir {
+  return {
+    ...all,
+    testMatch: [`**/tests/${group}/**/*.test.ts`],
+  }
 }
 
 export default all

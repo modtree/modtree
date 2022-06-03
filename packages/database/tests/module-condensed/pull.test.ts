@@ -1,7 +1,7 @@
-import { container, endpoint, getSource } from '../src/data-source'
-import { setup, teardown } from './environment'
-import { ModuleCondensed } from '../src/entity'
-import { ModuleCondensedRepository } from '../src/repository'
+import { container, endpoint, getSource } from '../../src/data-source'
+import { setup, teardown } from '../environment'
+import { ModuleCondensed } from '../../src/entity'
+import { ModuleCondensedRepository } from '../../src/repository'
 
 const lowerBound = 6000
 

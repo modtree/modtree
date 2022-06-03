@@ -1,8 +1,8 @@
-import { container, endpoint, getSource } from '../src/data-source'
-import { sql } from '../src/sql'
-import { Module } from '../src/entity'
-import { ModuleRepository } from '../src/repository'
-import { setup, teardown, importChecks } from './environment'
+import { container, endpoint, getSource } from '../../src/data-source'
+import { sql } from '../../src/sql'
+import { Module } from '../../src/entity'
+import { ModuleRepository } from '../../src/repository'
+import { setup, teardown, importChecks } from '../environment'
 
 const dbName = 'test_module_pull'
 const db = getSource(dbName)

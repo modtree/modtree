@@ -1,10 +1,10 @@
-import { container, endpoint, getSource } from '../src/data-source'
-import { Degree, Module } from '../src/entity'
-import { DegreeRepository } from '../src/repository'
-import { Init } from '../types/entity'
-import { init } from './init'
-import { setup, importChecks, teardown } from './environment'
-import { flatten } from '../src'
+import { container, endpoint, getSource } from '../../src/data-source'
+import { Degree, Module } from '../../src/entity'
+import { DegreeRepository } from '../../src/repository'
+import { Init } from '../../types/entity'
+import { init } from '../init'
+import { setup, importChecks, teardown } from '../environment'
+import { flatten } from '../../src/utils'
 
 const dbName = 'test_degree'
 const db = getSource(dbName)

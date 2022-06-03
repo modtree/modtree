@@ -1,12 +1,12 @@
-import { setup, teardown } from './environment'
-import { container, endpoint, getSource } from '../src/data-source'
-import { Module, ModuleCondensed, Degree, User } from '../src/entity'
+import { setup, teardown } from '../environment'
+import { container, endpoint, getSource } from '../../src/data-source'
+import { Module, ModuleCondensed, Degree, User } from '../../src/entity'
 import {
   ModuleRepository,
   ModuleCondensedRepository,
   DegreeRepository,
   UserRepository,
-} from '../src/repository'
+} from '../../src/repository'
 
 const dbName = 'test_base'
 const db = getSource(dbName)
@@ -72,17 +72,18 @@ test('endpoint is working', async () => {
 
 test('endpoint can run repo function', async () => {
   // retrieve all modules from the Computing faculty
-  const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository(db).findByFaculty('Computing'))
+  expect.hasAssertions()
+  await endpoint(db, () =>
+    container(db, () => ModuleRepository(db).findByFaculty('Computing')).then(
+      (res) => {
+        expect(res).toBeInstanceOf(Array)
+        if (!res) return
+        res.forEach((m) => {
+          expect(m).toBeInstanceOf(Module)
+        })
+        expect(res.length).toBeGreaterThan(10)
+      }
+    )
   )
-  expect(res).toBeInstanceOf(Array)
-  // check definition and ditch void to keep typescript happy
-  expect(res).toBeDefined()
-  if (!res) return
-  // ensure that all elements are instances of Module
-  res.forEach((m) => {
-    expect(m).toBeInstanceOf(Module)
-  })
-  expect(res.length).toBeGreaterThan(10)
   expect(db.isInitialized).toBe(false)
 })
