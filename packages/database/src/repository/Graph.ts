@@ -205,16 +205,30 @@ export function GraphRepository(database?: DataSource): Repository {
     const filtered = allEligibleModules.filter((one) => postReqs.includes(one.moduleCode))
 
     // 3. Transform filtered into data with fields to sort by
+    let potentialModuleCounts = []
+    // -- get number of mods each filtered module unlocks
+    // must be synchronous, due to current implementation choice
+    for (let i=0; i<filtered.length; i++) {
+      const cur = filtered[i]
+      const res = await UserRepository(db).getPotentialModules(graph.user, cur.moduleCode)
+      if (!res)
+        potentialModuleCounts.push(0)
+      else
+        potentialModuleCounts.push(res.length)
+    }
+    // -- data processing
     const degreeModulesCodes = graph.degree.modules.map((one) => one.moduleCode)
     type Data = {
       moduleCode: string,
       inDegree: boolean,
+      numPotentialModules: number,
       origIdx: number,
     }
     const data = filtered.map((one, origIdx): Data => {
       return {
         moduleCode: one.moduleCode,
         inDegree: degreeModulesCodes.includes(one.moduleCode),
+        numPotentialModules: potentialModuleCounts[origIdx],
         origIdx,
       }
     })
@@ -232,6 +246,8 @@ export function GraphRepository(database?: DataSource): Repository {
     function cmp(a: Data, b: Data): number {
       if (a.inDegree != b.inDegree)
         return a.inDegree ? -1 : 1
+      if (a.numPotentialModules != b.numPotentialModules)
+        return a.numPotentialModules > b.numPotentialModules ? -1 : 1
       return a.moduleCode < b.moduleCode ? -1 : 1
     }
 

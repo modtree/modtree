@@ -52,9 +52,10 @@ describe('Graph.initialize', () => {
     })
 
     it('In our current desired priority', async () => {
-      // lexicographical order for now
-      const degreeModules = ['CP2106', 'CS2030', 'CS2100', 'CS2107']
-      const nonDegreeModules = ['CS2030S', 'CS2040', 'CS2040C']
+      // unlocks 4, 3, 3, 0 mods
+      const degreeModules = ['CS2030', 'CS2100', 'CS2107', 'CP2106']
+      // unlocks 7, 2, 0 mods
+      const nonDegreeModules = ['CS2040', 'CS2040C', 'CS2030S']
       const expected = degreeModules.concat(nonDegreeModules)
       expect(suggestedModulesCodes).toEqual(expected)
     })
