@@ -17,9 +17,6 @@ beforeAll(() =>
       t.user = res.user
       t.degree = res.degree
     })
-    .catch(() => {
-      throw new Error('Unable to setup Graph test.')
-    })
 )
 afterAll(() => db.destroy().then(() => teardown(dbName)))
 

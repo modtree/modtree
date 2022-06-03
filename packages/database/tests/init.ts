@@ -25,6 +25,13 @@ export namespace init {
     graduationYear: 2025,
     graduationSemester: 2,
   }
+  export const graph1: Init.GraphProps = {
+    userId: '',
+    degreeId: '',
+    modulesPlacedCodes: [],
+    modulesHiddenCodes: [],
+    pullAll: true,
+  }
   export const emptyUser: Init.UserProps = {
     displayName: 'Khang Vu Nguyen',
     username: 'definitelynotkhang',

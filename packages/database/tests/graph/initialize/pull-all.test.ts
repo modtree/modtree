@@ -22,9 +22,6 @@ beforeAll(() =>
       t.user = res.user
       t.degree = res.degree
     })
-    .catch(() => {
-      throw new Error('Unable to setup Graph test.')
-    })
 )
 afterAll(() => db.destroy().then(() => teardown(dbName)))
 
@@ -69,7 +66,7 @@ describe('Graph.initialize', () => {
 })
 
 describe('Graph.toggleModules', () => {
-  it("Correctly changes a module's state from placed to hidden", async () => {
+  it('Correctly changes a module\'s state from placed to hidden', async () => {
     const toggled = 'MA2001'
     /**
      * execute the toggle
@@ -91,7 +88,7 @@ describe('Graph.toggleModules', () => {
     expect(t.graph.modulesPlaced[0].moduleCode).toEqual(toggled)
   })
 
-  it("Correctly changes a module's state from hidden to placed", async () => {
+  it('Correctly changes a module\'s state from hidden to placed', async () => {
     /**
      * simple the inverse of the above
      */

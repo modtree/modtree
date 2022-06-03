@@ -17,9 +17,6 @@ beforeAll(() =>
       t.degree = res.degree
       t.combinedModuleCodes = res.degree.modules.map(flatten.module)
     })
-    .catch(() => {
-      throw new Error('Unable to setup Degree test.')
-    })
 )
 afterAll(() => db.destroy().then(() => teardown(dbName)))
 
