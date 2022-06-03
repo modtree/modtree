@@ -119,9 +119,11 @@ export function UserRepository(database?: DataSource): Repository {
     // 2. get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodesSet = new Set<string>()
     user.modulesDone.forEach((module: Module) => {
-      module.fulfillRequirements.forEach((moduleCode: string) => {
-        postReqCodesSet.add(moduleCode)
-      })
+      // can be empty string
+      if (module.fulfillRequirements.length > 0)
+        module.fulfillRequirements.forEach((moduleCode: string) => {
+          postReqCodesSet.add(moduleCode)
+        })
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
     // 3. filter modulesDone and modulesDoing

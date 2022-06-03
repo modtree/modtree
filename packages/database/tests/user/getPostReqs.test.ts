@@ -55,3 +55,23 @@ it('Gets all post-reqs', async () => {
   postReqsCodes = postReqs.map((one: Module) => one.moduleCode)
   expect(postReqsCodes.sort()).toEqual(expected.sort())
 })
+
+it('Returns empty array for modules with empty string fulfillRequirements', async () => {
+  // init new user with CP2106
+  // CP2106 has empty string fulfillRequirements
+  const props: Init.UserProps = init.user1
+  props.modulesDone = ['CP2106']
+  const res = await container(db, async () => {
+    await UserRepository(db).initialize(props)
+    return await UserRepository(db).findOneByUsername(props.username)
+  })
+  expect(res).toBeDefined()
+  if (!res) return
+  // Get post reqs
+  const postReqs = await endpoint(db, () =>
+    container(db, () => UserRepository(db).getPostReqs(res))
+  )
+  expect(postReqs).toBeDefined()
+  if (!postReqs) return
+  expect(postReqs).toEqual([])
+})
