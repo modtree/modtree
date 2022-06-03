@@ -40,6 +40,7 @@ it('Correctly handles modules not taken before', async () => {
 })
 
 it('Returns false for modules taken before/currently', async () => {
+  expect.assertions(1)
   await container(db, async () => {
     // one done, one doing
     const modulesTested = ['MA2001', 'MA2219']
@@ -52,6 +53,7 @@ it('Returns false for modules taken before/currently', async () => {
 })
 
 it('Returns false if module code passed in does not exist', async () => {
+  expect.assertions(1)
   await container(db, () =>
     UserRepository(db)
       .canTakeModule(t.user, init.invalidModuleCode)
