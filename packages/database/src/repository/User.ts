@@ -94,17 +94,24 @@ export function UserRepository(database?: DataSource): Repository {
   /**
    * List mods a user can take, based on what the user has completed.
    *
+   * If optional string[] addedModuleCodes is specified, then each of the modules
+   * are taken as done, and passed into User.canTakeModule.
+   *
    * @param {User} user
+   * @param {string[]} addedModuleCodes
    * @return {Promise<Module[] | void>}
    */
-  async function eligibleModules(user: User): Promise<Module[] | void> {
+  async function eligibleModules(user: User, addedModuleCodes?: string[]): Promise<Module[] | void> {
+    // if undefined
+    if (!addedModuleCodes)
+      addedModuleCodes = []
     // 1. get post-reqs
-    const postReqs = await UserRepository(db).getPostReqs(user)
+    const postReqs = await UserRepository(db).getPostReqs(user, addedModuleCodes)
     if (!postReqs)
       return []
     // 2. filter post-reqs
     const promises = postReqs.map(
-      (one) => UserRepository(db).canTakeModule(user, one.moduleCode)
+      (one) => UserRepository(db).canTakeModule(user, one.moduleCode, addedModuleCodes)
     )
     const results = await Promise.all(promises)
     const filtered = postReqs.filter((_, idx) => results[idx])
@@ -115,10 +122,18 @@ export function UserRepository(database?: DataSource): Repository {
    * List all post-reqs of a user.
    * This is a union of all post-reqs, subtract modulesDone and modulesDoing.
    *
+   * If optional string[] addedModuleCodes is specified, then each of the module
+   * codes is added to modulesDoneCodes.
+   *
    * @param {User} user
+   * @param {string[]} addedModuleCodes
+   *
    * @return {Promise<Module[] | void>}
    */
-  async function getPostReqs(user: User): Promise<Module[] | void> {
+  async function getPostReqs(user: User, addedModuleCodes?: string[]): Promise<Module[] | void> {
+    // if undefined
+    if (!addedModuleCodes)
+      addedModuleCodes = []
     // 1. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
@@ -127,6 +142,18 @@ export function UserRepository(database?: DataSource): Repository {
     // 2. get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodesSet = new Set<string>()
     user.modulesDone.forEach((module: Module) => {
+      // can be empty string
+      if (module.fulfillRequirements instanceof Array)
+        module.fulfillRequirements.forEach((moduleCode: string) => {
+          postReqCodesSet.add(moduleCode)
+        })
+    })
+    const addedModules = await Promise.all(
+      addedModuleCodes.map((one) => ModuleRepository(db).findOneBy({
+        moduleCode: one,
+      }))
+    )
+    addedModules.forEach((module: Module) => {
       // can be empty string
       if (module.fulfillRequirements instanceof Array)
         module.fulfillRequirements.forEach((moduleCode: string) => {

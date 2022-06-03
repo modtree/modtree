@@ -38,8 +38,8 @@ export interface UserRepository extends BaseRepo<User, Init.UserProps> {
   canTakeModule(user: User, moduleCode: string, addModuleCodes?: string[]): Promise<boolean | void>
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
-  eligibleModules(user: User): Promise<Module[] | void>
-  getPostReqs(user: User): Promise<Module[] | void>
+  eligibleModules(user: User, addModuleCodes?: string[]): Promise<Module[] | void>
+  getPostReqs(user: User, addModuleCodes?: string[]): Promise<Module[] | void>
   getPotentialModules(user: User, moduleCode: string): Promise<Module[] | void>
   findOneById(id: string): Promise<User>
   addDegree(user: User, degreeId: string): Promise<void>
