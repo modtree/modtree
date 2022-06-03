@@ -6,6 +6,7 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { utils } from '../utils'
+import { copy } from '../utils/object'
 import {
   useLoadRelations,
   getDataSource,
@@ -137,6 +138,45 @@ export function UserRepository(database?: DataSource): Repository {
     return modules
   }
 
+    /**
+   * List mods that will be unlocked by completing a mod.
+   *
+   * @param {User} user
+   * @return {Promise<Module[] | void>}
+   */
+  async function getPotentialModules(user: User, moduleCode: string): Promise<Module[] | void> {
+    // 1. Return empty array if module in modulesDone or modulesDoing
+    await UserRepository(db).loadRelations(user, {
+      modulesDone: true,
+      modulesDoing: true,
+    })
+    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
+    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    if (modulesDoneCodes.includes(moduleCode) || modulesDoingCodes.includes(moduleCode))
+      return []
+    // 2. Get current eligible modules, and get module
+    const eligibleModules = await UserRepository(db).eligibleModules(user)
+    if (!eligibleModules)
+      return []
+    const eligibleModulesCodes = eligibleModules.map((one) => one.moduleCode)
+    const module = await ModuleRepository(db).findOneBy({
+      moduleCode
+    })
+    // 3. Temporarily add module to user and get new eligible modules
+    user.modulesDone.push(module)
+    const updatedUser = await BaseRepo.save(user) // TODO not saving
+    copy(updatedUser, user)
+    const newEligibleModules = await UserRepository(db).eligibleModules(user)
+    user.modulesDone = user.modulesDone.filter((one) => one.moduleCode !== moduleCode)
+    await BaseRepo.save(user)
+    // 4. Compare newEligibleModules to eligibleModules
+    if (!newEligibleModules)
+      return []
+    const filtered = newEligibleModules.filter((one) => !eligibleModulesCodes.includes(one.moduleCode))
+    return filtered
+  }
+
+
   /**
    * @param {string} username
    * @return {Promise<User>}
@@ -226,6 +266,7 @@ export function UserRepository(database?: DataSource): Repository {
     findOneByUsername,
     eligibleModules,
     getPostReqs,
+    getPotentialModules,
     findOneById,
     addDegree,
     findDegree,
