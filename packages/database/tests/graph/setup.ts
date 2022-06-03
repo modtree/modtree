@@ -16,10 +16,8 @@ type Response = {
  * @param {DataSource} db
  * @return {Promise<Response | void>}
  */
-export async function setupGraph(db: DataSource): Promise<Response> {
+export function setupGraph(db: DataSource): Promise<Response> {
   return new Promise((resolve, reject) => {
-    const degreeProps = init.degree1
-    const userProps = init.user1
     container(db, async () => {
       /**
        * load this in for rejects
@@ -31,14 +29,12 @@ export async function setupGraph(db: DataSource): Promise<Response> {
       let user: User
       let degree: Degree
       const userPromise = UserRepository(db)
-        .initialize(userProps)
-        .then(() => UserRepository(db).findOneByUsername(userProps.username))
+        .initialize(init.user1)
         .then((res) => {
           user = res
         })
       const degreePromise = DegreeRepository(db)
-        .initialize(degreeProps)
-        .then(() => DegreeRepository(db).findOneByTitle(degreeProps.title))
+        .initialize(init.degree1)
         .then((res) => {
           degree = res
         })
