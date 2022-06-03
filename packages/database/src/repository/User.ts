@@ -5,12 +5,8 @@ import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
-import { utils } from '../utils'
-import {
-  useLoadRelations,
-  getDataSource,
-  getRelationNames,
-} from './base'
+import { utils, flatten } from '../utils'
+import { useLoadRelations, getDataSource, getRelationNames } from './base'
 import type { UserRepository as Repository } from '../../types/repository'
 
 /**
@@ -66,12 +62,8 @@ export function UserRepository(database?: DataSource): Repository {
       modulesDoing: true,
     })
     // if module already taken, can't take module again
-    const modulesDoneCodes = user.modulesDone.map(
-      (one: Module) => one.moduleCode
-    )
-    const modulesDoingCodes = user.modulesDoing.map(
-      (one: Module) => one.moduleCode
-    )
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     if (
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)
@@ -79,7 +71,7 @@ export function UserRepository(database?: DataSource): Repository {
       return false
     }
     // 3. check if PrereqTree is fulfilled
-    const modulesDone = user.modulesDone.map((m) => m.moduleCode)
+    const modulesDone = user.modulesDone.map(flatten.module)
     return utils.checkTree(module.prereqTree, modulesDone)
   }
 
@@ -92,11 +84,11 @@ export function UserRepository(database?: DataSource): Repository {
   async function eligibleModules(user: User): Promise<Module[] | void> {
     // 1. get post-reqs
     const postReqs = await UserRepository(db).getPostReqs(user)
-    if (!postReqs)
-      return []
+    if (!postReqs) return []
     // 2. filter post-reqs
-    const promises = postReqs.map(
-      (one) => UserRepository(db).canTakeModule(user, one.moduleCode)
+    const postReqCodes = postReqs.map(flatten.module)
+    const promises = postReqCodes.map((moduleCode) =>
+      UserRepository(db).canTakeModule(user, moduleCode)
     )
     const results = await Promise.all(promises)
     const filtered = postReqs.filter((_, idx) => results[idx])
@@ -125,10 +117,11 @@ export function UserRepository(database?: DataSource): Repository {
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
     // 3. filter modulesDone and modulesDoing
-    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
-    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     const filtered = postReqCodesArr.filter(
-      (one) => !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
+      (one) =>
+        !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
     )
     // 4. get modules
     const modules = await ModuleRepository(db).findByCodes(filtered)

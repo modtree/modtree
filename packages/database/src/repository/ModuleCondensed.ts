@@ -5,6 +5,7 @@ import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { DataSource } from 'typeorm'
 import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleCondensedRepository as Repository } from '../../types/repository'
+import { flatten } from '..'
 
 /**
  * @param {DataSource} database
@@ -22,7 +23,7 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
    */
   async function getCodes(): Promise<string[]> {
     const modules = await BaseRepo.find()
-    return modules.map((m) => m.moduleCode)
+    return modules.map(flatten.module)
   }
 
   /**
@@ -42,9 +43,7 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
    * @return {Promise<ModuleCondensed[]>}
    */
   async function pull(): Promise<ModuleCondensed[]> {
-    const existingModules = new Set(
-      (await BaseRepo.find()).map((m) => m.moduleCode)
-    )
+    const existingModules = new Set(await getCodes())
     const freshModules = await fetch()
     const modulesToSave = freshModules.filter(
       (x) => !existingModules.has(x.moduleCode)

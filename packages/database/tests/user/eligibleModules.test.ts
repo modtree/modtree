@@ -4,6 +4,7 @@ import { ModuleRepository, UserRepository } from '../../src/repository'
 import { Init } from '../../types/entity'
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
+import { flatten } from '../../src'
 
 const dbName = 'test_user_eligibleModules'
 const db = getSource(dbName)
@@ -42,6 +43,6 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   if (!eligibleModules) return
   const expected = ['CS2109S']
   // Compare module codes
-  const eligibleModuleCodes = eligibleModules.map((one: Module) => one.moduleCode)
+  const eligibleModuleCodes = eligibleModules.map(flatten.module)
   expect(eligibleModuleCodes.sort()).toEqual(expected.sort())
 })

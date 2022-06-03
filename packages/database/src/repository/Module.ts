@@ -8,6 +8,7 @@ import { ModuleCondensedRepository } from './ModuleCondensed'
 import { DataSource } from 'typeorm'
 import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleRepository as Repository } from '../../types/repository'
+import { flatten } from '..'
 
 /**
  * @param {DataSource} database
@@ -38,7 +39,7 @@ export function ModuleRepository(database?: DataSource): Repository {
    */
   async function getCodes(): Promise<string[]> {
     const modules = await get()
-    const codes = modules.map((m) => m.moduleCode)
+    const codes = modules.map(flatten.module)
     return codes
   }
 

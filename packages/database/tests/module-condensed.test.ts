@@ -1,3 +1,4 @@
+import { flatten } from '../src'
 import { container, endpoint, getSource } from '../src/data-source'
 import { ModuleCondensed } from '../src/entity'
 import { ModuleCondensedRepository } from '../src/repository'
@@ -27,7 +28,7 @@ test('moduleCondensed.get', async () => {
     expect(module).toBeInstanceOf(ModuleCondensed)
   })
   /* make sure that all moduleCodes are unique */
-  const s = new Set(moduleList.map((m) => m.moduleCode))
+  const s = new Set(moduleList.map(flatten.module))
   expect(s.size).toBe(moduleList.length)
   expect(s.size).toBeGreaterThan(lowerBound)
 })

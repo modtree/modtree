@@ -4,6 +4,7 @@ import { ModuleRepository, UserRepository } from '../../src/repository'
 import { Init } from '../../types/entity'
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
+import { flatten } from '../../src'
 
 const dbName = 'test_user_getPostReqs'
 const db = getSource(dbName)
@@ -52,6 +53,6 @@ it('Gets all post-reqs', async () => {
   // Remove modules doing
   const expected = mod.fulfillRequirements.filter((one) => one !== 'MA2101')
   // Compare module codes
-  postReqsCodes = postReqs.map((one: Module) => one.moduleCode)
+  postReqsCodes = postReqs.map(flatten.module)
   expect(postReqsCodes.sort()).toEqual(expected.sort())
 })

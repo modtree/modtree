@@ -19,8 +19,8 @@ export class flatten {
   static user(user: User): response.User {
     return {
       ...user,
-      modulesDoing: user.modulesDoing.map((m) => m.moduleCode),
-      modulesDone: user.modulesDone.map((m) => m.moduleCode),
+      modulesDoing: user.modulesDoing.map(flatten.module),
+      modulesDone: user.modulesDone.map(flatten.module),
       savedDegrees: user.savedDegrees.map((d) => d.id),
     }
   }
@@ -35,8 +35,8 @@ export class flatten {
       id: graph.id,
       user: graph.user.id,
       degree: graph.degree.id,
-      modulesHidden: graph.modulesHidden.map((m) => m.moduleCode),
-      modulesPlaced: graph.modulesPlaced.map((m) => m.moduleCode),
+      modulesHidden: graph.modulesHidden.map(flatten.module),
+      modulesPlaced: graph.modulesPlaced.map(flatten.module),
     }
   }
 
@@ -46,6 +46,6 @@ export class flatten {
    * @return {response.Degree}
    */
   static degree(degree: Degree): response.Degree {
-    return { ...degree, modules: degree.modules.map((m) => m.moduleCode) }
+    return { ...degree, modules: degree.modules.map(flatten.module) }
   }
 }

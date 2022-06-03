@@ -4,6 +4,7 @@ import { DegreeRepository } from '../src/repository'
 import { Init } from '../types/entity'
 import { init } from './init'
 import { setup, importChecks, teardown } from './environment'
+import { flatten } from '../src'
 
 const dbName = 'test_degree'
 const db = getSource(dbName)
@@ -39,7 +40,7 @@ describe('Degree.initialize', () => {
   })
 
   it('Correctly saves modules', async () => {
-    const moduleCodes = degree.modules.map((m) => m.moduleCode)
+    const moduleCodes = degree.modules.map(flatten.module)
     // match relation's module codes to init props' modules codes
     expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
   })
@@ -53,7 +54,7 @@ describe('Degree.insertModules', () => {
   it('Correctly saves newly inserted modules', async () => {
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = degree.modules.map((m) => m.moduleCode)
+    const moduleCodes = degree.modules.map(flatten.module)
     expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
   })
 })
@@ -64,7 +65,7 @@ describe('Degree.insertModules with invalid module code', () => {
     await DegreeRepository(db).insertModules(degree, newModuleCodes)
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = degree.modules.map((m) => m.moduleCode)
+    const moduleCodes = degree.modules.map(flatten.module)
     expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
   })
   it('Adds some new modules if there is a mix of valid and invalid module codes', async () => {
@@ -78,7 +79,7 @@ describe('Degree.insertModules with invalid module code', () => {
     combinedModuleCodes.push('CS4269')
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = degree.modules.map((m) => m.moduleCode)
+    const moduleCodes = degree.modules.map(flatten.module)
     expect(moduleCodes.sort()).toStrictEqual(combinedModuleCodes.sort())
   })
 })

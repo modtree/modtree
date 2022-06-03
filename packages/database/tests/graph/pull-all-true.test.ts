@@ -9,6 +9,7 @@ import {
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
 import { setupGraph } from './setup'
+import { flatten } from '../../src'
 
 const dbName = 'test_graph_pull_all_true'
 const db = getSource(dbName)
@@ -65,9 +66,7 @@ describe('Graph.initialize', () => {
       'MA2001',
       'MA2219',
     ]
-    const modulesHiddenCodes = graph.modulesHidden.map(
-      (one: Module) => one.moduleCode
-    )
+    const modulesHiddenCodes = graph.modulesHidden.map(flatten.module)
     expect(moduleCodes.sort()).toEqual(modulesHiddenCodes.sort())
     expect(graph.modulesPlaced.length).toEqual(0)
   })
@@ -88,14 +87,14 @@ describe('Graph.toggleModules', () => {
     'MA2219',
   ]
 
-  it('Correctly changes a module\'s state from placed to hidden', async () => {
+  it("Correctly changes a module's state from placed to hidden", async () => {
     await container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
     expect(graph.modulesHidden.length).toEqual(moduleCodes.length - 1)
     expect(graph.modulesPlaced.length).toEqual(1)
     expect(graph.modulesPlaced[0].moduleCode).toEqual('MA2001')
   })
 
-  it('Correctly changes a module\'s state from hidden to placed', async () => {
+  it("Correctly changes a module's state from hidden to placed", async () => {
     await endpoint(db, () =>
       container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
     )
