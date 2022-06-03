@@ -81,7 +81,7 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {User} user
    * @return {Promise<Module[] | void>}
    */
-  async function eligibleModules(user: User): Promise<Module[] | void> {
+  async function eligibleModules(user: User): Promise<Module[]> {
     // 1. get post-reqs
     const postReqs = await UserRepository(db).getPostReqs(user)
     if (!postReqs) return []
@@ -100,9 +100,9 @@ export function UserRepository(database?: DataSource): Repository {
    * This is a union of all post-reqs, subtract modulesDone and modulesDoing.
    *
    * @param {User} user
-   * @return {Promise<Module[] | void>}
+   * @return {Promise<Module[]>}
    */
-  async function getPostReqs(user: User): Promise<Module[] | void> {
+  async function getPostReqs(user: User): Promise<Module[]> {
     // 1. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
@@ -205,8 +205,9 @@ export function UserRepository(database?: DataSource): Repository {
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter((degree) => degree.id != degreeId)
     // 3. find degree among user's savedDegrees
-    if (filtered.length == user.savedDegrees.length)
+    if (filtered.length == user.savedDegrees.length) {
       throw new Error('Degree not found in User')
+    }
     // 4. update entity and save
     user.savedDegrees = filtered
     await BaseRepo.save(user)

@@ -26,20 +26,10 @@ export function setupGraph(db: DataSource): Promise<Response> {
         user: UserRepository(db).create(),
         degree: DegreeRepository(db).create(),
       }
-      let user: User
-      let degree: Degree
-      const userPromise = UserRepository(db)
-        .initialize(init.user1)
-        .then((res) => {
-          user = res
-        })
-      const degreePromise = DegreeRepository(db)
-        .initialize(init.degree1)
-        .then((res) => {
-          degree = res
-        })
+      const userPromise = UserRepository(db).initialize(init.user1)
+      const degreePromise = DegreeRepository(db).initialize(init.degree1)
       return Promise.all([userPromise, degreePromise])
-        .then(() => {
+        .then(([user, degree]) => {
           return resolve({ user, degree })
         })
         .catch(() => {

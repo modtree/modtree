@@ -2,7 +2,7 @@ import type { Config } from '@jest/types'
 
 export const all: Config.InitialOptionsWithRootDir = {
   rootDir: '../..',
-  // lets console logs show
+  // show console logs
   silent: true,
   // shows results of each test function within each test file
   verbose: true,
@@ -41,7 +41,7 @@ export const server: Config.InitialOptions = {
   silent: false,
 }
 
-const khang = ['graph/**/*']
+const khang = ['user/degreeMethods']
 export const k: Config.InitialOptions = {
   ...all,
   testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
