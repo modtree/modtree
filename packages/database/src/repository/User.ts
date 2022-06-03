@@ -138,10 +138,11 @@ export function UserRepository(database?: DataSource): Repository {
     return modules
   }
 
-    /**
+  /**
    * List mods that will be unlocked by completing a mod.
    *
    * @param {User} user
+   * @param {string} moduleCode
    * @return {Promise<Module[] | void>}
    */
   async function getPotentialModules(user: User, moduleCode: string): Promise<Module[] | void> {

@@ -175,7 +175,7 @@ export function GraphRepository(database?: DataSource): Repository {
     return queryByUserAndDegreeId(userId, degreeId).getManyAndCount()
   }
 
-    /**
+  /**
    * Suggests modules from a single module.
    * Returns a subset of post-reqs for this module.
    * @param {Graph} graph
@@ -205,7 +205,7 @@ export function GraphRepository(database?: DataSource): Repository {
     const filtered = allEligibleModules.filter((one) => postReqs.includes(one.moduleCode))
 
     // 3. Transform filtered into data with fields to sort by
-    let potentialModuleCounts = []
+    const potentialModuleCounts = []
     // -- get number of mods each filtered module unlocks
     // must be synchronous, due to current implementation choice
     for (let i=0; i<filtered.length; i++) {
