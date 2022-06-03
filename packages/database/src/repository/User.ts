@@ -135,6 +135,8 @@ export function UserRepository(database?: DataSource): Repository {
   async function findOneByUsername(username: string): Promise<User> {
     return BaseRepo.createQueryBuilder('user')
       .where('user.username = :username', { username })
+      .leftJoinAndSelect('user.modulesDone', 'modulesDone')
+      .leftJoinAndSelect('user.modulesDoing', 'modulesDoing')
       .getOneOrFail()
   }
 
