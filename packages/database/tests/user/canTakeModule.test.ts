@@ -9,7 +9,7 @@ const db = getSource(dbName)
 const t: Partial<{ user: User }> = {}
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 importChecks({
   entities: [Module, User],
@@ -62,5 +62,5 @@ it('Returns false if module code passed in does not exist', async () => {
       .then((res) => {
         expect(res).toStrictEqual(false)
       })
-  ).then(() => db.destroy())
+  )
 })

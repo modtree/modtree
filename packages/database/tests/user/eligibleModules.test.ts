@@ -9,7 +9,7 @@ const dbName = 'test_user_eligibleModules'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 importChecks({
   entities: [Module, User],
@@ -48,5 +48,4 @@ it('Adds only modules which have pre-reqs cleared', async () => {
         expect(eligibleModuleCodes.sort()).toEqual(expected.sort())
       })
   )
-  await db.destroy()
 })

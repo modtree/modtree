@@ -9,7 +9,7 @@ const dbName = 'test_user_getPostReqs'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 importChecks({
   entities: [Module, User],
@@ -61,5 +61,5 @@ it('Gets all post-reqs', async () => {
         // Compare module codes
         expect(t.postReqsCodes.sort()).toEqual(expected.sort())
       })
-  ).then(() => db.destroy())
+  )
 })

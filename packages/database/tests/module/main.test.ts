@@ -4,8 +4,7 @@ import { ModuleRepository } from '../../src/repository'
 import { setup, importChecks, teardown } from '../environment'
 
 beforeAll(() => setup(dbName))
-
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 const dbName = 'test_module'
 const db = getSource(dbName)
@@ -19,8 +18,8 @@ const lowerBound = 6000
 
 describe('ModuleRepository.findByFaculty', () => {
   it('Valid faculty name', async () => {
-    const res = await endpoint(db, () =>
-      container(db, () => ModuleRepository(db).findByFaculty('Computing'))
+    const res = await container(db, () =>
+      ModuleRepository(db).findByFaculty('Computing')
     )
     if (!res) return
     expect(res).toBeInstanceOf(Array)
@@ -31,8 +30,8 @@ describe('ModuleRepository.findByFaculty', () => {
   })
 
   it('Invalid faculty name', async () => {
-    const res = await endpoint(db, () =>
-      container(db, () => ModuleRepository(db).findByFaculty('ABCDEFGH'))
+    const res = await container(db, () =>
+      ModuleRepository(db).findByFaculty('ABCDEFGH')
     )
     if (!res) return
     expect(res).toBeInstanceOf(Array)
@@ -41,8 +40,8 @@ describe('ModuleRepository.findByFaculty', () => {
 })
 
 test('fetch one module from NUSMods', async () => {
-  const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository(db).fetchOne('CS2040S'))
+  const res = await container(db, () =>
+    ModuleRepository(db).fetchOne('CS2040S')
   )
   expect(res).toBeInstanceOf(Module)
 })
@@ -68,9 +67,7 @@ test('build a module from props', () => {
 })
 
 test('get all modules in database', async () => {
-  const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository(db).find())
-  )
+  const res = await container(db, () => ModuleRepository(db).find())
   expect(res).toBeInstanceOf(Array)
   if (!res) return
   res.forEach((module) => {
@@ -80,9 +77,7 @@ test('get all modules in database', async () => {
 })
 
 test('get all module codes in database', async () => {
-  const res = await endpoint(db, () =>
-    container(db, () => ModuleRepository(db).getCodes())
-  )
+  const res = await container(db, () => ModuleRepository(db).getCodes())
   if (!res) return
   expect(res).toBeInstanceOf(Array)
   expect(res.length).toBeGreaterThan(lowerBound)

@@ -9,21 +9,19 @@ const dbName = 'test_module_condensed_pull'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
-  await container(db, () =>
-    ModuleCondensedRepository(db).deleteAll()
-  )
+  await container(db, () => ModuleCondensedRepository(db).deleteAll())
   const pullOnEmpty = await container(db, () =>
     ModuleCondensedRepository(db).pull()
   )
   const pullOnFull = await container(db, () =>
     ModuleCondensedRepository(db).pull()
   )
-  const written = await endpoint(db, () =>
-    container(db, () => ModuleCondensedRepository(db).find())
+  const written = await container(db, () =>
+    ModuleCondensedRepository(db).find()
   )
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()
@@ -36,7 +34,4 @@ test('moduleCondensed.pull', async () => {
   const s = new Set(written)
   expect(s.size).toBe(written.length)
   expect(s.size).toBeGreaterThan(lowerBound)
-  if (db.isInitialized) {
-    await db.destroy()
-  }
 })

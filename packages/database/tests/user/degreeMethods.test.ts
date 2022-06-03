@@ -20,7 +20,7 @@ beforeAll(() =>
       t.degree = res.degree
     })
 )
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 importChecks({
   entities: [User, Degree],
@@ -90,6 +90,6 @@ describe('User.removeDegree', () => {
           expect(err).toBeInstanceOf(Error)
           expect(err.message).toBe('Degree not found in User')
         })
-    ).then(() => db.destroy())
+    )
   })
 })

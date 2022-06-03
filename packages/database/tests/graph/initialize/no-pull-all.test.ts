@@ -24,7 +24,7 @@ beforeAll(() =>
       throw new Error('Unable to setup Graph test.')
     })
 )
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 describe('Graph.initialize', () => {
   it('Initializes a graph', async () => {
@@ -32,7 +32,7 @@ describe('Graph.initialize', () => {
     /**
      * initialize a test graph instance
      */
-    await endpoint(db, () =>
+    await 
       container(db, () =>
         GraphRepository(db)
           .initialize({
@@ -46,7 +46,6 @@ describe('Graph.initialize', () => {
             expect(res).toBeInstanceOf(Graph)
             t.graph = res
           })
-      )
     )
   })
   it('modulesPlaced and modulesHidden are blank', async () => {

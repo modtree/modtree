@@ -26,7 +26,7 @@ beforeAll(() =>
       throw new Error('Unable to setup Graph test.')
     })
 )
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 describe('Graph.initialize', () => {
   it('Initializes a graph', async () => {
@@ -112,16 +112,14 @@ describe('Graph.toggleModules', () => {
     /**
      * the actual error test
      */
-    await endpoint(db, () =>
-      container(db, () =>
-        GraphRepository(db).toggleModule(t.graph, init.invalidModuleCode)
-      ).catch((err) => {
-        /**
-         * the two assertions that are expected to required to run
-         */
-        expect(err).toBeInstanceOf(Error)
-        expect(err.message).toBe('Module not found in Graph')
-      })
-    )
+    await container(db, () =>
+      GraphRepository(db).toggleModule(t.graph, init.invalidModuleCode)
+    ).catch((err) => {
+      /**
+       * the two assertions that are expected to required to run
+       */
+      expect(err).toBeInstanceOf(Error)
+      expect(err.message).toBe('Module not found in Graph')
+    })
   })
 })

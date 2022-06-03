@@ -1,5 +1,5 @@
 import { container, getSource } from '../../src/data-source'
-import { Degree } from '../../src/entity'
+import { Degree} from '../../src/entity'
 import { DegreeRepository } from '../../src/repository'
 import { init } from '../init'
 import { setup } from '../environment'

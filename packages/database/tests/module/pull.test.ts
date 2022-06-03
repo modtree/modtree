@@ -13,7 +13,7 @@ importChecks({
 })
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 jest.setTimeout(60000)
 test('pull all modules from NUSMods', async () => {
@@ -25,9 +25,8 @@ test('pull all modules from NUSMods', async () => {
     'degree_modules_module',
     'module',
   ])
-  const res = await endpoint(db, () =>
+  const res = await 
     container(db, () => ModuleRepository(db).pull())
-  )
   expect(res).toBeDefined()
   expect(res).not.toBeNull()
   if (!res) return

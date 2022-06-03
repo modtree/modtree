@@ -14,7 +14,7 @@ beforeAll(() =>
     throw new Error('Unable to setup Degree test.')
   })
 )
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 describe('Degree.initialize', () => {
   const props = init.degree1
@@ -27,7 +27,7 @@ describe('Degree.initialize', () => {
           expect(res).toBeInstanceOf(Degree)
           t.degree = res
         })
-    ).then(() => db.destroy())
+    )
   })
 
   it('Correctly saves modules', async () => {
