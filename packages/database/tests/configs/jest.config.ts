@@ -61,10 +61,11 @@ export const w: Config.InitialOptions = {
  * @return {any}
  */
 export function group(): any {
-  const last = process.argv.pop()
+  const args = process.argv
+  const s = args.indexOf('./tests/configs/group.ts')
   return {
     ...all,
-    testMatch: [`**/tests/${last}/**/*.test.ts`],
+    testMatch: [`**/tests/${args[s + 1]}/**/*.test.ts`],
   }
 }
 
