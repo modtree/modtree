@@ -71,6 +71,7 @@
     "test:mc": "yarn tconf:group module-condensed",
     "test:g": "yarn tconf:group graph",
     "test:u": "yarn tconf:group user",
+    "test:b": "yarn tconf:group --silent=false base",
     "": "──────────────────────────────────────────────────────────",
     "lint": "eslint --fix --ext .js,.ts .",
     "lint:no-fix": "eslint --ext .js,.ts .",
