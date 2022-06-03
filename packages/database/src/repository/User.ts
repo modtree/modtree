@@ -6,7 +6,6 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { utils } from '../utils'
-import { copy } from '../utils/object'
 import {
   useLoadRelations,
   getDataSource,
@@ -180,6 +179,8 @@ export function UserRepository(database?: DataSource): Repository {
    * @return {Promise<Module[] | void>}
    */
   async function getPotentialModules(user: User, moduleCode: string): Promise<Module[] | void> {
+    // future support for multiple mods
+    const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
@@ -189,28 +190,19 @@ export function UserRepository(database?: DataSource): Repository {
     const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
     if (modulesDoneCodes.includes(moduleCode) || modulesDoingCodes.includes(moduleCode))
       return []
-    // 2. Get current eligible modules, and get module
+    // 2. Get current eligible modules
     const eligibleModules = await UserRepository(db).eligibleModules(user)
     if (!eligibleModules)
       return []
     const eligibleModulesCodes = eligibleModules.map((one) => one.moduleCode)
-    const module = await ModuleRepository(db).findOneBy({
-      moduleCode
-    })
-    // 3. Temporarily add module to user and get new eligible modules
-    user.modulesDone.push(module)
-    const updatedUser = await BaseRepo.save(user) // TODO not saving
-    copy(updatedUser, user)
-    const newEligibleModules = await UserRepository(db).eligibleModules(user)
-    user.modulesDone = user.modulesDone.filter((one) => one.moduleCode !== moduleCode)
-    await BaseRepo.save(user)
-    // 4. Compare newEligibleModules to eligibleModules
-    if (!newEligibleModules)
+    // 3. Get potential eligible modules
+    const potentialModules = await UserRepository(db).eligibleModules(user, addedModuleCodes)
+    if (!potentialModules)
       return []
-    const filtered = newEligibleModules.filter((one) => !eligibleModulesCodes.includes(one.moduleCode))
+    // 4. Compare potentialModules to eligibleModules
+    const filtered = potentialModules.filter((one) => !eligibleModulesCodes.includes(one.moduleCode))
     return filtered
   }
-
 
   /**
    * @param {string} username
