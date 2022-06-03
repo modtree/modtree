@@ -1,12 +1,13 @@
 import { container, getSource } from '../../src/data-source'
 import { Module, ModuleCondensed } from '../../src/entity'
 import { ModuleRepository } from '../../src/repository'
-import { setup, importChecks } from '../environment'
+import { oneUp } from '../../src/utils'
+import { setup, importChecks, teardown } from '../environment'
 
 beforeAll(() => setup(dbName))
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
-const dbName = 'test_module'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 importChecks({

@@ -1,10 +1,11 @@
 import { container, getSource } from '../../../src/data-source'
 import { Degree, Graph, User } from '../../../src/entity'
 import { GraphRepository } from '../../../src/repository'
-import { setup } from '../../environment'
+import { oneUp } from '../../../src/utils'
+import { setup, teardown } from '../../environment'
 import { setupGraph } from '../setup'
 
-const dbName = 'test_graph_initialize_no_pull_all'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 const t: Partial<{ user: User; degree: Degree; graph: Graph }> = {}
@@ -20,7 +21,7 @@ beforeAll(() =>
       throw new Error('Unable to setup Graph test.')
     })
 )
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 describe('Graph.initialize', () => {
   it('Initializes a graph', async () => {

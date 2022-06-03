@@ -2,14 +2,14 @@ import { container, getSource } from '../../src/data-source'
 import { Module, User } from '../../src/entity'
 import { ModuleRepository, UserRepository } from '../../src/repository'
 import { init } from '../init'
-import { setup, importChecks } from '../environment'
-import { flatten } from '../../src/utils'
+import { setup, importChecks, teardown } from '../environment'
+import { flatten, oneUp } from '../../src/utils'
 
-const dbName = 'test_user_eligibleModules'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 importChecks({
   entities: [Module, User],

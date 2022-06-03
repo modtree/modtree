@@ -2,11 +2,11 @@ import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
 import { DegreeRepository } from '../../src/repository'
 import { init } from '../init'
-import { setup } from '../environment'
-import { flatten } from '../../src/utils'
+import { setup, teardown } from '../environment'
+import { flatten, oneUp } from '../../src/utils'
 import { setupDegree } from './setup'
 
-const dbName = 'test_degree'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ degree: Degree; combinedModuleCodes: string[] }> = {}
 
@@ -21,7 +21,7 @@ beforeAll(() =>
       throw new Error('Unable to setup Degree test.')
     })
 )
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 describe('Degree.insertModules', () => {
   it('Adds modules to a degree', async () => {

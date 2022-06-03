@@ -2,9 +2,9 @@ import { container, getSource } from '../../src/data-source'
 import { sql } from '../../src/sql'
 import { Module } from '../../src/entity'
 import { ModuleRepository } from '../../src/repository'
-import { setup, importChecks } from '../environment'
+import { setup, importChecks, teardown } from '../environment'
 
-const dbName = 'test_module_pull'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 importChecks({
@@ -13,7 +13,7 @@ importChecks({
 })
 
 beforeAll(() => setup(dbName))
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 jest.setTimeout(60000)
 test('pull all modules from NUSMods', async () => {

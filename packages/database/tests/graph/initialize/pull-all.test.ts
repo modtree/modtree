@@ -1,12 +1,12 @@
-import { flatten } from '../../../src/utils'
+import { flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Degree, Graph, User } from '../../../src/entity'
 import { GraphRepository } from '../../../src/repository'
-import { setup } from '../../environment'
+import { setup, teardown } from '../../environment'
 import { init } from '../../init'
 import { setupGraph } from '../setup'
 
-const dbName = 'test_graph_initialize'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{
   degree: Degree
@@ -26,7 +26,7 @@ beforeAll(() =>
       throw new Error('Unable to setup Graph test.')
     })
 )
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 describe('Graph.initialize', () => {
   it('Initializes a graph', async () => {
@@ -69,7 +69,7 @@ describe('Graph.initialize', () => {
 })
 
 describe('Graph.toggleModules', () => {
-  it('Correctly changes a module\'s state from placed to hidden', async () => {
+  it("Correctly changes a module's state from placed to hidden", async () => {
     const toggled = 'MA2001'
     /**
      * execute the toggle
@@ -91,7 +91,7 @@ describe('Graph.toggleModules', () => {
     expect(t.graph.modulesPlaced[0].moduleCode).toEqual(toggled)
   })
 
-  it('Correctly changes a module\'s state from hidden to placed', async () => {
+  it("Correctly changes a module's state from hidden to placed", async () => {
     /**
      * simple the inverse of the above
      */

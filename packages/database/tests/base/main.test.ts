@@ -1,4 +1,4 @@
-import { setup } from '../environment'
+import { setup, teardown } from '../environment'
 import { container, endpoint, getSource } from '../../src/data-source'
 import { Module, ModuleCondensed, Degree, User } from '../../src/entity'
 import {
@@ -7,12 +7,13 @@ import {
   DegreeRepository,
   UserRepository,
 } from '../../src/repository'
+import { oneUp } from '../../src/utils'
 
-const dbName = 'test_base'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 test('AppDataSource is defined', () => {
   expect(db).toBeDefined()

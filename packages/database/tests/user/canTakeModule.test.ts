@@ -2,14 +2,15 @@ import { container, getSource } from '../../src/data-source'
 import { Module, User } from '../../src/entity'
 import { ModuleRepository, UserRepository } from '../../src/repository'
 import { init } from '../init'
-import { setup, importChecks } from '../environment'
+import { setup, importChecks, teardown } from '../environment'
+import { oneUp } from '../../src/utils'
 
-const dbName = 'test_user_canTakeModule'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ user: User }> = {}
 
 beforeAll(() => setup(dbName))
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 importChecks({
   entities: [Module, User],

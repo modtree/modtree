@@ -1,14 +1,14 @@
-import { flatten } from '../../src/utils'
+import { flatten, oneUp } from '../../src/utils'
 import { container, getSource } from '../../src/data-source'
 import { ModuleCondensed } from '../../src/entity'
 import { ModuleCondensedRepository } from '../../src/repository'
-import { setup, importChecks } from '../environment'
+import { setup, importChecks, teardown } from '../environment'
 
-const dbName = 'test_module_condensed'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => db.dropDatabase().then(() => db.destroy()))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 importChecks({
   entities: [ModuleCondensed],
