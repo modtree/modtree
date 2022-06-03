@@ -31,6 +31,7 @@ test('All repositories are defined', () => {
   expect(DegreeRepository(db)).toBeDefined()
   expect(UserRepository(db)).toBeDefined()
 })
+
 test('AppDataSource can be initialized and destroyed', async () => {
   await db.initialize()
   expect(db.isInitialized).toBe(true)
@@ -48,17 +49,6 @@ test('container is working', async () => {
   await db.destroy()
 })
 
-test('container can run repo function', async () => {
-  const res = await container(db, () =>
-    ModuleCondensedRepository(db).findOneBy({
-      moduleCode: 'CS1010S',
-    })
-  )
-  expect(res).toBeInstanceOf(ModuleCondensed)
-  expect(db.isInitialized).toBe(true)
-  await db.destroy()
-})
-
 test('endpoint is working', async () => {
   const res = await endpoint(db, () =>
     container(db, async () => {
@@ -67,23 +57,5 @@ test('endpoint is working', async () => {
     })
   )
   expect(res).toBe(true)
-  expect(db.isInitialized).toBe(false)
-})
-
-test('endpoint can run repo function', async () => {
-  // retrieve all modules from the Computing faculty
-  expect.hasAssertions()
-  await endpoint(db, () =>
-    container(db, () => ModuleRepository(db).findByFaculty('Computing')).then(
-      (res) => {
-        expect(res).toBeInstanceOf(Array)
-        if (!res) return
-        res.forEach((m) => {
-          expect(m).toBeInstanceOf(Module)
-        })
-        expect(res.length).toBeGreaterThan(10)
-      }
-    )
-  )
   expect(db.isInitialized).toBe(false)
 })
