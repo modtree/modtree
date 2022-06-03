@@ -3,6 +3,7 @@ name: auto deploy
 on:
   push:
     branches:
+      - main
       - dep/front
       - dep/back
       - dep/docs
@@ -58,6 +59,12 @@ jobs:
             echo "[ deploying front + back... ]"
             git checkout -b frontend-deployment; SEND
             git checkout -b backend-deployment; SEND
+
+          elif [[ ${{ github.ref_name }} == "main" ]]; then
+            echo "[ deploying everything... ]"
+            git checkout -b backend-deployment; SEND
+            git checkout -b frontend-deployment; SEND
+            git checkout -b docs-deployment; SEND
 
           fi
         env:
