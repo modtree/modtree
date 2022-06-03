@@ -2,7 +2,7 @@ import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
 import { DegreeRepository } from '../../src/repository'
 import { init } from '../init'
-import { setup, teardown } from '../environment'
+import { setup } from '../environment'
 import { flatten } from '../../src/utils'
 
 const dbName = 'test_degree'

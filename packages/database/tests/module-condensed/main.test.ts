@@ -1,8 +1,8 @@
 import { flatten } from '../../src/utils'
-import { container, endpoint, getSource } from '../../src/data-source'
+import { container, getSource } from '../../src/data-source'
 import { ModuleCondensed } from '../../src/entity'
 import { ModuleCondensedRepository } from '../../src/repository'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, importChecks } from '../environment'
 
 const dbName = 'test_module_condensed'
 const db = getSource(dbName)

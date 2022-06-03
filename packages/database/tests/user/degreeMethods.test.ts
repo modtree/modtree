@@ -1,7 +1,7 @@
 import { container, getSource } from '../../src/data-source'
 import { User, Degree } from '../../src/entity'
 import { UserRepository } from '../../src/repository'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, importChecks } from '../environment'
 import { setupUser } from './setup'
 import { init } from '../init'
 

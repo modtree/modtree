@@ -1,8 +1,8 @@
-import { container, endpoint, getSource } from '../../src/data-source'
+import { container, getSource } from '../../src/data-source'
 import { sql } from '../../src/sql'
 import { Module } from '../../src/entity'
 import { ModuleRepository } from '../../src/repository'
-import { setup, teardown, importChecks } from '../environment'
+import { setup, importChecks } from '../environment'
 
 const dbName = 'test_module_pull'
 const db = getSource(dbName)
@@ -26,7 +26,7 @@ test('pull all modules from NUSMods', async () => {
     'module',
   ])
   const res = await 
-    container(db, () => ModuleRepository(db).pull())
+  container(db, () => ModuleRepository(db).pull())
   expect(res).toBeDefined()
   expect(res).not.toBeNull()
   if (!res) return

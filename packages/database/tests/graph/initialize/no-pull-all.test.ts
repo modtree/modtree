@@ -1,17 +1,13 @@
-import { container, endpoint, getSource } from '../../../src/data-source'
+import { container, getSource } from '../../../src/data-source'
 import { Degree, Graph, User } from '../../../src/entity'
 import { GraphRepository } from '../../../src/repository'
-import { setup, teardown } from '../../environment'
+import { setup } from '../../environment'
 import { setupGraph } from '../setup'
 
 const dbName = 'test_graph_initialize_no_pull_all'
 const db = getSource(dbName)
 
-const t: Partial<{
-  user: User
-  degree: Degree
-  graph: Graph
-}> = {}
+const t: Partial<{ user: User; degree: Degree; graph: Graph }> = {}
 
 beforeAll(() =>
   setup(dbName)
@@ -32,20 +28,19 @@ describe('Graph.initialize', () => {
     /**
      * initialize a test graph instance
      */
-    await 
-      container(db, () =>
-        GraphRepository(db)
-          .initialize({
-            userId: t.user.id,
-            degreeId: t.degree.id,
-            modulesPlacedCodes: [],
-            modulesHiddenCodes: [],
-            pullAll: false,
-          })
-          .then((res) => {
-            expect(res).toBeInstanceOf(Graph)
-            t.graph = res
-          })
+    await container(db, () =>
+      GraphRepository(db)
+        .initialize({
+          userId: t.user.id,
+          degreeId: t.degree.id,
+          modulesPlacedCodes: [],
+          modulesHiddenCodes: [],
+          pullAll: false,
+        })
+        .then((res) => {
+          expect(res).toBeInstanceOf(Graph)
+          t.graph = res
+        })
     )
   })
   it('modulesPlaced and modulesHidden are blank', async () => {

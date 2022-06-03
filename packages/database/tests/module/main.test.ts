@@ -1,7 +1,7 @@
-import { container, endpoint, getSource } from '../../src/data-source'
+import { container, getSource } from '../../src/data-source'
 import { Module, ModuleCondensed } from '../../src/entity'
 import { ModuleRepository } from '../../src/repository'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, importChecks } from '../environment'
 
 beforeAll(() => setup(dbName))
 afterAll(() => db.dropDatabase().then(() => db.destroy()))

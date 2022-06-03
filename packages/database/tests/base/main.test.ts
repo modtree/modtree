@@ -1,4 +1,4 @@
-import { setup, teardown } from '../environment'
+import { setup } from '../environment'
 import { container, endpoint, getSource } from '../../src/data-source'
 import { Module, ModuleCondensed, Degree, User } from '../../src/entity'
 import {
@@ -12,7 +12,7 @@ const dbName = 'test_base'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.dropDatabase().then(() => db.destroy()))
 
 test('AppDataSource is defined', () => {
   expect(db).toBeDefined()
@@ -58,4 +58,5 @@ test('endpoint is working', async () => {
   )
   expect(res).toBe(true)
   expect(db.isInitialized).toBe(false)
+  await db.initialize()
 })

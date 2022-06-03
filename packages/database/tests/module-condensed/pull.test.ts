@@ -1,5 +1,5 @@
-import { container, endpoint, getSource } from '../../src/data-source'
-import { setup, teardown } from '../environment'
+import { container, getSource } from '../../src/data-source'
+import { setup } from '../environment'
 import { ModuleCondensed } from '../../src/entity'
 import { ModuleCondensedRepository } from '../../src/repository'
 

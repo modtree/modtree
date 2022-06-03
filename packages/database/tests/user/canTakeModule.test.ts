@@ -2,7 +2,7 @@ import { container, getSource } from '../../src/data-source'
 import { Module, User } from '../../src/entity'
 import { ModuleRepository, UserRepository } from '../../src/repository'
 import { init } from '../init'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, importChecks } from '../environment'
 
 const dbName = 'test_user_canTakeModule'
 const db = getSource(dbName)
