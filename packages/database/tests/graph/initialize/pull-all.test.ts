@@ -1,14 +1,14 @@
-import { flatten } from '../../src/utils'
-import { container, endpoint, getSource } from '../../src/data-source'
-import { Degree, Graph, Module, User } from '../../src/entity'
+import { flatten } from '../../../src/utils'
+import { container, endpoint, getSource } from '../../../src/data-source'
+import { Degree, Graph, Module, User } from '../../../src/entity'
 import {
   DegreeRepository,
   GraphRepository,
   UserRepository,
-} from '../../src/repository'
-import { importChecks, setup, teardown } from '../environment'
-import { init } from '../init'
-import { setupGraph } from './setup'
+} from '../../../src/repository'
+import { importChecks, setup, teardown } from '../../environment'
+import { init } from '../../init'
+import { setupGraph } from '../setup'
 
 const dbName = 'test_graph_initialize'
 const db = getSource(dbName)
@@ -22,16 +22,21 @@ importChecks({
   repositories: [UserRepository(db), DegreeRepository(db), GraphRepository(db)],
 })
 
-beforeAll(async () => {
-  await setup(dbName)
-  const res = await setupGraph(db)
-  if (!res) throw new Error('Unable to setup Graph test.')
-  ;[user, degree] = res
-})
+beforeAll(() =>
+  setup(dbName)
+    .then(() => setupGraph(db))
+    .then((res) => {
+      user = res.user
+      degree = res.degree
+    })
+    .catch(() => {
+      throw new Error('Unable to setup Graph test.')
+    })
+)
 afterAll(() => teardown(dbName))
 
 describe('Graph.initialize', () => {
-  it('Saves a graph', async () => {
+  it('Initializes a graph', async () => {
     expect.assertions(1)
     /**
      * initialize a test graph instance
@@ -64,14 +69,14 @@ describe('Graph.initialize', () => {
     /**
      * all these module codes should show up in the hidden codes
      */
-    const modulesHiddenCodes = graph.modulesHidden.map(flatten.module)
-    expect(modulesHiddenCodes.sort()).toEqual(moduleCodes.sort())
+    const hidden = graph.modulesHidden.map(flatten.module)
+    expect(hidden.sort()).toEqual(moduleCodes.sort())
     expect(graph.modulesPlaced.length).toEqual(0)
   })
 })
 
 describe('Graph.toggleModules', () => {
-  it('Correctly changes a module\'s state from placed to hidden', async () => {
+  it("Correctly changes a module's state from placed to hidden", async () => {
     const toggled = 'MA2001'
     /**
      * execute the toggle
@@ -91,7 +96,7 @@ describe('Graph.toggleModules', () => {
     expect(graph.modulesPlaced[0].moduleCode).toEqual(toggled)
   })
 
-  it('Correctly changes a module\'s state from hidden to placed', async () => {
+  it("Correctly changes a module's state from hidden to placed", async () => {
     /**
      * simple the inverse of the above
      */
