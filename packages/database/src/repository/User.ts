@@ -80,8 +80,7 @@ export function UserRepository(database?: DataSource): Repository {
       return false
     }
     // 3. check if PrereqTree is fulfilled
-    const modulesDone = user.modulesDone.map((m) => m.moduleCode)
-    return utils.checkTree(module.prereqTree, modulesDone)
+    return utils.checkTree(module.prereqTree, modulesDoneCodes)
   }
 
   /**
