@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
-import { copy } from '../utils'
+import { copy , emptyInit, flatten } from '../utils'
 import { db } from '../config'
 import { DegreeRepository } from '../repository'
-import { emptyInit, flatten } from '../utils'
 
 /** Degree API controller */
 export class degreeController {

@@ -1,11 +1,12 @@
 import type { Module, ModuleCondensed, User, Degree, Graph } from '../entity'
 import type { response } from '../../types/api-response'
 
+/** flattens TypeORM entities */
 export class flatten {
   /**
    * flattens a module to its module code
    * @param {Module | ModuleCondensed} module
-   * @returns {string} module code
+   * @return {string} module code
    */
   static module(module: Module | ModuleCondensed): string {
     return module.moduleCode

@@ -43,7 +43,7 @@
     "build": "rm -rf ./dist && tsc --declaration",
     "dev": "yarn build && yarn start",
     "graph": "madge --image graph.png",
-    "ci": "yarn build && yarn lint:no-fix",
+    "ci": "yarn lint:no-fix && yarn build",
     "default:env": "sh setup.sh",
     "": "──────────────────────────────────────────────────────────",
     "jest": "NODE_ENV=test jest",

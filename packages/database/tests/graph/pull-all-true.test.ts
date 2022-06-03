@@ -87,14 +87,14 @@ describe('Graph.toggleModules', () => {
     'MA2219',
   ]
 
-  it("Correctly changes a module's state from placed to hidden", async () => {
+  it('Correctly changes a module\'s state from placed to hidden', async () => {
     await container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
     expect(graph.modulesHidden.length).toEqual(moduleCodes.length - 1)
     expect(graph.modulesPlaced.length).toEqual(1)
     expect(graph.modulesPlaced[0].moduleCode).toEqual('MA2001')
   })
 
-  it("Correctly changes a module's state from hidden to placed", async () => {
+  it('Correctly changes a module\'s state from hidden to placed', async () => {
     await endpoint(db, () =>
       container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
     )
