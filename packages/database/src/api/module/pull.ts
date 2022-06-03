@@ -3,4 +3,7 @@ import { container } from '../../data-source'
 import { db } from '../../config'
 import { analyze } from '../analyze'
 
-analyze(() => container(db, () => ModuleRepository(db).pull()))
+const moduleRepo = ModuleRepository(db)
+analyze(() =>
+  container(db, () => moduleRepo.deleteAll().then(() => moduleRepo.pull()))
+)

@@ -41,7 +41,7 @@ export const server: Config.InitialOptions = {
   silent: false,
 }
 
-const khang = ['module/find-by-faculty']
+const khang = ['module/pull']
 export const k: Config.InitialOptions = {
   ...all,
   testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
