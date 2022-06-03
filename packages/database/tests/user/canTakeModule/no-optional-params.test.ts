@@ -1,11 +1,11 @@
-import { container, endpoint, getSource } from '../../src/data-source'
-import { Module, User } from '../../src/entity'
-import { ModuleRepository, UserRepository } from '../../src/repository'
-import { Init } from '../../types/entity'
-import { init } from '../init'
-import { setup, importChecks, teardown } from '../environment'
+import { container, endpoint, getSource } from '../../../src/data-source'
+import { Module, User } from '../../../src/entity'
+import { ModuleRepository, UserRepository } from '../../../src/repository'
+import { Init } from '../../../types/entity'
+import { init } from '../../init'
+import { setup, importChecks, teardown } from '../../environment'
 
-const dbName = 'test_user_canTakeModule'
+const dbName = 'test_user_canTakeModule_no_optional_params'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
