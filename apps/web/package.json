@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port=3000",
-    "build": "next build",
+    "build": "yarn build:db && next build",
     "start": "next start",
     "lint": "next lint --fix",
     "ci": "next lint && next build",
+    "build:db": "yarn --cwd ../../packages/database ci",
     "default:env": "cp .env.example .env.local"
   },
   "dependencies": {
