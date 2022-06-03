@@ -8,7 +8,7 @@ import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
 import { getDataSource, useLoadRelations } from './base'
-import { quickpop } from '../utils/array'
+import { quickpop, flatten } from '../utils'
 import type { GraphRepository as Repository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
@@ -97,8 +97,8 @@ export function GraphRepository(database?: DataSource): Repository {
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: graph.modulesPlaced.map((m) => m.moduleCode).indexOf(moduleCode),
-      hidden: graph.modulesHidden.map((m) => m.moduleCode).indexOf(moduleCode),
+      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
+      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
       invalid: -1,
     }
     const state: ModuleState =

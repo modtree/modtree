@@ -1,5 +1,5 @@
 import { ModuleCondensedRepository } from '../../repository/ModuleCondensed'
-import { container } from '../..'
+import { container } from '../../data-source'
 import { db } from '../../config'
 import { analyze } from '../analyze'
 

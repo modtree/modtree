@@ -5,12 +5,8 @@ import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
-import { utils } from '../utils'
-import {
-  useLoadRelations,
-  getDataSource,
-  getRelationNames,
-} from './base'
+import { utils, flatten } from '../utils'
+import { useLoadRelations, getDataSource, getRelationNames } from './base'
 import type { UserRepository as Repository } from '../../types/repository'
 
 /**
@@ -66,12 +62,8 @@ export function UserRepository(database?: DataSource): Repository {
       modulesDoing: true,
     })
     // if module already taken, can't take module again
-    const modulesDoneCodes = user.modulesDone.map(
-      (one: Module) => one.moduleCode
-    )
-    const modulesDoingCodes = user.modulesDoing.map(
-      (one: Module) => one.moduleCode
-    )
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     if (
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)
@@ -79,7 +71,7 @@ export function UserRepository(database?: DataSource): Repository {
       return false
     }
     // 3. check if PrereqTree is fulfilled
-    const modulesDone = user.modulesDone.map((m) => m.moduleCode)
+    const modulesDone = user.modulesDone.map(flatten.module)
     return utils.checkTree(module.prereqTree, modulesDone)
   }
 
@@ -89,14 +81,14 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {User} user
    * @return {Promise<Module[] | void>}
    */
-  async function eligibleModules(user: User): Promise<Module[] | void> {
+  async function eligibleModules(user: User): Promise<Module[]> {
     // 1. get post-reqs
     const postReqs = await UserRepository(db).getPostReqs(user)
-    if (!postReqs)
-      return []
+    if (!postReqs) return []
     // 2. filter post-reqs
-    const promises = postReqs.map(
-      (one) => UserRepository(db).canTakeModule(user, one.moduleCode)
+    const postReqCodes = postReqs.map(flatten.module)
+    const promises = postReqCodes.map((moduleCode) =>
+      UserRepository(db).canTakeModule(user, moduleCode)
     )
     const results = await Promise.all(promises)
     const filtered = postReqs.filter((_, idx) => results[idx])
@@ -108,9 +100,9 @@ export function UserRepository(database?: DataSource): Repository {
    * This is a union of all post-reqs, subtract modulesDone and modulesDoing.
    *
    * @param {User} user
-   * @return {Promise<Module[] | void>}
+   * @return {Promise<Module[]>}
    */
-  async function getPostReqs(user: User): Promise<Module[] | void> {
+  async function getPostReqs(user: User): Promise<Module[]> {
     // 1. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
@@ -125,10 +117,11 @@ export function UserRepository(database?: DataSource): Repository {
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
     // 3. filter modulesDone and modulesDoing
-    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
-    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     const filtered = postReqCodesArr.filter(
-      (one) => !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
+      (one) =>
+        !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
     )
     // 4. get modules
     const modules = await ModuleRepository(db).findByCodes(filtered)
@@ -142,6 +135,8 @@ export function UserRepository(database?: DataSource): Repository {
   async function findOneByUsername(username: string): Promise<User> {
     return BaseRepo.createQueryBuilder('user')
       .where('user.username = :username', { username })
+      .leftJoinAndSelect('user.modulesDone', 'modulesDone')
+      .leftJoinAndSelect('user.modulesDoing', 'modulesDoing')
       .getOneOrFail()
   }
 
@@ -210,8 +205,9 @@ export function UserRepository(database?: DataSource): Repository {
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter((degree) => degree.id != degreeId)
     // 3. find degree among user's savedDegrees
-    if (filtered.length == user.savedDegrees.length)
+    if (filtered.length == user.savedDegrees.length) {
       throw new Error('Degree not found in User')
+    }
     // 4. update entity and save
     user.savedDegrees = filtered
     await BaseRepo.save(user)

@@ -1,13 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import {
-  AcadYear,
-  ModuleCode,
   SemesterData,
-  Workload,
   PrereqTree,
-  ModuleTitle,
-  Department,
-  Faculty,
   NUSModuleAttributes,
 } from '../../types/nusmods'
 import { Base } from './Base'
@@ -18,13 +12,13 @@ export class Module extends Base {
     id: string
 
   @Column({ type: 'text' })
-    acadYear: AcadYear
+    acadYear: string
 
   @Column({ type: 'text' })
-    moduleCode: ModuleCode
+    moduleCode: string
 
   @Column({ type: 'text' })
-    title: ModuleTitle
+    title: string
 
   @Column({ type: 'varchar', nullable: true })
     description: string
@@ -33,35 +27,35 @@ export class Module extends Base {
     moduleCredit: string
 
   @Column({ type: 'text' })
-    department: Department
+    department: string
 
   @Column({ type: 'text' })
-    faculty: Faculty
+    faculty: string
 
-  @Column({ type: 'json' })
-    aliases: ModuleCode[]
+  @Column({ type: 'json', nullable: true })
+    aliases: string[]
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: true })
     attributes: NUSModuleAttributes
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
     prerequisite: string
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
     corequisite: string
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
     preclusion: string
 
-  @Column({ type: 'json' })
-    fulfillRequirements: ModuleCode[]
+  @Column({ type: 'json', nullable: true })
+    fulfillRequirements: string[]
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: true })
     semesterData: SemesterData[]
 
-  @Column({ type: 'json' })
+  @Column({ type: 'json', nullable: true })
     prereqTree: PrereqTree
 
-  @Column({ type: 'json' })
-    workload: Workload
+  @Column({ type: 'json', nullable: true })
+    workload: string | number[]
 }
