@@ -22,7 +22,7 @@ afterAll(() => teardown(dbName))
 
 importChecks({
   entities: [Module, Degree, User, Graph],
-  repositories: [UserRepository(db), DegreeRepository(db), GraphRepository(db)],
+  repositories: [ModuleRepository(db), UserRepository(db), DegreeRepository(db), GraphRepository(db)],
 })
 
 const expected = ['CS2107', 'CS2100', 'CS2030', 'CP2106', 'CS2040C', 'CS2040', 'CS2030S']
