@@ -41,7 +41,7 @@ export const server: Config.InitialOptions = {
   silent: false,
 }
 
-const khang = ['user/degreeMethods']
+const khang = ['degree/insert-modules']
 export const k: Config.InitialOptions = {
   ...all,
   testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
