@@ -12,10 +12,12 @@ import { setupGraph } from '../setup'
 
 const dbName = 'test_graph_initialize'
 const db = getSource(dbName)
-let degree: Degree
-let user: User
-let graph: Graph
-let moduleCodes: string[]
+const t: Partial<{
+  degree: Degree
+  user: User
+  graph: Graph
+  moduleCodes: string[]
+}> = {}
 
 importChecks({
   entities: [Module, Degree, User, Graph],
@@ -26,8 +28,8 @@ beforeAll(() =>
   setup(dbName)
     .then(() => setupGraph(db))
     .then((res) => {
-      user = res.user
-      degree = res.degree
+      t.user = res.user
+      t.degree = res.degree
     })
     .catch(() => {
       throw new Error('Unable to setup Graph test.')
@@ -44,15 +46,15 @@ describe('Graph.initialize', () => {
     await container(db, () =>
       GraphRepository(db)
         .initialize({
-          userId: user.id,
-          degreeId: degree.id,
+          userId: t.user.id,
+          degreeId: t.degree.id,
           modulesPlacedCodes: [],
           modulesHiddenCodes: [],
           pullAll: true,
         })
         .then((res) => {
           expect(res).toBeInstanceOf(Graph)
-          graph = res
+          t.graph = res
         })
     )
   })
@@ -62,16 +64,16 @@ describe('Graph.initialize', () => {
      * with pull all set to true, it will take modules from
      * both the degree and the user
      */
-    const all = degree.modules.map(flatten.module)
-    all.push(...user.modulesDone.map(flatten.module))
-    all.push(...user.modulesDoing.map(flatten.module))
-    moduleCodes = Array.from(new Set(all))
+    const all = t.degree.modules.map(flatten.module)
+    all.push(...t.user.modulesDone.map(flatten.module))
+    all.push(...t.user.modulesDoing.map(flatten.module))
+    t.moduleCodes = Array.from(new Set(all))
     /**
      * all these module codes should show up in the hidden codes
      */
-    const hidden = graph.modulesHidden.map(flatten.module)
-    expect(hidden.sort()).toEqual(moduleCodes.sort())
-    expect(graph.modulesPlaced.length).toEqual(0)
+    const hidden = t.graph.modulesHidden.map(flatten.module)
+    expect(hidden.sort()).toEqual(t.moduleCodes.sort())
+    expect(t.graph.modulesPlaced.length).toEqual(0)
   })
 })
 
@@ -81,28 +83,32 @@ describe('Graph.toggleModules', () => {
     /**
      * execute the toggle
      */
-    await container(db, () => GraphRepository(db).toggleModule(graph, toggled))
+    await container(db, () =>
+      GraphRepository(db).toggleModule(t.graph, toggled)
+    )
     /**
      * hidden list should have one less module
      */
-    expect(graph.modulesHidden.length).toEqual(moduleCodes.length - 1)
+    expect(t.graph.modulesHidden.length).toEqual(t.moduleCodes.length - 1)
     /**
      * placed list should now have one module
      */
-    expect(graph.modulesPlaced.length).toEqual(1)
+    expect(t.graph.modulesPlaced.length).toEqual(1)
     /**
      * that single module placed should be the toggled module
      */
-    expect(graph.modulesPlaced[0].moduleCode).toEqual(toggled)
+    expect(t.graph.modulesPlaced[0].moduleCode).toEqual(toggled)
   })
 
   it("Correctly changes a module's state from hidden to placed", async () => {
     /**
      * simple the inverse of the above
      */
-    await container(db, () => GraphRepository(db).toggleModule(graph, 'MA2001'))
-    expect(graph.modulesHidden.length).toEqual(moduleCodes.length)
-    expect(graph.modulesPlaced.length).toEqual(0)
+    await container(db, () =>
+      GraphRepository(db).toggleModule(t.graph, 'MA2001')
+    )
+    expect(t.graph.modulesHidden.length).toEqual(t.moduleCodes.length)
+    expect(t.graph.modulesPlaced.length).toEqual(0)
   })
 
   it('Throws error if the module toggled neither hidden nor placed', async () => {
@@ -117,7 +123,7 @@ describe('Graph.toggleModules', () => {
      */
     await endpoint(db, () =>
       container(db, () =>
-        GraphRepository(db).toggleModule(graph, init.invalidModuleCode)
+        GraphRepository(db).toggleModule(t.graph, init.invalidModuleCode)
       ).catch((err) => {
         /**
          * the two assertions that are expected to required to run

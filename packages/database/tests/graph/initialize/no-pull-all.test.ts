@@ -10,9 +10,12 @@ import { setupGraph } from '../setup'
 
 const dbName = 'test_graph_initialize_no_pull_all'
 const db = getSource(dbName)
-let degree: Degree
-let user: User
-let graph: Graph
+
+const t: Partial<{
+  user: User
+  degree: Degree
+  graph: Graph
+}> = {}
 
 importChecks({
   entities: [Module, Degree, User, Graph],
@@ -23,8 +26,8 @@ beforeAll(() =>
   setup(dbName)
     .then(() => setupGraph(db))
     .then((res) => {
-      user = res.user
-      degree = res.degree
+      t.user = res.user
+      t.degree = res.degree
     })
     .catch(() => {
       throw new Error('Unable to setup Graph test.')
@@ -42,21 +45,21 @@ describe('Graph.initialize', () => {
       container(db, () =>
         GraphRepository(db)
           .initialize({
-            userId: user.id,
-            degreeId: degree.id,
+            userId: t.user.id,
+            degreeId: t.degree.id,
             modulesPlacedCodes: [],
             modulesHiddenCodes: [],
             pullAll: false,
           })
           .then((res) => {
             expect(res).toBeInstanceOf(Graph)
-            graph = res
+            t.graph = res
           })
       )
     )
   })
   it('modulesPlaced and modulesHidden are blank', async () => {
-    expect(graph.modulesPlaced.length).toEqual(0)
-    expect(graph.modulesHidden.length).toEqual(0)
+    expect(t.graph.modulesPlaced).toHaveLength(0)
+    expect(t.graph.modulesHidden).toHaveLength(0)
   })
 })
