@@ -11,21 +11,21 @@ import { IDegree, IGraph, IModule, IUser } from './types'
 /** Graph entity */
 export class Graph implements IGraph {
   @PrimaryGeneratedColumn('uuid')
-    id: string
+  id: string
 
-  @ManyToOne("User", 'graph')
+  @ManyToOne('User', 'graph')
   @JoinTable()
-    user: IUser
+  user: IUser
 
-  @ManyToOne("Degree", 'graph')
+  @ManyToOne('Degree', 'graph')
   @JoinTable()
-    degree: IDegree
-
-  @ManyToMany('Module', 'graph')
-  @JoinTable()
-    modulesPlaced: IModule[]
+  degree: IDegree
 
   @ManyToMany('Module', 'graph')
   @JoinTable()
-    modulesHidden: IModule[]
+  modulesPlaced: IModule[]
+
+  @ManyToMany('Module', 'graph')
+  @JoinTable()
+  modulesHidden: IModule[]
 }

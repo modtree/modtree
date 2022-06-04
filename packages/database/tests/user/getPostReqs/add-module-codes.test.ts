@@ -1,14 +1,14 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
 import { ModuleRepository, UserRepository } from '../../../src/repository'
-import type * as InitProps from '../../../types/entity'
+import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ user: User, postReqsCodes: string[] }> = {}
+const t: Partial<{ user: User; postReqsCodes: string[] }> = {}
 
 beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
@@ -27,13 +27,17 @@ it('Saves an empty user', async () => {
 it('Gets all post-reqs', async () => {
   const addModuleCodes = ['MA2001']
   // Get post reqs
-  const postReqs = await container(db, () => UserRepository(db).getPostReqs(t.user, addModuleCodes))
+  const postReqs = await container(db, () =>
+    UserRepository(db).getPostReqs(t.user, addModuleCodes)
+  )
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   // Get fulfillRequirements for MA2001
-  const mod = await container(db, () => ModuleRepository(db).findOneBy({
-    moduleCode: 'MA2001'
-  }))
+  const mod = await container(db, () =>
+    ModuleRepository(db).findOneBy({
+      moduleCode: 'MA2001',
+    })
+  )
   expect(mod).toBeDefined()
   if (!mod) return
   // Compare module codes
@@ -45,8 +49,8 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   // CP2106 has empty string fulfillRequirements
   const addModuleCodes = ['CP2106']
   // Get post reqs
-  const postReqs = await container(db,
-    () => UserRepository(db).getPostReqs(t.user, addModuleCodes)
+  const postReqs = await container(db, () =>
+    UserRepository(db).getPostReqs(t.user, addModuleCodes)
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return

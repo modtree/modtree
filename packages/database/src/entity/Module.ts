@@ -10,53 +10,53 @@ import { Base } from './Base'
 /** Module entity */
 export class Module extends Base {
   @PrimaryGeneratedColumn('uuid')
-    id: string
+  id: string
 
   @Column({ type: 'text' })
-    acadYear: string
+  acadYear: string
 
   @Column({ type: 'text' })
-    moduleCode: string
+  moduleCode: string
 
   @Column({ type: 'text' })
-    title: string
+  title: string
 
   @Column({ type: 'varchar', nullable: true })
-    description: string
+  description: string
 
   @Column({ type: 'text' })
-    moduleCredit: string
+  moduleCredit: string
 
   @Column({ type: 'text' })
-    department: string
+  department: string
 
   @Column({ type: 'text' })
-    faculty: string
+  faculty: string
 
   @Column({ type: 'json', nullable: true })
-    aliases: string[]
+  aliases: string[]
 
   @Column({ type: 'json', nullable: true })
-    attributes: NUSModuleAttributes
+  attributes: NUSModuleAttributes
 
   @Column({ type: 'text', nullable: true })
-    prerequisite: string
+  prerequisite: string
 
   @Column({ type: 'text', nullable: true })
-    corequisite: string
+  corequisite: string
 
   @Column({ type: 'text', nullable: true })
-    preclusion: string
+  preclusion: string
 
   @Column({ type: 'json', nullable: true })
-    fulfillRequirements: string[]
+  fulfillRequirements: string[]
 
   @Column({ type: 'json', nullable: true })
-    semesterData: SemesterData[]
+  semesterData: SemesterData[]
 
   @Column({ type: 'json', nullable: true })
-    prereqTree: PrereqTree
+  prereqTree: PrereqTree
 
   @Column({ type: 'json', nullable: true })
-    workload: string | number[]
+  workload: string | number[]
 }

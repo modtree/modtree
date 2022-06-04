@@ -1,7 +1,7 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
 import { UserRepository } from '../../../src/repository'
-import type * as InitProps from '../../../types/entity'
+import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
@@ -29,7 +29,9 @@ it('Returns true for modules unlocked by the added modules', async () => {
   const res = await container(db, async () => {
     const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
     return Promise.all(
-      modulesTested.map((x) => UserRepository(db).canTakeModule(t.user, x, addModuleCodes))
+      modulesTested.map((x) =>
+        UserRepository(db).canTakeModule(t.user, x, addModuleCodes)
+      )
     )
   })
   expect(res).toStrictEqual([true, false, false, true])
@@ -40,7 +42,9 @@ it('Returns false for modules unlocked by the added modules, if not passed in', 
   const res = await container(db, async () => {
     const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
     return Promise.all(
-      modulesTested.map((x) => UserRepository(db).canTakeModule(t.user, x, addModuleCodes))
+      modulesTested.map((x) =>
+        UserRepository(db).canTakeModule(t.user, x, addModuleCodes)
+      )
     )
   })
   expect(res).toStrictEqual([false, false, false, true])

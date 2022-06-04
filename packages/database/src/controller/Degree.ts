@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { copy , EmptyInit, Flatten } from '../utils'
+import { copy, EmptyInit, Flatten } from '../utils'
 import { db } from '../config'
 import { DegreeRepository } from '../repository'
 import { IDegreeController } from '../../types/controller'

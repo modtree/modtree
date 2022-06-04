@@ -8,9 +8,7 @@ type DeleteAll = () => Promise<void>
  * @param {Repository<T>} repository
  * @returns {DeleteAll}
  */
-export function useDeleteAll<T>(
-  repository: Repository<T>
-): DeleteAll {
+export function useDeleteAll<T>(repository: Repository<T>): DeleteAll {
   const deleteAll = async () => {
     await repository.createQueryBuilder().delete().execute()
   }

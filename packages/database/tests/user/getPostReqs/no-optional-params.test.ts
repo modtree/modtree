@@ -1,7 +1,7 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
 import { ModuleRepository, UserRepository } from '../../../src/repository'
-import type * as InitProps from '../../../types/entity'
+import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
@@ -72,7 +72,9 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
-  const postReqs = await container(db, () => UserRepository(db).getPostReqs(res))
+  const postReqs = await container(db, () =>
+    UserRepository(db).getPostReqs(res)
+  )
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   expect(postReqs).toEqual([])

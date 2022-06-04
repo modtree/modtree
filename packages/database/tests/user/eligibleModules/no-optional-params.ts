@@ -11,7 +11,7 @@ const db = getSource(dbName)
 beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
 
-const t: Partial<{user: User}> = {}
+const t: Partial<{ user: User }> = {}
 
 it('Saves a user', async () => {
   expect.assertions(1)

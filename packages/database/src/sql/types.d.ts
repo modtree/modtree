@@ -52,7 +52,6 @@ export interface BaseSqlInterface {
    */
   restorePrompted(database: string): void
 
-
   /**
    * dumps a database snapshot to a .sql file
    *

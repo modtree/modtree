@@ -1,7 +1,7 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
 import { UserRepository } from '../../../src/repository'
-import type * as InitProps from '../../../types/entity'
+import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
@@ -27,13 +27,15 @@ it('Saves an empty user', async () => {
 it('Adds only modules which have pre-reqs cleared', async () => {
   const addModuleCodes = ['CS1101S']
   // Get eligible modules
-  const eligibleModules = await container(db,
-    () => UserRepository(db).eligibleModules(t.user, addModuleCodes)
+  const eligibleModules = await container(db, () =>
+    UserRepository(db).eligibleModules(t.user, addModuleCodes)
   )
   expect(eligibleModules).toBeDefined()
   if (!eligibleModules) return
   const expected = ['CS2109S']
   // Compare module codes
-  const eligibleModuleCodes = eligibleModules.map((one: Module) => one.moduleCode)
+  const eligibleModuleCodes = eligibleModules.map(
+    (one: Module) => one.moduleCode
+  )
   expect(eligibleModuleCodes.sort()).toEqual(expected.sort())
 })

@@ -43,7 +43,7 @@ export class User implements IUser {
   @JoinTable()
   savedDegrees: IDegree[]
 
-  @ManyToMany("Graph", 'user')
+  @ManyToMany('Graph', 'user')
   @JoinTable()
   savedGraphs: IGraph[]
 }

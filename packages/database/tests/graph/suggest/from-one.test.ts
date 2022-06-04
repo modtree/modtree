@@ -8,17 +8,16 @@ import {
 } from '../../../src/repository'
 import { setup, importChecks, teardown } from '../../environment'
 import Mockup from '../../mockup'
-import type * as InitProps from '../../../types/entity'
+import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 
 const dbName = 'test_suggest_modules_from_one'
 const db = getSource(dbName)
-// TODO: change to t.
-// Entities that will be created
-let graph: Graph
-// Data that will be populated
-let suggestedModulesCodes: string[]
-let postReqs: string[]
+const t: Partial<{
+  graph: Graph
+  suggestedModulesCodes: string[]
+  postReqs: string[]
+}> = {}
 
 const degreeProps: InitProps.Degree = {
   moduleCodes: [
@@ -44,7 +43,7 @@ beforeAll(async () => {
   await setup(dbName)
     .then(() => Mockup.graph(db, userProps, degreeProps))
     .then((res) => {
-      graph = res.graph
+      t.graph = res.graph
     })
 })
 afterAll(() => teardown(dbName))
@@ -74,15 +73,15 @@ describe('Graph.initialize', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        GraphRepository(db).suggestModulesFromOne(graph, 'CS1010')
+        GraphRepository(db).suggestModulesFromOne(t.graph, 'CS1010')
       )
       expect(res).toBeDefined()
       if (!res) return
       res.forEach((one) => {
         expect(one).toBeInstanceOf(Module)
       })
-      suggestedModulesCodes = res.map((one) => one.moduleCode)
-      const copy = [...suggestedModulesCodes]
+      t.suggestedModulesCodes = res.map((one) => one.moduleCode)
+      const copy = [...t.suggestedModulesCodes]
       expect(copy.sort()).toEqual(expected.sort())
     })
 
@@ -92,7 +91,7 @@ describe('Graph.initialize', () => {
       // unlocks 7, 2, 0 mods
       const nonDegreeModules = ['CS2040', 'CS2040C', 'CS2030S']
       const expected = degreeModules.concat(nonDegreeModules)
-      expect(suggestedModulesCodes).toEqual(expected)
+      expect(t.suggestedModulesCodes).toEqual(expected)
     })
   })
 
@@ -106,13 +105,13 @@ describe('Graph.initialize', () => {
       )
       expect(res).toBeDefined()
       if (!res) return
-      postReqs = res.fulfillRequirements
+      t.postReqs = res.fulfillRequirements
       // main test
       const moduleCodes = ['MA3269', 'DSA3102']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(postReqs.includes(code)).toEqual(true)
-        expect(suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
       })
     })
 
@@ -120,8 +119,8 @@ describe('Graph.initialize', () => {
       const moduleCodes = ['CG2111A']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(postReqs.includes(code)).toEqual(true)
-        expect(suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
       })
     })
 
@@ -129,8 +128,8 @@ describe('Graph.initialize', () => {
       const moduleCodes = ['IT2002']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(postReqs.includes(code)).toEqual(true)
-        expect(suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
       })
     })
   })

@@ -1,5 +1,5 @@
 import { DataSource, In, SelectQueryBuilder } from 'typeorm'
-import type * as InitProps from '../../types/entity'
+import type * as InitProps from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { Graph } from '../entity/Graph'
 import { ModuleRepository } from './Module'
