@@ -1,4 +1,4 @@
-import { container, endpoint, getSource } from '../../../src/data-source'
+import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
 import { ModuleRepository, UserRepository } from '../../../src/repository'
 import { Init } from '../../../types/entity'
@@ -72,9 +72,7 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
-  const postReqs = await endpoint(db, () =>
-    container(db, () => UserRepository(db).getPostReqs(res))
-  )
+  const postReqs = await container(db, () => UserRepository(db).getPostReqs(res))
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   expect(postReqs).toEqual([])
