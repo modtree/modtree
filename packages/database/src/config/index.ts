@@ -9,8 +9,8 @@ dotenvConfig()
 
 /**
  * generate a config based on the database type
- * @param {SupportedDatabases} type
- * @return {DataSourceOptions}
+ *
+ * @returns {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
   const prefix = (e: string) => process.env[getPrefix() + e]

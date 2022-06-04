@@ -1,10 +1,10 @@
-import { flatten, oneUp } from '../../../src/utils'
+import { Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Degree, Graph, User } from '../../../src/entity'
 import { GraphRepository } from '../../../src/repository'
 import { setup, teardown } from '../../environment'
-import { init } from '../../init'
-import { mockup } from '../../mockup'
+import Init from '../../init'
+import Mockup from '../../mockup'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -17,7 +17,7 @@ const t: Partial<{
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => mockup.graph(db))
+    .then(() => Mockup.graph(db, Init.user1, Init.degree1))
     .then((res) => {
       t.user = res.user
       t.degree = res.degree
@@ -52,21 +52,21 @@ describe('Graph.initialize', () => {
      * with pull all set to true, it will take modules from
      * both the degree and the user
      */
-    const all = t.degree.modules.map(flatten.module)
-    all.push(...t.user.modulesDone.map(flatten.module))
-    all.push(...t.user.modulesDoing.map(flatten.module))
+    const all = t.degree.modules.map(Flatten.module)
+    all.push(...t.user.modulesDone.map(Flatten.module))
+    all.push(...t.user.modulesDoing.map(Flatten.module))
     t.moduleCodes = Array.from(new Set(all))
     /**
      * all these module codes should show up in the hidden codes
      */
-    const hidden = t.graph.modulesHidden.map(flatten.module)
+    const hidden = t.graph.modulesHidden.map(Flatten.module)
     expect(hidden.sort()).toEqual(t.moduleCodes.sort())
     expect(t.graph.modulesPlaced.length).toEqual(0)
   })
 })
 
 describe('Graph.toggleModules', () => {
-  it('Correctly changes a module\'s state from placed to hidden', async () => {
+  it("Correctly changes a module's state from placed to hidden", async () => {
     const toggled = 'MA2001'
     /**
      * execute the toggle
@@ -88,7 +88,7 @@ describe('Graph.toggleModules', () => {
     expect(t.graph.modulesPlaced[0].moduleCode).toEqual(toggled)
   })
 
-  it('Correctly changes a module\'s state from hidden to placed', async () => {
+  it("Correctly changes a module's state from hidden to placed", async () => {
     /**
      * simple the inverse of the above
      */
@@ -100,23 +100,11 @@ describe('Graph.toggleModules', () => {
   })
 
   it('Throws error if the module toggled neither hidden nor placed', async () => {
-    /**
-     * this expects 2 assertions to be made
-     * if the container doesn't go into catch, no assertions will be made
-     * and so this test will fail
-     */
-    expect.assertions(2)
-    /**
-     * the actual error test
-     */
+    expect.assertions(1)
     await container(db, () =>
-      GraphRepository(db).toggleModule(t.graph, init.invalidModuleCode)
-    ).catch((err) => {
-      /**
-       * the two assertions that are expected to required to run
-       */
-      expect(err).toBeInstanceOf(Error)
-      expect(err.message).toBe('Module not found in Graph')
-    })
+      expect(() =>
+        GraphRepository(db).toggleModule(t.graph, Init.invalidModuleCode)
+      ).rejects.toThrowError(Error('Module not found in Graph'))
+    )
   })
 })

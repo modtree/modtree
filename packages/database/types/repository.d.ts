@@ -1,5 +1,5 @@
 import { Repository, FindOptionsRelations } from 'typeorm'
-import { Init } from './entity'
+import type * as InitProps from './entity'
 import type {
   Graph,
   User,
@@ -23,7 +23,7 @@ interface BaseRepo<Entity, InitProps> extends Repository<Entity> {
   deleteAll?(): Promise<void>
 }
 
-export interface GraphRepository extends BaseRepo<Graph, Init.GraphProps> {
+export interface GraphRepository extends BaseRepo<Graph, InitProps.Graph> {
   toggleModule(graph: Graph, moduleCode: string): Promise<void>
   loadRelations: LoadRelations<Graph>
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
@@ -34,8 +34,12 @@ export interface GraphRepository extends BaseRepo<Graph, Init.GraphProps> {
   suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]>
 }
 
-export interface UserRepository extends BaseRepo<User, Init.UserProps> {
-  canTakeModule(user: User, moduleCode: string, addModuleCodes?: string[]): Promise<boolean | void>
+export interface UserRepository extends BaseRepo<User, InitProps.User> {
+  canTakeModule(
+    user: User,
+    moduleCode: string,
+    addModuleCodes?: string[]
+  ): Promise<boolean>
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
   eligibleModules(user: User, addModuleCodes?: string[]): Promise<Module[]>
@@ -47,7 +51,7 @@ export interface UserRepository extends BaseRepo<User, Init.UserProps> {
   removeDegree(user: User, degreeId: string): Promise<void>
 }
 
-export interface DegreeRepository extends BaseRepo<Degree, Init.DegreeProps> {
+export interface DegreeRepository extends BaseRepo<Degree, InitProps.Degree> {
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
   loadRelations: LoadRelations<Degree>
   findOneByTitle(title: string): Promise<Degree>

@@ -57,8 +57,8 @@ export const w: Config.InitialOptions = {
 
 /**
  * a flexible config for running categorized tests
- * @param {string} group
- * @return {any}
+ *
+ * @returns {any}
  */
 export function group(): any {
   const args = process.argv

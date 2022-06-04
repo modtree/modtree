@@ -1,8 +1,8 @@
 import { container, getSource } from '../../src/data-source'
 import { Module, User } from '../../src/entity'
 import { UserRepository } from '../../src/repository'
-import { Init } from '../../types/entity'
-import { init } from '../init'
+import type * as InitProps from '../../types/entity'
+import Init from '../init'
 import { setup, teardown } from '../environment'
 import { oneUp } from '../../src/utils'
 
@@ -14,16 +14,16 @@ afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 const t: Partial<{
   user: User
-  props: Init.UserProps
+  props: InitProps.User
 }> = {
-  props: init.emptyUser
+  props: Init.emptyUser
 }
 
 it('Saves a user', async () => {
   t.props.modulesDone.push('CS1010')
   const res = await container(db, async () => {
     await UserRepository(db).initialize(t.props)
-    return await UserRepository(db).findOneByUsername(t.props.username)
+    return UserRepository(db).findOneByUsername(t.props.username)
   })
   expect(res).toBeDefined()
   if (!res) return
@@ -46,9 +46,7 @@ it('Correctly gets unlocked modules', async () => {
 
 it('Does not modify User.modulesDone', async () => {
   // Also loads relations
-  const res = await container(db, async () => {
-    return await UserRepository(db).findOneById(t.user.id)
-  })
+  const res = await container(db, async () => UserRepository(db).findOneById(t.user.id))
   expect(res).toBeDefined()
   if (!res) return
   const modulesDoneCodes = res.modulesDone.map((one) => one.moduleCode)

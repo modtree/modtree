@@ -7,32 +7,68 @@ import {
   ModuleRepository,
 } from '../../../src/repository'
 import { setup, importChecks, teardown } from '../../environment'
-import { setupGraph } from './setup'
+import Mockup from '../../mockup'
+import type * as InitProps from '../../../types/entity'
+import Init from '../../init'
 
 const dbName = 'test_suggest_modules_from_one'
 const db = getSource(dbName)
-
-beforeAll(async () => {
-  await setup(dbName)
-  const res = await setupGraph(db)
-  if (!res) throw new Error('Unable to setup Graph test.')
-  graph = res
-})
-afterAll(() => teardown(dbName))
-
-importChecks({
-  entities: [Module, Degree, User, Graph],
-  repositories: [ModuleRepository(db), UserRepository(db), DegreeRepository(db), GraphRepository(db)],
-})
-
-const expected = ['CS2107', 'CS2100', 'CS2030', 'CP2106', 'CS2040C', 'CS2040', 'CS2030S']
-
+// TODO: change to t.
 // Entities that will be created
 let graph: Graph
-
 // Data that will be populated
 let suggestedModulesCodes: string[]
 let postReqs: string[]
+
+const degreeProps: InitProps.Degree = {
+  moduleCodes: [
+    'CS1010',
+    'CG2111A', // in modulesDone, should not suggest
+    'IT2002', // in modulesDoing, should not suggest
+    'CS2030', // unlocks CS2104, CS3240, IS2103, IS2102 (4 mods)
+    'CS2040S', // cannot take this mod (without CS1231)
+    'CS2100', // unlocks CS3210, CS3237, CS2106 (3 mods)
+    'CS2107', // unlocks IS4231, IS5151, IFS4101 (3 mods)
+    'CP2106', // unlocks 0 mods
+  ],
+  title: 'Custom Degree',
+}
+
+const userProps: InitProps.User = {
+  ...Init.emptyUser,
+  modulesDone: ['CS1010', 'CG2111A'],
+  modulesDoing: ['IT2002'],
+}
+
+beforeAll(async () => {
+  await setup(dbName)
+    .then(() => Mockup.graph(db, userProps, degreeProps))
+    .then((res) => {
+      graph = res.graph
+    })
+})
+afterAll(() => teardown(dbName))
+
+// TODO: remove
+importChecks({
+  entities: [Module, Degree, User, Graph],
+  repositories: [
+    ModuleRepository(db),
+    UserRepository(db),
+    DegreeRepository(db),
+    GraphRepository(db),
+  ],
+})
+
+const expected = [
+  'CS2107',
+  'CS2100',
+  'CS2030',
+  'CP2106',
+  'CS2040C',
+  'CS2040',
+  'CS2030S',
+]
 
 describe('Graph.initialize', () => {
   describe('Suggests post-reqs of the given module', () => {
@@ -41,8 +77,7 @@ describe('Graph.initialize', () => {
         GraphRepository(db).suggestModulesFromOne(graph, 'CS1010')
       )
       expect(res).toBeDefined()
-      if (!res)
-        return
+      if (!res) return
       res.forEach((one) => {
         expect(one).toBeInstanceOf(Module)
       })
@@ -64,12 +99,13 @@ describe('Graph.initialize', () => {
   describe('Does not suggest post-reqs of the given module', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
-      const res = await endpoint(db, () => 
-        container(db, () => ModuleRepository(db).findOneBy({ moduleCode: 'CS1010' }))
+      const res = await endpoint(db, () =>
+        container(db, () =>
+          ModuleRepository(db).findOneBy({ moduleCode: 'CS1010' })
+        )
       )
       expect(res).toBeDefined()
-      if (!res)
-        return
+      if (!res) return
       postReqs = res.fulfillRequirements
       // main test
       const moduleCodes = ['MA3269', 'DSA3102']
@@ -99,4 +135,3 @@ describe('Graph.initialize', () => {
     })
   })
 })
-

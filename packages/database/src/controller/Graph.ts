@@ -1,19 +1,21 @@
 import { Request, Response } from 'express'
-import { copy , emptyInit, flatten } from '../utils'
+import { copy , EmptyInit, Flatten } from '../utils'
 import { db } from '../config'
 import { GraphRepository } from '../repository'
+import { IGraphController } from '../../types/controller'
 
 /** Graph API controller */
-export class graphController {
+export class GraphController implements IGraphController {
   private graphRepo = GraphRepository(db)
 
   /**
    * creates a Graph
+   *
    * @param {Request} req
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props = emptyInit.Graph
+    const props = EmptyInit.Graph
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
@@ -29,6 +31,7 @@ export class graphController {
 
   /**
    * finds one Graph by id
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -44,7 +47,7 @@ export class graphController {
         },
       })
       .then((graph) => {
-        res.json(flatten.graph(graph))
+        res.json(Flatten.graph(graph))
       })
       .catch(() => {
         res.status(404).json({ message: 'Graph not found' })
@@ -53,6 +56,7 @@ export class graphController {
 
   /**
    * hard-deletes one Graph by id
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -65,6 +69,7 @@ export class graphController {
 
   /**
    * list all graphs in the database
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -77,7 +82,7 @@ export class graphController {
         modulesPlaced: true,
       },
     })
-    const flat = results.map((graph) => flatten.graph(graph))
+    const flat = results.map((graph) => Flatten.graph(graph))
     res.json(flat)
   }
 }

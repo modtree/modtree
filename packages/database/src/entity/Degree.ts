@@ -5,17 +5,17 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import { Base } from './Base'
-import { Module } from './Module'
+import { IDegree, IModule } from './types'
 
 @Entity({ name: 'degree' })
-export class Degree extends Base {
+/** Degree entity */
+export class Degree implements IDegree {
   @PrimaryGeneratedColumn('uuid')
     id: string
 
-  @ManyToMany(() => Module)
+  @ManyToMany('Module', 'degree')
   @JoinTable()
-    modules: Module[]
+    modules: IModule[]
 
   @Column()
     title: string

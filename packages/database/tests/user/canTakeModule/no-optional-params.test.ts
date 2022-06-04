@@ -1,7 +1,7 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
 import { UserRepository } from '../../../src/repository'
-import { init } from '../../init'
+import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
 
@@ -14,7 +14,7 @@ afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 it('Saves a user', async () => {
   expect.assertions(1)
-  const props = init.emptyUser
+  const props = Init.emptyUser
   props.modulesDone.push('MA2001')
   props.modulesDoing.push('MA2219')
   await container(db, () =>
@@ -56,7 +56,7 @@ it('Returns false if module code passed in does not exist', async () => {
   expect.assertions(1)
   await container(db, () =>
     UserRepository(db)
-      .canTakeModule(t.user, init.invalidModuleCode)
+      .canTakeModule(t.user, Init.invalidModuleCode)
       .then((res) => {
         expect(res).toStrictEqual(false)
       })

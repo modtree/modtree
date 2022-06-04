@@ -1,17 +1,17 @@
 import axios from 'axios'
+import { DataSource } from 'typeorm'
 import { log } from '../cli'
-import { nusmodsApi, flatten } from '../utils'
+import { nusmodsApi, Flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
-import { DataSource } from 'typeorm'
 import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleRepository as Repository } from '../../types/repository'
-import { wait, client } from '../utils/pull'
+import { client } from '../utils/pull'
 
 /**
  * @param {DataSource} database
- * @return {ModuleRepository}
+ * @returns {ModuleRepository}
  */
 export function ModuleRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
@@ -21,29 +21,27 @@ export function ModuleRepository(database?: DataSource): Repository {
 
   /**
    * get all modules in the database
-   * @return {Promise<Module[]>}
+   *
+   * @returns {Promise<Module[]>}
    */
   async function get(): Promise<Module[]> {
-    const modules = await BaseRepo.find().catch((err) => {
-      log.warn('Warning: failed to get Modules from database.')
-      console.log(err)
-      return []
-    })
-    return modules
+    return BaseRepo.find()
   }
 
   /**
    * get all module codes from the module table
-   * @return {Promise<string[]>}
+   *
+   * @returns {Promise<string[]>}
    */
   async function getCodes(): Promise<string[]> {
     const modules = await get()
-    const codes = modules.map(flatten.module)
+    const codes = modules.map(Flatten.module)
     return codes
   }
 
   /**
    * fetches exactly one module with full details
+   *
    * @param {string} moduleCode
    */
   async function fetchOne(moduleCode: string): Promise<Module> {
@@ -70,7 +68,9 @@ export function ModuleRepository(database?: DataSource): Repository {
 
     for (let i = 0; i < diff.length; i++) {
       const moduleCode = diff[i]
-      while (buffer > config.buffer) await wait(config.freq)
+      while (buffer > config.buffer) {
+        await new Promise((resolve) => setTimeout(resolve, config.freq))
+      }
       buffer += 1
       fetchQueue.push(
         client
@@ -96,7 +96,7 @@ export function ModuleRepository(database?: DataSource): Repository {
 
   /**
    * @param {string} faculty
-   * @return {Promise<Module[]>}
+   * @returns {Promise<Module[]>}
    */
   async function findByFaculty(faculty: string): Promise<Module[]> {
     return BaseRepo.createQueryBuilder('module')
@@ -106,7 +106,7 @@ export function ModuleRepository(database?: DataSource): Repository {
 
   /**
    * @param {string[]} moduleCodes
-   * @return {Promise<Module[]>}
+   * @returns {Promise<Module[]>}
    */
   async function findByCodes(moduleCodes: string[]): Promise<Module[]> {
     if (moduleCodes.length === 0) {

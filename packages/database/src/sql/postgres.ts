@@ -1,8 +1,8 @@
-import { config } from '../config'
 import { join } from 'path'
+import { Client } from 'pg'
+import { config } from '../config'
 import { exec } from '../shell'
 import { BaseSql, promptDump, promptRestore } from './base'
-import { Client } from 'pg'
 
 const noDatabaseConfig = {
   host: config.host,
@@ -17,18 +17,27 @@ const connectionConfig = (database: string) => ({
 
 /** Sql interface for POSTGRESQL */
 export class Postgresql extends BaseSql {
+  clientGenerator: (database: string) => Client
+
+  dropCmd = 'dropdb'
+
+  createCmd = 'createdb'
+
   /** instantiate a new Sql class */
   constructor() {
     super('postgres')
+    this.clientGenerator = (database: string) =>
+      new Client(connectionConfig(database))
   }
 
   /**
    * removes a single table from a postgres database
+   *
    * @param {string} database
    * @param {string} table
    */
   async dropTable(database: string, table: string) {
-    const psql = new Client(connectionConfig(database))
+    const psql = this.clientGenerator(database)
     await psql.connect()
     await psql.query(`DROP TABLE IF EXISTS ${table}`)
     await psql.end()
@@ -36,11 +45,12 @@ export class Postgresql extends BaseSql {
 
   /**
    * removes a list of tables from a postgres database
+   *
    * @param {string} database
    * @param {string[]} tables
    */
   async dropTables(database: string, tables: string[]) {
-    const psql = new Client(connectionConfig(database))
+    const psql = this.clientGenerator(database)
     await psql.connect()
     await Promise.all(
       tables.map((table) => psql.query(`DROP TABLE IF EXISTS ${table}`))
@@ -50,31 +60,28 @@ export class Postgresql extends BaseSql {
 
   /**
    * drops the database
+   *
    * @param {string} database
    */
   async dropDatabase(database: string) {
-    await exec(`dropdb ${database}`)
+    await exec(`${this.dropCmd} ${database}`)
   }
 
   /**
    * a very aggressive function that drops the database
    * and then recreates it for a completely fresh start
    * so ensure .env.test has the corrent database name.
+   *
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    await exec(`dropdb ${database}`).catch((err) => {
-      console.log('Clear DB: Drop DB')
-      console.log(err)
-    })
-    await exec(`createdb ${database}`).catch((err) => {
-      console.log('Clear DB: Create DB')
-      console.log(err)
-    })
+    await exec(`${this.dropCmd} ${database}`)
+    await exec(`${this.createCmd} ${database}`)
   }
 
   /**
    * restores SQL database from a file
+   *
    * @param {string} database
    * @param {string} filename
    */
@@ -83,29 +90,26 @@ export class Postgresql extends BaseSql {
     const file = join(config.rootDir, '.sql', filename)
     const u = config.username ? `--username=${config.username}` : ''
     const p = config.password ? `PGPASSWORD=${config.password}` : ''
-    const cmd = `${p} ${this.coreCmd} ${u} ${database} < ${file}`
-    await exec(cmd).catch((err) => {
-      console.log('Restore from file error')
-      console.log(err)
-    })
+    const h = config.host ? `--host=${config.host}` : ''
+    const cmd = `${p} ${this.coreCmd} ${u} ${h} ${database} < ${file}`
+    await exec(cmd)
   }
 
   /**
    * interactive prompt to guide the user to restore an SQL database
+   *
    * @param {string} database
    */
   restorePrompted(database: string) {
     promptRestore(database).then(async (answers) => {
-      if (answers.confirm === 'no') {
-        console.log('cancelled.')
-        return
-      }
+      if (answers.confirm === 'no') return
       await this.restoreFromFile(database, answers.sql)
     })
   }
 
   /**
    * dump a database snapshot to an .sql file
+   *
    * @param {string} database
    */
   async dump(database: string) {

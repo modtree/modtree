@@ -1,8 +1,9 @@
 /**
  * O(1) delete from unsorted array
+ *
  * @param {T[]} arr
  * @param {number} index
- * @return {Module}
+ * @returns {T}
  */
 export function quickpop<T>(arr: T[], index: number): T {
   if (arr.length === 0) throw new Error('Tried to quickpop an empty array')

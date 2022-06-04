@@ -1,4 +1,4 @@
-export { moduleCondensedController } from './ModuleCondensed'
-export { userController } from './User'
-export { degreeController } from './Degree'
-export { graphController } from './Graph'
+export { ModuleCondensedController } from './ModuleCondensed'
+export { UserController } from './User'
+export { DegreeController } from './Degree'
+export { GraphController } from './Graph'

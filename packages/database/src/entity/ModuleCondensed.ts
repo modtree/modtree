@@ -3,6 +3,7 @@ import { ModuleCode, ModuleTitle } from '../../types/nusmods'
 import { Base } from './Base'
 
 @Entity({ name: 'moduleCondensed' })
+/** ModuleCondensed entity */
 export class ModuleCondensed extends Base {
   @PrimaryGeneratedColumn('uuid')
     id: string

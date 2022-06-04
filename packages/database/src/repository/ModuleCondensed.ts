@@ -1,14 +1,14 @@
 import axios from 'axios'
-import { nusmodsApi, getModuleLevel, flatten } from '../utils'
+import { DataSource } from 'typeorm'
+import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
-import { DataSource } from 'typeorm'
 import { getDataSource, useLoadRelations, useDeleteAll } from './base'
 import type { ModuleCondensedRepository as Repository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
- * @return {ModuleCondensedRepository}
+ * @returns {ModuleCondensedRepository}
  */
 export function ModuleCondensedRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
@@ -18,28 +18,31 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
 
   /**
    * get all module codes from the module table
-   * @return {Promise<string[]>}
+   *
+   * @returns {Promise<string[]>}
    */
   async function getCodes(): Promise<string[]> {
     const modules = await BaseRepo.find()
-    return modules.map(flatten.module)
+    return modules.map(Flatten.module)
   }
 
   /**
    * fetches a list of condensed modules from NUSMods API
-   * @return {Promise<ModuleCondensed[]>}
+   *
+   * @returns {Promise<ModuleCondensed[]>}
    */
   async function fetch(): Promise<ModuleCondensed[]> {
     const res = await axios.get(nusmodsApi('moduleList'))
-    const data: NMC[] = res.data
-    return data.map((n) =>
+    const { data } = res
+    return data.map((n: NMC) =>
       BaseRepo.create({ ...n, moduleLevel: getModuleLevel(n.moduleCode) })
     )
   }
 
   /**
    * pulls a list of condensed modules from NUSMods API
-   * @return {Promise<ModuleCondensed[]>}
+   *
+   * @returns {Promise<ModuleCondensed[]>}
    */
   async function pull(): Promise<ModuleCondensed[]> {
     const existingModules = new Set(await getCodes())

@@ -4,6 +4,7 @@ import { sql } from '../src/sql'
 
 /**
  * pre-test setup
+ *
  * @param {string} database
  */
 export async function setup(database: string) {
@@ -12,6 +13,7 @@ export async function setup(database: string) {
 
 /**
  * post-test teardown
+ *
  * @param {string} database
  */
 export async function teardown(database: string) {
@@ -21,6 +23,7 @@ export async function teardown(database: string) {
 type ImportCheckProps = { entities?: any[]; repositories?: Repository<any>[] }
 /**
  * check imports before every test
+ *
  * @param {ImportCheckProps} props
  */
 export function importChecks(props: ImportCheckProps) {

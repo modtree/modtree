@@ -1,5 +1,5 @@
 import { DataSource, In, SelectQueryBuilder } from 'typeorm'
-import { Init } from '../../types/entity'
+import type * as InitProps from '../../types/entity'
 import { Module } from '../entity/Module'
 import { Graph } from '../entity/Graph'
 import { ModuleRepository } from './Module'
@@ -8,14 +8,14 @@ import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
 import { getDataSource, useLoadRelations } from './base'
-import { quickpop, flatten } from '../utils'
+import { quickpop, Flatten } from '../utils'
 import type { GraphRepository as Repository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
 
 /**
  * @param {DataSource} database
- * @return {GraphRepository}
+ * @returns {GraphRepository}
  */
 export function GraphRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
@@ -24,10 +24,11 @@ export function GraphRepository(database?: DataSource): Repository {
 
   /**
    * Adds a Graph to DB
-   * @param {Init.GraphProps} props
-   * @return {Promise<Graph>}
+   *
+   * @param {InitProps.Graph} props
+   * @returns {Promise<Graph>}
    */
-  async function initialize(props: Init.GraphProps): Promise<Graph> {
+  async function initialize(props: InitProps.Graph): Promise<Graph> {
     /**
      * retrieves the degree and user with relations, without blocking each
      * other.
@@ -35,12 +36,14 @@ export function GraphRepository(database?: DataSource): Repository {
     async function getUserAndDegree(): Promise<[User, Degree]> {
       const getUser = UserRepository(db).findOneById(props.userId)
       const getDegree = DegreeRepository(db).findOneById(props.degreeId)
-      return await Promise.all([getUser, getDegree])
+      return Promise.all([getUser, getDegree])
     }
+    const [user, degree] = await getUserAndDegree()
 
     /**
      * gets lists of modules placed and modules hidden
-     * @return {Promise<Array<Module[]>>}
+     *
+     * @returns {Promise<Array<Module[]>>}
      */
     async function getModules(): Promise<Array<Module[]>> {
       if (props.pullAll) {
@@ -56,7 +59,7 @@ export function GraphRepository(database?: DataSource): Repository {
       }
       // if passed in, then find the modules
       const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
-      return await Promise.all(
+      return Promise.all(
         queryList.map((list) =>
           ModuleRepository(db).findBy({
             moduleCode: In(list),
@@ -64,9 +67,8 @@ export function GraphRepository(database?: DataSource): Repository {
         )
       )
     }
-
-    const [user, degree] = await getUserAndDegree()
     const [modulesHidden, modulesPlaced] = await getModules()
+
     const graph = BaseRepo.create({
       user,
       degree,
@@ -79,9 +81,10 @@ export function GraphRepository(database?: DataSource): Repository {
 
   /**
    * Toggle a Module's status between placed and hidden.
+   *
    * @param {Graph} graph
    * @param {string} moduleCode
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async function toggleModule(graph: Graph, moduleCode: string): Promise<void> {
     /**
@@ -97,19 +100,23 @@ export function GraphRepository(database?: DataSource): Repository {
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
-      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
+      placed: graph.modulesPlaced.map(Flatten.module).indexOf(moduleCode),
+      hidden: graph.modulesHidden.map(Flatten.module).indexOf(moduleCode),
       invalid: -1,
     }
-    const state: ModuleState =
-      index.placed !== -1
-        ? 'placed'
-        : index.hidden !== -1
-          ? 'hidden'
-          : 'invalid'
+    /**
+     * @returns {ModuleState}
+     */
+    function getState(): ModuleState {
+      if (index.placed !== -1) return 'placed'
+      if (index.hidden !== -1) return 'hidden'
+      return 'invalid'
+    }
+    const state = getState()
 
     /**
      * toggles the modules between placed and hidden
+     *
      * @param {Module[]} src
      * @param {Module[]} dest
      */
@@ -134,9 +141,10 @@ export function GraphRepository(database?: DataSource): Repository {
 
   /**
    * preliminary function to build up bulk of this query
+   *
    * @param {string} userId
    * @param {string} degreeId
-   * @return {SelectQueryBuilder<Graph>}
+   * @returns {SelectQueryBuilder<Graph>}
    */
   function queryByUserAndDegreeId(
     userId: string,
@@ -154,7 +162,7 @@ export function GraphRepository(database?: DataSource): Repository {
   /**
    * @param {string} userId
    * @param {string} degreeId
-   * @return {Promise<Graph>}
+   * @returns {Promise<Graph>}
    */
   async function findOneByUserAndDegreeId(
     userId: string,
@@ -166,7 +174,7 @@ export function GraphRepository(database?: DataSource): Repository {
   /**
    * @param {string} userId
    * @param {string} degreeId
-   * @return {Promise<Graph>}
+   * @returns {Promise<Graph>}
    */
   async function findManyByUserAndDegreeId(
     userId: string,
@@ -178,11 +186,15 @@ export function GraphRepository(database?: DataSource): Repository {
   /**
    * Suggests modules from a single module.
    * Returns a subset of post-reqs for this module.
+   *
    * @param {Graph} graph
    * @param {string} moduleCode
-   * @return {Promise<Module[]>}
+   * @returns {Promise<Module[]>}
    */
-  async function suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]> {
+  async function suggestModulesFromOne(
+    graph: Graph,
+    moduleCode: string
+  ): Promise<Module[]> {
     // Load relations
     await GraphRepository(db).loadRelations(graph, {
       user: true,
@@ -193,41 +205,48 @@ export function GraphRepository(database?: DataSource): Repository {
     })
 
     // 1. Get all post-reqs for this mod
-    const module = await ModuleRepository(db).findOneBy({ moduleCode,
-    })
+    const module = await ModuleRepository(db).findOneBy({ moduleCode })
     const postReqs = module.fulfillRequirements
-    if (postReqs.length == 0) // deal with empty array gracefully
+    if (postReqs.length === 0) {
+      // deal with empty array gracefully
       return []
+    }
 
     // 2. Filter for eligible modules
-    const allEligibleModules = await UserRepository(db).eligibleModules(graph.user)
+    const allEligibleModules = await UserRepository(db).eligibleModules(
+      graph.user
+    )
     if (!allEligibleModules) return [] // temp fix
-    const filtered = allEligibleModules.filter((one) => postReqs.includes(one.moduleCode))
+    const filtered = allEligibleModules.filter((one) =>
+      postReqs.includes(one.moduleCode)
+    )
 
     // 3. Transform filtered into data with fields to sort by
     // -- get number of mods each filtered module unlocks
     const resolvedPromises = await Promise.all(
-      filtered.map((one) => UserRepository(db).getUnlockedModules(graph.user, one.moduleCode))
+      filtered.map((one) =>
+        UserRepository(db).getUnlockedModules(graph.user, one.moduleCode)
+      )
     )
-    const unlockedModuleCounts = resolvedPromises.map((one) => {
-      return one instanceof Array ? one.length : 0
-    })
+    const unlockedModuleCounts = resolvedPromises.map((one) =>
+      one instanceof Array ? one.length : 0
+    )
     // -- data processing
     const degreeModulesCodes = graph.degree.modules.map((one) => one.moduleCode)
     type Data = {
-      moduleCode: string,
-      inDegree: boolean,
-      numUnlockedModules: number,
-      origIdx: number,
+      moduleCode: string
+      inDegree: boolean
+      numUnlockedModules: number
+      origIdx: number
     }
-    const data = filtered.map((one, origIdx): Data => {
-      return {
+    const data = filtered.map(
+      (one, origIdx): Data => ({
         moduleCode: one.moduleCode,
         inDegree: degreeModulesCodes.includes(one.moduleCode),
         numUnlockedModules: unlockedModuleCounts[origIdx],
         origIdx,
-      }
-    })
+      })
+    )
 
     /**
      * Sorting comparator
@@ -235,14 +254,14 @@ export function GraphRepository(database?: DataSource): Repository {
      * - if a higher priority, return -1
      * - elif a lower priority, return 1
      * - else return 0
+     *
      * @param {Data} a
      * @param {Data} b
-     * @return {number}
+     * @returns {number}
      */
     function cmp(a: Data, b: Data): number {
-      if (a.inDegree != b.inDegree)
-        return a.inDegree ? -1 : 1
-      if (a.numUnlockedModules != b.numUnlockedModules)
+      if (a.inDegree !== b.inDegree) return a.inDegree ? -1 : 1
+      if (a.numUnlockedModules !== b.numUnlockedModules)
         return a.numUnlockedModules > b.numUnlockedModules ? -1 : 1
       return a.moduleCode < b.moduleCode ? -1 : 1
     }

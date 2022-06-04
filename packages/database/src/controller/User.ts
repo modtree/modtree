@@ -1,21 +1,23 @@
 import { Request, Response } from 'express'
 import { db } from '../config'
 import { DegreeRepository, UserRepository } from '../repository'
-import { emptyInit, flatten, copy } from '../utils'
-import type { UserController } from '../../types/controller'
+import { EmptyInit, Flatten, copy } from '../utils'
+import type { IUserController } from '../../types/controller'
 
 /** User api controller */
-export class userController implements UserController {
+export class UserController implements IUserController {
   private userRepo = UserRepository(db)
+
   private degreeRepo = DegreeRepository(db)
 
   /**
    * creates a Degree
+   *
    * @param {Request} req
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props = emptyInit.User
+    const props = EmptyInit.User
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
@@ -32,6 +34,7 @@ export class userController implements UserController {
 
   /**
    * creates a User
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -45,7 +48,7 @@ export class userController implements UserController {
         .json({ message: 'insufficient keys', requestKeys, requiredKeys })
       return
     }
-    const degreeIds: string[] = req.body.degreeIds
+    const { degreeIds } = req.body
     const degrees = await this.degreeRepo.findByIds(degreeIds)
     const user = await this.userRepo.findOne({
       where: { id },
@@ -58,6 +61,7 @@ export class userController implements UserController {
 
   /**
    * gets one User by id
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -65,7 +69,7 @@ export class userController implements UserController {
     this.userRepo
       .findOneById(req.params.userId)
       .then((user) => {
-        res.json(flatten.user(user))
+        res.json(Flatten.user(user))
       })
       .catch(() => {
         res.status(404).json({ message: 'User not found' })
@@ -74,6 +78,7 @@ export class userController implements UserController {
 
   /**
    * gets one User by id
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -99,6 +104,7 @@ export class userController implements UserController {
 
   /**
    * get all Users
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -110,12 +116,13 @@ export class userController implements UserController {
         savedDegrees: true,
       },
     })
-    const flat = users.map((u) => flatten.user(u))
+    const flat = users.map((u) => Flatten.user(u))
     res.json(flat)
   }
 
   /**
    * hard-deletes one User by id
+   *
    * @param {Request} req
    * @param {Response} res
    */

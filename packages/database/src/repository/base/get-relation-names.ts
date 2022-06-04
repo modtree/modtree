@@ -7,7 +7,7 @@ import { Base } from '../../entity'
  *
  * @param {DataSource} database
  * @param {T} Entity
- * @return {Record<string, boolean>}
+ * @returns {Record<string, boolean>}
  */
 export function getRelationNames<T extends EntityTarget<Base>>(
   database: DataSource,
@@ -17,6 +17,8 @@ export function getRelationNames<T extends EntityTarget<Base>>(
   const relationNames = meta.relations.map((r) => r.propertyName)
   // make into Record for loadRelations
   const res: Record<string, boolean> = {}
-  relationNames.forEach((r) => (res[r] = true))
+  relationNames.forEach((r) => {
+    res[r] = true
+  })
   return res
 }

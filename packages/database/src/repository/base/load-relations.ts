@@ -7,7 +7,7 @@ import { Base } from '../../entity'
  * as a repository method
  *
  * @param {Repository<Base>} repository
- * @return {LoadRelationsMethod}
+ * @returns {LoadRelations<Base>}
  */
 export function useLoadRelations(
   repository: Repository<Base>
@@ -30,7 +30,7 @@ export function useLoadRelations(
       relations,
     })
     // iterate through the requested relations and mutate the entity
-    Object.keys(relations).map((key) => {
+    Object.keys(relations).forEach((key) => {
       entity[key] = res[key]
     })
   }

@@ -5,47 +5,45 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import { Base } from './Base'
-import { Module } from './Module'
-import { Degree } from './Degree'
-import { Graph } from './Graph'
+import { IDegree, IGraph, IModule, IUser } from './types'
 
 @Entity({ name: 'user' })
-export class User extends Base {
+/** User entity */
+export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
-    id: string
+  id: string
 
   @Column()
-    displayName: string
+  displayName: string
 
   @Column()
-    username: string
+  username: string
 
   @Column()
-    email: string
+  email: string
 
-  @ManyToMany(() => Module)
+  @ManyToMany('Module', 'user')
   @JoinTable()
-    modulesDone: Module[]
+  modulesDone: IModule[]
 
-  @ManyToMany(() => Module)
+  @ManyToMany('Module', 'user')
   @JoinTable()
-    modulesDoing: Module[]
+  modulesDoing: IModule[]
 
   @Column()
-    matriculationYear: number
+  matriculationYear: number
 
   @Column()
-    graduationYear: number
+  graduationYear: number
 
   @Column()
-    graduationSemester: number
+  graduationSemester: number
 
-  @ManyToMany(() => Degree)
+  @ManyToMany('Degree', 'user')
   @JoinTable()
-    savedDegrees: Degree[]
+  savedDegrees: IDegree[]
 
-  @ManyToMany(() => Graph)
+  @ManyToMany("Graph", 'user')
   @JoinTable()
-    savedGraphs: Graph[]
+  savedGraphs: IGraph[]
 }

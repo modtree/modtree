@@ -6,7 +6,6 @@ import { analyze } from '../analyze'
 
 analyze(() => container(db, () => ModuleCondensedRepository(db).find())).then(
   (res) => {
-    if (!res) return
     fs.writeFileSync('results.json', JSON.stringify(res))
   }
 )
