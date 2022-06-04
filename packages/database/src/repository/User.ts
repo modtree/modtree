@@ -100,7 +100,7 @@ export function UserRepository(database?: DataSource): Repository {
    *
    * @param {User} user
    * @param {string[]} addedModuleCodes
-   * @return {Promise<Module[]>}
+   * @returns {Promise<Module[]>}
    */
   async function eligibleModules(
     user: User,
@@ -134,8 +134,7 @@ export function UserRepository(database?: DataSource): Repository {
    *
    * @param {User} user
    * @param {string[]} addedModuleCodes
-   *
-   * @return {Promise<Module[]>}
+   * @returns {Promise<Module[]>}
    */
   async function getPostReqs(
     user: User,
@@ -193,7 +192,7 @@ export function UserRepository(database?: DataSource): Repository {
    *
    * @param {User} user
    * @param {string} moduleCode
-   * @return {Promise<Module[]>}
+   * @returns {Promise<Module[]>}
    */
   async function getUnlockedModules(
     user: User,

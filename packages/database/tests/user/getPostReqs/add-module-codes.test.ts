@@ -1,8 +1,8 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
 import { ModuleRepository, UserRepository } from '../../../src/repository'
-import { Init } from '../../../types/entity'
-import { init } from '../../init'
+import type * as InitProps from '../../../types/entity'
+import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
 
@@ -14,10 +14,10 @@ beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
 
 it('Saves an empty user', async () => {
-  const props: Init.UserProps = init.emptyUser
+  const props: InitProps.User = Init.emptyUser
   const res = await container(db, async () => {
     await UserRepository(db).initialize(props)
-    return await UserRepository(db).findOneByUsername(props.username)
+    return UserRepository(db).findOneByUsername(props.username)
   })
   expect(res).toBeDefined()
   if (!res) return

@@ -15,7 +15,7 @@ const t: Partial<{
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => Mockup.user(db))
+    .then(() => Mockup.user(db, Init.user1, Init.degree1))
     .then((res) => {
       t.user = res.user
       t.degree = res.degree

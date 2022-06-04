@@ -11,6 +11,12 @@ import { setupGraph } from './setup'
 
 const dbName = 'test_suggest_modules_from_one'
 const db = getSource(dbName)
+// TODO: change to t.
+// Entities that will be created
+let graph: Graph
+// Data that will be populated
+let suggestedModulesCodes: string[]
+let postReqs: string[]
 
 beforeAll(async () => {
   await setup(dbName)
@@ -20,19 +26,26 @@ beforeAll(async () => {
 })
 afterAll(() => teardown(dbName))
 
+// TODO: remove
 importChecks({
   entities: [Module, Degree, User, Graph],
-  repositories: [ModuleRepository(db), UserRepository(db), DegreeRepository(db), GraphRepository(db)],
+  repositories: [
+    ModuleRepository(db),
+    UserRepository(db),
+    DegreeRepository(db),
+    GraphRepository(db),
+  ],
 })
 
-const expected = ['CS2107', 'CS2100', 'CS2030', 'CP2106', 'CS2040C', 'CS2040', 'CS2030S']
-
-// Entities that will be created
-let graph: Graph
-
-// Data that will be populated
-let suggestedModulesCodes: string[]
-let postReqs: string[]
+const expected = [
+  'CS2107',
+  'CS2100',
+  'CS2030',
+  'CP2106',
+  'CS2040C',
+  'CS2040',
+  'CS2030S',
+]
 
 describe('Graph.initialize', () => {
   describe('Suggests post-reqs of the given module', () => {
@@ -41,8 +54,7 @@ describe('Graph.initialize', () => {
         GraphRepository(db).suggestModulesFromOne(graph, 'CS1010')
       )
       expect(res).toBeDefined()
-      if (!res)
-        return
+      if (!res) return
       res.forEach((one) => {
         expect(one).toBeInstanceOf(Module)
       })
@@ -64,12 +76,13 @@ describe('Graph.initialize', () => {
   describe('Does not suggest post-reqs of the given module', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
-      const res = await endpoint(db, () => 
-        container(db, () => ModuleRepository(db).findOneBy({ moduleCode: 'CS1010' }))
+      const res = await endpoint(db, () =>
+        container(db, () =>
+          ModuleRepository(db).findOneBy({ moduleCode: 'CS1010' })
+        )
       )
       expect(res).toBeDefined()
-      if (!res)
-        return
+      if (!res) return
       postReqs = res.fulfillRequirements
       // main test
       const moduleCodes = ['MA3269', 'DSA3102']
@@ -99,4 +112,3 @@ describe('Graph.initialize', () => {
     })
   })
 })
-

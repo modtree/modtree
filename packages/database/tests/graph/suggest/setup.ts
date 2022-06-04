@@ -1,11 +1,11 @@
-import { Degree, User, Graph } from '../../../src/entity'
-import { init } from '../../init'
-import { Init } from '../../../types/entity'
-import { DegreeRepository, GraphRepository, UserRepository } from '../../../src/repository'
 import { DataSource } from 'typeorm'
+import { Degree, User, Graph } from '../../../src/entity'
+import Init from '../../init'
+import type * as InitProps from '../../../types/entity'
+import { DegreeRepository, GraphRepository, UserRepository } from '../../../src/repository'
 import { container } from '../../../src/data-source'
 
-const degreeProps: Init.DegreeProps = {
+const degreeProps: InitProps.Degree = {
   moduleCodes: [
     'CS1010',
     'CG2111A', // in modulesDone, should not suggest
@@ -19,8 +19,8 @@ const degreeProps: Init.DegreeProps = {
   title: 'Custom Degree'
 }
 
-const userProps: Init.UserProps = {
-  ...init.emptyUser,
+const userProps: InitProps.User = {
+  ...Init.emptyUser,
   modulesDone: ['CS1010', 'CG2111A'],
   modulesDoing: ['IT2002'],
 }
@@ -30,7 +30,7 @@ const userProps: Init.UserProps = {
  * init user, init degree
  *
  * @param {DataSource} db
- * @return {Promise<Graph | void>}
+ * @returns {Promise<Graph | void>}
  */
 export async function setupGraph(db: DataSource): Promise<Graph | void> {
   let user: User
@@ -48,7 +48,7 @@ export async function setupGraph(db: DataSource): Promise<Graph | void> {
       })
     await Promise.all([userRes, degreeRes])
     // init graph, depends on user and degree
-    const graphProps: Init.GraphProps = {
+    const graphProps: InitProps.Graph = {
       userId: user.id,
       degreeId: degree.id,
       modulesPlacedCodes: [],

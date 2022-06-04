@@ -67,7 +67,7 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   props.modulesDone = ['CP2106']
   const res = await container(db, async () => {
     await UserRepository(db).initialize(props)
-    return await UserRepository(db).findOneByUsername(props.username)
+    return UserRepository(db).findOneByUsername(props.username)
   })
   expect(res).toBeDefined()
   if (!res) return

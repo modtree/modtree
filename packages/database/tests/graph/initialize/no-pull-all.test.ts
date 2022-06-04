@@ -4,6 +4,7 @@ import { GraphRepository } from '../../../src/repository'
 import { oneUp } from '../../../src/utils'
 import { setup, teardown } from '../../environment'
 import Mockup from '../../mockup'
+import Init from '../../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -12,7 +13,7 @@ const t: Partial<{ user: User; degree: Degree; graph: Graph }> = {}
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => Mockup.graph(db))
+    .then(() => Mockup.graph(db, Init.user1, Init.degree1))
     .then((res) => {
       t.user = res.user
       t.degree = res.degree

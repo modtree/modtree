@@ -12,7 +12,7 @@ const t: Partial<{ degree: Degree; combinedModuleCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => Mockup.degree(db))
+    .then(() => Mockup.degree(db, Init.degree1))
     .then((res) => {
       t.degree = res.degree
       t.combinedModuleCodes = res.degree.modules.map(Flatten.module)
