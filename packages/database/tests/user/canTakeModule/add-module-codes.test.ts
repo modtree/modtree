@@ -5,7 +5,7 @@ import { Init } from '../../../types/entity'
 import { init } from '../../init'
 import { setup, importChecks, teardown } from '../../environment'
 
-const dbName = 'test_user_canTakeModule_no_optional_params'
+const dbName = 'test_user_canTakeModule_add_module_codes'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
@@ -17,7 +17,7 @@ importChecks({
 })
 
 let user: User
-it('Saves a user', async () => {
+it('Saves an empty user', async () => {
   const props: Init.UserProps = init.emptyUser
   const res = await endpoint(db, () =>
     container(db, async () => {
