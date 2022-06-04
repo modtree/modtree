@@ -31,14 +31,16 @@ export interface GraphRepository extends BaseRepo<Graph, Init.GraphProps> {
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]>
+  suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]>
 }
 
 export interface UserRepository extends BaseRepo<User, Init.UserProps> {
-  canTakeModule(user: User, moduleCode: string): Promise<boolean | void>
+  canTakeModule(user: User, moduleCode: string, addModuleCodes?: string[]): Promise<boolean | void>
   loadRelations: LoadRelations<User>
   findOneByUsername(username: string): Promise<User>
-  eligibleModules(user: User): Promise<Module[]>
-  getPostReqs(user: User): Promise<Module[]>
+  eligibleModules(user: User, addModuleCodes?: string[]): Promise<Module[]>
+  getPostReqs(user: User, addModuleCodes?: string[]): Promise<Module[]>
+  getUnlockedModules(user: User, moduleCode: string): Promise<Module[]>
   findOneById(id: string): Promise<User>
   addDegree(user: User, degreeId: string): Promise<void>
   findDegree(user: User, degreeId: string): Promise<Degree>

@@ -1,20 +1,16 @@
-import { container, getSource } from '../../src/data-source'
-import { Module, User } from '../../src/entity'
-import { ModuleRepository, UserRepository } from '../../src/repository'
-import { init } from '../init'
-import { setup, importChecks, teardown } from '../environment'
-import { flatten, oneUp } from '../../src/utils'
+import { container, getSource } from '../../../src/data-source'
+import { Module, User } from '../../../src/entity'
+import { ModuleRepository, UserRepository } from '../../../src/repository'
+import { Init } from '../../../types/entity'
+import { init } from '../../init'
+import { setup, teardown } from '../../environment'
+import { flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
-
-importChecks({
-  entities: [Module, User],
-  repositories: [ModuleRepository(db), UserRepository(db)],
-})
 
 const t: Partial<{
   user: User
@@ -62,4 +58,22 @@ it('Gets all post-reqs', async () => {
         expect(t.postReqsCodes.sort()).toEqual(expected.sort())
       })
   )
+})
+
+it('Returns empty array for modules with empty string fulfillRequirements', async () => {
+  // init new user with CP2106
+  // CP2106 has empty string fulfillRequirements
+  const props: Init.UserProps = init.user1
+  props.modulesDone = ['CP2106']
+  const res = await container(db, async () => {
+    await UserRepository(db).initialize(props)
+    return await UserRepository(db).findOneByUsername(props.username)
+  })
+  expect(res).toBeDefined()
+  if (!res) return
+  // Get post reqs
+  const postReqs = await container(db, () => UserRepository(db).getPostReqs(res))
+  expect(postReqs).toBeDefined()
+  if (!postReqs) return
+  expect(postReqs).toEqual([])
 })

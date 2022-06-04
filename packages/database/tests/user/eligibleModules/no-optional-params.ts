@@ -1,20 +1,15 @@
-import { container, getSource } from '../../src/data-source'
-import { Module, User } from '../../src/entity'
-import { ModuleRepository, UserRepository } from '../../src/repository'
-import { init } from '../init'
-import { setup, importChecks, teardown } from '../environment'
-import { flatten, oneUp } from '../../src/utils'
+import { container, getSource } from '../../../src/data-source'
+import { User } from '../../../src/entity'
+import { UserRepository } from '../../../src/repository'
+import { init } from '../../init'
+import { setup, teardown } from '../../environment'
+import { flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
 afterAll(() => db.destroy().then(() => teardown(dbName)))
-
-importChecks({
-  entities: [Module, User],
-  repositories: [ModuleRepository(db), UserRepository(db)],
-})
 
 const t: Partial<{user: User}> = {}
 
