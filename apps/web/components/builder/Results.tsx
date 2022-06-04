@@ -17,7 +17,6 @@ export const ResultDisplay = () => {
   const searchedModuleCondensed = useSelector<SearchState, ModuleCondensed[]>(
     (state) => state.search.moduleCondensed
   )
-  console.log('got here')
   useEffect(() => {
     console.log('results component', searchedModuleCondensed[0])
   }, [searchedModuleCondensed])

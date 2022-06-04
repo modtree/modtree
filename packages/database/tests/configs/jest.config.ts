@@ -2,7 +2,7 @@ import type { Config } from '@jest/types'
 
 export const all: Config.InitialOptionsWithRootDir = {
   rootDir: '../..',
-  // lets console logs show
+  // show console logs
   silent: true,
   // shows results of each test function within each test file
   verbose: true,
@@ -25,7 +25,7 @@ export const ci: Config.InitialOptions = {
   testMatch: ['**/tests/**/*.test.ts'],
   testPathIgnorePatterns: [
     ...all.testPathIgnorePatterns,
-    'module-pull',
+    'module/pull',
     'server',
   ],
 }
@@ -41,7 +41,7 @@ export const server: Config.InitialOptions = {
   silent: false,
 }
 
-const khang = ['pull-all*']
+const khang = ['module/pull']
 export const k: Config.InitialOptions = {
   ...all,
   testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
@@ -53,6 +53,20 @@ export const w: Config.InitialOptions = {
   ...all,
   testMatch: [`**/tests/**/${wTest}.test.ts`],
   silent: false,
+}
+
+/**
+ * a flexible config for running categorized tests
+ * @param {string} group
+ * @return {any}
+ */
+export function group(): any {
+  const args = process.argv
+  const s = args.indexOf('./tests/configs/group.ts')
+  return {
+    ...all,
+    testMatch: [`**/tests/${args[s + 1]}/**/*.test.ts`],
+  }
 }
 
 export default all
