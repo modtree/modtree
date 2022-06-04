@@ -1,5 +1,5 @@
 import { Repository, FindOptionsRelations } from 'typeorm'
-import type * as InitProps from './entity'
+import type * as InitProps from './init-props'
 import type {
   Graph,
   User,
