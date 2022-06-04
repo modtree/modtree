@@ -1,35 +1,37 @@
 import { PrereqTree } from '../../types/nusmods'
+
 export * from './array'
 export * from './object'
 export * from './string'
 export * from './entity'
 export * from './empty'
 
-export namespace utils {
+/**
+ * unsorted utils
+ */
+export class Utils {
   /**
    * sees if a user is eligible to take a mod, given the modules he/she has cleared
+   *
    * @param {PrereqTree} prereqTree
    * @param {string[]} modulesCleared
-   * @return {boolean}
+   * @returns {boolean}
    */
-  export function checkTree(
-    prereqTree: PrereqTree,
-    modulesCleared: string[]
-  ): boolean {
+  static checkTree(prereqTree: PrereqTree, modulesCleared: string[]): boolean {
     if (prereqTree === '') return true
-    else if (typeof prereqTree === 'string') {
+    if (typeof prereqTree === 'string') {
       return modulesCleared.includes(prereqTree)
-    } else if (Array.isArray(prereqTree.and)) {
-      return prereqTree.and.every((one: PrereqTree) =>
-        checkTree(one, modulesCleared)
-      )
-    } else if (Array.isArray(prereqTree.or)) {
-      return prereqTree.or.some((one: PrereqTree) =>
-        checkTree(one, modulesCleared)
-      )
-    } else {
-      console.warn('not supposed to be here')
-      return true
     }
+    if (Array.isArray(prereqTree.and)) {
+      return prereqTree.and.every((one: PrereqTree) =>
+        Utils.checkTree(one, modulesCleared)
+      )
+    }
+    if (Array.isArray(prereqTree.or)) {
+      return prereqTree.or.some((one: PrereqTree) =>
+        Utils.checkTree(one, modulesCleared)
+      )
+    }
+    throw new Error('not supposed to be here')
   }
 }

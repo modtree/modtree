@@ -1,15 +1,16 @@
-import { db } from '../config'
 import { Request, Response } from 'express'
 import { Like } from 'typeorm'
+import { db } from '../config'
 import { ModuleCondensedRepository } from '../repository'
-import type { ModuleCondensedController } from '../../types/controller'
+import type { IModuleCondensedController } from '../../types/controller'
 
 /** ModuleCondensed api controller */
-export class moduleCondensedController implements ModuleCondensedController {
+export class ModuleCondensedController implements IModuleCondensedController {
   private moduleRepo = ModuleCondensedRepository(db)
 
   /**
    * returns all the modules in the database
+   *
    * @param {Request} req
    * @param {Response} res
    */
@@ -20,6 +21,7 @@ export class moduleCondensedController implements ModuleCondensedController {
 
   /**
    * searches the modules in the database (using a substring)
+   *
    * @param {Request} req
    * @param {Response} res
    */

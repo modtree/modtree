@@ -7,6 +7,7 @@ export interface BaseSqlInterface {
 
   /**
    * removes a single table from a mysql database
+   *
    * @param {string} database
    * @param {string} table
    */
@@ -14,6 +15,7 @@ export interface BaseSqlInterface {
 
   /**
    * removes a list of tables from a mysql database
+   *
    * @param {string} database
    * @param {string[]} tables
    */
@@ -21,6 +23,7 @@ export interface BaseSqlInterface {
 
   /**
    * drops the database
+   *
    * @param {string} database
    */
   dropDatabase(database: string): Promise<void>
@@ -29,12 +32,14 @@ export interface BaseSqlInterface {
    * a very aggressive function that drops the database
    * and then recreates it for a completely fresh start
    * so ensure .env.test has the corrent database name.
+   *
    * @param {string} database
    */
   clearDatabase(database: string): Promise<void>
 
   /**
    * restores SQL database from a file
+   *
    * @param {string} database
    * @param {string} filename
    */
@@ -42,6 +47,7 @@ export interface BaseSqlInterface {
 
   /**
    * interactive prompt to guide the user to restore an SQL database
+   *
    * @param {string} database
    */
   restorePrompted(database: string): void
@@ -49,6 +55,7 @@ export interface BaseSqlInterface {
 
   /**
    * dumps a database snapshot to a .sql file
+   *
    * @param {database}
    */
   dump(database: string): Promise<void>

@@ -1,17 +1,19 @@
-import { log } from '../cli'
 import { inspect } from 'util'
+import { log } from '../cli'
 import { endpoint } from '../data-source'
 import { ModtreeFunction } from '../../types/modtree'
 import { db } from '../config'
 
 type Verbosity = 'none' | 'verbose' | 'normal'
 
-namespace print {
+/** prints analytics */
+class Print {
   /**
    * prints the keys of the response
+   *
    * @param {any} response
    */
-  export function keys(response: any) {
+  static keys(response: any) {
     // check for null response
     if (response === undefined || response === null) {
       return
@@ -27,10 +29,11 @@ namespace print {
 
   /**
    * prints the full contents of the response
+   *
    * @param {any} response
    * @param {Verbosity} verbosity
    */
-  export function data(response: any, verbosity: Verbosity) {
+  static data(response: any, verbosity: Verbosity) {
     // if verbosity is none, return immediately
     if (verbosity === 'none') {
       return
@@ -51,9 +54,10 @@ namespace print {
 
   /**
    * prints the length of the response, if it's an array or a set
+   *
    * @param {any} response
    */
-  export function length(response: any) {
+  static size(response: any) {
     // check for null response
     if (response === undefined || response === null) {
       return
@@ -64,28 +68,30 @@ namespace print {
     }
     if (response instanceof Array) {
       console.log('size of Array:', response.length)
-      return
+      
     }
   }
 }
 
 /**
  * prints the return value of a function to be analyzed
+ *
  * @param {any} response
  * @param {Verbosity} verbosity
  */
 function printResponse(response: any, verbosity: Verbosity) {
   log.yellow('─────── BEGIN RESPONSE ───────')
   // only print data if set to verbose
-  print.data(response, verbosity)
+  Print.data(response, verbosity)
   // always print keys
-  print.keys(response)
-  print.length(response)
+  Print.keys(response)
+  Print.size(response)
   log.yellow('──────── END RESPONSE ────────')
 }
 
 /**
  * analyzes the output of an endpoint function
+ *
  * @param {ModtreeFunction} callback
  * @param {Verbosity} verbosity
  */
@@ -98,5 +104,4 @@ export async function analyze<T>(
     return
   }
   printResponse(response, verbosity)
-  return response
 }

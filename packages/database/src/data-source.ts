@@ -6,8 +6,9 @@ import { config } from './config'
 
 /**
  * custom source creator
+ *
  * @param {string} database to use
- * @return {DataSource}
+ * @returns {DataSource}
  */
 export function getSource(database: string): DataSource {
   return new DataSource({
@@ -18,9 +19,10 @@ export function getSource(database: string): DataSource {
 
 /**
  * a wrapper for typeorm-based database connections
+ *
  * @param {DataSource} database
  * @param {ModtreeFunction} fn
- * @return {Promise<T | void>}
+ * @returns {Promise<T | void>}
  */
 export function container<T>(
   database: DataSource,
@@ -44,9 +46,10 @@ export function container<T>(
 /**
  * closes the connection to database after everything is done
  * meant to be an overall wrapper for all endpoint functions.
+ *
  * @param {DataSource} database
  * @param {ModtreeFunction<T>} callback
- * @return {Promise<T | void>}
+ * @returns {Promise<T | void>}
  */
 export function endpoint<T>(
   database: DataSource,

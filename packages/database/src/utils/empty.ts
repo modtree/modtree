@@ -1,10 +1,11 @@
-import { Init } from '../../types/entity'
+import type * as InitProps from '../../types/entity'
 
-export namespace emptyInit {
+/** empty data */
+export class EmptyInit {
   /**
    * empty User
    */
-  export const User: Init.UserProps = {
+  static User: InitProps.User = {
     displayName: '',
     username: '',
     modulesDone: [],
@@ -18,7 +19,7 @@ export namespace emptyInit {
   /**
    * empty Degree
    */
-  export const Degree: Init.DegreeProps = {
+  static Degree: InitProps.Degree = {
     moduleCodes: [],
     title: '',
   }
@@ -26,7 +27,7 @@ export namespace emptyInit {
   /**
    * empty Graph
    */
-  export const Graph: Init.GraphProps = {
+  static Graph: InitProps.Graph = {
     userId: '',
     degreeId: '',
     modulesPlacedCodes: [],

@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import { Init } from '../../types/entity'
+import type * as InitProps from '../../types/entity'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { getDataSource, useLoadRelations, getRelationNames } from './base'
@@ -8,7 +8,7 @@ import type { DegreeRepository as Repository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
- * @return {DegreeRepository}
+ * @returns {DegreeRepository}
  */
 export function DegreeRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
@@ -17,10 +17,11 @@ export function DegreeRepository(database?: DataSource): Repository {
 
   /**
    * Adds a Degree to DB
-   * @param {DegreeInitProps} props
-   * @return {Promise<Degree>}
+   *
+   * @param {InitProps.Degree} props
+   * @returns {Promise<Degree>}
    */
-  async function initialize(props: Init.DegreeProps): Promise<Degree> {
+  async function initialize(props: InitProps.Degree): Promise<Degree> {
     const { moduleCodes, title } = props
     const degree = BaseRepo.create({ title })
     // find modules required, to create many-to-many relation
@@ -32,6 +33,7 @@ export function DegreeRepository(database?: DataSource): Repository {
 
   /**
    * Adds Modules to a Degree
+   *
    * @param {Degree} degree
    * @param {string[]} moduleCodes
    */
@@ -56,7 +58,7 @@ export function DegreeRepository(database?: DataSource): Repository {
 
   /**
    * @param {string} title
-   * @return {Promise<Degree>}
+   * @returns {Promise<Degree>}
    */
   async function findOneByTitle(title: string): Promise<Degree> {
     return BaseRepo.createQueryBuilder('degree')
@@ -67,8 +69,9 @@ export function DegreeRepository(database?: DataSource): Repository {
 
   /**
    * Returns a Degree with all relations loaded
+   *
    * @param {string} id
-   * @return {Promise<Degree>}
+   * @returns {Promise<Degree>}
    */
   async function findOneById(id: string): Promise<Degree> {
     // get user by id
@@ -83,7 +86,7 @@ export function DegreeRepository(database?: DataSource): Repository {
 
   /**
    * @param {string[]} degreeIds
-   * @return {Promise<Module[]>}
+   * @returns {Promise<Degree[]>}
    */
   async function findByIds(degreeIds: string[]): Promise<Degree[]> {
     if (degreeIds.length === 0) {

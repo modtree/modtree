@@ -7,6 +7,7 @@ import {
 import { Base } from './Base'
 
 @Entity({ name: 'module' })
+/** Module entity */
 export class Module extends Base {
   @PrimaryGeneratedColumn('uuid')
     id: string

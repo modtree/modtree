@@ -5,29 +5,27 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import { User } from './User'
-import { Degree } from './Degree'
-import { Module } from './Module'
-import { Base } from './Base'
+import { IDegree, IGraph, IModule, IUser } from './types'
 
 @Entity({ name: 'graph' })
-export class Graph extends Base {
+/** Graph entity */
+export class Graph implements IGraph {
   @PrimaryGeneratedColumn('uuid')
     id: string
 
-  @ManyToOne(() => User)
+  @ManyToOne("User", 'graph')
   @JoinTable()
-    user: User
+    user: IUser
 
-  @ManyToOne(() => Degree)
+  @ManyToOne("Degree", 'graph')
   @JoinTable()
-    degree: Degree
+    degree: IDegree
 
-  @ManyToMany(() => Module)
+  @ManyToMany('Module', 'graph')
   @JoinTable()
-    modulesPlaced: Module[]
+    modulesPlaced: IModule[]
 
-  @ManyToMany(() => Module)
+  @ManyToMany('Module', 'graph')
   @JoinTable()
-    modulesHidden: Module[]
+    modulesHidden: IModule[]
 }

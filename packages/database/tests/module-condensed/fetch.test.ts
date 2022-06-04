@@ -1,4 +1,4 @@
-import { flatten, oneUp } from '../../src/utils'
+import { Flatten, oneUp } from '../../src/utils'
 import { container, getSource } from '../../src/data-source'
 import { ModuleCondensed } from '../../src/entity'
 import { ModuleCondensedRepository } from '../../src/repository'
@@ -17,7 +17,7 @@ test('moduleCondensed.fetch', async () => {
       .then((moduleList) => {
         expect(moduleList).toBeInstanceOf(Array)
         expect(moduleList[0]).toBeInstanceOf(ModuleCondensed)
-        const s = new Set(moduleList.map(flatten.module))
+        const s = new Set(moduleList.map(Flatten.module))
         /**
          * expect all module codes to be unique
          */

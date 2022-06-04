@@ -8,10 +8,11 @@ const Sequencer = require('@jest/test-sequencer').default
 class CustomSequencer extends Sequencer {
   /**
    * where the magic happens
+   *
    * @param {any} tests
-   * @return {any[]}
+   * @returns {any[]}
    */
-  sort(tests) {
+  static sort(tests) {
     const copyTests = Array.from(tests)
     /** put base test in front */
     const baseFirst = copyTests.filter((t) => t.path.endsWith('base.test.ts'))

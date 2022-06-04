@@ -1,12 +1,12 @@
-const config = require('modtree-config/eslint-backend')
+/**
+ * database tests config
+ */
 module.exports = {
-  ...config,
   env: {
     'jest/globals': true,
   },
-  plugins: [...config.plugins, 'jest'],
+  plugins: ['jest'],
   rules: {
-    ...config.rules,
     'new-cap': 'off',
   },
 }

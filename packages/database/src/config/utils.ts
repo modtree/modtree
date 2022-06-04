@@ -6,7 +6,8 @@ const typeTarget = () =>
 
 /**
  * gets project database type from .env
- * @return {DatabaseType}
+ *
+ * @returns {SupportedDatabases}
  */
 export function getDatabaseType(): SupportedDatabases {
   const dbType = process.env[typeTarget()].toLowerCase()
@@ -15,7 +16,7 @@ export function getDatabaseType(): SupportedDatabases {
 }
 
 /**
- * @return {number} the default port of each database
+ * @returns {number} the default port of each database
  */
 export function getDatabasePort(): number {
   const dbType = process.env[typeTarget()].toLowerCase()
@@ -24,7 +25,7 @@ export function getDatabasePort(): number {
 }
 
 /**
- * @return {string} the default port of each database
+ * @returns {string} the default port of each database
  */
 export function getPrefix(): string {
   const dbType = process.env[typeTarget()]
@@ -37,6 +38,7 @@ export function getPrefix(): string {
 
 /**
  * prints the blue box before each run
+ *
  * @param {DataSourceOptions} config
  */
 export function boxLog(config: DataSourceOptions) {

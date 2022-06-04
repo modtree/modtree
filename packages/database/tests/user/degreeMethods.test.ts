@@ -2,8 +2,8 @@ import { container, getSource } from '../../src/data-source'
 import { User, Degree } from '../../src/entity'
 import { UserRepository } from '../../src/repository'
 import { setup, teardown } from '../environment'
-import { mockup } from '../mockup'
-import { init } from '../init'
+import Mockup from '../mockup'
+import Init from '../init'
 import { oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -15,7 +15,7 @@ const t: Partial<{
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => mockup.user(db))
+    .then(() => Mockup.user(db))
     .then((res) => {
       t.user = res.user
       t.degree = res.degree
@@ -56,14 +56,11 @@ describe('User.findDegree', () => {
   })
 
   it('Throws error if degree not found', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
     await container(db, () =>
-      UserRepository(db)
-        .findDegree(t.user, init.invalidUUID)
-        .catch((err) => {
-          expect(err).toBeInstanceOf(Error)
-          expect(err.message).toBe('Degree not found in User')
-        })
+      expect(() =>
+        UserRepository(db).findDegree(t.user, Init.invalidUUID)
+      ).rejects.toThrowError(Error('Degree not found in User'))
     )
   })
 })
@@ -78,14 +75,11 @@ describe('User.removeDegree', () => {
   })
 
   it('Throws error if degree not found', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
     await container(db, () =>
-      UserRepository(db)
-        .removeDegree(t.user, init.invalidUUID)
-        .catch((err) => {
-          expect(err).toBeInstanceOf(Error)
-          expect(err.message).toBe('Degree not found in User')
-        })
+      expect(() =>
+        UserRepository(db).removeDegree(t.user, Init.invalidUUID)
+      ).rejects.toThrowError(Error('Degree not found in User'))
     )
   })
 })

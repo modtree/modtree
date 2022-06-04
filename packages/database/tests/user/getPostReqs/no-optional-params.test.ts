@@ -1,10 +1,10 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
 import { ModuleRepository, UserRepository } from '../../../src/repository'
-import { Init } from '../../../types/entity'
-import { init } from '../../init'
+import type * as InitProps from '../../../types/entity'
+import Init from '../../init'
 import { setup, teardown } from '../../environment'
-import { flatten, oneUp } from '../../../src/utils'
+import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -19,7 +19,7 @@ const t: Partial<{
 
 it('Saves a user', async () => {
   expect.assertions(1)
-  const props = init.emptyUser
+  const props = Init.emptyUser
   props.modulesDone.push('MA2001')
   props.modulesDoing.push('MA2101')
   await container(db, () =>
@@ -40,7 +40,7 @@ it('Gets all post-reqs', async () => {
       .getPostReqs(t.user)
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
-        t.postReqsCodes = res.map(flatten.module)
+        t.postReqsCodes = res.map(Flatten.module)
         return res
       })
       .then(() =>
@@ -63,7 +63,7 @@ it('Gets all post-reqs', async () => {
 it('Returns empty array for modules with empty string fulfillRequirements', async () => {
   // init new user with CP2106
   // CP2106 has empty string fulfillRequirements
-  const props: Init.UserProps = init.user1
+  const props: InitProps.User = Init.user1
   props.modulesDone = ['CP2106']
   const res = await container(db, async () => {
     await UserRepository(db).initialize(props)

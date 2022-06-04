@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "outDir": "./lib"
-  },
-  "extends": "tsconfig/react-library.json",
-  "include": ["."],
-  "exclude": ["lib", "build", "node_modules"]
-}

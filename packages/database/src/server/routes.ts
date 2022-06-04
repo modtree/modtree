@@ -1,8 +1,8 @@
 import {
-  moduleCondensedController,
-  userController,
-  degreeController,
-  graphController,
+  ModuleCondensedController,
+  UserController,
+  DegreeController,
+  GraphController,
 } from '../controller'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
@@ -17,6 +17,7 @@ type RouteWithController<T> = Route<T> & { controller: Class<T> }
 
 /**
  * a factory function that adds routes to an existing route list
+ *
  * @param {RouteWithController<T>} arr
  * @param {Route<T>} routes
  * @param {Class<T>} controller
@@ -31,20 +32,7 @@ function addRoutes<T>(
   })
 }
 
-/**
- * gets all the routes for modtree's API
- * @return {RouteWithController<any>[]}
- */
-function getRoutes(): RouteWithController<any>[] {
-  const Routes = []
-  addRoutes(Routes, moduleCondensedRoutes, moduleCondensedController)
-  addRoutes(Routes, userRoutes, userController)
-  addRoutes(Routes, degreeRoutes, degreeController)
-  addRoutes(Routes, graphRoutes, graphController)
-  return Routes
-}
-
-const moduleCondensedRoutes: Route<moduleCondensedController>[] = [
+const moduleCondensedRoutes: Route<ModuleCondensedController>[] = [
   {
     action: 'list',
     route: '/modules/list',
@@ -57,7 +45,7 @@ const moduleCondensedRoutes: Route<moduleCondensedController>[] = [
   },
 ]
 
-const userRoutes: Route<userController>[] = [
+const userRoutes: Route<UserController>[] = [
   {
     action: 'create',
     route: '/user/create',
@@ -90,7 +78,7 @@ const userRoutes: Route<userController>[] = [
   },
 ]
 
-const degreeRoutes: Route<degreeController>[] = [
+const degreeRoutes: Route<DegreeController>[] = [
   {
     action: 'create',
     route: '/degree/create',
@@ -113,7 +101,7 @@ const degreeRoutes: Route<degreeController>[] = [
   },
 ]
 
-const graphRoutes: Route<graphController>[] = [
+const graphRoutes: Route<GraphController>[] = [
   {
     action: 'create',
     route: '/graph/create',
@@ -135,5 +123,19 @@ const graphRoutes: Route<graphController>[] = [
     method: 'get',
   },
 ]
+
+/**
+ * gets all the routes for modtree's API
+ *
+ * @returns {RouteWithController<any>[]}
+ */
+function getRoutes(): RouteWithController<any>[] {
+  const Routes = []
+  addRoutes(Routes, moduleCondensedRoutes, ModuleCondensedController)
+  addRoutes(Routes, userRoutes, UserController)
+  addRoutes(Routes, degreeRoutes, DegreeController)
+  addRoutes(Routes, graphRoutes, GraphController)
+  return Routes
+}
 
 export const Routes = getRoutes()

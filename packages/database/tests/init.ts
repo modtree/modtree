@@ -1,7 +1,10 @@
-import { Init } from '../types/entity'
+import type * as InitProps from '../types/entity'
 
-export namespace init {
-  export const degree1: Init.DegreeProps = {
+/**
+ * fake data for test cases
+ */
+export default class Init {
+  static degree1: InitProps.Degree = {
     moduleCodes: [
       'CS1101S',
       'CS1231S',
@@ -15,7 +18,8 @@ export namespace init {
     ],
     title: 'Computer Science',
   }
-  export const user1: Init.UserProps = {
+
+  static user1: InitProps.User = {
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
     email: 'khang@modtree.com',
@@ -25,14 +29,16 @@ export namespace init {
     graduationYear: 2025,
     graduationSemester: 2,
   }
-  export const graph1: Init.GraphProps = {
+
+  static graph1: InitProps.Graph = {
     userId: '',
     degreeId: '',
     modulesPlacedCodes: [],
     modulesHiddenCodes: [],
     pullAll: true,
   }
-  export const emptyUser: Init.UserProps = {
+
+  static emptyUser: InitProps.User = {
     displayName: 'Khang Vu Nguyen',
     username: 'definitelynotkhang',
     email: 'user@modtree.com',
@@ -42,6 +48,8 @@ export namespace init {
     graduationYear: 2025,
     graduationSemester: 2,
   }
-  export const invalidModuleCode = 'XXYYZZ'
-  export const invalidUUID = 'invalid-uuid'
+
+  static invalidModuleCode = 'XXYYZZ'
+
+  static invalidUUID = 'invalid-uuid'
 }

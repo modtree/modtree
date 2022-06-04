@@ -6,7 +6,7 @@ import {
   GraphRepository,
   UserRepository,
 } from '../src/repository'
-import { init } from './init'
+import Init from './init'
 
 type EntityRecord = {
   user: User
@@ -14,11 +14,9 @@ type EntityRecord = {
   graph: Graph
 }
 
-namespace Mockup {
-  export type User = Pick<EntityRecord, 'user' | 'degree'>
-  export type Degree = Pick<EntityRecord, 'degree'>
-  export type Graph = Pick<EntityRecord, 'user' | 'degree'>
-}
+  type MockupUser = Pick<EntityRecord, 'user' | 'degree'>
+  type MockupDegree = Pick<EntityRecord, 'degree'>
+  type MockupGraph = Pick<EntityRecord, 'user' | 'degree'>
 
 type MockupPromises = {
   user: (db: DataSource) => Promise<User>
@@ -27,11 +25,11 @@ type MockupPromises = {
 }
 
 /** mockup generator for tests */
-export class mockup {
+export default class Mockup {
   private static promise: MockupPromises = {
-    user: (db: DataSource) => UserRepository(db).initialize(init.user1),
-    degree: (db: DataSource) => DegreeRepository(db).initialize(init.degree1),
-    graph: (db: DataSource) => GraphRepository(db).initialize(init.graph1),
+    user: (db: DataSource) => UserRepository(db).initialize(Init.user1),
+    degree: (db: DataSource) => DegreeRepository(db).initialize(Init.degree1),
+    graph: (db: DataSource) => GraphRepository(db).initialize(Init.graph1),
   }
 
   /**
@@ -39,19 +37,13 @@ export class mockup {
    * init user, init degree
    *
    * @param {DataSource} db
-   * @return {Promise<Mockup.User>}
+   * @returns {Promise<MockupUser>}
    */
-  static user(db: DataSource): Promise<Mockup.User> {
+  static user(db: DataSource): Promise<MockupUser> {
     return new Promise((resolve, reject) => {
-      container(db, async () => {
-        return Promise.all([this.promise.user(db), this.promise.degree(db)])
-          .then(([user, degree]) => {
-            return resolve({ user, degree })
-          })
-          .catch(() => {
-            return reject(new Error('Unable to complete mockup for User'))
-          })
-      })
+      container(db, async () => Promise.all([this.promise.user(db), this.promise.degree(db)])
+          .then(([user, degree]) => resolve({ user, degree }))
+          .catch(() => reject(new Error('Unable to complete mockup for User'))))
     })
   }
 
@@ -60,19 +52,13 @@ export class mockup {
    * init user, init degree
    *
    * @param {DataSource} db
-   * @return {Promise<Mockup.Graph>}
+   * @returns {Promise<MockupGraph>}
    */
-  static graph(db: DataSource): Promise<Mockup.Graph> {
+  static graph(db: DataSource): Promise<MockupGraph> {
     return new Promise((resolve, reject) => {
-      container(db, async () => {
-        return Promise.all([mockup.promise.user(db), mockup.promise.degree(db)])
-          .then(([user, degree]) => {
-            return resolve({ user, degree })
-          })
-          .catch(() => {
-            return reject(new Error('Unable to complete mockup for Graph'))
-          })
-      })
+      container(db, async () => Promise.all([Mockup.promise.user(db), Mockup.promise.degree(db)])
+          .then(([user, degree]) => resolve({ user, degree }))
+          .catch(() => reject(new Error('Unable to complete mockup for Graph'))))
     })
   }
 
@@ -81,19 +67,13 @@ export class mockup {
    * init user, init degree
    *
    * @param {DataSource} db
-   * @return {Promise<Mockup.Degree>}
+   * @returns {Promise<MockupDegree>}
    */
-  static degree(db: DataSource): Promise<Mockup.Degree> {
+  static degree(db: DataSource): Promise<MockupDegree> {
     return new Promise((resolve, reject) => {
-      container(db, async () => {
-        return Promise.all([mockup.promise.degree(db)])
-          .then(([degree]) => {
-            return resolve({ degree })
-          })
-          .catch(() => {
-            return reject(new Error('Unable to complete mockup for Degree'))
-          })
-      })
+      container(db, async () => Promise.all([Mockup.promise.degree(db)])
+          .then(([degree]) => resolve({ degree }))
+          .catch(() => reject(new Error('Unable to complete mockup for Degree'))))
     })
   }
 }

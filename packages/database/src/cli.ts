@@ -17,13 +17,15 @@ type TextPrinter = (e: any) => void
 
 /**
  * prints colored text
+ *
  * @param {Color} color
- * @return {TextPrinter}
+ * @returns {TextPrinter}
  */
 function colorLog(color: Color): TextPrinter {
   /**
    * sends all arguments to chalk[color]
-   * @param {any[]} ...args
+   *
+   * @param {...any[]} args
    */
   function helper(...args: any[]) {
     console.log(chalk[color](...args))
@@ -33,12 +35,14 @@ function colorLog(color: Color): TextPrinter {
 
 /**
  * prints a colored box around text
+ *
  * @param {Color} color
- * @return {TextPrinter}
+ * @returns {TextPrinter}
  */
 function boxColorLog(color: Color): TextPrinter {
   /**
    * sends string to boxen
+   *
    * @param {string} text
    */
   function helper(text: string) {

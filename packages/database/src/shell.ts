@@ -7,14 +7,15 @@ type Response = {
 
 /**
  * Executes a shell command and return it as a Promise.
+ *
  * @param {string} cmd
- * @return {Promise<Response>}
+ * @returns {Promise<Response>}
  */
 export function exec(cmd: string): Promise<Response> {
   return new Promise((resolve, reject) => {
     execDefault(cmd, (error, stdout, stderr) => {
       resolve({
-        output: stdout ? stdout : stderr,
+        output: stdout || stderr,
         error,
       })
       reject(new Error('rejected, but calmn down and carry on shelling'))

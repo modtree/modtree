@@ -1,17 +1,17 @@
 import { DataSource } from 'typeorm'
-import { Init } from '../../types/entity'
+import type * as InitProps from '../../types/entity'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
-import { utils, flatten } from '../utils'
+import { Utils, Flatten } from '../utils'
 import { useLoadRelations, getDataSource, getRelationNames } from './base'
 import type { UserRepository as Repository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
- * @return {UserRepository}
+ * @returns {UserRepository}
  */
 export function UserRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
@@ -20,11 +20,13 @@ export function UserRepository(database?: DataSource): Repository {
 
   /**
    * Adds a User to DB
-   * @param {UserProps} props
-   * @return {Promise<User>}
+   *
+   * @param {InitProps.User} props
+   * @returns {Promise<User>}
    */
-  async function initialize(props: Init.UserProps): Promise<User> {
-    // find modules completed and modules doing, to create many-to-many relation
+  async function initialize(props: InitProps.User): Promise<User> {
+    // find modules completed and modules doing, to create many-to-many
+    // relation
     const queryList = [props.modulesDone, props.modulesDoing]
     const modulesPromise = Promise.all(
       queryList.map((list) => ModuleRepository(db).findByCodes(list))
@@ -50,13 +52,13 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {User} user
    * @param {string} moduleCode
    * @param {string[]} addedModuleCodes
-   * @return {Promise<boolean>}
+   * @returns {Promise<boolean>}
    */
   async function canTakeModule(
     user: User,
     moduleCode: string,
     addedModuleCodes?: string[]
-  ): Promise<boolean | void> {
+  ): Promise<boolean> {
     // 1. find module
     const module = await ModuleRepository(db).findOneBy({ moduleCode })
     // -- if module not found, assume invalid module code
@@ -67,15 +69,20 @@ export function UserRepository(database?: DataSource): Repository {
       modulesDoing: true,
     })
     // -- if module already taken, can't take module again
-    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
-    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    const modulesDoneCodes = user.modulesDone.map(Flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(Flatten.module)
     // -- add some module codes to done modules
-    if (addedModuleCodes && addedModuleCodes.length > 0)
+    if (addedModuleCodes && addedModuleCodes.length > 0) {
       addedModuleCodes.forEach((one) => {
         // ignore duplicates
-        if (!modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one))
+        if (
+          !modulesDoneCodes.includes(one) &&
+          !modulesDoingCodes.includes(one)
+        ) {
           modulesDoneCodes.push(one)
+        }
       })
+    }
     if (
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)
@@ -83,9 +90,8 @@ export function UserRepository(database?: DataSource): Repository {
       return false
     }
     // 3. check if PrereqTree is fulfilled
-    return utils.checkTree(module.prereqTree, modulesDoneCodes)
+    return Utils.checkTree(module.prereqTree, modulesDoneCodes)
   }
-
   /**
    * List mods a user can take, based on what the user has completed.
    *
@@ -96,17 +102,23 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {string[]} addedModuleCodes
    * @return {Promise<Module[]>}
    */
-  async function eligibleModules(user: User, addedModuleCodes?: string[]): Promise<Module[]> {
+  async function eligibleModules(
+    user: User,
+    addedModuleCodes?: string[]
+  ): Promise<Module[]> {
     // if undefined
-    if (!addedModuleCodes)
+    if (!addedModuleCodes) {
       addedModuleCodes = []
+    }
     // 1. get post-reqs
-    const postReqs = await UserRepository(db).getPostReqs(user, addedModuleCodes)
-    if (!postReqs)
-      return []
+    const postReqs = await UserRepository(db).getPostReqs(
+      user,
+      addedModuleCodes
+    )
+    if (!postReqs) return []
     // 2. filter post-reqs
-    const promises = postReqs.map(
-      (one) => UserRepository(db).canTakeModule(user, one.moduleCode, addedModuleCodes)
+    const promises = postReqs.map((one) =>
+      UserRepository(db).canTakeModule(user, one.moduleCode, addedModuleCodes)
     )
     const results = await Promise.all(promises)
     const filtered = postReqs.filter((_, idx) => results[idx])
@@ -125,10 +137,14 @@ export function UserRepository(database?: DataSource): Repository {
    *
    * @return {Promise<Module[]>}
    */
-  async function getPostReqs(user: User, addedModuleCodes?: string[]): Promise<Module[]> {
+  async function getPostReqs(
+    user: User,
+    addedModuleCodes?: string[]
+  ): Promise<Module[]> {
     // if undefined
-    if (!addedModuleCodes)
+    if (!addedModuleCodes) {
       addedModuleCodes = []
+    }
     // 1. load modulesDone and modulesDoing relations
     await UserRepository(db).loadRelations(user, {
       modulesDone: true,
@@ -138,27 +154,31 @@ export function UserRepository(database?: DataSource): Repository {
     const postReqCodesSet = new Set<string>()
     user.modulesDone.forEach((module: Module) => {
       // can be empty string
-      if (module.fulfillRequirements instanceof Array)
+      if (module.fulfillRequirements instanceof Array) {
         module.fulfillRequirements.forEach((moduleCode: string) => {
           postReqCodesSet.add(moduleCode)
         })
+      }
     })
     const addedModules = await Promise.all(
-      addedModuleCodes.map((one) => ModuleRepository(db).findOneBy({
-        moduleCode: one,
-      }))
+      addedModuleCodes.map((one) =>
+        ModuleRepository(db).findOneBy({
+          moduleCode: one,
+        })
+      )
     )
     addedModules.forEach((module: Module) => {
       // can be empty string
-      if (module.fulfillRequirements instanceof Array)
+      if (module.fulfillRequirements instanceof Array) {
         module.fulfillRequirements.forEach((moduleCode: string) => {
           postReqCodesSet.add(moduleCode)
         })
+      }
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
     // 3. filter modulesDone and modulesDoing
-    const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
+    const modulesDoneCodes = user.modulesDone.map(Flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(Flatten.module)
     const filtered = postReqCodesArr.filter(
       (one) =>
         !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
@@ -175,7 +195,10 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {string} moduleCode
    * @return {Promise<Module[]>}
    */
-  async function getUnlockedModules(user: User, moduleCode: string): Promise<Module[]> {
+  async function getUnlockedModules(
+    user: User,
+    moduleCode: string
+  ): Promise<Module[]> {
     // future support for multiple mods
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
@@ -185,25 +208,34 @@ export function UserRepository(database?: DataSource): Repository {
     })
     const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
     const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
-    if (modulesDoneCodes.includes(moduleCode) || modulesDoingCodes.includes(moduleCode))
+    if (
+      modulesDoneCodes.includes(moduleCode) ||
+      modulesDoingCodes.includes(moduleCode)
+    ) {
       return []
+    }
     // 2. Get current eligible modules
     const eligibleModules = await UserRepository(db).eligibleModules(user)
-    if (!eligibleModules)
-      return []
-    const eligibleModulesCodes = eligibleModules.map((one) => one.moduleCode)
+    if (!eligibleModules) return []
+    const eligibleModulesCodes = eligibleModules.map(Flatten.module)
     // 3. Get unlocked eligible modules
-    const unlockedModules = await UserRepository(db).eligibleModules(user, addedModuleCodes)
-    if (!unlockedModules)
+    const unlockedModules = await UserRepository(db).eligibleModules(
+      user,
+      addedModuleCodes
+    )
+    if (!unlockedModules) {
       return []
+    }
     // 4. Compare unlockedModules to eligibleModules
-    const filtered = unlockedModules.filter((one) => !eligibleModulesCodes.includes(one.moduleCode))
+    const filtered = unlockedModules.filter(
+      (one) => !eligibleModulesCodes.includes(one.moduleCode)
+    )
     return filtered
   }
 
   /**
    * @param {string} username
-   * @return {Promise<User>}
+   * @returns {Promise<User>}
    */
   async function findOneByUsername(username: string): Promise<User> {
     return BaseRepo.createQueryBuilder('user')
@@ -215,8 +247,9 @@ export function UserRepository(database?: DataSource): Repository {
 
   /**
    * Returns a User with all relations loaded
+   *
    * @param {string} id
-   * @return {Promise<User>}
+   * @returns {Promise<User>}
    */
   async function findOneById(id: string): Promise<User> {
     // get user by id
@@ -231,9 +264,10 @@ export function UserRepository(database?: DataSource): Repository {
 
   /**
    * Adds an already saved degree to a user.
+   *
    * @param {User} user
    * @param {string} degreeId
-   * @return {Promise<void>}
+   * @returns {Promise<void>}
    */
   async function addDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
@@ -249,9 +283,10 @@ export function UserRepository(database?: DataSource): Repository {
 
   /**
    * Finds a degree among saved degrees of a user.
+   *
    * @param {User} user
    * @param {string} degreeId
-   * @return {Promise<Degree>}
+   * @returns {Promise<Degree>}
    */
   async function findDegree(user: User, degreeId: string): Promise<Degree> {
     // 1. load savedDegrees relations
@@ -259,16 +294,19 @@ export function UserRepository(database?: DataSource): Repository {
       savedDegrees: true,
     })
     // 2. find degree among user's savedDegrees
-    const filtered = user.savedDegrees.filter((degree) => degree.id == degreeId)
-    if (filtered.length == 0) throw new Error('Degree not found in User')
+    const filtered = user.savedDegrees.filter(
+      (degree) => degree.id === degreeId
+    )
+    if (filtered.length === 0) throw new Error('Degree not found in User')
     return filtered[0]
   }
 
   /**
    * Removes a degree among saved degrees of a user.
+   *
    * @param {User} user
    * @param {string} degreeId
-   * @return {Promise<Degree>}
+   * @returns {Promise<void>}
    */
   async function removeDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
@@ -276,9 +314,11 @@ export function UserRepository(database?: DataSource): Repository {
       savedDegrees: true,
     })
     // 2. find degree among user's savedDegrees
-    const filtered = user.savedDegrees.filter((degree) => degree.id != degreeId)
+    const filtered = user.savedDegrees.filter(
+      (degree) => degree.id !== degreeId
+    )
     // 3. find degree among user's savedDegrees
-    if (filtered.length == user.savedDegrees.length) {
+    if (filtered.length === user.savedDegrees.length) {
       throw new Error('Degree not found in User')
     }
     // 4. update entity and save

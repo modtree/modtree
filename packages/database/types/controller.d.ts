@@ -1,12 +1,22 @@
 import { Request, Response } from 'express'
 
-interface Controller {
+interface IController {
   list(req: Request, res: Response): Promise<void>
 }
 
-export interface UserController extends Controller {
+export interface IUserController extends IController {
   create(req: Request, res: Response): Promise<void>
   get(req: Request, res: Response): Promise<void>
 }
 
-export type ModuleCondensedController = Controller
+export interface IDegreeController extends IController {
+  create(req: Request, res: Response): Promise<void>
+  get(req: Request, res: Response): Promise<void>
+}
+
+export interface IGraphController extends IController {
+  create(req: Request, res: Response): Promise<void>
+  get(req: Request, res: Response): Promise<void>
+}
+
+export type IModuleCondensedController = IController
