@@ -205,17 +205,13 @@ export function GraphRepository(database?: DataSource): Repository {
     const filtered = allEligibleModules.filter((one) => postReqs.includes(one.moduleCode))
 
     // 3. Transform filtered into data with fields to sort by
-    const potentialModuleCounts = []
     // -- get number of mods each filtered module unlocks
-    // must be synchronous, due to current implementation choice
-    for (let i=0; i<filtered.length; i++) {
-      const cur = filtered[i]
-      const res = await UserRepository(db).getPotentialModules(graph.user, cur.moduleCode)
-      if (!res)
-        potentialModuleCounts.push(0)
-      else
-        potentialModuleCounts.push(res.length)
-    }
+    const resolvedPromises = await Promise.all(
+      filtered.map((one) => UserRepository(db).getPotentialModules(graph.user, one.moduleCode))
+    )
+    const potentialModuleCounts = resolvedPromises.map((one) => {
+      return one instanceof Array ? one.length : 0
+    })
     // -- data processing
     const degreeModulesCodes = graph.degree.modules.map((one) => one.moduleCode)
     type Data = {
