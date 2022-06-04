@@ -40,6 +40,8 @@ export default class Mockup {
    * init user, init degree
    *
    * @param {DataSource} db
+   * @param {InitProps.User} userProps
+   * @param {InitProps.Degree} degreeProps
    * @returns {Promise<MockupUser>}
    */
   static user(
@@ -64,6 +66,8 @@ export default class Mockup {
    * init user, init degree
    *
    * @param {DataSource} db
+   * @param {InitProps.User} userProps
+   * @param {InitProps.Degree} degreeProps
    * @returns {Promise<MockupGraph>}
    */
   static graph(
@@ -102,6 +106,7 @@ export default class Mockup {
    * init user, init degree
    *
    * @param {DataSource} db
+   * @param {InitProps.Degree} degreeProps
    * @returns {Promise<MockupDegree>}
    */
   static degree(
