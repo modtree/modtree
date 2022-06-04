@@ -1,11 +1,11 @@
-import { container, endpoint, getSource } from '../../src/data-source'
-import { Module, User } from '../../src/entity'
-import { ModuleRepository, UserRepository } from '../../src/repository'
-import { Init } from '../../types/entity'
-import { init } from '../init'
-import { setup, importChecks, teardown } from '../environment'
+import { container, endpoint, getSource } from '../../../src/data-source'
+import { Module, User } from '../../../src/entity'
+import { ModuleRepository, UserRepository } from '../../../src/repository'
+import { Init } from '../../../types/entity'
+import { init } from '../../init'
+import { setup, importChecks, teardown } from '../../environment'
 
-const dbName = 'test_user_getPostReqs'
+const dbName = 'test_user_getPostReqs_add_module_codes'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
@@ -16,15 +16,11 @@ importChecks({
   repositories: [ModuleRepository(db), UserRepository(db)],
 })
 
-jest.setTimeout(20000)
-
 let user: User
 let postReqsCodes: string[]
 
-it('Saves a user', async () => {
+it('Saves an empty user', async () => {
   const props: Init.UserProps = init.emptyUser
-  props.modulesDone.push('MA2001')
-  props.modulesDoing.push('MA2101')
   const res = await endpoint(db, () =>
     container(db, async () => {
       await UserRepository(db).initialize(props)
@@ -37,8 +33,9 @@ it('Saves a user', async () => {
 })
 
 it('Gets all post-reqs', async () => {
+  const addModuleCodes = ['MA2001']
   // Get post reqs
-  const postReqs = await container(db, () => UserRepository(db).getPostReqs(user))
+  const postReqs = await container(db, () => UserRepository(db).getPostReqs(user, addModuleCodes))
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   // Get fulfillRequirements for MA2001
@@ -49,27 +46,17 @@ it('Gets all post-reqs', async () => {
   )
   expect(mod).toBeDefined()
   if (!mod) return
-  // Remove modules doing
-  const expected = mod.fulfillRequirements.filter((one) => one !== 'MA2101')
   // Compare module codes
   postReqsCodes = postReqs.map((one: Module) => one.moduleCode)
-  expect(postReqsCodes.sort()).toEqual(expected.sort())
+  expect(postReqsCodes.sort()).toEqual(mod.fulfillRequirements.sort())
 })
 
 it('Returns empty array for modules with empty string fulfillRequirements', async () => {
-  // init new user with CP2106
   // CP2106 has empty string fulfillRequirements
-  const props: Init.UserProps = init.user1
-  props.modulesDone = ['CP2106']
-  const res = await container(db, async () => {
-    await UserRepository(db).initialize(props)
-    return await UserRepository(db).findOneByUsername(props.username)
-  })
-  expect(res).toBeDefined()
-  if (!res) return
+  const addModuleCodes = ['CP2106']
   // Get post reqs
   const postReqs = await endpoint(db, () =>
-    container(db, () => UserRepository(db).getPostReqs(res))
+    container(db, () => UserRepository(db).getPostReqs(user, addModuleCodes))
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return
