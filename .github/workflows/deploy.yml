@@ -40,31 +40,36 @@ jobs:
           REMOTE=https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
 
           function SEND() {
-            git push $REMOTE || git push --force $REMOTE
+            rm -rf .git
+            git init
+            git add --all
+            git commit -m "one take wonder"
+            git checkout -b "$1"
+            git push --force $REMOTE
           }
 
           if [[ ${{ github.ref_name }} == "dep/front" ]]; then
             echo "[ deploying frontend... ]"
-            git checkout -b frontend-deployment; SEND
+            SEND "frontend-deployment"
 
           elif [[ ${{ github.ref_name }} == "dep/back" ]]; then
             echo "[ deploying backend... ]"
-            git checkout -b backend-deployment; SEND
+            SEND "backend-deployment"
 
           elif [[ ${{ github.ref_name }} == "dep/docs" ]]; then
             echo "[ deploying docs... ]"
-            git checkout -b docs-deployment; SEND
+            SEND "docs-deployment"
 
           elif [[ ${{ github.ref_name }} == "dep/app" ]]; then
             echo "[ deploying front + back... ]"
-            git checkout -b frontend-deployment; SEND
-            git checkout -b backend-deployment; SEND
+            SEND "frontend-deployment"
+            SEND "backend-deployment"
 
           elif [[ ${{ github.ref_name }} == "main" ]]; then
             echo "[ deploying everything... ]"
-            git checkout -b backend-deployment; SEND
-            git checkout -b frontend-deployment; SEND
-            git checkout -b docs-deployment; SEND
+            SEND "frontend-deployment"
+            SEND "backend-deployment"
+            SEND "docs-deployment"
 
           fi
         env:
