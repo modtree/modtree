@@ -72,7 +72,9 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
-  const postReqs = await container(db, () => UserRepository(db).getPostReqs(res))
+  const postReqs = await container(db, () =>
+    UserRepository(db).getPostReqs(res)
+  )
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   expect(postReqs).toEqual([])

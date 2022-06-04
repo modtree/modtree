@@ -20,7 +20,7 @@ test('It should get a search results of CS', async () => {
     .then((res) => {
       const results: any[] = res.data
       expect(results.length).toBeGreaterThan(10)
-      results.forEach(x => {
+      results.forEach((x) => {
         expect(typeof x.title).toStrictEqual('string')
         expect(typeof x.moduleCode).toStrictEqual('string')
         expect(typeof x.moduleLevel).toStrictEqual('number')

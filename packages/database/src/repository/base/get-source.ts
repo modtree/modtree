@@ -10,4 +10,3 @@ import { db as DefaultSource } from '../../config'
 export function getDataSource(db: DataSource): DataSource {
   return db || DefaultSource
 }
-

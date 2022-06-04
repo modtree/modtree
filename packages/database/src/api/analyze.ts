@@ -68,7 +68,6 @@ class Print {
     }
     if (response instanceof Array) {
       console.log('size of Array:', response.length)
-      
     }
   }
 }

@@ -13,7 +13,7 @@ export class EmptyInit {
     matriculationYear: 0,
     graduationYear: 0,
     graduationSemester: 0,
-    email: ''
+    email: '',
   }
 
   /**
@@ -32,6 +32,6 @@ export class EmptyInit {
     degreeId: '',
     modulesPlacedCodes: [],
     modulesHiddenCodes: [],
-    pullAll: false
+    pullAll: false,
   }
 }

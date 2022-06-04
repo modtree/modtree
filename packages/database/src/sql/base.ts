@@ -94,9 +94,7 @@ export class BaseSql implements BaseSqlInterface {
    * @param {string} database
    */
   async dropDatabase(database: string) {
-    throw new Error(
-      `${this.type}: not implemented yet for ${database}`
-    )
+    throw new Error(`${this.type}: not implemented yet for ${database}`)
   }
 
   /**
@@ -107,9 +105,7 @@ export class BaseSql implements BaseSqlInterface {
    * @param {string} database
    */
   async clearDatabase(database: string) {
-    throw new Error(
-      `${this.type}: not implemented yet for ${database}`
-    )
+    throw new Error(`${this.type}: not implemented yet for ${database}`)
   }
 
   /**
@@ -130,9 +126,7 @@ export class BaseSql implements BaseSqlInterface {
    * @param {string} database
    */
   restorePrompted(database: string) {
-    throw new Error(
-      `${this.type}: not implemented yet for ${database}`
-    )
+    throw new Error(`${this.type}: not implemented yet for ${database}`)
   }
 
   /**
@@ -141,8 +135,6 @@ export class BaseSql implements BaseSqlInterface {
    * @param {string} database
    */
   async dump(database: string) {
-    throw new Error(
-      `${this.type}: not implemented yet for ${database}`
-    )
+    throw new Error(`${this.type}: not implemented yet for ${database}`)
   }
 }
