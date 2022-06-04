@@ -83,7 +83,8 @@ export class Postgresql extends BaseSql {
     const file = join(config.rootDir, '.sql', filename)
     const u = config.username ? `--username=${config.username}` : ''
     const p = config.password ? `PGPASSWORD=${config.password}` : ''
-    const cmd = `${p} ${this.coreCmd} ${u} ${database} < ${file}`
+    const h = config.host ? `--host=${config.host}` : ''
+    const cmd = `${p} ${this.coreCmd} ${u} ${h} ${database} < ${file}`
     await exec(cmd).catch((err) => {
       console.log('Restore from file error')
       console.log(err)
