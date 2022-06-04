@@ -8,32 +8,8 @@ import {
   UserRepository,
 } from '../src/repository'
 
-type EntityRecord = {
-  user: User
-  degree: Degree
-  graph: Graph
-}
-
-type MockupUser = Pick<EntityRecord, 'user' | 'degree'>
-type MockupDegree = Pick<EntityRecord, 'degree'>
-type MockupGraph = Pick<EntityRecord, 'user' | 'degree' | 'graph'>
-
-type MockupPromises = {
-  user: (db: DataSource, props: InitProps.User) => Promise<User>
-  degree: (db: DataSource, props: InitProps.Degree) => Promise<Degree>
-  graph: (db: DataSource, props: InitProps.Graph) => Promise<Graph>
-}
-
 /** mockup generator for tests */
 export default class Mockup {
-  private static promise: MockupPromises = {
-    user: (db: DataSource, props: InitProps.User) =>
-      UserRepository(db).initialize(props),
-    degree: (db: DataSource, props: InitProps.Degree) =>
-      DegreeRepository(db).initialize(props),
-    graph: (db: DataSource, props: InitProps.Graph) =>
-      GraphRepository(db).initialize(props),
-  }
 
   /**
    * Performs the setup to initialize a User with saved Degrees
@@ -41,21 +17,14 @@ export default class Mockup {
    *
    * @param {DataSource} db
    * @param {InitProps.User} userProps
-   * @param {InitProps.Degree} degreeProps
-   * @returns {Promise<MockupUser>}
+   * @returns {Promise<User>}
    */
-  static user(
-    db: DataSource,
-    userProps: InitProps.User,
-    degreeProps: InitProps.Degree
-  ): Promise<MockupUser> {
+  static user(db: DataSource, userProps: InitProps.User): Promise<User> {
     return new Promise((resolve, reject) => {
-      container(db, async () =>
-        Promise.all([
-          this.promise.user(db, userProps),
-          this.promise.degree(db, degreeProps),
-        ])
-          .then(([user, degree]) => resolve({ user, degree }))
+      container(db, () =>
+        UserRepository(db)
+          .initialize(userProps)
+          .then((user) => resolve(user))
           .catch(() => reject(new Error('Unable to complete mockup for User')))
       )
     })
@@ -66,37 +35,21 @@ export default class Mockup {
    * init user, init degree
    *
    * @param {DataSource} db
-   * @param {InitProps.User} userProps
    * @param {InitProps.Degree} degreeProps
-   * @returns {Promise<MockupGraph>}
+   * @returns {Promise<Degree>}
    */
-  static graph(
+  static degree(
     db: DataSource,
-    userProps: InitProps.User,
     degreeProps: InitProps.Degree
-  ): Promise<MockupGraph> {
+  ): Promise<Degree> {
     return new Promise((resolve, reject) => {
-      container(db, async () =>
-        Promise.all([
-          Mockup.promise.user(db, userProps),
-          Mockup.promise.degree(db, degreeProps),
-        ])
-          .then(([user, degree]) => {
-            const graphProps: InitProps.Graph = {
-              userId: user.id,
-              degreeId: degree.id,
-              modulesPlacedCodes: [],
-              modulesHiddenCodes: [],
-              pullAll: false,
-            }
-            return Promise.all([
-              GraphRepository(db).initialize(graphProps),
-              user,
-              degree,
-            ])
-          })
-          .then(([graph, user, degree]) => resolve({ graph, user, degree }))
-          .catch(() => reject(new Error('Unable to complete mockup for Graph')))
+      container(db, () =>
+        DegreeRepository(db)
+          .initialize(degreeProps)
+          .then((degree) => resolve(degree))
+          .catch(() =>
+            reject(new Error('Unable to complete mockup for Degree'))
+          )
       )
     })
   }
@@ -106,17 +59,15 @@ export default class Mockup {
    * init user, init degree
    *
    * @param {DataSource} db
-   * @param {InitProps.Degree} degreeProps
-   * @returns {Promise<MockupDegree>}
+   * @param {InitProps.Graph} degreeProps
+   * @returns {Promise<Graph>}
    */
-  static degree(
-    db: DataSource,
-    degreeProps: InitProps.Degree
-  ): Promise<MockupDegree> {
+  static graph(db: DataSource, graphProps: InitProps.Graph): Promise<Graph> {
     return new Promise((resolve, reject) => {
-      container(db, async () =>
-        Promise.all([Mockup.promise.degree(db, degreeProps)])
-          .then(([degree]) => resolve({ degree }))
+      container(db, () =>
+        GraphRepository(db)
+          .initialize(graphProps)
+          .then((graph) => resolve(graph))
           .catch(() =>
             reject(new Error('Unable to complete mockup for Degree'))
           )

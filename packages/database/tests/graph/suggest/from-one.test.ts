@@ -14,6 +14,8 @@ import Init from '../../init'
 const dbName = 'test_suggest_modules_from_one'
 const db = getSource(dbName)
 const t: Partial<{
+  user: User
+  degree: Degree
   graph: Graph
   suggestedModulesCodes: string[]
   postReqs: string[]
@@ -39,13 +41,29 @@ const userProps: InitProps.User = {
   modulesDoing: ['IT2002'],
 }
 
-beforeAll(async () => {
-  await setup(dbName)
-    .then(() => Mockup.graph(db, userProps, degreeProps))
-    .then((res) => {
-      t.graph = res.graph
+beforeAll(() =>
+  setup(dbName)
+    .then(() => Mockup.user(db, userProps))
+    .then((user) => {
+      t.user = user
     })
-})
+    .then(() => Mockup.degree(db, degreeProps))
+    .then((degree) => {
+      t.degree = degree
+    })
+    .then(() =>
+      Mockup.graph(db, {
+        userId: t.user.id,
+        degreeId: t.degree.id,
+        modulesPlacedCodes: [],
+        modulesHiddenCodes: [],
+        pullAll: false,
+      })
+    )
+    .then((graph) => {
+      t.graph = graph
+    })
+)
 afterAll(() => teardown(dbName))
 
 // TODO: remove

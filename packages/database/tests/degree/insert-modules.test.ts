@@ -13,9 +13,9 @@ const t: Partial<{ degree: Degree; combinedModuleCodes: string[] }> = {}
 beforeAll(() =>
   setup(dbName)
     .then(() => Mockup.degree(db, Init.degree1))
-    .then((res) => {
-      t.degree = res.degree
-      t.combinedModuleCodes = res.degree.modules.map(Flatten.module)
+    .then((degree) => {
+      t.degree = degree
+      t.combinedModuleCodes = degree.modules.map(Flatten.module)
     })
 )
 afterAll(() => db.destroy().then(() => teardown(dbName)))

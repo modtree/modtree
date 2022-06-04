@@ -17,10 +17,25 @@ const t: Partial<{
 
 beforeAll(() =>
   setup(dbName)
-    .then(() => Mockup.graph(db, Init.user1, Init.degree1))
-    .then((res) => {
-      t.user = res.user
-      t.degree = res.degree
+    .then(() => Mockup.user(db, Init.user1))
+    .then((user) => {
+      t.user = user
+    })
+    .then(() => Mockup.degree(db, Init.degree1))
+    .then((degree) => {
+      t.degree = degree
+    })
+    .then(() =>
+      Mockup.graph(db, {
+        userId: t.user.id,
+        degreeId: t.degree.id,
+        modulesPlacedCodes: [],
+        modulesHiddenCodes: [],
+        pullAll: true,
+      })
+    )
+    .then((graph) => {
+      t.graph = graph
     })
 )
 afterAll(() => db.destroy().then(() => teardown(dbName)))
