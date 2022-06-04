@@ -17,9 +17,11 @@
     "rm:logs": "find . -name *.log | xargs rm",
     "setup": "yarn && yarn build:db && yarn default:env",
     "heroku-postbuild": "yarn build:db",
-    "default:env": "turbo run default:env"
+    "default:env": "turbo run default:env",
+    "version": "auto-changelog -p && git add CHANGELOG.md"
   },
   "devDependencies": {
+    "auto-changelog": "^2.4.0",
     "prettier": "latest",
     "turbo": "latest"
   },
