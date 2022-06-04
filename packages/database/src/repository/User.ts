@@ -175,7 +175,7 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {string} moduleCode
    * @return {Promise<Module[] | void>}
    */
-  async function getPotentialModules(user: User, moduleCode: string): Promise<Module[] | void> {
+  async function getUnlockedModules(user: User, moduleCode: string): Promise<Module[] | void> {
     // future support for multiple mods
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
@@ -192,12 +192,12 @@ export function UserRepository(database?: DataSource): Repository {
     if (!eligibleModules)
       return []
     const eligibleModulesCodes = eligibleModules.map((one) => one.moduleCode)
-    // 3. Get potential eligible modules
-    const potentialModules = await UserRepository(db).eligibleModules(user, addedModuleCodes)
-    if (!potentialModules)
+    // 3. Get unlocked eligible modules
+    const unlockedModules = await UserRepository(db).eligibleModules(user, addedModuleCodes)
+    if (!unlockedModules)
       return []
-    // 4. Compare potentialModules to eligibleModules
-    const filtered = potentialModules.filter((one) => !eligibleModulesCodes.includes(one.moduleCode))
+    // 4. Compare unlockedModules to eligibleModules
+    const filtered = unlockedModules.filter((one) => !eligibleModulesCodes.includes(one.moduleCode))
     return filtered
   }
 
@@ -293,7 +293,7 @@ export function UserRepository(database?: DataSource): Repository {
     findOneByUsername,
     eligibleModules,
     getPostReqs,
-    getPotentialModules,
+    getUnlockedModules,
     findOneById,
     addDegree,
     findDegree,

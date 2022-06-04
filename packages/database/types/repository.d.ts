@@ -40,7 +40,7 @@ export interface UserRepository extends BaseRepo<User, Init.UserProps> {
   findOneByUsername(username: string): Promise<User>
   eligibleModules(user: User, addModuleCodes?: string[]): Promise<Module[]>
   getPostReqs(user: User, addModuleCodes?: string[]): Promise<Module[]>
-  getPotentialModules(user: User, moduleCode: string): Promise<Module[] | void>
+  getUnlockedModules(user: User, moduleCode: string): Promise<Module[] | void>
   findOneById(id: string): Promise<User>
   addDegree(user: User, degreeId: string): Promise<void>
   findDegree(user: User, degreeId: string): Promise<Degree>

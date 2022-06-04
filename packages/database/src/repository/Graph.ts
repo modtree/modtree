@@ -207,9 +207,9 @@ export function GraphRepository(database?: DataSource): Repository {
     // 3. Transform filtered into data with fields to sort by
     // -- get number of mods each filtered module unlocks
     const resolvedPromises = await Promise.all(
-      filtered.map((one) => UserRepository(db).getPotentialModules(graph.user, one.moduleCode))
+      filtered.map((one) => UserRepository(db).getUnlockedModules(graph.user, one.moduleCode))
     )
-    const potentialModuleCounts = resolvedPromises.map((one) => {
+    const unlockedModuleCounts = resolvedPromises.map((one) => {
       return one instanceof Array ? one.length : 0
     })
     // -- data processing
@@ -217,14 +217,14 @@ export function GraphRepository(database?: DataSource): Repository {
     type Data = {
       moduleCode: string,
       inDegree: boolean,
-      numPotentialModules: number,
+      numUnlockedModules: number,
       origIdx: number,
     }
     const data = filtered.map((one, origIdx): Data => {
       return {
         moduleCode: one.moduleCode,
         inDegree: degreeModulesCodes.includes(one.moduleCode),
-        numPotentialModules: potentialModuleCounts[origIdx],
+        numUnlockedModules: unlockedModuleCounts[origIdx],
         origIdx,
       }
     })
@@ -242,8 +242,8 @@ export function GraphRepository(database?: DataSource): Repository {
     function cmp(a: Data, b: Data): number {
       if (a.inDegree != b.inDegree)
         return a.inDegree ? -1 : 1
-      if (a.numPotentialModules != b.numPotentialModules)
-        return a.numPotentialModules > b.numPotentialModules ? -1 : 1
+      if (a.numUnlockedModules != b.numUnlockedModules)
+        return a.numUnlockedModules > b.numUnlockedModules ? -1 : 1
       return a.moduleCode < b.moduleCode ? -1 : 1
     }
 

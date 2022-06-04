@@ -5,7 +5,7 @@ import { Init } from '../../types/entity'
 import { init } from '../init'
 import { setup, importChecks, teardown } from '../environment'
 
-const dbName = 'test_user_getPotentialModules'
+const dbName = 'test_user_getUnlockedModules'
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
@@ -34,10 +34,10 @@ it('Saves a user', async () => {
   user = res
 })
 
-it('Correctly gets potential modules', async () => {
-  // Get potential modules for CS2100
+it('Correctly gets unlocked modules', async () => {
+  // Get unlocked modules for CS2100
   const modules = await endpoint(db, () =>
-    container(db, () => UserRepository(db).getPotentialModules(user, 'CS2100'))
+    container(db, () => UserRepository(db).getUnlockedModules(user, 'CS2100'))
   )
   expect(modules).toBeDefined()
   if (!modules) return
@@ -62,9 +62,9 @@ it('Does not modify User.modulesDone', async () => {
 })
 
 it('Returns empty array if module in User.modulesDone', async () => {
-  // Get potential modules for CS1010, which is in User.modulesDone
+  // Get unlocked modules for CS1010, which is in User.modulesDone
   const modules = await endpoint(db, () =>
-    container(db, () => UserRepository(db).getPotentialModules(user, 'CS1010'))
+    container(db, () => UserRepository(db).getUnlockedModules(user, 'CS1010'))
   )
   expect(modules).toBeDefined()
   if (!modules) return
