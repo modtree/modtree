@@ -1,43 +1,39 @@
-import { container, endpoint, getSource } from '../../src/data-source'
+import { container, getSource } from '../../src/data-source'
 import { Module, User } from '../../src/entity'
-import { ModuleRepository, UserRepository } from '../../src/repository'
+import { UserRepository } from '../../src/repository'
 import { Init } from '../../types/entity'
 import { init } from '../init'
-import { setup, importChecks, teardown } from '../environment'
+import { setup, teardown } from '../environment'
+import { oneUp } from '../../src/utils'
 
-const dbName = 'test_user_getUnlockedModules'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
-importChecks({
-  entities: [Module, User],
-  repositories: [ModuleRepository(db), UserRepository(db)],
-})
-
-jest.setTimeout(20000)
-
-let user: User
-const props: Init.UserProps = init.emptyUser
+const t: Partial<{
+  user: User
+  props: Init.UserProps
+}> = {
+  props: init.emptyUser
+}
 
 it('Saves a user', async () => {
-  props.modulesDone.push('CS1010')
-  const res = await endpoint(db, () =>
-    container(db, async () => {
-      await UserRepository(db).initialize(props)
-      return await UserRepository(db).findOneByUsername(props.username)
-    })
-  )
+  t.props.modulesDone.push('CS1010')
+  const res = await container(db, async () => {
+    await UserRepository(db).initialize(t.props)
+    return await UserRepository(db).findOneByUsername(t.props.username)
+  })
   expect(res).toBeDefined()
   if (!res) return
-  user = res
+  t.user = res
 })
 
 it('Correctly gets unlocked modules', async () => {
   // Get unlocked modules for CS2100
-  const modules = await endpoint(db, () =>
-    container(db, () => UserRepository(db).getUnlockedModules(user, 'CS2100'))
+  const modules = await container(db,
+    () => UserRepository(db).getUnlockedModules(t.user, 'CS2100')
   )
   expect(modules).toBeDefined()
   if (!modules) return
@@ -50,11 +46,9 @@ it('Correctly gets unlocked modules', async () => {
 
 it('Does not modify User.modulesDone', async () => {
   // Also loads relations
-  const res = await endpoint(db, () =>
-    container(db, async () => {
-      return await UserRepository(db).findOneById(user.id)
-    })
-  )
+  const res = await container(db, async () => {
+    return await UserRepository(db).findOneById(t.user.id)
+  })
   expect(res).toBeDefined()
   if (!res) return
   const modulesDoneCodes = res.modulesDone.map((one) => one.moduleCode)
@@ -63,8 +57,8 @@ it('Does not modify User.modulesDone', async () => {
 
 it('Returns empty array if module in User.modulesDone', async () => {
   // Get unlocked modules for CS1010, which is in User.modulesDone
-  const modules = await endpoint(db, () =>
-    container(db, () => UserRepository(db).getUnlockedModules(user, 'CS1010'))
+  const modules = await container(db,
+    () => UserRepository(db).getUnlockedModules(t.user, 'CS1010')
   )
   expect(modules).toBeDefined()
   if (!modules) return
