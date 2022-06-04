@@ -8,7 +8,7 @@ import {
 } from '../../../src/repository'
 import { setup, importChecks, teardown } from '../../environment'
 import Mockup from '../../mockup'
-import type * as InitProps from '../../../types/entity'
+import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 
 const dbName = 'test_suggest_modules_from_one'

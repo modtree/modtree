@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm'
 import { container } from '../src/data-source'
 import { Degree, Graph, User } from '../src/entity'
-import type * as InitProps from '../types/entity'
+import type * as InitProps from '../types/init-props'
 import {
   DegreeRepository,
   GraphRepository,

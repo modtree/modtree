@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import type * as InitProps from '../../types/entity'
+import type * as InitProps from '../../types/init-props'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { getDataSource, useLoadRelations, getRelationNames } from './base'

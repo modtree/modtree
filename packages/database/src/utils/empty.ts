@@ -1,4 +1,4 @@
-import type * as InitProps from '../../types/entity'
+import type * as InitProps from '../../types/init-props'
 
 /** empty data */
 export class EmptyInit {

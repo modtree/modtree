@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import type * as InitProps from '../../types/entity'
+import type * as InitProps from '../../types/init-props'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
