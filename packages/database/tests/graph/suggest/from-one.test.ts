@@ -7,7 +7,9 @@ import {
   ModuleRepository,
 } from '../../../src/repository'
 import { setup, importChecks, teardown } from '../../environment'
-import { setupGraph } from './setup'
+import Mockup from '../../mockup'
+import type * as InitProps from '../../../types/entity'
+import Init from '../../init'
 
 const dbName = 'test_suggest_modules_from_one'
 const db = getSource(dbName)
@@ -18,11 +20,32 @@ let graph: Graph
 let suggestedModulesCodes: string[]
 let postReqs: string[]
 
+const degreeProps: InitProps.Degree = {
+  moduleCodes: [
+    'CS1010',
+    'CG2111A', // in modulesDone, should not suggest
+    'IT2002', // in modulesDoing, should not suggest
+    'CS2030', // unlocks CS2104, CS3240, IS2103, IS2102 (4 mods)
+    'CS2040S', // cannot take this mod (without CS1231)
+    'CS2100', // unlocks CS3210, CS3237, CS2106 (3 mods)
+    'CS2107', // unlocks IS4231, IS5151, IFS4101 (3 mods)
+    'CP2106', // unlocks 0 mods
+  ],
+  title: 'Custom Degree',
+}
+
+const userProps: InitProps.User = {
+  ...Init.emptyUser,
+  modulesDone: ['CS1010', 'CG2111A'],
+  modulesDoing: ['IT2002'],
+}
+
 beforeAll(async () => {
   await setup(dbName)
-  const res = await setupGraph(db)
-  if (!res) throw new Error('Unable to setup Graph test.')
-  graph = res
+    .then(() => Mockup.graph(db, userProps, degreeProps))
+    .then((res) => {
+      graph = res.graph
+    })
 })
 afterAll(() => teardown(dbName))
 

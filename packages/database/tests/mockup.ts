@@ -16,7 +16,7 @@ type EntityRecord = {
 
 type MockupUser = Pick<EntityRecord, 'user' | 'degree'>
 type MockupDegree = Pick<EntityRecord, 'degree'>
-type MockupGraph = Pick<EntityRecord, 'user' | 'degree'>
+type MockupGraph = Pick<EntityRecord, 'user' | 'degree' | 'graph'>
 
 type MockupPromises = {
   user: (db: DataSource, props: InitProps.User) => Promise<User>
@@ -77,7 +77,21 @@ export default class Mockup {
           Mockup.promise.user(db, userProps),
           Mockup.promise.degree(db, degreeProps),
         ])
-          .then(([user, degree]) => resolve({ user, degree }))
+          .then(([user, degree]) => {
+            const graphProps: InitProps.Graph = {
+              userId: user.id,
+              degreeId: degree.id,
+              modulesPlacedCodes: [],
+              modulesHiddenCodes: [],
+              pullAll: false,
+            }
+            return Promise.all([
+              GraphRepository(db).initialize(graphProps),
+              user,
+              degree,
+            ])
+          })
+          .then(([graph, user, degree]) => resolve({ graph, user, degree }))
           .catch(() => reject(new Error('Unable to complete mockup for Graph')))
       )
     })
