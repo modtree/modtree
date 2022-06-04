@@ -173,9 +173,9 @@ export function UserRepository(database?: DataSource): Repository {
    *
    * @param {User} user
    * @param {string} moduleCode
-   * @return {Promise<Module[] | void>}
+   * @return {Promise<Module[]>}
    */
-  async function getUnlockedModules(user: User, moduleCode: string): Promise<Module[] | void> {
+  async function getUnlockedModules(user: User, moduleCode: string): Promise<Module[]> {
     // future support for multiple mods
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
