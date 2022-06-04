@@ -1,40 +1,34 @@
-import { container, endpoint, getSource } from '../../../src/data-source'
+import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
-import { ModuleRepository, UserRepository } from '../../../src/repository'
+import { UserRepository } from '../../../src/repository'
 import { Init } from '../../../types/entity'
 import { init } from '../../init'
-import { setup, importChecks, teardown } from '../../environment'
+import { setup, teardown } from '../../environment'
+import { oneUp } from '../../../src/utils'
 
-const dbName = 'test_user_eligibleModules_add_module_codes'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
+const t: Partial<{ user: User }> = {}
 
 beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+afterAll(() => db.destroy().then(() => teardown(dbName)))
 
-importChecks({
-  entities: [Module, User],
-  repositories: [ModuleRepository(db), UserRepository(db)],
-})
-
-let user: User
 it('Saves an empty user', async () => {
   const props: Init.UserProps = init.emptyUser
-  const res = await endpoint(db, () =>
-    container(db, async () => {
-      await UserRepository(db).initialize(props)
-      return await UserRepository(db).findOneByUsername(props.username)
-    })
-  )
+  const res = await container(db, async () => {
+    await UserRepository(db).initialize(props)
+    return await UserRepository(db).findOneByUsername(props.username)
+  })
   expect(res).toBeDefined()
   if (!res) return
-  user = res
+  t.user = res
 })
 
 it('Adds only modules which have pre-reqs cleared', async () => {
   const addModuleCodes = ['CS1101S']
   // Get eligible modules
-  const eligibleModules = await endpoint(db, () =>
-    container(db, () => UserRepository(db).eligibleModules(user, addModuleCodes))
+  const eligibleModules = await container(db,
+    () => UserRepository(db).eligibleModules(t.user, addModuleCodes)
   )
   expect(eligibleModules).toBeDefined()
   if (!eligibleModules) return
