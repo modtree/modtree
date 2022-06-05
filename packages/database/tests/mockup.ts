@@ -59,7 +59,7 @@ export default class Mockup {
    * init user, init degree
    *
    * @param {DataSource} db
-   * @param {InitProps.Graph} degreeProps
+   * @param {InitProps.Graph} graphProps
    * @returns {Promise<Graph>}
    */
   static graph(db: DataSource, graphProps: InitProps.Graph): Promise<Graph> {

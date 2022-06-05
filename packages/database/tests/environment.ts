@@ -10,6 +10,7 @@ type SetupOptions = {
  * pre-test setup
  *
  * @param {DataSource} db
+ * @param {SetupOptions} opts
  */
 export async function setup(db: DataSource, opts?: SetupOptions) {
   return sql
@@ -28,9 +29,9 @@ export async function setup(db: DataSource, opts?: SetupOptions) {
  * @param {DataSource} db
  */
 export async function teardown(db: DataSource) {
-  const drop = () => sql.dropDatabase(db.options.database.toString())
+  const drop = sql.dropDatabase(db.options.database.toString())
   if (db.isInitialized) {
-    return db.destroy().then(drop)
+    return db.destroy().then(() => drop)
   }
   return drop
 }
