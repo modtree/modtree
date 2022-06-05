@@ -51,7 +51,7 @@ test('It should create a user', async () => {
  * reject a user creation if has insufficient keys
  * with status 400: Bad Request
  */
-test('It should create a user', async () => {
+test('It should reject a user creation on invaid id', async () => {
   expect.hasAssertions()
   await expect(() =>
     server.post('user/create', {

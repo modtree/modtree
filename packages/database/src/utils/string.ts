@@ -35,6 +35,9 @@ export function oneUp(fullPath: string): string {
 
 /**
  * checks if the input is a non-empty string
+ *
+ * @param {string} value
+ * @returns {boolean}
  */
 export function nonEmtpyString(value: any): boolean {
   return typeof value === 'string' && value.length > 0

@@ -10,8 +10,11 @@ interface CustomMatchers<R = unknown> {
  */
 declare global {
   namespace jest {
+    // eslint-disable-next-line
     interface Expect extends CustomMatchers {}
+    // eslint-disable-next-line
     interface Matchers<R> extends CustomMatchers<R> {}
+    // eslint-disable-next-line
     interface InverseAsymmetricMatchers extends CustomMatchers {}
   }
 }

@@ -10,6 +10,9 @@ export const server = axios.create({
   httpsAgent: new Agent({ keepAlive: true }),
 })
 
+/**
+ * setup function for server tests
+ */
 export function setup() {
   expect.extend({
     toBeUserResponse(user: response.User) {
