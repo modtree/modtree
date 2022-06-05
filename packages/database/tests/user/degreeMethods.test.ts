@@ -11,17 +11,19 @@ const db = getSource(dbName)
 const t: Partial<{ user: User; degree: Degree }> = {}
 
 beforeAll(() =>
-  setup(dbName)
-    .then(() => Mockup.user(db, Init.user1))
-    .then((user) => {
+  setup(db)
+    .then(() =>
+      Promise.all([
+        Mockup.user(db, Init.user1),
+        Mockup.degree(db, Init.degree1),
+      ])
+    )
+    .then(([user, degree]) => {
       t.user = user
-    })
-    .then(() => Mockup.degree(db, Init.degree1))
-    .then((degree) => {
       t.degree = degree
     })
 )
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+afterAll(() => teardown(db))
 
 describe('User.addDegree', () => {
   it('Successfully adds a degree to a user', async () => {

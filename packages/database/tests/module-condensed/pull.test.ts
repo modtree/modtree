@@ -9,8 +9,8 @@ const lowerBound = 6000
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+beforeAll(() => setup(db))
+afterAll(() => teardown(db))
 
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {

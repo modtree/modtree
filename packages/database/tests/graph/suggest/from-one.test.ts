@@ -42,7 +42,7 @@ const userProps: InitProps.User = {
 }
 
 beforeAll(() =>
-  setup(dbName)
+  setup(db)
     .then(() => Mockup.user(db, userProps))
     .then((user) => {
       t.user = user
@@ -64,7 +64,7 @@ beforeAll(() =>
       t.graph = graph
     })
 )
-afterAll(() => teardown(dbName))
+afterAll(() => teardown(db))
 
 // TODO: remove
 importChecks({

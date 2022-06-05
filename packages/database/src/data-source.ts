@@ -29,7 +29,11 @@ export function container<T>(
   fn: () => Promise<T | void>
 ): Promise<T | void> {
   // if already initialized, reattach to old instance
-  if (database.isInitialized) return fn()
+  if (database.isInitialized) {
+    console.log('reusing old instance')
+    return fn()
+  }
+  console.log('creating new instance')
   // if not initialized, kickstart a new instance
   return (
     database

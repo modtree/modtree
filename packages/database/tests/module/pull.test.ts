@@ -7,8 +7,8 @@ import { oneUp } from '../../src/utils'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+beforeAll(() => setup(db))
+afterAll(() => teardown(db))
 
 jest.setTimeout(60000)
 test('pull all modules from NUSMods', async () => {

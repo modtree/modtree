@@ -11,14 +11,14 @@ const db = getSource(dbName)
 const t: Partial<{ degree: Degree; combinedModuleCodes: string[] }> = {}
 
 beforeAll(() =>
-  setup(dbName)
+  setup(db)
     .then(() => Mockup.degree(db, Init.degree1))
     .then((degree) => {
       t.degree = degree
       t.combinedModuleCodes = degree.modules.map(Flatten.module)
     })
 )
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+afterAll(() => teardown(db))
 
 describe('Degree.insertModules', () => {
   it('Correctly saves newly inserted modules', async () => {

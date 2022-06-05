@@ -16,7 +16,7 @@ const t: Partial<{
 }> = {}
 
 beforeAll(() =>
-  setup(dbName)
+  setup(db)
     .then(() => Mockup.user(db, Init.user1))
     .then((user) => {
       t.user = user
@@ -38,7 +38,7 @@ beforeAll(() =>
       t.graph = graph
     })
 )
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+afterAll(() => teardown(db))
 
 describe('Graph.initialize', () => {
   it('Initializes a graph', async () => {
