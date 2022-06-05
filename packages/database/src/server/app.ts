@@ -1,4 +1,3 @@
-import * as bodyParser from 'body-parser'
 import cors, { CorsOptions } from 'cors'
 import express, { NextFunction, Request, Response } from 'express'
 import { Routes } from './routes'
@@ -10,7 +9,7 @@ const corsOpts: CorsOptions = {
 // create express app
 const app = express()
 app.use(cors(corsOpts))
-app.use(bodyParser.json())
+app.use(express.json())
 // register express routes from defined application routes
 Routes.forEach((route) => {
   app[route.method](

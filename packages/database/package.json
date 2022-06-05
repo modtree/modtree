@@ -15,6 +15,7 @@
     "@types/mysql": "^2.15.21",
     "@types/node": "^16.11.10",
     "@types/pg": "^8.6.5",
+    "@types/supertest": "^2.0.12",
     "eslint-config-modtree": "*",
     "eslint-plugin-jest": "^26.2.2",
     "jest": "^28.1.0",
@@ -26,7 +27,6 @@
   "dependencies": {
     "@inquirer/input": "^0.0.20-alpha.0",
     "axios": "^0.27.2",
-    "body-parser": "^1.20.0",
     "boxen": "^5.1.2",
     "chalk": "^4.1.2",
     "cors": "^2.8.5",
