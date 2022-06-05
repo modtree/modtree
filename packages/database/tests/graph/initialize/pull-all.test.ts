@@ -1,10 +1,13 @@
 import { Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Degree, Graph, User } from '../../../src/entity'
-import { GraphRepository } from '../../../src/repository'
+import {
+  DegreeRepository,
+  GraphRepository,
+  UserRepository,
+} from '../../../src/repository'
 import { setup, teardown } from '../../environment'
 import Init from '../../init'
-import Mockup from '../../mockup'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -19,23 +22,21 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Mockup.user(db, Init.user1),
-        Mockup.degree(db, Init.degree1),
+        UserRepository(db).initialize(Init.user1),
+        DegreeRepository(db).initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) => {
       t.user = user
       t.degree = degree
-    })
-    .then(() =>
-      Mockup.graph(db, {
-        userId: t.user.id,
-        degreeId: t.degree.id,
+      return GraphRepository(db).initialize({
+        userId: user.id,
+        degreeId: degree.id,
         modulesPlacedCodes: [],
         modulesHiddenCodes: [],
         pullAll: true,
       })
-    )
+    })
     .then((graph) => {
       t.graph = graph
     })

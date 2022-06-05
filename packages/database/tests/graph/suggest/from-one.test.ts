@@ -1,12 +1,17 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
 import { Module, Graph } from '../../../src/entity'
-import { GraphRepository, ModuleRepository } from '../../../src/repository'
+import {
+  DegreeRepository,
+  GraphRepository,
+  ModuleRepository,
+  UserRepository,
+} from '../../../src/repository'
 import { setup, teardown } from '../../environment'
-import Mockup from '../../mockup'
 import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
+import { oneUp } from '../../../src/utils'
 
-const dbName = 'test_suggest_modules_from_one'
+const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{
   graph: Graph
@@ -37,10 +42,13 @@ const userProps: InitProps.User = {
 beforeAll(() =>
   setup(db)
     .then(() =>
-      Promise.all([Mockup.user(db, userProps), Mockup.degree(db, degreeProps)])
+      Promise.all([
+        UserRepository(db).initialize(userProps),
+        DegreeRepository(db).initialize(degreeProps),
+      ])
     )
     .then(([user, degree]) =>
-      Mockup.graph(db, {
+      GraphRepository(db).initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],

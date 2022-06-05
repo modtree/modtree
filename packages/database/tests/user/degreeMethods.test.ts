@@ -1,10 +1,9 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree, User } from '../../src/entity'
-import { UserRepository } from '../../src/repository'
+import { DegreeRepository, UserRepository } from '../../src/repository'
 import { oneUp } from '../../src/utils'
 import { setup, teardown } from '../environment'
 import Init from '../init'
-import Mockup from '../mockup'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -14,8 +13,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Mockup.user(db, Init.user1),
-        Mockup.degree(db, Init.degree1),
+        UserRepository(db).initialize(Init.user1),
+        DegreeRepository(db).initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) => {
