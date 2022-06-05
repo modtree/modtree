@@ -10,8 +10,8 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ user: User; postReqsCodes: string[] }> = {}
 
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+beforeAll(() => setup(db))
+afterAll(() => teardown(db))
 
 it('Saves an empty user', async () => {
   const props: InitProps.User = Init.emptyUser

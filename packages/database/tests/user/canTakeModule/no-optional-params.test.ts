@@ -9,8 +9,8 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ user: User }> = {}
 
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+beforeAll(() => setup(db))
+afterAll(() => teardown(db))
 
 it('Saves a user', async () => {
   expect.assertions(1)

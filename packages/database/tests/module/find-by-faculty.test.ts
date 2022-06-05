@@ -7,8 +7,8 @@ import { setup, teardown } from '../environment'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+beforeAll(() => setup(db))
+afterAll(() => teardown(db))
 
 describe('ModuleRepository.findByFaculty', () => {
   it('Valid faculty name', async () => {

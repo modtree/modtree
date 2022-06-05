@@ -5,8 +5,11 @@ import { oneUp } from '../../src/utils'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
+beforeAll(() => setup(db, { initialize: false }))
+/**
+ * no need to cut connection because last test contains endpoint
+ */
+afterAll(() => teardown(db))
 
 test('AppDataSource is defined', () => {
   expect(db).toBeDefined()

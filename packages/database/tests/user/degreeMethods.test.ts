@@ -1,27 +1,28 @@
 import { container, getSource } from '../../src/data-source'
-import { User, Degree } from '../../src/entity'
-import { UserRepository } from '../../src/repository'
-import { setup, teardown } from '../environment'
-import Mockup from '../mockup'
-import Init from '../init'
+import { Degree, User } from '../../src/entity'
+import { DegreeRepository, UserRepository } from '../../src/repository'
 import { oneUp } from '../../src/utils'
+import { setup, teardown } from '../environment'
+import Init from '../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{
-  user: User
-  degree: Degree
-}> = {}
+const t: Partial<{ user: User; degree: Degree }> = {}
 
 beforeAll(() =>
-  setup(dbName)
-    .then(() => Mockup.user(db, Init.user1, Init.degree1))
-    .then((res) => {
-      t.user = res.user
-      t.degree = res.degree
+  setup(db)
+    .then(() =>
+      Promise.all([
+        UserRepository(db).initialize(Init.user1),
+        DegreeRepository(db).initialize(Init.degree1),
+      ])
+    )
+    .then(([user, degree]) => {
+      t.user = user
+      t.degree = degree
     })
 )
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+afterAll(() => teardown(db))
 
 describe('User.addDegree', () => {
   it('Successfully adds a degree to a user', async () => {

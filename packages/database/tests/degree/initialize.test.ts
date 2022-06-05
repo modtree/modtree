@@ -9,8 +9,8 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ degree: Degree }> = {}
 
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+beforeAll(() => setup(db))
+afterAll(() => teardown(db))
 
 describe('Degree.initialize', () => {
   const props = Init.degree1

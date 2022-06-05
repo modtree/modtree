@@ -1,4 +1,3 @@
-import { setup, teardown } from '../environment'
 import { getSource } from '../../src/data-source'
 import { Module, ModuleCondensed, Degree, User } from '../../src/entity'
 import {
@@ -11,9 +10,6 @@ import { oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-
-beforeAll(() => setup(dbName))
-afterAll(() => teardown(dbName))
 
 test('AppDataSource is defined', () => {
   expect(db).toBeDefined()

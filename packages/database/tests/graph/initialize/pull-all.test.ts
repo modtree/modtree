@@ -1,10 +1,13 @@
 import { Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Degree, Graph, User } from '../../../src/entity'
-import { GraphRepository } from '../../../src/repository'
+import {
+  DegreeRepository,
+  GraphRepository,
+  UserRepository,
+} from '../../../src/repository'
 import { setup, teardown } from '../../environment'
 import Init from '../../init'
-import Mockup from '../../mockup'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -16,14 +19,29 @@ const t: Partial<{
 }> = {}
 
 beforeAll(() =>
-  setup(dbName)
-    .then(() => Mockup.graph(db, Init.user1, Init.degree1))
-    .then((res) => {
-      t.user = res.user
-      t.degree = res.degree
+  setup(db)
+    .then(() =>
+      Promise.all([
+        UserRepository(db).initialize(Init.user1),
+        DegreeRepository(db).initialize(Init.degree1),
+      ])
+    )
+    .then(([user, degree]) => {
+      t.user = user
+      t.degree = degree
+      return GraphRepository(db).initialize({
+        userId: user.id,
+        degreeId: degree.id,
+        modulesPlacedCodes: [],
+        modulesHiddenCodes: [],
+        pullAll: true,
+      })
+    })
+    .then((graph) => {
+      t.graph = graph
     })
 )
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+afterAll(() => teardown(db))
 
 describe('Graph.initialize', () => {
   it('Initializes a graph', async () => {

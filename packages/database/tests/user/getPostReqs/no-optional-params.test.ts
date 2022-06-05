@@ -9,8 +9,8 @@ import { Flatten, oneUp } from '../../../src/utils'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(dbName))
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+beforeAll(() => setup(db))
+afterAll(() => teardown(db))
 
 const t: Partial<{
   user: User

@@ -4,21 +4,20 @@ import { DegreeRepository } from '../../src/repository'
 import Init from '../init'
 import { setup, teardown } from '../environment'
 import { Flatten, oneUp } from '../../src/utils'
-import Mockup from '../mockup'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ degree: Degree; combinedModuleCodes: string[] }> = {}
 
 beforeAll(() =>
-  setup(dbName)
-    .then(() => Mockup.degree(db, Init.degree1))
-    .then((res) => {
-      t.degree = res.degree
-      t.combinedModuleCodes = res.degree.modules.map(Flatten.module)
+  setup(db)
+    .then(() => DegreeRepository(db).initialize(Init.degree1))
+    .then((degree) => {
+      t.degree = degree
+      t.combinedModuleCodes = degree.modules.map(Flatten.module)
     })
 )
-afterAll(() => db.destroy().then(() => teardown(dbName)))
+afterAll(() => teardown(db))
 
 describe('Degree.insertModules', () => {
   it('Correctly saves newly inserted modules', async () => {
