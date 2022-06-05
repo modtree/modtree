@@ -43,7 +43,7 @@
   "scripts": {
     "h1": "─────────────────────────────────────────────── core utils ",
     "start": "node dist/server",
-    "build": "rm -rf ./dist && tsc --declaration",
+    "build": "rm -rf ./dist && tsc --build tsconfig.build.json",
     "dev": "yarn build && yarn start",
     "graph": "madge --image graph.png",
     "ci": "yarn lint:no-fix && yarn build",

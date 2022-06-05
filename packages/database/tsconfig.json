@@ -8,9 +8,11 @@
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "declaration": true,
     "sourceMap": true,
-    "types": ["@types/jest"]
+    "types": ["@types/jest"],
+    "typeRoots": ["./types"]
   },
-  "include": ["src", "types"],
+  "include": ["src", "tests", "types"],
   "exclude": ["dist", "node_modules"]
 }
