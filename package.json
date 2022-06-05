@@ -1,6 +1,6 @@
 {
-  "name": "modtree-monorepo",
-  "version": "0.0.0",
+  "name": "modtree",
+  "version": "0.1.0",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -18,7 +18,7 @@
     "setup": "yarn && yarn build:db && yarn default:env",
     "heroku-postbuild": "yarn build:db",
     "default:env": "turbo run default:env",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "version": "auto-changelog -p && git add --all"
   },
   "devDependencies": {
     "auto-changelog": "^2.4.0",
