@@ -13,12 +13,14 @@ const t: Partial<{ user: User; degree: Degree; graph: Graph }> = {}
 
 beforeAll(() =>
   setup(db)
-    .then(() => Mockup.user(db, Init.user1))
-    .then((user) => {
+    .then(() =>
+      Promise.all([
+        Mockup.user(db, Init.user1),
+        Mockup.degree(db, Init.degree1),
+      ])
+    )
+    .then(([user, degree]) => {
       t.user = user
-    })
-    .then(() => Mockup.degree(db, Init.degree1))
-    .then((degree) => {
       t.degree = degree
     })
     .then(() =>

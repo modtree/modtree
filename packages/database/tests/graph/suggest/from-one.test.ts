@@ -1,12 +1,7 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
-import { Degree, User, Module, Graph } from '../../../src/entity'
-import {
-  DegreeRepository,
-  UserRepository,
-  GraphRepository,
-  ModuleRepository,
-} from '../../../src/repository'
-import { setup, importChecks, teardown } from '../../environment'
+import { Module, Graph } from '../../../src/entity'
+import { GraphRepository, ModuleRepository } from '../../../src/repository'
+import { setup, teardown } from '../../environment'
 import Mockup from '../../mockup'
 import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
@@ -14,8 +9,6 @@ import Init from '../../init'
 const dbName = 'test_suggest_modules_from_one'
 const db = getSource(dbName)
 const t: Partial<{
-  user: User
-  degree: Degree
   graph: Graph
   suggestedModulesCodes: string[]
   postReqs: string[]
@@ -43,18 +36,13 @@ const userProps: InitProps.User = {
 
 beforeAll(() =>
   setup(db)
-    .then(() => Mockup.user(db, userProps))
-    .then((user) => {
-      t.user = user
-    })
-    .then(() => Mockup.degree(db, degreeProps))
-    .then((degree) => {
-      t.degree = degree
-    })
     .then(() =>
+      Promise.all([Mockup.user(db, userProps), Mockup.degree(db, degreeProps)])
+    )
+    .then(([user, degree]) =>
       Mockup.graph(db, {
-        userId: t.user.id,
-        degreeId: t.degree.id,
+        userId: user.id,
+        degreeId: degree.id,
         modulesPlacedCodes: [],
         modulesHiddenCodes: [],
         pullAll: false,
@@ -65,17 +53,6 @@ beforeAll(() =>
     })
 )
 afterAll(() => teardown(db))
-
-// TODO: remove
-importChecks({
-  entities: [Module, Degree, User, Graph],
-  repositories: [
-    ModuleRepository(db),
-    UserRepository(db),
-    DegreeRepository(db),
-    GraphRepository(db),
-  ],
-})
 
 const expected = [
   'CS2107',
