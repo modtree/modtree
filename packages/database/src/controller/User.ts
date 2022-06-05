@@ -114,6 +114,7 @@ export class UserController implements IUserController {
         modulesDone: true,
         modulesDoing: true,
         savedDegrees: true,
+        savedGraphs: true,
       },
     })
     const flat = users.map((u) => Flatten.user(u))
@@ -127,9 +128,15 @@ export class UserController implements IUserController {
    * @param {Response} res
    */
   async delete(req: Request, res: Response) {
-    const deleteResult = await this.userRepo.delete({
-      id: req.params.userId,
-    })
-    res.json({ deleteResult })
+    await this.userRepo
+      .delete({
+        id: req.params.userId,
+      })
+      .then((deleteResult) => {
+        res.json({ deleteResult })
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'User not found' })
+      })
   }
 }

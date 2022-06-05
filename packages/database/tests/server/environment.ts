@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Agent } from 'http'
+import { nonEmtpyString } from '../../src/utils'
 import { response } from '../../types/api-response'
 
 export const server = axios.create({
@@ -11,19 +12,28 @@ export const server = axios.create({
 
 export function setup() {
   expect.extend({
-    toBeUserResponse(received: response.User) {
-      const c1 = typeof received.id === 'string' && received.id.length > 0
-      const checks = [c1]
+    toBeUserResponse(user: response.User) {
+      const checks = [
+        nonEmtpyString(user.id),
+        nonEmtpyString(user.displayName),
+        nonEmtpyString(user.username),
+        user.graduationYear > 0,
+        user.graduationSemester > 0,
+        user.graduationSemester > 0,
+        user.modulesDone instanceof Array,
+        user.modulesDoing instanceof Array,
+        user.savedDegrees instanceof Array,
+        user.savedGraphs instanceof Array,
+      ]
       return checks.every((x) => x === true)
         ? {
             pass: true,
             message: () =>
-              `Expected ${received} not to be a valid User API response`,
+              `Expected ${user} not to be a valid User API response`,
           }
         : {
             pass: false,
-            message: () =>
-              `Expected ${received} to be a valid User API response`,
+            message: () => `Expected ${user} to be a valid User API response`,
           }
     },
   })

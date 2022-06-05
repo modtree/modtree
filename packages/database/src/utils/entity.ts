@@ -25,6 +25,7 @@ export class Flatten {
       modulesDoing: user.modulesDoing.map(Flatten.module),
       modulesDone: user.modulesDone.map(Flatten.module),
       savedDegrees: user.savedDegrees.map((d) => d.id),
+      savedGraphs: [],
     }
   }
 

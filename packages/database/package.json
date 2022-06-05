@@ -43,8 +43,10 @@
   "scripts": {
     "h1": "─────────────────────────────────────────────── core utils ",
     "start": "node dist/server",
+    "start:test": "NODE_ENV=test node dist/server",
     "build": "rm -rf ./dist && tsc --build tsconfig.build.json",
     "dev": "yarn build && yarn start",
+    "dev:test": "yarn build && yarn start:test",
     "graph": "madge --image graph.png",
     "ci": "yarn lint:no-fix && yarn build",
     "default:env": "sh setup.sh",
@@ -80,6 +82,7 @@
     "h5": "───────────────────────────────────────────── sql commands ",
     "dump": "ts-node ./src/api/sql/dump.ts",
     "restore": "ts-node ./src/api/sql/restore.ts",
+    "restore:test": "NODE_ENV=test ts-node ./src/api/sql/restore.ts",
     "restore:file": "ts-node ./src/api/sql/restore-from-file.ts",
     "restore:default": "ts-node ./src/api/sql/restore-default.ts",
     "reset:all": "ts-node ./src/api/sql/reset/all.ts",

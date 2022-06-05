@@ -32,13 +32,15 @@ export function UserRepository(database?: DataSource): Repository {
       queryList.map((list) => ModuleRepository(db).findByCodes(list))
     )
     const [modulesDone, modulesDoing] = await modulesPromise
-    const userProps = {
+    const user = BaseRepo.create({
       ...props,
       modulesDone: modulesDone || [],
       modulesDoing: modulesDoing || [],
-    }
-    const user = BaseRepo.create(userProps)
+      savedDegrees: [],
+      savedGraphs: [],
+    })
     await BaseRepo.save(user)
+    console.log(user)
     return user
   }
 

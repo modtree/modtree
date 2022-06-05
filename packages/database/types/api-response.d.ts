@@ -15,7 +15,7 @@ export namespace relationless {
    */
   export type User = Omit<
     UserEntity,
-    'modulesDone' | 'modulesDoing' | 'savedDegrees'
+    'modulesDone' | 'modulesDoing' | 'savedDegrees' | 'savedGraphs'
   >
 
   /**
@@ -43,6 +43,7 @@ export namespace response {
     modulesDone: string[]
     modulesDoing: string[]
     savedDegrees: string[]
+    savedGraphs: string[]
   }
 
   /**

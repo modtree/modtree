@@ -32,3 +32,10 @@ export function oneUp(fullPath: string): string {
   const child = basename(fullPath)
   return join(parent, child)
 }
+
+/**
+ * checks if the input is a non-empty string
+ */
+export function nonEmtpyString(value: any): boolean {
+  return typeof value === 'string' && value.length > 0
+}
