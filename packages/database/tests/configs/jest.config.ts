@@ -25,8 +25,8 @@ export const ci: Config.InitialOptions = {
   testMatch: ['**/tests/**/*.test.ts'],
   testPathIgnorePatterns: [
     ...all.testPathIgnorePatterns,
-    'module/pull',
-    'server',
+    'packages/database/tests/module/pull',
+    'packages/database/tests/server',
   ],
 }
 
