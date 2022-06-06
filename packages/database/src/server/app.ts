@@ -26,5 +26,8 @@ Routes.forEach((route) => {
     }
   )
 })
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).send('modtree server is running')
+})
 
 export default app

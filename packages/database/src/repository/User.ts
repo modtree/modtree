@@ -40,7 +40,6 @@ export function UserRepository(database?: DataSource): Repository {
       savedGraphs: [],
     })
     await BaseRepo.save(user)
-    console.log(user)
     return user
   }
 

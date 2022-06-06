@@ -29,22 +29,9 @@ export function container<T>(
   fn: () => Promise<T | void>
 ): Promise<T | void> {
   // if already initialized, reattach to old instance
-  if (database.isInitialized) {
-    console.log('reusing old instance')
-    return fn()
-  }
-  console.log('creating new instance')
+  if (database.isInitialized) return fn()
   // if not initialized, kickstart a new instance
-  return (
-    database
-      .initialize()
-      .then(fn)
-      // failed to initialize database connection
-      .catch((error) => {
-        console.log(error)
-        log.red('typeorm failed to initialize connection to database.')
-      })
-  )
+  return database.initialize().then(fn)
 }
 
 /**
