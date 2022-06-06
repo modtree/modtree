@@ -7,7 +7,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, useLoadRelations } from './base'
+import { getDataSource, useLoadRelations, getRelationNames } from './base'
 import { quickpop, Flatten } from '../utils'
 import type { GraphRepository as Repository } from '../../types/repository'
 
@@ -137,6 +137,23 @@ export function GraphRepository(database?: DataSource): Repository {
     }
 
     await BaseRepo.save(graph)
+  }
+
+  /**
+   * Returns a User with all relations loaded
+   *
+   * @param {string} id
+   * @returns {Promise<Graph>}
+   */
+  async function findOneById(id: string): Promise<Graph> {
+    // get graph by id
+    const graph = await BaseRepo.createQueryBuilder('graph')
+      .where('graph.id = :id', { id })
+      .getOneOrFail()
+    // get relation names
+    const relationNames = getRelationNames(db, Graph)
+    await GraphRepository(db).loadRelations(graph, relationNames)
+    return graph
   }
 
   /**
@@ -276,6 +293,7 @@ export function GraphRepository(database?: DataSource): Repository {
     initialize,
     toggleModule,
     loadRelations,
+    findOneById,
     findOneByUserAndDegreeId,
     findManyByUserAndDegreeId,
     suggestModulesFromOne,
