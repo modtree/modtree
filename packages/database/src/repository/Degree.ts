@@ -4,13 +4,13 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { getDataSource, getRelationNames } from './base'
 import { copy } from '../utils'
-import type { DegreeRepository as Repository } from '../../types/repository'
+import type { IDegreeRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @returns {DegreeRepository}
  */
-export function DegreeRepository(database?: DataSource): Repository {
+export function DegreeRepository(database?: DataSource): IDegreeRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
   const allRelations = getRelationNames(BaseRepo)

@@ -24,7 +24,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   const addModuleCodes = ['CS1101S']
   // Get eligible modules
   const eligibleModules = await container(db, () =>
-    UserRepository(db).eligibleModules(t.user, addModuleCodes)
+    UserRepository(db).getEligibleModules(t.user, addModuleCodes)
   )
   expect(eligibleModules).toBeDefined()
   if (!eligibleModules) return

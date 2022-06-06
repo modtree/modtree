@@ -6,14 +6,14 @@ import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { getDataSource, useDeleteAll } from './base'
-import type { ModuleRepository as Repository } from '../../types/repository'
+import type {IModuleRepository} from '../../types/repository'
 import { client } from '../utils/pull'
 
 /**
  * @param {DataSource} database
  * @returns {ModuleRepository}
  */
-export function ModuleRepository(database?: DataSource): Repository {
+export function ModuleRepository(database?: DataSource): IModuleRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Module)
   const deleteAll = useDeleteAll<Module>(BaseRepo)

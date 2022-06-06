@@ -7,13 +7,13 @@ import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { Utils, Flatten, copy } from '../utils'
 import { getDataSource, getRelationNames } from './base'
-import type { UserRepository as Repository } from '../../types/repository'
+import type {IUserRepository} from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @returns {UserRepository}
  */
-export function UserRepository(database?: DataSource): Repository {
+export function UserRepository(database?: DataSource): IUserRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(User)
   const allRelations = getRelationNames(BaseRepo)

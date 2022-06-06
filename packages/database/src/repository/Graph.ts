@@ -9,7 +9,7 @@ import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
 import { getDataSource, getRelationNames } from './base'
 import { quickpop, Flatten, copy } from '../utils'
-import type { GraphRepository as Repository } from '../../types/repository'
+import type { IGraphRepository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
 
@@ -17,7 +17,7 @@ type ModuleState = 'placed' | 'hidden' | 'invalid'
  * @param {DataSource} database
  * @returns {GraphRepository}
  */
-export function GraphRepository(database?: DataSource): Repository {
+export function GraphRepository(database?: DataSource): IGraphRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Graph)
   const allRelations = getRelationNames(BaseRepo)
@@ -216,7 +216,7 @@ export function GraphRepository(database?: DataSource): Repository {
     }
 
     // 2. Filter for eligible modules
-    const allEligibleModules = await UserRepository(db).eligibleModules(
+    const allEligibleModules = await UserRepository(db).getEligibleModules(
       graph.user
     )
     if (!allEligibleModules) return [] // temp fix

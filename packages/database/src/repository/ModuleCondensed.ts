@@ -4,13 +4,15 @@ import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { getDataSource, useDeleteAll } from './base'
-import type { ModuleCondensedRepository as Repository } from '../../types/repository'
+import type { IModuleCondensedRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @returns {ModuleCondensedRepository}
  */
-export function ModuleCondensedRepository(database?: DataSource): Repository {
+export function ModuleCondensedRepository(
+  database?: DataSource
+): IModuleCondensedRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
   const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)

@@ -10,15 +10,15 @@ import type {
 import type { Module as NM, ModuleCondensed as NMC } from './nusmods'
 
 /**
- * BaseRepository, but for now only in types
+ * IBaseRepository, but for now only in types
  * it is a interface that will be extended to form the final Repositories of modtree
  */
-interface BaseRepo<Entity, InitProps> extends Repository<Entity> {
+interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
   initialize?(props: InitProps): Promise<Entity>
   deleteAll?(): Promise<void>
 }
 
-export interface GraphRepository extends BaseRepo<Graph, InitProps.Graph> {
+export interface IGraphRepository extends IBaseRepo<Graph, InitProps.Graph> {
   toggleModule(graph: Graph, moduleCode: string): Promise<void>
   findOneById(id: string): Promise<Graph>
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
@@ -29,7 +29,7 @@ export interface GraphRepository extends BaseRepo<Graph, InitProps.Graph> {
   suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]>
 }
 
-export interface UserRepository extends BaseRepo<User, InitProps.User> {
+export interface IUserRepository extends IBaseRepo<User, InitProps.User> {
   canTakeModule(
     user: User,
     moduleCode: string,
@@ -45,14 +45,14 @@ export interface UserRepository extends BaseRepo<User, InitProps.User> {
   removeDegree(user: User, degreeId: string): Promise<void>
 }
 
-export interface DegreeRepository extends BaseRepo<Degree, InitProps.Degree> {
+export interface IDegreeRepository extends IBaseRepo<Degree, InitProps.Degree> {
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
   findOneByTitle(title: string): Promise<Degree>
   findOneById(id: string): Promise<Degree>
   findByIds(id: string[]): Promise<Degree[]>
 }
 
-export interface ModuleRepository extends BaseRepo<Module, NM> {
+export interface IModuleRepository extends IBaseRepo<Module, NM> {
   get(): Promise<Module[]>
   fetchOne(moduleCode: string): Promise<Module>
   getCodes(): Promise<string[]>
@@ -61,8 +61,8 @@ export interface ModuleRepository extends BaseRepo<Module, NM> {
   findByCodes(moduleCodes: string[]): Promise<Module[]>
 }
 
-export interface ModuleCondensedRepository
-  extends BaseRepo<ModuleCondensed, NMC> {
+export interface IModuleCondensedRepository
+  extends IBaseRepo<ModuleCondensed, NMC> {
   pull(): Promise<ModuleCondensed[]>
   fetch(): Promise<ModuleCondensed[]>
   getCodes(): Promise<string[]>
