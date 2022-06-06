@@ -1,4 +1,4 @@
-import type { Config } from '@jest/types'
+import { Config } from '@jest/types'
 
 export const all: Config.InitialOptionsWithRootDir = {
   rootDir: '../..',

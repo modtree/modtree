@@ -1,15 +1,14 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
-import { getDegreeRepository } from '../../src/repository'
 import Init from '../init'
-import { setup, teardown } from '../environment'
-import { Flatten, oneUp } from '../../src/utils'
+import { setup, teardown, repo } from '../environment'
+import { copy, Flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ degree: Degree }> = {}
 
-beforeAll(() => setup(db))
+beforeAll(() => setup(db).then(res => copy(res, repo)))
 afterAll(() => teardown(db))
 
 describe('Degree.initialize', () => {
@@ -17,7 +16,7 @@ describe('Degree.initialize', () => {
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () =>
-      getDegreeRepository(db)
+      repo.Degree
         .initialize(props)
         .then((res) => {
           expect(res).toBeInstanceOf(Degree)
@@ -28,7 +27,7 @@ describe('Degree.initialize', () => {
 
   it('Can find same degree (without relations)', async () => {
     await container(db, () =>
-      getDegreeRepository(db)
+      repo.Degree
         .findOneByTitle(props.title)
         .then((res) => {
           expect(res).toBeInstanceOf(Degree)

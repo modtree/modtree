@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import type { InitProps } from '../../types/init-props'
+import { InitProps } from '../../types/init-props'
 import { Degree } from '../entity/Degree'
 import { getModuleRepository } from './Module'
 import {
@@ -9,7 +9,7 @@ import {
   useFindOneByKey,
 } from './base'
 import { copy } from '../utils'
-import type { IDegreeRepository } from '../../types/repository'
+import { IDegreeRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
@@ -22,6 +22,7 @@ export function getDegreeRepository(database?: DataSource): IDegreeRepository {
   const findOneById = useFindOneByKey(BaseRepo, 'id')
   const findOneByTitle = useFindOneByKey(BaseRepo, 'title')
   const allRelations = getRelationNames(BaseRepo)
+  const [ModuleRepository] = [getModuleRepository(db)]
 
   /**
    * Adds a Degree to DB
@@ -33,7 +34,7 @@ export function getDegreeRepository(database?: DataSource): IDegreeRepository {
     const { moduleCodes, title } = props
     const degree = BaseRepo.create({ title })
     // find modules required, to create many-to-many relation
-    const modules = await getModuleRepository(db).findByCodes(moduleCodes)
+    const modules = await ModuleRepository.findByCodes(moduleCodes)
     degree.modules = modules
     await BaseRepo.save(degree)
     return degree
@@ -51,7 +52,7 @@ export function getDegreeRepository(database?: DataSource): IDegreeRepository {
   ): Promise<Degree> {
     // find modules to add
     return Promise.all([
-      getModuleRepository(db).findBy({
+      ModuleRepository.findBy({
         moduleCode: In(moduleCodes),
       }),
       findOneById(degree.id),

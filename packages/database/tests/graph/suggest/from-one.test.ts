@@ -1,15 +1,9 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
 import { Module, Graph } from '../../../src/entity'
-import {
-  getDegreeRepository,
-  getGraphRepository,
-  getModuleRepository,
-  getUserRepository,
-} from '../../../src/repository'
-import { setup, teardown } from '../../environment'
-import type { InitProps } from '../../../types/init-props'
+import { setup, teardown, repo } from '../../environment'
+import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
-import { oneUp } from '../../../src/utils'
+import { copy, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -41,14 +35,15 @@ const userProps: InitProps['User'] = {
 
 beforeAll(() =>
   setup(db)
+    .then((res) => copy(res, repo))
     .then(() =>
       Promise.all([
-        getUserRepository(db).initialize(userProps),
-        getDegreeRepository(db).initialize(degreeProps),
+        repo.User.initialize(userProps),
+        repo.Degree.initialize(degreeProps),
       ])
     )
     .then(([user, degree]) =>
-      getGraphRepository(db).initialize({
+      repo.Graph.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -76,7 +71,7 @@ describe('Graph.suggestModulesFromOne', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        getGraphRepository(db).suggestModulesFromOne(t.graph, 'CS1010')
+        repo.Graph.suggestModulesFromOne(t.graph, 'CS1010')
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -102,9 +97,7 @@ describe('Graph.suggestModulesFromOne', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
       const res = await endpoint(db, () =>
-        container(db, () =>
-          getModuleRepository(db).findOneBy({ moduleCode: 'CS1010' })
-        )
+        container(db, () => repo.Module.findOneBy({ moduleCode: 'CS1010' }))
       )
       expect(res).toBeDefined()
       if (!res) return

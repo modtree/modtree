@@ -1,7 +1,7 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
 import { getUserRepository } from '../../../src/repository'
-import type { InitProps } from '../../../types/init-props'
+import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'

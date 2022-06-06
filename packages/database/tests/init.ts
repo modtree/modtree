@@ -1,4 +1,4 @@
-import type { InitProps } from '../types/init-props'
+import { InitProps } from '../types/init-props'
 
 /**
  * fake data for test cases

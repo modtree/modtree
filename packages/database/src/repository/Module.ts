@@ -3,7 +3,7 @@ import { DataSource, In } from 'typeorm'
 import { log } from '../cli'
 import { nusmodsApi, Flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
-import type { InitProps } from '../../types/init-props'
+import { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { getModuleCondensedRepository } from './ModuleCondensed'
 import {
@@ -12,7 +12,7 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from './base'
-import type { IModuleRepository } from '../../types/repository'
+import { IModuleRepository } from '../../types/repository'
 import { client } from '../utils/pull'
 
 /**
@@ -25,6 +25,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
   const deleteAll = useDeleteAll<Module>(BaseRepo)
   const findOneById = useFindOneByKey(BaseRepo, 'id')
   const allRelations = getRelationNames(BaseRepo)
+  const [ModuleCondensedRepository] = [getModuleCondensedRepository(db)]
 
   /**
    * initialize a Module
@@ -68,7 +69,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     }
     let buffer = 0
     const moduleCodes = new Set(await getCodes())
-    const moduleCondesedCodes = await getModuleCondensedRepository(db).getCodes()
+    const moduleCondesedCodes = await ModuleCondensedRepository.getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
     console.log(`fetching ${diff.length} modules from NUSMods...`)
     const [result, fetchQueue, writeQueue] = [[], [], []]

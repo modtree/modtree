@@ -1,13 +1,18 @@
 import { DataSource } from 'typeorm'
-import type { InitProps } from '../../types/init-props'
+import { InitProps } from '../../types/init-props'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { getModuleRepository } from './Module'
 import { getDegreeRepository } from './Degree'
 import { Utils, Flatten, copy } from '../utils'
-import { getDataSource, getRelationNames, useDeleteAll, useFindOneByKey } from './base'
-import type { IUserRepository } from '../../types/repository'
+import {
+  getDataSource,
+  getRelationNames,
+  useDeleteAll,
+  useFindOneByKey,
+} from './base'
+import { IUserRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
@@ -19,6 +24,10 @@ export function getUserRepository(database?: DataSource): IUserRepository {
   const allRelations = getRelationNames(BaseRepo)
   const deleteAll = useDeleteAll(BaseRepo)
   const findOneById = useFindOneByKey(BaseRepo, 'id')
+  const [DegreeRepository, ModuleRepository] = [
+    getDegreeRepository(db),
+    getModuleRepository(db),
+  ]
 
   /**
    * Adds a User to DB
@@ -31,7 +40,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     // relation
     const queryList = [props.modulesDone, props.modulesDoing]
     const modulesPromise = Promise.all(
-      queryList.map((list) => getModuleRepository(db).findByCodes(list))
+      queryList.map((list) => ModuleRepository.findByCodes(list))
     )
     const [modulesDone, modulesDoing] = await modulesPromise
     const user = BaseRepo.create({
@@ -63,7 +72,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     addedModuleCodes?: string[]
   ): Promise<boolean> {
     // 1. find module
-    const module = await getModuleRepository(db).findOneBy({ moduleCode })
+    const module = await ModuleRepository.findOneBy({ moduleCode })
     // -- if module not found, assume invalid module code
     if (!module) return false
     // 2. load modulesDone and modulesDoing relations
@@ -155,7 +164,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     })
     const addedModules = await Promise.all(
       addedModuleCodes.map((one) =>
-        getModuleRepository(db).findOneBy({
+        ModuleRepository.findOneBy({
           moduleCode: one,
         })
       )
@@ -177,7 +186,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
         !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
     )
     // 4. get modules
-    const modules = await getModuleRepository(db).findByCodes(filtered)
+    const modules = await ModuleRepository.findByCodes(filtered)
     return modules
   }
 
@@ -242,7 +251,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     // 1. load savedDegrees relations
     copy(await findOneById(user.id), user)
     // 2. find degree in DB
-    const degree = await getDegreeRepository(db).findOneById(degreeId)
+    const degree = await DegreeRepository.findOneById(degreeId)
     // 3. append degree
     user.savedDegrees.push(degree)
     await BaseRepo.save(user)

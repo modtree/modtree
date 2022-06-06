@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Agent } from 'http'
 import { DeleteResult } from 'typeorm'
 import { ResponseProps } from '../../types/api-response'
-import type { InitProps } from '../../types/init-props'
+import { InitProps } from '../../types/init-props'
 
 export const server = axios.create({
   baseURL: 'http://localhost:8080/',

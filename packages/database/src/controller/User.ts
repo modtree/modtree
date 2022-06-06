@@ -2,12 +2,11 @@ import { Request, Response } from 'express'
 import { db } from '../config'
 import { getDegreeRepository, getUserRepository } from '../repository'
 import { EmptyInit, Flatten, copy } from '../utils'
-import type { IUserController } from '../../types/controller'
+import { IUserController } from '../../types/controller'
 
 /** User api controller */
 export class UserController implements IUserController {
   private userRepo = getUserRepository(db)
-
   private degreeRepo = getDegreeRepository(db)
 
   /**

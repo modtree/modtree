@@ -1,6 +1,20 @@
 import { DataSource, Repository } from 'typeorm'
 import { config } from '../src/config'
 import { sql } from '../src/sql'
+import {
+  getUserRepository,
+  getGraphRepository,
+  getDegreeRepository,
+  getModuleRepository,
+  getModuleCondensedRepository,
+} from '../src/repository'
+import {
+  IModuleRepository,
+  IUserRepository,
+  IGraphRepository,
+  IDegreeRepository,
+  IModuleCondensedRepository,
+} from '../types/repository'
 
 type SetupOptions = {
   initialize: boolean
@@ -11,15 +25,32 @@ type SetupOptions = {
  *
  * @param {DataSource} db
  * @param {SetupOptions} opts
+ * @returns {Promise<Repositories>} initialized repositories
  */
-export async function setup(db: DataSource, opts?: SetupOptions) {
+export async function setup(
+  db: DataSource,
+  opts?: SetupOptions
+): Promise<Repositories> {
+  /**
+   * bundle initializing the database and initializing the repositories
+   */
+  const initializeRepositories = () =>
+    db.initialize().then(() => ({
+      User: getUserRepository(db),
+      Degree: getDegreeRepository(db),
+      Module: getModuleRepository(db),
+      ModuleCondensed: getModuleCondensedRepository(db),
+      Graph: getGraphRepository(db),
+    }))
   return sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
-    .then(() => {
+    .then(async () => {
       // by default, initialize a new connection
-      if (!opts) return db.initialize()
+      if (!opts) {
+        return initializeRepositories()
+      }
       // else, read the config
-      return opts.initialize ? db.initialize() : null
+      return opts.initialize ? initializeRepositories() : null
     })
 }
 
@@ -54,3 +85,13 @@ export function importChecks(props: ImportCheckProps) {
     })
   })
 }
+
+export type Repositories = Partial<{
+  Module: IModuleRepository
+  ModuleCondensed: IModuleCondensedRepository
+  User: IUserRepository
+  Degree: IDegreeRepository
+  Graph: IGraphRepository
+}>
+
+export const repo: Repositories = {}

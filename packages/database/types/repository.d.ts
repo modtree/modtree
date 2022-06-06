@@ -1,6 +1,6 @@
-import type { Repository } from 'typeorm'
-import type { InitProps } from './init-props'
-import type {
+import { Repository } from 'typeorm'
+import { InitProps } from './init-props'
+import {
   Graph,
   User,
   Degree,
