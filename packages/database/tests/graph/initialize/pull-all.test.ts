@@ -1,4 +1,4 @@
-import {  Flatten, oneUp } from '../../../src/utils'
+import { Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Graph } from '../../../src/entity'
 import { setup, teardown, repo, t } from '../../environment'

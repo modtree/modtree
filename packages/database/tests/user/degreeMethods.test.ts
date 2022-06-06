@@ -27,8 +27,7 @@ describe('User.addDegree', () => {
     expect.assertions(4)
     await container(db, () =>
       // get user with all relations
-      repo.User
-        .addDegree(t.user, t.degree.id)
+      repo.User.addDegree(t.user, t.degree.id)
         .then(() => repo.User.findOneById(t.user.id))
         .then((user) => {
           expect(user).toBeInstanceOf(User)
@@ -45,12 +44,10 @@ describe('User.findDegree', () => {
   it('Successfully finds a saved degree of a user', async () => {
     expect.assertions(2)
     await container(db, () =>
-      repo.User
-        .findDegree(t.user, t.degree.id)
-        .then((degree) => {
-          expect(degree).toBeInstanceOf(Degree)
-          expect(degree.id).toEqual(t.degree.id)
-        })
+      repo.User.findDegree(t.user, t.degree.id).then((degree) => {
+        expect(degree).toBeInstanceOf(Degree)
+        expect(degree.id).toEqual(t.degree.id)
+      })
     )
   })
 
@@ -66,9 +63,7 @@ describe('User.findDegree', () => {
 
 describe('User.removeDegree', () => {
   it('Successfully removes a saved degree', async () => {
-    await container(db, () =>
-      repo.User.removeDegree(t.user, t.degree.id)
-    )
+    await container(db, () => repo.User.removeDegree(t.user, t.degree.id))
     expect(t.user.savedDegrees).toBeInstanceOf(Array)
     expect(t.user.savedDegrees.length).toEqual(0)
   })

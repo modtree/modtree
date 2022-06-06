@@ -15,23 +15,19 @@ describe('Degree.initialize', () => {
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () =>
-      repo.Degree
-        .initialize(props)
-        .then((res) => {
-          expect(res).toBeInstanceOf(Degree)
-          t.degree = res
-        })
+      repo.Degree.initialize(props).then((res) => {
+        expect(res).toBeInstanceOf(Degree)
+        t.degree = res
+      })
     )
   })
 
   it('Can find same degree (without relations)', async () => {
     await container(db, () =>
-      repo.Degree
-        .findOneByTitle(props.title)
-        .then((res) => {
-          expect(res).toBeInstanceOf(Degree)
-          expect(res).toStrictEqual(t.degree)
-        })
+      repo.Degree.findOneByTitle(props.title).then((res) => {
+        expect(res).toBeInstanceOf(Degree)
+        expect(res).toStrictEqual(t.degree)
+      })
     )
   })
 

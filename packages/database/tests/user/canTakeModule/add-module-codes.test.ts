@@ -1,7 +1,7 @@
 import { container, getSource } from '../../../src/data-source'
 import Init from '../../init'
 import { setup, teardown, repo, t } from '../../environment'
-import {  oneUp } from '../../../src/utils'
+import { oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

@@ -1,5 +1,5 @@
 import { getSource } from '../../../src/data-source'
-import {  oneUp } from '../../../src/utils'
+import { oneUp } from '../../../src/utils'
 import { setup, teardown, repo, t } from '../../environment'
 import Init from '../../init'
 
