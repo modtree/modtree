@@ -2,12 +2,12 @@ import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
 import Init from '../init'
 import { setup, teardown, repo, t } from '../environment'
-import { copy, Flatten, oneUp } from '../../src/utils'
+import { Flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db).then(res => copy(res, repo)))
+beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 describe('Degree.initialize', () => {

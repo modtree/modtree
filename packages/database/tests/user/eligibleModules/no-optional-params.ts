@@ -3,12 +3,12 @@ import { User } from '../../../src/entity'
 import { getUserRepository } from '../../../src/repository'
 import Init from '../../init'
 import { setup, teardown, repo, t } from '../../environment'
-import { copy, Flatten, oneUp } from '../../../src/utils'
+import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db).then((res) => copy(res, repo)))
+beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 it('Saves a user', async () => {

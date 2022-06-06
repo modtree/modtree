@@ -1,6 +1,6 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree, User } from '../../src/entity'
-import { copy, oneUp } from '../../src/utils'
+import { oneUp } from '../../src/utils'
 import { setup, teardown, repo, t } from '../environment'
 import Init from '../init'
 
@@ -9,7 +9,6 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-  .then(res => copy(res, repo))
     .then(() =>
       Promise.all([
         repo.User.initialize(Init.user1),

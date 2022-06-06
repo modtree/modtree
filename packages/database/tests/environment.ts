@@ -15,7 +15,6 @@ import {
   IDegreeRepository,
   IModuleCondensedRepository,
 } from '../types/repository'
-import { copy } from '../src/utils'
 
 type SetupOptions = {
   initialize: boolean
@@ -27,29 +26,25 @@ const repo: Repositories = {}
  *
  * @param {DataSource} db
  * @param {SetupOptions} opts
- * @returns {Promise<Repositories>} initialized repositories
+ * @returns {Promise<void>}
  */
 export async function setup(
   db: DataSource,
   opts?: SetupOptions
-): Promise<Repositories> {
+): Promise<void> {
   /**
    * bundle initializing the database and initializing the repositories
+   *
+   * @returns {Promise<void>}
    */
-  const initializeRepositories = () =>
-    db
-      .initialize()
-      .then(() => ({
-        User: getUserRepository(db),
-        Degree: getDegreeRepository(db),
-        Module: getModuleRepository(db),
-        ModuleCondensed: getModuleCondensedRepository(db),
-        Graph: getGraphRepository(db),
-      }))
-      .then((res) => {
-        copy(res, repo)
-        return res
-      })
+  const initializeRepositories = (): Promise<void> =>
+    db.initialize().then(() => {
+      repo.User = getUserRepository(db)
+      repo.Degree = getDegreeRepository(db)
+      repo.Module = getModuleRepository(db)
+      repo.ModuleCondensed = getModuleCondensedRepository(db)
+      repo.Graph = getGraphRepository(db)
+    })
   return sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
     .then(async () => {

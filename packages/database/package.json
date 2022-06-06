@@ -8,6 +8,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@jest/test-sequencer": "^28.1.0",
+    "@jest/types": "^28.1.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/inquirer": "^8.2.1",

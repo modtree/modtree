@@ -1,4 +1,4 @@
-import { copy, Flatten, oneUp } from '../../../src/utils'
+import {  Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Graph } from '../../../src/entity'
 import { setup, teardown, repo, t } from '../../environment'
@@ -9,7 +9,6 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then((res) => copy(res, repo))
     .then(() =>
       Promise.all([
         repo.User.initialize(Init.user1),

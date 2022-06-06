@@ -3,7 +3,7 @@ import { Module } from '../../../src/entity'
 import { setup, teardown, repo, t } from '../../environment'
 import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
-import { copy, oneUp } from '../../../src/utils'
+import {  oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -30,7 +30,6 @@ const userProps: InitProps['User'] = {
 
 beforeAll(() =>
   setup(db)
-    .then((res) => copy(res, repo))
     .then(() =>
       Promise.all([
         repo.User.initialize(userProps),
