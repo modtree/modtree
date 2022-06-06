@@ -7,8 +7,8 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, useLoadRelations, getRelationNames } from './base'
-import { quickpop, Flatten } from '../utils'
+import { getDataSource, getRelationNames } from './base'
+import { quickpop, Flatten, copy } from '../utils'
 import type { GraphRepository as Repository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
@@ -20,7 +20,7 @@ type ModuleState = 'placed' | 'hidden' | 'invalid'
 export function GraphRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Graph)
-  const loadRelations = useLoadRelations(BaseRepo)
+  const allRelations = getRelationNames(BaseRepo)
 
   /**
    * Adds a Graph to DB
@@ -90,12 +90,7 @@ export function GraphRepository(database?: DataSource): Repository {
     /**
      * retrieve a Graph from database given its id
      */
-    await GraphRepository(db).loadRelations(graph, {
-      user: true,
-      degree: true,
-      modulesPlaced: true,
-      modulesHidden: true,
-    })
+    copy(await GraphRepository(db).findOneById(graph.id), graph)
     /**
      * find the index of the given moduleCode to toggle
      */
@@ -146,14 +141,10 @@ export function GraphRepository(database?: DataSource): Repository {
    * @returns {Promise<Graph>}
    */
   async function findOneById(id: string): Promise<Graph> {
-    // get graph by id
-    const graph = await BaseRepo.createQueryBuilder('graph')
-      .where('graph.id = :id', { id })
-      .getOneOrFail()
-    // get relation names
-    const relationNames = getRelationNames(db, Graph)
-    await GraphRepository(db).loadRelations(graph, relationNames)
-    return graph
+    return BaseRepo.findOneOrFail({
+      where: { id },
+      relations: allRelations,
+    })
   }
 
   /**
@@ -213,13 +204,8 @@ export function GraphRepository(database?: DataSource): Repository {
     moduleCode: string
   ): Promise<Module[]> {
     // Load relations
-    await GraphRepository(db).loadRelations(graph, {
-      user: true,
-      degree: true,
-    })
-    await DegreeRepository(db).loadRelations(graph.degree, {
-      modules: true,
-    })
+    copy(await GraphRepository(db).findOneById(graph.id), graph)
+    copy(await DegreeRepository(db).findOneById(graph.degree.id), graph.degree)
 
     // 1. Get all post-reqs for this mod
     const module = await ModuleRepository(db).findOneBy({ moduleCode })
@@ -292,7 +278,6 @@ export function GraphRepository(database?: DataSource): Repository {
   return BaseRepo.extend({
     initialize,
     toggleModule,
-    loadRelations,
     findOneById,
     findOneByUserAndDegreeId,
     findManyByUserAndDegreeId,

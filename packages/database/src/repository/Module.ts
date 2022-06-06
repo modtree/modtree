@@ -5,7 +5,7 @@ import { nusmodsApi, Flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
-import { getDataSource, useLoadRelations, useDeleteAll } from './base'
+import { getDataSource, useDeleteAll } from './base'
 import type { ModuleRepository as Repository } from '../../types/repository'
 import { client } from '../utils/pull'
 
@@ -16,7 +16,6 @@ import { client } from '../utils/pull'
 export function ModuleRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Module)
-  const loadRelations = useLoadRelations(BaseRepo)
   const deleteAll = useDeleteAll<Module>(BaseRepo)
 
   /**
@@ -123,7 +122,6 @@ export function ModuleRepository(database?: DataSource): Repository {
     fetchOne,
     pull,
     findByFaculty,
-    loadRelations,
     findByCodes,
     deleteAll,
   })

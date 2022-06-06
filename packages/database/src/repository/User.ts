@@ -16,7 +16,7 @@ import type { UserRepository as Repository } from '../../types/repository'
 export function UserRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(User)
-  const allRelations = getRelationNames(db, User)
+  const allRelations = getRelationNames(BaseRepo)
 
   /**
    * Adds a User to DB
@@ -65,8 +65,7 @@ export function UserRepository(database?: DataSource): Repository {
     // -- if module not found, assume invalid module code
     if (!module) return false
     // 2. load modulesDone and modulesDoing relations
-    const res = await UserRepository(db).findOneById(user.id)
-    copy(res, user)
+    copy(await UserRepository(db).findOneById(user.id), user)
     // -- if module already taken, can't take module again
     const modulesDoneCodes = user.modulesDone.map(Flatten.module)
     const modulesDoingCodes = user.modulesDoing.map(Flatten.module)

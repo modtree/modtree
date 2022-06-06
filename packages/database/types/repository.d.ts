@@ -1,4 +1,4 @@
-import { Repository, FindOptionsRelations } from 'typeorm'
+import { Repository } from 'typeorm'
 import type * as InitProps from './init-props'
 import type {
   Graph,
@@ -8,11 +8,6 @@ import type {
   ModuleCondensed,
 } from '../src/entity'
 import type { Module as NM, ModuleCondensed as NMC } from './nusmods'
-
-type LoadRelations<Entity> = (
-  entity: Entity,
-  relations: FindOptionsRelations<Entity>
-) => Promise<void>
 
 /**
  * BaseRepository, but for now only in types
@@ -25,7 +20,6 @@ interface BaseRepo<Entity, InitProps> extends Repository<Entity> {
 
 export interface GraphRepository extends BaseRepo<Graph, InitProps.Graph> {
   toggleModule(graph: Graph, moduleCode: string): Promise<void>
-  loadRelations: LoadRelations<Graph>
   findOneById(id: string): Promise<Graph>
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
   findManyByUserAndDegreeId(
@@ -53,7 +47,6 @@ export interface UserRepository extends BaseRepo<User, InitProps.User> {
 
 export interface DegreeRepository extends BaseRepo<Degree, InitProps.Degree> {
   insertModules(degree: Degree, moduleCodes: string[]): Promise<void>
-  loadRelations: LoadRelations<Degree>
   findOneByTitle(title: string): Promise<Degree>
   findOneById(id: string): Promise<Degree>
   findByIds(id: string[]): Promise<Degree[]>
@@ -65,7 +58,6 @@ export interface ModuleRepository extends BaseRepo<Module, NM> {
   getCodes(): Promise<string[]>
   pull(): Promise<Module[]>
   findByFaculty(faculty: string): Promise<Module[]>
-  loadRelations: LoadRelations<Module>
   findByCodes(moduleCodes: string[]): Promise<Module[]>
 }
 
@@ -74,6 +66,5 @@ export interface ModuleCondensedRepository
   pull(): Promise<ModuleCondensed[]>
   fetch(): Promise<ModuleCondensed[]>
   getCodes(): Promise<string[]>
-  loadRelations: LoadRelations<ModuleCondensed>
   deleteAll(): Promise<void>
 }
