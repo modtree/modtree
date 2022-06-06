@@ -2,7 +2,7 @@ import { DataSource, In } from 'typeorm'
 import type * as InitProps from '../../types/init-props'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import { getDataSource, getRelationNames } from './base'
+import { getDataSource, getRelationNames, useDeleteAll } from './base'
 import { copy } from '../utils'
 import type { IDegreeRepository } from '../../types/repository'
 
@@ -14,6 +14,7 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
   const allRelations = getRelationNames(BaseRepo)
+  const deleteAll = useDeleteAll(BaseRepo)
 
   /**
    * Adds a Degree to DB
@@ -98,5 +99,6 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
     findOneByTitle,
     findOneById,
     findByIds,
+    deleteAll,
   })
 }

@@ -14,13 +14,13 @@ import type { Module as NM, ModuleCondensed as NMC } from './nusmods'
  * it is a interface that will be extended to form the final Repositories of modtree
  */
 interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
-  initialize?(props: InitProps): Promise<Entity>
-  deleteAll?(): Promise<void>
+  initialize(props: InitProps): Promise<Entity>
+  deleteAll(): Promise<void>
 }
 
 export interface IGraphRepository extends IBaseRepo<Graph, InitProps.Graph> {
-  toggleModule(graph: Graph, moduleCode: string): Promise<void>
   findOneById(id: string): Promise<Graph>
+  toggleModule(graph: Graph, moduleCode: string): Promise<void>
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
   findManyByUserAndDegreeId(
     userId: string,

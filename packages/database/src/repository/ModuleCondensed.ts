@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type * as InitProps from '../../types/init-props'
 import { DataSource } from 'typeorm'
 import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
@@ -16,6 +17,15 @@ export function ModuleCondensedRepository(
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
   const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
+
+  /**
+   * initialize a Module Condensed
+   * @param {InitProps.ModuleCondensed} props
+   * @returns {Promise<ModuleCondensed>}
+   */
+  async function initialize(props: InitProps.ModuleCondensed): Promise<ModuleCondensed> {
+    return BaseRepo.create(props)
+  }
 
   /**
    * get all module codes from the module table
@@ -56,9 +66,10 @@ export function ModuleCondensedRepository(
   }
 
   return BaseRepo.extend({
-    getCodes,
-    fetch,
-    pull,
+    initialize,
     deleteAll,
+    getCodes,
+    pull,
+    fetch,
   })
 }

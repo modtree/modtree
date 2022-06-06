@@ -6,7 +6,7 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { Utils, Flatten, copy } from '../utils'
-import { getDataSource, getRelationNames } from './base'
+import { getDataSource, getRelationNames, useDeleteAll } from './base'
 import type {IUserRepository} from '../../types/repository'
 
 /**
@@ -17,6 +17,7 @@ export function UserRepository(database?: DataSource): IUserRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(User)
   const allRelations = getRelationNames(BaseRepo)
+  const deleteAll = useDeleteAll(BaseRepo)
 
   /**
    * Adds a User to DB
@@ -316,6 +317,7 @@ export function UserRepository(database?: DataSource): IUserRepository {
     findOneById,
     addDegree,
     findDegree,
+    deleteAll,
     removeDegree,
   })
 }

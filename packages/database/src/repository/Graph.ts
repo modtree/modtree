@@ -7,7 +7,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, getRelationNames } from './base'
+import { getDataSource, getRelationNames, useDeleteAll } from './base'
 import { quickpop, Flatten, copy } from '../utils'
 import type { IGraphRepository } from '../../types/repository'
 
@@ -21,6 +21,7 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Graph)
   const allRelations = getRelationNames(BaseRepo)
+  const deleteAll = useDeleteAll(BaseRepo)
 
   /**
    * Adds a Graph to DB
@@ -282,5 +283,6 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
     findOneByUserAndDegreeId,
     findManyByUserAndDegreeId,
     suggestModulesFromOne,
+    deleteAll,
   })
 }

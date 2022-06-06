@@ -1,3 +1,5 @@
+import { Module as NM, ModuleCondensed as NMC } from './nusmods'
+
 export type User = {
   displayName: string
   username: string
@@ -21,3 +23,6 @@ export type Graph = {
   modulesHiddenCodes: string[]
   pullAll: boolean
 }
+
+export type Module = NM
+export type ModuleCondensed = NMC
