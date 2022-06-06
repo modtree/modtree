@@ -1,31 +1,32 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
 import { UserRepository } from '../../../src/repository'
+import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
+
 const t: Partial<{ user: User }> = {}
 
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+const userProps: InitProps.User = {
+  ...Init.emptyUser,
+  modulesDone: ['MA2001'],
+  modulesDoing: ['MA2219'],
+}
 
-it('Saves a user', async () => {
-  expect.assertions(1)
-  const props = Init.emptyUser
-  props.modulesDone.push('MA2001')
-  props.modulesDoing.push('MA2219')
-  await container(db, () =>
-    UserRepository(db)
-      .initialize(props)
-      .then((res) => {
-        expect(res).toBeInstanceOf(User)
-        t.user = res
-      })
-  )
-})
+beforeAll(() =>
+  setup(db)
+    .then(() =>
+      UserRepository(db).initialize(userProps),
+    )
+    .then((user) => {
+      t.user = user
+    })
+)
+afterAll(() => teardown(db))
 
 it('Correctly handles modules not taken before', async () => {
   expect.assertions(1)

@@ -9,28 +9,27 @@ import { Flatten, oneUp } from '../../../src/utils'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
-
 const t: Partial<{
   user: User
   postReqsCodes: string[]
 }> = {}
 
-it('Saves a user', async () => {
-  expect.assertions(1)
-  const props = Init.emptyUser
-  props.modulesDone.push('MA2001')
-  props.modulesDoing.push('MA2101')
-  await container(db, () =>
-    UserRepository(db)
-      .initialize(props)
-      .then((res) => {
-        expect(res).toBeInstanceOf(User)
-        t.user = res
-      })
-  )
-})
+const userProps: InitProps.User = {
+  ...Init.emptyUser,
+  modulesDone: ['MA2001'],
+  modulesDoing: ['MA2101'],
+}
+
+beforeAll(() =>
+  setup(db)
+    .then(() =>
+      UserRepository(db).initialize(userProps),
+    )
+    .then((user) => {
+      t.user = user
+    })
+)
+afterAll(() => teardown(db))
 
 it('Gets all post-reqs', async () => {
   // Get post reqs

@@ -1,7 +1,6 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
 import { ModuleRepository, UserRepository } from '../../../src/repository'
-import type * as InitProps from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
@@ -10,19 +9,16 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ user: User; postReqsCodes: string[] }> = {}
 
-beforeAll(() => setup(db))
+beforeAll(() =>
+  setup(db)
+    .then(() =>
+      UserRepository(db).initialize(Init.emptyUser),
+    )
+    .then((user) => {
+      t.user = user
+    })
+)
 afterAll(() => teardown(db))
-
-it('Saves an empty user', async () => {
-  const props: InitProps.User = Init.emptyUser
-  const res = await container(db, async () => {
-    await UserRepository(db).initialize(props)
-    return UserRepository(db).findOneByUsername(props.username)
-  })
-  expect(res).toBeDefined()
-  if (!res) return
-  t.user = res
-})
 
 it('Gets all post-reqs', async () => {
   const addModuleCodes = ['MA2001']
