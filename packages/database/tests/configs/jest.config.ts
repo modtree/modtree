@@ -20,25 +20,32 @@ export const all: Config.InitialOptionsWithRootDir = {
   testSequencer: './tests/configs/sequencer.js',
 }
 
-export const ci: Config.InitialOptions = {
+/**
+ * use with yarn test:database
+ * depended on by github actions
+ */
+export const database: Config.InitialOptions = {
   ...all,
   testMatch: ['**/tests/**/*.test.ts'],
   testPathIgnorePatterns: [
     ...all.testPathIgnorePatterns,
-    'module/pull',
-    'server',
+    'packages/database/tests/module/pull',
+    'packages/database/tests/server',
   ],
+}
+
+/**
+ * use with yarn test:server
+ * depended on by github actions
+ */
+export const server: Config.InitialOptions = {
+  ...all,
+  testMatch: ['**/tests/server/**/*.test.ts'],
 }
 
 export const pull: Config.InitialOptions = {
   ...all,
   testMatch: ['**/tests/**/*pull.test.ts'],
-}
-
-export const server: Config.InitialOptions = {
-  ...all,
-  testMatch: ['**/tests/server/**/*.test.ts'],
-  silent: false,
 }
 
 const khang = ['user/degreeMethods']

@@ -2,7 +2,7 @@ import { DataSource, In } from 'typeorm'
 import type * as InitProps from '../../types/init-props'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import { getDataSource, useLoadRelations, getRelationNames } from './base'
+import { getDataSource, getRelationNames } from './base'
 import { copy } from '../utils'
 import type { DegreeRepository as Repository } from '../../types/repository'
 
@@ -13,7 +13,7 @@ import type { DegreeRepository as Repository } from '../../types/repository'
 export function DegreeRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
-  const loadRelations = useLoadRelations(BaseRepo)
+  const allRelations = getRelationNames(BaseRepo)
 
   /**
    * Adds a Degree to DB
@@ -46,9 +46,7 @@ export function DegreeRepository(database?: DataSource): Repository {
       moduleCode: In(moduleCodes),
     })
     // find modules part of current degree
-    await DegreeRepository(db).loadRelations(degree, {
-      modules: true,
-    })
+    copy(await DegreeRepository(db).findOneById(degree.id), degree)
     // update the degree
     degree.modules.push(...newModules)
     const updatedDegree = await BaseRepo.save(degree)
@@ -74,14 +72,10 @@ export function DegreeRepository(database?: DataSource): Repository {
    * @returns {Promise<Degree>}
    */
   async function findOneById(id: string): Promise<Degree> {
-    // get user by id
-    const degree = await BaseRepo.createQueryBuilder('degree')
-      .where('degree.id = :id', { id })
-      .getOneOrFail()
-    // get relation names
-    const relationNames = getRelationNames(db, Degree)
-    await DegreeRepository(db).loadRelations(degree, relationNames)
-    return degree
+    return BaseRepo.findOneOrFail({
+      where: { id },
+      relations: allRelations,
+    })
   }
 
   /**
@@ -101,7 +95,6 @@ export function DegreeRepository(database?: DataSource): Repository {
   return BaseRepo.extend({
     initialize,
     insertModules,
-    loadRelations,
     findOneByTitle,
     findOneById,
     findByIds,

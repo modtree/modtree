@@ -25,8 +25,17 @@ export class GraphController implements IGraphController {
       return
     }
     copy(req.body, props)
-    const graph = await this.graphRepo.initialize(props)
-    res.json(graph)
+    await this.graphRepo
+      .initialize(props)
+      .then((graph) => {
+        res.json(graph)
+      })
+      .catch(() => {
+        res
+          .status(400)
+          .json({ message: 'invalid ids', requestKeys, requiredKeys })
+        
+      })
   }
 
   /**
@@ -61,10 +70,16 @@ export class GraphController implements IGraphController {
    * @param {Response} res
    */
   async delete(req: Request, res: Response) {
-    const deleteResult = await this.graphRepo.delete({
-      id: req.params.graphId,
-    })
-    res.json({ deleteResult })
+    await this.graphRepo
+      .delete({
+        id: req.params.graphId,
+      })
+      .then((deleteResult) => {
+        res.json({ deleteResult })
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'Graph not found' })
+      })
   }
 
   /**
@@ -74,15 +89,22 @@ export class GraphController implements IGraphController {
    * @param {Response} res
    */
   async list(req: Request, res: Response) {
-    const results = await this.graphRepo.find({
-      relations: {
-        user: true,
-        degree: true,
-        modulesHidden: true,
-        modulesPlaced: true,
-      },
-    })
-    const flat = results.map((graph) => Flatten.graph(graph))
-    res.json(flat)
+    await this.graphRepo
+      .find({
+        relations: {
+          user: true,
+          degree: true,
+          modulesHidden: true,
+          modulesPlaced: true,
+        },
+      })
+      .then((results) => {
+        const flat = results.map((graph) => Flatten.graph(graph))
+        res.json(flat)
+        
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'Graphs not found' })
+      })
   }
 }

@@ -1,4 +1,3 @@
-export * from './load-relations'
 export * from './delete-all'
 export * from './get-source'
 export * from './get-relation-names'

@@ -8,9 +8,13 @@ import {
   GraphRepository,
 } from '../../src/repository'
 import { oneUp } from '../../src/utils'
+import { setup, teardown } from '../environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
+
+beforeAll(() => setup(db))
+beforeAll(() => teardown(db))
 
 test('AppDataSource is defined', () => {
   expect(db).toBeDefined()
@@ -24,7 +28,7 @@ test('All entities are defined', () => {
   expect(Graph).toBeDefined()
 })
 
-test('All repositories are defined', () => {
+test('All repositories are defined', async () => {
   expect(ModuleRepository(db)).toBeDefined()
   expect(ModuleCondensedRepository(db)).toBeDefined()
   expect(DegreeRepository(db)).toBeDefined()

@@ -9,24 +9,24 @@ import type {
 /**
  * entities without properties that have relations
  */
-export namespace relationless {
+export type Relationless = {
   /**
    * User without relations
    */
-  export type User = Omit<
+  User: Omit<
     UserEntity,
-    'modulesDone' | 'modulesDoing' | 'savedDegrees'
+    'modulesDone' | 'modulesDoing' | 'savedDegrees' | 'savedGraphs'
   >
 
   /**
    * Degree without relations
    */
-  export type Degree = Omit<DegreeEntity, 'modules'>
+  Degree: Omit<DegreeEntity, 'modules'>
 
   /**
    * Graph without relations
    */
-  export type Graph = Omit<
+  Graph: Omit<
     GraphEntity,
     'user' | 'degree' | 'modulesPlaced' | 'modulesHidden'
   >
@@ -35,27 +35,28 @@ export namespace relationless {
 /**
  * API response shapes
  */
-export namespace response {
+export type ResponseProps = {
   /**
    * User API respsonse
    */
-  export interface User extends relationless.User {
+  User: Relationless['User'] & {
     modulesDone: string[]
     modulesDoing: string[]
     savedDegrees: string[]
+    savedGraphs: string[]
   }
 
   /**
    * Degree API respsonse
    */
-  export interface Degree extends relationless.Degree {
+  Degree: Relationless['Degree'] & {
     modules: string[]
   }
 
   /**
    * Graph API respsonse
    */
-  export interface Graph extends relationless.Graph {
+  Graph: Relationless['Graph'] & {
     user: string
     degree: string
     modulesPlaced: string[]
@@ -65,6 +66,6 @@ export namespace response {
   /**
    * already-flat entities
    */
-  export type Module = ModuleEntity
-  export type ModuleCondensed = ModuleCondensedEntity
+  Module: ModuleEntity
+  ModuleCondensed: ModuleCondensedEntity
 }

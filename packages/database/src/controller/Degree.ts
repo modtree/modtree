@@ -54,10 +54,16 @@ export class DegreeController implements IDegreeController {
    * @param {Response} res
    */
   async delete(req: Request, res: Response) {
-    const deleteResult = await this.degreeRepo.delete({
-      id: req.params.degreeId,
-    })
-    res.json({ deleteResult })
+    await this.degreeRepo
+      .delete({
+        id: req.params.degreeId,
+      })
+      .then((deleteResult) => {
+        res.json({ deleteResult })
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'Degree not found' })
+      })
   }
 
   /**

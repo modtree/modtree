@@ -8,7 +8,7 @@
     "start": "next start",
     "build": "next build ",
     "lint": "next lint",
-    "ci": "next lint && next build"
+    "ci:build": "next lint && next build"
   },
   "author": "Modtree",
   "license": "MIT",

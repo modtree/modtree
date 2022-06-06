@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm'
 import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
-import { getDataSource, useLoadRelations, useDeleteAll } from './base'
+import { getDataSource, useDeleteAll } from './base'
 import type { ModuleCondensedRepository as Repository } from '../../types/repository'
 
 /**
@@ -13,7 +13,6 @@ import type { ModuleCondensedRepository as Repository } from '../../types/reposi
 export function ModuleCondensedRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
-  const loadRelations = useLoadRelations(BaseRepo)
   const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
 
   /**
@@ -58,7 +57,6 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
     getCodes,
     fetch,
     pull,
-    loadRelations,
     deleteAll,
   })
 }

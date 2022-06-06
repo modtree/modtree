@@ -5,8 +5,8 @@ import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
-import { Utils, Flatten } from '../utils'
-import { useLoadRelations, getDataSource, getRelationNames } from './base'
+import { Utils, Flatten, copy } from '../utils'
+import { getDataSource, getRelationNames } from './base'
 import type { UserRepository as Repository } from '../../types/repository'
 
 /**
@@ -16,7 +16,7 @@ import type { UserRepository as Repository } from '../../types/repository'
 export function UserRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(User)
-  const loadRelations = useLoadRelations(BaseRepo)
+  const allRelations = getRelationNames(BaseRepo)
 
   /**
    * Adds a User to DB
@@ -32,12 +32,13 @@ export function UserRepository(database?: DataSource): Repository {
       queryList.map((list) => ModuleRepository(db).findByCodes(list))
     )
     const [modulesDone, modulesDoing] = await modulesPromise
-    const userProps = {
+    const user = BaseRepo.create({
       ...props,
       modulesDone: modulesDone || [],
       modulesDoing: modulesDoing || [],
-    }
-    const user = BaseRepo.create(userProps)
+      savedDegrees: [],
+      savedGraphs: [],
+    })
     await BaseRepo.save(user)
     return user
   }
@@ -64,10 +65,7 @@ export function UserRepository(database?: DataSource): Repository {
     // -- if module not found, assume invalid module code
     if (!module) return false
     // 2. load modulesDone and modulesDoing relations
-    await UserRepository(db).loadRelations(user, {
-      modulesDone: true,
-      modulesDoing: true,
-    })
+    copy(await UserRepository(db).findOneById(user.id), user)
     // -- if module already taken, can't take module again
     const modulesDoneCodes = user.modulesDone.map(Flatten.module)
     const modulesDoingCodes = user.modulesDoing.map(Flatten.module)
@@ -145,10 +143,7 @@ export function UserRepository(database?: DataSource): Repository {
       addedModuleCodes = []
     }
     // 1. load modulesDone and modulesDoing relations
-    await UserRepository(db).loadRelations(user, {
-      modulesDone: true,
-      modulesDoing: true,
-    })
+    copy(await UserRepository(db).findOneById(user.id), user)
     // 2. get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodesSet = new Set<string>()
     user.modulesDone.forEach((module: Module) => {
@@ -201,10 +196,7 @@ export function UserRepository(database?: DataSource): Repository {
     // future support for multiple mods
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
-    await UserRepository(db).loadRelations(user, {
-      modulesDone: true,
-      modulesDoing: true,
-    })
+    copy(await UserRepository(db).findOneById(user.id), user)
     const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
     const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
     if (
@@ -237,11 +229,10 @@ export function UserRepository(database?: DataSource): Repository {
    * @returns {Promise<User>}
    */
   async function findOneByUsername(username: string): Promise<User> {
-    return BaseRepo.createQueryBuilder('user')
-      .where('user.username = :username', { username })
-      .leftJoinAndSelect('user.modulesDone', 'modulesDone')
-      .leftJoinAndSelect('user.modulesDoing', 'modulesDoing')
-      .getOneOrFail()
+    return BaseRepo.findOneOrFail({
+      where: { username },
+      relations: allRelations,
+    })
   }
 
   /**
@@ -250,15 +241,11 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {string} id
    * @returns {Promise<User>}
    */
-  async function findOneById(id: string): Promise<User> {
-    // get user by id
-    const user = await BaseRepo.createQueryBuilder('user')
-      .where('user.id = :id', { id })
-      .getOneOrFail()
-    // get relation names
-    const relationNames = getRelationNames(db, User)
-    await UserRepository(db).loadRelations(user, relationNames)
-    return user
+  function findOneById(id: string): Promise<User> {
+    return BaseRepo.findOneOrFail({
+      where: { id },
+      relations: allRelations,
+    })
   }
 
   /**
@@ -270,9 +257,7 @@ export function UserRepository(database?: DataSource): Repository {
    */
   async function addDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
-    await UserRepository(db).loadRelations(user, {
-      savedDegrees: true,
-    })
+    copy(await UserRepository(db).findOneById(user.id), user)
     // 2. find degree in DB
     const degree = await DegreeRepository(db).findOneById(degreeId)
     // 3. append degree
@@ -289,9 +274,7 @@ export function UserRepository(database?: DataSource): Repository {
    */
   async function findDegree(user: User, degreeId: string): Promise<Degree> {
     // 1. load savedDegrees relations
-    await UserRepository(db).loadRelations(user, {
-      savedDegrees: true,
-    })
+    copy(await UserRepository(db).findOneById(user.id), user)
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter(
       (degree) => degree.id === degreeId
@@ -309,9 +292,7 @@ export function UserRepository(database?: DataSource): Repository {
    */
   async function removeDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
-    await UserRepository(db).loadRelations(user, {
-      savedDegrees: true,
-    })
+    copy(await UserRepository(db).findOneById(user.id), user)
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter(
       (degree) => degree.id !== degreeId
@@ -328,7 +309,6 @@ export function UserRepository(database?: DataSource): Repository {
   return BaseRepo.extend({
     canTakeModule,
     initialize,
-    loadRelations,
     findOneByUsername,
     eligibleModules,
     getPostReqs,

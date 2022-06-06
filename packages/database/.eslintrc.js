@@ -27,11 +27,11 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.ts', '.d.ts'],
-        project: ['tsconfig.json', 'eslint.tsconfig.json'],
+        project: ['tsconfig.json', 'tsconfig.build.json'],
       },
       typescript: {
         alwaysTryTypes: true,
-        project: ['tsconfig.json', 'eslint.tsconfig.json'],
+        project: ['tsconfig.json', 'tsconfig.build.json'],
       },
     },
   },
@@ -48,6 +48,7 @@ module.exports = {
     'no-console': 0,
     '@typescript-eslint/no-loop-func': 0,
     'no-promise-executor-return': 0,
+    'max-classes-per-file': 0,
     // jsdoc chill out pls
     'jsdoc/require-param-description': 0,
     'jsdoc/require-property-description': 0,
