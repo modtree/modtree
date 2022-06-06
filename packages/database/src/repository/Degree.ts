@@ -47,7 +47,7 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
       moduleCode: In(moduleCodes),
     })
     // find modules part of current degree
-    copy(await DegreeRepository(db).findOneById(degree.id), degree)
+    copy(await findOneById(degree.id), degree)
     // update the degree
     degree.modules.push(...newModules)
     const updatedDegree = await BaseRepo.save(degree)

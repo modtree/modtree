@@ -91,7 +91,7 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
     /**
      * retrieve a Graph from database given its id
      */
-    copy(await GraphRepository(db).findOneById(graph.id), graph)
+    copy(await findOneById(graph.id), graph)
     /**
      * find the index of the given moduleCode to toggle
      */
@@ -205,7 +205,7 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
     moduleCode: string
   ): Promise<Module[]> {
     // Load relations
-    copy(await GraphRepository(db).findOneById(graph.id), graph)
+    copy(await findOneById(graph.id), graph)
     copy(await DegreeRepository(db).findOneById(graph.degree.id), graph.degree)
 
     // 1. Get all post-reqs for this mod
