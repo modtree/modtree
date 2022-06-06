@@ -29,16 +29,6 @@ beforeAll(() =>
     .then(([user, degree]) => {
       t.user = user
       t.degree = degree
-      return GraphRepository(db).initialize({
-        userId: user.id,
-        degreeId: degree.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: true,
-      })
-    })
-    .then((graph) => {
-      t.graph = graph
     })
 )
 afterAll(() => teardown(db))
