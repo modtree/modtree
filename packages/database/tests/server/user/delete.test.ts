@@ -1,36 +1,14 @@
 import { AxiosError } from 'axios'
-import { User } from '../../src/entity'
-import { server, setup } from './environment'
-
-beforeAll(setup)
-
-const user1 = {
-  displayName: 'Nguyen Vu Khang',
-  username: 'nguyenvukhang',
-  email: 'khang@modtree.com',
-  modulesDone: [
-    'MA2001,',
-    'MA1100,',
-    'HSH1000,',
-    'HSA1000,',
-    'GEA1000',
-    'IS1103',
-    'CS1010S',
-    'DTK1234',
-    'HS1401S',
-    'HSI1000',
-    'HSS1000',
-    'MA2002',
-    'MA2219',
-    'PC1432',
-  ],
-  modulesDoing: [],
-  matriculationYear: 2021,
-  graduationYear: 2024,
-  graduationSemester: 2,
-}
+import { User } from '../../../src/entity'
+import { server } from '../environment'
+import Init from '../../init'
+import { toBeUserResponse } from '../expect-extend'
 
 const t: Partial<{ userId: string }> = {}
+
+beforeAll(() => {
+  expect.extend({ toBeUserResponse })
+})
 
 /**
  * create a user
@@ -38,7 +16,7 @@ const t: Partial<{ userId: string }> = {}
  */
 test('It should create a user', async () => {
   expect.hasAssertions()
-  await server.post('user/create', user1).then((res) => {
+  await server.post('user/create', Init.user2).then((res) => {
     const user: User = res.data
     expect(typeof user.id).toBe('string')
     expect(user.id.length).toBeGreaterThan(0)
@@ -50,11 +28,11 @@ test('It should create a user', async () => {
  * reject a user creation if has insufficient keys
  * with status 400: Bad Request
  */
-test('It should reject a user creation on invaid id', async () => {
+test('It should reject a user creation on invalid id', async () => {
   expect.hasAssertions()
   await expect(() =>
     server.post('user/create', {
-      ...user1,
+      ...Init.user2,
       email: undefined,
     })
   ).rejects.toThrowError(new AxiosError('Request failed with status code 400'))
