@@ -26,6 +26,17 @@ describe('Degree.initialize', () => {
     )
   })
 
+  it('Can find same degree (without relations)', async () => {
+    await container(db, () =>
+      DegreeRepository(db)
+        .findOneByTitle(props.title)
+        .then((res) => {
+          expect(res).toBeInstanceOf(Degree)
+          expect(res).toStrictEqual(t.degree)
+        })
+    )
+  })
+
   it('Correctly saves modules', async () => {
     const moduleCodes = t.degree.modules.map(Flatten.module)
     // match relation's module codes to init props' modules codes
