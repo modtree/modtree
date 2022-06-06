@@ -11,9 +11,7 @@ const t: Partial<{ user: User; postReqsCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      UserRepository(db).initialize(Init.emptyUser),
-    )
+    .then(() => UserRepository(db).initialize(Init.emptyUser))
     .then((user) => {
       t.user = user
     })

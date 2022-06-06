@@ -15,7 +15,9 @@ beforeAll(async () => {
     t.degreeId2 = degree2.id
   })
 })
-afterAll(() => Promise.all([Delete.Degree(t.degreeId1), Delete.Degree(t.degreeId2)]))
+afterAll(() =>
+  Promise.all([Delete.Degree(t.degreeId1), Delete.Degree(t.degreeId2)])
+)
 
 /**
  * list all degrees

@@ -1,10 +1,10 @@
-import type * as InitProps from '../types/init-props'
+import type { InitProps } from '../types/init-props'
 
 /**
  * fake data for test cases
  */
 export default class Init {
-  static degree1: InitProps.Degree = {
+  static degree1: InitProps['Degree'] = {
     moduleCodes: [
       'CS1101S',
       'CS1231S',
@@ -19,7 +19,7 @@ export default class Init {
     title: 'Computer Science',
   }
 
-  static degree2: InitProps.Degree = {
+  static degree2: InitProps['Degree'] = {
     moduleCodes: [
       'MA1100',
       'MA2001',
@@ -34,7 +34,7 @@ export default class Init {
     title: 'Mathematics',
   }
 
-  static user1: InitProps.User = {
+  static user1: InitProps['User'] = {
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
     email: 'khang@modtree.com',
@@ -45,7 +45,7 @@ export default class Init {
     graduationSemester: 2,
   }
 
-  static user2: InitProps.User = {
+  static user2: InitProps['User'] = {
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
     email: 'khang@modtree.com',
@@ -71,7 +71,7 @@ export default class Init {
     graduationSemester: 2,
   }
 
-  static user3: InitProps.User = {
+  static user3: InitProps['User'] = {
     displayName: 'Tan Wei Seng',
     username: 'tanweiseng',
     email: 'weiseng@modtree.com',
@@ -97,7 +97,7 @@ export default class Init {
     graduationSemester: 2,
   }
 
-  static graph1: InitProps.Graph = {
+  static graph1: InitProps['Graph'] = {
     userId: '',
     degreeId: '',
     modulesPlacedCodes: [],
@@ -105,7 +105,7 @@ export default class Init {
     pullAll: true,
   }
 
-  static emptyUser: InitProps.User = {
+  static emptyUser: InitProps['User'] = {
     displayName: 'Khang Vu Nguyen',
     username: 'definitelynotkhang',
     email: 'user@modtree.com',

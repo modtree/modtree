@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import type * as InitProps from '../../types/init-props'
+import type { InitProps } from '../../types/init-props'
 import { User } from '../entity/User'
 import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
@@ -7,7 +7,7 @@ import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { Utils, Flatten, copy } from '../utils'
 import { getDataSource, getRelationNames, useDeleteAll } from './base'
-import type {IUserRepository} from '../../types/repository'
+import type { IUserRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
@@ -22,10 +22,10 @@ export function UserRepository(database?: DataSource): IUserRepository {
   /**
    * Adds a User to DB
    *
-   * @param {InitProps.User} props
+   * @param {InitProps['User']} props
    * @returns {Promise<User>}
    */
-  async function initialize(props: InitProps.User): Promise<User> {
+  async function initialize(props: InitProps['User']): Promise<User> {
     // find modules completed and modules doing, to create many-to-many
     // relation
     const queryList = [props.modulesDone, props.modulesDoing]
@@ -110,10 +110,7 @@ export function UserRepository(database?: DataSource): IUserRepository {
       addedModuleCodes = []
     }
     // 1. get post-reqs
-    const postReqs = await getPostReqs(
-      user,
-      addedModuleCodes
-    )
+    const postReqs = await getPostReqs(user, addedModuleCodes)
     if (!postReqs) return []
     // 2. filter post-reqs
     const promises = postReqs.map((one) =>
@@ -211,10 +208,7 @@ export function UserRepository(database?: DataSource): IUserRepository {
     if (!eligibleModules) return []
     const eligibleModulesCodes = eligibleModules.map(Flatten.module)
     // 3. Get unlocked eligible modules
-    const unlockedModules = await getEligibleModules(
-      user,
-      addedModuleCodes
-    )
+    const unlockedModules = await getEligibleModules(user, addedModuleCodes)
     if (!unlockedModules) {
       return []
     }

@@ -11,7 +11,7 @@ const db = getSource(dbName)
 
 const t: Partial<{ user: User }> = {}
 
-const userProps: InitProps.User = {
+const userProps: InitProps['User'] = {
   ...Init.emptyUser,
   modulesDone: ['MA2001'],
   modulesDoing: ['MA2219'],
@@ -19,9 +19,7 @@ const userProps: InitProps.User = {
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      UserRepository(db).initialize(userProps),
-    )
+    .then(() => UserRepository(db).initialize(userProps))
     .then((user) => {
       t.user = user
     })

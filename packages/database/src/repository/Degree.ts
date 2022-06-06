@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import type * as InitProps from '../../types/init-props'
+import type { InitProps } from '../../types/init-props'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { getDataSource, getRelationNames, useDeleteAll } from './base'
@@ -19,10 +19,10 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
   /**
    * Adds a Degree to DB
    *
-   * @param {InitProps.Degree} props
+   * @param {InitProps['Degree']} props
    * @returns {Promise<Degree>}
    */
-  async function initialize(props: InitProps.Degree): Promise<Degree> {
+  async function initialize(props: InitProps['Degree']): Promise<Degree> {
     const { moduleCodes, title } = props
     const degree = BaseRepo.create({ title })
     // find modules required, to create many-to-many relation

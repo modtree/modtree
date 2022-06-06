@@ -1,12 +1,12 @@
-import type * as InitProps from '../../types/init-props'
+import type { InitProps } from '../../types/init-props'
 import type { ResponseProps } from '../../types/api-response'
 
 /** empty init props */
-export class EmptyInit {
+export const EmptyInit: InitProps = {
   /**
    * empty User init props
    */
-  static User: InitProps.User = {
+  User: {
     displayName: '',
     username: '',
     modulesDone: [],
@@ -15,26 +15,74 @@ export class EmptyInit {
     graduationYear: 0,
     graduationSemester: 0,
     email: '',
-  }
+  },
 
   /**
    * empty Degree init props
    */
-  static Degree: InitProps.Degree = {
+  Degree: {
     moduleCodes: [],
     title: '',
-  }
+  },
 
   /**
    * empty Graph init props
    */
-  static Graph: InitProps.Graph = {
+  Graph: {
     userId: '',
     degreeId: '',
     modulesPlacedCodes: [],
     modulesHiddenCodes: [],
     pullAll: false,
-  }
+  },
+
+  /**
+   * empty Module init props
+   */
+  Module: {
+    acadYear: '',
+    // Basic info
+    moduleCode: '',
+    title: '',
+    // Additional info
+    description: '',
+    moduleCredit: '',
+    department: '',
+    faculty: '',
+    workload: '',
+    aliases: [],
+    attributes: {
+      year: false,
+      su: false,
+      grsu: false,
+      ssgf: false,
+      sfs: false,
+      lab: false,
+      ism: false,
+      urop: false,
+      fyp: false,
+      mpes1: false,
+      mpes2: false,
+    },
+    // Requsites
+    prerequisite: '',
+    corequisite: '',
+    preclusion: '',
+    // Semester data
+    semesterData: [],
+    // Requisite tree
+    prereqTree: '',
+    fulfillRequirements: [],
+  },
+
+  /**
+   * empty Module init props
+   */
+  ModuleCondensed: {
+    moduleCode: '',
+    title: '',
+    semesters: [],
+  },
 }
 
 /** empty API responses */

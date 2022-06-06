@@ -1,7 +1,7 @@
 import { container, getSource } from '../../src/data-source'
 import { Module, User } from '../../src/entity'
 import { UserRepository } from '../../src/repository'
-import type * as InitProps from '../../types/init-props'
+import type { InitProps } from '../../types/init-props'
 import Init from '../init'
 import { setup, teardown } from '../environment'
 import { oneUp } from '../../src/utils'
@@ -11,16 +11,14 @@ const db = getSource(dbName)
 
 const t: Partial<{ user: User }> = {}
 
-const userProps: InitProps.User = {
+const userProps: InitProps['User'] = {
   ...Init.emptyUser,
-  modulesDone: ['CS1010']
+  modulesDone: ['CS1010'],
 }
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      UserRepository(db).initialize(userProps),
-    )
+    .then(() => UserRepository(db).initialize(userProps))
     .then((user) => {
       t.user = user
     })

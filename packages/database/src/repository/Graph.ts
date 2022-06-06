@@ -1,5 +1,5 @@
 import { DataSource, In, SelectQueryBuilder } from 'typeorm'
-import type * as InitProps from '../../types/init-props'
+import type { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { Graph } from '../entity/Graph'
 import { ModuleRepository } from './Module'
@@ -26,10 +26,10 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
   /**
    * Adds a Graph to DB
    *
-   * @param {InitProps.Graph} props
+   * @param {InitProps['Graph']} props
    * @returns {Promise<Graph>}
    */
-  async function initialize(props: InitProps.Graph): Promise<Graph> {
+  async function initialize(props: InitProps['Graph']): Promise<Graph> {
     /**
      * retrieves the degree and user with relations, without blocking each
      * other.

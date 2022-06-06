@@ -7,7 +7,7 @@ import {
   UserRepository,
 } from '../../../src/repository'
 import { setup, teardown } from '../../environment'
-import type * as InitProps from '../../../types/init-props'
+import type { InitProps } from '../../../types/init-props'
 import Init from '../../init'
 import { oneUp } from '../../../src/utils'
 
@@ -19,7 +19,7 @@ const t: Partial<{
   postReqs: string[]
 }> = {}
 
-const degreeProps: InitProps.Degree = {
+const degreeProps: InitProps['Degree'] = {
   moduleCodes: [
     'CS1010',
     'CG2111A', // in modulesDone, should not suggest
@@ -33,7 +33,7 @@ const degreeProps: InitProps.Degree = {
   title: 'Custom Degree',
 }
 
-const userProps: InitProps.User = {
+const userProps: InitProps['User'] = {
   ...Init.emptyUser,
   modulesDone: ['CS1010', 'CG2111A'],
   modulesDoing: ['IT2002'],

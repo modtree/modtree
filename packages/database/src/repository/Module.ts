@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm'
 import { log } from '../cli'
 import { nusmodsApi, Flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
-import type * as InitProps from '../../types/init-props'
+import type { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
 import { getDataSource, useDeleteAll } from './base'
@@ -21,10 +21,10 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
 
   /**
    * initialize a Module
-   * @param {InitProps.Module} props
+   * @param {InitProps['Module']} props
    * @returns {Promise<Module>}
    */
-  async function initialize(props: InitProps.Module): Promise<Module> {
+  async function initialize(props: InitProps['Module']): Promise<Module> {
     return BaseRepo.create(props)
   }
 
