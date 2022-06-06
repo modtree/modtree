@@ -1,5 +1,5 @@
 import type { Module, ModuleCondensed, User, Degree, Graph } from '../entity'
-import type { response } from '../../types/api-response'
+import type { ResponseProps } from '../../types/api-response'
 
 /** flattens TypeORM entities */
 export class Flatten {
@@ -19,7 +19,7 @@ export class Flatten {
    * @param {User} user
    * @returns {response.User}
    */
-  static user(user: User): response.User {
+  static user(user: User): ResponseProps['User'] {
     return {
       ...user,
       modulesDoing: user.modulesDoing.map(Flatten.module),
@@ -35,7 +35,7 @@ export class Flatten {
    * @param {Graph} graph
    * @returns {response.Graph}
    */
-  static graph(graph: Graph): response.Graph {
+  static graph(graph: Graph): ResponseProps['Graph'] {
     return {
       id: graph.id,
       user: graph.user.id,
@@ -51,7 +51,7 @@ export class Flatten {
    * @param {Degree} degree
    * @returns {response.Degree}
    */
-  static degree(degree: Degree): response.Degree {
+  static degree(degree: Degree): ResponseProps['Degree'] {
     return { ...degree, modules: degree.modules.map(Flatten.module) }
   }
 }

@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
-import { ModuleCode, ModuleTitle } from '../../types/nusmods'
 import { Base } from './Base'
 
 @Entity({ name: 'moduleCondensed' })
@@ -9,12 +8,12 @@ export class ModuleCondensed extends Base {
   id: string
 
   @Column()
-  moduleCode: ModuleCode
+  moduleCode: string
 
   // Numeric part of moduleCode
   @Column()
   moduleLevel: number
 
   @Column()
-  title: ModuleTitle
+  title: string
 }
