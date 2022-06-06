@@ -1,7 +1,7 @@
 import { container, getSource } from '../../src/data-source'
 import { setup, teardown } from '../environment'
 import { ModuleCondensed } from '../../src/entity'
-import { ModuleCondensedRepository } from '../../src/repository'
+import { getModuleCondensedRepository } from '../../src/repository'
 import { oneUp } from '../../src/utils'
 
 const lowerBound = 6000
@@ -14,15 +14,15 @@ afterAll(() => teardown(db))
 
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
-  await container(db, () => ModuleCondensedRepository(db).deleteAll())
+  await container(db, () => getModuleCondensedRepository(db).deleteAll())
   const pullOnEmpty = await container(db, () =>
-    ModuleCondensedRepository(db).pull()
+    getModuleCondensedRepository(db).pull()
   )
   const pullOnFull = await container(db, () =>
-    ModuleCondensedRepository(db).pull()
+    getModuleCondensedRepository(db).pull()
   )
   const written = await container(db, () =>
-    ModuleCondensedRepository(db).find()
+    getModuleCondensedRepository(db).find()
   )
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()

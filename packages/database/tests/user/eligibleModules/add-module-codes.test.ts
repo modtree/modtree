@@ -1,6 +1,6 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module, User } from '../../../src/entity'
-import { UserRepository } from '../../../src/repository'
+import { getUserRepository } from '../../../src/repository'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { oneUp } from '../../../src/utils'
@@ -11,7 +11,7 @@ const t: Partial<{ user: User }> = {}
 
 beforeAll(() =>
   setup(db)
-    .then(() => UserRepository(db).initialize(Init.emptyUser))
+    .then(() => getUserRepository(db).initialize(Init.emptyUser))
     .then((user) => {
       t.user = user
     })
@@ -22,7 +22,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   const addModuleCodes = ['CS1101S']
   // Get eligible modules
   const eligibleModules = await container(db, () =>
-    UserRepository(db).getEligibleModules(t.user, addModuleCodes)
+    getUserRepository(db).getEligibleModules(t.user, addModuleCodes)
   )
   expect(eligibleModules).toBeDefined()
   if (!eligibleModules) return

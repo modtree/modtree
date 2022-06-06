@@ -1,8 +1,8 @@
-import { ModuleRepository } from '../../repository/Module'
+import { getModuleRepository } from '../../repository/Module'
 import { container } from '../../data-source'
 import { db } from '../../config'
 import { analyze } from '../analyze'
 
 analyze(() =>
-  container(db, () => ModuleRepository(db).findByFaculty('Computing'))
+  container(db, () => getModuleRepository(db).findByFaculty('Computing'))
 )

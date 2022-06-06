@@ -5,7 +5,7 @@ import { nusmodsApi, Flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import type { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
-import { ModuleCondensedRepository } from './ModuleCondensed'
+import { getModuleCondensedRepository } from './ModuleCondensed'
 import {
   getDataSource,
   getRelationNames,
@@ -19,7 +19,7 @@ import { client } from '../utils/pull'
  * @param {DataSource} database
  * @returns {ModuleRepository}
  */
-export function ModuleRepository(database?: DataSource): IModuleRepository {
+export function getModuleRepository(database?: DataSource): IModuleRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Module)
   const deleteAll = useDeleteAll<Module>(BaseRepo)
@@ -68,7 +68,7 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
     }
     let buffer = 0
     const moduleCodes = new Set(await getCodes())
-    const moduleCondesedCodes = await ModuleCondensedRepository(db).getCodes()
+    const moduleCondesedCodes = await getModuleCondensedRepository(db).getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
     console.log(`fetching ${diff.length} modules from NUSMods...`)
     const [result, fetchQueue, writeQueue] = [[], [], []]

@@ -1,6 +1,6 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
-import { UserRepository } from '../../../src/repository'
+import { getUserRepository } from '../../../src/repository'
 import type { InitProps } from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
@@ -19,7 +19,7 @@ const userProps: InitProps['User'] = {
 
 beforeAll(() =>
   setup(db)
-    .then(() => UserRepository(db).initialize(userProps))
+    .then(() => getUserRepository(db).initialize(userProps))
     .then((user) => {
       t.user = user
     })
@@ -31,7 +31,7 @@ it('Correctly handles modules not taken before', async () => {
   await container(db, async () => {
     const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
     await Promise.all(
-      modulesTested.map((x) => UserRepository(db).canTakeModule(t.user, x))
+      modulesTested.map((x) => getUserRepository(db).canTakeModule(t.user, x))
     ).then((res) => {
       expect(res).toStrictEqual([true, false, false, true])
     })
@@ -44,7 +44,7 @@ it('Returns false for modules taken before/currently', async () => {
     // one done, one doing
     const modulesTested = ['MA2001', 'MA2219']
     await Promise.all(
-      modulesTested.map((x) => UserRepository(db).canTakeModule(t.user, x))
+      modulesTested.map((x) => getUserRepository(db).canTakeModule(t.user, x))
     ).then((res) => {
       expect(res).toStrictEqual([false, false])
     })
@@ -54,7 +54,7 @@ it('Returns false for modules taken before/currently', async () => {
 it('Returns false if module code passed in does not exist', async () => {
   expect.assertions(1)
   await container(db, () =>
-    UserRepository(db)
+    getUserRepository(db)
       .canTakeModule(t.user, Init.invalidModuleCode)
       .then((res) => {
         expect(res).toStrictEqual(false)

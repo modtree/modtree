@@ -1,10 +1,10 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
 import { Module, Graph } from '../../../src/entity'
 import {
-  DegreeRepository,
-  GraphRepository,
-  ModuleRepository,
-  UserRepository,
+  getDegreeRepository,
+  getGraphRepository,
+  getModuleRepository,
+  getUserRepository,
 } from '../../../src/repository'
 import { setup, teardown } from '../../environment'
 import type { InitProps } from '../../../types/init-props'
@@ -43,12 +43,12 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        UserRepository(db).initialize(userProps),
-        DegreeRepository(db).initialize(degreeProps),
+        getUserRepository(db).initialize(userProps),
+        getDegreeRepository(db).initialize(degreeProps),
       ])
     )
     .then(([user, degree]) =>
-      GraphRepository(db).initialize({
+      getGraphRepository(db).initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -76,7 +76,7 @@ describe('Graph.suggestModulesFromOne', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        GraphRepository(db).suggestModulesFromOne(t.graph, 'CS1010')
+        getGraphRepository(db).suggestModulesFromOne(t.graph, 'CS1010')
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -103,7 +103,7 @@ describe('Graph.suggestModulesFromOne', () => {
       // get postReqs
       const res = await endpoint(db, () =>
         container(db, () =>
-          ModuleRepository(db).findOneBy({ moduleCode: 'CS1010' })
+          getModuleRepository(db).findOneBy({ moduleCode: 'CS1010' })
         )
       )
       expect(res).toBeDefined()

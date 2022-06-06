@@ -1,6 +1,6 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree, User } from '../../src/entity'
-import { DegreeRepository, UserRepository } from '../../src/repository'
+import { getDegreeRepository, getUserRepository } from '../../src/repository'
 import { oneUp } from '../../src/utils'
 import { setup, teardown } from '../environment'
 import Init from '../init'
@@ -13,8 +13,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        UserRepository(db).initialize(Init.user1),
-        DegreeRepository(db).initialize(Init.degree1),
+        getUserRepository(db).initialize(Init.user1),
+        getDegreeRepository(db).initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) => {
@@ -29,9 +29,9 @@ describe('User.addDegree', () => {
     expect.assertions(4)
     await container(db, () =>
       // get user with all relations
-      UserRepository(db)
+      getUserRepository(db)
         .addDegree(t.user, t.degree.id)
-        .then(() => UserRepository(db).findOneById(t.user.id))
+        .then(() => getUserRepository(db).findOneById(t.user.id))
         .then((user) => {
           expect(user).toBeInstanceOf(User)
           expect(user.savedDegrees).toBeInstanceOf(Array)
@@ -47,7 +47,7 @@ describe('User.findDegree', () => {
   it('Successfully finds a saved degree of a user', async () => {
     expect.assertions(2)
     await container(db, () =>
-      UserRepository(db)
+      getUserRepository(db)
         .findDegree(t.user, t.degree.id)
         .then((degree) => {
           expect(degree).toBeInstanceOf(Degree)
@@ -60,7 +60,7 @@ describe('User.findDegree', () => {
     expect.assertions(1)
     await container(db, () =>
       expect(() =>
-        UserRepository(db).findDegree(t.user, Init.invalidUUID)
+        getUserRepository(db).findDegree(t.user, Init.invalidUUID)
       ).rejects.toThrowError(Error('Degree not found in User'))
     )
   })
@@ -69,7 +69,7 @@ describe('User.findDegree', () => {
 describe('User.removeDegree', () => {
   it('Successfully removes a saved degree', async () => {
     await container(db, () =>
-      UserRepository(db).removeDegree(t.user, t.degree.id)
+      getUserRepository(db).removeDegree(t.user, t.degree.id)
     )
     expect(t.user.savedDegrees).toBeInstanceOf(Array)
     expect(t.user.savedDegrees.length).toEqual(0)
@@ -79,7 +79,7 @@ describe('User.removeDegree', () => {
     expect.assertions(1)
     await container(db, () =>
       expect(() =>
-        UserRepository(db).removeDegree(t.user, Init.invalidUUID)
+        getUserRepository(db).removeDegree(t.user, Init.invalidUUID)
       ).rejects.toThrowError(Error('Degree not found in User'))
     )
   })

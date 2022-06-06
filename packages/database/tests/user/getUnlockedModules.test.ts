@@ -1,6 +1,6 @@
 import { container, getSource } from '../../src/data-source'
 import { Module, User } from '../../src/entity'
-import { UserRepository } from '../../src/repository'
+import { getUserRepository } from '../../src/repository'
 import type { InitProps } from '../../types/init-props'
 import Init from '../init'
 import { setup, teardown } from '../environment'
@@ -18,7 +18,7 @@ const userProps: InitProps['User'] = {
 
 beforeAll(() =>
   setup(db)
-    .then(() => UserRepository(db).initialize(userProps))
+    .then(() => getUserRepository(db).initialize(userProps))
     .then((user) => {
       t.user = user
     })
@@ -28,7 +28,7 @@ afterAll(() => teardown(db))
 it('Correctly gets unlocked modules', async () => {
   // Get unlocked modules for CS2100
   const modules = await container(db, () =>
-    UserRepository(db).getUnlockedModules(t.user, 'CS2100')
+    getUserRepository(db).getUnlockedModules(t.user, 'CS2100')
   )
   expect(modules).toBeDefined()
   if (!modules) return
@@ -42,7 +42,7 @@ it('Correctly gets unlocked modules', async () => {
 it('Does not modify User.modulesDone', async () => {
   // Also loads relations
   const res = await container(db, async () =>
-    UserRepository(db).findOneById(t.user.id)
+    getUserRepository(db).findOneById(t.user.id)
   )
   expect(res).toBeDefined()
   if (!res) return
@@ -53,7 +53,7 @@ it('Does not modify User.modulesDone', async () => {
 it('Returns empty array if module in User.modulesDone', async () => {
   // Get unlocked modules for CS1010, which is in User.modulesDone
   const modules = await container(db, () =>
-    UserRepository(db).getUnlockedModules(t.user, 'CS1010')
+    getUserRepository(db).getUnlockedModules(t.user, 'CS1010')
   )
   expect(modules).toBeDefined()
   if (!modules) return

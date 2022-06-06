@@ -1,6 +1,6 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
-import { UserRepository } from '../../../src/repository'
+import { getUserRepository } from '../../../src/repository'
 import Init from '../../init'
 import { setup, teardown } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
@@ -18,7 +18,7 @@ it('Saves a user', async () => {
   const props = Init.emptyUser
   props.modulesDone.push('CS1101S')
   await container(db, () =>
-    UserRepository(db)
+    getUserRepository(db)
       .initialize(props)
       .then((res) => {
         expect(res).toBeInstanceOf(User)
@@ -31,7 +31,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   // Get eligible modules
   expect.assertions(2)
   await container(db, () =>
-    UserRepository(db)
+    getUserRepository(db)
       .eligibleModules(t.user)
       .then((eligibleModules) => {
         expect(eligibleModules).toBeInstanceOf(Array)

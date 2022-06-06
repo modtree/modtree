@@ -1,9 +1,9 @@
 import { getSource } from '../../../src/data-source'
 import { Graph } from '../../../src/entity'
 import {
-  DegreeRepository,
-  GraphRepository,
-  UserRepository,
+  getDegreeRepository,
+  getGraphRepository,
+  getUserRepository,
 } from '../../../src/repository'
 import { oneUp } from '../../../src/utils'
 import { setup, teardown } from '../../environment'
@@ -18,12 +18,12 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        UserRepository(db).initialize(Init.user1),
-        DegreeRepository(db).initialize(Init.degree1),
+        getUserRepository(db).initialize(Init.user1),
+        getDegreeRepository(db).initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) =>
-      GraphRepository(db).initialize({
+      getGraphRepository(db).initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],

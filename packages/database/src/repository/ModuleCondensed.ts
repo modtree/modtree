@@ -11,7 +11,7 @@ import type { IModuleCondensedRepository } from '../../types/repository'
  * @param {DataSource} database
  * @returns {ModuleCondensedRepository}
  */
-export function ModuleCondensedRepository(
+export function getModuleCondensedRepository(
   database?: DataSource
 ): IModuleCondensedRepository {
   const db = getDataSource(database)

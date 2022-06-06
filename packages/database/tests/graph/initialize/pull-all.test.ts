@@ -2,9 +2,9 @@ import { Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Degree, Graph, User } from '../../../src/entity'
 import {
-  DegreeRepository,
-  GraphRepository,
-  UserRepository,
+  getDegreeRepository,
+  getGraphRepository,
+  getUserRepository,
 } from '../../../src/repository'
 import { setup, teardown } from '../../environment'
 import Init from '../../init'
@@ -22,8 +22,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        UserRepository(db).initialize(Init.user1),
-        DegreeRepository(db).initialize(Init.degree1),
+        getUserRepository(db).initialize(Init.user1),
+        getDegreeRepository(db).initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) => {
@@ -40,7 +40,7 @@ describe('Graph.initialize', () => {
      * initialize a test graph instance
      */
     await container(db, () =>
-      GraphRepository(db)
+      getGraphRepository(db)
         .initialize({
           userId: t.user.id,
           degreeId: t.degree.id,
@@ -80,7 +80,7 @@ describe('Graph.toggleModules', () => {
      * execute the toggle
      */
     await container(db, () =>
-      GraphRepository(db).toggleModule(t.graph, toggled)
+      getGraphRepository(db).toggleModule(t.graph, toggled)
     )
     /**
      * hidden list should have one less module
@@ -101,7 +101,7 @@ describe('Graph.toggleModules', () => {
      * simple the inverse of the above
      */
     await container(db, () =>
-      GraphRepository(db).toggleModule(t.graph, 'MA2001')
+      getGraphRepository(db).toggleModule(t.graph, 'MA2001')
     )
     expect(t.graph.modulesHidden.length).toEqual(t.moduleCodes.length)
     expect(t.graph.modulesPlaced.length).toEqual(0)
@@ -111,7 +111,7 @@ describe('Graph.toggleModules', () => {
     expect.assertions(1)
     await container(db, () =>
       expect(() =>
-        GraphRepository(db).toggleModule(t.graph, Init.invalidModuleCode)
+        getGraphRepository(db).toggleModule(t.graph, Init.invalidModuleCode)
       ).rejects.toThrowError(Error('Module not found in Graph'))
     )
   })

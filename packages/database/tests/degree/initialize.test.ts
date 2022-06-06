@@ -1,6 +1,6 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
-import { DegreeRepository } from '../../src/repository'
+import { getDegreeRepository } from '../../src/repository'
 import Init from '../init'
 import { setup, teardown } from '../environment'
 import { Flatten, oneUp } from '../../src/utils'
@@ -17,7 +17,7 @@ describe('Degree.initialize', () => {
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () =>
-      DegreeRepository(db)
+      getDegreeRepository(db)
         .initialize(props)
         .then((res) => {
           expect(res).toBeInstanceOf(Degree)
@@ -28,7 +28,7 @@ describe('Degree.initialize', () => {
 
   it('Can find same degree (without relations)', async () => {
     await container(db, () =>
-      DegreeRepository(db)
+      getDegreeRepository(db)
         .findOneByTitle(props.title)
         .then((res) => {
           expect(res).toBeInstanceOf(Degree)

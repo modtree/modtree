@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { copy, EmptyInit, Flatten } from '../utils'
 import { db } from '../config'
-import { GraphRepository } from '../repository'
+import { getGraphRepository } from '../repository'
 import { IGraphController } from '../../types/controller'
 
 /** Graph API controller */
 export class GraphController implements IGraphController {
-  private graphRepo = GraphRepository(db)
+  private graphRepo = getGraphRepository(db)
 
   /**
    * creates a Graph
