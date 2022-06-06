@@ -17,6 +17,7 @@ export function UserRepository(database?: DataSource): Repository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(User)
   const loadRelations = useLoadRelations(BaseRepo)
+  const allRelations = getRelationNames(db, User)
 
   /**
    * Adds a User to DB
@@ -240,9 +241,14 @@ export function UserRepository(database?: DataSource): Repository {
   async function findOneByUsername(username: string): Promise<User> {
     return BaseRepo.createQueryBuilder('user')
       .where('user.username = :username', { username })
-      .leftJoinAndSelect('user.modulesDone', 'modulesDone')
-      .leftJoinAndSelect('user.modulesDoing', 'modulesDoing')
       .getOneOrFail()
+      .then(async (user) => {
+        return UserRepository(db)
+          .loadRelations(user, allRelations)
+          .then(() => {
+            return user
+          })
+      })
   }
 
   /**
@@ -257,8 +263,7 @@ export function UserRepository(database?: DataSource): Repository {
       .where('user.id = :id', { id })
       .getOneOrFail()
     // get relation names
-    const relationNames = getRelationNames(db, User)
-    await UserRepository(db).loadRelations(user, relationNames)
+    await UserRepository(db).loadRelations(user, allRelations)
     return user
   }
 
