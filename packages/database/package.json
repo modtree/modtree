@@ -44,7 +44,7 @@
   },
   "scripts": {
     "h0": "─────────────────────────────────────────────────────── ci ",
-    "ci:build": "yarn lint:no-fix && yarn build",
+    "ci:build": "yarn lint:no-fix && yarn build && yarn build:test",
     "ci:test:database": "bash ./tests/scripts.sh database",
     "ci:test:server": "bash ./tests/scripts.sh server",
     "ci:test:all": "yarn ci:test:database && yarn ci:test:server",
