@@ -65,7 +65,7 @@ export function UserRepository(database?: DataSource): Repository {
     // -- if module not found, assume invalid module code
     if (!module) return false
     // 2. load modulesDone and modulesDoing relations
-    copy(await UserRepository(db).findOneById(user.id), user)
+    copy(await findOneById(user.id), user)
     // -- if module already taken, can't take module again
     const modulesDoneCodes = user.modulesDone.map(Flatten.module)
     const modulesDoingCodes = user.modulesDoing.map(Flatten.module)
@@ -100,7 +100,7 @@ export function UserRepository(database?: DataSource): Repository {
    * @param {string[]} addedModuleCodes
    * @returns {Promise<Module[]>}
    */
-  async function eligibleModules(
+  async function getEligibleModules(
     user: User,
     addedModuleCodes?: string[]
   ): Promise<Module[]> {
@@ -109,14 +109,14 @@ export function UserRepository(database?: DataSource): Repository {
       addedModuleCodes = []
     }
     // 1. get post-reqs
-    const postReqs = await UserRepository(db).getPostReqs(
+    const postReqs = await getPostReqs(
       user,
       addedModuleCodes
     )
     if (!postReqs) return []
     // 2. filter post-reqs
     const promises = postReqs.map((one) =>
-      UserRepository(db).canTakeModule(user, one.moduleCode, addedModuleCodes)
+      canTakeModule(user, one.moduleCode, addedModuleCodes)
     )
     const results = await Promise.all(promises)
     const filtered = postReqs.filter((_, idx) => results[idx])
@@ -143,7 +143,7 @@ export function UserRepository(database?: DataSource): Repository {
       addedModuleCodes = []
     }
     // 1. load modulesDone and modulesDoing relations
-    copy(await UserRepository(db).findOneById(user.id), user)
+    copy(await findOneById(user.id), user)
     // 2. get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodesSet = new Set<string>()
     user.modulesDone.forEach((module: Module) => {
@@ -206,11 +206,11 @@ export function UserRepository(database?: DataSource): Repository {
       return []
     }
     // 2. Get current eligible modules
-    const eligibleModules = await UserRepository(db).eligibleModules(user)
+    const eligibleModules = await getEligibleModules(user)
     if (!eligibleModules) return []
     const eligibleModulesCodes = eligibleModules.map(Flatten.module)
     // 3. Get unlocked eligible modules
-    const unlockedModules = await UserRepository(db).eligibleModules(
+    const unlockedModules = await getEligibleModules(
       user,
       addedModuleCodes
     )
@@ -257,7 +257,7 @@ export function UserRepository(database?: DataSource): Repository {
    */
   async function addDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
-    copy(await UserRepository(db).findOneById(user.id), user)
+    copy(await findOneById(user.id), user)
     // 2. find degree in DB
     const degree = await DegreeRepository(db).findOneById(degreeId)
     // 3. append degree
@@ -274,7 +274,7 @@ export function UserRepository(database?: DataSource): Repository {
    */
   async function findDegree(user: User, degreeId: string): Promise<Degree> {
     // 1. load savedDegrees relations
-    copy(await UserRepository(db).findOneById(user.id), user)
+    copy(await findOneById(user.id), user)
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter(
       (degree) => degree.id === degreeId
@@ -292,7 +292,7 @@ export function UserRepository(database?: DataSource): Repository {
    */
   async function removeDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
-    copy(await UserRepository(db).findOneById(user.id), user)
+    copy(await findOneById(user.id), user)
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter(
       (degree) => degree.id !== degreeId
@@ -310,7 +310,7 @@ export function UserRepository(database?: DataSource): Repository {
     canTakeModule,
     initialize,
     findOneByUsername,
-    eligibleModules,
+    getEligibleModules,
     getPostReqs,
     getUnlockedModules,
     findOneById,
