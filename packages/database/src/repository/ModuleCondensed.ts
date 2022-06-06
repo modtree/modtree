@@ -4,7 +4,7 @@ import type { InitProps } from '../../types/init-props'
 import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
-import { getDataSource, useDeleteAll } from './base'
+import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
 import type { IModuleCondensedRepository } from '../../types/repository'
 
 /**
@@ -17,6 +17,7 @@ export function ModuleCondensedRepository(
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
   const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
 
   /**
    * initialize a Module Condensed
@@ -74,5 +75,6 @@ export function ModuleCondensedRepository(
     getCodes,
     pull,
     fetch,
+    findOneById,
   })
 }

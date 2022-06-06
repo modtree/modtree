@@ -6,7 +6,7 @@ import { Module as NM } from '../../types/nusmods'
 import type { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
-import { getDataSource, useDeleteAll } from './base'
+import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
 import type { IModuleRepository } from '../../types/repository'
 import { client } from '../utils/pull'
 
@@ -18,6 +18,7 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Module)
   const deleteAll = useDeleteAll<Module>(BaseRepo)
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
 
   /**
    * initialize a Module
@@ -135,6 +136,7 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
     pull,
     findByFaculty,
     findByCodes,
+    findOneById,
     deleteAll,
   })
 }

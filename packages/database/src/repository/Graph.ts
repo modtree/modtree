@@ -7,7 +7,7 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, getRelationNames, useDeleteAll } from './base'
+import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
 import { quickpop, Flatten, copy } from '../utils'
 import type { IGraphRepository } from '../../types/repository'
 
@@ -20,21 +20,8 @@ type ModuleState = 'placed' | 'hidden' | 'invalid'
 export function GraphRepository(database?: DataSource): IGraphRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Graph)
-  const allRelations = getRelationNames(BaseRepo)
   const deleteAll = useDeleteAll(BaseRepo)
-
-  /**
-   * Returns a User with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<Graph>}
-   */
-  async function findOneById(id: string): Promise<Graph> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
-      relations: allRelations,
-    })
-  }
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
 
   /**
    * Adds a Graph to DB

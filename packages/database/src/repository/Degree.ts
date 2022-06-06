@@ -2,7 +2,7 @@ import { DataSource, In } from 'typeorm'
 import type { InitProps } from '../../types/init-props'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import { getDataSource, getRelationNames, useDeleteAll } from './base'
+import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
 import { copy } from '../utils'
 import type { IDegreeRepository } from '../../types/repository'
 
@@ -13,21 +13,8 @@ import type { IDegreeRepository } from '../../types/repository'
 export function DegreeRepository(database?: DataSource): IDegreeRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
-  const allRelations = getRelationNames(BaseRepo)
   const deleteAll = useDeleteAll(BaseRepo)
-
-  /**
-   * Returns a Degree with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<Degree>}
-   */
-  async function findOneById(id: string): Promise<Degree> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
-      relations: allRelations,
-    })
-  }
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
 
   /**
    * Adds a Degree to DB

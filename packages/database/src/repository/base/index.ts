@@ -1,6 +1,7 @@
-export * from './delete-all'
-export * from './get-source'
-export * from './get-relation-names'
+export { useDeleteAll } from './delete-all'
+export { getDataSource } from './get-source'
+export { getRelationNames } from './get-relation-names'
+export { useFindOneByKey } from './find-one-by-key'
 
 /**
  * standards:

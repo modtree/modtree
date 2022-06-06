@@ -6,7 +6,7 @@ import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
 import { DegreeRepository } from './Degree'
 import { Utils, Flatten, copy } from '../utils'
-import { getDataSource, getRelationNames, useDeleteAll } from './base'
+import { getDataSource, getRelationNames, useDeleteAll, useFindOneByKey } from './base'
 import type { IUserRepository } from '../../types/repository'
 
 /**
@@ -18,19 +18,7 @@ export function UserRepository(database?: DataSource): IUserRepository {
   const BaseRepo = db.getRepository(User)
   const allRelations = getRelationNames(BaseRepo)
   const deleteAll = useDeleteAll(BaseRepo)
-
-  /**
-   * Returns a User with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<User>}
-   */
-  function findOneById(id: string): Promise<User> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
-      relations: allRelations,
-    })
-  }
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
 
   /**
    * Adds a User to DB
