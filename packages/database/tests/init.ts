@@ -19,6 +19,21 @@ export default class Init {
     title: 'Computer Science',
   }
 
+  static degree2: InitProps.Degree = {
+    moduleCodes: [
+      'MA1100',
+      'MA2001',
+      'MA2002',
+      'MA2101',
+      'MA2219',
+      'MA2104',
+      'MA2213',
+      'MA2216',
+      'MA2202',
+    ],
+    title: 'Mathematics',
+  }
+
   static user1: InitProps.User = {
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',

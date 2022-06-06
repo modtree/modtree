@@ -2,18 +2,13 @@ import { AxiosError } from 'axios'
 import { User } from '../../../src/entity'
 import { Delete, server } from '../environment'
 import Init from '../../init'
-import { toBeUserResponse } from '../expect-extend'
 
 const t: Partial<{ userId: string }> = {}
 
-beforeAll(() => {
-  expect.extend({ toBeUserResponse })
-})
 afterAll(() => Delete.User(t.userId))
 
 /**
  * create a user
- * the user should then appear in the list of all users
  */
 test('It should create a user', async () => {
   await server.post('user/create', Init.user2).then((res) => {
