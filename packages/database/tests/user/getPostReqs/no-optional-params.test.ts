@@ -55,7 +55,7 @@ it('Gets all post-reqs', async () => {
           (one) => one !== 'MA2101'
         )
         // Compare module codes
-        expect(t.postReqsCodes.sort()).toEqual(expected.sort())
+        expect(t.postReqsCodes.sort()).toStrictEqual(expected.sort())
       })
   )
 })

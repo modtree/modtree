@@ -42,7 +42,7 @@ it('Gets all post-reqs', async () => {
   if (!mod) return
   // Compare module codes
   t.postReqsCodes = postReqs.map((one: Module) => one.moduleCode)
-  expect(t.postReqsCodes.sort()).toEqual(mod.fulfillRequirements.sort())
+  expect(t.postReqsCodes.sort()).toStrictEqual(mod.fulfillRequirements.sort())
 })
 
 it('Returns empty array for modules with empty string fulfillRequirements', async () => {

@@ -85,7 +85,7 @@ describe('Graph.initialize', () => {
       })
       t.suggestedModulesCodes = res.map((one) => one.moduleCode)
       const copy = [...t.suggestedModulesCodes]
-      expect(copy.sort()).toEqual(expected.sort())
+      expect(copy.sort()).toStrictEqual(expected.sort())
     })
 
     it('In our current desired priority', async () => {

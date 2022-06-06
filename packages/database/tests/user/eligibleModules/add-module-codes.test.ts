@@ -37,5 +37,5 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   const eligibleModuleCodes = eligibleModules.map(
     (one: Module) => one.moduleCode
   )
-  expect(eligibleModuleCodes.sort()).toEqual(expected.sort())
+  expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
 })

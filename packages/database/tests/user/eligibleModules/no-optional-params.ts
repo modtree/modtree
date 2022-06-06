@@ -40,7 +40,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
          * Compare module codes
          */
         const eligibleModuleCodes = eligibleModules.map(Flatten.module)
-        expect(eligibleModuleCodes.sort()).toEqual(expected.sort())
+        expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
       })
   )
 })

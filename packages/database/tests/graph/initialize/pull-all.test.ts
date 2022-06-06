@@ -78,7 +78,7 @@ describe('Graph.initialize', () => {
      * all these module codes should show up in the hidden codes
      */
     const hidden = t.graph.modulesHidden.map(Flatten.module)
-    expect(hidden.sort()).toEqual(t.moduleCodes.sort())
+    expect(hidden.sort()).toStrictEqual(t.moduleCodes.sort())
     expect(t.graph.modulesPlaced.length).toEqual(0)
   })
 })
