@@ -18,9 +18,9 @@ beforeAll(async () => {
 afterAll(() => Promise.all([Delete.Degree(t.degreeId1), Delete.Degree(t.degreeId2)]))
 
 /**
- * list all users
+ * list all degrees
  */
-test('It should list all users', async () => {
+test('It should list all degrees', async () => {
   await server.get('degree/list').then((res) => {
     const degrees: Degree[] = res.data
     degrees.forEach((degree) => {
