@@ -52,6 +52,7 @@
     "start": "node dist/server",
     "start:test": "NODE_ENV=test yarn start",
     "build": "rm -rf ./dist && tsc --build tsconfig.build.json",
+    "build:test": "tsc --build tsconfig.test.json",
     "dev": "yarn build && yarn start",
     "dev:test": "yarn build && yarn start:test",
     "graph": "madge --image graph.png",

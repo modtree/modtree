@@ -8,6 +8,7 @@ import {
   getModuleRepository,
   getModuleCondensedRepository,
 } from '../src/repository'
+import { User, Graph, Degree } from '../src/entity'
 import {
   IModuleRepository,
   IUserRepository,
@@ -97,5 +98,31 @@ export type Repositories = Partial<{
   Graph: IGraphRepository
 }>
 
-export const t: any = {}
+type TestProps = {
+  user: User
+  user1: User
+  user2: User
+  degree: Degree
+  degree1: Degree
+  degree2: Degree
+  graph: Graph
+  graph1: Graph
+  graph2: Graph
+  userId: string
+  userId1: string
+  userId2: string
+  degreeId: string
+  degreeId1: string
+  degreeId2: string
+  graphId: string
+  graphId1: string
+  graphId2: string
+  combinedModuleCodes: string[]
+  postReqsCodes: string[]
+  postReqs: string[]
+  moduleCodes: string[]
+  suggestedModulesCodes: string[]
+}
+
+export const t: Partial<TestProps> = {}
 export { repo }
