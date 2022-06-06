@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { ModtreeFunction } from '../types/modtree'
-import { log } from './cli'
 import { config } from './config'
 
 /**

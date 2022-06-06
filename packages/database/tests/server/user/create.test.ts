@@ -4,12 +4,12 @@ import { Delete, server } from '../environment'
 import Init from '../../init'
 import { toBeUserResponse } from '../expect-extend'
 
+const t: Partial<{ userId: string }> = {}
+
 beforeAll(() => {
   expect.extend({ toBeUserResponse })
 })
 afterAll(() => Delete.User(t.userId))
-
-const t: Partial<{ userId: string }> = {}
 
 /**
  * create a user

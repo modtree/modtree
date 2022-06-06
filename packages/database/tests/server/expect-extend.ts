@@ -1,7 +1,18 @@
 import { ResponseProps } from '../../types/api-response'
 import { EmptyResponse } from '../../src/utils'
 
-export function toBeUserResponse(user: ResponseProps['User']) {
+type CustomMatcherResult = {
+  pass: boolean
+  message: () => string
+}
+
+/**
+ * @param {ResponseProps['User']} user
+ * @returns {CustomMatcherResult}
+ */
+export function toBeUserResponse(
+  user: ResponseProps['User']
+): CustomMatcherResult {
   const checks: boolean[] = []
   const responseKeys = Object.getOwnPropertyNames(user)
   Object.entries(EmptyResponse.User).forEach(([key, value]) => {

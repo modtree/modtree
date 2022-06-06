@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "ci": "turbo run ci",
+    "ci:build": "turbo run ci:build",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",

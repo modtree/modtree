@@ -17,6 +17,7 @@ export const server = axios.create({
 export class Create {
   /**
    * sends a tested post request to create a user
+   *
    * @param {InitProps.User} props
    * @returns {Promise<User>}
    */
@@ -37,6 +38,7 @@ export class Create {
 export class Delete {
   /**
    * sends a tested delete request to delete a user
+   *
    * @param {string} id
    */
   static async User(id: string) {
