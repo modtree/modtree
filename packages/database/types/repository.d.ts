@@ -52,7 +52,6 @@ export interface IDegreeRepository
 
 export interface IModuleRepository
   extends IBaseRepo<Module, InitProps['Module']> {
-  get(): Promise<Module[]>
   fetchOne(moduleCode: string): Promise<Module>
   getCodes(): Promise<string[]>
   pull(): Promise<Module[]>

@@ -1,4 +1,11 @@
 import { Repository } from 'typeorm'
+import {
+  IUser,
+  IGraph,
+  IDegree,
+  IModule,
+  IModuleCondensed,
+} from '../../entity/types'
 
 /**
  * example usage:
@@ -16,16 +23,17 @@ import { Repository } from 'typeorm'
  * keys of Searchables
  */
 type Searchables = { id: string; title: string; username: string }
+type AllEntities = IUser | IGraph | IDegree | IModuleCondensed | IModule
 
 /**
  * function that useFindOneByKey returns
  * a function that takes in just one parameter: value,
  * and returns a Promise to one and only one Entity
  */
-type FindOneByKey = (value: string) => Promise<any>
+type FindByKey<T> = (value: string) => Promise<T>
 
 /**
- * Returns an Entity with all relations loaded
+ * Returns one Entity with all relations loaded
  *
  * @param {Repository<any>} repository
  * @param {T} key
@@ -34,7 +42,7 @@ type FindOneByKey = (value: string) => Promise<any>
 export function useFindOneByKey<
   Entity extends Searchables,
   T extends keyof Entity
->(repository: Repository<any>, key: T): FindOneByKey {
+>(repository: Repository<any>, key: T): FindByKey<any> {
   const relations: Record<string, boolean> = {}
   repository.metadata.relations.forEach((r) => {
     relations[r.propertyName] = true
@@ -54,9 +62,9 @@ export function useFindOneByKey<
  * @returns {FindOneByKey<Entity>}
  */
 export function useFindByKey<
-  Entity extends Searchables,
+  Entity extends AllEntities,
   T extends keyof Entity
->(repository: Repository<any>, key: T): FindOneByKey {
+>(repository: Repository<any>, key: T): FindByKey<any[]> {
   const relations: Record<string, boolean> = {}
   repository.metadata.relations.forEach((r) => {
     relations[r.propertyName] = true

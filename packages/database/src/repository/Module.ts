@@ -1,12 +1,17 @@
 import axios from 'axios'
-import { DataSource } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import { log } from '../cli'
 import { nusmodsApi, Flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import type { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { ModuleCondensedRepository } from './ModuleCondensed'
-import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
+import {
+  getDataSource,
+  getRelationNames,
+  useDeleteAll,
+  useFindOneByKey,
+} from './base'
 import type { IModuleRepository } from '../../types/repository'
 import { client } from '../utils/pull'
 
@@ -19,6 +24,7 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
   const BaseRepo = db.getRepository(Module)
   const deleteAll = useDeleteAll<Module>(BaseRepo)
   const findOneById = useFindOneByKey(BaseRepo, 'id')
+  const allRelations = getRelationNames(BaseRepo)
 
   /**
    * initialize a Module
@@ -31,23 +37,12 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
   }
 
   /**
-   * get all modules in the database
-   *
-   * @returns {Promise<Module[]>}
-   */
-  async function get(): Promise<Module[]> {
-    return BaseRepo.find()
-  }
-
-  /**
    * get all module codes from the module table
    *
    * @returns {Promise<string[]>}
    */
   async function getCodes(): Promise<string[]> {
-    const modules = await get()
-    const codes = modules.map(Flatten.module)
-    return codes
+    return BaseRepo.find().then((res) => res.map(Flatten.module))
   }
 
   /**
@@ -56,10 +51,11 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string} moduleCode
    */
   async function fetchOne(moduleCode: string): Promise<Module> {
-    const res = await axios.get(nusmodsApi(`modules/${moduleCode}`))
-    const n: NM = res.data
-    const m = BaseRepo.create(n)
-    return m
+    return axios.get(nusmodsApi(`modules/${moduleCode}`)).then((res) => {
+      const n: NM = res.data
+      const m = BaseRepo.create(n)
+      return m
+    })
   }
 
   /**
@@ -109,28 +105,20 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string} faculty
    * @returns {Promise<Module[]>}
    */
-  async function findByFaculty(faculty: string): Promise<Module[]> {
-    return BaseRepo.createQueryBuilder('module')
-      .where('module.faculty = :faculty', { faculty })
-      .getMany()
+  function findByFaculty(faculty: string): Promise<Module[]> {
+    return BaseRepo.find({ where: { faculty }, relations: allRelations })
   }
 
   /**
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */
-  async function findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    if (moduleCodes.length === 0) {
-      return []
-    }
-    return BaseRepo.createQueryBuilder('module')
-      .where('module.moduleCode IN (:...moduleCodes)', { moduleCodes })
-      .getMany()
+  function findByCodes(moduleCodes: string[]): Promise<Module[]> {
+    return BaseRepo.find({ where: { moduleCode: In(moduleCodes) } })
   }
 
   return BaseRepo.extend({
     initialize,
-    get,
     getCodes,
     fetchOne,
     pull,

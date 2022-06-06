@@ -1,4 +1,4 @@
-import { DataSource, In, SelectQueryBuilder } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import type { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { Graph } from '../entity/Graph'
@@ -7,7 +7,12 @@ import { UserRepository } from './User'
 import { DegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
+import {
+  getDataSource,
+  getRelationNames,
+  useDeleteAll,
+  useFindOneByKey,
+} from './base'
 import { quickpop, Flatten, copy } from '../utils'
 import type { IGraphRepository } from '../../types/repository'
 
@@ -22,6 +27,7 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
   const BaseRepo = db.getRepository(Graph)
   const deleteAll = useDeleteAll(BaseRepo)
   const findOneById = useFindOneByKey(BaseRepo, 'id')
+  const allRelations = getRelationNames(BaseRepo)
 
   /**
    * Adds a Graph to DB
@@ -136,35 +142,25 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
   }
 
   /**
-   * preliminary function to build up bulk of this query
-   *
-   * @param {string} userId
-   * @param {string} degreeId
-   * @returns {SelectQueryBuilder<Graph>}
-   */
-  function queryByUserAndDegreeId(
-    userId: string,
-    degreeId: string
-  ): SelectQueryBuilder<Graph> {
-    return BaseRepo.createQueryBuilder('Graph')
-      .where('Graph.degree.id = :degreeId', { degreeId })
-      .andWhere('Graph.user.id = :userId', { userId })
-      .leftJoinAndSelect('Graph.user', 'user')
-      .leftJoinAndSelect('Graph.degree', 'degree')
-      .leftJoinAndSelect('Graph.modulesPlaced', 'placed')
-      .leftJoinAndSelect('Graph.modulesHidden', 'hidden')
-  }
-
-  /**
    * @param {string} userId
    * @param {string} degreeId
    * @returns {Promise<Graph>}
    */
-  async function findOneByUserAndDegreeId(
+  function findOneByUserAndDegreeId(
     userId: string,
     degreeId: string
   ): Promise<Graph> {
-    return queryByUserAndDegreeId(userId, degreeId).getOneOrFail()
+    return BaseRepo.findOneOrFail({
+      relations: allRelations,
+      where: {
+        user: {
+          id: userId,
+        },
+        degree: {
+          id: degreeId,
+        },
+      },
+    })
   }
 
   /**
@@ -176,7 +172,17 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]> {
-    return queryByUserAndDegreeId(userId, degreeId).getManyAndCount()
+    return BaseRepo.findAndCount({
+      relations: allRelations,
+      where: {
+        user: {
+          id: userId,
+        },
+        degree: {
+          id: degreeId,
+        },
+      },
+    })
   }
 
   /**
