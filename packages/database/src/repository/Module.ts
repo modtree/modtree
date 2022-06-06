@@ -21,6 +21,7 @@ export function ModuleRepository(database?: DataSource): IModuleRepository {
 
   /**
    * initialize a Module
+   *
    * @param {InitProps['Module']} props
    * @returns {Promise<Module>}
    */

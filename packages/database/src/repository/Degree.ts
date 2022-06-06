@@ -17,6 +17,19 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
   const deleteAll = useDeleteAll(BaseRepo)
 
   /**
+   * Returns a Degree with all relations loaded
+   *
+   * @param {string} id
+   * @returns {Promise<Degree>}
+   */
+  async function findOneById(id: string): Promise<Degree> {
+    return BaseRepo.findOneOrFail({
+      where: { id },
+      relations: allRelations,
+    })
+  }
+
+  /**
    * Adds a Degree to DB
    *
    * @param {InitProps['Degree']} props
@@ -64,19 +77,6 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
       .where('degree.title = :title', { title })
       .leftJoinAndSelect('degree.modules', 'module')
       .getOneOrFail()
-  }
-
-  /**
-   * Returns a Degree with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<Degree>}
-   */
-  async function findOneById(id: string): Promise<Degree> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
-      relations: allRelations,
-    })
   }
 
   /**

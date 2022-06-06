@@ -20,6 +20,19 @@ export function UserRepository(database?: DataSource): IUserRepository {
   const deleteAll = useDeleteAll(BaseRepo)
 
   /**
+   * Returns a User with all relations loaded
+   *
+   * @param {string} id
+   * @returns {Promise<User>}
+   */
+  function findOneById(id: string): Promise<User> {
+    return BaseRepo.findOneOrFail({
+      where: { id },
+      relations: allRelations,
+    })
+  }
+
+  /**
    * Adds a User to DB
    *
    * @param {InitProps['User']} props
@@ -226,19 +239,6 @@ export function UserRepository(database?: DataSource): IUserRepository {
   async function findOneByUsername(username: string): Promise<User> {
     return BaseRepo.findOneOrFail({
       where: { username },
-      relations: allRelations,
-    })
-  }
-
-  /**
-   * Returns a User with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<User>}
-   */
-  function findOneById(id: string): Promise<User> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
       relations: allRelations,
     })
   }

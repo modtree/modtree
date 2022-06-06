@@ -24,6 +24,19 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
   const deleteAll = useDeleteAll(BaseRepo)
 
   /**
+   * Returns a User with all relations loaded
+   *
+   * @param {string} id
+   * @returns {Promise<Graph>}
+   */
+  async function findOneById(id: string): Promise<Graph> {
+    return BaseRepo.findOneOrFail({
+      where: { id },
+      relations: allRelations,
+    })
+  }
+
+  /**
    * Adds a Graph to DB
    *
    * @param {InitProps['Graph']} props
@@ -133,19 +146,6 @@ export function GraphRepository(database?: DataSource): IGraphRepository {
     }
 
     await BaseRepo.save(graph)
-  }
-
-  /**
-   * Returns a User with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<Graph>}
-   */
-  async function findOneById(id: string): Promise<Graph> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
-      relations: allRelations,
-    })
   }
 
   /**

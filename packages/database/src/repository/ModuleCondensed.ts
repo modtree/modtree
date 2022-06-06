@@ -1,6 +1,6 @@
 import axios from 'axios'
-import type { InitProps } from '../../types/init-props'
 import { DataSource } from 'typeorm'
+import type { InitProps } from '../../types/init-props'
 import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
@@ -20,6 +20,7 @@ export function ModuleCondensedRepository(
 
   /**
    * initialize a Module Condensed
+   *
    * @param {InitProps['ModuleCondensed']} props
    * @returns {Promise<ModuleCondensed>}
    */
