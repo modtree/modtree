@@ -196,7 +196,7 @@ export function UserRepository(database?: DataSource): Repository {
     // future support for multiple mods
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
-    await UserRepository(db).findOneById(user.id)
+    copy(await UserRepository(db).findOneById(user.id), user)
     const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
     const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
     if (
