@@ -1,5 +1,5 @@
 import { User } from '../../../src/entity'
-import { server } from '../environment'
+import { Mockup, server } from '../environment'
 import Init from '../../init'
 import { toBeUserResponse } from '../expect-extend'
 
@@ -7,19 +7,12 @@ const t: Partial<{ userId1: string; userId2: string }> = {}
 
 beforeAll(async () => {
   expect.extend({ toBeUserResponse })
-  /**
-   * creates the two tests users
-   */
-  return Promise.all([
-    server.post('user/create', Init.user2),
-    server.post('user/create', Init.user3),
-  ]).then(([user1, user2]) => {
-    /**
-     * make a note of the two auto-generated user ids
-     */
-    t.userId1 = user1.data.id
-    t.userId2 = user2.data.id
-  })
+  return Promise.all([Mockup.User(Init.user2), Mockup.User(Init.user3)]).then(
+    ([user1, user2]) => {
+      t.userId1 = user1.id
+      t.userId2 = user2.id
+    }
+  )
 })
 
 /**
