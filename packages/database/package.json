@@ -56,7 +56,7 @@
     "dev": "yarn build && yarn start",
     "dev:test": "yarn build && yarn start:test",
     "graph": "madge --image graph.png",
-    "default:env": "sh setup.sh",
+    "default:env": "sh ./scripts/setup.sh",
     "jest": "NODE_ENV=test jest",
     "h2": "───────────────────────────────────────────── test configs ",
     "tconf:database": "yarn jest -c ./tests/configs/database.ts",
