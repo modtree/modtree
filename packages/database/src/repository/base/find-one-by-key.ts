@@ -15,17 +15,14 @@ import { Repository } from 'typeorm'
  * the second argument of useFindOneByKey() is constrained by the
  * keys of Searchables
  */
-type Searchables = { id: Query }
-type Query = string | number
+type Searchables = { id: string; title: string; username: string }
 
 /**
  * function that useFindOneByKey returns
  * a function that takes in just one parameter: value,
  * and returns a Promise to one and only one Entity
  */
-type FindOneByKey<Entity extends Searchables> = (
-  value: Query
-) => Promise<Entity>
+type FindOneByKey = (value: string) => Promise<any>
 
 /**
  * Returns an Entity with all relations loaded
@@ -37,13 +34,35 @@ type FindOneByKey<Entity extends Searchables> = (
 export function useFindOneByKey<
   Entity extends Searchables,
   T extends keyof Entity
->(repository: Repository<any>, key: T): FindOneByKey<Entity> {
+>(repository: Repository<any>, key: T): FindOneByKey {
   const relations: Record<string, boolean> = {}
   repository.metadata.relations.forEach((r) => {
     relations[r.propertyName] = true
   })
-  return (value: Query) =>
+  return (value: string) =>
     repository.findOneOrFail({
+      where: { [key]: value },
+      relations,
+    })
+}
+
+/**
+ * Returns an Array Entities with all relations loaded
+ *
+ * @param {Repository<any>} repository
+ * @param {T} key
+ * @returns {FindOneByKey<Entity>}
+ */
+export function useFindByKey<
+  Entity extends Searchables,
+  T extends keyof Entity
+>(repository: Repository<any>, key: T): FindOneByKey {
+  const relations: Record<string, boolean> = {}
+  repository.metadata.relations.forEach((r) => {
+    relations[r.propertyName] = true
+  })
+  return (value: string) =>
+    repository.find({
       where: { [key]: value },
       relations,
     })

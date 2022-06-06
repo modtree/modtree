@@ -2,7 +2,12 @@ import { DataSource, In } from 'typeorm'
 import type { InitProps } from '../../types/init-props'
 import { Degree } from '../entity/Degree'
 import { ModuleRepository } from './Module'
-import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
+import {
+  getDataSource,
+  getRelationNames,
+  useDeleteAll,
+  useFindOneByKey,
+} from './base'
 import { copy } from '../utils'
 import type { IDegreeRepository } from '../../types/repository'
 
@@ -15,6 +20,8 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
   const BaseRepo = db.getRepository(Degree)
   const deleteAll = useDeleteAll(BaseRepo)
   const findOneById = useFindOneByKey(BaseRepo, 'id')
+  const findOneByTitle = useFindOneByKey(BaseRepo, 'title')
+  const allRelations = getRelationNames(BaseRepo)
 
   /**
    * Adds a Degree to DB
@@ -41,29 +48,23 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
   async function insertModules(
     degree: Degree,
     moduleCodes: string[]
-  ): Promise<void> {
+  ): Promise<Degree> {
     // find modules to add
-    const newModules = await ModuleRepository(db).findBy({
-      moduleCode: In(moduleCodes),
-    })
-    // find modules part of current degree
-    copy(await findOneById(degree.id), degree)
-    // update the degree
-    degree.modules.push(...newModules)
-    const updatedDegree = await BaseRepo.save(degree)
-    // update the passed object
-    copy(updatedDegree, degree)
-  }
-
-  /**
-   * @param {string} title
-   * @returns {Promise<Degree>}
-   */
-  async function findOneByTitle(title: string): Promise<Degree> {
-    return BaseRepo.createQueryBuilder('degree')
-      .where('degree.title = :title', { title })
-      .leftJoinAndSelect('degree.modules', 'module')
-      .getOneOrFail()
+    return Promise.all([
+      ModuleRepository(db).findBy({
+        moduleCode: In(moduleCodes),
+      }),
+      findOneById(degree.id),
+    ])
+      .then(([newModules, loadedDegree]) => {
+        copy(loadedDegree, degree)
+        degree.modules.push(...newModules)
+        return BaseRepo.save(degree)
+      })
+      .then((updatedDegree) => {
+        copy(updatedDegree, degree)
+        return updatedDegree
+      })
   }
 
   /**
@@ -71,13 +72,12 @@ export function DegreeRepository(database?: DataSource): IDegreeRepository {
    * @returns {Promise<Degree[]>}
    */
   async function findByIds(degreeIds: string[]): Promise<Degree[]> {
-    if (degreeIds.length === 0) {
-      return []
-    }
-    return BaseRepo.createQueryBuilder('degree')
-      .where('degree.id IN (:...degreeIds)', { degreeIds })
-      .leftJoinAndSelect('degree.modules', 'module')
-      .getMany()
+    return BaseRepo.find({
+      where: {
+        id: In(degreeIds),
+      },
+      relations: allRelations,
+    })
   }
 
   return BaseRepo.extend({
