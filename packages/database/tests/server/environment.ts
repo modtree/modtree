@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Agent } from 'http'
-import { nonEmtpyString } from '../../src/utils'
-import { response } from '../../types/api-response'
+import { ResponseProps } from '../../types/api-response'
+import { EmptyResponse } from '../../src/utils'
 
 export const server = axios.create({
   baseURL: 'http://localhost:8080/',
@@ -15,20 +15,16 @@ export const server = axios.create({
  */
 export function setup() {
   expect.extend({
-    toBeUserResponse(user: response.User) {
-      const checks = [
-        nonEmtpyString(user.id),
-        nonEmtpyString(user.displayName),
-        nonEmtpyString(user.username),
-        user.graduationYear > 0,
-        user.graduationSemester > 0,
-        user.graduationSemester > 0,
-        user.modulesDone instanceof Array,
-        user.modulesDoing instanceof Array,
-        user.savedDegrees instanceof Array,
-        user.savedGraphs instanceof Array,
-      ]
-      return checks.every((x) => x === true)
+    toBeUserResponse(user: ResponseProps['User']) {
+      const checks: boolean[] = []
+      const responseKeys = Object.getOwnPropertyNames(user)
+      Object.entries(EmptyResponse.User).forEach(([key, value]) => {
+        // ensure that the response has each key
+        checks.push(responseKeys.includes(key))
+        // ensure that the response value type is correct
+        checks.push(typeof user[key] === typeof value)
+      })
+      return checks.every(Boolean)
         ? {
             pass: true,
             message: () =>

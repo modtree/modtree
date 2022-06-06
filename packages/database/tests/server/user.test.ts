@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios'
 import { User } from '../../src/entity'
-
 import { server, setup } from './environment'
 
 beforeAll(setup)
