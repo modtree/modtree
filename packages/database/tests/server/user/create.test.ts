@@ -1,12 +1,13 @@
 import { AxiosError } from 'axios'
 import { User } from '../../../src/entity'
-import { server } from '../environment'
+import { Delete, server } from '../environment'
 import Init from '../../init'
 import { toBeUserResponse } from '../expect-extend'
 
 beforeAll(() => {
   expect.extend({ toBeUserResponse })
 })
+afterAll(() => Delete.User(t.userId))
 
 const t: Partial<{ userId: string }> = {}
 
@@ -34,14 +35,4 @@ test('It should reject a user creation on insufficient keys', async () => {
       email: undefined,
     })
   ).rejects.toThrowError(new AxiosError('Request failed with status code 400'))
-})
-
-/**
- * delete created user
- * (teardown)
- */
-test('It should delete created user', async () => {
-  await server.delete(`user/delete/${t.userId}`).then((res) => {
-    expect(res.data).toMatchObject({ deleteResult: { raw: [], affected: 1 } })
-  })
 })

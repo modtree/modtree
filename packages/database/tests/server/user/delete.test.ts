@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import Init from '../../init'
-import { server, Mockup } from '../environment'
+import { server, Create } from '../environment'
 
 const t: Partial<{ userId: string }> = {}
 
@@ -9,7 +9,7 @@ beforeAll(() =>
    * note that this mockup contains its own checks too
    * apart from just calling the server endpoint
    */
-  Mockup.User(Init.user2).then((user) => {
+  Create.User(Init.user2).then((user) => {
     t.userId = user.id
   })
 )
