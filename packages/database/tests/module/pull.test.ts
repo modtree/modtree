@@ -10,6 +10,8 @@ const db = getSource(dbName)
 beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
+const lowerBound = 6100
+
 jest.setTimeout(60000)
 test('pull all modules from NUSMods', async () => {
   expect.assertions(3)
@@ -20,7 +22,7 @@ test('pull all modules from NUSMods', async () => {
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
         expect(res[0]).toBeInstanceOf(Module)
-        expect(res.length).toBeGreaterThan(6100)
+        expect(res.length).toBeGreaterThan(lowerBound)
       })
   )
 })

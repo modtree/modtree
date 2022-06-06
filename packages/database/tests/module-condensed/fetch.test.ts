@@ -10,6 +10,8 @@ const db = getSource(dbName)
 beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
+const lowerBound = 6000
+
 test('moduleCondensed.fetch', async () => {
   await container(db, () =>
     ModuleCondensedRepository(db)
@@ -22,7 +24,7 @@ test('moduleCondensed.fetch', async () => {
          * expect all module codes to be unique
          */
         expect(s.size).toBe(moduleList.length)
-        expect(s.size).toBeGreaterThan(6000)
+        expect(s.size).toBeGreaterThan(lowerBound)
       })
   )
 })
