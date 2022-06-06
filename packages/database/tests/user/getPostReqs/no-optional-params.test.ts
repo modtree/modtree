@@ -1,18 +1,13 @@
 import { container, getSource } from '../../../src/data-source'
-import { Module, User } from '../../../src/entity'
+import { Module } from '../../../src/entity'
 import { getModuleRepository, getUserRepository } from '../../../src/repository'
 import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
-import { setup, teardown } from '../../environment'
+import { setup, teardown, t, repo } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-
-const t: Partial<{
-  user: User
-  postReqsCodes: string[]
-}> = {}
 
 const userProps: InitProps['User'] = {
   ...Init.emptyUser,
@@ -22,7 +17,7 @@ const userProps: InitProps['User'] = {
 
 beforeAll(() =>
   setup(db)
-    .then(() => getUserRepository(db).initialize(userProps))
+    .then(() => repo.User.initialize(userProps))
     .then((user) => {
       t.user = user
     })

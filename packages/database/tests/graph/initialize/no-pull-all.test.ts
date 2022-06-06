@@ -1,12 +1,10 @@
 import { getSource } from '../../../src/data-source'
-import { Graph } from '../../../src/entity'
 import { copy, oneUp } from '../../../src/utils'
-import { repo, setup, teardown } from '../../environment'
+import { setup, teardown, repo, t } from '../../environment'
 import Init from '../../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ graph: Graph }> = {}
 
 beforeAll(() =>
   setup(db)

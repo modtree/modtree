@@ -1,17 +1,15 @@
 import { container, getSource } from '../../../src/data-source'
-import { User } from '../../../src/entity'
-import { getUserRepository } from '../../../src/repository'
 import Init from '../../init'
-import { setup, teardown } from '../../environment'
-import { oneUp } from '../../../src/utils'
+import { setup, teardown, repo, t } from '../../environment'
+import { copy, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ user: User }> = {}
 
 beforeAll(() =>
   setup(db)
-    .then(() => getUserRepository(db).initialize(Init.emptyUser))
+    .then((res) => copy(res, repo))
+    .then(() => repo.User.initialize(Init.emptyUser))
     .then((user) => {
       t.user = user
     })
@@ -24,7 +22,7 @@ it('Returns true for modules unlocked by the added modules', async () => {
     const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
     return Promise.all(
       modulesTested.map((x) =>
-        getUserRepository(db).canTakeModule(t.user, x, addModuleCodes)
+        repo.User.canTakeModule(t.user, x, addModuleCodes)
       )
     )
   })
@@ -37,7 +35,7 @@ it('Returns false for modules unlocked by the added modules, if not passed in', 
     const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
     return Promise.all(
       modulesTested.map((x) =>
-        getUserRepository(db).canTakeModule(t.user, x, addModuleCodes)
+        repo.User.canTakeModule(t.user, x, addModuleCodes)
       )
     )
   })

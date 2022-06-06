@@ -1,9 +1,7 @@
 import { AxiosError } from 'axios'
 import { User } from '../../../src/entity'
-import { Delete, server } from '../environment'
+import { Delete, server, t } from '../environment'
 import Init from '../../init'
-
-const t: Partial<{ userId: string }> = {}
 
 afterAll(() => Delete.User(t.userId))
 

@@ -1,8 +1,6 @@
 import { AxiosError } from 'axios'
 import Init from '../../init'
-import { server, Create } from '../environment'
-
-const t: Partial<{ degreeId: string }> = {}
+import { Create, server, t } from '../environment'
 
 beforeAll(() =>
   /**

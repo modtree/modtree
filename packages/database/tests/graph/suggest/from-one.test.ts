@@ -1,17 +1,12 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
-import { Module, Graph } from '../../../src/entity'
-import { setup, teardown, repo } from '../../environment'
+import { Module } from '../../../src/entity'
+import { setup, teardown, repo, t } from '../../environment'
 import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
 import { copy, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{
-  graph: Graph
-  suggestedModulesCodes: string[]
-  postReqs: string[]
-}> = {}
 
 const degreeProps: InitProps['Degree'] = {
   moduleCodes: [

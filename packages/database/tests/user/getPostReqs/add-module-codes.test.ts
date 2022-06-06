@@ -1,17 +1,15 @@
 import { container, getSource } from '../../../src/data-source'
-import { Module, User } from '../../../src/entity'
 import { getModuleRepository, getUserRepository } from '../../../src/repository'
 import Init from '../../init'
-import { setup, teardown } from '../../environment'
-import { oneUp } from '../../../src/utils'
+import { setup, teardown, repo, t } from '../../environment'
+import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ user: User; postReqsCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(db)
-    .then(() => getUserRepository(db).initialize(Init.emptyUser))
+    .then(() => repo.User.initialize(Init.emptyUser))
     .then((user) => {
       t.user = user
     })
@@ -35,7 +33,7 @@ it('Gets all post-reqs', async () => {
   expect(mod).toBeDefined()
   if (!mod) return
   // Compare module codes
-  t.postReqsCodes = postReqs.map((one: Module) => one.moduleCode)
+  t.postReqsCodes = postReqs.map(Flatten.module)
   expect(t.postReqsCodes.sort()).toStrictEqual(mod.fulfillRequirements.sort())
 })
 

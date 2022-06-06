@@ -1,17 +1,11 @@
 import { copy, Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
-import { Degree, Graph, User } from '../../../src/entity'
-import { repo, setup, teardown } from '../../environment'
+import { Graph } from '../../../src/entity'
+import { setup, teardown, repo, t } from '../../environment'
 import Init from '../../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{
-  degree: Degree
-  user: User
-  graph: Graph
-  moduleCodes: string[]
-}> = {}
 
 beforeAll(() =>
   setup(db)

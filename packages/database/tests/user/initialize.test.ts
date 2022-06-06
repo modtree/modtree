@@ -2,12 +2,11 @@ import { container, getSource } from '../../src/data-source'
 import { User } from '../../src/entity'
 import { getUserRepository } from '../../src/repository'
 import Init from '../init'
-import { setup, teardown } from '../environment'
+import { setup, teardown, t } from '../environment'
 import { oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ user: User }> = {}
 
 beforeAll(() => setup(db))
 afterAll(() => teardown(db))

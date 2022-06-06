@@ -121,3 +121,5 @@ export class Delete {
     return Delete.request('Graph', id)
   }
 }
+
+export const t: any = {}

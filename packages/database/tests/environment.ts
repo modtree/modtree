@@ -15,11 +15,13 @@ import {
   IDegreeRepository,
   IModuleCondensedRepository,
 } from '../types/repository'
+import { copy } from '../src/utils'
 
 type SetupOptions = {
   initialize: boolean
 }
 
+const repo: Repositories = {}
 /**
  * pre-test setup
  *
@@ -35,13 +37,19 @@ export async function setup(
    * bundle initializing the database and initializing the repositories
    */
   const initializeRepositories = () =>
-    db.initialize().then(() => ({
-      User: getUserRepository(db),
-      Degree: getDegreeRepository(db),
-      Module: getModuleRepository(db),
-      ModuleCondensed: getModuleCondensedRepository(db),
-      Graph: getGraphRepository(db),
-    }))
+    db
+      .initialize()
+      .then(() => ({
+        User: getUserRepository(db),
+        Degree: getDegreeRepository(db),
+        Module: getModuleRepository(db),
+        ModuleCondensed: getModuleCondensedRepository(db),
+        Graph: getGraphRepository(db),
+      }))
+      .then((res) => {
+        copy(res, repo)
+        return res
+      })
   return sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
     .then(async () => {
@@ -94,4 +102,5 @@ export type Repositories = Partial<{
   Graph: IGraphRepository
 }>
 
-export const repo: Repositories = {}
+export const t: any = {}
+export { repo }

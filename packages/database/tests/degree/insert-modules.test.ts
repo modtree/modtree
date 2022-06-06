@@ -1,12 +1,10 @@
 import { container, getSource } from '../../src/data-source'
-import { Degree } from '../../src/entity'
 import Init from '../init'
-import { repo, setup, teardown } from '../environment'
+import { setup, teardown, repo, t } from '../environment'
 import { copy, Flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ degree: Degree; combinedModuleCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(db)
