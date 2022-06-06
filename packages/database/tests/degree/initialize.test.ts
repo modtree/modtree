@@ -1,7 +1,7 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
 import Init from '../init'
-import { setup, teardown, repo, t } from '../environment'
+import { setup, teardown, Repo, t } from '../environment'
 import { Flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -15,7 +15,7 @@ describe('Degree.initialize', () => {
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () =>
-      repo.Degree.initialize(props).then((res) => {
+      Repo.Degree.initialize(props).then((res) => {
         expect(res).toBeInstanceOf(Degree)
         t.degree = res
       })
@@ -24,7 +24,7 @@ describe('Degree.initialize', () => {
 
   it('Can find same degree (without relations)', async () => {
     await container(db, () =>
-      repo.Degree.findOneByTitle(props.title).then((res) => {
+      Repo.Degree.findOneByTitle(props.title).then((res) => {
         expect(res).toBeInstanceOf(Degree)
         expect(res).toStrictEqual(t.degree)
       })

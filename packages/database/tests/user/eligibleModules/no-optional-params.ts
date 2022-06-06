@@ -2,7 +2,7 @@ import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
 import { getUserRepository } from '../../../src/repository'
 import Init from '../../init'
-import { setup, teardown, repo, t } from '../../environment'
+import { setup, teardown, Repo, t } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -29,7 +29,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   // Get eligible modules
   expect.assertions(2)
   await container(db, () =>
-    repo.User.getEligibleModules(t.user).then((eligibleModules) => {
+    Repo.User.getEligibleModules(t.user).then((eligibleModules) => {
       expect(eligibleModules).toBeInstanceOf(Array)
       const expected = ['CS2109S']
       /**

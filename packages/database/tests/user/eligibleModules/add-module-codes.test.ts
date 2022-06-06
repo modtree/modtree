@@ -1,6 +1,6 @@
 import { container, getSource } from '../../../src/data-source'
 import Init from '../../init'
-import { setup, teardown, repo, t } from '../../environment'
+import { setup, teardown, Repo, t } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -8,7 +8,7 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => repo.User.initialize(Init.emptyUser))
+    .then(() => Repo.User.initialize(Init.emptyUser))
     .then((user) => {
       t.user = user
     })
@@ -19,7 +19,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   const addModuleCodes = ['CS1101S']
   // Get eligible modules
   const eligibleModules = await container(db, () =>
-    repo.User.getEligibleModules(t.user, addModuleCodes)
+    Repo.User.getEligibleModules(t.user, addModuleCodes)
   )
   expect(eligibleModules).toBeDefined()
   if (!eligibleModules) return

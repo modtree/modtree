@@ -1,7 +1,7 @@
 import { Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Graph } from '../../../src/entity'
-import { setup, teardown, repo, t } from '../../environment'
+import { setup, teardown, Repo, t } from '../../environment'
 import Init from '../../init'
 
 const dbName = oneUp(__filename)
@@ -11,8 +11,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        repo.User.initialize(Init.user1),
-        repo.Degree.initialize(Init.degree1),
+        Repo.User.initialize(Init.user1),
+        Repo.Degree.initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) => {
@@ -29,7 +29,7 @@ describe('Graph.initialize', () => {
      * initialize a test graph instance
      */
     await container(db, () =>
-      repo.Graph.initialize({
+      Repo.Graph.initialize({
         userId: t.user.id,
         degreeId: t.degree.id,
         modulesPlacedCodes: [],
@@ -66,7 +66,7 @@ describe('Graph.toggleModules', () => {
     /**
      * execute the toggle
      */
-    await container(db, () => repo.Graph.toggleModule(t.graph, toggled))
+    await container(db, () => Repo.Graph.toggleModule(t.graph, toggled))
     /**
      * hidden list should have one less module
      */
@@ -85,7 +85,7 @@ describe('Graph.toggleModules', () => {
     /**
      * simple the inverse of the above
      */
-    await container(db, () => repo.Graph.toggleModule(t.graph, 'MA2001'))
+    await container(db, () => Repo.Graph.toggleModule(t.graph, 'MA2001'))
     expect(t.graph.modulesHidden.length).toEqual(t.moduleCodes.length)
     expect(t.graph.modulesPlaced.length).toEqual(0)
   })
@@ -94,7 +94,7 @@ describe('Graph.toggleModules', () => {
     expect.assertions(1)
     await container(db, () =>
       expect(() =>
-        repo.Graph.toggleModule(t.graph, Init.invalidModuleCode)
+        Repo.Graph.toggleModule(t.graph, Init.invalidModuleCode)
       ).rejects.toThrowError(Error('Module not found in Graph'))
     )
   })

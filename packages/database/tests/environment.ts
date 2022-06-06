@@ -21,7 +21,7 @@ type SetupOptions = {
   initialize: boolean
 }
 
-const repo: Repositories = {}
+const Repo: Repositories = {}
 /**
  * pre-test setup
  *
@@ -40,11 +40,11 @@ export async function setup(
    */
   const initializeRepositories = (): Promise<void> =>
     db.initialize().then(() => {
-      repo.User = getUserRepository(db)
-      repo.Degree = getDegreeRepository(db)
-      repo.Module = getModuleRepository(db)
-      repo.ModuleCondensed = getModuleCondensedRepository(db)
-      repo.Graph = getGraphRepository(db)
+      Repo.User = getUserRepository(db)
+      Repo.Degree = getDegreeRepository(db)
+      Repo.Module = getModuleRepository(db)
+      Repo.ModuleCondensed = getModuleCondensedRepository(db)
+      Repo.Graph = getGraphRepository(db)
     })
   return sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
@@ -125,4 +125,4 @@ type TestProps = {
 }
 
 export const t: Partial<TestProps> = {}
-export { repo }
+export { Repo }

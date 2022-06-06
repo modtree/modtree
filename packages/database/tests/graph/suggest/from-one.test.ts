@@ -1,6 +1,6 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
 import { Module } from '../../../src/entity'
-import { setup, teardown, repo, t } from '../../environment'
+import { setup, teardown, Repo, t } from '../../environment'
 import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
 import { oneUp } from '../../../src/utils'
@@ -32,12 +32,12 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        repo.User.initialize(userProps),
-        repo.Degree.initialize(degreeProps),
+        Repo.User.initialize(userProps),
+        Repo.Degree.initialize(degreeProps),
       ])
     )
     .then(([user, degree]) =>
-      repo.Graph.initialize({
+      Repo.Graph.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -65,7 +65,7 @@ describe('Graph.suggestModulesFromOne', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        repo.Graph.suggestModulesFromOne(t.graph, 'CS1010')
+        Repo.Graph.suggestModulesFromOne(t.graph, 'CS1010')
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -91,7 +91,7 @@ describe('Graph.suggestModulesFromOne', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
       const res = await endpoint(db, () =>
-        container(db, () => repo.Module.findOneBy({ moduleCode: 'CS1010' }))
+        container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
       )
       expect(res).toBeDefined()
       if (!res) return

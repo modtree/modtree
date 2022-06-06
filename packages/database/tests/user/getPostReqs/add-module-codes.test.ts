@@ -1,7 +1,7 @@
 import { container, getSource } from '../../../src/data-source'
 import { getModuleRepository, getUserRepository } from '../../../src/repository'
 import Init from '../../init'
-import { setup, teardown, repo, t } from '../../environment'
+import { setup, teardown, Repo, t } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -9,7 +9,7 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => repo.User.initialize(Init.emptyUser))
+    .then(() => Repo.User.initialize(Init.emptyUser))
     .then((user) => {
       t.user = user
     })

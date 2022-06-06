@@ -3,7 +3,7 @@ import { Module } from '../../../src/entity'
 import { getModuleRepository, getUserRepository } from '../../../src/repository'
 import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
-import { setup, teardown, t, repo } from '../../environment'
+import { setup, teardown, t, Repo } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -17,7 +17,7 @@ const userProps: InitProps['User'] = {
 
 beforeAll(() =>
   setup(db)
-    .then(() => repo.User.initialize(userProps))
+    .then(() => Repo.User.initialize(userProps))
     .then((user) => {
       t.user = user
     })
