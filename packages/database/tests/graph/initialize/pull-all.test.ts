@@ -29,16 +29,6 @@ beforeAll(() =>
     .then(([user, degree]) => {
       t.user = user
       t.degree = degree
-      return GraphRepository(db).initialize({
-        userId: user.id,
-        degreeId: degree.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: true,
-      })
-    })
-    .then((graph) => {
-      t.graph = graph
     })
 )
 afterAll(() => teardown(db))
@@ -78,7 +68,7 @@ describe('Graph.initialize', () => {
      * all these module codes should show up in the hidden codes
      */
     const hidden = t.graph.modulesHidden.map(Flatten.module)
-    expect(hidden.sort()).toEqual(t.moduleCodes.sort())
+    expect(hidden.sort()).toStrictEqual(t.moduleCodes.sort())
     expect(t.graph.modulesPlaced.length).toEqual(0)
   })
 })

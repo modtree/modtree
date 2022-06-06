@@ -72,7 +72,7 @@ const expected = [
   'CS2030S',
 ]
 
-describe('Graph.initialize', () => {
+describe('Graph.suggestModulesFromOne', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
@@ -85,7 +85,7 @@ describe('Graph.initialize', () => {
       })
       t.suggestedModulesCodes = res.map((one) => one.moduleCode)
       const copy = [...t.suggestedModulesCodes]
-      expect(copy.sort()).toEqual(expected.sort())
+      expect(copy.sort()).toStrictEqual(expected.sort())
     })
 
     it('In our current desired priority', async () => {

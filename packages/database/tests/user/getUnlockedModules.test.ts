@@ -9,26 +9,23 @@ import { oneUp } from '../../src/utils'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+const t: Partial<{ user: User }> = {}
 
-const t: Partial<{
-  user: User
-  props: InitProps.User
-}> = {
-  props: Init.emptyUser,
+const userProps: InitProps.User = {
+  ...Init.emptyUser,
+  modulesDone: ['CS1010']
 }
 
-it('Saves a user', async () => {
-  t.props.modulesDone.push('CS1010')
-  const res = await container(db, async () => {
-    await UserRepository(db).initialize(t.props)
-    return UserRepository(db).findOneByUsername(t.props.username)
-  })
-  expect(res).toBeDefined()
-  if (!res) return
-  t.user = res
-})
+beforeAll(() =>
+  setup(db)
+    .then(() =>
+      UserRepository(db).initialize(userProps),
+    )
+    .then((user) => {
+      t.user = user
+    })
+)
+afterAll(() => teardown(db))
 
 it('Correctly gets unlocked modules', async () => {
   // Get unlocked modules for CS2100
@@ -41,7 +38,7 @@ it('Correctly gets unlocked modules', async () => {
   const expected = ['CS2106', 'CS3210', 'CS3237']
   // Compare module codes
   const codes = modules.map((one: Module) => one.moduleCode)
-  expect(codes.sort()).toEqual(expected.sort())
+  expect(codes.sort()).toStrictEqual(expected.sort())
 })
 
 it('Does not modify User.modulesDone', async () => {
