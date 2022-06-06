@@ -72,7 +72,7 @@ const expected = [
   'CS2030S',
 ]
 
-describe('Graph.initialize', () => {
+describe('Graph.suggestModulesFromOne', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
