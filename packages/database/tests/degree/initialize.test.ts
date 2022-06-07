@@ -22,7 +22,7 @@ describe('Degree.initialize', () => {
     )
   })
 
-  it('Can find same degree (without relations)', async () => {
+  it('Can find same degree (with relations)', async () => {
     await container(db, () =>
       Repo.Degree.findOneByTitle(props.title).then((res) => {
         expect(res).toBeInstanceOf(Degree)

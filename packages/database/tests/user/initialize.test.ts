@@ -22,7 +22,8 @@ describe('User.initialize', () => {
       })
     )
   })
-  it('Can find same user (without relations)', async () => {
+
+  it('Can find same user (with relations)', async () => {
     expect.assertions(2)
     await container(db, () =>
       Repo.User.findOneByUsername(props.username).then((res) => {
