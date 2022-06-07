@@ -1,6 +1,6 @@
-import { ModuleCondensedRepository } from '../../repository/ModuleCondensed'
+import { getModuleCondensedRepository } from '../../repository/ModuleCondensed'
 import { container } from '../../data-source'
 import { db } from '../../config'
 import { analyze } from '../analyze'
 
-analyze(() => container(db, () => ModuleCondensedRepository(db).fetch()))
+analyze(() => container(db, () => getModuleCondensedRepository(db).fetch()))

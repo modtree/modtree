@@ -1,7 +1,6 @@
 import { oneUp } from '../../src/utils'
 import { container, getSource } from '../../src/data-source'
-import { ModuleCondensedRepository } from '../../src/repository'
-import { setup, teardown } from '../environment'
+import { Repo, setup, teardown } from '../environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -13,7 +12,7 @@ const lowerBound = 6000
 
 test('moduleCondensed.getCodes', async () => {
   const moduleList = await container(db, () =>
-    ModuleCondensedRepository(db).getCodes()
+    Repo.ModuleCondensed.getCodes()
   )
   expect(moduleList).toBeDefined()
   if (!moduleList) return

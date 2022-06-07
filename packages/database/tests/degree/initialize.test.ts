@@ -1,13 +1,11 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
-import { DegreeRepository } from '../../src/repository'
 import Init from '../init'
-import { setup, teardown } from '../environment'
+import { setup, teardown, Repo, t } from '../environment'
 import { Flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ degree: Degree }> = {}
 
 beforeAll(() => setup(db))
 afterAll(() => teardown(db))
@@ -17,23 +15,19 @@ describe('Degree.initialize', () => {
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () =>
-      DegreeRepository(db)
-        .initialize(props)
-        .then((res) => {
-          expect(res).toBeInstanceOf(Degree)
-          t.degree = res
-        })
+      Repo.Degree.initialize(props).then((res) => {
+        expect(res).toBeInstanceOf(Degree)
+        t.degree = res
+      })
     )
   })
 
   it('Can find same degree (without relations)', async () => {
     await container(db, () =>
-      DegreeRepository(db)
-        .findOneByTitle(props.title)
-        .then((res) => {
-          expect(res).toBeInstanceOf(Degree)
-          expect(res).toStrictEqual(t.degree)
-        })
+      Repo.Degree.findOneByTitle(props.title).then((res) => {
+        expect(res).toBeInstanceOf(Degree)
+        expect(res).toStrictEqual(t.degree)
+      })
     )
   })
 

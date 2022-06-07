@@ -1,8 +1,6 @@
 import { AxiosError } from 'axios'
 import Init from '../../init'
-import { server, Create } from '../environment'
-
-const t: Partial<{ degreeId: string }> = {}
+import { Create, server, t } from '../environment'
 
 beforeAll(() =>
   /**
@@ -28,7 +26,7 @@ test('It should delete created degree', async () => {
  * with status 404: User not found
  */
 test('It should reject bad id for deletion', async () => {
-  await expect(() => server.delete('degree/delete/invalid')).rejects.toThrowError(
-    new AxiosError('Request failed with status code 404')
-  )
+  await expect(() =>
+    server.delete('degree/delete/invalid')
+  ).rejects.toThrowError(new AxiosError('Request failed with status code 404'))
 })

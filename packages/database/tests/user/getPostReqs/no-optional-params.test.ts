@@ -1,20 +1,14 @@
 import { container, getSource } from '../../../src/data-source'
-import { Module, User } from '../../../src/entity'
-import { ModuleRepository, UserRepository } from '../../../src/repository'
-import type * as InitProps from '../../../types/init-props'
+import { Module } from '../../../src/entity'
+import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
-import { setup, teardown } from '../../environment'
+import { setup, teardown, t, Repo } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-const t: Partial<{
-  user: User
-  postReqsCodes: string[]
-}> = {}
-
-const userProps: InitProps.User = {
+const userProps: InitProps['User'] = {
   ...Init.emptyUser,
   modulesDone: ['MA2001'],
   modulesDoing: ['MA2101'],
@@ -22,9 +16,7 @@ const userProps: InitProps.User = {
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      UserRepository(db).initialize(userProps),
-    )
+    .then(() => Repo.User.initialize(userProps))
     .then((user) => {
       t.user = user
     })
@@ -35,7 +27,7 @@ it('Gets all post-reqs', async () => {
   // Get post reqs
   expect.assertions(3)
   await container(db, () =>
-    UserRepository(db)
+    Repo.User
       .getPostReqs(t.user)
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
@@ -43,7 +35,7 @@ it('Gets all post-reqs', async () => {
         return res
       })
       .then(() =>
-        ModuleRepository(db).findOneBy({
+        Repo.Module.findOneBy({
           moduleCode: 'MA2001',
         })
       )
@@ -62,17 +54,17 @@ it('Gets all post-reqs', async () => {
 it('Returns empty array for modules with empty string fulfillRequirements', async () => {
   // init new user with CP2106
   // CP2106 has empty string fulfillRequirements
-  const props: InitProps.User = Init.user1
+  const props: InitProps['User'] = Init.user1
   props.modulesDone = ['CP2106']
   const res = await container(db, async () => {
-    await UserRepository(db).initialize(props)
-    return UserRepository(db).findOneByUsername(props.username)
+    await Repo.User.initialize(props)
+    return Repo.User.findOneByUsername(props.username)
   })
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
   const postReqs = await container(db, () =>
-    UserRepository(db).getPostReqs(res)
+    Repo.User.getPostReqs(res)
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return

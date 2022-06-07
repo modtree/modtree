@@ -1,13 +1,11 @@
 import { container, getSource } from '../../src/data-source'
 import { User } from '../../src/entity'
-import { UserRepository } from '../../src/repository'
 import Init from '../init'
-import { setup, teardown } from '../environment'
+import { setup, teardown, Repo, t } from '../environment'
 import { oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ user: User }> = {}
 
 beforeAll(() => setup(db))
 afterAll(() => teardown(db))
@@ -18,7 +16,7 @@ describe('User.initialize', () => {
   it('Saves an empty user', async () => {
     expect.assertions(1)
     await container(db, () =>
-      UserRepository(db)
+      Repo.User
         .initialize(props)
         .then((res) => {
           expect(res).toBeInstanceOf(User)
@@ -29,7 +27,7 @@ describe('User.initialize', () => {
   it('Can find same user (without relations)', async () => {
     expect.assertions(2)
     await container(db, () =>
-      UserRepository(db)
+      Repo.User
         .findOneByUsername(props.username)
         .then((res) => {
           expect(res).toBeInstanceOf(User)

@@ -1,10 +1,8 @@
 import { AxiosError } from 'axios'
 import { Degree } from '../../../src/entity'
-import { Delete, server } from '../environment'
+import { Delete, server, t } from '../environment'
 import Init from '../../init'
 import { toBeUserResponse } from '../expect-extend'
-
-const t: Partial<{ degreeId: string }> = {}
 
 beforeAll(() => {
   expect.extend({ toBeUserResponse })

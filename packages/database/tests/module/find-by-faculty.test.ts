@@ -1,8 +1,7 @@
 import { container, getSource } from '../../src/data-source'
 import { Module } from '../../src/entity'
-import { ModuleRepository } from '../../src/repository'
 import { oneUp } from '../../src/utils'
-import { setup, teardown } from '../environment'
+import { setup, teardown, Repo } from '../environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -13,7 +12,7 @@ afterAll(() => teardown(db))
 describe('ModuleRepository.findByFaculty', () => {
   it('Valid faculty name', async () => {
     const res = await container(db, () =>
-      ModuleRepository(db).findByFaculty('Computing')
+      Repo.Module.findByFaculty('Computing')
     )
     if (!res) return
     expect(res).toBeInstanceOf(Array)
@@ -25,7 +24,7 @@ describe('ModuleRepository.findByFaculty', () => {
 
   it('Invalid faculty name', async () => {
     const res = await container(db, () =>
-      ModuleRepository(db).findByFaculty('ABCDEFGH')
+      Repo.Module.findByFaculty('ABCDEFGH')
     )
     if (!res) return
     expect(res).toBeInstanceOf(Array)

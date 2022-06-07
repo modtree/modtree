@@ -1,19 +1,35 @@
 import axios from 'axios'
 import { DataSource } from 'typeorm'
+import { InitProps } from '../../types/init-props'
 import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
-import { getDataSource, useDeleteAll } from './base'
-import type { ModuleCondensedRepository as Repository } from '../../types/repository'
+import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
+import { IModuleCondensedRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @returns {ModuleCondensedRepository}
  */
-export function ModuleCondensedRepository(database?: DataSource): Repository {
+export function getModuleCondensedRepository(
+  database?: DataSource
+): IModuleCondensedRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(ModuleCondensed)
   const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
+
+  /**
+   * initialize a Module Condensed
+   *
+   * @param {InitProps['ModuleCondensed']} props
+   * @returns {Promise<ModuleCondensed>}
+   */
+  async function initialize(
+    props: InitProps['ModuleCondensed']
+  ): Promise<ModuleCondensed> {
+    return BaseRepo.create(props)
+  }
 
   /**
    * get all module codes from the module table
@@ -54,9 +70,11 @@ export function ModuleCondensedRepository(database?: DataSource): Repository {
   }
 
   return BaseRepo.extend({
-    getCodes,
-    fetch,
-    pull,
+    initialize,
     deleteAll,
+    getCodes,
+    pull,
+    fetch,
+    findOneById,
   })
 }

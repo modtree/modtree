@@ -1,9 +1,6 @@
 import { AxiosError } from 'axios'
-
 import Init from '../../init'
-import { Create, Delete, server } from '../environment'
-
-const t: Partial<{ graphId: string; userId: string; degreeId: string }> = {}
+import { Create, Delete, server, t } from '../environment'
 
 beforeAll(() =>
   Promise.all([Create.User(Init.user2), Create.Degree(Init.degree1)])

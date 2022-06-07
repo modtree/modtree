@@ -1,11 +1,11 @@
 import { getSource } from '../../src/data-source'
 import { Module, ModuleCondensed, Degree, User, Graph } from '../../src/entity'
 import {
-  ModuleRepository,
-  ModuleCondensedRepository,
-  DegreeRepository,
-  UserRepository,
-  GraphRepository,
+  getModuleRepository,
+  getModuleCondensedRepository,
+  getDegreeRepository,
+  getUserRepository,
+  getGraphRepository,
 } from '../../src/repository'
 import { oneUp } from '../../src/utils'
 import { setup, teardown } from '../environment'
@@ -29,9 +29,9 @@ test('All entities are defined', () => {
 })
 
 test('All repositories are defined', async () => {
-  expect(ModuleRepository(db)).toBeDefined()
-  expect(ModuleCondensedRepository(db)).toBeDefined()
-  expect(DegreeRepository(db)).toBeDefined()
-  expect(UserRepository(db)).toBeDefined()
-  expect(GraphRepository(db)).toBeDefined()
+  expect(getModuleRepository(db)).toBeDefined()
+  expect(getModuleCondensedRepository(db)).toBeDefined()
+  expect(getDegreeRepository(db)).toBeDefined()
+  expect(getUserRepository(db)).toBeDefined()
+  expect(getGraphRepository(db)).toBeDefined()
 })

@@ -1,5 +1,5 @@
-import type { Module, ModuleCondensed, User, Degree, Graph } from '../entity'
-import type { ResponseProps } from '../../types/api-response'
+import { Module, ModuleCondensed, User, Degree, Graph } from '../entity'
+import { ResponseProps } from '../../types/api-response'
 
 /** flattens TypeORM entities */
 export class Flatten {

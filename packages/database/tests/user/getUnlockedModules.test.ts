@@ -1,26 +1,19 @@
 import { container, getSource } from '../../src/data-source'
-import { Module, User } from '../../src/entity'
-import { UserRepository } from '../../src/repository'
-import type * as InitProps from '../../types/init-props'
+import { InitProps } from '../../types/init-props'
 import Init from '../init'
-import { setup, teardown } from '../environment'
-import { oneUp } from '../../src/utils'
+import { setup, teardown, Repo, t } from '../environment'
+import { Flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-
-const t: Partial<{ user: User }> = {}
-
-const userProps: InitProps.User = {
+const userProps: InitProps['User'] = {
   ...Init.emptyUser,
-  modulesDone: ['CS1010']
+  modulesDone: ['CS1010'],
 }
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      UserRepository(db).initialize(userProps),
-    )
+    .then(() => Repo.User.initialize(userProps))
     .then((user) => {
       t.user = user
     })
@@ -30,32 +23,30 @@ afterAll(() => teardown(db))
 it('Correctly gets unlocked modules', async () => {
   // Get unlocked modules for CS2100
   const modules = await container(db, () =>
-    UserRepository(db).getUnlockedModules(t.user, 'CS2100')
+    Repo.User.getUnlockedModules(t.user, 'CS2100')
   )
   expect(modules).toBeDefined()
   if (!modules) return
   // Notice that this does not include all CS2100 post-reqs
   const expected = ['CS2106', 'CS3210', 'CS3237']
   // Compare module codes
-  const codes = modules.map((one: Module) => one.moduleCode)
+  const codes = modules.map(Flatten.module)
   expect(codes.sort()).toStrictEqual(expected.sort())
 })
 
 it('Does not modify User.modulesDone', async () => {
   // Also loads relations
-  const res = await container(db, async () =>
-    UserRepository(db).findOneById(t.user.id)
-  )
+  const res = await container(db, async () => Repo.User.findOneById(t.user.id))
   expect(res).toBeDefined()
   if (!res) return
-  const modulesDoneCodes = res.modulesDone.map((one) => one.moduleCode)
+  const modulesDoneCodes = res.modulesDone.map(Flatten.module)
   expect(modulesDoneCodes).toEqual(['CS1010'])
 })
 
 it('Returns empty array if module in User.modulesDone', async () => {
   // Get unlocked modules for CS1010, which is in User.modulesDone
   const modules = await container(db, () =>
-    UserRepository(db).getUnlockedModules(t.user, 'CS1010')
+    Repo.User.getUnlockedModules(t.user, 'CS1010')
   )
   expect(modules).toBeDefined()
   if (!modules) return

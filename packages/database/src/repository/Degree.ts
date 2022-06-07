@@ -1,31 +1,40 @@
 import { DataSource, In } from 'typeorm'
-import type * as InitProps from '../../types/init-props'
+import { InitProps } from '../../types/init-props'
 import { Degree } from '../entity/Degree'
-import { ModuleRepository } from './Module'
-import { getDataSource, getRelationNames } from './base'
+import { getModuleRepository } from './Module'
+import {
+  getDataSource,
+  getRelationNames,
+  useDeleteAll,
+  useFindOneByKey,
+} from './base'
 import { copy } from '../utils'
-import type { DegreeRepository as Repository } from '../../types/repository'
+import { IDegreeRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
  * @returns {DegreeRepository}
  */
-export function DegreeRepository(database?: DataSource): Repository {
+export function getDegreeRepository(database?: DataSource): IDegreeRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Degree)
+  const deleteAll = useDeleteAll(BaseRepo)
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
+  const findOneByTitle = useFindOneByKey(BaseRepo, 'title')
   const allRelations = getRelationNames(BaseRepo)
+  const [ModuleRepository] = [getModuleRepository(db)]
 
   /**
    * Adds a Degree to DB
    *
-   * @param {InitProps.Degree} props
+   * @param {InitProps['Degree']} props
    * @returns {Promise<Degree>}
    */
-  async function initialize(props: InitProps.Degree): Promise<Degree> {
+  async function initialize(props: InitProps['Degree']): Promise<Degree> {
     const { moduleCodes, title } = props
     const degree = BaseRepo.create({ title })
     // find modules required, to create many-to-many relation
-    const modules = await ModuleRepository(db).findByCodes(moduleCodes)
+    const modules = await ModuleRepository.findByCodes(moduleCodes)
     degree.modules = modules
     await BaseRepo.save(degree)
     return degree
@@ -40,42 +49,23 @@ export function DegreeRepository(database?: DataSource): Repository {
   async function insertModules(
     degree: Degree,
     moduleCodes: string[]
-  ): Promise<void> {
+  ): Promise<Degree> {
     // find modules to add
-    const newModules = await ModuleRepository(db).findBy({
-      moduleCode: In(moduleCodes),
-    })
-    // find modules part of current degree
-    copy(await DegreeRepository(db).findOneById(degree.id), degree)
-    // update the degree
-    degree.modules.push(...newModules)
-    const updatedDegree = await BaseRepo.save(degree)
-    // update the passed object
-    copy(updatedDegree, degree)
-  }
-
-  /**
-   * @param {string} title
-   * @returns {Promise<Degree>}
-   */
-  async function findOneByTitle(title: string): Promise<Degree> {
-    return BaseRepo.createQueryBuilder('degree')
-      .where('degree.title = :title', { title })
-      .leftJoinAndSelect('degree.modules', 'module')
-      .getOneOrFail()
-  }
-
-  /**
-   * Returns a Degree with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<Degree>}
-   */
-  async function findOneById(id: string): Promise<Degree> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
-      relations: allRelations,
-    })
+    return Promise.all([
+      ModuleRepository.findBy({
+        moduleCode: In(moduleCodes),
+      }),
+      findOneById(degree.id),
+    ])
+      .then(([newModules, loadedDegree]) => {
+        copy(loadedDegree, degree)
+        degree.modules.push(...newModules)
+        return BaseRepo.save(degree)
+      })
+      .then((updatedDegree) => {
+        copy(updatedDegree, degree)
+        return updatedDegree
+      })
   }
 
   /**
@@ -83,13 +73,12 @@ export function DegreeRepository(database?: DataSource): Repository {
    * @returns {Promise<Degree[]>}
    */
   async function findByIds(degreeIds: string[]): Promise<Degree[]> {
-    if (degreeIds.length === 0) {
-      return []
-    }
-    return BaseRepo.createQueryBuilder('degree')
-      .where('degree.id IN (:...degreeIds)', { degreeIds })
-      .leftJoinAndSelect('degree.modules', 'module')
-      .getMany()
+    return BaseRepo.find({
+      where: {
+        id: In(degreeIds),
+      },
+      relations: allRelations,
+    })
   }
 
   return BaseRepo.extend({
@@ -98,5 +87,6 @@ export function DegreeRepository(database?: DataSource): Repository {
     findOneByTitle,
     findOneById,
     findByIds,
+    deleteAll,
   })
 }

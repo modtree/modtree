@@ -1,29 +1,21 @@
 import { getSource } from '../../../src/data-source'
-import { Graph } from '../../../src/entity'
-import {
-  DegreeRepository,
-  GraphRepository,
-  UserRepository,
-} from '../../../src/repository'
 import { oneUp } from '../../../src/utils'
-import { setup, teardown } from '../../environment'
+import { setup, teardown, Repo, t } from '../../environment'
 import Init from '../../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-const t: Partial<{ graph: Graph }> = {}
-
 beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        UserRepository(db).initialize(Init.user1),
-        DegreeRepository(db).initialize(Init.degree1),
+        Repo.User.initialize(Init.user1),
+        Repo.Degree.initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) =>
-      GraphRepository(db).initialize({
+      Repo.Graph.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],

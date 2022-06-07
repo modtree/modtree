@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { copy, EmptyInit, Flatten } from '../utils'
 import { db } from '../config'
-import { DegreeRepository } from '../repository'
+import { getDegreeRepository } from '../repository'
 import { IDegreeController } from '../../types/controller'
 
 /** Degree API controller */
 export class DegreeController implements IDegreeController {
-  private degreeRepo = DegreeRepository(db)
+  private degreeRepo = getDegreeRepository(db)
 
   /**
    * creates a Degree

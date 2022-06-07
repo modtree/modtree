@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { copy, EmptyInit, Flatten } from '../utils'
 import { db } from '../config'
-import { GraphRepository } from '../repository'
+import { getGraphRepository } from '../repository'
 import { IGraphController } from '../../types/controller'
 
 /** Graph API controller */
 export class GraphController implements IGraphController {
-  private graphRepo = GraphRepository(db)
+  private graphRepo = getGraphRepository(db)
 
   /**
    * creates a Graph
@@ -34,7 +34,6 @@ export class GraphController implements IGraphController {
         res
           .status(400)
           .json({ message: 'invalid ids', requestKeys, requiredKeys })
-        
       })
   }
 
@@ -101,7 +100,6 @@ export class GraphController implements IGraphController {
       .then((results) => {
         const flat = results.map((graph) => Flatten.graph(graph))
         res.json(flat)
-        
       })
       .catch(() => {
         res.status(404).json({ message: 'Graphs not found' })

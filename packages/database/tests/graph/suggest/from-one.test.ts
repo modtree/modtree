@@ -1,25 +1,14 @@
 import { container, endpoint, getSource } from '../../../src/data-source'
-import { Module, Graph } from '../../../src/entity'
-import {
-  DegreeRepository,
-  GraphRepository,
-  ModuleRepository,
-  UserRepository,
-} from '../../../src/repository'
-import { setup, teardown } from '../../environment'
-import type * as InitProps from '../../../types/init-props'
+import { Module } from '../../../src/entity'
+import { setup, teardown, Repo, t } from '../../environment'
+import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
 import { oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{
-  graph: Graph
-  suggestedModulesCodes: string[]
-  postReqs: string[]
-}> = {}
 
-const degreeProps: InitProps.Degree = {
+const degreeProps: InitProps['Degree'] = {
   moduleCodes: [
     'CS1010',
     'CG2111A', // in modulesDone, should not suggest
@@ -33,7 +22,7 @@ const degreeProps: InitProps.Degree = {
   title: 'Custom Degree',
 }
 
-const userProps: InitProps.User = {
+const userProps: InitProps['User'] = {
   ...Init.emptyUser,
   modulesDone: ['CS1010', 'CG2111A'],
   modulesDoing: ['IT2002'],
@@ -43,12 +32,12 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        UserRepository(db).initialize(userProps),
-        DegreeRepository(db).initialize(degreeProps),
+        Repo.User.initialize(userProps),
+        Repo.Degree.initialize(degreeProps),
       ])
     )
     .then(([user, degree]) =>
-      GraphRepository(db).initialize({
+      Repo.Graph.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -76,7 +65,7 @@ describe('Graph.suggestModulesFromOne', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        GraphRepository(db).suggestModulesFromOne(t.graph, 'CS1010')
+        Repo.Graph.suggestModulesFromOne(t.graph, 'CS1010')
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -102,9 +91,7 @@ describe('Graph.suggestModulesFromOne', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
       const res = await endpoint(db, () =>
-        container(db, () =>
-          ModuleRepository(db).findOneBy({ moduleCode: 'CS1010' })
-        )
+        container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
       )
       expect(res).toBeDefined()
       if (!res) return

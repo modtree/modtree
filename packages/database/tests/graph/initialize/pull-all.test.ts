@@ -1,29 +1,18 @@
 import { Flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
-import { Degree, Graph, User } from '../../../src/entity'
-import {
-  DegreeRepository,
-  GraphRepository,
-  UserRepository,
-} from '../../../src/repository'
-import { setup, teardown } from '../../environment'
+import { Graph } from '../../../src/entity'
+import { setup, teardown, Repo, t } from '../../environment'
 import Init from '../../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{
-  degree: Degree
-  user: User
-  graph: Graph
-  moduleCodes: string[]
-}> = {}
 
 beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        UserRepository(db).initialize(Init.user1),
-        DegreeRepository(db).initialize(Init.degree1),
+        Repo.User.initialize(Init.user1),
+        Repo.Degree.initialize(Init.degree1),
       ])
     )
     .then(([user, degree]) => {
@@ -40,18 +29,16 @@ describe('Graph.initialize', () => {
      * initialize a test graph instance
      */
     await container(db, () =>
-      GraphRepository(db)
-        .initialize({
-          userId: t.user.id,
-          degreeId: t.degree.id,
-          modulesPlacedCodes: [],
-          modulesHiddenCodes: [],
-          pullAll: true,
-        })
-        .then((res) => {
-          expect(res).toBeInstanceOf(Graph)
-          t.graph = res
-        })
+      Repo.Graph.initialize({
+        userId: t.user.id,
+        degreeId: t.degree.id,
+        modulesPlacedCodes: [],
+        modulesHiddenCodes: [],
+        pullAll: true,
+      }).then((res) => {
+        expect(res).toBeInstanceOf(Graph)
+        t.graph = res
+      })
     )
   })
 
@@ -79,9 +66,7 @@ describe('Graph.toggleModules', () => {
     /**
      * execute the toggle
      */
-    await container(db, () =>
-      GraphRepository(db).toggleModule(t.graph, toggled)
-    )
+    await container(db, () => Repo.Graph.toggleModule(t.graph, toggled))
     /**
      * hidden list should have one less module
      */
@@ -100,9 +85,7 @@ describe('Graph.toggleModules', () => {
     /**
      * simple the inverse of the above
      */
-    await container(db, () =>
-      GraphRepository(db).toggleModule(t.graph, 'MA2001')
-    )
+    await container(db, () => Repo.Graph.toggleModule(t.graph, 'MA2001'))
     expect(t.graph.modulesHidden.length).toEqual(t.moduleCodes.length)
     expect(t.graph.modulesPlaced.length).toEqual(0)
   })
@@ -111,7 +94,7 @@ describe('Graph.toggleModules', () => {
     expect.assertions(1)
     await container(db, () =>
       expect(() =>
-        GraphRepository(db).toggleModule(t.graph, Init.invalidModuleCode)
+        Repo.Graph.toggleModule(t.graph, Init.invalidModuleCode)
       ).rejects.toThrowError(Error('Module not found in Graph'))
     )
   })

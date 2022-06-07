@@ -1,15 +1,20 @@
-import { DataSource, In, SelectQueryBuilder } from 'typeorm'
-import type * as InitProps from '../../types/init-props'
+import { DataSource, In } from 'typeorm'
+import { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
 import { Graph } from '../entity/Graph'
-import { ModuleRepository } from './Module'
-import { UserRepository } from './User'
-import { DegreeRepository } from './Degree'
+import { getModuleRepository } from './Module'
+import { getUserRepository } from './User'
+import { getDegreeRepository } from './Degree'
 import { Degree } from '../entity/Degree'
 import { User } from '../entity/User'
-import { getDataSource, getRelationNames } from './base'
+import {
+  getDataSource,
+  getRelationNames,
+  useDeleteAll,
+  useFindOneByKey,
+} from './base'
 import { quickpop, Flatten, copy } from '../utils'
-import type { GraphRepository as Repository } from '../../types/repository'
+import { IGraphRepository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
 
@@ -17,25 +22,32 @@ type ModuleState = 'placed' | 'hidden' | 'invalid'
  * @param {DataSource} database
  * @returns {GraphRepository}
  */
-export function GraphRepository(database?: DataSource): Repository {
+export function getGraphRepository(database?: DataSource): IGraphRepository {
   const db = getDataSource(database)
   const BaseRepo = db.getRepository(Graph)
+  const deleteAll = useDeleteAll(BaseRepo)
+  const findOneById = useFindOneByKey(BaseRepo, 'id')
   const allRelations = getRelationNames(BaseRepo)
+  const [ModuleRepository, DegreeRepository, UserRepository] = [
+    getModuleRepository(db),
+    getDegreeRepository(db),
+    getUserRepository(db),
+  ]
 
   /**
    * Adds a Graph to DB
    *
-   * @param {InitProps.Graph} props
+   * @param {InitProps['Graph']} props
    * @returns {Promise<Graph>}
    */
-  async function initialize(props: InitProps.Graph): Promise<Graph> {
+  async function initialize(props: InitProps['Graph']): Promise<Graph> {
     /**
      * retrieves the degree and user with relations, without blocking each
      * other.
      */
     async function getUserAndDegree(): Promise<[User, Degree]> {
-      const getUser = UserRepository(db).findOneById(props.userId)
-      const getDegree = DegreeRepository(db).findOneById(props.degreeId)
+      const getUser = UserRepository.findOneById(props.userId)
+      const getDegree = DegreeRepository.findOneById(props.degreeId)
       return Promise.all([getUser, getDegree])
     }
     const [user, degree] = await getUserAndDegree()
@@ -61,7 +73,7 @@ export function GraphRepository(database?: DataSource): Repository {
       const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
       return Promise.all(
         queryList.map((list) =>
-          ModuleRepository(db).findBy({
+          ModuleRepository.findBy({
             moduleCode: In(list),
           })
         )
@@ -90,7 +102,7 @@ export function GraphRepository(database?: DataSource): Repository {
     /**
      * retrieve a Graph from database given its id
      */
-    copy(await GraphRepository(db).findOneById(graph.id), graph)
+    copy(await findOneById(graph.id), graph)
     /**
      * find the index of the given moduleCode to toggle
      */
@@ -135,48 +147,25 @@ export function GraphRepository(database?: DataSource): Repository {
   }
 
   /**
-   * Returns a User with all relations loaded
-   *
-   * @param {string} id
-   * @returns {Promise<Graph>}
-   */
-  async function findOneById(id: string): Promise<Graph> {
-    return BaseRepo.findOneOrFail({
-      where: { id },
-      relations: allRelations,
-    })
-  }
-
-  /**
-   * preliminary function to build up bulk of this query
-   *
-   * @param {string} userId
-   * @param {string} degreeId
-   * @returns {SelectQueryBuilder<Graph>}
-   */
-  function queryByUserAndDegreeId(
-    userId: string,
-    degreeId: string
-  ): SelectQueryBuilder<Graph> {
-    return BaseRepo.createQueryBuilder('Graph')
-      .where('Graph.degree.id = :degreeId', { degreeId })
-      .andWhere('Graph.user.id = :userId', { userId })
-      .leftJoinAndSelect('Graph.user', 'user')
-      .leftJoinAndSelect('Graph.degree', 'degree')
-      .leftJoinAndSelect('Graph.modulesPlaced', 'placed')
-      .leftJoinAndSelect('Graph.modulesHidden', 'hidden')
-  }
-
-  /**
    * @param {string} userId
    * @param {string} degreeId
    * @returns {Promise<Graph>}
    */
-  async function findOneByUserAndDegreeId(
+  function findOneByUserAndDegreeId(
     userId: string,
     degreeId: string
   ): Promise<Graph> {
-    return queryByUserAndDegreeId(userId, degreeId).getOneOrFail()
+    return BaseRepo.findOneOrFail({
+      relations: allRelations,
+      where: {
+        user: {
+          id: userId,
+        },
+        degree: {
+          id: degreeId,
+        },
+      },
+    })
   }
 
   /**
@@ -188,7 +177,17 @@ export function GraphRepository(database?: DataSource): Repository {
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]> {
-    return queryByUserAndDegreeId(userId, degreeId).getManyAndCount()
+    return BaseRepo.findAndCount({
+      relations: allRelations,
+      where: {
+        user: {
+          id: userId,
+        },
+        degree: {
+          id: degreeId,
+        },
+      },
+    })
   }
 
   /**
@@ -204,11 +203,11 @@ export function GraphRepository(database?: DataSource): Repository {
     moduleCode: string
   ): Promise<Module[]> {
     // Load relations
-    copy(await GraphRepository(db).findOneById(graph.id), graph)
-    copy(await DegreeRepository(db).findOneById(graph.degree.id), graph.degree)
+    copy(await findOneById(graph.id), graph)
+    copy(await DegreeRepository.findOneById(graph.degree.id), graph.degree)
 
     // 1. Get all post-reqs for this mod
-    const module = await ModuleRepository(db).findOneBy({ moduleCode })
+    const module = await ModuleRepository.findOneBy({ moduleCode })
     const postReqs = module.fulfillRequirements
     if (postReqs.length === 0) {
       // deal with empty array gracefully
@@ -216,7 +215,7 @@ export function GraphRepository(database?: DataSource): Repository {
     }
 
     // 2. Filter for eligible modules
-    const allEligibleModules = await UserRepository(db).eligibleModules(
+    const allEligibleModules = await UserRepository.getEligibleModules(
       graph.user
     )
     if (!allEligibleModules) return [] // temp fix
@@ -228,7 +227,7 @@ export function GraphRepository(database?: DataSource): Repository {
     // -- get number of mods each filtered module unlocks
     const resolvedPromises = await Promise.all(
       filtered.map((one) =>
-        UserRepository(db).getUnlockedModules(graph.user, one.moduleCode)
+        UserRepository.getUnlockedModules(graph.user, one.moduleCode)
       )
     )
     const unlockedModuleCounts = resolvedPromises.map((one) =>
@@ -282,5 +281,6 @@ export function GraphRepository(database?: DataSource): Repository {
     findOneByUserAndDegreeId,
     findManyByUserAndDegreeId,
     suggestModulesFromOne,
+    deleteAll,
   })
 }

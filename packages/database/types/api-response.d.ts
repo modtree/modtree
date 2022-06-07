@@ -1,4 +1,4 @@
-import type {
+import {
   User as UserEntity,
   Degree as DegreeEntity,
   Graph as GraphEntity,

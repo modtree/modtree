@@ -49,6 +49,7 @@ module.exports = {
     '@typescript-eslint/no-loop-func': 0,
     'no-promise-executor-return': 0,
     'max-classes-per-file': 0,
+    '@typescript-eslint/no-use-before-define': 0,
     // jsdoc chill out pls
     'jsdoc/require-param-description': 0,
     'jsdoc/require-property-description': 0,

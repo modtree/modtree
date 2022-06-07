@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
 import { db } from '../config'
-import { DegreeRepository, UserRepository } from '../repository'
+import { getDegreeRepository, getUserRepository } from '../repository'
 import { EmptyInit, Flatten, copy } from '../utils'
-import type { IUserController } from '../../types/controller'
+import { IUserController } from '../../types/controller'
 
 /** User api controller */
 export class UserController implements IUserController {
-  private userRepo = UserRepository(db)
+  private userRepo = getUserRepository(db)
 
-  private degreeRepo = DegreeRepository(db)
+  private degreeRepo = getDegreeRepository(db)
 
   /**
    * creates a Degree

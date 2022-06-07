@@ -1,9 +1,7 @@
 import { Degree } from '../../../src/entity'
-import { Create, Delete, server } from '../environment'
+import { Create, Delete, server, t } from '../environment'
 import Init from '../../init'
 import { toBeUserResponse } from '../expect-extend'
-
-const t: Partial<{ degreeId1: string; degreeId2: string }> = {}
 
 beforeAll(async () => {
   expect.extend({ toBeUserResponse })
@@ -15,7 +13,9 @@ beforeAll(async () => {
     t.degreeId2 = degree2.id
   })
 })
-afterAll(() => Promise.all([Delete.Degree(t.degreeId1), Delete.Degree(t.degreeId2)]))
+afterAll(() =>
+  Promise.all([Delete.Degree(t.degreeId1), Delete.Degree(t.degreeId2)])
+)
 
 /**
  * list all degrees

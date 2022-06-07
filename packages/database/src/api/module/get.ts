@@ -1,6 +1,6 @@
-import { ModuleRepository } from '../../repository/Module'
+import { getModuleRepository } from '../../repository/Module'
 import { container } from '../../data-source'
 import { db } from '../../config'
 import { analyze } from '../analyze'
 
-analyze(() => container(db, () => ModuleRepository(db).get()))
+analyze(() => container(db, () => getModuleRepository(db).find()))

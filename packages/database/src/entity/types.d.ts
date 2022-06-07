@@ -4,8 +4,11 @@ import {
   SemesterData,
 } from '../../types/nusmods'
 
-export interface IUser {
+export type IBase = {
   id: string
+}
+
+export type IUser = IBase & {
   displayName: string
   username: string
   email: string
@@ -18,22 +21,19 @@ export interface IUser {
   savedGraphs: IGraph[]
 }
 
-export interface IDegree {
-  id: string
+export type IDegree = IBase & {
   title: string
   modules: IModule[]
 }
 
-export interface IGraph {
-  id: string
+export type IGraph = IBase & {
   user: IUser
   degree: IDegree
   modulesPlaced: IModule[]
   modulesHidden: IModule[]
 }
 
-export interface IModule {
-  id: string
+export type IModule = IBase & {
   acadYear: string
   moduleCode: string
   title: string
@@ -52,8 +52,7 @@ export interface IModule {
   workload: string | number[]
 }
 
-export interface IModuleCondensed {
-  id: string
+export type IModuleCondensed = IBase & {
   title: string
   moduleCode: string
   moduleLevel: number
