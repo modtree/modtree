@@ -20,18 +20,18 @@ export const get: MethodProps = {
       title: 'Programming Methodology',
       acadYear: '2021/2022',
       description:
-        'This module is a first course in linear algebra. Fundamental ' +
-        'concepts of linear algebra will be introduced and investigated in ' +
-        'the context of the Euclidean spaces R^n.  Proofs of results will ' +
-        'be presented in the concrete setting.  Students are expected to ' +
-        'acquire computational facilities and geometric intuition with ' +
-        'regard to vectors and matrices.  Some applications will be ' +
-        'presented. Major topics: Systems of linear equations, matrices, ' +
-        'determinants, Euclidean spaces, linear combinations and linear ' +
-        'span, subspaces, linear independence, bases and dimension, rank of ' +
-        'a matrix, inner products, eigenvalues and eigenvectors, ' +
-        'diagonalization, linear transformations between Euclidean spaces, ' +
-        'applications.',
+        'This module introduces the fundamental concepts of problem solving ' +
+        'by computing and programming using an imperative programming ' +
+        'language. It is the first and \nforemost introductory course to ' +
+        'computing and is equivalent to CS1010 and CS1010E Programming ' +
+        'Methodology. Topics covered include problem solving by computing, ' +
+        'writing pseudo-codes, basic problem formulation and problem ' +
+        'solving, program development, coding, testing and debugging, ' +
+        'fundamental programming constructs (variables, types, expressions, ' +
+        'assignments, functions, control structures, etc.), fundamental ' +
+        'data structures: arrays, strings and structures, simple file ' +
+        'processing, and basic recursion. This module is appropriate for ' +
+        'FoS students.',
       moduleCredit: 4,
       department: 'Computer Science',
       faculty: 'Computing',
