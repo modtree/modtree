@@ -42,6 +42,18 @@ describe('Graph.initialize', () => {
     )
   })
 
+  it('Can find same graph (excluding nested relations)', async () => {
+    expect.assertions(1)
+    await container(db, () =>
+      Repo.Graph.findOneById(t.graph.id).then((res) => {
+        expect(res).toBeInstanceOf(Graph)
+        // currently not strictly equal, because Graph.findOneById
+        // does not load nested relations, but Graph.initialize does
+        // expect(res).toStrictEqual(t.graph)
+      })
+    )
+  })
+
   it('Correctly populates modulesHidden', async () => {
     /**
      * with pull all set to true, it will take modules from
