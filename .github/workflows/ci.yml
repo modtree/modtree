@@ -6,6 +6,7 @@ on:
     types: [opened, reopened, synchronize]
   push:
     branches:
+      - graph
       - main
       - k
       - w
@@ -100,28 +101,26 @@ jobs:
     if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ubuntu-20.04
     steps:
-      - name: "Logs: project build"
-        run: echo ${{ needs.ci.outputs.project_build }}
-
-      - name: "Logs: database tests"
-        run: echo ${{ needs.ci.outputs.database_tests }}
-
-      - name: "Logs: server tests"
-        run: echo ${{ needs.ci.outputs.server_tests }}
+      - name: Overall status
+        run: |
+          echo "logs"
+          echo "───────────────────────────────────"
+          echo "project build:  ${{ needs.ci.outputs.project_build }}"
+          echo "database tests: ${{ needs.ci.outputs.database_tests }}"
+          echo "server tests:   ${{ needs.ci.outputs.server_tests }}"
+          echo "───────────────────────────────────"
 
       - name: Environment prep
         run: |
+          function emojize() {
+            [ "$2" = "success" ] && emoji="✅" || emoji="❌"
+            echo "$1=$emoji" >> $GITHUB_ENV
+          }
           echo "RUN_URL=https://github.com/modtree/modtree/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV; \
           echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV; \
-          [[ "${{ needs.ci.outputs.project_build }}" == "success" ]] \
-          && echo "PROJECT_BUILD=✅" >> $GITHUB_ENV \
-          || echo "PROJECT_BUILD=❌" >> $GITHUB_ENV; \
-          [[ "${{ needs.ci.outputs.database_tests }}" == "success" ]] \
-          && echo "DATABASE_TESTS=✅" >> $GITHUB_ENV \
-          || echo "DATABASE_TESTS=❌" >> $GITHUB_ENV;
-          [[ "${{ needs.ci.outputs.server_tests }}" == "success" ]] \
-          && echo "SERVER_TESTS=✅" >> $GITHUB_ENV \
-          || echo "SERVER_TESTS=❌" >> $GITHUB_ENV;
+          emojize PROJECT_BUILD ${{ needs.ci.outputs.project_build }}
+          emojize DATABASE_TESTS ${{ needs.ci.outputs.database_tests }}
+          emojize SERVER_TESTS ${{ needs.ci.outputs.server_tests }}
 
       - name: Send message
         uses: appleboy/telegram-action@master

@@ -27,6 +27,7 @@ const yarn = {
     test: {
       database: 'yarn test:database',
       server:
+        'yarn ci:restore && ' +
         'yarn start-server-and-test ' +
         "'yarn ci:dev' http://localhost:8080 'yarn test:server'",
       all: 'yarn ci:test:database && yarn ci:test:server',
