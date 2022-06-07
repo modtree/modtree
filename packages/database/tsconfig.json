@@ -13,6 +13,6 @@
     "types": ["@types/jest"],
     "typeRoots": ["./types"]
   },
-  "include": ["src", "tests", "types"],
+  "include": ["src", "tests", "types", "script.js"],
   "exclude": ["dist", "node_modules"]
 }

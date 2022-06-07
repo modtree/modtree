@@ -27,15 +27,15 @@ module.exports = {
     'import/resolver': {
       node: {
         extensions: ['.js', '.ts', '.d.ts'],
-        project: ['tsconfig.json', 'tsconfig.build.json'],
+        project: ['tsconfig.json'],
       },
       typescript: {
         alwaysTryTypes: true,
-        project: ['tsconfig.json', 'tsconfig.build.json'],
+        project: ['tsconfig.json'],
       },
     },
   },
-  ignorePatterns: ['src/migrations/*'],
+  ignorePatterns: ['src/migrations/*', 'scripts.js'],
   rules: {
     'no-useless-escape': 0, // some seemingly useless escapes are actually required
     'new-cap': 0,
