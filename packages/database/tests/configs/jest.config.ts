@@ -10,13 +10,9 @@ export const all: Config.InitialOptionsWithRootDir = {
   bail: 1,
   // clear mocks, calls, instances, contexts and results before every test
   clearMocks: true,
-  // postgres problems
-  maxConcurrency: 1,
-  maxWorkers: 1,
   // actual stuff
   preset: 'ts-jest',
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: ['environment.ts'],
   testSequencer: './tests/configs/sequencer.js',
 }
 
@@ -27,11 +23,7 @@ export const all: Config.InitialOptionsWithRootDir = {
 export const database: Config.InitialOptions = {
   ...all,
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: [
-    ...all.testPathIgnorePatterns,
-    'packages/database/tests/module/pull',
-    'packages/database/tests/server',
-  ],
+  testPathIgnorePatterns: ['pull', './tests/server'],
 }
 
 /**
@@ -48,32 +40,11 @@ export const pull: Config.InitialOptions = {
   testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
-const khang = ['user/degreeMethods']
-export const k: Config.InitialOptions = {
-  ...all,
-  testMatch: khang.map((x) => `**/tests/**/${x}.test.ts`),
-  silent: false,
-}
-
 const wTest = 'utils'
 export const w: Config.InitialOptions = {
   ...all,
   testMatch: [`**/tests/**/${wTest}.test.ts`],
   silent: false,
-}
-
-/**
- * a flexible config for running categorized tests
- *
- * @returns {any}
- */
-export function group(): any {
-  const args = process.argv
-  const s = args.indexOf('./tests/configs/group.ts')
-  return {
-    ...all,
-    testMatch: [`**/tests/${args[s + 1]}/**/*.test.ts`],
-  }
 }
 
 export default all
