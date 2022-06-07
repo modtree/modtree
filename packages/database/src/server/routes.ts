@@ -1,3 +1,4 @@
+import { ValidationChain } from 'express-validator'
 import {
   ModuleCondensedController,
   UserController,
@@ -11,9 +12,13 @@ type Route<T> = {
   action: keyof T
   route: string
   method: 'post' | 'put' | 'patch' | 'get' | 'delete'
+  validators: ValidationChain[]
 }
 
-type RouteWithController<T> = Route<T> & { controller: Class<T> }
+type RouteWithController<T> = Route<T> & {
+  controller: Class<T>
+  validators: ValidationChain[]
+}
 
 /**
  * a factory function that adds routes to an existing route list
@@ -37,11 +42,13 @@ const moduleCondensedRoutes: Route<ModuleCondensedController>[] = [
     action: 'list',
     route: '/modules/list',
     method: 'get',
+    validators: [],
   },
   {
     action: 'find',
     route: '/modules/find/:moduleCode',
     method: 'get',
+    validators: [],
   },
 ]
 
@@ -50,31 +57,37 @@ const userRoutes: Route<UserController>[] = [
     action: 'create',
     route: '/user/create',
     method: 'post',
+    validators: [],
   },
   {
     action: 'insertDegree',
     route: '/user/insert-degree/:userId',
     method: 'post',
+    validators: [],
   },
   {
     action: 'list',
     route: '/user/list',
     method: 'get',
+    validators: [],
   },
   {
     action: 'getFull',
     route: '/user/get-full/:userId',
     method: 'get',
+    validators: [],
   },
   {
     action: 'get',
     route: '/user/get/:userId',
     method: 'get',
+    validators: [],
   },
   {
     action: 'delete',
     route: '/user/delete/:userId',
     method: 'delete',
+    validators: [],
   },
 ]
 
@@ -83,21 +96,25 @@ const degreeRoutes: Route<DegreeController>[] = [
     action: 'create',
     route: '/degree/create',
     method: 'post',
+    validators: [],
   },
   {
     action: 'get',
     route: '/degree/get/:degreeId',
     method: 'get',
+    validators: [],
   },
   {
     action: 'delete',
     route: '/degree/delete/:degreeId',
     method: 'delete',
+    validators: [],
   },
   {
     action: 'list',
     route: '/degree/list',
     method: 'get',
+    validators: [],
   },
 ]
 
@@ -106,21 +123,25 @@ const graphRoutes: Route<GraphController>[] = [
     action: 'create',
     route: '/graph/create',
     method: 'post',
+    validators: [],
   },
   {
     action: 'get',
     route: '/graph/get/:graphId',
     method: 'get',
+    validators: [],
   },
   {
     action: 'delete',
     route: '/graph/delete/:graphId',
     method: 'delete',
+    validators: [],
   },
   {
     action: 'list',
     route: '/graph/list',
     method: 'get',
+    validators: [],
   },
 ]
 

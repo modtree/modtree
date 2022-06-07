@@ -1,6 +1,7 @@
 import cors, { CorsOptions } from 'cors'
 import express, { NextFunction, Request, Response } from 'express'
 import { Routes } from './routes'
+import { body } from 'express-validator'
 
 const corsOpts: CorsOptions = {
   origin: ['https://modtree.vercel.app', 'http://localhost:3000'],
@@ -14,6 +15,7 @@ app.use(express.json())
 Routes.forEach((route) => {
   app[route.method](
     route.route,
+    ...route.validators,
     (req: Request, res: Response, next: NextFunction) => {
       const result = new route.controller()[route.action](req, res, next)
       if (result instanceof Promise) {
