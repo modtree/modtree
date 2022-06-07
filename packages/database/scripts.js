@@ -87,10 +87,12 @@ const scripts = {
     m: 'ts-node ./src/api/sql/reset/module.ts',
     d: 'ts-node ./src/api/sql/reset/degree.ts',
   },
-  'typeorm:ds': 'typeorm-ts-node-esm -d ./src/config/index.ts',
-  mc: 'yarn typeorm:ds schema:log',
-  mg: 'yarn typeorm:ds migration:generate ./src/migrations/migration-name',
-  mr: 'yarn typeorm:ds migration:run',
+  'typeorm:js': 'typeorm-ts-node-esm -d ./src/config/index.ts',
+  migration: {
+    check: 'yarn typeorm:js schema:log',
+    generate: 'yarn typeorm:js migration:generate ./src/migrations/migration-name',
+    run: 'yarn typeorm:js migration:run',
+  },
   module: {
     'get-codes': 'ts-node ./src/api/module/get-codes.ts',
     get: 'ts-node ./src/api/module/get.ts',
