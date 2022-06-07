@@ -1,7 +1,6 @@
 import cors, { CorsOptions } from 'cors'
 import express, { NextFunction, Request, Response } from 'express'
 import { Routes } from './routes'
-import { body } from 'express-validator'
 
 const corsOpts: CorsOptions = {
   origin: ['https://modtree.vercel.app', 'http://localhost:3000'],

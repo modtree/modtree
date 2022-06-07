@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint --fix",
     "ci:build": "next lint && next build",
-    "build:db": "yarn --cwd ../../packages/database ci",
+    "build:db": "yarn --cwd ../../packages/database ci:build",
     "default:env": "cp .env.example .env.local"
   },
   "dependencies": {
