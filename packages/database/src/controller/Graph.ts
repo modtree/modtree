@@ -4,6 +4,7 @@ import { db } from '../config'
 import { getGraphRepository } from '../repository'
 import { IGraphController } from '../../types/controller'
 import { validationResult } from 'express-validator'
+import { validate } from './base'
 
 /** Graph API controller */
 export class GraphController implements IGraphController {
@@ -106,11 +107,7 @@ export class GraphController implements IGraphController {
    * @param {Response} res
    */
   async toggle(req: Request, res: Response) {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() })
-      return
-    }
+    if (!validate(req, res)) return
     const moduleCode = req.params.moduleCode
     console.log(moduleCode)
     res.json({ moduleCode })
