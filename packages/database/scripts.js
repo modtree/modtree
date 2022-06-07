@@ -53,6 +53,12 @@ const scripts = {
     group: 'yarn jest -c ./tests/configs/group.ts',
   },
   test: {
+    s: {
+      _: 'yarn tconf:group server',
+      u: 'yarn tconf:group server/user',
+      g: 'yarn tconf:group server/graph',
+      d: 'yarn tconf:group server/degree',
+    },
     _: 'yarn tconf:group',
     database: 'yarn tconf:database',
     ci: 'yarn test:database',
@@ -61,7 +67,6 @@ const scripts = {
     kd: 'yarn tconf:k --detectOpenHandles',
     w: 'yarn tconf:w',
     all: 'yarn tconf:all',
-    s: 'yarn tconf:server',
     d: 'yarn tconf:group degree',
     m: 'yarn tconf:group module',
     mc: 'yarn tconf:group module-condensed',
