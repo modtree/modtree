@@ -1,6 +1,5 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
-import { getUserRepository } from '../../../src/repository'
 import Init from '../../init'
 import { setup, teardown, Repo, t } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
@@ -16,7 +15,7 @@ it('Saves a user', async () => {
   const props = Init.emptyUser
   props.modulesDone.push('CS1101S')
   await container(db, () =>
-    getUserRepository(db)
+    Repo.User
       .initialize(props)
       .then((res) => {
         expect(res).toBeInstanceOf(User)

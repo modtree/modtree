@@ -1,8 +1,7 @@
 import { Flatten, oneUp } from '../../src/utils'
 import { container, getSource } from '../../src/data-source'
 import { ModuleCondensed } from '../../src/entity'
-import { getModuleCondensedRepository } from '../../src/repository'
-import { setup, teardown } from '../environment'
+import { setup, teardown, Repo } from '../environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -14,7 +13,7 @@ const lowerBound = 6000
 
 test('moduleCondensed.fetch', async () => {
   await container(db, () =>
-    getModuleCondensedRepository(db)
+    Repo.ModuleCondensed
       .fetch()
       .then((moduleList) => {
         expect(moduleList).toBeInstanceOf(Array)

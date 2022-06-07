@@ -1,5 +1,4 @@
 import { container, getSource } from '../../../src/data-source'
-import { getModuleRepository, getUserRepository } from '../../../src/repository'
 import Init from '../../init'
 import { setup, teardown, Repo, t } from '../../environment'
 import { Flatten, oneUp } from '../../../src/utils'
@@ -20,13 +19,13 @@ it('Gets all post-reqs', async () => {
   const addModuleCodes = ['MA2001']
   // Get post reqs
   const postReqs = await container(db, () =>
-    getUserRepository(db).getPostReqs(t.user, addModuleCodes)
+    Repo.User.getPostReqs(t.user, addModuleCodes)
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   // Get fulfillRequirements for MA2001
   const mod = await container(db, () =>
-    getModuleRepository(db).findOneBy({
+    Repo.Module.findOneBy({
       moduleCode: 'MA2001',
     })
   )
@@ -42,7 +41,7 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   const addModuleCodes = ['CP2106']
   // Get post reqs
   const postReqs = await container(db, () =>
-    getUserRepository(db).getPostReqs(t.user, addModuleCodes)
+    Repo.User.getPostReqs(t.user, addModuleCodes)
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return

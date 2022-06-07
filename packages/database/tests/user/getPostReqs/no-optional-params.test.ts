@@ -1,6 +1,5 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module } from '../../../src/entity'
-import { getModuleRepository, getUserRepository } from '../../../src/repository'
 import { InitProps } from '../../../types/init-props'
 import Init from '../../init'
 import { setup, teardown, t, Repo } from '../../environment'
@@ -28,7 +27,7 @@ it('Gets all post-reqs', async () => {
   // Get post reqs
   expect.assertions(3)
   await container(db, () =>
-    getUserRepository(db)
+    Repo.User
       .getPostReqs(t.user)
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
@@ -36,7 +35,7 @@ it('Gets all post-reqs', async () => {
         return res
       })
       .then(() =>
-        getModuleRepository(db).findOneBy({
+        Repo.Module.findOneBy({
           moduleCode: 'MA2001',
         })
       )
@@ -58,14 +57,14 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   const props: InitProps['User'] = Init.user1
   props.modulesDone = ['CP2106']
   const res = await container(db, async () => {
-    await getUserRepository(db).initialize(props)
-    return getUserRepository(db).findOneByUsername(props.username)
+    await Repo.User.initialize(props)
+    return Repo.User.findOneByUsername(props.username)
   })
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
   const postReqs = await container(db, () =>
-    getUserRepository(db).getPostReqs(res)
+    Repo.User.getPostReqs(res)
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return
