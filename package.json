@@ -18,7 +18,9 @@
     "setup": "yarn && yarn build:db && yarn default:env",
     "heroku-postbuild": "yarn build:db",
     "default:env": "turbo run default:env",
-    "version": "auto-changelog -p && git add --all"
+    "version": "auto-changelog -p && git add --all",
+    "prepare": "bash ./scripts.sh setup",
+    "i": "bash ./scripts.sh inverse"
   },
   "devDependencies": {
     "auto-changelog": "^2.4.0",
