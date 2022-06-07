@@ -160,11 +160,6 @@ const graphRoutes: Route<GraphController>[] = [
     route: '/graph/id/:graphId/toggle/:moduleCode',
     method: 'post',
     validators: [
-      param('graphId').custom(async (graphId) => {
-        return Repo.Graph.countBy({ id: graphId }).then((count) => {
-          if (count === 0) return Promise.reject('Graph id not found')
-        })
-      }),
       param('moduleCode')
         .custom(validModuleCode)
         .withMessage('must be a valid module code'),

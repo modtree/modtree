@@ -108,26 +108,12 @@ export class GraphController implements IGraphController {
   async toggle(req: Request, res: Response) {
     if (!validate(req, res)) return
     const { moduleCode, graphId } = req.params
-    this.graphRepo.findOneById(graphId).then((graph) => {
-      this.graphRepo.toggleModule(graph, moduleCode).then((graph) => {
-        res.json({ moduleCode, graph: flatten.graph(graph) })
+    this.graphRepo
+      .findOneById(graphId)
+      .then((graph) => this.graphRepo.toggleModule(graph, moduleCode))
+      .then((graph) => {
+        res.json(flatten.graph(graph))
       })
-    })
-    // this.graphRepo
-    //   .find({
-    //     relations: {
-    //       user: true,
-    //       degree: true,
-    //       modulesHidden: true,
-    //       modulesPlaced: true,
-    //     },
-    //   })
-    //   .then((results) => {
-    //     const flat = results.map((graph) => flatten.graph(graph))
-    //     res.json(flat)
-    //   })
-    //   .catch(() => {
-    //     res.status(404).json({ message: 'Graphs not found' })
-    //   })
+      .catch(() => res.status(500).json({ message: 'Unable to toggle module' }))
   }
 }

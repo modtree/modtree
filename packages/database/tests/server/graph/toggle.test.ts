@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { ResponseProps } from '../../../types/api-response'
 import { init } from '../../init'
 import { Create, Delete, server } from '../environment'
@@ -10,6 +11,8 @@ const t: Partial<{
   degreeId: string
   freshCode: string
   hiddenCode: string
+  placedCode: string
+  original: ResponseProps['Graph']
 }> = {}
 
 beforeAll(() =>
@@ -28,6 +31,7 @@ beforeAll(() =>
     )
     .then((graph) => {
       t.graphId = graph.id
+      t.original = graph
       t.graph = graph
     })
 )
@@ -37,8 +41,20 @@ afterAll(() =>
   )
 )
 
-describe('insert unseen module', () => {
+/**
+ * server should return 400 Bad Request on invalid ids
+ */
+test('reject unseen graph id', async () => {
+  const invalidId = 'yellow'
+  await expect(() =>
+    server.post(`graph/id/${invalidId}/toggle/${t.freshCode}`)
+  ).rejects.toThrowError(new AxiosError('Request failed with status code 400'))
+})
 
+/**
+ * unseen modules should be treated as new additions to the graph
+ */
+describe('insert unseen module', () => {
   /**
    * a module that isn't yet in the graph
    */
@@ -52,21 +68,21 @@ describe('insert unseen module', () => {
    * since the module isn't in the graph,
    * toggling it should add it to the placed list.
    */
-  it('should place this module down', async () => {
-    expect.assertions(1)
-    await server.post(`graph/id/${t.graphId}/toggle/${t.freshCode}`).then((res) => {
-      const graph: ResponseProps['Graph'] = res.data.graph
-      expect(graph.modulesPlaced).toStrictEqual([t.freshCode])
-    })
+  it('places this module', async () => {
+    await server
+      .post(`graph/id/${t.graphId}/toggle/${t.freshCode}`)
+      .then((res) => {
+        const graph: ResponseProps['Graph'] = res.data
+        expect(graph.modulesPlaced).toContain(t.freshCode)
+      })
   })
 })
 
-describe('toggle existing hidden', () => {
-
+describe('hidden -> placed', () => {
   /**
    * a module that is already in the list of modules hidden
    */
-  it('should be a hidden module', () => {
+  it('is a hidden module', () => {
     t.hiddenCode = 'MA2219'
     expect(t.graph.modulesPlaced).not.toContain(t.hiddenCode)
     expect(t.graph.modulesHidden).toContain(t.hiddenCode)
@@ -76,11 +92,40 @@ describe('toggle existing hidden', () => {
    * since the module isn't in the graph,
    * toggling it should add it to the placed list.
    */
-  it('should make the hidden module placed', async () => {
-    expect.assertions(1)
-    await server.post(`graph/id/${t.graphId}/toggle/${t.hiddenCode}`).then((res) => {
-      const graph: ResponseProps['Graph'] = res.data.graph
-      expect(graph.modulesPlaced.sort()).toStrictEqual([t.hiddenCode, t.freshCode].sort())
-    })
+  it('makes hidden -> placed', async () => {
+    await server
+      .post(`graph/id/${t.graphId}/toggle/${t.hiddenCode}`)
+      .then((res) => {
+        const graph: ResponseProps['Graph'] = res.data
+        const { modulesPlaced, modulesHidden } = graph
+        expect(modulesPlaced).toContain(t.hiddenCode)
+        expect(modulesHidden).not.toContain(t.hiddenCode)
+        t.graph = graph
+      })
+  })
+})
+
+describe('placed -> hidden', () => {
+  /**
+   * a module that is already in the list of modules placed
+   */
+  it('is a placed module', () => {
+    t.placedCode = t.freshCode
+    expect(t.graph.modulesPlaced).toContain(t.placedCode)
+    expect(t.graph.modulesHidden).not.toContain(t.placedCode)
+  })
+
+  /**
+   * toggling it should hide it
+   */
+  it('makes placed -> hidden', async () => {
+    await server
+      .post(`graph/id/${t.graphId}/toggle/${t.hiddenCode}`)
+      .then((res) => {
+        const graph: ResponseProps['Graph'] = res.data
+        const { modulesPlaced, modulesHidden } = graph
+        expect(modulesPlaced).not.toContain(t.hiddenCode)
+        expect(modulesHidden).toContain(t.hiddenCode)
+      })
   })
 })
