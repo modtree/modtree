@@ -13,7 +13,7 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from './base'
-import { quickpop, Flatten, copy } from '../utils'
+import { quickpop, flatten, copy } from '../utils'
 import { IGraphRepository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'invalid'
@@ -107,8 +107,8 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: graph.modulesPlaced.map(Flatten.module).indexOf(moduleCode),
-      hidden: graph.modulesHidden.map(Flatten.module).indexOf(moduleCode),
+      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
+      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
       invalid: -1,
     }
     /**

@@ -1,14 +1,14 @@
 import { container, getSource } from '../../../src/data-source'
-import Init from '../../init'
+import { init } from '../../init'
 import { setup, teardown, Repo, t } from '../../environment'
-import { Flatten, oneUp } from '../../../src/utils'
+import { flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => Repo.User.initialize(Init.emptyUser))
+    .then(() => Repo.User.initialize(init.emptyUser))
     .then((user) => {
       t.user = user
     })
@@ -32,7 +32,7 @@ it('Gets all post-reqs', async () => {
   expect(mod).toBeDefined()
   if (!mod) return
   // Compare module codes
-  t.postReqsCodes = postReqs.map(Flatten.module)
+  t.postReqsCodes = postReqs.map(flatten.module)
   expect(t.postReqsCodes.sort()).toStrictEqual(mod.fulfillRequirements.sort())
 })
 

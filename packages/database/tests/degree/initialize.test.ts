@@ -1,8 +1,8 @@
 import { container, getSource } from '../../src/data-source'
 import { Degree } from '../../src/entity'
-import Init from '../init'
+import { init } from '../init'
 import { setup, teardown, Repo, t } from '../environment'
-import { Flatten, oneUp } from '../../src/utils'
+import { flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -11,7 +11,7 @@ beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 describe('Degree.initialize', () => {
-  const props = Init.degree1
+  const props = init.degree1
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () =>
@@ -32,7 +32,7 @@ describe('Degree.initialize', () => {
   })
 
   it('Correctly saves modules', async () => {
-    const moduleCodes = t.degree.modules.map(Flatten.module)
+    const moduleCodes = t.degree.modules.map(flatten.module)
     // match relation's module codes to init props' modules codes
     expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
   })

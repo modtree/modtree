@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
 import { User } from '../../../src/entity'
 import { Delete, server, t } from '../environment'
-import Init from '../../init'
+import { init } from '../../init'
 
 afterAll(() => Delete.User(t.userId))
 
@@ -9,7 +9,7 @@ afterAll(() => Delete.User(t.userId))
  * create a user
  */
 test('It should create a user', async () => {
-  await server.post('user/create', Init.user2).then((res) => {
+  await server.post('user/create', init.user2).then((res) => {
     const user: User = res.data
     expect(typeof user.id).toBe('string')
     expect(user.id.length).toBeGreaterThan(0)
@@ -24,7 +24,7 @@ test('It should create a user', async () => {
 test('It should reject a user creation on insufficient keys', async () => {
   await expect(() =>
     server.post('user/create', {
-      ...Init.user2,
+      ...init.user2,
       email: undefined,
     })
   ).rejects.toThrowError(new AxiosError('Request failed with status code 400'))

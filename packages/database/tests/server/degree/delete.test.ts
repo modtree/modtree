@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import Init from '../../init'
+import { init } from '../../init'
 import { Create, server, t } from '../environment'
 
 beforeAll(() =>
@@ -7,7 +7,7 @@ beforeAll(() =>
    * note that this mockup contains its own checks too
    * apart from just calling the server endpoint
    */
-  Create.Degree(Init.degree1).then((degree) => {
+  Create.Degree(init.degree1).then((degree) => {
     t.degreeId = degree.id
   })
 )

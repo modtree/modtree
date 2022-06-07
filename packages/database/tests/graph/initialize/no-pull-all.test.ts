@@ -1,7 +1,7 @@
 import { getSource } from '../../../src/data-source'
 import { oneUp } from '../../../src/utils'
 import { setup, teardown, Repo, t } from '../../environment'
-import Init from '../../init'
+import { init } from '../../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -10,8 +10,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User.initialize(Init.user1),
-        Repo.Degree.initialize(Init.degree1),
+        Repo.User.initialize(init.user1),
+        Repo.Degree.initialize(init.degree1),
       ])
     )
     .then(([user, degree]) =>

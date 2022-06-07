@@ -1,6 +1,6 @@
 import { container, getSource } from '../../../src/data-source'
 import { InitProps } from '../../../types/init-props'
-import Init from '../../init'
+import { init } from '../../init'
 import { setup, teardown, Repo, t } from '../../environment'
 import { oneUp } from '../../../src/utils'
 
@@ -8,7 +8,7 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 const userProps: InitProps['User'] = {
-  ...Init.emptyUser,
+  ...init.emptyUser,
   modulesDone: ['MA2001'],
   modulesDoing: ['MA2219'],
 }
@@ -50,7 +50,7 @@ it('Returns false for modules taken before/currently', async () => {
 it('Returns false if module code passed in does not exist', async () => {
   expect.assertions(1)
   await container(db, () =>
-    Repo.User.canTakeModule(t.user, Init.invalidModuleCode).then((res) => {
+    Repo.User.canTakeModule(t.user, init.invalidModuleCode).then((res) => {
       expect(res).toStrictEqual(false)
     })
   )

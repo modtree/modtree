@@ -2,7 +2,7 @@ import { container, endpoint, getSource } from '../../../src/data-source'
 import { Module } from '../../../src/entity'
 import { setup, teardown, Repo, t } from '../../environment'
 import { InitProps } from '../../../types/init-props'
-import Init from '../../init'
+import { init } from '../../init'
 import { oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
@@ -23,7 +23,7 @@ const degreeProps: InitProps['Degree'] = {
 }
 
 const userProps: InitProps['User'] = {
-  ...Init.emptyUser,
+  ...init.emptyUser,
   modulesDone: ['CS1010', 'CG2111A'],
   modulesDoing: ['IT2002'],
 }

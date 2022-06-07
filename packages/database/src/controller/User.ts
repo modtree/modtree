@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { db } from '../config'
 import { getDegreeRepository, getUserRepository } from '../repository'
-import { EmptyInit, Flatten, copy } from '../utils'
+import { emptyInit, flatten, copy } from '../utils'
 import { IUserController } from '../../types/controller'
 
 /** User api controller */
@@ -17,7 +17,7 @@ export class UserController implements IUserController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props = EmptyInit.User
+    const props = emptyInit.User
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
@@ -69,7 +69,7 @@ export class UserController implements IUserController {
     this.userRepo
       .findOneById(req.params.userId)
       .then((user) => {
-        res.json(Flatten.user(user))
+        res.json(flatten.user(user))
       })
       .catch(() => {
         res.status(404).json({ message: 'User not found' })
@@ -117,7 +117,7 @@ export class UserController implements IUserController {
         savedGraphs: true,
       },
     })
-    const flat = users.map((u) => Flatten.user(u))
+    const flat = users.map((u) => flatten.user(u))
     res.json(flat)
   }
 

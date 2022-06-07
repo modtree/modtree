@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios'
 import { Graph } from '../../../src/entity'
 import { Create, Delete, server, t } from '../environment'
-import Init from '../../init'
+import { init } from '../../init'
 
 beforeAll(() =>
-  Promise.all([Create.User(Init.user2), Create.Degree(Init.degree1)]).then(
+  Promise.all([Create.User(init.user2), Create.Degree(init.degree1)]).then(
     ([user, degree]) => {
       t.userId = user.id
       t.degreeId = degree.id
@@ -23,7 +23,7 @@ afterAll(() =>
 test('It should create a graph', async () => {
   await server
     .post('graph/create', {
-      ...Init.graph1,
+      ...init.graph1,
       userId: t.userId,
       degreeId: t.degreeId,
     })
@@ -42,7 +42,7 @@ test('It should create a graph', async () => {
 test('It should reject a graph creation on insufficient keys', async () => {
   await expect(() =>
     server.post('graph/create', {
-      ...Init.graph1,
+      ...init.graph1,
       moduleCodes: undefined,
     })
   ).rejects.toThrowError(new AxiosError('Request failed with status code 400'))

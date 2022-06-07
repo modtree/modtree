@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { DataSource, In } from 'typeorm'
 import { log } from '../cli'
-import { nusmodsApi, Flatten } from '../utils'
+import { nusmodsApi, flatten } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
@@ -43,7 +43,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @returns {Promise<string[]>}
    */
   async function getCodes(): Promise<string[]> {
-    return BaseRepo.find().then((res) => res.map(Flatten.module))
+    return BaseRepo.find().then((res) => res.map(flatten.module))
   }
 
   /**

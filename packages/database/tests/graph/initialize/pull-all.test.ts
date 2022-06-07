@@ -1,8 +1,8 @@
-import { Flatten, oneUp } from '../../../src/utils'
+import { flatten, oneUp } from '../../../src/utils'
 import { container, getSource } from '../../../src/data-source'
 import { Graph } from '../../../src/entity'
 import { setup, teardown, Repo, t } from '../../environment'
-import Init from '../../init'
+import { init } from '../../init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -11,8 +11,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User.initialize(Init.user1),
-        Repo.Degree.initialize(Init.degree1),
+        Repo.User.initialize(init.user1),
+        Repo.Degree.initialize(init.degree1),
       ])
     )
     .then(([user, degree]) => {
@@ -47,14 +47,14 @@ describe('Graph.initialize', () => {
      * with pull all set to true, it will take modules from
      * both the degree and the user
      */
-    const all = t.degree.modules.map(Flatten.module)
-    all.push(...t.user.modulesDone.map(Flatten.module))
-    all.push(...t.user.modulesDoing.map(Flatten.module))
+    const all = t.degree.modules.map(flatten.module)
+    all.push(...t.user.modulesDone.map(flatten.module))
+    all.push(...t.user.modulesDoing.map(flatten.module))
     t.moduleCodes = Array.from(new Set(all))
     /**
      * all these module codes should show up in the hidden codes
      */
-    const hidden = t.graph.modulesHidden.map(Flatten.module)
+    const hidden = t.graph.modulesHidden.map(flatten.module)
     expect(hidden.sort()).toStrictEqual(t.moduleCodes.sort())
     expect(t.graph.modulesPlaced.length).toEqual(0)
   })
@@ -94,7 +94,7 @@ describe('Graph.toggleModules', () => {
     expect.assertions(1)
     await container(db, () =>
       expect(() =>
-        Repo.Graph.toggleModule(t.graph, Init.invalidModuleCode)
+        Repo.Graph.toggleModule(t.graph, init.invalidModuleCode)
       ).rejects.toThrowError(Error('Module not found in Graph'))
     )
   })

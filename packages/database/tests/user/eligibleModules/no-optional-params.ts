@@ -1,8 +1,8 @@
 import { container, getSource } from '../../../src/data-source'
 import { User } from '../../../src/entity'
-import Init from '../../init'
+import { init } from '../../init'
 import { setup, teardown, Repo, t } from '../../environment'
-import { Flatten, oneUp } from '../../../src/utils'
+import { flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -12,7 +12,7 @@ afterAll(() => teardown(db))
 
 it('Saves a user', async () => {
   expect.assertions(1)
-  const props = Init.emptyUser
+  const props = init.emptyUser
   props.modulesDone.push('CS1101S')
   await container(db, () =>
     Repo.User
@@ -34,7 +34,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
       /**
        * Compare module codes
        */
-      const eligibleModuleCodes = eligibleModules.map(Flatten.module)
+      const eligibleModuleCodes = eligibleModules.map(flatten.module)
       expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
     })
   )

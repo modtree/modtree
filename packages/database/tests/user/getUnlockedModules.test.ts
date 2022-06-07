@@ -1,13 +1,13 @@
 import { container, getSource } from '../../src/data-source'
 import { InitProps } from '../../types/init-props'
-import Init from '../init'
+import { init } from '../init'
 import { setup, teardown, Repo, t } from '../environment'
-import { Flatten, oneUp } from '../../src/utils'
+import { flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const userProps: InitProps['User'] = {
-  ...Init.emptyUser,
+  ...init.emptyUser,
   modulesDone: ['CS1010'],
 }
 
@@ -30,7 +30,7 @@ it('Correctly gets unlocked modules', async () => {
   // Notice that this does not include all CS2100 post-reqs
   const expected = ['CS2106', 'CS3210', 'CS3237']
   // Compare module codes
-  const codes = modules.map(Flatten.module)
+  const codes = modules.map(flatten.module)
   expect(codes.sort()).toStrictEqual(expected.sort())
 })
 
@@ -39,7 +39,7 @@ it('Does not modify User.modulesDone', async () => {
   const res = await container(db, async () => Repo.User.findOneById(t.user.id))
   expect(res).toBeDefined()
   if (!res) return
-  const modulesDoneCodes = res.modulesDone.map(Flatten.module)
+  const modulesDoneCodes = res.modulesDone.map(flatten.module)
   expect(modulesDoneCodes).toEqual(['CS1010'])
 })
 

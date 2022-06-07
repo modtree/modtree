@@ -1,17 +1,17 @@
 import { container, getSource } from '../../src/data-source'
-import Init from '../init'
+import { init } from '../init'
 import { setup, teardown, Repo, t } from '../environment'
-import { Flatten, oneUp } from '../../src/utils'
+import { flatten, oneUp } from '../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => Repo.Degree.initialize(Init.degree1))
+    .then(() => Repo.Degree.initialize(init.degree1))
     .then((degree) => {
       t.degree = degree
-      t.combinedModuleCodes = degree.modules.map(Flatten.module)
+      t.combinedModuleCodes = degree.modules.map(flatten.module)
     })
 )
 afterAll(() => teardown(db))
@@ -25,24 +25,24 @@ describe('Degree.insertModules', () => {
     )
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = t.degree.modules.map(Flatten.module)
+    const moduleCodes = t.degree.modules.map(flatten.module)
     expect(moduleCodes.sort()).toStrictEqual(t.combinedModuleCodes.sort())
   })
 })
 
 describe('Degree.insertModules with invalid module code', () => {
   it('Does not add new modules if all module codes are invalid', async () => {
-    const newModuleCodes = [Init.invalidModuleCode]
+    const newModuleCodes = [init.invalidModuleCode]
     await container(db, () =>
       Repo.Degree.insertModules(t.degree, newModuleCodes)
     )
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = t.degree.modules.map(Flatten.module)
+    const moduleCodes = t.degree.modules.map(flatten.module)
     expect(moduleCodes.sort()).toStrictEqual(t.combinedModuleCodes.sort())
   })
   it('Adds some new modules if there is a mix of valid and invalid module codes', async () => {
-    const newModuleCodes = [Init.invalidModuleCode, 'CS4269']
+    const newModuleCodes = [init.invalidModuleCode, 'CS4269']
     await container(db, () =>
       Repo.Degree.insertModules(t.degree, newModuleCodes)
     )
@@ -50,7 +50,7 @@ describe('Degree.insertModules with invalid module code', () => {
     t.combinedModuleCodes.push('CS4269')
     // match retrieved module codes to
     // init props' module codes + added module codes
-    const moduleCodes = t.degree.modules.map(Flatten.module)
+    const moduleCodes = t.degree.modules.map(flatten.module)
     expect(moduleCodes.sort()).toStrictEqual(t.combinedModuleCodes.sort())
   })
 })

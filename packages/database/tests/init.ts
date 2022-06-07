@@ -1,10 +1,22 @@
 import { InitProps } from '../types/init-props'
 
+type Init = {
+  degree1: InitProps['Degree']
+  degree2: InitProps['Degree']
+  user1: InitProps['User']
+  user2: InitProps['User']
+  user3: InitProps['User']
+  emptyUser: InitProps['User']
+  graph1: InitProps['Graph']
+  invalidUUID: string
+  invalidModuleCode: string
+}
+
 /**
  * fake data for test cases
  */
-export default class Init {
-  static degree1: InitProps['Degree'] = {
+export const init: Init = {
+  degree1: {
     moduleCodes: [
       'CS1101S',
       'CS1231S',
@@ -17,9 +29,9 @@ export default class Init {
       'CS3230',
     ],
     title: 'Computer Science',
-  }
+  },
 
-  static degree2: InitProps['Degree'] = {
+  degree2: {
     moduleCodes: [
       'MA1100',
       'MA2001',
@@ -32,9 +44,9 @@ export default class Init {
       'MA2202',
     ],
     title: 'Mathematics',
-  }
+  },
 
-  static user1: InitProps['User'] = {
+  user1: {
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
     email: 'khang@modtree.com',
@@ -43,9 +55,9 @@ export default class Init {
     matriculationYear: 2021,
     graduationYear: 2025,
     graduationSemester: 2,
-  }
+  },
 
-  static user2: InitProps['User'] = {
+  user2: {
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
     email: 'khang@modtree.com',
@@ -69,9 +81,9 @@ export default class Init {
     matriculationYear: 2021,
     graduationYear: 2024,
     graduationSemester: 2,
-  }
+  },
 
-  static user3: InitProps['User'] = {
+  user3: {
     displayName: 'Tan Wei Seng',
     username: 'tanweiseng',
     email: 'weiseng@modtree.com',
@@ -95,17 +107,17 @@ export default class Init {
     matriculationYear: 2021,
     graduationYear: 2024,
     graduationSemester: 2,
-  }
+  },
 
-  static graph1: InitProps['Graph'] = {
+  graph1: {
     userId: '',
     degreeId: '',
     modulesPlacedCodes: [],
     modulesHiddenCodes: [],
     pullAll: true,
-  }
+  },
 
-  static emptyUser: InitProps['User'] = {
+  emptyUser: {
     displayName: 'Khang Vu Nguyen',
     username: 'definitelynotkhang',
     email: 'user@modtree.com',
@@ -114,9 +126,9 @@ export default class Init {
     matriculationYear: 2021,
     graduationYear: 2025,
     graduationSemester: 2,
-  }
+  },
 
-  static invalidModuleCode = 'XXYYZZ'
+  invalidModuleCode: 'XXYYZZ',
 
-  static invalidUUID = 'invalid-uuid'
+  invalidUUID: 'invalid-uuid',
 }

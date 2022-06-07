@@ -5,7 +5,7 @@ import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { getModuleRepository } from './Module'
 import { getDegreeRepository } from './Degree'
-import { Utils, Flatten, copy } from '../utils'
+import { utils, flatten, copy } from '../utils'
 import {
   getDataSource,
   getRelationNames,
@@ -78,8 +78,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     // 2. load modulesDone and modulesDoing relations
     copy(await findOneById(user.id), user)
     // -- if module already taken, can't take module again
-    const modulesDoneCodes = user.modulesDone.map(Flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(Flatten.module)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     // -- add some module codes to done modules
     if (addedModuleCodes && addedModuleCodes.length > 0) {
       addedModuleCodes.forEach((one) => {
@@ -99,7 +99,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
       return false
     }
     // 3. check if PrereqTree is fulfilled
-    return Utils.checkTree(module.prereqTree, modulesDoneCodes)
+    return utils.checkTree(module.prereqTree, modulesDoneCodes)
   }
   /**
    * List mods a user can take, based on what the user has completed.
@@ -179,8 +179,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
     // 3. filter modulesDone and modulesDoing
-    const modulesDoneCodes = user.modulesDone.map(Flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(Flatten.module)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     const filtered = postReqCodesArr.filter(
       (one) =>
         !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
@@ -216,7 +216,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     // 2. Get current eligible modules
     const eligibleModules = await getEligibleModules(user)
     if (!eligibleModules) return []
-    const eligibleModulesCodes = eligibleModules.map(Flatten.module)
+    const eligibleModulesCodes = eligibleModules.map(flatten.module)
     // 3. Get unlocked eligible modules
     const unlockedModules = await getEligibleModules(user, addedModuleCodes)
     if (!unlockedModules) {

@@ -1,15 +1,15 @@
 import { container, getSource } from '../../../src/data-source'
 import { Module } from '../../../src/entity'
 import { InitProps } from '../../../types/init-props'
-import Init from '../../init'
+import { init } from '../../init'
 import { setup, teardown, t, Repo } from '../../environment'
-import { Flatten, oneUp } from '../../../src/utils'
+import { flatten, oneUp } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 const userProps: InitProps['User'] = {
-  ...Init.emptyUser,
+  ...init.emptyUser,
   modulesDone: ['MA2001'],
   modulesDoing: ['MA2101'],
 }
@@ -31,7 +31,7 @@ it('Gets all post-reqs', async () => {
       .getPostReqs(t.user)
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
-        t.postReqsCodes = res.map(Flatten.module)
+        t.postReqsCodes = res.map(flatten.module)
         return res
       })
       .then(() =>
@@ -54,7 +54,7 @@ it('Gets all post-reqs', async () => {
 it('Returns empty array for modules with empty string fulfillRequirements', async () => {
   // init new user with CP2106
   // CP2106 has empty string fulfillRequirements
-  const props: InitProps['User'] = Init.user1
+  const props: InitProps['User'] = init.user1
   props.modulesDone = ['CP2106']
   const res = await container(db, async () => {
     await Repo.User.initialize(props)

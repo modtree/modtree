@@ -1,13 +1,13 @@
 import { Degree } from '../../../src/entity'
 import { Create, Delete, server, t } from '../environment'
-import Init from '../../init'
+import { init } from '../../init'
 import { toBeUserResponse } from '../expect-extend'
 
 beforeAll(async () => {
   expect.extend({ toBeUserResponse })
   return Promise.all([
-    Create.Degree(Init.degree1),
-    Create.Degree(Init.degree2),
+    Create.Degree(init.degree1),
+    Create.Degree(init.degree2),
   ]).then(([degree1, degree2]) => {
     t.degreeId1 = degree1.id
     t.degreeId2 = degree2.id

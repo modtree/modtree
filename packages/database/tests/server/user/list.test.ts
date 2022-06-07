@@ -1,11 +1,11 @@
 import { User } from '../../../src/entity'
 import { Create, Delete, server, t } from '../environment'
-import Init from '../../init'
+import { init } from '../../init'
 import { toBeUserResponse } from '../expect-extend'
 
 beforeAll(async () => {
   expect.extend({ toBeUserResponse })
-  return Promise.all([Create.User(Init.user2), Create.User(Init.user3)]).then(
+  return Promise.all([Create.User(init.user2), Create.User(init.user3)]).then(
     ([user1, user2]) => {
       t.userId1 = user1.id
       t.userId2 = user2.id
