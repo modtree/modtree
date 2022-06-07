@@ -6,6 +6,10 @@ import { validationResult } from "express-validator"
  * ```
  * if (!validate(req, res)) return
  * ```
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {boolean}
  */
 export function validate(req: Request, res: Response): boolean {
   const errors = validationResult(req)

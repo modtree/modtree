@@ -4,6 +4,8 @@ import { getRoutes } from './routes'
 
 /**
  * requires database connection to be initialized
+ *
+ * @returns {Express} an express app
  */
 export function getApp(): Express {
   const corsOpts: CorsOptions = {
