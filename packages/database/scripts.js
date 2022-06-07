@@ -17,6 +17,7 @@
  * }
  */
 const scripts = {
+  script: 'node ./scripts.js',
   ci: {
     build: 'yarn lint:no-fix && yarn build && yarn build:test',
     test: {
@@ -40,9 +41,6 @@ const scripts = {
   graph: 'madge --image graph.png',
   default: {
     env: 'sh ./bash/setup.sh',
-  },
-  script: {
-    update: 'node ./package-scripts.js',
   },
   jest: 'NODE_ENV=test jest',
   tconf: {

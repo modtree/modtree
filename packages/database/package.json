@@ -40,6 +40,7 @@
     "typeorm": "0.3.6"
   },
   "scripts": {
+    "script": "node ./scripts.js",
     "ci:build": "yarn lint:no-fix && yarn build && yarn build:test",
     "ci:test:database": "bash ./tests/scripts.sh database",
     "ci:test:server": "bash ./tests/scripts.sh server",
@@ -52,7 +53,6 @@
     "dev:test": "yarn build && yarn start:test",
     "graph": "madge --image graph.png",
     "default:env": "sh ./bash/setup.sh",
-    "script:update": "node ./package-scripts.js",
     "jest": "NODE_ENV=test jest",
     "tconf:database": "yarn jest -c ./tests/configs/database.ts",
     "tconf:server": "yarn jest -c ./tests/configs/server.ts",
