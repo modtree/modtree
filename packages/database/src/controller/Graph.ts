@@ -3,7 +3,6 @@ import { copy, emptyInit, flatten } from '../utils'
 import { db } from '../config'
 import { getGraphRepository } from '../repository'
 import { IGraphController } from '../../types/controller'
-import { validationResult } from 'express-validator'
 import { validate } from './base'
 
 /** Graph API controller */
@@ -30,7 +29,7 @@ export class GraphController implements IGraphController {
     this.graphRepo
       .initialize(props)
       .then((graph) => {
-        res.json(graph)
+        res.json(flatten.graph(graph))
       })
       .catch(() => {
         res
@@ -108,9 +107,12 @@ export class GraphController implements IGraphController {
    */
   async toggle(req: Request, res: Response) {
     if (!validate(req, res)) return
-    const moduleCode = req.params.moduleCode
-    console.log(moduleCode)
-    res.json({ moduleCode })
+    const { moduleCode, graphId } = req.params
+    this.graphRepo.findOneById(graphId).then((graph) => {
+      this.graphRepo.toggleModule(graph, moduleCode).then((graph) => {
+        res.json({ moduleCode, graph: flatten.graph(graph) })
+      })
+    })
     // this.graphRepo
     //   .find({
     //     relations: {

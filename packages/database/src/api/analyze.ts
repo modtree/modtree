@@ -21,9 +21,9 @@ class Print {
     // prints the keys returned
     const keys = Object.keys(response)
     if (keys.length > 0) {
-      console.log('keys:', Array.from(keys))
+      log.green('keys:', Array.from(keys))
     } else {
-      console.log('(no keys returned)')
+      log.green('(no keys returned)')
     }
   }
 
@@ -40,16 +40,16 @@ class Print {
     }
     // check for null response
     if (response === undefined || response === null) {
-      console.log('response is undefined')
+      log.yellow('response is undefined')
       return
     }
     // prints the entire thing expanded
     if (verbosity === 'verbose') {
-      console.log(inspect(response))
+      log.yellow(inspect(response))
       return
     }
     // normal print
-    console.log(response)
+    log.yellow(response)
   }
 
   /**
@@ -63,11 +63,11 @@ class Print {
       return
     }
     if (response instanceof Set) {
-      console.log('size of Set:', response.size)
+      log.yellow('size of Set:', response.size)
       return
     }
     if (response instanceof Array) {
-      console.log('size of Array:', response.length)
+      log.yellow('size of Array:', response.length)
     }
   }
 }

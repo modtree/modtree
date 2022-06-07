@@ -1,11 +1,20 @@
-import { body, param, ValidationChain } from 'express-validator'
+import { param, ValidationChain } from 'express-validator'
 import {
   ModuleCondensedController,
   UserController,
   DegreeController,
   GraphController,
 } from '../controller'
-import { validModuleCode } from '../utils'
+import {
+  getModuleRepository,
+  getModuleCondensedRepository,
+  getDegreeRepository,
+  getUserRepository,
+  getGraphRepository,
+} from '../repository'
+import { db } from '../config'
+import { copy, validModuleCode } from '../utils'
+import { Repositories } from '../../types/repository'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
 
@@ -20,6 +29,8 @@ type RouteWithController<T> = Route<T> & {
   controller: Class<T>
   validators: ValidationChain[]
 }
+
+const Repo: Repositories = {}
 
 /**
  * a factory function that adds routes to an existing route list
@@ -146,9 +157,14 @@ const graphRoutes: Route<GraphController>[] = [
   },
   {
     action: 'toggle',
-    route: '/graph/toggle/:moduleCode',
+    route: '/graph/id/:graphId/toggle/:moduleCode',
     method: 'post',
     validators: [
+      param('graphId').custom(async (graphId) => {
+        return Repo.Graph.countBy({ id: graphId }).then((count) => {
+          if (count === 0) return Promise.reject('Graph id not found')
+        })
+      }),
       param('moduleCode')
         .custom(validModuleCode)
         .withMessage('must be a valid module code'),
@@ -161,7 +177,16 @@ const graphRoutes: Route<GraphController>[] = [
  *
  * @returns {RouteWithController<any>[]}
  */
-function getRoutes(): RouteWithController<any>[] {
+export function getRoutes(): RouteWithController<any>[] {
+  const loadRepositories = {
+    Degree: getDegreeRepository(db),
+    User: getUserRepository(db),
+    Graph: getGraphRepository(db),
+    Module: getModuleRepository(db),
+    ModuleCondensed: getModuleCondensedRepository(db),
+  }
+  copy(loadRepositories, Repo)
+
   const Routes = []
   addRoutes(Routes, moduleCondensedRoutes, ModuleCondensedController)
   addRoutes(Routes, userRoutes, UserController)
@@ -169,5 +194,3 @@ function getRoutes(): RouteWithController<any>[] {
   addRoutes(Routes, graphRoutes, GraphController)
   return Routes
 }
-
-export const Routes = getRoutes()

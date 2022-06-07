@@ -16,7 +16,7 @@ import {
 import { quickpop, flatten, copy } from '../utils'
 import { IGraphRepository } from '../../types/repository'
 
-type ModuleState = 'placed' | 'hidden' | 'invalid'
+type ModuleState = 'placed' | 'hidden' | 'new'
 
 /**
  * @param {DataSource} database
@@ -96,9 +96,12 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    *
    * @param {Graph} graph
    * @param {string} moduleCode
-   * @returns {Promise<void>}
+   * @returns {Promise<Graph>}
    */
-  async function toggleModule(graph: Graph, moduleCode: string): Promise<void> {
+  async function toggleModule(
+    graph: Graph,
+    moduleCode: string
+  ): Promise<Graph> {
     /**
      * retrieve a Graph from database given its id
      */
@@ -109,7 +112,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
     const index: Record<ModuleState, number> = {
       placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
       hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
-      invalid: -1,
+      new: -1,
     }
     /**
      * @returns {ModuleState}
@@ -117,12 +120,13 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
     function getState(): ModuleState {
       if (index.placed !== -1) return 'placed'
       if (index.hidden !== -1) return 'hidden'
-      return 'invalid'
+      return 'new'
     }
     const state = getState()
 
     /**
      * toggles the modules between placed and hidden
+     * if the module is not found, append it to placed
      *
      * @param {Module[]} src
      * @param {Module[]} dest
@@ -131,19 +135,17 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
       dest.push(quickpop(src, index[state]))
     }
 
-    /**
-     * toggles the modules between placed and hidden
-     */
     if (state === 'placed') {
       toggle(graph.modulesPlaced, graph.modulesHidden)
     } else if (state === 'hidden') {
       toggle(graph.modulesHidden, graph.modulesPlaced)
     } else {
-      // throw error if module not found
-      throw new Error('Module not found in Graph')
+      ModuleRepository.findOneBy({ moduleCode }).then((module) => {
+        graph.modulesPlaced.push(module)
+      })
     }
 
-    await BaseRepo.save(graph)
+    return BaseRepo.save(graph)
   }
 
   /**
