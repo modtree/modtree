@@ -6,7 +6,7 @@ module.exports = {
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["tsconfig.json", "eslint.tsconfig.json"],
+    project: ["tsconfig.json"],
     sourceType: "module",
   },
   ignorePatterns: ["/lib/**/*", "/dist/**/*", ".eslintrc.js", "/coverage/**/*"],
