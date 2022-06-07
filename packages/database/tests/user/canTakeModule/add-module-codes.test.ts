@@ -1,5 +1,5 @@
 import { container, getSource } from '../../../src/data-source'
-import Init from '../../init'
+import { init } from '../../init'
 import { setup, teardown, Repo, t } from '../../environment'
 import { oneUp } from '../../../src/utils'
 
@@ -8,7 +8,7 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => Repo.User.initialize(Init.emptyUser))
+    .then(() => Repo.User.initialize(init.emptyUser))
     .then((user) => {
       t.user = user
     })

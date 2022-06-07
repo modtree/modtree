@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import Init from '../../init'
+import { init } from '../../init'
 import { Create, server, t } from '../environment'
 
 beforeAll(() =>
@@ -7,7 +7,7 @@ beforeAll(() =>
    * note that this mockup contains its own checks too
    * apart from just calling the server endpoint
    */
-  Create.User(Init.user2).then((user) => {
+  Create.User(init.user2).then((user) => {
     t.userId = user.id
   })
 )

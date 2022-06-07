@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { DataSource } from 'typeorm'
 import { InitProps } from '../../types/init-props'
-import { nusmodsApi, getModuleLevel, Flatten } from '../utils'
+import { nusmodsApi, getModuleLevel, flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { ModuleCondensed } from '../entity/ModuleCondensed'
 import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
@@ -38,7 +38,7 @@ export function getModuleCondensedRepository(
    */
   async function getCodes(): Promise<string[]> {
     const modules = await BaseRepo.find()
-    return modules.map(Flatten.module)
+    return modules.map(flatten.module)
   }
 
   /**

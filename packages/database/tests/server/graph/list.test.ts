@@ -1,16 +1,16 @@
 import { Graph } from '../../../src'
-import Init from '../../init'
+import { init } from '../../init'
 import { Create, Delete, server, t } from '../environment'
 
 beforeAll(() =>
-  Promise.all([Create.User(Init.user2), Create.Degree(Init.degree1)])
+  Promise.all([Create.User(init.user2), Create.Degree(init.degree1)])
     .then(([user, degree]) => {
       t.userId = user.id
       t.degreeId = degree.id
     })
     .then(() =>
       Create.Graph({
-        ...Init.graph1,
+        ...init.graph1,
         userId: t.userId,
         degreeId: t.degreeId,
       })

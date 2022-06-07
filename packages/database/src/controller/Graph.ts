@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { copy, EmptyInit, Flatten } from '../utils'
+import { copy, emptyInit, flatten } from '../utils'
 import { db } from '../config'
 import { getGraphRepository } from '../repository'
 import { IGraphController } from '../../types/controller'
@@ -15,7 +15,7 @@ export class GraphController implements IGraphController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props = EmptyInit.Graph
+    const props = emptyInit.Graph
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
@@ -55,7 +55,7 @@ export class GraphController implements IGraphController {
         },
       })
       .then((graph) => {
-        res.json(Flatten.graph(graph))
+        res.json(flatten.graph(graph))
       })
       .catch(() => {
         res.status(404).json({ message: 'Graph not found' })
@@ -98,7 +98,7 @@ export class GraphController implements IGraphController {
         },
       })
       .then((results) => {
-        const flat = results.map((graph) => Flatten.graph(graph))
+        const flat = results.map((graph) => flatten.graph(graph))
         res.json(flat)
       })
       .catch(() => {

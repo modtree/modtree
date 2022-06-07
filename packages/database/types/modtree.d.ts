@@ -8,16 +8,6 @@ export type ModtreeFunctionWithArgs<A extends BaseArgs, T> = (
   args: A
 ) => Promise<T>
 
-declare namespace modtree {
-  /** Module Class */
-  export class Module {
-    static get(): Promise<Module[]>
-    static getCodes(): Promise<Set<string>>
-    static fetchOne(moduleCode: string): Promise<Module>
-    static pull(): Promise<Module[]>
-  }
-}
-
 type SupportedDatabases = Extract<DatabaseType, 'mysql' | 'postgres'>
 
 type DataSourceOptions = {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { copy, EmptyInit, Flatten } from '../utils'
+import { copy, emptyInit, flatten } from '../utils'
 import { db } from '../config'
 import { getDegreeRepository } from '../repository'
 import { IDegreeController } from '../../types/controller'
@@ -15,7 +15,7 @@ export class DegreeController implements IDegreeController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    const props = EmptyInit.Degree
+    const props = emptyInit.Degree
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)
     if (!requiredKeys.every((val) => requestKeys.includes(val))) {
@@ -40,7 +40,7 @@ export class DegreeController implements IDegreeController {
     this.degreeRepo
       .findOneById(req.params.degreeId)
       .then((degree) => {
-        res.json(Flatten.degree(degree))
+        res.json(flatten.degree(degree))
       })
       .catch(() => {
         res.status(404).json({ message: 'Degree not found' })
@@ -74,7 +74,7 @@ export class DegreeController implements IDegreeController {
    */
   async list(req: Request, res: Response) {
     const results = await this.degreeRepo.find({ relations: { modules: true } })
-    const flat = results.map((degree) => Flatten.degree(degree))
+    const flat = results.map((degree) => flatten.degree(degree))
     res.json(flat)
   }
 }

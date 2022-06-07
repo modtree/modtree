@@ -2,7 +2,7 @@ import { InitProps } from '../../types/init-props'
 import { ResponseProps } from '../../types/api-response'
 
 /** empty init props */
-export const EmptyInit: InitProps = {
+export const emptyInit: InitProps = {
   /**
    * empty User init props
    */
