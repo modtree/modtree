@@ -25,7 +25,7 @@ export class GraphController implements IGraphController {
       return
     }
     copy(req.body, props)
-    await this.graphRepo
+    this.graphRepo
       .initialize(props)
       .then((graph) => {
         res.json(graph)
@@ -44,37 +44,10 @@ export class GraphController implements IGraphController {
    * @param {Response} res
    */
   async get(req: Request, res: Response) {
-    this.graphRepo
-      .findOne({
-        where: { id: req.params.graphId },
-        relations: {
-          user: true,
-          degree: true,
-          modulesHidden: true,
-          modulesPlaced: true,
-        },
-      })
+    return this.graphRepo
+      .findOneById(req.params.graphId)
       .then((graph) => {
         res.json(flatten.graph(graph))
-      })
-      .catch(() => {
-        res.status(404).json({ message: 'Graph not found' })
-      })
-  }
-
-  /**
-   * hard-deletes one Graph by id
-   *
-   * @param {Request} req
-   * @param {Response} res
-   */
-  async delete(req: Request, res: Response) {
-    await this.graphRepo
-      .delete({
-        id: req.params.graphId,
-      })
-      .then((deleteResult) => {
-        res.json({ deleteResult })
       })
       .catch(() => {
         res.status(404).json({ message: 'Graph not found' })
@@ -88,7 +61,51 @@ export class GraphController implements IGraphController {
    * @param {Response} res
    */
   async list(req: Request, res: Response) {
-    await this.graphRepo
+    this.graphRepo
+      .find({
+        relations: {
+          user: true,
+          degree: true,
+          modulesHidden: true,
+          modulesPlaced: true,
+        },
+      })
+      .then((results) => {
+        const flat = results.map((graph) => flatten.graph(graph))
+        res.json(flat)
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'Graphs not found' })
+      })
+  }
+
+  /**
+   * hard-deletes one Graph by id
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async delete(req: Request, res: Response) {
+    this.graphRepo
+      .delete({
+        id: req.params.graphId,
+      })
+      .then((deleteResult) => {
+        res.json({ deleteResult })
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'Graph not found' })
+      })
+  }
+
+  /**
+   * finds a graph by its id and updates it with request props
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async update(req: Request, res: Response) {
+    this.graphRepo
       .find({
         relations: {
           user: true,

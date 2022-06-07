@@ -15,8 +15,9 @@ export class ModuleCondensedController implements IModuleCondensedController {
    * @param {Response} res
    */
   async list(req: Request, res: Response) {
-    const all = await this.moduleRepo.find()
-    res.json(all)
+    this.moduleRepo.find().then((results) => {
+      res.json(results)
+    })
   }
 
   /**

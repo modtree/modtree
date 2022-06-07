@@ -48,13 +48,25 @@ export class DegreeController implements IDegreeController {
   }
 
   /**
+   * list all degrees in the database
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async list(req: Request, res: Response) {
+    this.degreeRepo.find({ relations: { modules: true } }).then((results) => {
+      res.json(results.map((degree) => flatten.degree(degree)))
+    })
+  }
+
+  /**
    * hard-deletes one Degree by id
    *
    * @param {Request} req
    * @param {Response} res
    */
   async delete(req: Request, res: Response) {
-    await this.degreeRepo
+    this.degreeRepo
       .delete({
         id: req.params.degreeId,
       })
@@ -64,17 +76,5 @@ export class DegreeController implements IDegreeController {
       .catch(() => {
         res.status(404).json({ message: 'Degree not found' })
       })
-  }
-
-  /**
-   * list all degrees in the database
-   *
-   * @param {Request} req
-   * @param {Response} res
-   */
-  async list(req: Request, res: Response) {
-    const results = await this.degreeRepo.find({ relations: { modules: true } })
-    const flat = results.map((degree) => flatten.degree(degree))
-    res.json(flat)
   }
 }

@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
+
+import { IUserController } from '../../types/controller'
 import { db } from '../config'
 import { getDegreeRepository, getUserRepository } from '../repository'
-import { emptyInit, flatten, copy } from '../utils'
-import { IUserController } from '../../types/controller'
+import { copy, emptyInit, flatten } from '../utils'
 
 /** User api controller */
 export class UserController implements IUserController {
@@ -33,33 +34,6 @@ export class UserController implements IUserController {
   }
 
   /**
-   * creates a User
-   *
-   * @param {Request} req
-   * @param {Response} res
-   */
-  async insertDegree(req: Request, res: Response) {
-    const id = req.params.userId
-    const requestKeys = Object.keys(req.body)
-    const requiredKeys = ['degreeIds']
-    if (!requiredKeys.every((val) => requestKeys.includes(val))) {
-      res
-        .status(400)
-        .json({ message: 'insufficient keys', requestKeys, requiredKeys })
-      return
-    }
-    const { degreeIds } = req.body
-    const degrees = await this.degreeRepo.findByIds(degreeIds)
-    const user = await this.userRepo.findOne({
-      where: { id },
-      relations: { savedDegrees: true },
-    })
-    user.savedDegrees.push(...degrees)
-    const result = this.userRepo.save(user)
-    res.json(result)
-  }
-
-  /**
    * gets one User by id
    *
    * @param {Request} req
@@ -70,6 +44,47 @@ export class UserController implements IUserController {
       .findOneById(req.params.userId)
       .then((user) => {
         res.json(flatten.user(user))
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'User not found' })
+      })
+  }
+
+  /**
+   * get all Users
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async list(req: Request, res: Response) {
+    this.userRepo
+      .find({
+        relations: {
+          modulesDone: true,
+          modulesDoing: true,
+          savedDegrees: true,
+          savedGraphs: true,
+        },
+      })
+      .then((users) => {
+        const flat = users.map((u) => flatten.user(u))
+        res.json(flat)
+      })
+  }
+
+  /**
+   * hard-deletes a User by id
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async delete(req: Request, res: Response) {
+    this.userRepo
+      .delete({
+        id: req.params.userId,
+      })
+      .then((deleteResult) => {
+        res.json({ deleteResult })
       })
       .catch(() => {
         res.status(404).json({ message: 'User not found' })
@@ -103,40 +118,32 @@ export class UserController implements IUserController {
   }
 
   /**
-   * get all Users
+   * inserts a degree into a User
    *
    * @param {Request} req
    * @param {Response} res
    */
-  async list(req: Request, res: Response) {
-    const users = await this.userRepo.find({
-      relations: {
-        modulesDone: true,
-        modulesDoing: true,
-        savedDegrees: true,
-        savedGraphs: true,
-      },
+  async insertDegree(req: Request, res: Response) {
+    const id = req.params.userId
+    const requestKeys = Object.keys(req.body)
+    const requiredKeys = ['degreeIds']
+    if (!requiredKeys.every((val) => requestKeys.includes(val))) {
+      res
+        .status(400)
+        .json({ message: 'insufficient keys', requestKeys, requiredKeys })
+      return
+    }
+    const { degreeIds } = req.body
+    Promise.all([
+      this.degreeRepo.findByIds(degreeIds),
+      this.userRepo.findOne({
+        where: { id },
+        relations: { savedDegrees: true },
+      }),
+    ]).then(([degrees, user]) => {
+      user.savedDegrees.push(...degrees)
+      const result = this.userRepo.save(user)
+      res.json(result)
     })
-    const flat = users.map((u) => flatten.user(u))
-    res.json(flat)
-  }
-
-  /**
-   * hard-deletes one User by id
-   *
-   * @param {Request} req
-   * @param {Response} res
-   */
-  async delete(req: Request, res: Response) {
-    await this.userRepo
-      .delete({
-        id: req.params.userId,
-      })
-      .then((deleteResult) => {
-        res.json({ deleteResult })
-      })
-      .catch(() => {
-        res.status(404).json({ message: 'User not found' })
-      })
   }
 }
