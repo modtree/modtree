@@ -5,6 +5,7 @@ import {
   DegreeController,
   GraphController,
 } from '../controller'
+import { validModuleCode } from '../utils'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
 
@@ -149,7 +150,7 @@ const graphRoutes: Route<GraphController>[] = [
     method: 'post',
     validators: [
       param('moduleCode')
-        .matches(new RegExp(/[A-Z]{2,3}[0-9]{4}[A-Z]*/))
+        .custom(validModuleCode)
         .withMessage('must be a valid module code'),
     ],
   },

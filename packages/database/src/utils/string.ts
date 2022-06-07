@@ -42,3 +42,16 @@ export function oneUp(fullPath: string): string {
 export function nonEmptyString(value: any): boolean {
   return typeof value === 'string' && value.length > 0
 }
+
+/**
+ * checks if the input is a non-empty string
+ *
+ * @param {string} value
+ * @returns {boolean}
+ */
+export function validModuleCode(moduleCode: string): boolean {
+  const valid = new RegExp(/^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$/)
+  const result = Boolean(moduleCode.match(valid))
+  if (!result) throw new Error('Invalid module code')
+  return result
+}

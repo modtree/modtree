@@ -6,7 +6,6 @@ on:
     types: [opened, reopened, synchronize]
   push:
     branches:
-      - graph
       - main
       - k
       - w
