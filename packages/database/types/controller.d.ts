@@ -17,11 +17,10 @@ export interface IUserController extends IController {
   insertDegree: APIEndpoint
 }
 
-// export interface IDegreeController extends IController {}
 export type IDegreeController = IController
 
 export interface IGraphController extends IController {
-  update: APIEndpoint
+  toggle: APIEndpoint
 }
 
 export interface IModuleCondensedController extends IReads {

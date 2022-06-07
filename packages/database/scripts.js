@@ -42,7 +42,7 @@ const yarn = {
     _: 'node dist/server',
     test: 'NODE_ENV=test node dist/server',
   },
-  dev: 'yarn build && yarn start',
+  dev: 'nodemon ./src/server/index.ts',
   test: {
     _: jest('database'),
     // narrow testing with `yarn test:database graph`

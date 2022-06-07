@@ -17,6 +17,7 @@
     "graph:create": "ts-node ./graph/create.ts",
     "graph:list": "ts-node ./graph/list.ts",
     "graph:delete": "ts-node ./graph/delete.ts",
+    "graph:toggle": "ts-node ./graph/toggle.ts",
     "": "───────────────────────────────────────────────────────────",
     "ug": "yarn user:get",
     "ugf": "yarn user:get-full",
@@ -29,7 +30,8 @@
     "dd": "yarn degree:delete",
     "gc": "yarn graph:create",
     "gl": "yarn graph:list",
-    "gd": "yarn graph:delete"
+    "gd": "yarn graph:delete",
+    "gt": "yarn graph:toggle"
   },
   "dependencies": {
     "axios": "^0.27.2",

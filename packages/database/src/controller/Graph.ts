@@ -3,6 +3,7 @@ import { copy, emptyInit, flatten } from '../utils'
 import { db } from '../config'
 import { getGraphRepository } from '../repository'
 import { IGraphController } from '../../types/controller'
+import { validationResult } from 'express-validator'
 
 /** Graph API controller */
 export class GraphController implements IGraphController {
@@ -104,22 +105,30 @@ export class GraphController implements IGraphController {
    * @param {Request} req
    * @param {Response} res
    */
-  async update(req: Request, res: Response) {
-    this.graphRepo
-      .find({
-        relations: {
-          user: true,
-          degree: true,
-          modulesHidden: true,
-          modulesPlaced: true,
-        },
-      })
-      .then((results) => {
-        const flat = results.map((graph) => flatten.graph(graph))
-        res.json(flat)
-      })
-      .catch(() => {
-        res.status(404).json({ message: 'Graphs not found' })
-      })
+  async toggle(req: Request, res: Response) {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() })
+      return
+    }
+    const moduleCode = req.params.moduleCode
+    console.log(moduleCode)
+    res.json({ moduleCode })
+    // this.graphRepo
+    //   .find({
+    //     relations: {
+    //       user: true,
+    //       degree: true,
+    //       modulesHidden: true,
+    //       modulesPlaced: true,
+    //     },
+    //   })
+    //   .then((results) => {
+    //     const flat = results.map((graph) => flatten.graph(graph))
+    //     res.json(flat)
+    //   })
+    //   .catch(() => {
+    //     res.status(404).json({ message: 'Graphs not found' })
+    //   })
   }
 }

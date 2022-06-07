@@ -1,4 +1,4 @@
-import { ValidationChain } from 'express-validator'
+import { body, param, ValidationChain } from 'express-validator'
 import {
   ModuleCondensedController,
   UserController,
@@ -142,6 +142,16 @@ const graphRoutes: Route<GraphController>[] = [
     route: '/graph/list',
     method: 'get',
     validators: [],
+  },
+  {
+    action: 'toggle',
+    route: '/graph/toggle/:moduleCode',
+    method: 'post',
+    validators: [
+      param('moduleCode')
+        .matches(new RegExp(/[A-Z]{2,3}[0-9]{4}[A-Z]*/))
+        .withMessage('must be a valid module code'),
+    ],
   },
 ]
 
