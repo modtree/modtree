@@ -233,7 +233,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
       one instanceof Array ? one.length : 0
     )
     // -- data processing
-    const degreeModulesCodes = graph.degree.modules.map((one) => one.moduleCode)
+    const degreeModulesCodes = graph.degree.modules.map(flatten.module)
     type Data = {
       moduleCode: string
       inDegree: boolean
