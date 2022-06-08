@@ -1,21 +1,3 @@
-/**
- * usage:
- * nested keys will be joined with a colon.
- * keys that are "_" will simply be up until the parent.
- *
- * const scripts = {
- *   ci: {
- *     _: "echo 'hello'"
- *     build: "echo 'world'",
- *   }
- * }
- *
- * will produce these package.json scripts:
- * "scripts": {
- *   "ci": "echo 'hello'"
- *   "ci:build": "echo 'world'"
- * }
- */
 const jest = (config) => `jest -c ./tests/configs/${config}.ts --runInBand`
 const yarn = {
   ci: {
@@ -61,9 +43,9 @@ const migration = {
 }
 
 const api = {
-  script: 'node ./scripts.js',
   graph: 'madge --image graph.png',
-  'default:env': 'sh ./bash/setup.sh',
+  script: 'node ./scripts/compile-package-scripts.js',
+  'default:env': 'sh ./scripts/setup.sh',
   module: {
     'get-codes': 'ts-node ./src/api/module/get-codes.ts',
     get: 'ts-node ./src/api/module/get.ts',
@@ -94,23 +76,8 @@ const api = {
   },
 }
 
-function fold(tree, parents) {
-  Object.keys(tree).forEach((key) => {
-    const value = tree[key]
-    if (typeof value === 'string') {
-      const outputKey =
-        key === '_' ? parents.join(':') : [...parents, key].join(':')
-      output[outputKey] = value
-      return
-    }
-    fold(tree[key], [...parents, key])
-  })
-  return tree
+module.exports = {
+  ...yarn,
+  ...api,
+  ...migration,
 }
-
-const fs = require('fs')
-const output = {}
-fold({ ...yarn, ...api, ...migration }, [])
-const data = JSON.parse(fs.readFileSync('package.json'))
-data.scripts = output
-fs.writeFileSync('package.json', JSON.stringify(data, null, 2))
