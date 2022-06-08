@@ -3,7 +3,7 @@ const yarn = {
   ci: {
     lint: 'eslint .',
     build: 'yarn ci:lint && yarn build && yarn build:test',
-    restore: 'NODE_ENV=test ts-node ./tests/server/restore.ts',
+    restore: 'NODE_ENV=test ts-node ./tests/restore-server.ts',
     start: 'NODE_ENV=test node dist/server',
     dev: 'yarn build && yarn ci:start',
     test: {

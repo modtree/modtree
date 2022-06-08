@@ -1,14 +1,14 @@
-import { getSource } from '../../src/data-source'
-import { Module, ModuleCondensed, Degree, User, Graph } from '../../src/entity'
+import { getSource } from '@src/data-source'
+import { Module, ModuleCondensed, Degree, User, Graph } from '@entity'
 import {
   getModuleRepository,
   getModuleCondensedRepository,
   getDegreeRepository,
   getUserRepository,
   getGraphRepository,
-} from '../../src/repository'
-import { oneUp } from '../../src/utils'
-import { setup, teardown } from '../environment'
+} from '@repository'
+import { oneUp } from '@utils'
+import { setup, teardown } from '@environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

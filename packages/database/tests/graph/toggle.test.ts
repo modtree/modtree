@@ -1,9 +1,9 @@
 import { EntityNotFoundError } from 'typeorm'
-import { flatten, oneUp } from '../../src/utils'
-import { getSource } from '../../src/data-source'
-import { Graph , Module, ModuleCondensed } from '../../src/entity'
-import { setup, teardown, Repo } from '../environment'
-import { init } from '../init'
+import { flatten, oneUp } from '@utils'
+import { getSource } from '@src/data-source'
+import { Graph , Module, ModuleCondensed } from '@entity'
+import { setup, teardown, Repo } from '@environment'
+import { init } from "@tests/init"
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

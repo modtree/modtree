@@ -1,7 +1,7 @@
-import { container, getSource } from '../../src/data-source'
-import { setup, teardown, Repo } from '../environment'
-import { ModuleCondensed } from '../../src/entity'
-import { oneUp } from '../../src/utils'
+import { container, getSource } from '@src/data-source'
+import { setup, teardown, Repo } from '@environment'
+import { ModuleCondensed } from '@entity'
+import { oneUp } from '@utils'
 
 const lowerBound = 6000
 

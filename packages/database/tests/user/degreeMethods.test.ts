@@ -1,8 +1,8 @@
-import { container, getSource } from '../../src/data-source'
-import { Degree, User } from '../../src/entity'
-import { oneUp } from '../../src/utils'
-import { setup, teardown, Repo, t } from '../environment'
-import { init } from '../init'
+import { container, getSource } from '@src/data-source'
+import { Degree, User } from '@entity'
+import { oneUp } from '@utils'
+import { setup, teardown, Repo, t } from '@environment'
+import { init } from "@tests/init"
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

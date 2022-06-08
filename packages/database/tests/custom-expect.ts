@@ -1,5 +1,5 @@
-import { ResponseProps } from '../../types/api-response'
-import { EmptyResponse } from '../../src/utils'
+import { ResponseProps } from '@mtypes/api-response'
+import { EmptyResponse } from '@utils'
 
 type CustomMatcherResult = {
   pass: boolean

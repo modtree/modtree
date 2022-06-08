@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
-import { init } from '../../init'
-import { Create, server, t } from '../environment'
+import { init } from "@tests/init"
+import { Create, server, t } from '@environment'
 
 beforeAll(() =>
   /**

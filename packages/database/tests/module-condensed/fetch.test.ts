@@ -1,7 +1,7 @@
-import { flatten, oneUp } from '../../src/utils'
-import { container, getSource } from '../../src/data-source'
-import { ModuleCondensed } from '../../src/entity'
-import { setup, teardown, Repo } from '../environment'
+import { flatten, oneUp } from '@utils'
+import { container, getSource } from '@src/data-source'
+import { ModuleCondensed } from '@entity'
+import { setup, teardown, Repo } from '@environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

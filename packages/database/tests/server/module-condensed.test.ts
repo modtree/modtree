@@ -1,4 +1,4 @@
-import { server } from './environment'
+import { server } from '@environment'
 
 /**
  * try a specific full module search
