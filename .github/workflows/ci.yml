@@ -10,6 +10,10 @@ on:
       - k
       - w
 
+env:
+  PREFIX: TEST_DATABASE_TYPE=POSTGRES TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner TEST_POSTGRES_HOST=localhost TEST_POSTGRES_ACTIVE_DATABASE=base TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql TEST_POSTGRES_SYNC=true
+  POSTGRES_INIT: sudo systemctl start postgresql.service; echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql; echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql; echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql; sudo su postgres -c "psql --file=/tmp/setup.sql"; createdb base;
+
 jobs:
   pre_job:
     # skip duplicate checks
@@ -24,117 +28,87 @@ jobs:
           concurrent_skipping: same_content_newer
           paths_ignore: '["**/README.md", "**/docs/**"]'
 
-  ci:
+  server_tests:
     if: always()
     runs-on: ubuntu-20.04
     outputs:
-      project_build: ${{ steps.project_build.outcome }}
-      database_core: ${{ steps.database_core.outcome }}
-      database_utils: ${{ steps.database_utils.outcome }}
-      server_tests: ${{ steps.server_tests.outcome }}
+      status: ${{ job.status }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
-      # lint then build the entire codebase as a base method
-      # to check code quality
-      - name: 🍺 Check out repository code
-        uses: actions/checkout@v3
-      - name: 🧶 Install yarn
-        run: yarn install --frozen-lockfile
-      - name: 📦 Build & lint database functions
-        id: project_build
-        continue-on-error: true
-        run: yarn ci:build
-      # run database tests using a PostgreSQL instance
-      # on Github Actions
-      - name: 🔥 Initialize PostgreSQL
-        run: |
-          sudo systemctl start postgresql.service
-          echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql
-          echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql
-          echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql
-          sudo su postgres -c "psql --file=/tmp/setup.sql"
-          createdb base
-      - name: 📦 Run database core tests
-        id: database_core
-        working-directory: ./packages/database
-        continue-on-error: true
-        run: |
-          TEST_DATABASE_TYPE=POSTGRES \
-          TEST_POSTGRES_USERNAME=runner \
-          TEST_POSTGRES_PASSWORD=runner \
-          TEST_POSTGRES_HOST=localhost \
-          TEST_POSTGRES_ACTIVE_DATABASE=base \
-          TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
-          TEST_POSTGRES_SYNC=true \
-          yarn ci:test:database
-      - name: 📦 Run database utils tests
-        id: database_utils
-        working-directory: ./packages/database
-        continue-on-error: true
-        run: |
-          TEST_DATABASE_TYPE=POSTGRES \
-          TEST_POSTGRES_USERNAME=runner \
-          TEST_POSTGRES_PASSWORD=runner \
-          TEST_POSTGRES_HOST=localhost \
-          TEST_POSTGRES_ACTIVE_DATABASE=base \
-          TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
-          TEST_POSTGRES_SYNC=true \
-          yarn ci:test:utils
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1.6.0
+      - run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run server tests
-        id: server_tests
         working-directory: ./packages/database
-        continue-on-error: true
-        run: |
-          TEST_DATABASE_TYPE=POSTGRES \
-          TEST_POSTGRES_USERNAME=runner \
-          TEST_POSTGRES_PASSWORD=runner \
-          TEST_POSTGRES_HOST=localhost \
-          TEST_POSTGRES_ACTIVE_DATABASE=base \
-          TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
-          TEST_POSTGRES_SYNC=true \
-          yarn ci:test:server
-      - name: Summary
-        run: |
-          A=${{ steps.project_build.outcome }}
-          B=${{ steps.database_core.outcome }}
-          C=${{ steps.database_utils.outcome }}
-          D=${{ steps.server_tests.outcome }}
-          echo "build: $A"
-          echo "database core: $B"
-          echo "database utils: $C"
-          echo "server: $D"
-          all=($A $B $C $D)
-          [[ "${all[*]}" =~ "failure" ]] && exit 1 || exit 0
+        run: ${{ env.PREFIX }} yarn ci:test:server
+
+  database_core:
+    if: always()
+    runs-on: ubuntu-20.04
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    outputs:
+      status: ${{ job.status }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1.6.0
+      - run: ${{ env.POSTGRES_INIT }}
+      - name: 📦 Run database core tests
+        working-directory: ./packages/database
+        run: ${{ env.PREFIX }} yarn ci:test:database
+
+  database_utils:
+    if: always()
+    runs-on: ubuntu-20.04
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    outputs:
+      status: ${{ job.status }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1.6.0
+      - run: ${{ env.POSTGRES_INIT }}
+      - name: 📦 Run database utils tests
+        working-directory: ./packages/database
+        run: ${{ env.PREFIX }} yarn ci:test:utils
+
+  project_build:
+    if: always()
+    runs-on: ubuntu-20.04
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    outputs:
+      status: ${{ job.status }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1.6.0
+      - name: 📦 Build & lint entire project
+        run: yarn ci:build
 
   telegram:
-    needs: [pre_job, ci]
+    needs: [pre_job, server_tests, project_build, database_core, database_utils]
     if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ubuntu-20.04
     steps:
-      - name: Overall status
-        run: |
-          echo "logs"
-          echo "───────────────────────────────────"
-          echo "project build:  ${{ needs.ci.outputs.project_build }}"
-          echo "database core tests: ${{ needs.ci.outputs.database_core }}"
-          echo "database utils tests: ${{ needs.ci.outputs.database_utils }}"
-          echo "server tests:   ${{ needs.ci.outputs.server_tests }}"
-          echo "───────────────────────────────────"
-
       - name: Environment prep
         run: |
           function emojize() {
+            echo "$1: $2"
             [ "$2" = "success" ] && emoji="✅" || emoji="❌"
             echo "$1=$emoji" >> $GITHUB_ENV
           }
-          echo "RUN_URL=https://github.com/modtree/modtree/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV; \
-          echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV; \
-          emojize PROJECT_BUILD ${{ needs.ci.outputs.project_build }}
-          emojize DATABASE_CORE ${{ needs.ci.outputs.database_core }}
-          emojize DATABASE_UTILS ${{ needs.ci.outputs.database_utils }}
-          emojize SERVER_TESTS ${{ needs.ci.outputs.server_tests }}
+          BASE_URL="https://github.com/modtree/modtree/actions/runs"
+          echo "RUN_URL=${BASE_URL}/${{ github.run_id }}" >> $GITHUB_ENV
+          echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
+          emojize PROJECT_BUILD ${{ needs.project_build.outputs.status }}
+          emojize DATABASE_CORE ${{ needs.database_core.outputs.status }}
+          emojize DATABASE_UTILS ${{ needs.database_utils.outputs.status }}
+          emojize SERVER_TESTS ${{ needs.server_tests.outputs.status }}
 
       - name: Send message
         uses: appleboy/telegram-action@master
