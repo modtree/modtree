@@ -219,7 +219,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
 
     // 2. Filter for eligible modules
     const allEligibleModules = await UserRepository.getEligibleModules(
-      graph.user
+      graph.user, []
     )
     if (!allEligibleModules) return [] // temp fix
     const filtered = allEligibleModules.filter((one) =>

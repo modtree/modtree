@@ -58,7 +58,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
-   * If optional string[] addedModuleCodes is specified, then each of the module
+   * If string[] addedModuleCodes is specified, then each of the module
    * codes is added to modulesDoneCodes.
    *
    * @param {User} user
@@ -104,7 +104,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
   /**
    * List mods a user can take, based on what the user has completed.
    *
-   * If optional string[] addedModuleCodes is specified, then each of the modules
+   * If string[] addedModuleCodes is specified, then each of the modules
    * are taken as done, and passed into User.canTakeModule.
    *
    * @param {User} user
@@ -113,12 +113,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    */
   async function getEligibleModules(
     user: User,
-    addedModuleCodes?: string[]
+    addedModuleCodes: string[]
   ): Promise<Module[]> {
-    // if undefined
-    if (!addedModuleCodes) {
-      addedModuleCodes = []
-    }
     // 1. get post-reqs
     const postReqs = await getPostReqs(user, addedModuleCodes)
     if (!postReqs) return []
@@ -135,7 +131,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * List all post-reqs of a user.
    * This is a union of all post-reqs, subtract modulesDone and modulesDoing.
    *
-   * If optional string[] addedModuleCodes is specified, then each of the module
+   * If string[] addedModuleCodes is specified, then each of the module
    * codes is added to modulesDoneCodes.
    *
    * @param {User} user
@@ -144,12 +140,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    */
   async function getPostReqs(
     user: User,
-    addedModuleCodes?: string[]
+    addedModuleCodes: string[]
   ): Promise<Module[]> {
-    // if undefined
-    if (!addedModuleCodes) {
-      addedModuleCodes = []
-    }
     // 1. load modulesDone and modulesDoing relations
     copy(await findOneById(user.id), user)
     // 2. get array of module codes of post-reqs (fulfillRequirements)
@@ -214,7 +206,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
       return []
     }
     // 2. Get current eligible modules
-    const eligibleModules = await getEligibleModules(user)
+    const eligibleModules = await getEligibleModules(user, [])
     if (!eligibleModules) return []
     const eligibleModulesCodes = eligibleModules.map(flatten.module)
     // 3. Get unlocked eligible modules
