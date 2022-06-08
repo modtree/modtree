@@ -61,7 +61,6 @@
     "test:server": "jest -c ./tests/jest.config.ts --runInBand tests/server",
     "test:pull": "jest -c ./tests/jest.config.ts --runInBand tests/pull",
     "test:utils": "jest -c ./tests/jest.config.ts --runInBand tests/utils",
-    "test:w": "jest -c ./tests/configs/w.ts --runInBand",
     "graph": "madge --image graph.png",
     "script": "node ./scripts/compile-package-scripts.js",
     "default:env": "sh ./scripts/setup.sh",

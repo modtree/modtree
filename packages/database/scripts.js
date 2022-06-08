@@ -33,7 +33,6 @@ const yarn = {
     server: jest('tests/server'),
     pull: jest('tests/pull'),
     utils: jest('tests/utils'),
-    w: 'jest -c ./tests/configs/w.ts --runInBand',
   },
 }
 
