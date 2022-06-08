@@ -1,1 +1,1 @@
-module.exports = require("eslint-config-modtree/prettier");
+module.exports = require('eslint-config-modtree/prettier')

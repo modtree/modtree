@@ -8,4 +8,4 @@ const graph = {
   pullAll: true,
 };
 
-postman.post("http://localhost:8080/graph/create", graph)
+postman.post("http://localhost:8080/graph/create", graph);

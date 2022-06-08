@@ -1,7 +1,7 @@
 import { container, getSource } from '@src/data-source'
 import { Module } from '@entity'
 import { InitProps } from '@mtypes/init-props'
-import { init } from "@tests/init"
+import { init } from '@tests/init'
 import { setup, teardown, t, Repo } from '@environment'
 import { flatten, oneUp } from '@utils'
 
@@ -27,8 +27,7 @@ it('Gets all post-reqs', async () => {
   // Get post reqs
   expect.assertions(3)
   await container(db, () =>
-    Repo.User
-      .getPostReqs(t.user)
+    Repo.User.getPostReqs(t.user)
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
         t.postReqsCodes = res.map(flatten.module)
@@ -63,9 +62,7 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
-  const postReqs = await container(db, () =>
-    Repo.User.getPostReqs(res)
-  )
+  const postReqs = await container(db, () => Repo.User.getPostReqs(res))
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   expect(postReqs).toEqual([])

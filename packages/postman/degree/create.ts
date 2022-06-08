@@ -19,4 +19,4 @@ const degree = {
   title: "Computer Science",
 };
 
-postman.post("http://localhost:8080/degree/create", degree)
+postman.post("http://localhost:8080/degree/create", degree);

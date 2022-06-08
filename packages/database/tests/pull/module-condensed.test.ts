@@ -14,15 +14,9 @@ afterAll(() => teardown(db))
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
   await container(db, () => Repo.ModuleCondensed.deleteAll())
-  const pullOnEmpty = await container(db, () =>
-    Repo.ModuleCondensed.pull()
-  )
-  const pullOnFull = await container(db, () =>
-    Repo.ModuleCondensed.pull()
-  )
-  const written = await container(db, () =>
-    Repo.ModuleCondensed.find()
-  )
+  const pullOnEmpty = await container(db, () => Repo.ModuleCondensed.pull())
+  const pullOnFull = await container(db, () => Repo.ModuleCondensed.pull())
+  const written = await container(db, () => Repo.ModuleCondensed.find())
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()
   if (!pullOnFull || !pullOnEmpty || !written) return

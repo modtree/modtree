@@ -1,6 +1,6 @@
 import { Degree } from '@entity'
 import { Create, Delete, server, t } from '@environment'
-import { init } from "@tests/init"
+import { init } from '@tests/init'
 import { toBeUserResponse } from '@tests/custom-expect'
 
 beforeAll(async () => {

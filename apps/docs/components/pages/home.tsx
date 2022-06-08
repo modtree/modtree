@@ -1,22 +1,22 @@
 import { features } from '../features'
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
+import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const members = [
   {
-    name: "Nguyen Vu Khang",
-    role: "Faculty of Science",
-    href: "https://github.com/nguyenvukhang",
-    src: "/images/people/khang_headshot.jpg",
+    name: 'Nguyen Vu Khang',
+    role: 'Faculty of Science',
+    href: 'https://github.com/nguyenvukhang',
+    src: '/images/people/khang_headshot.jpg',
   },
   {
-    name: "Tan Wei Seng",
-    role: "School of Computing",
-    href: "https://github.com/weiseng18",
-    src: "/images/people/weiseng_headshot.jpg",
+    name: 'Tan Wei Seng',
+    role: 'School of Computing',
+    href: 'https://github.com/weiseng18',
+    src: '/images/people/weiseng_headshot.jpg',
   },
-];
+]
 
 function Page() {
   return (
@@ -112,7 +112,7 @@ function Page() {
             <p className="mb-6 text-lg leading-normal text-current lg:text-xl">
               <b className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-orange-400">
                 With modtree, we&apos;re doing just that.
-              </b>{" "}
+              </b>{' '}
               We&apos;re abstracting the staggering internet queries needed for
               most degree planning into a single cohesive web-app to serve you a
               world class planning experience.
@@ -124,14 +124,14 @@ function Page() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 function Person(props: {
-  name: string;
-  href: string;
-  role: string;
-  src: string;
+  name: string
+  href: string
+  role: string
+  src: string
 }) {
   return (
     <div className="flex items-center max-w-2xl py-2 mx-auto space-x-4">
@@ -158,7 +158,7 @@ function Person(props: {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Page;
+export default Page

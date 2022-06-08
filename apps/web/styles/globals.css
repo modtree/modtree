@@ -16,7 +16,7 @@ span {
   @apply select-text;
 }
 
-.react-flow__node{
+.react-flow__node {
   @apply bg-transparent rounded-lg p-0.5;
 }
 

@@ -31,7 +31,7 @@ const Base = (props: {
   const shadow = props.focused && !props.hasResults ? 'shadow-md' : ''
   const container = 'flex flex-row items-center'
   const border = 'border border-gray-200'
-  const round = props.hasResults ? 'rounded-t-md' : 'rounded-md' 
+  const round = props.hasResults ? 'rounded-t-md' : 'rounded-md'
   const style = `${container} ${border} ${shadow} ${transition} ${round} ${props.bg}`
   return <div className={style}>{props.children}</div>
 }
@@ -51,13 +51,15 @@ async function handleQuery(
   const upper = value.toUpperCase()
   const backend = process.env.NEXT_PUBLIC_BACKEND
   const url = `${backend}/modules/find/${upper}`
-  fetch(url).then((res) => {
-    res.json().then((result) => {
-      const moduleList: ModuleCondensed[] = result
-      dispatch(setSearchedModuleCondensed(moduleList))
-      reload[1](!reload[0])
+  fetch(url)
+    .then((res) => {
+      res.json().then((result) => {
+        const moduleList: ModuleCondensed[] = result
+        dispatch(setSearchedModuleCondensed(moduleList))
+        reload[1](!reload[0])
+      })
     })
-  }).catch(() => true)
+    .catch(() => true)
 }
 
 export default function SearchBar() {

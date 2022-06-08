@@ -7,6 +7,6 @@ export default configureStore({
   reducer: {
     flow: flowReducer,
     builder: builderReducer,
-    search: searchReducer
+    search: searchReducer,
   },
 })

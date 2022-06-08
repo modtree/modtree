@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { init } from "@tests/init"
+import { init } from '@tests/init'
 import { Create, server, t } from '@environment'
 
 beforeAll(() =>

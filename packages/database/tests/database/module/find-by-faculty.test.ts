@@ -23,9 +23,7 @@ describe('ModuleRepository.findByFaculty', () => {
   })
 
   it('Invalid faculty name', async () => {
-    const res = await container(db, () =>
-      Repo.Module.findByFaculty('ABCDEFGH')
-    )
+    const res = await container(db, () => Repo.Module.findByFaculty('ABCDEFGH'))
     if (!res) return
     expect(res).toBeInstanceOf(Array)
     expect(res.length).toBe(0)

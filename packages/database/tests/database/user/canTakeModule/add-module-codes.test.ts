@@ -1,5 +1,5 @@
 import { container, getSource } from '@src/data-source'
-import { init } from "@tests/init"
+import { init } from '@tests/init'
 import { setup, teardown, Repo, t } from '@environment'
 import { oneUp } from '@utils'
 

@@ -73,6 +73,7 @@ the VCS/git logs more valuable. The general structure of a commit message is:
   1. "!" after the type/scope, and
   2. a "BREAKING CHANGE" footer describing the change.
      Example:
+
      ```
      refactor(provider)!: drop support for Python 2
 

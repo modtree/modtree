@@ -42,7 +42,7 @@ export const get: MethodProps = {
     schema: {
       id: 'string',
       title: 'string',
-      modules: 'string[]'
+      modules: 'string[]',
     },
   },
 }

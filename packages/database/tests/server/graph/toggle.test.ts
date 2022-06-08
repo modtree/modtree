@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { ResponseProps } from '@mtypes/api-response'
-import { init } from "@tests/init"
+import { init } from '@tests/init'
 import { Create, Delete, server } from '@environment'
 
 const t: Partial<{

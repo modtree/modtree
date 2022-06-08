@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Agent } from 'http'
-import { DeleteResult , DataSource, Repository } from 'typeorm'
+import { DeleteResult, DataSource, Repository } from 'typeorm'
 import { ResponseProps } from '@mtypes/api-response'
 import { InitProps } from '@mtypes/init-props'
 import { config } from '@config'

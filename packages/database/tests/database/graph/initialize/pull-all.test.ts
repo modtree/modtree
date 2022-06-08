@@ -2,7 +2,7 @@ import { flatten, oneUp } from '@utils'
 import { container, getSource } from '@src/data-source'
 import { Graph } from '@entity'
 import { setup, teardown, Repo, t } from '@environment'
-import { init } from "@tests/init"
+import { init } from '@tests/init'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

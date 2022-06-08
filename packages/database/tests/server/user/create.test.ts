@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
 import { User } from '@entity'
 import { Delete, server, t } from '@environment'
-import { init } from "@tests/init"
+import { init } from '@tests/init'
 
 afterAll(() => Delete.User(t.userId))
 

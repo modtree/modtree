@@ -16,12 +16,10 @@ test('pull all modules from NUSMods', async () => {
   expect.assertions(3)
   await container(db, () => Repo.Module.deleteAll())
   await container(db, () =>
-    Repo.Module
-      .pull()
-      .then((res) => {
-        expect(res).toBeInstanceOf(Array)
-        expect(res[0]).toBeInstanceOf(Module)
-        expect(res.length).toBeGreaterThan(lowerBound)
-      })
+    Repo.Module.pull().then((res) => {
+      expect(res).toBeInstanceOf(Array)
+      expect(res[0]).toBeInstanceOf(Module)
+      expect(res.length).toBeGreaterThan(lowerBound)
+    })
   )
 })

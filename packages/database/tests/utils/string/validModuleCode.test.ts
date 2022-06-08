@@ -1,4 +1,4 @@
-import { oneUp , validModuleCode } from '@utils'
+import { oneUp, validModuleCode } from '@utils'
 import { getSource } from '@src/data-source'
 import { setup, teardown, Repo, t } from '@environment'
 
