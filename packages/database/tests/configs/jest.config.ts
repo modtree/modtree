@@ -23,7 +23,7 @@ export const all: Config.InitialOptionsWithRootDir = {
 export const database: Config.InitialOptions = {
   ...all,
   testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: ['pull', './tests/server'],
+  testPathIgnorePatterns: ['./tests/pull', './tests/server'],
 }
 
 /**

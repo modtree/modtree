@@ -10,7 +10,11 @@ export const flatten = {
    * @returns {string} module code
    */
   module(module: Module | ModuleCondensed): string {
-    return module.moduleCode
+    try {
+      return module.moduleCode
+    } catch (err) {
+      throw new Error(`Failed flattening module: ${module}`)
+    }
   },
 
   /**

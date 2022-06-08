@@ -137,15 +137,16 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
 
     if (state === 'placed') {
       toggle(graph.modulesPlaced, graph.modulesHidden)
-    } else if (state === 'hidden') {
+      return BaseRepo.save(graph)
+    } if (state === 'hidden') {
       toggle(graph.modulesHidden, graph.modulesPlaced)
-    } else {
-      ModuleRepository.findOneBy({ moduleCode }).then((module) => {
+      return BaseRepo.save(graph)
+    } 
+      return ModuleRepository.findOneByOrFail({ moduleCode }).then((module) => {
         graph.modulesPlaced.push(module)
+        return BaseRepo.save(graph)
       })
-    }
-
-    return BaseRepo.save(graph)
+    
   }
 
   /**
