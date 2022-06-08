@@ -26,7 +26,8 @@ export interface IUserRepository extends IBaseRepo<User, InitProps['User']> {
   canTakeModule(
     user: User,
     moduleCode: string,
-    addModuleCodes: string[]
+    addModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<boolean>
   findOneByUsername(username: string): Promise<User>
   getEligibleModules(user: User, addModuleCodes: string[]): Promise<Module[]>

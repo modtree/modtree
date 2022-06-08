@@ -70,6 +70,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     user: User,
     moduleCode: string,
     addedModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<boolean> {
     // 1. find module
     const module = await ModuleRepository.findOneBy({ moduleCode })
@@ -77,14 +78,16 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     if (!module) return false
     // 2. load modulesDone and modulesDoing relations
     copy(await findOneById(user.id), user)
-    // -- if module already taken, can't take module again
-    const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    // -- add some module codes to done modules
+    let modulesDoneCodes = []
+    if (addUserModulesDone) {
+      // if module already taken, can't take module again
+      const userModulesDoneCodes = user.modulesDone.map(flatten.module)
+      modulesDoneCodes = modulesDoneCodes.concat(userModulesDoneCodes)
+    }
     if (addedModuleCodes && addedModuleCodes.length > 0) {
+      // add some module codes to done modules
       const filtered = await filterTakenModules(user, addedModuleCodes)
-      filtered.forEach((one) => {
-        modulesDoneCodes.push(one)
-      })
+      modulesDoneCodes = modulesDoneCodes.concat(filtered)
     }
     if (await hasTakenModule(user, moduleCode)) {
       return false
@@ -110,10 +113,11 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     const postReqs = await getPostReqs(user, addedModuleCodes)
     if (!postReqs) return []
     // 2. filter post-reqs
-    const promises = postReqs.map((one) =>
-      canTakeModule(user, one.moduleCode, addedModuleCodes)
+    const results = await Promise.all(
+      postReqs.map((one) =>
+        canTakeModule(user, one.moduleCode, addedModuleCodes, true)
+      )
     )
-    const results = await Promise.all(promises)
     const filtered = postReqs.filter((_, idx) => results[idx])
     return filtered
   }
