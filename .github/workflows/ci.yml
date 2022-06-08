@@ -31,8 +31,6 @@ jobs:
   server_tests:
     if: always()
     runs-on: ubuntu-20.04
-    outputs:
-      status: ${{ job.status }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
@@ -50,8 +48,6 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    outputs:
-      status: ${{ job.status }}
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
@@ -66,8 +62,6 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    outputs:
-      status: ${{ job.status }}
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
@@ -82,8 +76,6 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    outputs:
-      status: ${{ job.status }}
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
@@ -105,10 +97,10 @@ jobs:
           BASE_URL="https://github.com/modtree/modtree/actions/runs"
           echo "RUN_URL=${BASE_URL}/${{ github.run_id }}" >> $GITHUB_ENV
           echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
-          emojize PROJECT_BUILD ${{ needs.project_build.outputs.status }}
-          emojize DATABASE_CORE ${{ needs.database_core.outputs.status }}
-          emojize DATABASE_UTILS ${{ needs.database_utils.outputs.status }}
-          emojize SERVER_TESTS ${{ needs.server_tests.outputs.status }}
+          emojize PROJECT_BUILD ${{ needs.project_build.result }}
+          emojize DATABASE_CORE ${{ needs.database_core.result }}
+          emojize DATABASE_UTILS ${{ needs.database_utils.result }}
+          emojize SERVER_TESTS ${{ needs.server_tests.result }}
 
       - name: Send message
         uses: appleboy/telegram-action@master
