@@ -92,10 +92,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
         }
       })
     }
-    if (
-      modulesDoneCodes.includes(moduleCode) ||
-      modulesDoingCodes.includes(moduleCode)
-    ) {
+    if (await hasTakenModule(user, moduleCode)) {
       return false
     }
     // 3. check if PrereqTree is fulfilled
@@ -197,14 +194,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
     copy(await findOneById(user.id), user)
-    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
-    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
-    if (
-      modulesDoneCodes.includes(moduleCode) ||
-      modulesDoingCodes.includes(moduleCode)
-    ) {
+    if (await hasTakenModule(user, moduleCode))
       return []
-    }
     // 2. Get current eligible modules
     const eligibleModules = await getEligibleModules(user, [])
     if (!eligibleModules) return []
