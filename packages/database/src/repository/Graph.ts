@@ -201,7 +201,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * be considered for the output, subject to the criteria.
    *
    * @param {Graph} graph
-   * @param {string} moduleCode
+   * @param {string[]} moduleCodes
    * @param {boolean} addUserModulesDone
    * @returns {Promise<Module[]>}
    */
