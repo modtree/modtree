@@ -69,7 +69,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
   async function canTakeModule(
     user: User,
     moduleCode: string,
-    addedModuleCodes?: string[]
+    addedModuleCodes: string[],
   ): Promise<boolean> {
     // 1. find module
     const module = await ModuleRepository.findOneBy({ moduleCode })
@@ -79,17 +79,11 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     copy(await findOneById(user.id), user)
     // -- if module already taken, can't take module again
     const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     // -- add some module codes to done modules
     if (addedModuleCodes && addedModuleCodes.length > 0) {
-      addedModuleCodes.forEach((one) => {
-        // ignore duplicates
-        if (
-          !modulesDoneCodes.includes(one) &&
-          !modulesDoingCodes.includes(one)
-        ) {
-          modulesDoneCodes.push(one)
-        }
+      const filtered = await filterTakenModules(user, addedModuleCodes)
+      filtered.forEach((one) => {
+        modulesDoneCodes.push(one)
       })
     }
     if (await hasTakenModule(user, moduleCode)) {
@@ -167,13 +161,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
       }
     })
     const postReqCodesArr = Array.from(postReqCodesSet)
-    // 3. filter modulesDone and modulesDoing
-    const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
-    const filtered = postReqCodesArr.filter(
-      (one) =>
-        !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
-    )
+    // 3. filter taken modules
+    const filtered = await filterTakenModules(user, postReqCodesArr)
     // 4. get modules
     const modules = await ModuleRepository.findByCodes(filtered)
     return modules
@@ -229,6 +218,31 @@ export function getUserRepository(database?: DataSource): IUserRepository {
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)
     )
+  }
+
+  /**
+   * Given moduleCodes, removes modules in user.modulesDone or
+   * user.modulesDoing.
+   *
+   * This is meant to be a util method, so it does not convert
+   * module codes
+   *
+   * @param {User} user
+   * @param {string[]} moduleCodes
+   * @returns {Promise<string[]>}
+   */
+  async function filterTakenModules(user: User, moduleCodes: string[]): Promise<string[]> {
+    // load module relations
+    copy(await findOneById(user.id), user)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
+    const modulesTakenCodes = modulesDoneCodes.concat(modulesDoingCodes)
+    // result
+    const result = await Promise.all(
+      moduleCodes.map((one) => !modulesTakenCodes.includes(one))
+    )
+    const filtered = moduleCodes.filter((_, idx) => result[idx])
+    return filtered
   }
 
   /**
@@ -308,6 +322,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     getPostReqs,
     getUnlockedModules,
     hasTakenModule,
+    filterTakenModules,
     findOneById,
     addDegree,
     findDegree,
