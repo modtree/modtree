@@ -1,4 +1,4 @@
-import { getModuleLevel } from '../../src/utils'
+import { getModuleLevel } from '../../../src/utils'
 
 describe('String.getModuleLevel', () => {
   it('Correctly extracts the 4-digit code', () => {

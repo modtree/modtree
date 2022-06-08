@@ -35,7 +35,7 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ['src/migrations/*', 'scripts.js'],
+  ignorePatterns: ['src/migrations/*', 'scripts.js', 'scripts/*'],
   rules: {
     'no-useless-escape': 0, // some seemingly useless escapes are actually required
     'new-cap': 0,

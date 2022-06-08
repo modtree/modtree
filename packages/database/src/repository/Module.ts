@@ -71,7 +71,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     const moduleCodes = new Set(await getCodes())
     const moduleCondesedCodes = await ModuleCondensedRepository.getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
-    console.log(`fetching ${diff.length} modules from NUSMods...`)
+    log.yellow(`fetching ${diff.length} modules from NUSMods...`)
     const [result, fetchQueue, writeQueue] = [[], [], []]
 
     for (let i = 0; i < diff.length; i++) {

@@ -13,7 +13,7 @@ type Color =
   | 'gray'
   | 'grey'
 
-type TextPrinter = (e: any) => void
+type TextPrinter = (...e: any[]) => void
 
 /**
  * prints colored text

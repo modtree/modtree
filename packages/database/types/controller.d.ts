@@ -1,22 +1,28 @@
 import { Request, Response } from 'express'
 
-interface IController {
-  list(req: Request, res: Response): Promise<void>
+type APIEndpoint = (req: Request, res: Response) => Promise<void>
+
+interface IReads {
+  list: APIEndpoint
+}
+
+interface IController extends IReads {
+  create: APIEndpoint
+  get: APIEndpoint
+  delete: APIEndpoint
 }
 
 export interface IUserController extends IController {
-  create(req: Request, res: Response): Promise<void>
-  get(req: Request, res: Response): Promise<void>
+  getFull: APIEndpoint
+  insertDegree: APIEndpoint
 }
 
-export interface IDegreeController extends IController {
-  create(req: Request, res: Response): Promise<void>
-  get(req: Request, res: Response): Promise<void>
-}
+export type IDegreeController = IController
 
 export interface IGraphController extends IController {
-  create(req: Request, res: Response): Promise<void>
-  get(req: Request, res: Response): Promise<void>
+  toggle: APIEndpoint
 }
 
-export type IModuleCondensedController = IController
+export interface IModuleCondensedController extends IReads {
+  find: APIEndpoint
+}

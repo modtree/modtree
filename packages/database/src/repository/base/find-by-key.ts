@@ -13,7 +13,7 @@ import {
  * const BaseRepo = db.getRepository(User)
  * const findOneById = useFindOneByKey(BaseRepo, 'id')
  * findOneById('3316ace0-a791-494a-b1a7-3537e090e61c').then((user) => {
- *   console.log(user)
+ *   log(user)
  * })
  */
 

@@ -1,33 +1,42 @@
 import cors, { CorsOptions } from 'cors'
-import express, { NextFunction, Request, Response } from 'express'
-import { Routes } from './routes'
+import express, { NextFunction, Request, Response, Express } from 'express'
+import { getRoutes } from './routes'
 
-const corsOpts: CorsOptions = {
-  origin: ['https://modtree.vercel.app', 'http://localhost:3000'],
-}
-
-// create express app
-const app = express()
-app.use(cors(corsOpts))
-app.use(express.json())
-// register express routes from defined application routes
-Routes.forEach((route) => {
-  app[route.method](
-    route.route,
-    (req: Request, res: Response, next: NextFunction) => {
-      const result = new route.controller()[route.action](req, res, next)
-      if (result instanceof Promise) {
-        result.then((result) =>
-          result !== null && result !== undefined ? res.send(result) : undefined
-        )
-      } else if (result !== null && result !== undefined) {
-        res.json(result)
+/**
+ * requires database connection to be initialized
+ *
+ * @returns {Express} an express app
+ */
+export function getApp(): Express {
+  const corsOpts: CorsOptions = {
+    origin: ['https://modtree.vercel.app', 'http://localhost:3000'],
+  }
+  // create express app
+  const app = express()
+  app.use(cors(corsOpts))
+  app.use(express.json())
+  // register express routes from defined application routes
+  const routes = getRoutes()
+  routes.forEach((route) => {
+    app[route.method](
+      route.route,
+      ...route.validators,
+      (req: Request, res: Response, next: NextFunction) => {
+        const result = new route.controller()[route.action](req, res, next)
+        if (result instanceof Promise) {
+          result.then((result) =>
+            result !== null && result !== undefined
+              ? res.send(result)
+              : undefined
+          )
+        } else if (result !== null && result !== undefined) {
+          res.json(result)
+        }
       }
-    }
-  )
-})
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).send('modtree server is running')
-})
-
-export default app
+    )
+  })
+  app.get('/', (req: Request, res: Response) => {
+    res.status(200).send('modtree server is running')
+  })
+  return app
+}

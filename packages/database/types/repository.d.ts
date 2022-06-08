@@ -13,7 +13,7 @@ interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
 }
 
 export interface IGraphRepository extends IBaseRepo<Graph, InitProps['Graph']> {
-  toggleModule(graph: Graph, moduleCode: string): Promise<void>
+  toggleModule(graph: Graph, moduleCode: string): Promise<Graph>
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
   findManyByUserAndDegreeId(
     userId: string,
@@ -60,3 +60,12 @@ export interface IModuleCondensedRepository
   getCodes(): Promise<string[]>
   deleteAll(): Promise<void>
 }
+
+export type Repositories = Partial<{
+  Module: IModuleRepository
+  ModuleCondensed: IModuleCondensedRepository
+  User: IUserRepository
+  Degree: IDegreeRepository
+  Graph: IGraphRepository
+}>
+

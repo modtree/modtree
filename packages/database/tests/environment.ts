@@ -9,13 +9,7 @@ import {
   getModuleCondensedRepository,
 } from '../src/repository'
 import { User, Graph, Degree } from '../src/entity'
-import {
-  IModuleRepository,
-  IUserRepository,
-  IGraphRepository,
-  IDegreeRepository,
-  IModuleCondensedRepository,
-} from '../types/repository'
+import { Repositories } from '../types/repository'
 
 type SetupOptions = {
   initialize: boolean
@@ -89,14 +83,6 @@ export function importChecks(props: ImportCheckProps) {
     })
   })
 }
-
-export type Repositories = Partial<{
-  Module: IModuleRepository
-  ModuleCondensed: IModuleCondensedRepository
-  User: IUserRepository
-  Degree: IDegreeRepository
-  Graph: IGraphRepository
-}>
 
 type TestProps = {
   user: User
