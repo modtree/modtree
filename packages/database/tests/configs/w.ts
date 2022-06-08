@@ -1,3 +1,3 @@
-import { w } from './jest.config'
+import { w } from '../jest.config'
 
 export default w

@@ -1,7 +1,7 @@
 import { Config } from '@jest/types'
 
-export const all: Config.InitialOptionsWithRootDir = {
-  rootDir: '../..',
+const all: Config.InitialOptionsWithRootDir = {
+  rootDir: '..',
   moduleNameMapper: {
     '@entity': '<rootDir>/src/entity',
     '@repository': '<rootDir>/src/repository',
@@ -24,32 +24,6 @@ export const all: Config.InitialOptionsWithRootDir = {
   clearMocks: true,
   // actual stuff
   preset: 'ts-jest',
-  testMatch: ['<rootDir>/tests/**/*.test.ts'],
-  testSequencer: '<rootDir>/tests/configs/sequencer.js',
-}
-
-/**
- * use with yarn test:database
- * depended on by github actions
- */
-export const database: Config.InitialOptions = {
-  ...all,
-  testMatch: ['**/tests/**/*.test.ts'],
-  testPathIgnorePatterns: ['./tests/pull', './tests/server'],
-}
-
-/**
- * use with yarn test:server
- * depended on by github actions
- */
-export const server: Config.InitialOptions = {
-  ...all,
-  testMatch: ['**/tests/server/**/*.test.ts'],
-}
-
-export const pull: Config.InitialOptions = {
-  ...all,
-  testMatch: ['**/tests/**/*pull.test.ts'],
 }
 
 const wTest = 'utils'

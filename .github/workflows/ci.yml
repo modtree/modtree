@@ -29,7 +29,8 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       project_build: ${{ steps.project_build.outcome }}
-      database_tests: ${{ steps.database_tests.outcome }}
+      database_core: ${{ steps.database_core.outcome }}
+      database_utils: ${{ steps.database_utils.outcome }}
       server_tests: ${{ steps.server_tests.outcome }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -55,8 +56,8 @@ jobs:
           echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql
           sudo su postgres -c "psql --file=/tmp/setup.sql"
           createdb base
-      - name: 📦 Run database tests
-        id: database_tests
+      - name: 📦 Run database core tests
+        id: database_core
         working-directory: ./packages/database
         continue-on-error: true
         run: |
@@ -66,8 +67,21 @@ jobs:
           TEST_POSTGRES_HOST=localhost \
           TEST_POSTGRES_ACTIVE_DATABASE=base \
           TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
-          TEST_POSTGRES_SYNC="true" \
+          TEST_POSTGRES_SYNC=true \
           yarn ci:test:database
+      - name: 📦 Run database utils tests
+        id: database_utils
+        working-directory: ./packages/database
+        continue-on-error: true
+        run: |
+          TEST_DATABASE_TYPE=POSTGRES \
+          TEST_POSTGRES_USERNAME=runner \
+          TEST_POSTGRES_PASSWORD=runner \
+          TEST_POSTGRES_HOST=localhost \
+          TEST_POSTGRES_ACTIVE_DATABASE=base \
+          TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
+          TEST_POSTGRES_SYNC=true \
+          yarn ci:test:utils
       - name: 📦 Run server tests
         id: server_tests
         working-directory: ./packages/database
@@ -79,21 +93,20 @@ jobs:
           TEST_POSTGRES_HOST=localhost \
           TEST_POSTGRES_ACTIVE_DATABASE=base \
           TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql \
-          TEST_POSTGRES_SYNC="true" \
+          TEST_POSTGRES_SYNC=true \
           yarn ci:test:server
       - name: Summary
         run: |
-          A="${{ steps.project_build.outcome }}"
-          B="${{ steps.database_tests.outcome }}"
-          C="${{ steps.server_tests.outcome }}"
+          A=${{ steps.project_build.outcome }}
+          B=${{ steps.database_core.outcome }}
+          C=${{ steps.database_utils.outcome }}
+          D=${{ steps.server_tests.outcome }}
           echo "build: $A"
-          echo "database: $B"
-          echo "server: $C"
-          if [[ $A == "success" && $B == "success" && $C == "success" ]]; then
-            exit 0
-          else
-            exit 1
-          fi
+          echo "database core: $B"
+          echo "database utils: $C"
+          echo "server: $D"
+          all=($A $B $C $D)
+          [[ "${all[*]}" =~ "failure" ]] && exit 1 || exit 0
 
   telegram:
     needs: [pre_job, ci]
@@ -105,7 +118,8 @@ jobs:
           echo "logs"
           echo "───────────────────────────────────"
           echo "project build:  ${{ needs.ci.outputs.project_build }}"
-          echo "database tests: ${{ needs.ci.outputs.database_tests }}"
+          echo "database core tests: ${{ needs.ci.outputs.database_core }}"
+          echo "database utils tests: ${{ needs.ci.outputs.database_utils }}"
           echo "server tests:   ${{ needs.ci.outputs.server_tests }}"
           echo "───────────────────────────────────"
 
@@ -118,7 +132,8 @@ jobs:
           echo "RUN_URL=https://github.com/modtree/modtree/actions/runs/${{ github.run_id }}" >> $GITHUB_ENV; \
           echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV; \
           emojize PROJECT_BUILD ${{ needs.ci.outputs.project_build }}
-          emojize DATABASE_TESTS ${{ needs.ci.outputs.database_tests }}
+          emojize DATABASE_CORE ${{ needs.ci.outputs.database_core }}
+          emojize DATABASE_UTILS ${{ needs.ci.outputs.database_utils }}
           emojize SERVER_TESTS ${{ needs.ci.outputs.server_tests }}
 
       - name: Send message
@@ -131,6 +146,7 @@ jobs:
           message: |
             `${{ env.SHORT_SHA }}` ${{ github.event.head_commit.message }}
             ${{ env.PROJECT_BUILD }} lint + build
-            ${{ env.DATABASE_TESTS }} database tests
+            ${{ env.DATABASE_CORE }} database core
+            ${{ env.DATABASE_UTILS }} database utils
             ${{ env.SERVER_TESTS }} server tests
             [view logs](${{ env.RUN_URL }})
