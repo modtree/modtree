@@ -27,7 +27,7 @@ retaining the schema.
 ## Module commands
 
 `yarn module:fetch-one` fetches exactly one module's full details from
-NUSMods API's [moduleCode endpoint][moduleCode].
+NUSMods API's [moduleCode endpoint][modulecode].
 
 `yarn module:pull` does a fetch for every module (condensed) that
 exists in the database that doesn't yet have corresponding full module
@@ -35,8 +35,7 @@ data.
 
 `yarn module:get-codes` lists all module codes of modules in the
 database.  
-(NOTE: this reads from a different table than `yarn
-modcon:get-codes`)
+(NOTE: this reads from a different table than `yarn modcon:get-codes`)
 
 `yarn module:get` lists all modules in the database
 
@@ -50,4 +49,4 @@ script)
 [nusmods-api]: https://api.nusmods.com/v2/
 [modulelist]: https://api.nusmods.com/v2/#/Modules/get__acadYear__moduleList_json
 [moduleinfo]: https://api.nusmods.com/v2/#/Modules/get__acadYear__moduleInfo_json
-[moduleCode]: https://api.nusmods.com/v2/#/Modules/get__acadYear__modules__moduleCode__json
+[modulecode]: https://api.nusmods.com/v2/#/Modules/get__acadYear__modules__moduleCode__json

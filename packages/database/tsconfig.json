@@ -11,7 +11,21 @@
     "declaration": true,
     "sourceMap": true,
     "types": ["@types/jest"],
-    "typeRoots": ["./types"]
+    "typeRoots": ["./types"],
+    "baseUrl": ".",
+    "paths": {
+      "@entity": ["./src/entity"],
+      "@mtypes/*": ["./types/*"],
+      "@utils": ["./src/utils"],
+      "@repository": ["./src/repository"],
+      "@config": ["./src/config"],
+      "@controller": ["./src/controller"],
+      "@sql": ["./src/sql"],
+      "@environment": ["./tests/environment"],
+      "@tests/*": ["./tests/*"],
+      "@init": ["./tests/init"],
+      "@src/*": ["./src/*"]
+    }
   },
   "include": ["src", "tests", "types"],
   "exclude": ["dist", "node_modules"]

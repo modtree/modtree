@@ -16,7 +16,8 @@ sub > p {
   @apply text-xl text-gray-500;
 }
 
-.logo, .dark .logo {
+.logo,
+.dark .logo {
   background-image: url('/logo-light.svg');
   @apply bg-auto bg-no-repeat h-14 w-64;
 }

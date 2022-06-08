@@ -1,7 +1,7 @@
-import { container, getSource } from '../../src/data-source'
-import { setup, teardown, Repo } from '../environment'
-import { ModuleCondensed } from '../../src/entity'
-import { oneUp } from '../../src/utils'
+import { container, getSource } from '@src/data-source'
+import { setup, teardown, Repo } from '@environment'
+import { ModuleCondensed } from '@entity'
+import { oneUp } from '@utils'
 
 const lowerBound = 6000
 
@@ -14,15 +14,9 @@ afterAll(() => teardown(db))
 jest.setTimeout(10000)
 test('moduleCondensed.pull', async () => {
   await container(db, () => Repo.ModuleCondensed.deleteAll())
-  const pullOnEmpty = await container(db, () =>
-    Repo.ModuleCondensed.pull()
-  )
-  const pullOnFull = await container(db, () =>
-    Repo.ModuleCondensed.pull()
-  )
-  const written = await container(db, () =>
-    Repo.ModuleCondensed.find()
-  )
+  const pullOnEmpty = await container(db, () => Repo.ModuleCondensed.pull())
+  const pullOnFull = await container(db, () => Repo.ModuleCondensed.pull())
+  const written = await container(db, () => Repo.ModuleCondensed.find())
 
   expect([pullOnFull, pullOnEmpty, written]).toBeDefined()
   if (!pullOnFull || !pullOnEmpty || !written) return

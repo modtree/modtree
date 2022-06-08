@@ -29,7 +29,7 @@ export const builder = createSlice({
     toggleBuilderModule: (state, action: PayloadAction<ModuleCondensed>) => {
       const p = action.payload
       const copy = state.moduleCondensed
-      const match = copy.filter(x => x.moduleCode === p.moduleCode)
+      const match = copy.filter((x) => x.moduleCode === p.moduleCode)
       if (match.length === 0) copy.push(p)
       state.moduleCondensed = copy
     },

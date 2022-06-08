@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
-import { Graph } from '../../../src/entity'
-import { Create, Delete, server, t } from '../environment'
-import { init } from '../../init'
+import { Graph } from '@entity'
+import { Create, Delete, server, t } from '@environment'
+import { init } from '@tests/init'
 
 beforeAll(() =>
   Promise.all([Create.User(init.user2), Create.Degree(init.degree1)]).then(

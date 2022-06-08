@@ -1,6 +1,6 @@
-import { oneUp , validModuleCode } from '../../../src/utils'
-import { getSource } from '../../../src/data-source'
-import { setup, teardown, Repo, t } from '../../environment'
+import { oneUp, validModuleCode } from '@utils'
+import { getSource } from '@src/data-source'
+import { setup, teardown, Repo, t } from '@environment'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

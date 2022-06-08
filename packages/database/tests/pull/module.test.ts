@@ -1,7 +1,7 @@
-import { container, getSource } from '../../src/data-source'
-import { Module } from '../../src/entity'
-import { Repo, setup, teardown } from '../environment'
-import { oneUp } from '../../src/utils'
+import { container, getSource } from '@src/data-source'
+import { Module } from '@entity'
+import { Repo, setup, teardown } from '@environment'
+import { oneUp } from '@utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -16,12 +16,10 @@ test('pull all modules from NUSMods', async () => {
   expect.assertions(3)
   await container(db, () => Repo.Module.deleteAll())
   await container(db, () =>
-    Repo.Module
-      .pull()
-      .then((res) => {
-        expect(res).toBeInstanceOf(Array)
-        expect(res[0]).toBeInstanceOf(Module)
-        expect(res.length).toBeGreaterThan(lowerBound)
-      })
+    Repo.Module.pull().then((res) => {
+      expect(res).toBeInstanceOf(Array)
+      expect(res[0]).toBeInstanceOf(Module)
+      expect(res.length).toBeGreaterThan(lowerBound)
+    })
   )
 })

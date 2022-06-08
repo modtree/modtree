@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios'
-import { Degree } from '../../../src/entity'
-import { Delete, server, t } from '../environment'
-import { init } from '../../init'
-import { toBeUserResponse } from '../expect-extend'
+import { Degree } from '@entity'
+import { Delete, server, t } from '@environment'
+import { init } from '@tests/init'
+import { toBeUserResponse } from '@tests/custom-expect'
 
 beforeAll(() => {
   expect.extend({ toBeUserResponse })

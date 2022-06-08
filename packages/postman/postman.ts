@@ -13,8 +13,8 @@ const box = (t: string, color: string) =>
   });
 
 const print = {
-  status: () => console.log(box('STATUS', 'green')),
-  data: () => console.log(box('DATA', 'green')),
+  status: () => console.log(box("STATUS", "green")),
+  data: () => console.log(box("DATA", "green")),
 };
 
 const log = {

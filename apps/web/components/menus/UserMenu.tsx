@@ -53,8 +53,7 @@ export default function UserMenu() {
   }
 
   useEffect(() => {
-    if (user && user.email)
-      getUsername(user.email)
+    if (user && user.email) getUsername(user.email)
   }, [user])
 
   return (
@@ -65,7 +64,7 @@ export default function UserMenu() {
       <div className={'text-sm mx-4'}>
         Username: <span className={'font-bold'}>{username}</span>
       </div>
-      <Separator/>
+      <Separator />
       <MenuItem text="Your Profile" onClick={() => alert('Open Profile')} />
       <MenuItem text="Settings" onClick={() => alert('Open settings')} />
       <MenuItem text="Sign out" href="/api/auth/logout" />

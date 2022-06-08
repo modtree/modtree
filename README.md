@@ -6,10 +6,10 @@ Modtree is a project that seeks to leverage [existing
 data](https://api.nusmods.com/v2/) in a graph-oriented visualization
 tool in order to:
 
-* Increase clarity in degree planning
-* Allow students to efficiently experiment with different degree paths
-* Minimize mental overhead and time spent to source for degree data
-* Improve module information accessibility
+- Increase clarity in degree planning
+- Allow students to efficiently experiment with different degree paths
+- Minimize mental overhead and time spent to source for degree data
+- Improve module information accessibility
 
 ## Project Layout
 

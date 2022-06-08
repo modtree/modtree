@@ -9,7 +9,9 @@ const TabSelect = (props: {
   // onClick={() => props.setSelected(index)}
   const on = props.isSelected === true
   const accent = 'hsl(var(--nextra-primary-hue), 100%, 50%)'
-  const style = on ? { color: accent, borderColor: accent } : { borderColor: 'transparent' }
+  const style = on
+    ? { color: accent, borderColor: accent }
+    : { borderColor: 'transparent' }
   return (
     <div
       style={style}

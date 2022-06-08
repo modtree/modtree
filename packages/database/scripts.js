@@ -1,18 +1,19 @@
-const jest = (config) => `jest -c ./tests/configs/${config}.ts --runInBand`
+const jest = (filter) => `jest -c ./tests/jest.config.ts --runInBand ${filter}`
 const yarn = {
   ci: {
     lint: 'eslint .',
     build: 'yarn ci:lint && yarn build && yarn build:test',
-    restore: 'NODE_ENV=test ts-node ./tests/server/restore.ts',
+    restore: 'NODE_ENV=test ts-node ./tests/restore-server.ts',
     start: 'NODE_ENV=test node dist/server',
     dev: 'yarn build && yarn ci:start',
     test: {
       database: 'yarn test:database',
+      utils: 'yarn test:utils',
       server:
         'yarn ci:restore && ' +
         'yarn start-server-and-test ' +
         "'yarn ci:dev' http://localhost:8080 'yarn test:server'",
-      all: 'yarn ci:test:database && yarn ci:test:server',
+      all: 'yarn ci:test:database && yarn ci:test:server && yarn ci:test:utils',
     },
   },
   lint: 'eslint --fix .',
@@ -26,12 +27,12 @@ const yarn = {
   },
   dev: 'nodemon ./src/server/index.ts',
   test: {
-    _: jest('database'),
-    // narrow testing with `yarn test:database graph`
-    database: jest('database'),
-    server: jest('server'),
-    pull: jest('pull'),
-    w: jest('w'),
+    // narrow testing with `yarn test database/graph`
+    _: 'jest -c ./tests/jest.config.ts --runInBand',
+    database: jest('tests/database'),
+    server: jest('tests/server'),
+    pull: jest('tests/pull'),
+    utils: jest('tests/utils'),
   },
 }
 

@@ -1,40 +1,40 @@
-import Link from "next/link";
+import Link from 'next/link'
 
 function FooterLink({ href, children }) {
   const classes =
-    "text-sm text-gray-500 no-underline betterbetterhover:hover:betterhover:hover:text-gray-700 betterbetterhover:hover:dark:betterhover:hover:text-white  transition";
-  if (href.startsWith("http")) {
+    'text-sm text-gray-500 no-underline betterbetterhover:hover:betterhover:hover:text-gray-700 betterbetterhover:hover:dark:betterhover:hover:text-white  transition'
+  if (href.startsWith('http')) {
     return (
       <a href={href} className={classes}>
         {children}
       </a>
-    );
+    )
   }
   return (
     <Link href={href}>
       <a className={classes}>{children}</a>
     </Link>
-  );
+  )
 }
 
 function FooterHeader({ children }) {
-  return <h3 className="text-sm text-gray-900 dark:text-white">{children}</h3>;
+  return <h3 className="text-sm text-gray-900 dark:text-white">{children}</h3>
 }
 
 const navigation = {
   general: [
-    { name: "Documentation", href: "/docs" },
-    { name: "API Reference", href: "/reference" },
-    { name: "Releases", href: "https://github.com/modtree/modtree/releases" },
-    { name: "FAQ", href: "/docs/faq" },
+    { name: 'Documentation', href: '/docs' },
+    { name: 'API Reference', href: '/reference' },
+    { name: 'Releases', href: 'https://github.com/modtree/modtree/releases' },
+    { name: 'FAQ', href: '/docs/faq' },
   ],
   support: [
     {
-      name: "GitHub",
-      href: "https://github.com/modtree/modtree",
+      name: 'GitHub',
+      href: 'https://github.com/modtree/modtree',
     },
   ],
-};
+}
 
 export function Footer() {
   return (
@@ -78,5 +78,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

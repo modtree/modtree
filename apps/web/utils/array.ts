@@ -24,7 +24,7 @@ type StrRecord = Record<string, any>
  * @param {StrRecord} target
  */
 export function copy(source: StrRecord, target: StrRecord) {
-  Object.keys(source).forEach(key => {
+  Object.keys(source).forEach((key) => {
     target[key] = source[key]
   })
 }

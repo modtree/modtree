@@ -68,4 +68,3 @@ export type Repositories = Partial<{
   Degree: IDegreeRepository
   Graph: IGraphRepository
 }>
-

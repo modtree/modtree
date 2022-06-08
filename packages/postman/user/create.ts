@@ -52,4 +52,4 @@ const user2 = {
   graduationSemester: 2,
 };
 
-postman.post("http://localhost:8080/user/create", user2)
+postman.post("http://localhost:8080/user/create", user2);

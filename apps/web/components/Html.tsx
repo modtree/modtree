@@ -1,4 +1,9 @@
-import { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, ReactElement } from 'react'
+import {
+  ChangeEvent,
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  ReactElement,
+} from 'react'
 import { UseState } from 'types'
 
 function composeCss(base: string, added: string | undefined): string {
@@ -42,14 +47,12 @@ type BaseInputProps = DetailedHTMLProps<
   HTMLInputElement
 >
 
-
 type InputProps = BaseInputProps & {
   displayState: UseState<string>
   /*eslint no-unused-vars: ["error", { "args": "none" }]*/
   callback?: (value: string) => any | void
   className?: string
 }
-
 
 export const Input = (props: InputProps) => {
   const [display, setDisplay] = props.displayState
