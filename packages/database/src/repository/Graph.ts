@@ -210,12 +210,8 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
     copy(await DegreeRepository.findOneById(graph.degree.id), graph.degree)
 
     // 1. Get all post-reqs for this mod
-    const module = await ModuleRepository.findOneBy({ moduleCode })
-    const postReqs = module.fulfillRequirements
-    if (postReqs.length === 0) {
-      // deal with empty array gracefully
-      return []
-    }
+    const postReqs = await UserRepository.getPostReqs(graph.user, [moduleCode], true)
+    const postReqsCodes = postReqs.map(flatten.module)
 
     // 2. Filter for eligible modules
     const allEligibleModules = await UserRepository.getEligibleModules(
@@ -223,7 +219,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
     )
     if (!allEligibleModules) return [] // temp fix
     const filtered = allEligibleModules.filter((one) =>
-      postReqs.includes(one.moduleCode)
+      postReqsCodes.includes(one.moduleCode)
     )
 
     // 3. Transform filtered into data with fields to sort by
