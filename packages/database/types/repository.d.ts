@@ -19,7 +19,7 @@ export interface IGraphRepository extends IBaseRepo<Graph, InitProps['Graph']> {
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]>
-  suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]>
+  suggestModules(graph: Graph, moduleCodes: string[]): Promise<Module[]>
 }
 
 export interface IUserRepository extends IBaseRepo<User, InitProps['User']> {

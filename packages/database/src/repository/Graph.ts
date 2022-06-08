@@ -201,16 +201,16 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * @param {string} moduleCode
    * @returns {Promise<Module[]>}
    */
-  async function suggestModulesFromOne(
+  async function suggestModules(
     graph: Graph,
-    moduleCode: string
+    moduleCodes: string[]
   ): Promise<Module[]> {
     // Load relations
     copy(await findOneById(graph.id), graph)
     copy(await DegreeRepository.findOneById(graph.degree.id), graph.degree)
 
     // 1. Get all post-reqs for this mod
-    const postReqs = await UserRepository.getPostReqs(graph.user, [moduleCode], true)
+    const postReqs = await UserRepository.getPostReqs(graph.user, moduleCodes, true)
     const postReqsCodes = postReqs.map(flatten.module)
 
     // 2. Filter for eligible modules
@@ -279,7 +279,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
     findOneById,
     findOneByUserAndDegreeId,
     findManyByUserAndDegreeId,
-    suggestModulesFromOne,
+    suggestModules,
     deleteAll,
   })
 }

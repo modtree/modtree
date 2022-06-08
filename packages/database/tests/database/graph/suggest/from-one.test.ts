@@ -61,11 +61,11 @@ const expected = [
   'CS2030S',
 ]
 
-describe('Graph.suggestModulesFromOne', () => {
+describe('Graph.suggestModules (from one)', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        Repo.Graph.suggestModulesFromOne(t.graph, 'CS1010')
+        Repo.Graph.suggestModules(t.graph, ['CS1010'])
       )
       expect(res).toBeDefined()
       if (!res) return
