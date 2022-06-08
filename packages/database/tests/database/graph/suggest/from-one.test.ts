@@ -28,6 +28,8 @@ const userProps: InitProps['User'] = {
   modulesDoing: ['IT2002'],
 }
 
+jest.setTimeout(15000)
+
 beforeAll(() =>
   setup(db)
     .then(() =>

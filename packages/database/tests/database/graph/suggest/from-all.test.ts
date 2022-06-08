@@ -75,6 +75,8 @@ const expected = [
   'CS2040S',
 ]
 
+jest.setTimeout(15000)
+
 describe('Graph.suggestModules (from many)', () => {
   it('Suggests post-reqs of the given module which the user is eligible for', async () => {
     const res = await container(db, () =>
