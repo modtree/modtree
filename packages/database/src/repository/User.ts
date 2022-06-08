@@ -61,9 +61,13 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * If string[] addedModuleCodes is specified, then each of the module
    * codes is added to modulesDoneCodes.
    *
+   * If addUserModulesDone is true, then each module of user.modulesDone will
+   * be considered for the output, subject to the criteria.
+   *
    * @param {User} user
    * @param {string} moduleCode
    * @param {string[]} addedModuleCodes
+   * @param {boolean} addUserModulesDone
    * @returns {Promise<boolean>}
    */
   async function canTakeModule(
@@ -129,8 +133,12 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * If string[] addedModuleCodes is specified, then each of the module
    * codes is added to modulesDoneCodes.
    *
+   * If addUserModulesDone is true, then each module of user.modulesDone will
+   * be considered for the output, subject to the criteria.
+   *
    * @param {User} user
    * @param {string[]} addedModuleCodes
+   * @param {boolean} addUserModulesDone
    * @returns {Promise<Module[]>}
    */
   async function getPostReqs(
