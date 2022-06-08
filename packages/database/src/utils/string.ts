@@ -44,7 +44,7 @@ export function nonEmptyString(value: any): boolean {
 }
 
 /**
- * checks if the input is a non-empty string
+ * checks if the input is a valid module code
  *
  * @param {string} moduleCode
  * @returns {boolean}
