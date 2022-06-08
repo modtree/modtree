@@ -222,6 +222,25 @@ export function getUserRepository(database?: DataSource): IUserRepository {
   }
 
   /**
+   * Returns true if the moduleCode belongs to a module is in
+   * user.modulesDone or user.modulesDoing
+   *
+   * @param {User} user
+   * @param {string} moduleCode
+   * @returns {Promise<boolean>}
+   */
+  async function hasTakenModule(user: User, moduleCode: string): Promise<boolean> {
+    // load module relations
+    copy(await findOneById(user.id), user)
+    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
+    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    return (
+      modulesDoneCodes.includes(moduleCode) ||
+      modulesDoingCodes.includes(moduleCode)
+    )
+  }
+
+  /**
    * @param {string} username
    * @returns {Promise<User>}
    */
@@ -297,6 +316,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     getEligibleModules,
     getPostReqs,
     getUnlockedModules,
+    hasTakenModule,
     findOneById,
     addDegree,
     findDegree,

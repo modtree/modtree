@@ -32,6 +32,7 @@ export interface IUserRepository extends IBaseRepo<User, InitProps['User']> {
   getEligibleModules(user: User, addModuleCodes: string[]): Promise<Module[]>
   getPostReqs(user: User, addModuleCodes: string[]): Promise<Module[]>
   getUnlockedModules(user: User, moduleCode: string): Promise<Module[]>
+  hasTakenModule(user: User, moduleCode: string): Promise<boolean>
   addDegree(user: User, degreeId: string): Promise<void>
   findDegree(user: User, degreeId: string): Promise<Degree>
   removeDegree(user: User, degreeId: string): Promise<void>
