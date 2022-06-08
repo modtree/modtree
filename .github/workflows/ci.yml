@@ -3,12 +3,10 @@ name: ci
 on:
   workflow_dispatch:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, synchronize]
   push:
     branches:
       - main
-      - k
-      - w
 
 env:
   PREFIX: TEST_DATABASE_TYPE=POSTGRES TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner TEST_POSTGRES_HOST=localhost TEST_POSTGRES_ACTIVE_DATABASE=base TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql TEST_POSTGRES_SYNC=true
@@ -37,7 +35,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
-      - run: ${{ env.POSTGRES_INIT }}
+      - run: yarn install --frozen-lockfile --silent
+      - name: 🔥 Setup PostgreSQL
+        run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run server tests
         working-directory: ./packages/database
         run: ${{ env.PREFIX }} yarn ci:test:server
@@ -51,7 +51,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
-      - run: ${{ env.POSTGRES_INIT }}
+      - name: 🧶 Install yarn
+        run: yarn install --frozen-lockfile --silent
+      - name: 🔥 Setup PostgreSQL
+        run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run database core tests
         working-directory: ./packages/database
         run: ${{ env.PREFIX }} yarn ci:test:database
@@ -65,6 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
+      - run: yarn install --frozen-lockfile --silent
       - run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run database utils tests
         working-directory: ./packages/database
@@ -79,6 +83,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
+      - run: yarn install --frozen-lockfile --silent
       - name: 📦 Build & lint entire project
         run: yarn ci:build
 
