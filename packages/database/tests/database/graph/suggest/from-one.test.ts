@@ -1,4 +1,4 @@
-import { container, endpoint, getSource } from '@src/data-source'
+import { container, getSource } from '@src/data-source'
 import { Module } from '@entity'
 import { setup, teardown, Repo, t } from '@environment'
 import { InitProps } from '@mtypes/init-props'
@@ -65,7 +65,7 @@ describe('Graph.suggestModules (from one)', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        Repo.Graph.suggestModules(t.graph, ['CS1010'])
+        Repo.Graph.suggestModules(t.graph, ['CS1010'], false)
       )
       expect(res).toBeDefined()
       if (!res) return

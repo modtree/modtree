@@ -78,7 +78,7 @@ const expected = [
 describe('Graph.suggestModules (from many)', () => {
   it('Suggests post-reqs of the given module which the user is eligible for', async () => {
     const res = await container(db, () =>
-      Repo.Graph.suggestModules(t.graph, ['CS1010', 'CS1231'])
+      Repo.Graph.suggestModules(t.graph, ['CS1010', 'CS1231'], false)
     )
     expect(res).toBeDefined()
     if (!res) return
