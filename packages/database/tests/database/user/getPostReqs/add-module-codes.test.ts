@@ -19,7 +19,7 @@ it('Gets all post-reqs', async () => {
   const addModuleCodes = ['MA2001']
   // Get post reqs
   const postReqs = await container(db, () =>
-    Repo.User.getPostReqs(t.user, addModuleCodes)
+    Repo.User.getPostReqs(t.user, addModuleCodes, true)
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return
@@ -41,7 +41,7 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   const addModuleCodes = ['CP2106']
   // Get post reqs
   const postReqs = await container(db, () =>
-    Repo.User.getPostReqs(t.user, addModuleCodes)
+    Repo.User.getPostReqs(t.user, addModuleCodes, true)
   )
   expect(postReqs).toBeDefined()
   if (!postReqs) return

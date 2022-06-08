@@ -110,7 +110,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     addedModuleCodes: string[]
   ): Promise<Module[]> {
     // 1. get post-reqs
-    const postReqs = await getPostReqs(user, addedModuleCodes)
+    const postReqs = await getPostReqs(user, addedModuleCodes, true)
     if (!postReqs) return []
     // 2. filter post-reqs
     const results = await Promise.all(
@@ -135,35 +135,40 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    */
   async function getPostReqs(
     user: User,
-    addedModuleCodes: string[]
+    addedModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<Module[]> {
     // 1. load modulesDone and modulesDoing relations
     copy(await findOneById(user.id), user)
     // 2. get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodesSet = new Set<string>()
-    user.modulesDone.forEach((module: Module) => {
-      // can be empty string
-      if (module.fulfillRequirements instanceof Array) {
-        module.fulfillRequirements.forEach((moduleCode: string) => {
-          postReqCodesSet.add(moduleCode)
-        })
-      }
-    })
-    const addedModules = await Promise.all(
-      addedModuleCodes.map((one) =>
-        ModuleRepository.findOneBy({
-          moduleCode: one,
-        })
+    if (addUserModulesDone) {
+      user.modulesDone.forEach((module: Module) => {
+        // can be empty string
+        if (module.fulfillRequirements instanceof Array) {
+          module.fulfillRequirements.forEach((moduleCode: string) => {
+            postReqCodesSet.add(moduleCode)
+          })
+        }
+      })
+    }
+    if (addedModuleCodes.length > 0) {
+      const addedModules = await Promise.all(
+        addedModuleCodes.map((one) =>
+          ModuleRepository.findOneBy({
+            moduleCode: one,
+          })
+        )
       )
-    )
-    addedModules.forEach((module: Module) => {
-      // can be empty string
-      if (module.fulfillRequirements instanceof Array) {
-        module.fulfillRequirements.forEach((moduleCode: string) => {
-          postReqCodesSet.add(moduleCode)
-        })
-      }
-    })
+      addedModules.forEach((module: Module) => {
+        // can be empty string
+        if (module.fulfillRequirements instanceof Array) {
+          module.fulfillRequirements.forEach((moduleCode: string) => {
+            postReqCodesSet.add(moduleCode)
+          })
+        }
+      })
+    }
     const postReqCodesArr = Array.from(postReqCodesSet)
     // 3. filter taken modules
     const filtered = await filterTakenModules(user, postReqCodesArr)
