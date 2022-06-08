@@ -26,11 +26,4 @@ const all: Config.InitialOptionsWithRootDir = {
   preset: 'ts-jest',
 }
 
-const wTest = 'utils'
-export const w: Config.InitialOptions = {
-  ...all,
-  testMatch: [`**/tests/**/${wTest}.test.ts`],
-  silent: false,
-}
-
 export default all
