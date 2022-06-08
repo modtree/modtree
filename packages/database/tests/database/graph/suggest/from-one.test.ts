@@ -90,9 +90,7 @@ describe('Graph.suggestModules (from one)', () => {
   describe('Does not suggest post-reqs of the given module', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
-      const res = await endpoint(db, () =>
-        container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
-      )
+      const res = await container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
       expect(res).toBeDefined()
       if (!res) return
       t.postReqs = res.fulfillRequirements
