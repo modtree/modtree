@@ -36,8 +36,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
       - run: yarn install --frozen-lockfile --silent
-      - name: 🔥 Setup PostgreSQL
-        run: ${{ env.POSTGRES_INIT }}
+      - run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run server tests
         working-directory: ./packages/database
         run: ${{ env.PREFIX }} yarn ci:test:server
@@ -51,10 +50,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
-      - name: 🧶 Install yarn
-        run: yarn install --frozen-lockfile --silent
-      - name: 🔥 Setup PostgreSQL
-        run: ${{ env.POSTGRES_INIT }}
+      - run: yarn install --frozen-lockfile --silent
+      - run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run database core tests
         working-directory: ./packages/database
         run: ${{ env.PREFIX }} yarn ci:test:database
@@ -107,7 +104,24 @@ jobs:
           emojize DATABASE_UTILS ${{ needs.database_utils.result }}
           emojize SERVER_TESTS ${{ needs.server_tests.result }}
 
-      - name: Send message
+      - name: Send message (PR)
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: appleboy/telegram-action@master
+        with:
+          disable_web_page_preview: true
+          to: ${{ secrets.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            `${{ env.SHORT_SHA }}`  #${{ github.event.pull_request.number }}  ${{ github.event.pull_request.title }}
+            ${{ env.PROJECT_BUILD }} lint + build
+            ${{ env.DATABASE_CORE }} database core
+            ${{ env.DATABASE_UTILS }} database utils
+            ${{ env.SERVER_TESTS }} server tests
+            [view logs](${{ env.RUN_URL }})
+
+      - name: Send message (Push)
+        if: ${{ github.event_name == 'push' }}
         uses: appleboy/telegram-action@master
         with:
           disable_web_page_preview: true
