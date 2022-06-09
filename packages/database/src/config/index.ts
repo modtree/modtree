@@ -1,7 +1,7 @@
 import { config as dotenvConfig } from 'dotenv'
 import { DataSource } from 'typeorm'
 import { ModuleCondensed, Module, User, Degree, Graph } from '@modtree/entity'
-import { DataSourceOptions } from '../../types/modtree'
+import { DataSourceOptions } from '@modtree/types'
 import { getDatabaseType, getDatabasePort, getPrefix, boxLog } from './utils'
 
 /** read from .env file (no matter what NODE_ENV) */

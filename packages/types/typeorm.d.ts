@@ -1,6 +1,20 @@
-/**
- * the end goal here is to eventually import all types directly from TypeORM,
- * so this file will not have to exist.
- */
+import type { DatabaseType } from 'typeorm'
 
-export type EntityConstructor<T> = new () => T
+export type AsyncFunction<T> = () => Promise<T>
+
+type SupportedDatabases = Extract<DatabaseType, 'mysql' | 'postgres'>
+
+type DataSourceOptions = {
+  type: SupportedDatabases
+  rootDir: string
+  restoreSource: string
+  port: number
+  database: string
+  username: string
+  password: string
+  host: string
+  migrations: string[]
+  entities: any[]
+  synchronize: boolean
+  migrationsRun: boolean
+}

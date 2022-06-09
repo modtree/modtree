@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
-import { ModtreeFunction } from '../types/modtree'
+import { AsyncFunction } from '@modtree/types'
 import { config } from './config'
 import { log } from './cli'
 
@@ -21,7 +21,7 @@ export function getSource(database: string): DataSource {
  * a wrapper for typeorm-based database connections
  *
  * @param {DataSource} database
- * @param {ModtreeFunction} fn
+ * @param {AsyncFunction} fn
  * @returns {Promise<T | void>}
  */
 export function container<T>(
@@ -39,12 +39,12 @@ export function container<T>(
  * meant to be an overall wrapper for all endpoint functions.
  *
  * @param {DataSource} database
- * @param {ModtreeFunction<T>} callback
+ * @param {AsyncFunction<T>} callback
  * @returns {Promise<T | void>}
  */
 export function endpoint<T>(
   database: DataSource,
-  callback: ModtreeFunction<T>
+  callback: AsyncFunction<T>
 ): Promise<T | void> {
   const response = callback()
     .catch((err) => {

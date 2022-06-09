@@ -1,4 +1,4 @@
-import { SupportedDatabases, DataSourceOptions } from '../../types/modtree'
+import { SupportedDatabases, DataSourceOptions } from '@modtree/types'
 import { box } from '../cli'
 
 const typeTarget = () =>
