@@ -187,7 +187,9 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
       )
     )
     const filtered = postReqs.filter((_, idx) => results[idx])
-    return filtered
+    // 3. remove modulesDone and modulesDoing
+    const final = filtered.filter((one) => !hasTakenModule(modulesDone, modulesDoing, one))
+    return final
   }
 
   /**
