@@ -1,4 +1,4 @@
-import { container, getSource } from '@src/data-source'
+import { getSource } from '@src/data-source'
 import { setup, teardown, Repo } from '@environment'
 import { oneUp } from '@utils'
 
@@ -13,16 +13,18 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   const modulesDoing = []
   const modulesSelected = []
   expect.assertions(2)
-  await container(db, () =>
-    Repo.Module.getEligibleModules(modulesDone, modulesDoing, modulesSelected).then((eligibleModuleCodes) => {
-      expect(eligibleModuleCodes).toBeInstanceOf(Array)
-      const expected = ['CS2109S']
-      /**
-       * Compare module codes
-       */
-      expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
-    })
-  )
+  await Repo.Module.getEligibleModules(
+    modulesDone,
+    modulesDoing,
+    modulesSelected
+  ).then((eligibleModuleCodes) => {
+    expect(eligibleModuleCodes).toBeInstanceOf(Array)
+    const expected = ['CS2109S']
+    /**
+     * Compare module codes
+     */
+    expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
+  })
 })
 
 it('modulesDone and modulesSelected function the same way', async () => {
@@ -30,14 +32,16 @@ it('modulesDone and modulesSelected function the same way', async () => {
   const modulesDoing = []
   const modulesSelected = ['CS1101S']
   expect.assertions(2)
-  await container(db, () =>
-    Repo.Module.getEligibleModules(modulesDone, modulesDoing, modulesSelected).then((eligibleModuleCodes) => {
-      expect(eligibleModuleCodes).toBeInstanceOf(Array)
-      const expected = ['CS2109S']
-      /**
-       * Compare module codes
-       */
-      expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
-    })
-  )
+  await Repo.Module.getEligibleModules(
+    modulesDone,
+    modulesDoing,
+    modulesSelected
+  ).then((eligibleModuleCodes) => {
+    expect(eligibleModuleCodes).toBeInstanceOf(Array)
+    const expected = ['CS2109S']
+    /**
+     * Compare module codes
+     */
+    expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
+  })
 })

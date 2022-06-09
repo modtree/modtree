@@ -1,4 +1,4 @@
-import { container, getSource } from '@src/data-source'
+import { getSource } from '@src/data-source'
 import { setup, teardown, Repo, t } from '@environment'
 import { oneUp } from '@utils'
 
@@ -37,8 +37,11 @@ const expected = [
 describe('getSuggestedModules (from one)', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
-      const res = await container(db, () =>
-        Repo.Module.getSuggestedModules(modulesDone, modulesDoing, ['CS1010'], requiredModules)
+      const res = await Repo.Module.getSuggestedModules(
+        modulesDone,
+        modulesDoing,
+        ['CS1010'],
+        requiredModules
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -60,7 +63,7 @@ describe('getSuggestedModules (from one)', () => {
   describe('Does not suggest post-reqs of the given module', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
-      const res = await container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
+      const res = await Repo.Module.findOneBy({ moduleCode: 'CS1010' })
       expect(res).toBeDefined()
       if (!res) return
       t.postReqs = res.fulfillRequirements

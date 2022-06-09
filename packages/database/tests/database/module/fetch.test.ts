@@ -1,4 +1,4 @@
-import { container, getSource } from '@src/data-source'
+import { getSource } from '@src/data-source'
 import { Module } from '@entity'
 import { oneUp } from '@utils'
 import { setup, teardown, Repo } from '@environment'
@@ -10,6 +10,8 @@ beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 test('fetch one module from NUSMods', async () => {
-  const res = await container(db, () => Repo.Module.fetchOne('CS2040S'))
-  expect(res).toBeInstanceOf(Module)
+  expect.hasAssertions()
+  await Repo.Module.fetchOne('CS2040S').then((res) => {
+    expect(res).toBeInstanceOf(Module)
+  })
 })

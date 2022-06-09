@@ -1,4 +1,4 @@
-import { container, getSource } from '@src/data-source'
+import { getSource } from '@src/data-source'
 import { setup, teardown, Repo } from '@environment'
 import { oneUp } from '@utils'
 
@@ -13,8 +13,10 @@ const modulesDoing = []
 
 it('Correctly gets unlocked modules', async () => {
   // Get unlocked modules for CS2100
-  const codes = await container(db, () =>
-    Repo.Module.getUnlockedModules(modulesDone, modulesDoing, 'CS2100')
+  const codes = await Repo.Module.getUnlockedModules(
+    modulesDone,
+    modulesDoing,
+    'CS2100'
   )
   expect(codes).toBeDefined()
   if (!codes) return
@@ -26,8 +28,10 @@ it('Correctly gets unlocked modules', async () => {
 
 it('Returns empty array if module in User.modulesDone', async () => {
   // Get unlocked modules for CS1010, which is in User.modulesDone
-  const modules = await container(db, () =>
-    Repo.Module.getUnlockedModules(modulesDone, modulesDoing, 'CS1010')
+  const modules = await Repo.Module.getUnlockedModules(
+    modulesDone,
+    modulesDoing,
+    'CS1010'
   )
   expect(modules).toBeDefined()
   if (!modules) return

@@ -1,4 +1,4 @@
-import { container, getSource } from '@src/data-source'
+import { getSource } from '@src/data-source'
 import { setup, teardown, Repo, t } from '@environment'
 import { oneUp } from '@utils'
 
@@ -50,8 +50,11 @@ const expected = [
 
 describe('getSuggestedModules (from many)', () => {
   it('Suggests post-reqs of the given module which the user is eligible for', async () => {
-    const res = await container(db, () =>
-      Repo.Module.getSuggestedModules(modulesDone, modulesDoing, ['CS1010', 'CS1231'], requiredModules)
+    const res = await Repo.Module.getSuggestedModules(
+      modulesDone,
+      modulesDoing,
+      ['CS1010', 'CS1231'],
+      requiredModules
     )
     expect(res).toBeDefined()
     if (!res) return
@@ -62,9 +65,26 @@ describe('getSuggestedModules (from many)', () => {
 
   it('Suggests post-reqs of the given module in our current desired priority', async () => {
     // unlocks 5, 3, 3, 2, 0, 0, 0 mods
-    const degreeModules = ['CS2030', 'CS2100', 'CS2107', 'CS2040S', 'CP2106', 'CS2109S', 'CS3234']
+    const degreeModules = [
+      'CS2030',
+      'CS2100',
+      'CS2107',
+      'CS2040S',
+      'CP2106',
+      'CS2109S',
+      'CS3234',
+    ]
     // unlocks 13, 2, 1, 1, 0, 0, 0, 0 mods
-    const nonDegreeModules = ['CS2040', 'CS2040C', 'MA2214', 'MA3205', 'CS2030S', 'MA2202', 'MA2202S', 'MA2219']
+    const nonDegreeModules = [
+      'CS2040',
+      'CS2040C',
+      'MA2214',
+      'MA3205',
+      'CS2030S',
+      'MA2202',
+      'MA2202S',
+      'MA2219',
+    ]
     const expected = degreeModules.concat(nonDegreeModules)
     expect(t.suggestedModulesCodes).toEqual(expected)
   })
