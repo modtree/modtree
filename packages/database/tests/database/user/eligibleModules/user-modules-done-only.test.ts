@@ -26,7 +26,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   // Get eligible modules
   expect.assertions(2)
   await container(db, () =>
-    Repo.User.getEligibleModules(t.user, []).then((eligibleModules) => {
+    Repo.User.getEligibleModules(t.user).then((eligibleModules) => {
       expect(eligibleModules).toBeInstanceOf(Array)
       const expected = ['CS2109S']
       /**
