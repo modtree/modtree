@@ -7,10 +7,11 @@
   "scripts": {
     "ci:build": "nx affected --target=build",
     "ci:build:s": "nx affected --target=build --skip-nx-cache",
-    "build:db": "turbo run build --filter=database",
+    "build": "nx run-many --target=build --all",
+    "build:s": "nx run-many --target=build --all --skip-nx-cache",
     "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",
-    "dev": "turbo run dev --filter=database --filter=web --parallel",
+    "dev": "nx run-many --target=dev --all",
     "dev:docs": "turbo run dev --filter=docs",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "rm:logs": "find . -name *.log | xargs rm",

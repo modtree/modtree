@@ -5,6 +5,10 @@
   "affected": {
     "defaultBase": "main"
   },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "packages"
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
@@ -16,6 +20,12 @@
   },
   "targetDependencies": {
     "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ],
+    "dev": [
       {
         "target": "build",
         "projects": "dependencies"

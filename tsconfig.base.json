@@ -26,7 +26,9 @@
     "skipDefaultLibCheck": false,
     "baseUrl": ".",
     "paths": {
-      "@modtree/database": ["packages/database/src/index.ts"]
+      "@modtree/database": ["packages/database/src/index.ts"],
+      "@modtree/entity": ["packages/entity/src/index.ts"],
+      "@modtree/types": ["packages/types/index.d.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
