@@ -13,12 +13,6 @@ import {
 import { quickpop, flatten, copy } from '../utils'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
-type Data = {
-  moduleCode: string
-  inDegree: boolean
-  numUnlockedModules: number
-  origIdx: number
-}
 
 /**
  * @param {DataSource} database

@@ -1,9 +1,15 @@
 import axios from 'axios'
 import { DataSource, In } from 'typeorm'
 import { Module } from '@modtree/entity'
-import { IModuleRepository , InitProps, NUSMods } from '@modtree/types'
+import { IModuleRepository, InitProps, NUSMods } from '@modtree/types'
 import { log } from '../cli'
-import { nusmodsApi, flatten , checkTree, hasTakenModule, unique } from '../utils'
+import {
+  nusmodsApi,
+  flatten,
+  checkTree,
+  hasTakenModule,
+  unique,
+} from '../utils'
 import { getModuleCondensedRepository } from './ModuleCondensed'
 import {
   getDataSource,
@@ -12,6 +18,13 @@ import {
   useFindOneByKey,
 } from './base'
 import { client } from '../utils/pull'
+
+type Data = {
+  moduleCode: string
+  inDegree: boolean
+  numUnlockedModules: number
+  origIdx: number
+}
 
 /**
  * @param {DataSource} database
@@ -116,15 +129,19 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     return BaseRepo.find({ where: { moduleCode: In(moduleCodes) } })
   }
 
- /**
-  * Given modulesDone, determines if a module (moduleCode) can be taken.
-  * Returns false if moduleCode is in modulesDone or modulesDoing.
-  *
-  * @param {string[]} modulesDone
-  * @param {string[]} modulesDoing
-  * @param {string} moduleCode
-  */
-  async function canTakeModule(modulesDone: string[], modulesDoing: string[], moduleCode: string): Promise<boolean> {
+  /**
+   * Given modulesDone, determines if a module (moduleCode) can be taken.
+   * Returns false if moduleCode is in modulesDone or modulesDoing.
+   *
+   * @param {string[]} modulesDone
+   * @param {string[]} modulesDoing
+   * @param {string} moduleCode
+   */
+  async function canTakeModule(
+    modulesDone: string[],
+    modulesDoing: string[],
+    moduleCode: string
+  ): Promise<boolean> {
     // 1. find module
     const module = await BaseRepo.findOneBy({ moduleCode })
     if (!module) return false
@@ -142,9 +159,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string[]} moduleCodes
    * @returns {Promise<string[]>}
    */
-  async function getPostReqs(
-    moduleCodes: string[]
-  ): Promise<string[]> {
+  async function getPostReqs(moduleCodes: string[]): Promise<string[]> {
     const modules = await findByCodes(moduleCodes)
     // get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodes = []
@@ -179,13 +194,13 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     if (!postReqs) return []
     // 2. filter post-reqs
     const results = await Promise.all(
-      postReqs.map((one) =>
-        canTakeModule(modules, modulesDoing, one)
-      )
+      postReqs.map((one) => canTakeModule(modules, modulesDoing, one))
     )
     const filtered = postReqs.filter((_, idx) => results[idx])
     // 3. remove modulesDone and modulesDoing
-    const final = filtered.filter((one) => !hasTakenModule(modulesDone, modulesDoing, one))
+    const final = filtered.filter(
+      (one) => !hasTakenModule(modulesDone, modulesDoing, one)
+    )
     return final
   }
 
@@ -204,12 +219,19 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     // future support for multiple mods
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
-    if (hasTakenModule(modulesDone, modulesDoing, moduleCode))
-      return []
+    if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) return []
     // 2. Get current eligible modules
-    const eligibleModules = await getEligibleModules(modulesDone, modulesDoing, [])
+    const eligibleModules = await getEligibleModules(
+      modulesDone,
+      modulesDoing,
+      []
+    )
     // 3. Get unlocked eligible modules
-    const unlockedModules = await getEligibleModules(modulesDone, modulesDoing, addedModuleCodes)
+    const unlockedModules = await getEligibleModules(
+      modulesDone,
+      modulesDoing,
+      addedModuleCodes
+    )
     // 4. Compare unlockedModules to eligibleModules
     const filtered = unlockedModules.filter(
       (moduleCode) => !eligibleModules.includes(moduleCode)
@@ -224,7 +246,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * modulesDone and modulesDoing are purely for checking pre-reqs/taken before
    * modulesSelected are the mods that the suggestions should stem from.
    * requiredModules are the degree mods.
-   * 
+   *
    * @param {string[]} modulesDone
    * @param {string[]} modulesDoing
    * @param {string[]} modulesSelected
@@ -239,7 +261,11 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     const modules = unique(modulesDone.concat(modulesSelected))
     // get relevant modules
     const postReqs = await getPostReqs(modules)
-    const eligibleModules = await getEligibleModules(modulesDone, modulesDoing, modulesSelected)
+    const eligibleModules = await getEligibleModules(
+      modulesDone,
+      modulesDoing,
+      modulesSelected
+    )
     const filtered = eligibleModules.filter((one) => postReqs.includes(one))
     // obtain data for sorting criteria
     const resolvedPromises = await Promise.all(
@@ -251,12 +277,6 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
       one instanceof Array ? one.length : 0
     )
     // -- data processing
-    type Data = {
-      moduleCode: string
-      inDegree: boolean
-      numUnlockedModules: number
-      origIdx: number
-    }
     const data = filtered.map(
       (moduleCode, origIdx): Data => ({
         moduleCode,
