@@ -14,6 +14,7 @@ import {
 } from './base'
 import { IModuleRepository } from '../../types/repository'
 import { client } from '../utils/pull'
+import { checkTree, hasTakenModule } from '../utils'
 
 /**
  * @param {DataSource} database
@@ -118,6 +119,26 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     return BaseRepo.find({ where: { moduleCode: In(moduleCodes) } })
   }
 
+ /**
+  * Given modulesDone, determines if a module (moduleCode) can be taken.
+  * Returns false if moduleCode is in modulesDone or modulesDoing.
+  *
+  * @param {string[]} modulesDone
+  * @param {string[]} modulesDoing
+  * @param {string} moduleCode
+  */
+  async function canTakeModule(modulesDone: string[], modulesDoing: string[], moduleCode: string): Promise<boolean> {
+    // 1. find module
+    const module = await BaseRepo.findOneBy({ moduleCode })
+    if (!module) return false
+    // 2. filter modulesDone and modulesDoing
+    if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) {
+      return false
+    }
+    // 3. check if PrereqTree is fulfilled
+    return checkTree(module.prereqTree, modulesDone)
+  }
+
   return BaseRepo.extend({
     initialize,
     getCodes,
@@ -127,5 +148,6 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     findByCodes,
     findOneById,
     deleteAll,
+    canTakeModule,
   })
 }
