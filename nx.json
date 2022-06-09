@@ -29,9 +29,10 @@
     }
   },
   "targetDependencies": {
+    "lint": [{ "target": "build", "projects": "dependencies" }],
     "build": [
-      { "target": "build", "projects": "dependencies" },
-      { "target": "lint", "projects": "self" }
+      { "target": "lint", "projects": "self" },
+      { "target": "build", "projects": "dependencies" }
     ],
     "dev": [{ "target": "build", "projects": "dependencies" }],
     "ci:test:utils": [{ "target": "build", "projects": "dependencies" }],
