@@ -2,9 +2,11 @@
   "name": "modtree",
   "version": "0.1.0",
   "license": "MIT",
+  "scripts": {},
   "private": true,
   "scripts": {
-    "ci:build": "turbo run ci:build",
+    "ci:build": "nx affected --target=build",
+    "ci:build:s": "nx affected --target=build --skip-nx-cache",
     "build:db": "turbo run build --filter=database",
     "test:db": "turbo run test --filter=database",
     "lint": "turbo run lint",

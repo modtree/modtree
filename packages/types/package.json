@@ -1,0 +1,9 @@
+{
+  "name": "@modtree/types",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "modtree",
+  "description": "modtree TypeScript type definitions",
+  "types": "./index.d.ts",
+  "type": "commonjs"
+}
