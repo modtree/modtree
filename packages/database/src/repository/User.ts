@@ -5,7 +5,7 @@ import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { getModuleRepository } from './Module'
 import { getDegreeRepository } from './Degree'
-import { checkTree, flatten, copy } from '../utils'
+import { flatten, copy } from '../utils'
 import {
   getDataSource,
   getRelationNames,

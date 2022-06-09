@@ -1,8 +1,5 @@
 import { container, getSource } from '@src/data-source'
-import { Module } from '@entity'
 import { setup, teardown, Repo, t } from '@environment'
-import { InitProps } from '@mtypes/init-props'
-import { init } from '@tests/init'
 import { oneUp } from '@utils'
 
 const dbName = oneUp(__filename)

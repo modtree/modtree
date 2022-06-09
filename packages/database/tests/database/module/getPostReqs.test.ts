@@ -16,7 +16,7 @@ it('getPostReqs == fulfillRequirements for single mod', async () => {
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
         t.postReqsCodes = res
-        return
+        
       })
       .then(() => 
         Repo.Module.findOneBy({
@@ -37,7 +37,7 @@ it('getPostReqs == union of fulfillRequirements for multiple mods', async () => 
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
         t.postReqsCodes = res
-        return
+        
       })
       .then(() => 
         Repo.Module.findByCodes(modulesDone)
@@ -58,7 +58,7 @@ it('Returns empty array for modules with no post reqs', async () => {
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
         expect(res.length).toEqual(0)
-        return
+        
       })
   )
 })

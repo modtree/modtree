@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { DataSource, In } from 'typeorm'
 import { log } from '../cli'
-import { nusmodsApi, flatten } from '../utils'
+import { nusmodsApi, flatten , checkTree, hasTakenModule, unique } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import { InitProps } from '../../types/init-props'
 import { Module } from '../entity/Module'
@@ -14,7 +14,6 @@ import {
 } from './base'
 import { IModuleRepository } from '../../types/repository'
 import { client } from '../utils/pull'
-import { checkTree, hasTakenModule, unique } from '../utils'
 
 /**
  * @param {DataSource} database
@@ -223,6 +222,15 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
   /**
    * Suggest modules from one/many.
    * Returns a subset of post-reqs of these modules.
+   *
+   * modulesDone and modulesDoing are purely for checking pre-reqs/taken before
+   * modulesSelected are the mods that the suggestions should stem from.
+   * requiredModules are the degree mods.
+   * 
+   * @param {string[]} modulesDone
+   * @param {string[]} modulesDoing
+   * @param {string[]} modulesSelected
+   * @param {string[]} requiredModules
    */
   async function getSuggestedModules(
     modulesDone: string[],

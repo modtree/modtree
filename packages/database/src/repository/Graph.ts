@@ -197,12 +197,8 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * Suggests modules from a single module.
    * Returns a subset of post-reqs for this module.
    *
-   * If addUserModulesDone is true, then each module of user.modulesDone will
-   * be considered for the output, subject to the criteria.
-   *
    * @param {Graph} graph
    * @param {string[]} moduleCodes
-   * @param {boolean} addUserModulesDone
    * @returns {Promise<Module[]>}
    */
   async function suggestModules(
