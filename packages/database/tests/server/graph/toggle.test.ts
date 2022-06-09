@@ -72,7 +72,7 @@ describe('insert unseen module', () => {
     await server
       .post(`graph/id/${t.graphId}/toggle/${t.freshCode}`)
       .then((res) => {
-        const graph: ResponseProps['Graph'] = res.data
+        const graph: ModtreeApiResponse.Graph = res.data
         expect(graph.modulesPlaced).toContain(t.freshCode)
       })
   })
@@ -96,7 +96,7 @@ describe('hidden -> placed', () => {
     await server
       .post(`graph/id/${t.graphId}/toggle/${t.hiddenCode}`)
       .then((res) => {
-        const graph: ResponseProps['Graph'] = res.data
+        const graph: ModtreeApiResponse.Graph = res.data
         const { modulesPlaced, modulesHidden } = graph
         expect(modulesPlaced).toContain(t.hiddenCode)
         expect(modulesHidden).not.toContain(t.hiddenCode)
@@ -122,7 +122,7 @@ describe('placed -> hidden', () => {
     await server
       .post(`graph/id/${t.graphId}/toggle/${t.hiddenCode}`)
       .then((res) => {
-        const graph: ResponseProps['Graph'] = res.data
+        const graph: ModtreeApiResponse.Graph = res.data
         const { modulesPlaced, modulesHidden } = graph
         expect(modulesPlaced).not.toContain(t.hiddenCode)
         expect(modulesHidden).toContain(t.hiddenCode)

@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
 import { Graph, User, Degree, Module, ModuleCondensed } from '@modtree/entity'
-import { InitProps } from './init-props'
+import { InitProps } from '@modtree/types'
 
 /**
  * IBaseRepository, but for now only in types

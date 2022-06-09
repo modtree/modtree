@@ -1,4 +1,4 @@
-import { InitProps } from '@mtypes/init-props'
+import { InitProps } from '@modtree/types'
 
 type Init = {
   degree1: InitProps['Degree']

@@ -1,5 +1,4 @@
-import { ModtreeApiResponse } from '@modtree/types'
-import { InitProps } from '../../types/init-props'
+import { ModtreeApiResponse, InitProps } from '@modtree/types'
 
 /** empty init props */
 export const emptyInit: InitProps = {

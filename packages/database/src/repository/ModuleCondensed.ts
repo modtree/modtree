@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { DataSource } from 'typeorm'
 import { ModuleCondensed } from '@modtree/entity'
-import { InitProps } from '../../types/init-props'
+import { InitProps } from '@modtree/types'
 import { nusmodsApi, getModuleLevel, flatten } from '../utils'
 import { ModuleCondensed as NMC } from '../../types/nusmods'
 import { getDataSource, useDeleteAll, useFindOneByKey } from './base'

@@ -1,6 +1,6 @@
 import { DataSource, In } from 'typeorm'
 import { Degree } from '@modtree/entity'
-import { InitProps } from '../../types/init-props'
+import { InitProps } from '@modtree/types'
 import { getModuleRepository } from './Module'
 import {
   getDataSource,

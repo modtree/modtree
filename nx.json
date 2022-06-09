@@ -13,27 +13,31 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "ci:test:all"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "ci:test",
+          "ci:test:all",
+          "ci:test:server",
+          "ci:test:database",
+          "ci:test:utils"
+        ],
         "accessToken": "MGI3YzRiY2YtNzIwYS00MmY2LTgxM2QtNzM5NTIxOThiNDA4fHJlYWQtd3JpdGU="
       }
     }
   },
   "targetDependencies": {
     "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      },
-      {
-        "target": "lint",
-        "projects": "self"
-      }
+      { "target": "build", "projects": "dependencies" },
+      { "target": "lint", "projects": "self" }
     ],
-    "dev": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
+    "dev": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test": [
+      { "target": "ci:test:utils", "projects": "self" },
+      { "target": "ci:test:server", "projects": "self" },
+      { "target": "ci:test:database", "projects": "self" }
     ]
   }
 }

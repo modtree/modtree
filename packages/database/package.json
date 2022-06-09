@@ -18,6 +18,7 @@
     "ci:restore": "NODE_ENV=test ts-node ./tests/restore-server.ts",
     "ci:start": "NODE_ENV=test node dist/server",
     "ci:dev": "yarn build && yarn ci:start",
+    "ci:test": "exit 0",
     "ci:test:database": "yarn test:database",
     "ci:test:utils": "yarn test:utils",
     "ci:test:server": "yarn ci:restore && yarn start-server-and-test 'yarn ci:dev' http://localhost:8080 'yarn test:server'",

@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { Agent } from 'http'
 import { DeleteResult, DataSource, Repository } from 'typeorm'
-import { ModtreeApiResponse } from '@modtree/types'
-import { InitProps } from '@mtypes/init-props'
+import { ModtreeApiResponse, InitProps } from '@modtree/types'
 import { config } from '@config'
 import { sql } from '@sql'
 import {
