@@ -5,7 +5,7 @@ import { Module } from '../entity/Module'
 import { Degree } from '../entity/Degree'
 import { getModuleRepository } from './Module'
 import { getDegreeRepository } from './Degree'
-import { utils, flatten, copy } from '../utils'
+import { checkTree, flatten, copy } from '../utils'
 import {
   getDataSource,
   getRelationNames,
@@ -97,7 +97,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
       return false
     }
     // 3. check if PrereqTree is fulfilled
-    return utils.checkTree(module.prereqTree, modulesDoneCodes)
+    return checkTree(module.prereqTree, modulesDoneCodes)
   }
   /**
    * List mods a user can take, based on what the user has completed.
