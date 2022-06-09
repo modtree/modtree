@@ -4,6 +4,7 @@
   "license": "MIT",
   "author": "modtree",
   "description": "modtree TypeScript type definitions",
+  "main": "index.js",
   "types": "./index.d.ts",
   "type": "commonjs"
 }

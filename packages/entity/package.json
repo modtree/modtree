@@ -10,7 +10,7 @@
     "@modtree/types": "*"
   },
   "scripts": {
-    "lint": "eslint --fix .",
+    "lint": "eslint --fix --ext .ts .",
     "build": "tsc"
   }
 }
