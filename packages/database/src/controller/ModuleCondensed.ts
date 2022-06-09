@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { Like } from 'typeorm'
+import { IModuleCondensedController } from '@modtree/types'
 import { db } from '../config'
 import { getModuleCondensedRepository } from '../repository'
-import { IModuleCondensedController } from '../../types/controller'
 
 /** ModuleCondensed api controller */
 export class ModuleCondensedController implements IModuleCondensedController {

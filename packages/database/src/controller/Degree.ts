@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
+import { IDegreeController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '../utils'
 import { db } from '../config'
 import { getDegreeRepository } from '../repository'
-import { IDegreeController } from '../../types/controller'
 
 /** Degree API controller */
 export class DegreeController implements IDegreeController {

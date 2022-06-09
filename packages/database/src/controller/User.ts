@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import { IUserController } from '../../types/controller'
+import { IUserController } from '@modtree/types'
 import { db } from '../config'
 import { getDegreeRepository, getUserRepository } from '../repository'
 import { copy, emptyInit, flatten } from '../utils'
