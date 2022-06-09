@@ -33,6 +33,7 @@ const yarn = {
     server: jest('tests/server'),
     pull: jest('tests/pull'),
     utils: jest('tests/utils'),
+    mu: jest('tests/utils/module'),
   },
 }
 
