@@ -9,7 +9,7 @@ import {
 } from './entity-interface'
 
 /**
- * IBaseRepository, but for now only in types
+ * BaseRepository, but for now only in types
  * it is a interface that will be extended to form the final Repositories of modtree
  */
 interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
@@ -18,54 +18,51 @@ interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
   findOneById: (value: string) => Promise<Entity>
 }
 
-export interface IIGraphRepository
+export interface IGraphRepository
   extends IBaseRepo<IGraph, InitProps['Graph']> {
-  toggleIModule(graph: IGraph, moduleCode: string): Promise<IGraph>
-  findOneByIUserAndIDegreeId(userId: string, degreeId: string): Promise<IGraph>
-  findManyByIUserAndIDegreeId(
+  toggleModule(graph: IGraph, moduleCode: string): Promise<IGraph>
+  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<IGraph>
+  findManyByUserAndDegreeId(
     userId: string,
     degreeId: string
   ): Promise<[IGraph[], number]>
-  suggestIModules(
+  suggestModules(
     graph: IGraph,
     moduleCodes: string[],
-    addIUserIModulesDone: boolean
+    addUserModulesDone: boolean
   ): Promise<IModule[]>
 }
 
-export interface IIUserRepository extends IBaseRepo<IUser, InitProps['User']> {
-  canTakeIModule(
+export interface IUserRepository extends IBaseRepo<IUser, InitProps['User']> {
+  canTakeModule(
     user: IUser,
     moduleCode: string,
-    addIModuleCodes: string[],
-    addIUserIModulesDone: boolean
+    addModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<boolean>
-  findOneByIUsername(username: string): Promise<IUser>
-  getEligibleIModules(
-    user: IUser,
-    addIModuleCodes: string[]
-  ): Promise<IModule[]>
+  findOneByUsername(username: string): Promise<IUser>
+  getEligibleModules(user: IUser, addModuleCodes: string[]): Promise<IModule[]>
   getPostReqs(
     user: IUser,
-    addIModuleCodes: string[],
-    addIUserIModulesDone: boolean
+    addModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<IModule[]>
-  getUnlockedIModules(user: IUser, moduleCode: string): Promise<IModule[]>
-  hasTakenIModule(user: IUser, moduleCode: string): Promise<boolean>
-  filterTakenIModules(user: IUser, moduleCodes: string[]): Promise<string[]>
-  addIDegree(user: IUser, degreeId: string): Promise<void>
-  findIDegree(user: IUser, degreeId: string): Promise<IDegree>
-  removeIDegree(user: IUser, degreeId: string): Promise<void>
+  getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
+  hasTakenModule(user: IUser, moduleCode: string): Promise<boolean>
+  filterTakenModules(user: IUser, moduleCodes: string[]): Promise<string[]>
+  addDegree(user: IUser, degreeId: string): Promise<void>
+  findDegree(user: IUser, degreeId: string): Promise<IDegree>
+  removeDegree(user: IUser, degreeId: string): Promise<void>
 }
 
-export interface IIDegreeRepository
+export interface IDegreeRepository
   extends IBaseRepo<IDegree, InitProps['Degree']> {
-  insertIModules(degree: IDegree, moduleCodes: string[]): Promise<IDegree>
+  insertModules(degree: IDegree, moduleCodes: string[]): Promise<IDegree>
   findOneByTitle(title: string): Promise<IDegree>
   findByIds(id: string[]): Promise<IDegree[]>
 }
 
-export interface IIModuleRepository
+export interface IModuleRepository
   extends IBaseRepo<IModule, InitProps['Module']> {
   fetchOne(moduleCode: string): Promise<IModule>
   getCodes(): Promise<string[]>
@@ -74,7 +71,7 @@ export interface IIModuleRepository
   findByCodes(moduleCodes: string[]): Promise<IModule[]>
 }
 
-export interface IIModuleCondensedRepository
+export interface IModuleCondensedRepository
   extends IBaseRepo<IModuleCondensed, InitProps['ModuleCondensed']> {
   pull(): Promise<IModuleCondensed[]>
   fetch(): Promise<IModuleCondensed[]>
@@ -83,9 +80,9 @@ export interface IIModuleCondensedRepository
 }
 
 export type Repositories = Partial<{
-  IModule: IIModuleRepository
-  IModuleCondensed: IIModuleCondensedRepository
-  IUser: IIUserRepository
-  IDegree: IIDegreeRepository
-  IGraph: IIGraphRepository
+  Module: IModuleRepository
+  ModuleCondensed: IModuleCondensedRepository
+  User: IUserRepository
+  Degree: IDegreeRepository
+  Graph: IGraphRepository
 }>

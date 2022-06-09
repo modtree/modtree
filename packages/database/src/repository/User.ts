@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm'
 import { User, Module, Degree } from '@modtree/entity'
-import { InitProps } from '@modtree/types'
+import { InitProps, IUserRepository } from '@modtree/types'
 import { getModuleRepository } from './Module'
 import { getDegreeRepository } from './Degree'
 import { flatten, copy } from '../utils'
@@ -10,7 +10,6 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from './base'
-import { IUserRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database

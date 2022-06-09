@@ -1,6 +1,6 @@
 import { DataSource, In } from 'typeorm'
 import { Degree } from '@modtree/entity'
-import { InitProps } from '@modtree/types'
+import { InitProps, IDegreeRepository } from '@modtree/types'
 import { getModuleRepository } from './Module'
 import {
   getDataSource,
@@ -9,7 +9,6 @@ import {
   useFindOneByKey,
 } from './base'
 import { copy } from '../utils'
-import { IDegreeRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { DataSource, In } from 'typeorm'
 import { Module } from '@modtree/entity'
-import { InitProps, NUSMods } from '@modtree/types'
+import { IModuleRepository , InitProps, NUSMods } from '@modtree/types'
 import { log } from '../cli'
 import { nusmodsApi, flatten , checkTree, hasTakenModule, unique } from '../utils'
 import { getModuleCondensedRepository } from './ModuleCondensed'
@@ -11,7 +11,6 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from './base'
-import { IModuleRepository } from '../../types/repository'
 import { client } from '../utils/pull'
 
 /**

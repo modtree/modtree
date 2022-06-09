@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Agent } from 'http'
 import { DeleteResult, DataSource, Repository } from 'typeorm'
-import { ModtreeApiResponse, InitProps } from '@modtree/types'
+import { ModtreeApiResponse, InitProps , Repositories } from '@modtree/types'
 import { config } from '@config'
 import { sql } from '@sql'
 import {
@@ -12,7 +12,6 @@ import {
   getModuleCondensedRepository,
 } from '@repository'
 import { User, Graph, Degree } from '@modtree/entity'
-import { Repositories } from '@mtypes/repository'
 
 type SetupOptions = {
   initialize: boolean
