@@ -65,6 +65,11 @@ export interface IModuleRepository
     modulesDoing: string[],
     modulesSelected: string[]
   ): Promise<string[]>
+  getUnlockedModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    moduleCode: string
+  ): Promise<string[]>
 }
 
 export interface IModuleCondensedRepository

@@ -190,6 +190,34 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     return filtered
   }
 
+  /**
+   * List mods that will be unlocked by completing a mod.
+   *
+   * @param {string[]} modulesDone
+   * @param {string[]} modulesDoing
+   * @param {string} moduleCode
+   */
+  async function getUnlockedModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    moduleCode: string
+  ): Promise<string[]> {
+    // future support for multiple mods
+    const addedModuleCodes = [moduleCode]
+    // 1. Return empty array if module in modulesDone or modulesDoing
+    if (hasTakenModule(modulesDone, modulesDoing, moduleCode))
+      return []
+    // 2. Get current eligible modules
+    const eligibleModules = await getEligibleModules(modulesDone, modulesDoing, [])
+    // 3. Get unlocked eligible modules
+    const unlockedModules = await getEligibleModules(modulesDone, modulesDoing, addedModuleCodes)
+    // 4. Compare unlockedModules to eligibleModules
+    const filtered = unlockedModules.filter(
+      (moduleCode) => !eligibleModules.includes(moduleCode)
+    )
+    return filtered
+  }
+
   return BaseRepo.extend({
     initialize,
     getCodes,
@@ -202,5 +230,6 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     canTakeModule,
     getPostReqs,
     getEligibleModules,
+    getUnlockedModules,
   })
 }
