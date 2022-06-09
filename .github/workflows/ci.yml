@@ -26,66 +26,32 @@ jobs:
           concurrent_skipping: same_content_newer
           paths_ignore: '["**/README.md", "**/docs/**"]'
 
-  server_tests:
+  backend_tests:
     if: always()
     runs-on: ubuntu-20.04
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
       - run: yarn install --frozen-lockfile --silent
       - run: ${{ env.POSTGRES_INIT }}
-      - name: 📦 Run server tests
+      - name: 📦 Run all backend tests
         working-directory: ./packages/database
-        run: ${{ env.PREFIX }} yarn ci:test:server
-
-  database_core:
-    if: always()
-    runs-on: ubuntu-20.04
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1.6.0
-      - run: yarn install --frozen-lockfile --silent
-      - run: ${{ env.POSTGRES_INIT }}
-      - name: 📦 Run database core tests
-        working-directory: ./packages/database
-        run: ${{ env.PREFIX }} yarn ci:test:database
-
-  database_utils:
-    if: always()
-    runs-on: ubuntu-20.04
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1.6.0
-      - run: yarn install --frozen-lockfile --silent
-      - run: ${{ env.POSTGRES_INIT }}
-      - name: 📦 Run database utils tests
-        working-directory: ./packages/database
-        run: ${{ env.PREFIX }} yarn ci:test:utils
+        run: ${{ env.PREFIX }} yarn nx ci:test:all database
 
   project_build:
     if: always()
     runs-on: ubuntu-20.04
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
       - run: yarn install --frozen-lockfile --silent
       - name: 📦 Build & lint entire project
-        run: yarn ci:build
+        run: yarn nx run-many --target=build --all
 
   telegram:
-    needs: [pre_job, server_tests, project_build, database_core, database_utils]
+    needs: [pre_job, project_build, backend_tests]
     if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ubuntu-20.04
     steps:
@@ -100,9 +66,7 @@ jobs:
           echo "RUN_URL=${BASE_URL}/${{ github.run_id }}" >> $GITHUB_ENV
           echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
           emojize PROJECT_BUILD ${{ needs.project_build.result }}
-          emojize DATABASE_CORE ${{ needs.database_core.result }}
-          emojize DATABASE_UTILS ${{ needs.database_utils.result }}
-          emojize SERVER_TESTS ${{ needs.server_tests.result }}
+          emojize BACKEND_TESTS ${{ needs.backend_tests.result }}
 
       - name: Send message (PR)
         if: ${{ github.event_name == 'pull_request' }}
@@ -115,9 +79,7 @@ jobs:
           message: |
             `${{ env.SHORT_SHA }}`  #${{ github.event.pull_request.number }}  ${{ github.event.pull_request.title }}
             ${{ env.PROJECT_BUILD }} lint + build
-            ${{ env.DATABASE_CORE }} database core
-            ${{ env.DATABASE_UTILS }} database utils
-            ${{ env.SERVER_TESTS }} server tests
+            ${{ env.BACKEND_TESTS }} backend tests
             [view logs](${{ env.RUN_URL }})
 
       - name: Send message (Push)
@@ -131,7 +93,5 @@ jobs:
           message: |
             `${{ env.SHORT_SHA }}` ${{ github.event.head_commit.message }}
             ${{ env.PROJECT_BUILD }} lint + build
-            ${{ env.DATABASE_CORE }} database core
-            ${{ env.DATABASE_UTILS }} database utils
-            ${{ env.SERVER_TESTS }} server tests
+            ${{ env.BACKEND_TESTS }} backend tests
             [view logs](${{ env.RUN_URL }})

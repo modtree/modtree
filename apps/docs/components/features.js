@@ -10,32 +10,32 @@ import {
 export const features = [
   {
     name: 'Smart Reminders',
-    description: `Modtree will remind you to take pre-requisites so you don't have to check yourself.`,
+    description: 'Modtree will remind you to take pre-requisites so you don\'t have to check yourself.',
     icon: BellIcon,
   },
   {
     name: 'Easy Authentication',
-    description: `Modtree offers an option of passwordless, OTP-only authentication.`,
+    description: 'Modtree offers an option of passwordless, OTP-only authentication.',
     icon: FingerPrintIcon,
   },
   {
     name: 'Remote Storage',
-    description: `Save your degree and module plans online.`,
+    description: 'Save your degree and module plans online.',
     icon: CloudUploadIcon,
   },
   {
     name: 'Switch it up',
-    description: `Efficiently trial-and-error many possible ways of completing your degree.`,
+    description: 'Efficiently trial-and-error many possible ways of completing your degree.',
     icon: BeakerIcon,
   },
   {
     name: 'Power of overview',
-    description: `Modtree lets you visualize your entire degree all the way through, while giving you the flexibility to make it truly your own.`,
+    description: 'Modtree lets you visualize your entire degree all the way through, while giving you the flexibility to make it truly your own.',
     icon: ArrowsExpandIcon,
   },
   {
     name: 'Community templates',
-    description: `Pick from one of many existing templates that your friends created to jumpstart your degree planning.`,
+    description: 'Pick from one of many existing templates that your friends created to jumpstart your degree planning.',
     icon: ShareIcon,
   },
 ]

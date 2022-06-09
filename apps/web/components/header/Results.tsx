@@ -1,4 +1,4 @@
-import { ModuleCondensed } from 'database'
+import { ModuleCondensed } from '@modtree/database'
 import { useSelector } from 'react-redux'
 import { SearchState } from '@/store/search'
 import { ReactElement } from 'react'

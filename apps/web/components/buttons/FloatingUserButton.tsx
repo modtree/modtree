@@ -47,7 +47,7 @@ const SignedOutRect = () => {
     <div
       className={` items-center h-10 ${flex} ${padding} ${border} ${hover} ${active}`}
     >
-      <Link href="/api/auth/login">
+      <Link href="/api/auth/login" passHref>
         <div className="text-gray-400">Sign in</div>
       </Link>
     </div>

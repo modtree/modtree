@@ -1,0 +1,33 @@
+{
+  "compileOnSave": false,
+  "display": "Default",
+  "compilerOptions": {
+    "rootDir": ".",
+    "composite": false,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "strict": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["es5", "es6", "dom"],
+    "skipLibCheck": false,
+    "skipDefaultLibCheck": false,
+    "baseUrl": ".",
+    "paths": {
+      "@modtree/database": ["packages/database/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

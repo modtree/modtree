@@ -27,7 +27,7 @@ const MenuItem = (props: {
   const transition = 'transition ease-out'
   const hover = 'hover:bg-blue-500 hover:text-white'
   return (
-    <Link href={props.href || '#'}>
+    <Link href={props.href || '#'} passHref>
       <div
         className={`cursor-pointer ${hover} ${transition}`}
         onClick={props.onClick}
