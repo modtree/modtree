@@ -14,7 +14,7 @@ import {
 } from './base'
 import { IModuleRepository } from '../../types/repository'
 import { client } from '../utils/pull'
-import { checkTree, hasTakenModule } from '../utils'
+import { checkTree, hasTakenModule, unique } from '../utils'
 
 /**
  * @param {DataSource} database
@@ -150,17 +150,15 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
   ): Promise<string[]> {
     const modules = await findByCodes(moduleCodes)
     // get array of module codes of post-reqs (fulfillRequirements)
-    const postReqCodesSet = new Set<string>()
+    const postReqCodes = []
     modules.forEach((module) => {
       // can be empty string
       if (module.fulfillRequirements instanceof Array) {
-        module.fulfillRequirements.forEach((moduleCode: string) => {
-          postReqCodesSet.add(moduleCode)
-        })
+        postReqCodes.push(...module.fulfillRequirements)
       }
     })
-    const postReqCodesArr = Array.from(postReqCodesSet)
-    return postReqCodesArr
+    const uniqueCodes = unique(postReqCodes)
+    return uniqueCodes
   }
 
   return BaseRepo.extend({

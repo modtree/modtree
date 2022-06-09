@@ -14,3 +14,14 @@ export function quickpop<T>(arr: T[], index: number): T {
   if (arr.length !== index) arr[index] = elem
   return res
 }
+
+/**
+ * Remove duplicate entries from array
+ *
+ * @param {T[]} arr
+ * @returns {T[]}
+ */
+export function unique<T>(arr: T[]): T[] {
+  const set = new Set<T>(arr)
+  return Array.from(set)
+}
