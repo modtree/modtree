@@ -1,10 +1,9 @@
 import axios from 'axios'
 import { DataSource, In } from 'typeorm'
 import { Module } from '@modtree/entity'
-import { InitProps } from '@modtree/types'
+import { InitProps, NUSMods } from '@modtree/types'
 import { log } from '../cli'
 import { nusmodsApi, flatten , checkTree, hasTakenModule, unique } from '../utils'
-import { Module as NM } from '../../types/nusmods'
 import { getModuleCondensedRepository } from './ModuleCondensed'
 import {
   getDataSource,
@@ -53,7 +52,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    */
   async function fetchOne(moduleCode: string): Promise<Module> {
     return axios.get(nusmodsApi(`modules/${moduleCode}`)).then((res) => {
-      const n: NM = res.data
+      const n: NUSMods.Module = res.data
       const m = BaseRepo.create(n)
       return m
     })
@@ -85,7 +84,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
           .get(`${moduleCode}.json`)
           .then((res) => {
             buffer -= 1
-            const n: NM = res.data
+            const n: NUSMods.Module = res.data
             const m = BaseRepo.create(n)
             result.push(m)
             writeQueue.push(BaseRepo.save(m))
