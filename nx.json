@@ -34,6 +34,9 @@
       { "target": "lint", "projects": "self" }
     ],
     "dev": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test:utils": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test:server": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test:database": [{ "target": "build", "projects": "dependencies" }],
     "ci:test": [
       { "target": "ci:test:utils", "projects": "self" },
       { "target": "ci:test:server", "projects": "self" },

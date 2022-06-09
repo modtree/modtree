@@ -37,7 +37,7 @@ jobs:
       - run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run all backend tests
         working-directory: ./packages/database
-        run: ${{ env.PREFIX }} yarn nx ci:test
+        run: ${{ env.PREFIX }} yarn nx ci:test database
 
   project_build:
     if: always()
