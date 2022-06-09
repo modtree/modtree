@@ -23,12 +23,7 @@ export interface IGraphRepository extends IBaseRepo<Graph, InitProps['Graph']> {
 }
 
 export interface IUserRepository extends IBaseRepo<User, InitProps['User']> {
-  canTakeModule(
-    user: User,
-    moduleCode: string,
-    addModuleCodes: string[],
-    addUserModulesDone: boolean
-  ): Promise<boolean>
+  canTakeModule(user: User, moduleCode: string): Promise<boolean>
   findOneByUsername(username: string): Promise<User>
   getEligibleModules(user: User, addModuleCodes: string[]): Promise<Module[]>
   getPostReqs(

@@ -58,46 +58,17 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
-   * If string[] addedModuleCodes is specified, then each of the module
-   * codes is added to modulesDoneCodes.
-   *
-   * If addUserModulesDone is true, then each module of user.modulesDone will
-   * be considered for the output, subject to the criteria.
-   *
    * @param {User} user
    * @param {string} moduleCode
-   * @param {string[]} addedModuleCodes
-   * @param {boolean} addUserModulesDone
    * @returns {Promise<boolean>}
    */
   async function canTakeModule(
     user: User,
     moduleCode: string,
-    addedModuleCodes: string[],
-    addUserModulesDone: boolean
   ): Promise<boolean> {
-    // 1. find module
-    const module = await ModuleRepository.findOneBy({ moduleCode })
-    // -- if module not found, assume invalid module code
-    if (!module) return false
-    // 2. load modulesDone and modulesDoing relations
-    copy(await findOneById(user.id), user)
-    let modulesDoneCodes = []
-    if (addUserModulesDone) {
-      // if module already taken, can't take module again
-      const userModulesDoneCodes = user.modulesDone.map(flatten.module)
-      modulesDoneCodes = modulesDoneCodes.concat(userModulesDoneCodes)
-    }
-    if (addedModuleCodes && addedModuleCodes.length > 0) {
-      // add some module codes to done modules
-      const filtered = await filterTakenModules(user, addedModuleCodes)
-      modulesDoneCodes = modulesDoneCodes.concat(filtered)
-    }
-    if (await hasTakenModule(user, moduleCode)) {
-      return false
-    }
-    // 3. check if PrereqTree is fulfilled
-    return checkTree(module.prereqTree, modulesDoneCodes)
+    const modulesDone = user.modulesDone.map(flatten.module)
+    const modulesDoing = user.modulesDoing.map(flatten.module)
+    return ModuleRepository.canTakeModule(modulesDone, modulesDoing, moduleCode)
   }
   /**
    * List mods a user can take, based on what the user has completed.
@@ -119,7 +90,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     // 2. filter post-reqs
     const results = await Promise.all(
       postReqs.map((one) =>
-        canTakeModule(user, one.moduleCode, addedModuleCodes, true)
+        canTakeModule(user, one.moduleCode)
       )
     )
     const filtered = postReqs.filter((_, idx) => results[idx])
