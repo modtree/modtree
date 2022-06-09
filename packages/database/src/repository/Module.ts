@@ -139,6 +139,30 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     return checkTree(module.prereqTree, modulesDone)
   }
 
+  /**
+   * Returns union of all moduleCodes' post-reqs.
+   *
+   * @param {string[]} moduleCodes
+   * @returns {Promise<string[]>}
+   */
+  async function getPostReqs(
+    moduleCodes: string[]
+  ): Promise<string[]> {
+    const modules = await findByCodes(moduleCodes)
+    // get array of module codes of post-reqs (fulfillRequirements)
+    const postReqCodesSet = new Set<string>()
+    modules.forEach((module) => {
+      // can be empty string
+      if (module.fulfillRequirements instanceof Array) {
+        module.fulfillRequirements.forEach((moduleCode: string) => {
+          postReqCodesSet.add(moduleCode)
+        })
+      }
+    })
+    const postReqCodesArr = Array.from(postReqCodesSet)
+    return postReqCodesArr
+  }
+
   return BaseRepo.extend({
     initialize,
     getCodes,
@@ -149,5 +173,6 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     findOneById,
     deleteAll,
     canTakeModule,
+    getPostReqs,
   })
 }

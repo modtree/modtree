@@ -59,6 +59,7 @@ export interface IModuleRepository
   findByFaculty(faculty: string): Promise<Module[]>
   findByCodes(moduleCodes: string[]): Promise<Module[]>
   canTakeModule(modulesDone: string[], modulesDoing: string[], moduleCode: string): Promise<boolean>
+  getPostReqs(modules: string[]): Promise<string[]>
 }
 
 export interface IModuleCondensedRepository
