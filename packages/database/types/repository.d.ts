@@ -60,6 +60,11 @@ export interface IModuleRepository
   findByCodes(moduleCodes: string[]): Promise<Module[]>
   canTakeModule(modulesDone: string[], modulesDoing: string[], moduleCode: string): Promise<boolean>
   getPostReqs(modules: string[]): Promise<string[]>
+  getEligibleModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    modulesSelected: string[]
+  ): Promise<string[]>
 }
 
 export interface IModuleCondensedRepository

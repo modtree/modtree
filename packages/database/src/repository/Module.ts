@@ -161,6 +161,35 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     return uniqueCodes
   }
 
+  /**
+   * Returns all mods a user can take, based on what the user has completed.
+   *
+   * modulesSelected helps to temporarily 'add' modules as done.
+   *
+   * @param {string[]} modulesDone
+   * @param {string[]} modulesDoing
+   * @param {string[]} modulesSelected
+   * @returns {Promise<Module[]>}
+   */
+  async function getEligibleModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    modulesSelected: string[]
+  ): Promise<string[]> {
+    const modules = unique(modulesDone.concat(modulesSelected))
+    // 1. get post-reqs
+    const postReqs = await getPostReqs(modules)
+    if (!postReqs) return []
+    // 2. filter post-reqs
+    const results = await Promise.all(
+      postReqs.map((one) =>
+        canTakeModule(modules, modulesDoing, one)
+      )
+    )
+    const filtered = postReqs.filter((_, idx) => results[idx])
+    return filtered
+  }
+
   return BaseRepo.extend({
     initialize,
     getCodes,
@@ -172,5 +201,6 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     deleteAll,
     canTakeModule,
     getPostReqs,
+    getEligibleModules,
   })
 }
