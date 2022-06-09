@@ -229,8 +229,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
   async function hasTakenModule(user: User, moduleCode: string): Promise<boolean> {
     // load module relations
     copy(await findOneById(user.id), user)
-    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
-    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     return (
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)
