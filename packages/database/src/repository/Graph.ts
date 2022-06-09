@@ -197,33 +197,34 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * Suggests modules from a single module.
    * Returns a subset of post-reqs for this module.
    *
+   * If addUserModulesDone is true, then each module of user.modulesDone will
+   * be considered for the output, subject to the criteria.
+   *
    * @param {Graph} graph
-   * @param {string} moduleCode
+   * @param {string[]} moduleCodes
+   * @param {boolean} addUserModulesDone
    * @returns {Promise<Module[]>}
    */
-  async function suggestModulesFromOne(
+  async function suggestModules(
     graph: Graph,
-    moduleCode: string
+    moduleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<Module[]> {
     // Load relations
     copy(await findOneById(graph.id), graph)
     copy(await DegreeRepository.findOneById(graph.degree.id), graph.degree)
 
-    // 1. Get all post-reqs for this mod
-    const module = await ModuleRepository.findOneBy({ moduleCode })
-    const postReqs = module.fulfillRequirements
-    if (postReqs.length === 0) {
-      // deal with empty array gracefully
-      return []
-    }
+    // 1. Get all post-reqs for the mods
+    const postReqs = await UserRepository.getPostReqs(graph.user, moduleCodes, addUserModulesDone)
+    const postReqsCodes = postReqs.map(flatten.module)
 
     // 2. Filter for eligible modules
     const allEligibleModules = await UserRepository.getEligibleModules(
-      graph.user
+      graph.user, []
     )
     if (!allEligibleModules) return [] // temp fix
     const filtered = allEligibleModules.filter((one) =>
-      postReqs.includes(one.moduleCode)
+      postReqsCodes.includes(one.moduleCode)
     )
 
     // 3. Transform filtered into data with fields to sort by
@@ -237,7 +238,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
       one instanceof Array ? one.length : 0
     )
     // -- data processing
-    const degreeModulesCodes = graph.degree.modules.map((one) => one.moduleCode)
+    const degreeModulesCodes = graph.degree.modules.map(flatten.module)
     type Data = {
       moduleCode: string
       inDegree: boolean
@@ -283,7 +284,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
     findOneById,
     findOneByUserAndDegreeId,
     findManyByUserAndDegreeId,
-    suggestModulesFromOne,
+    suggestModules,
     deleteAll,
   })
 }

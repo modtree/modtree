@@ -58,18 +58,23 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * Given a module code, checks if user has cleared sufficient pre-requisites.
    * Currently does not check for preclusion.
    *
-   * If optional string[] addedModuleCodes is specified, then each of the module
+   * If string[] addedModuleCodes is specified, then each of the module
    * codes is added to modulesDoneCodes.
+   *
+   * If addUserModulesDone is true, then each module of user.modulesDone will
+   * be considered for the output, subject to the criteria.
    *
    * @param {User} user
    * @param {string} moduleCode
    * @param {string[]} addedModuleCodes
+   * @param {boolean} addUserModulesDone
    * @returns {Promise<boolean>}
    */
   async function canTakeModule(
     user: User,
     moduleCode: string,
-    addedModuleCodes?: string[]
+    addedModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<boolean> {
     // 1. find module
     const module = await ModuleRepository.findOneBy({ moduleCode })
@@ -77,25 +82,18 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     if (!module) return false
     // 2. load modulesDone and modulesDoing relations
     copy(await findOneById(user.id), user)
-    // -- if module already taken, can't take module again
-    const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
-    // -- add some module codes to done modules
-    if (addedModuleCodes && addedModuleCodes.length > 0) {
-      addedModuleCodes.forEach((one) => {
-        // ignore duplicates
-        if (
-          !modulesDoneCodes.includes(one) &&
-          !modulesDoingCodes.includes(one)
-        ) {
-          modulesDoneCodes.push(one)
-        }
-      })
+    let modulesDoneCodes = []
+    if (addUserModulesDone) {
+      // if module already taken, can't take module again
+      const userModulesDoneCodes = user.modulesDone.map(flatten.module)
+      modulesDoneCodes = modulesDoneCodes.concat(userModulesDoneCodes)
     }
-    if (
-      modulesDoneCodes.includes(moduleCode) ||
-      modulesDoingCodes.includes(moduleCode)
-    ) {
+    if (addedModuleCodes && addedModuleCodes.length > 0) {
+      // add some module codes to done modules
+      const filtered = await filterTakenModules(user, addedModuleCodes)
+      modulesDoneCodes = modulesDoneCodes.concat(filtered)
+    }
+    if (await hasTakenModule(user, moduleCode)) {
       return false
     }
     // 3. check if PrereqTree is fulfilled
@@ -104,7 +102,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
   /**
    * List mods a user can take, based on what the user has completed.
    *
-   * If optional string[] addedModuleCodes is specified, then each of the modules
+   * If string[] addedModuleCodes is specified, then each of the modules
    * are taken as done, and passed into User.canTakeModule.
    *
    * @param {User} user
@@ -113,20 +111,17 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    */
   async function getEligibleModules(
     user: User,
-    addedModuleCodes?: string[]
+    addedModuleCodes: string[]
   ): Promise<Module[]> {
-    // if undefined
-    if (!addedModuleCodes) {
-      addedModuleCodes = []
-    }
     // 1. get post-reqs
-    const postReqs = await getPostReqs(user, addedModuleCodes)
+    const postReqs = await getPostReqs(user, addedModuleCodes, true)
     if (!postReqs) return []
     // 2. filter post-reqs
-    const promises = postReqs.map((one) =>
-      canTakeModule(user, one.moduleCode, addedModuleCodes)
+    const results = await Promise.all(
+      postReqs.map((one) =>
+        canTakeModule(user, one.moduleCode, addedModuleCodes, true)
+      )
     )
-    const results = await Promise.all(promises)
     const filtered = postReqs.filter((_, idx) => results[idx])
     return filtered
   }
@@ -135,56 +130,56 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * List all post-reqs of a user.
    * This is a union of all post-reqs, subtract modulesDone and modulesDoing.
    *
-   * If optional string[] addedModuleCodes is specified, then each of the module
+   * If string[] addedModuleCodes is specified, then each of the module
    * codes is added to modulesDoneCodes.
+   *
+   * If addUserModulesDone is true, then each module of user.modulesDone will
+   * be considered for the output, subject to the criteria.
    *
    * @param {User} user
    * @param {string[]} addedModuleCodes
+   * @param {boolean} addUserModulesDone
    * @returns {Promise<Module[]>}
    */
   async function getPostReqs(
     user: User,
-    addedModuleCodes?: string[]
+    addedModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<Module[]> {
-    // if undefined
-    if (!addedModuleCodes) {
-      addedModuleCodes = []
-    }
     // 1. load modulesDone and modulesDoing relations
     copy(await findOneById(user.id), user)
     // 2. get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodesSet = new Set<string>()
-    user.modulesDone.forEach((module: Module) => {
-      // can be empty string
-      if (module.fulfillRequirements instanceof Array) {
-        module.fulfillRequirements.forEach((moduleCode: string) => {
-          postReqCodesSet.add(moduleCode)
-        })
-      }
-    })
-    const addedModules = await Promise.all(
-      addedModuleCodes.map((one) =>
-        ModuleRepository.findOneBy({
-          moduleCode: one,
-        })
+    if (addUserModulesDone) {
+      user.modulesDone.forEach((module: Module) => {
+        // can be empty string
+        if (module.fulfillRequirements instanceof Array) {
+          module.fulfillRequirements.forEach((moduleCode: string) => {
+            postReqCodesSet.add(moduleCode)
+          })
+        }
+      })
+    }
+    if (addedModuleCodes.length > 0) {
+      const addedModules = await Promise.all(
+        addedModuleCodes.map((one) =>
+          ModuleRepository.findOneBy({
+            moduleCode: one,
+          })
+        )
       )
-    )
-    addedModules.forEach((module: Module) => {
-      // can be empty string
-      if (module.fulfillRequirements instanceof Array) {
-        module.fulfillRequirements.forEach((moduleCode: string) => {
-          postReqCodesSet.add(moduleCode)
-        })
-      }
-    })
+      addedModules.forEach((module: Module) => {
+        // can be empty string
+        if (module.fulfillRequirements instanceof Array) {
+          module.fulfillRequirements.forEach((moduleCode: string) => {
+            postReqCodesSet.add(moduleCode)
+          })
+        }
+      })
+    }
     const postReqCodesArr = Array.from(postReqCodesSet)
-    // 3. filter modulesDone and modulesDoing
-    const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
-    const filtered = postReqCodesArr.filter(
-      (one) =>
-        !modulesDoneCodes.includes(one) && !modulesDoingCodes.includes(one)
-    )
+    // 3. filter taken modules
+    const filtered = await filterTakenModules(user, postReqCodesArr)
     // 4. get modules
     const modules = await ModuleRepository.findByCodes(filtered)
     return modules
@@ -205,16 +200,10 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
     copy(await findOneById(user.id), user)
-    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
-    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
-    if (
-      modulesDoneCodes.includes(moduleCode) ||
-      modulesDoingCodes.includes(moduleCode)
-    ) {
+    if (await hasTakenModule(user, moduleCode))
       return []
-    }
     // 2. Get current eligible modules
-    const eligibleModules = await getEligibleModules(user)
+    const eligibleModules = await getEligibleModules(user, [])
     if (!eligibleModules) return []
     const eligibleModulesCodes = eligibleModules.map(flatten.module)
     // 3. Get unlocked eligible modules
@@ -226,6 +215,50 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     const filtered = unlockedModules.filter(
       (one) => !eligibleModulesCodes.includes(one.moduleCode)
     )
+    return filtered
+  }
+
+  /**
+   * Returns true if the moduleCode belongs to a module is in
+   * user.modulesDone or user.modulesDoing
+   *
+   * @param {User} user
+   * @param {string} moduleCode
+   * @returns {Promise<boolean>}
+   */
+  async function hasTakenModule(user: User, moduleCode: string): Promise<boolean> {
+    // load module relations
+    copy(await findOneById(user.id), user)
+    const modulesDoneCodes = user.modulesDone.map((one) => one.moduleCode)
+    const modulesDoingCodes = user.modulesDoing.map((one) => one.moduleCode)
+    return (
+      modulesDoneCodes.includes(moduleCode) ||
+      modulesDoingCodes.includes(moduleCode)
+    )
+  }
+
+  /**
+   * Given moduleCodes, removes modules in user.modulesDone or
+   * user.modulesDoing.
+   *
+   * This is meant to be a util method, so it does not convert
+   * module codes
+   *
+   * @param {User} user
+   * @param {string[]} moduleCodes
+   * @returns {Promise<string[]>}
+   */
+  async function filterTakenModules(user: User, moduleCodes: string[]): Promise<string[]> {
+    // load module relations
+    copy(await findOneById(user.id), user)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
+    const modulesTakenCodes = modulesDoneCodes.concat(modulesDoingCodes)
+    // result
+    const result = await Promise.all(
+      moduleCodes.map((one) => !modulesTakenCodes.includes(one))
+    )
+    const filtered = moduleCodes.filter((_, idx) => result[idx])
     return filtered
   }
 
@@ -305,6 +338,8 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     getEligibleModules,
     getPostReqs,
     getUnlockedModules,
+    hasTakenModule,
+    filterTakenModules,
     findOneById,
     addDegree,
     findDegree,

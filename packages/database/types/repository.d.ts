@@ -19,19 +19,26 @@ export interface IGraphRepository extends IBaseRepo<Graph, InitProps['Graph']> {
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]>
-  suggestModulesFromOne(graph: Graph, moduleCode: string): Promise<Module[]>
+  suggestModules(graph: Graph, moduleCodes: string[], addUserModulesDone: boolean): Promise<Module[]>
 }
 
 export interface IUserRepository extends IBaseRepo<User, InitProps['User']> {
   canTakeModule(
     user: User,
     moduleCode: string,
-    addModuleCodes?: string[]
+    addModuleCodes: string[],
+    addUserModulesDone: boolean
   ): Promise<boolean>
   findOneByUsername(username: string): Promise<User>
-  getEligibleModules(user: User, addModuleCodes?: string[]): Promise<Module[]>
-  getPostReqs(user: User, addModuleCodes?: string[]): Promise<Module[]>
+  getEligibleModules(user: User, addModuleCodes: string[]): Promise<Module[]>
+  getPostReqs(
+    user: User,
+    addModuleCodes: string[],
+    addUserModulesDone: boolean
+  ): Promise<Module[]>
   getUnlockedModules(user: User, moduleCode: string): Promise<Module[]>
+  hasTakenModule(user: User, moduleCode: string): Promise<boolean>
+  filterTakenModules(user: User, moduleCodes: string[]): Promise<string[]>
   addDegree(user: User, degreeId: string): Promise<void>
   findDegree(user: User, degreeId: string): Promise<Degree>
   removeDegree(user: User, degreeId: string): Promise<void>

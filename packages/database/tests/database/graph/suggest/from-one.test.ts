@@ -1,4 +1,4 @@
-import { container, endpoint, getSource } from '@src/data-source'
+import { container, getSource } from '@src/data-source'
 import { Module } from '@entity'
 import { setup, teardown, Repo, t } from '@environment'
 import { InitProps } from '@mtypes/init-props'
@@ -27,6 +27,8 @@ const userProps: InitProps['User'] = {
   modulesDone: ['CS1010', 'CG2111A'],
   modulesDoing: ['IT2002'],
 }
+
+jest.setTimeout(15000)
 
 beforeAll(() =>
   setup(db)
@@ -61,11 +63,11 @@ const expected = [
   'CS2030S',
 ]
 
-describe('Graph.suggestModulesFromOne', () => {
+describe('Graph.suggestModules (from one)', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
       const res = await container(db, () =>
-        Repo.Graph.suggestModulesFromOne(t.graph, 'CS1010')
+        Repo.Graph.suggestModules(t.graph, ['CS1010'], false)
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -90,9 +92,7 @@ describe('Graph.suggestModulesFromOne', () => {
   describe('Does not suggest post-reqs of the given module', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
-      const res = await endpoint(db, () =>
-        container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
-      )
+      const res = await container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
       expect(res).toBeDefined()
       if (!res) return
       t.postReqs = res.fulfillRequirements
