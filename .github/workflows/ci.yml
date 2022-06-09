@@ -37,7 +37,7 @@ jobs:
       - run: ${{ env.POSTGRES_INIT }}
       - name: 📦 Run all backend tests
         working-directory: ./packages/database
-        run: ${{ env.PREFIX }} yarn nx ci:test:all database
+        run: ${{ env.PREFIX }} yarn nx ci:test
 
   project_build:
     if: always()
@@ -48,7 +48,7 @@ jobs:
         continue-on-error: true
       - run: yarn install --frozen-lockfile --silent
       - name: 📦 Build & lint entire project
-        run: yarn nx run-many --target=build --all
+        run: yarn build
 
   telegram:
     needs: [pre_job, project_build, backend_tests]
