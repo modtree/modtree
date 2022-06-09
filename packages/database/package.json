@@ -6,7 +6,7 @@
   "description": "modtree database with PostgreSQL",
   "main": "./dist/index.js",
   "type": "commonjs",
-  "devDepedencies": {
+  "depedencies": {
     "@modtree/entity": "*",
     "@modtree/types": "*"
   },
