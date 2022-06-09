@@ -1,5 +1,5 @@
 {
-  "extends": "tsconfig/nextjs.json",
+  "extends": "../../tsconfig.nextjs.json",
   "include": ["next-env.d.ts", "pages", "store", "components", "flow"],
   "exclude": ["node_modules"],
   "compilerOptions": {

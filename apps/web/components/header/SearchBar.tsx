@@ -8,7 +8,7 @@ import {
 } from '@/store/search'
 import colors from 'tailwindcss/colors'
 import { Input } from '@/components/Html'
-import { ModuleCondensed } from 'database'
+import { ModuleCondensed } from '@modtree/database'
 import { flatten } from '@/utils/tailwind'
 import { AnyAction, Dispatch } from 'redux'
 import { UseState } from 'types'

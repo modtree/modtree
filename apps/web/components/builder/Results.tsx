@@ -1,4 +1,4 @@
-import { ModuleCondensed } from 'database'
+import { ModuleCondensed } from '@modtree/database'
 import { IoEllipseOutline, IoEllipse } from 'react-icons/io5'
 import { BuilderState, toggleBuilderModule } from '@/store/builder'
 import { useDispatch, useSelector } from 'react-redux'

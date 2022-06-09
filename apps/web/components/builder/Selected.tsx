@@ -1,4 +1,4 @@
-import { ModuleCondensed } from 'database'
+import { ModuleCondensed } from '@modtree/database'
 import { useState } from 'react'
 import { IoCloseSharp } from 'react-icons/io5'
 import { BuilderState, toggleBuilderModule } from '@/store/builder'

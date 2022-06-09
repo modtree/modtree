@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ModuleCondensed } from 'database'
+import { ModuleCondensed } from '@modtree/database'
 import { useDispatch } from 'react-redux'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 

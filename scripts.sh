@@ -32,6 +32,7 @@ weiseng_inv() {
 khang_env() {
  	cp $SRC/web/.env* $WEB
  	cp $SRC/database/.env* $DATABASE
+ 	cp $SRC/nx-cloud.env .
 }
 
 khang_inv() {
@@ -39,6 +40,7 @@ khang_inv() {
   mkdir -p $SRC/database
   cp $WEB/.env.local $WEB/.env.example $SRC/web
   cp $DATABASE/.env $DATABASE/.env.example $SRC/database
+ 	cp ./nx-cloud.env $SRC
 }
 
 # fancy

@@ -1,10 +1,10 @@
 {
-  "name": "tsconfig",
-  "version": "0.0.0",
-  "private": true,
-  "main": "index.js",
+  "name": "@modtree/tsconfig",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "modtree",
+  "description": "modtree typescript configs",
   "files": [
-    "base.json",
     "nextjs.json",
     "react-library.json"
   ]
