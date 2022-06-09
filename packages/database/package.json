@@ -6,6 +6,10 @@
   "description": "modtree database with PostgreSQL",
   "main": "./dist/index.js",
   "type": "commonjs",
+  "devDepedencies": {
+    "@modtree/entity": "*",
+    "@modtree/types": "*"
+  },
   "scripts": {
     "ci:lint": "eslint .",
     "ci:build": "yarn ci:lint && yarn build && yarn build:test",

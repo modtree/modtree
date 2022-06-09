@@ -5,7 +5,7 @@ import {
   IDegree,
   IModule,
   IModuleCondensed,
-} from '../../entity/types'
+} from '@modtree/types'
 
 /**
  * example usage:
@@ -37,7 +37,7 @@ type FindByKey<T> = (value: string) => Promise<T>
  *
  * @param {Repository<any>} repository
  * @param {T} key
- * @returns {FindOneByKey<Entity>}
+ * @returns {FindByKey<any>}
  */
 export function useFindOneByKey<
   Entity extends Searchables,
@@ -59,7 +59,7 @@ export function useFindOneByKey<
  *
  * @param {Repository<any>} repository
  * @param {T} key
- * @returns {FindOneByKey<Entity>}
+ * @returns {FindByKey<any[]>}
  */
 export function useFindByKey<
   Entity extends AllEntities,

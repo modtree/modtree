@@ -16,7 +16,7 @@ import { IUserRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
- * @returns {UserRepository}
+ * @returns {IUserRepository}
  */
 export function getUserRepository(database?: DataSource): IUserRepository {
   const db = getDataSource(database)

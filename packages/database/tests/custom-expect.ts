@@ -1,4 +1,4 @@
-import { ResponseProps } from '@mtypes/api-response'
+import { ModtreeApiResponse } from '@modtree/types'
 import { EmptyResponse } from '@utils'
 
 type CustomMatcherResult = {
@@ -7,11 +7,11 @@ type CustomMatcherResult = {
 }
 
 /**
- * @param {ResponseProps['User']} user
+ * @param {ModtreeApiResponse.User} user
  * @returns {CustomMatcherResult}
  */
 export function toBeUserResponse(
-  user: ResponseProps['User']
+  user: ModtreeApiResponse.User
 ): CustomMatcherResult {
   const checks: boolean[] = []
   const responseKeys = Object.getOwnPropertyNames(user)

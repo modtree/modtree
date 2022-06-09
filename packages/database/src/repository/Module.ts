@@ -17,7 +17,7 @@ import { client } from '../utils/pull'
 
 /**
  * @param {DataSource} database
- * @returns {ModuleRepository}
+ * @returns {IModuleRepository}
  */
 export function getModuleRepository(database?: DataSource): IModuleRepository {
   const db = getDataSource(database)

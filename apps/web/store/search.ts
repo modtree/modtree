@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Module, ModuleCondensed } from '@modtree/database'
+import { Module, ModuleCondensed } from '@modtree/entity'
 
 type State = {
   moduleCondensed: ModuleCondensed[]

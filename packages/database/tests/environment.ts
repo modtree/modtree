@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Agent } from 'http'
 import { DeleteResult, DataSource, Repository } from 'typeorm'
-import { ResponseProps } from '@mtypes/api-response'
+import { ModtreeApiResponse } from '@modtree/types'
 import { InitProps } from '@mtypes/init-props'
 import { config } from '@config'
 import { sql } from '@sql'
@@ -136,10 +136,28 @@ export class Create {
    * @param {typeof InitProps} props
    * @returns {Promise<T>}
    */
-  private static async request<T extends keyof ResponseProps>(
-    entity: T,
-    props: InitProps[T]
-  ): Promise<ResponseProps[T]> {
+  // TODO: find some other way than to overload the *** out of this function
+  private static async request(
+    entity: 'User',
+    props: InitProps['User']
+  ): Promise<ModtreeApiResponse.User>
+  private static async request(
+    entity: 'Degree',
+    props: InitProps['Degree']
+  ): Promise<ModtreeApiResponse.Degree>
+  private static async request(
+    entity: 'Graph',
+    props: InitProps['Graph']
+  ): Promise<ModtreeApiResponse.Graph>
+  private static async request(
+    entity: 'Module',
+    props: InitProps['Module']
+  ): Promise<ModtreeApiResponse.Module>
+  private static async request(
+    entity: 'ModuleCondensed',
+    props: InitProps['ModuleCondensed']
+  ): Promise<ModtreeApiResponse.ModuleCondensed>
+  private static async request(entity: string, props: any): Promise<any> {
     return server.post(`${entity.toLowerCase()}/create`, props).then((res) => {
       expect(typeof res.data.id).toBe('string')
       expect(res.data.id.length).toBeGreaterThan(0)
@@ -153,7 +171,9 @@ export class Create {
    * @param {InitProps['User']} props
    * @returns {Promise<User>}
    */
-  static async User(props: InitProps['User']): Promise<ResponseProps['User']> {
+  static async User(
+    props: InitProps['User']
+  ): Promise<ModtreeApiResponse.User> {
     return Create.request('User', props)
   }
 
@@ -165,7 +185,7 @@ export class Create {
    */
   static async Degree(
     props: InitProps['Degree']
-  ): Promise<ResponseProps['Degree']> {
+  ): Promise<ModtreeApiResponse.Degree> {
     return Create.request('Degree', props)
   }
 
@@ -177,7 +197,7 @@ export class Create {
    */
   static async Graph(
     props: InitProps['Graph']
-  ): Promise<ResponseProps['Graph']> {
+  ): Promise<ModtreeApiResponse.Graph> {
     return Create.request('Graph', props)
   }
 }
@@ -194,10 +214,7 @@ export class Delete {
    * @param {string} id of entity
    * @returns {Promise<DeleteResult>}
    */
-  private static async request<T extends keyof ResponseProps>(
-    entity: T,
-    id: string
-  ): Promise<DeleteResult> {
+  private static async request(entity: string, id: any): Promise<DeleteResult> {
     return server.delete(`${entity.toLowerCase()}/delete/${id}`).then((res) => {
       expect(res.data).toMatchObject({ deleteResult: { raw: [], affected: 1 } })
       return res.data

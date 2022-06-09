@@ -12,8 +12,8 @@ _S_='\033[0;37m'  # Soft (Gray)
 
 DATABASE=./packages/database
 WEB=./apps/web
-[ $USER = "khang" ]   && SRC=~/dots/personal/.secrets/modtree
-[ $USER = "weiseng" ] && SRC=$REPOS/orbital/env
+[[ $USER == "khang" ]]   && SRC=~/dots/personal/.secrets/modtree
+[[ $USER == "weiseng" ]] && SRC=$REPOS/orbital/env
 
 # weiseng's config
 
@@ -68,8 +68,8 @@ inv_end() {
 handle_args() {
   [ -z $SRC ] && return 0
   local cmd="$1"
-  [ $cmd = "setup" ] && env_start; eval ${USER}_env; env_end; return
-  [ $cmd = "inverse" ] && inv_start; eval ${USER}_inv; inv_end; return
+  [[ $cmd == "setup" ]] && env_start; eval ${USER}_env; env_end; return
+  [[ $cmd == "inverse" ]] && inv_start; eval ${USER}_inv; inv_end; return
   return 0
 }
 

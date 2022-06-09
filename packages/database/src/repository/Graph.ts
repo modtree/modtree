@@ -17,10 +17,16 @@ import { quickpop, flatten, copy } from '../utils'
 import { IGraphRepository } from '../../types/repository'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
+type Data = {
+  moduleCode: string
+  inDegree: boolean
+  numUnlockedModules: number
+  origIdx: number
+}
 
 /**
  * @param {DataSource} database
- * @returns {GraphRepository}
+ * @returns {IGraphRepository}
  */
 export function getGraphRepository(database?: DataSource): IGraphRepository {
   const db = getDataSource(database)
@@ -203,7 +209,7 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    */
   async function suggestModules(
     graph: Graph,
-    moduleCodes: string[],
+    moduleCodes: string[]
   ): Promise<Module[]> {
     // Load relations
     copy(await findOneById(graph.id), graph)
@@ -215,7 +221,12 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
     const modulesSelected = moduleCodes
     const requiredModules = graph.degree.modules.map(flatten.module)
     // Results
-    const res = await ModuleRepository.getSuggestedModules(modulesDone, modulesDoing, modulesSelected, requiredModules)
+    const res = await ModuleRepository.getSuggestedModules(
+      modulesDone,
+      modulesDoing,
+      modulesSelected,
+      requiredModules
+    )
     const modules = await Promise.all(
       res.map((moduleCode) => ModuleRepository.findOneBy({ moduleCode }))
     )

@@ -1,5 +1,5 @@
+import { ModtreeApiResponse } from '@modtree/types'
 import { InitProps } from '../../types/init-props'
-import { ResponseProps } from '../../types/api-response'
 
 /** empty init props */
 export const emptyInit: InitProps = {
@@ -85,8 +85,16 @@ export const emptyInit: InitProps = {
   },
 }
 
+type EmptyResponseProps = {
+  User: ModtreeApiResponse.User
+  Degree: ModtreeApiResponse.Degree
+  Module: ModtreeApiResponse.Module
+  Graph: ModtreeApiResponse.Graph
+  ModuleCondensed: ModtreeApiResponse.ModuleCondensed
+}
+
 /** empty API responses */
-export const EmptyResponse: ResponseProps = {
+export const EmptyResponse: EmptyResponseProps = {
   /**
    * empty User response
    */

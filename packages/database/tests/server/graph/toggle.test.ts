@@ -1,18 +1,18 @@
 import { AxiosError } from 'axios'
-import { ResponseProps } from '@mtypes/api-response'
+import { ModtreeApiResponse } from '@modtree/types'
 import { init } from '@tests/init'
 import { Create, Delete, server } from '@environment'
 
 const t: Partial<{
-  graph: ResponseProps['Graph']
-  user: ResponseProps['User']
+  graph: ModtreeApiResponse.Graph
+  user: ModtreeApiResponse.User
+  original: ModtreeApiResponse.Graph
   graphId: string
   userId: string
   degreeId: string
   freshCode: string
   hiddenCode: string
   placedCode: string
-  original: ResponseProps['Graph']
 }> = {}
 
 beforeAll(() =>

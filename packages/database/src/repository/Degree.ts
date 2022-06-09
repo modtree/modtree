@@ -13,7 +13,7 @@ import { IDegreeRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
- * @returns {DegreeRepository}
+ * @returns {IDegreeRepository}
  */
 export function getDegreeRepository(database?: DataSource): IDegreeRepository {
   const db = getDataSource(database)

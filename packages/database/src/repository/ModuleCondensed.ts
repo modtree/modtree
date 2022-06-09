@@ -9,7 +9,7 @@ import { IModuleCondensedRepository } from '../../types/repository'
 
 /**
  * @param {DataSource} database
- * @returns {ModuleCondensedRepository}
+ * @returns {IModuleCondensedRepository}
  */
 export function getModuleCondensedRepository(
   database?: DataSource
