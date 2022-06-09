@@ -1,1 +1,1 @@
-const khang = 'dev'
+module.exports = {}
