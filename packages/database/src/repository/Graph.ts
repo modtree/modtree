@@ -197,85 +197,29 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * Suggests modules from a single module.
    * Returns a subset of post-reqs for this module.
    *
-   * If addUserModulesDone is true, then each module of user.modulesDone will
-   * be considered for the output, subject to the criteria.
-   *
    * @param {Graph} graph
    * @param {string[]} moduleCodes
-   * @param {boolean} addUserModulesDone
    * @returns {Promise<Module[]>}
    */
   async function suggestModules(
     graph: Graph,
     moduleCodes: string[],
-    addUserModulesDone: boolean
   ): Promise<Module[]> {
     // Load relations
     copy(await findOneById(graph.id), graph)
     copy(await DegreeRepository.findOneById(graph.degree.id), graph.degree)
-
-    // 1. Get all post-reqs for the mods
-    const postReqs = await UserRepository.getPostReqs(graph.user, moduleCodes, addUserModulesDone)
-    const postReqsCodes = postReqs.map(flatten.module)
-
-    // 2. Filter for eligible modules
-    const allEligibleModules = await UserRepository.getEligibleModules(
-      graph.user, []
+    copy(await UserRepository.findOneById(graph.user.id), graph.user)
+    // Get data
+    const modulesDone = graph.user.modulesDone.map(flatten.module)
+    const modulesDoing = graph.user.modulesDoing.map(flatten.module)
+    const modulesSelected = moduleCodes
+    const requiredModules = graph.degree.modules.map(flatten.module)
+    // Results
+    const res = await ModuleRepository.getSuggestedModules(modulesDone, modulesDoing, modulesSelected, requiredModules)
+    const modules = await Promise.all(
+      res.map((moduleCode) => ModuleRepository.findOneBy({ moduleCode }))
     )
-    if (!allEligibleModules) return [] // temp fix
-    const filtered = allEligibleModules.filter((one) =>
-      postReqsCodes.includes(one.moduleCode)
-    )
-
-    // 3. Transform filtered into data with fields to sort by
-    // -- get number of mods each filtered module unlocks
-    const resolvedPromises = await Promise.all(
-      filtered.map((one) =>
-        UserRepository.getUnlockedModules(graph.user, one.moduleCode)
-      )
-    )
-    const unlockedModuleCounts = resolvedPromises.map((one) =>
-      one instanceof Array ? one.length : 0
-    )
-    // -- data processing
-    const degreeModulesCodes = graph.degree.modules.map(flatten.module)
-    type Data = {
-      moduleCode: string
-      inDegree: boolean
-      numUnlockedModules: number
-      origIdx: number
-    }
-    const data = filtered.map(
-      (one, origIdx): Data => ({
-        moduleCode: one.moduleCode,
-        inDegree: degreeModulesCodes.includes(one.moduleCode),
-        numUnlockedModules: unlockedModuleCounts[origIdx],
-        origIdx,
-      })
-    )
-
-    /**
-     * Sorting comparator
-     * higher priority => want smaller final index in the array
-     * - if a higher priority, return -1
-     * - elif a lower priority, return 1
-     * - else return 0
-     *
-     * @param {Data} a
-     * @param {Data} b
-     * @returns {number}
-     */
-    function cmp(a: Data, b: Data): number {
-      if (a.inDegree !== b.inDegree) return a.inDegree ? -1 : 1
-      if (a.numUnlockedModules !== b.numUnlockedModules)
-        return a.numUnlockedModules > b.numUnlockedModules ? -1 : 1
-      return a.moduleCode < b.moduleCode ? -1 : 1
-    }
-
-    // 4. Sort and rebuild original array
-    data.sort(cmp)
-    const final = data.map((one) => filtered[one.origIdx])
-    return final
+    return modules
   }
 
   return BaseRepo.extend({

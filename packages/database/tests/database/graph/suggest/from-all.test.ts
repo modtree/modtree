@@ -79,8 +79,9 @@ jest.setTimeout(15000)
 
 describe('Graph.suggestModules (from many)', () => {
   it('Suggests post-reqs of the given module which the user is eligible for', async () => {
+    const selectedModules = userProps.modulesDone
     const res = await container(db, () =>
-      Repo.Graph.suggestModules(t.graph, [], true)
+      Repo.Graph.suggestModules(t.graph, selectedModules)
     )
     expect(res).toBeDefined()
     if (!res) return

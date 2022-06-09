@@ -27,7 +27,7 @@ it('Gets all post-reqs', async () => {
   // Get post reqs
   expect.assertions(3)
   await container(db, () =>
-    Repo.User.getPostReqs(t.user, [], true)
+    Repo.User.getPostReqs(t.user)
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
         t.postReqsCodes = res.map(flatten.module)
@@ -62,7 +62,7 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
-  const postReqs = await container(db, () => Repo.User.getPostReqs(res, [], true))
+  const postReqs = await container(db, () => Repo.User.getPostReqs(res))
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   expect(postReqs).toEqual([])

@@ -27,6 +27,7 @@
     "test:server": "jest -c ./tests/jest.config.ts --runInBand tests/server",
     "test:pull": "jest -c ./tests/jest.config.ts --runInBand tests/pull",
     "test:utils": "jest -c ./tests/jest.config.ts --runInBand tests/utils",
+    "test:mu": "jest -c ./tests/jest.config.ts --runInBand tests/utils/module",
     "graph": "madge --image graph.png",
     "script": "node ./scripts/compile-package-scripts.js",
     "default:env": "sh ./scripts/setup.sh",

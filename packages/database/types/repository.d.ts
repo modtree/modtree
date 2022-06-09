@@ -19,23 +19,14 @@ export interface IGraphRepository extends IBaseRepo<Graph, InitProps['Graph']> {
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]>
-  suggestModules(graph: Graph, moduleCodes: string[], addUserModulesDone: boolean): Promise<Module[]>
+  suggestModules(graph: Graph, moduleCodes: string[]): Promise<Module[]>
 }
 
 export interface IUserRepository extends IBaseRepo<User, InitProps['User']> {
-  canTakeModule(
-    user: User,
-    moduleCode: string,
-    addModuleCodes: string[],
-    addUserModulesDone: boolean
-  ): Promise<boolean>
+  canTakeModule(user: User, moduleCode: string): Promise<boolean>
   findOneByUsername(username: string): Promise<User>
-  getEligibleModules(user: User, addModuleCodes: string[]): Promise<Module[]>
-  getPostReqs(
-    user: User,
-    addModuleCodes: string[],
-    addUserModulesDone: boolean
-  ): Promise<Module[]>
+  getEligibleModules(user: User): Promise<Module[]>
+  getPostReqs(user: User): Promise<Module[]>
   getUnlockedModules(user: User, moduleCode: string): Promise<Module[]>
   hasTakenModule(user: User, moduleCode: string): Promise<boolean>
   filterTakenModules(user: User, moduleCodes: string[]): Promise<string[]>
@@ -58,6 +49,24 @@ export interface IModuleRepository
   pull(): Promise<Module[]>
   findByFaculty(faculty: string): Promise<Module[]>
   findByCodes(moduleCodes: string[]): Promise<Module[]>
+  canTakeModule(modulesDone: string[], modulesDoing: string[], moduleCode: string): Promise<boolean>
+  getPostReqs(modules: string[]): Promise<string[]>
+  getEligibleModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    modulesSelected: string[]
+  ): Promise<string[]>
+  getUnlockedModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    moduleCode: string
+  ): Promise<string[]>
+  getSuggestedModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    modulesSelected: string[],
+    requiredModules: string[]
+  ): Promise<string[]>
 }
 
 export interface IModuleCondensedRepository

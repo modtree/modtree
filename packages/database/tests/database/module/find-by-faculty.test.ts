@@ -1,4 +1,4 @@
-import { container, getSource } from '@src/data-source'
+import { getSource } from '@src/data-source'
 import { Module } from '@entity'
 import { oneUp } from '@utils'
 import { setup, teardown, Repo } from '@environment'
@@ -11,21 +11,21 @@ afterAll(() => teardown(db))
 
 describe('ModuleRepository.findByFaculty', () => {
   it('Valid faculty name', async () => {
-    const res = await container(db, () =>
-      Repo.Module.findByFaculty('Computing')
-    )
-    if (!res) return
-    expect(res).toBeInstanceOf(Array)
-    res.forEach((module) => {
-      expect(module).toBeInstanceOf(Module)
+    expect.hasAssertions()
+    await Repo.Module.findByFaculty('Computing').then((res) => {
+      expect(res).toBeInstanceOf(Array)
+      res.forEach((module) => {
+        expect(module).toBeInstanceOf(Module)
+      })
+      expect(res.length).toBeGreaterThan(100)
     })
-    expect(res.length).toBeGreaterThan(100)
   })
 
   it('Invalid faculty name', async () => {
-    const res = await container(db, () => Repo.Module.findByFaculty('ABCDEFGH'))
-    if (!res) return
-    expect(res).toBeInstanceOf(Array)
-    expect(res.length).toBe(0)
+    expect.hasAssertions()
+    await Repo.Module.findByFaculty('ABCDEFGH').then((res) => {
+      expect(res).toBeInstanceOf(Array)
+      expect(res.length).toBe(0)
+    })
   })
 })
