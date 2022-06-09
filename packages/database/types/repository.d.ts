@@ -70,6 +70,12 @@ export interface IModuleRepository
     modulesDoing: string[],
     moduleCode: string
   ): Promise<string[]>
+  getSuggestedModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    modulesSelected: string[],
+    requiredModules: string[]
+  ): Promise<string[]>
 }
 
 export interface IModuleCondensedRepository

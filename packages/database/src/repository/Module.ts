@@ -218,6 +218,70 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     return filtered
   }
 
+  /**
+   * Suggest modules from one/many.
+   * Returns a subset of post-reqs of these modules.
+   */
+  async function getSuggestedModules(
+    modulesDone: string[],
+    modulesDoing: string[],
+    modulesSelected: string[],
+    requiredModules: string[]
+  ): Promise<string[]> {
+    const modules = unique(modulesDone.concat(modulesSelected))
+    // get relevant modules
+    const postReqs = await getPostReqs(modules)
+    const eligibleModules = await getEligibleModules(modulesDone, modulesDoing, modulesSelected)
+    const filtered = eligibleModules.filter((one) => postReqs.includes(one))
+    // obtain data for sorting criteria
+    const resolvedPromises = await Promise.all(
+      filtered.map((moduleCode) =>
+        getUnlockedModules(modulesDone, modulesDoing, moduleCode)
+      )
+    )
+    const unlockedModuleCounts = resolvedPromises.map((one) =>
+      one instanceof Array ? one.length : 0
+    )
+    // -- data processing
+    type Data = {
+      moduleCode: string
+      inDegree: boolean
+      numUnlockedModules: number
+      origIdx: number
+    }
+    const data = filtered.map(
+      (moduleCode, origIdx): Data => ({
+        moduleCode,
+        inDegree: requiredModules.includes(moduleCode),
+        numUnlockedModules: unlockedModuleCounts[origIdx],
+        origIdx,
+      })
+    )
+
+    /**
+     * Sorting comparator
+     * higher priority => want smaller final index in the array
+     * - if a higher priority, return -1
+     * - elif a lower priority, return 1
+     * - else return 0
+     *
+     * @param {Data} a
+     * @param {Data} b
+     * @returns {number}
+     */
+    function cmp(a: Data, b: Data): number {
+      if (a.inDegree !== b.inDegree) return a.inDegree ? -1 : 1
+      if (a.numUnlockedModules !== b.numUnlockedModules)
+        return a.numUnlockedModules > b.numUnlockedModules ? -1 : 1
+      return a.moduleCode < b.moduleCode ? -1 : 1
+    }
+
+    // Sort and rebuild original array
+    data.sort(cmp)
+    const final = data.map((one) => filtered[one.origIdx])
+    return final
+  }
+
   return BaseRepo.extend({
     initialize,
     getCodes,
@@ -231,5 +295,6 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     getPostReqs,
     getEligibleModules,
     getUnlockedModules,
+    getSuggestedModules,
   })
 }
