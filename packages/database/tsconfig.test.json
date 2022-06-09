@@ -4,6 +4,6 @@
     "outDir": "./tests/dist",
     "noEmit": true
   },
-  "include": ["tests", "types"],
+  "include": ["tests"],
   "exclude": ["src"]
 }
