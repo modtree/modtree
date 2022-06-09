@@ -1,6 +1,12 @@
 import { Repository } from 'typeorm'
 import { InitProps } from './init-props'
-import { Graph, User, Degree, Module, ModuleCondensed } from '../src/entity'
+import {
+  IGraph,
+  IUser,
+  IDegree,
+  IModule,
+  IModuleCondensed,
+} from './entity-interface'
 
 /**
  * IBaseRepository, but for now only in types
@@ -12,66 +18,74 @@ interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
   findOneById: (value: string) => Promise<Entity>
 }
 
-export interface IGraphRepository extends IBaseRepo<Graph, InitProps['Graph']> {
-  toggleModule(graph: Graph, moduleCode: string): Promise<Graph>
-  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph>
-  findManyByUserAndDegreeId(
+export interface IIGraphRepository
+  extends IBaseRepo<IGraph, InitProps['Graph']> {
+  toggleIModule(graph: IGraph, moduleCode: string): Promise<IGraph>
+  findOneByIUserAndIDegreeId(userId: string, degreeId: string): Promise<IGraph>
+  findManyByIUserAndIDegreeId(
     userId: string,
     degreeId: string
-  ): Promise<[Graph[], number]>
-  suggestModules(graph: Graph, moduleCodes: string[], addUserModulesDone: boolean): Promise<Module[]>
+  ): Promise<[IGraph[], number]>
+  suggestIModules(
+    graph: IGraph,
+    moduleCodes: string[],
+    addIUserIModulesDone: boolean
+  ): Promise<IModule[]>
 }
 
-export interface IUserRepository extends IBaseRepo<User, InitProps['User']> {
-  canTakeModule(
-    user: User,
+export interface IIUserRepository extends IBaseRepo<IUser, InitProps['User']> {
+  canTakeIModule(
+    user: IUser,
     moduleCode: string,
-    addModuleCodes: string[],
-    addUserModulesDone: boolean
+    addIModuleCodes: string[],
+    addIUserIModulesDone: boolean
   ): Promise<boolean>
-  findOneByUsername(username: string): Promise<User>
-  getEligibleModules(user: User, addModuleCodes: string[]): Promise<Module[]>
+  findOneByIUsername(username: string): Promise<IUser>
+  getEligibleIModules(
+    user: IUser,
+    addIModuleCodes: string[]
+  ): Promise<IModule[]>
   getPostReqs(
-    user: User,
-    addModuleCodes: string[],
-    addUserModulesDone: boolean
-  ): Promise<Module[]>
-  getUnlockedModules(user: User, moduleCode: string): Promise<Module[]>
-  hasTakenModule(user: User, moduleCode: string): Promise<boolean>
-  filterTakenModules(user: User, moduleCodes: string[]): Promise<string[]>
-  addDegree(user: User, degreeId: string): Promise<void>
-  findDegree(user: User, degreeId: string): Promise<Degree>
-  removeDegree(user: User, degreeId: string): Promise<void>
+    user: IUser,
+    addIModuleCodes: string[],
+    addIUserIModulesDone: boolean
+  ): Promise<IModule[]>
+  getUnlockedIModules(user: IUser, moduleCode: string): Promise<IModule[]>
+  hasTakenIModule(user: IUser, moduleCode: string): Promise<boolean>
+  filterTakenIModules(user: IUser, moduleCodes: string[]): Promise<string[]>
+  addIDegree(user: IUser, degreeId: string): Promise<void>
+  findIDegree(user: IUser, degreeId: string): Promise<IDegree>
+  removeIDegree(user: IUser, degreeId: string): Promise<void>
 }
 
-export interface IDegreeRepository
-  extends IBaseRepo<Degree, InitProps['Degree']> {
-  insertModules(degree: Degree, moduleCodes: string[]): Promise<Degree>
-  findOneByTitle(title: string): Promise<Degree>
-  findByIds(id: string[]): Promise<Degree[]>
+export interface IIDegreeRepository
+  extends IBaseRepo<IDegree, InitProps['Degree']> {
+  insertIModules(degree: IDegree, moduleCodes: string[]): Promise<IDegree>
+  findOneByTitle(title: string): Promise<IDegree>
+  findByIds(id: string[]): Promise<IDegree[]>
 }
 
-export interface IModuleRepository
-  extends IBaseRepo<Module, InitProps['Module']> {
-  fetchOne(moduleCode: string): Promise<Module>
+export interface IIModuleRepository
+  extends IBaseRepo<IModule, InitProps['Module']> {
+  fetchOne(moduleCode: string): Promise<IModule>
   getCodes(): Promise<string[]>
-  pull(): Promise<Module[]>
-  findByFaculty(faculty: string): Promise<Module[]>
-  findByCodes(moduleCodes: string[]): Promise<Module[]>
+  pull(): Promise<IModule[]>
+  findByFaculty(faculty: string): Promise<IModule[]>
+  findByCodes(moduleCodes: string[]): Promise<IModule[]>
 }
 
-export interface IModuleCondensedRepository
-  extends IBaseRepo<ModuleCondensed, InitProps['ModuleCondensed']> {
-  pull(): Promise<ModuleCondensed[]>
-  fetch(): Promise<ModuleCondensed[]>
+export interface IIModuleCondensedRepository
+  extends IBaseRepo<IModuleCondensed, InitProps['ModuleCondensed']> {
+  pull(): Promise<IModuleCondensed[]>
+  fetch(): Promise<IModuleCondensed[]>
   getCodes(): Promise<string[]>
   deleteAll(): Promise<void>
 }
 
 export type Repositories = Partial<{
-  Module: IModuleRepository
-  ModuleCondensed: IModuleCondensedRepository
-  User: IUserRepository
-  Degree: IDegreeRepository
-  Graph: IGraphRepository
+  IModule: IIModuleRepository
+  IModuleCondensed: IIModuleCondensedRepository
+  IUser: IIUserRepository
+  IDegree: IIDegreeRepository
+  IGraph: IIGraphRepository
 }>

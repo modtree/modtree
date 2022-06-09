@@ -1,5 +1,5 @@
 import { container, getSource } from '@src/data-source'
-import { Module } from '@entity'
+import { Module } from '@modtree/entity'
 import { InitProps } from '@mtypes/init-props'
 import { init } from '@tests/init'
 import { setup, teardown, t, Repo } from '@environment'

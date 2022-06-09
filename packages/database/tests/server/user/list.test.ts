@@ -1,4 +1,4 @@
-import { User } from '@entity'
+import { User } from '@modtree/entity'
 import { Create, Delete, server, t } from '@environment'
 import { init } from '@tests/init'
 import { toBeUserResponse } from '@tests/custom-expect'

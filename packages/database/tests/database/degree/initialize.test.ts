@@ -1,5 +1,5 @@
 import { container, getSource } from '@src/data-source'
-import { Degree } from '@entity'
+import { Degree } from '@modtree/entity'
 import { init } from '@tests/init'
 import { setup, teardown, Repo, t } from '@environment'
 import { flatten, oneUp } from '@utils'

@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { Degree } from '@entity'
+import { Degree } from '@modtree/entity'
 import { Delete, server, t } from '@environment'
 import { init } from '@tests/init'
 import { toBeUserResponse } from '@tests/custom-expect'

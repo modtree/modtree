@@ -1,8 +1,6 @@
 import { DataSource } from 'typeorm'
+import { User, Module, Degree } from '@modtree/entity'
 import { InitProps } from '../../types/init-props'
-import { User } from '../entity/User'
-import { Module } from '../entity/Module'
-import { Degree } from '../entity/Degree'
 import { getModuleRepository } from './Module'
 import { getDegreeRepository } from './Degree'
 import { flatten, copy } from '../utils'
@@ -136,7 +134,10 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} moduleCode
    * @returns {Promise<boolean>}
    */
-  async function hasTakenModule(user: User, moduleCode: string): Promise<boolean> {
+  async function hasTakenModule(
+    user: User,
+    moduleCode: string
+  ): Promise<boolean> {
     // load module relations
     copy(await findOneById(user.id), user)
     const modulesDoneCodes = user.modulesDone.map(flatten.module)
@@ -158,7 +159,10 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string[]} moduleCodes
    * @returns {Promise<string[]>}
    */
-  async function filterTakenModules(user: User, moduleCodes: string[]): Promise<string[]> {
+  async function filterTakenModules(
+    user: User,
+    moduleCodes: string[]
+  ): Promise<string[]> {
     // load module relations
     copy(await findOneById(user.id), user)
     const modulesDoneCodes = user.modulesDone.map(flatten.module)

@@ -12,7 +12,7 @@ import {
   getModuleRepository,
   getModuleCondensedRepository,
 } from '@repository'
-import { User, Graph, Degree } from '@entity'
+import { User, Graph, Degree } from '@modtree/entity'
 import { Repositories } from '@mtypes/repository'
 
 type SetupOptions = {

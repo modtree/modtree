@@ -1,12 +1,9 @@
 import { DataSource, In } from 'typeorm'
+import { Module, Graph, User, Degree } from '@modtree/entity'
 import { InitProps } from '../../types/init-props'
-import { Module } from '../entity/Module'
-import { Graph } from '../entity/Graph'
 import { getModuleRepository } from './Module'
 import { getUserRepository } from './User'
 import { getDegreeRepository } from './Degree'
-import { Degree } from '../entity/Degree'
-import { User } from '../entity/User'
 import {
   getDataSource,
   getRelationNames,

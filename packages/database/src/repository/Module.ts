@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { DataSource, In } from 'typeorm'
+import { Module } from '@modtree/entity'
 import { log } from '../cli'
 import { nusmodsApi, flatten , checkTree, hasTakenModule, unique } from '../utils'
 import { Module as NM } from '../../types/nusmods'
 import { InitProps } from '../../types/init-props'
-import { Module } from '../entity/Module'
 import { getModuleCondensedRepository } from './ModuleCondensed'
 import {
   getDataSource,

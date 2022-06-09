@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { Graph } from '@entity'
+import { Graph } from '@modtree/entity'
 import { Create, Delete, server, t } from '@environment'
 import { init } from '@tests/init'
 

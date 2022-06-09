@@ -1,5 +1,5 @@
 import { getSource } from '@src/data-source'
-import { Module, ModuleCondensed, Degree, User, Graph } from '@entity'
+import { Module, ModuleCondensed, Degree, User, Graph } from '@modtree/entity'
 import {
   getModuleRepository,
   getModuleCondensedRepository,

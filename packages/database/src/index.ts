@@ -1,1 +1,1 @@
-export * from './entity'
+export const khang = 'dev'

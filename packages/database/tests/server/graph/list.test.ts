@@ -1,4 +1,4 @@
-import { Graph } from '@entity'
+import { Graph } from '@modtree/entity'
 import { init } from '@tests/init'
 import { Create, Delete, server, t } from '@environment'
 

@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { User } from '@entity'
+import { User } from '@modtree/entity'
 import { Delete, server, t } from '@environment'
 import { init } from '@tests/init'
 
