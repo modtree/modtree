@@ -1,14 +1,14 @@
 import { oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
 import { Repo, setup, teardown } from '@modtree/test-env'
-import { getModuleCondensedRepository } from '../../src'
+import { ModuleCondensedRepository } from '../../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db).then(() => {
-    Repo.ModuleCondensed = getModuleCondensedRepository(db)
+    Repo.ModuleCondensed = new ModuleCondensedRepository(db)
   })
 )
 afterAll(() => teardown(db))

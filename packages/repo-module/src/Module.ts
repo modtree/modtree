@@ -1,16 +1,16 @@
 import axios from 'axios'
-import { DataSource, In } from 'typeorm'
+import { DataSource, In, Repository } from 'typeorm'
 import { Module } from '@modtree/entity'
-import { IModuleRepository, InitProps, NUSMods } from '@modtree/types'
+import {
+  IModuleCondensedRepository,
+  IModuleRepository,
+  InitProps,
+  NUSMods,
+} from '@modtree/types'
 import { nusmodsApi, flatten, unique, client, log } from '@modtree/utils'
 import { hasTakenModule, checkTree } from './utils'
-import {
-  getDataSource,
-  getRelationNames,
-  useDeleteAll,
-  useFindOneByKey,
-} from '@modtree/repo-base'
-import { getModuleCondensedRepository } from './ModuleCondensed'
+import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
+import { ModuleCondensedRepository } from './ModuleCondensed'
 
 type Data = {
   moduleCode: string
@@ -19,17 +19,21 @@ type Data = {
   origIdx: number
 }
 
-/**
- * @param {DataSource} database
- * @returns {IModuleRepository}
- */
-export function getModuleRepository(database?: DataSource): IModuleRepository {
-  const db = getDataSource(database)
-  const BaseRepo = db.getRepository(Module)
-  const deleteAll = useDeleteAll<Module>(BaseRepo)
-  const findOneById = useFindOneByKey(BaseRepo, 'id')
-  const allRelations = getRelationNames(BaseRepo)
-  const [ModuleCondensedRepository] = [getModuleCondensedRepository(db)]
+export class ModuleRepository
+  extends Repository<Module>
+  implements IModuleRepository
+{
+  private db: DataSource
+  private moduleCondensedRepo: IModuleCondensedRepository
+
+  constructor(db: DataSource) {
+    super(Module, db.manager)
+    this.db = db
+    this.moduleCondensedRepo = new ModuleCondensedRepository(db)
+  }
+
+  deleteAll = useDeleteAll(this)
+  findOneById = useFindOneByKey(this, 'id')
 
   /**
    * initialize a Module
@@ -37,8 +41,8 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {InitProps['Module']} props
    * @returns {Promise<Module>}
    */
-  async function initialize(props: InitProps['Module']): Promise<Module> {
-    return BaseRepo.create(props)
+  async initialize(props: InitProps['Module']): Promise<Module> {
+    return this.create(props)
   }
 
   /**
@@ -46,8 +50,8 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    *
    * @returns {Promise<string[]>}
    */
-  async function getCodes(): Promise<string[]> {
-    return BaseRepo.find().then((res) => res.map(flatten.module))
+  async getCodes(): Promise<string[]> {
+    return this.find().then((res) => res.map(flatten.module))
   }
 
   /**
@@ -55,10 +59,10 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    *
    * @param {string} moduleCode
    */
-  async function fetchOne(moduleCode: string): Promise<Module> {
+  async fetchOne(moduleCode: string): Promise<Module> {
     return axios.get(nusmodsApi(`modules/${moduleCode}`)).then((res) => {
       const n: NUSMods.Module = res.data
-      const m = BaseRepo.create(n)
+      const m = this.create(n)
       return m
     })
   }
@@ -66,14 +70,14 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
   /**
    * fetches exactly one module with full details
    */
-  async function pull(): Promise<Module[]> {
+  async pull(): Promise<Module[]> {
     const config = {
       freq: 0.1,
       buffer: 100,
     }
     let buffer = 0
-    const moduleCodes = new Set(await getCodes())
-    const moduleCondesedCodes = await ModuleCondensedRepository.getCodes()
+    const moduleCodes = new Set(await this.getCodes())
+    const moduleCondesedCodes = await this.moduleCondensedRepo.getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
     log.yellow(`fetching ${diff.length} modules from NUSMods...`)
     const [result, fetchQueue, writeQueue] = [[], [], []]
@@ -90,9 +94,9 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
           .then((res) => {
             buffer -= 1
             const n: NUSMods.Module = res.data
-            const m = BaseRepo.create(n)
+            const m = this.create(n)
             result.push(m)
-            writeQueue.push(BaseRepo.save(m))
+            writeQueue.push(this.save(m))
           })
           .catch(() => {
             buffer -= 1
@@ -110,16 +114,16 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string} faculty
    * @returns {Promise<Module[]>}
    */
-  function findByFaculty(faculty: string): Promise<Module[]> {
-    return BaseRepo.find({ where: { faculty }, relations: allRelations })
+  findByFaculty(faculty: string): Promise<Module[]> {
+    return this.findBy({ faculty })
   }
 
   /**
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */
-  function findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    return BaseRepo.find({ where: { moduleCode: In(moduleCodes) } })
+  findByCodes(moduleCodes: string[]): Promise<Module[]> {
+    return this.find({ where: { moduleCode: In(moduleCodes) } })
   }
 
   /**
@@ -130,13 +134,13 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string[]} modulesDoing
    * @param {string} moduleCode
    */
-  async function canTakeModule(
+  async canTakeModule(
     modulesDone: string[],
     modulesDoing: string[],
     moduleCode: string
   ): Promise<boolean> {
     // 1. find module
-    const module = await BaseRepo.findOneBy({ moduleCode })
+    const module = await this.findOneBy({ moduleCode })
     if (!module) return false
     // 2. filter modulesDone and modulesDoing
     if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) {
@@ -152,8 +156,8 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string[]} moduleCodes
    * @returns {Promise<string[]>}
    */
-  async function getPostReqs(moduleCodes: string[]): Promise<string[]> {
-    const modules = await findByCodes(moduleCodes)
+  async getPostReqs(moduleCodes: string[]): Promise<string[]> {
+    const modules = await this.findByCodes(moduleCodes)
     // get array of module codes of post-reqs (fulfillRequirements)
     const postReqCodes = []
     modules.forEach((module) => {
@@ -176,18 +180,18 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string[]} modulesSelected
    * @returns {Promise<Module[]>}
    */
-  async function getEligibleModules(
+  async getEligibleModules(
     modulesDone: string[],
     modulesDoing: string[],
     modulesSelected: string[]
   ): Promise<string[]> {
     const modules = unique(modulesDone.concat(modulesSelected))
     // 1. get post-reqs
-    const postReqs = await getPostReqs(modules)
+    const postReqs = await this.getPostReqs(modules)
     if (!postReqs) return []
     // 2. filter post-reqs
     const results = await Promise.all(
-      postReqs.map((one) => canTakeModule(modules, modulesDoing, one))
+      postReqs.map((one) => this.canTakeModule(modules, modulesDoing, one))
     )
     const filtered = postReqs.filter((_, idx) => results[idx])
     // 3. remove modulesDone and modulesDoing
@@ -204,7 +208,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string[]} modulesDoing
    * @param {string} moduleCode
    */
-  async function getUnlockedModules(
+  async getUnlockedModules(
     modulesDone: string[],
     modulesDoing: string[],
     moduleCode: string
@@ -214,13 +218,13 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     // 1. Return empty array if module in modulesDone or modulesDoing
     if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) return []
     // 2. Get current eligible modules
-    const eligibleModules = await getEligibleModules(
+    const eligibleModules = await this.getEligibleModules(
       modulesDone,
       modulesDoing,
       []
     )
     // 3. Get unlocked eligible modules
-    const unlockedModules = await getEligibleModules(
+    const unlockedModules = await this.getEligibleModules(
       modulesDone,
       modulesDoing,
       addedModuleCodes
@@ -245,7 +249,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
    * @param {string[]} modulesSelected
    * @param {string[]} requiredModules
    */
-  async function getSuggestedModules(
+  async getSuggestedModules(
     modulesDone: string[],
     modulesDoing: string[],
     modulesSelected: string[],
@@ -253,8 +257,8 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
   ): Promise<string[]> {
     const modules = unique(modulesDone.concat(modulesSelected))
     // get relevant modules
-    const postReqs = await getPostReqs(modules)
-    const eligibleModules = await getEligibleModules(
+    const postReqs = await this.getPostReqs(modules)
+    const eligibleModules = await this.getEligibleModules(
       modulesDone,
       modulesDoing,
       modulesSelected
@@ -263,7 +267,7 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     // obtain data for sorting criteria
     const resolvedPromises = await Promise.all(
       filtered.map((moduleCode) =>
-        getUnlockedModules(modulesDone, modulesDoing, moduleCode)
+        this.getUnlockedModules(modulesDone, modulesDoing, moduleCode)
       )
     )
     const unlockedModuleCounts = resolvedPromises.map((one) =>
@@ -302,20 +306,4 @@ export function getModuleRepository(database?: DataSource): IModuleRepository {
     const final = data.map((one) => filtered[one.origIdx])
     return final
   }
-
-  return BaseRepo.extend({
-    initialize,
-    getCodes,
-    fetchOne,
-    pull,
-    findByFaculty,
-    findByCodes,
-    findOneById,
-    deleteAll,
-    canTakeModule,
-    getPostReqs,
-    getEligibleModules,
-    getUnlockedModules,
-    getSuggestedModules,
-  })
 }

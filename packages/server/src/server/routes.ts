@@ -3,8 +3,8 @@ import { Repositories } from '@modtree/types'
 import { copy } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import {
-  getModuleRepository,
-  getModuleCondensedRepository,
+  ModuleRepository,
+  ModuleCondensedRepository,
   validModuleCode
 } from '@modtree/repo-module'
 import { DegreeRepository } from '@modtree/repo-degree'
@@ -178,8 +178,8 @@ export function getRoutes(): RouteWithController<any>[] {
     Degree: new DegreeRepository(db),
     User: new UserRepository(db),
     Graph: new GraphRepository(db),
-    Module: getModuleRepository(db),
-    ModuleCondensed: getModuleCondensedRepository(db),
+    Module: new ModuleRepository(db),
+    ModuleCondensed: new ModuleCondensedRepository(db),
   }
   copy(loadRepositories, Repo)
 

@@ -1,6 +1,6 @@
 import { Graph, Module, ModuleCondensed } from '@modtree/entity'
 import { DegreeRepository } from '@modtree/repo-degree'
-import { getModuleCondensedRepository } from '@modtree/repo-module'
+import { ModuleCondensedRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
@@ -20,7 +20,7 @@ beforeAll(() =>
         User: new UserRepository(db),
         Degree: new DegreeRepository(db),
         Graph: new GraphRepository(db),
-        ModuleCondensed: getModuleCondensedRepository(db),
+        ModuleCondensed: new ModuleCondensedRepository(db),
       })
       return Promise.all([
         Repo.User.initialize(init.user1),

@@ -12,7 +12,7 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from '@modtree/repo-base'
-import { getModuleRepository } from '@modtree/repo-module'
+import { ModuleRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 
@@ -28,7 +28,7 @@ export class GraphRepository extends Repository<Graph> {
   constructor(db: DataSource) {
     super(Graph, db.manager)
     this.db = db
-    this.ModuleRepository = getModuleRepository(this.db)
+    this.ModuleRepository = new ModuleRepository(this.db)
     this.DegreeRepository = new DegreeRepository(this.db)
     this.UserRepository = new UserRepository(this.db)
   }
@@ -53,7 +53,7 @@ export class GraphRepository extends Repository<Graph> {
    *
    * @returns {Promise<Array<Module[]>>}
    */
-  private async getModules(
+  private async Modules(
     user: User,
     degree: Degree,
     props: InitProps['Graph']
@@ -88,7 +88,7 @@ export class GraphRepository extends Repository<Graph> {
    */
   async initialize(props: InitProps['Graph']): Promise<Graph> {
     const [user, degree] = await this.getUserAndDegree(props)
-    const [modulesHidden, modulesPlaced] = await this.getModules(
+    const [modulesHidden, modulesPlaced] = await this.Modules(
       user,
       degree,
       props

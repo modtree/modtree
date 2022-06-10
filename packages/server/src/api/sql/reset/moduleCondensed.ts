@@ -1,5 +1,5 @@
 import { db, container } from '@modtree/typeorm-config'
-import { getModuleCondensedRepository } from '@modtree/repo-module'
+import { ModuleCondensedRepository } from '@modtree/repo-module'
 import { analyze } from '../../analyze'
 
-analyze(() => container(db, () => getModuleCondensedRepository(db).deleteAll()))
+analyze(() => container(db, () => new ModuleCondensedRepository(db).deleteAll()))

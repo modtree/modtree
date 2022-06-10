@@ -1,5 +1,5 @@
 import { db, container } from '@modtree/typeorm-config'
-import { getModuleRepository } from '@modtree/repo-module'
+import { ModuleRepository } from '@modtree/repo-module'
 import { analyze } from '../analyze'
 
-analyze(() => container(db, () => getModuleRepository(db).fetchOne('LL4004V')))
+analyze(() => container(db, () => new ModuleRepository(db).fetchOne('LL4004V')))

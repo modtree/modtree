@@ -1,21 +1,20 @@
 import axios from 'axios'
-import { DataSource } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { ModuleCondensed } from '@modtree/entity'
 import { InitProps, NUSMods, IModuleCondensedRepository } from '@modtree/types'
 import { nusmodsApi, getModuleLevel, flatten } from '@modtree/utils'
-import { getDataSource, useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
+import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 
-/**
- * @param {DataSource} database
- * @returns {IModuleCondensedRepository}
- */
-export function getModuleCondensedRepository(
-  database?: DataSource
-): IModuleCondensedRepository {
-  const db = getDataSource(database)
-  const BaseRepo = db.getRepository(ModuleCondensed)
-  const deleteAll = useDeleteAll<ModuleCondensed>(BaseRepo)
-  const findOneById = useFindOneByKey(BaseRepo, 'id')
+export class ModuleCondensedRepository
+  extends Repository<ModuleCondensed>
+  implements IModuleCondensedRepository
+{
+  constructor(db: DataSource) {
+    super(ModuleCondensed, db.manager)
+  }
+
+  deleteAll = useDeleteAll(this)
+  findOneById = useFindOneByKey(this, 'id')
 
   /**
    * initialize a Module Condensed
@@ -23,10 +22,10 @@ export function getModuleCondensedRepository(
    * @param {InitProps['ModuleCondensed']} props
    * @returns {Promise<ModuleCondensed>}
    */
-  async function initialize(
+  async initialize(
     props: InitProps['ModuleCondensed']
   ): Promise<ModuleCondensed> {
-    return BaseRepo.create(props)
+    return this.create(props)
   }
 
   /**
@@ -34,8 +33,8 @@ export function getModuleCondensedRepository(
    *
    * @returns {Promise<string[]>}
    */
-  async function getCodes(): Promise<string[]> {
-    const modules = await BaseRepo.find()
+  async getCodes(): Promise<string[]> {
+    const modules = await this.find()
     return modules.map(flatten.module)
   }
 
@@ -44,11 +43,11 @@ export function getModuleCondensedRepository(
    *
    * @returns {Promise<ModuleCondensed[]>}
    */
-  async function fetch(): Promise<ModuleCondensed[]> {
+  async fetch(): Promise<ModuleCondensed[]> {
     const res = await axios.get(nusmodsApi('moduleList'))
     const { data } = res
     return data.map((n: NUSMods.ModuleCondensed) =>
-      BaseRepo.create({ ...n, moduleLevel: getModuleLevel(n.moduleCode) })
+      this.create({ ...n, moduleLevel: getModuleLevel(n.moduleCode) })
     )
   }
 
@@ -57,22 +56,13 @@ export function getModuleCondensedRepository(
    *
    * @returns {Promise<ModuleCondensed[]>}
    */
-  async function pull(): Promise<ModuleCondensed[]> {
-    const existingModules = new Set(await getCodes())
-    const freshModules = await fetch()
+  async pull(): Promise<ModuleCondensed[]> {
+    const existingModules = new Set(await this.getCodes())
+    const freshModules = await this.fetch()
     const modulesToSave = freshModules.filter(
       (x) => !existingModules.has(x.moduleCode)
     )
-    await BaseRepo.save(modulesToSave)
+    await this.save(modulesToSave)
     return modulesToSave
   }
-
-  return BaseRepo.extend({
-    initialize,
-    deleteAll,
-    getCodes,
-    pull,
-    fetch,
-    findOneById,
-  })
 }

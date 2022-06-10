@@ -7,7 +7,7 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from '@modtree/repo-base'
-import { getModuleRepository } from '@modtree/repo-module'
+import { ModuleRepository } from '@modtree/repo-module'
 
 export class DegreeRepository
   extends Repository<Degree>
@@ -20,7 +20,7 @@ export class DegreeRepository
   constructor(db: DataSource) {
     super(Degree, db.manager)
     this.db = db
-    this.moduleRepo = getModuleRepository(this.db)
+    this.moduleRepo = new ModuleRepository(this.db)
   }
 
   deleteAll = useDeleteAll(this)

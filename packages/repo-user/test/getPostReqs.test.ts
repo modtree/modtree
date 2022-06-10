@@ -4,7 +4,7 @@ import { setup, teardown, t, Repo, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
 import { UserRepository } from '../src'
-import { getModuleRepository } from '@modtree/repo-module'
+import { ModuleRepository } from '@modtree/repo-module'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -20,7 +20,7 @@ beforeAll(() =>
     .then(() => {
       Object.assign(Repo, {
         User: new UserRepository(db),
-        Module: getModuleRepository(db),
+        Module: new ModuleRepository(db),
       })
       return Repo.User.initialize(userProps)
     })
