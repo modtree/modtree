@@ -2,11 +2,16 @@ import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown, Repo } from '@modtree/test-env'
 import { checkTree } from '.'
+import { getModuleRepository } from '../Module'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db))
+beforeAll(() =>
+  setup(db).then(() => {
+    Repo.Module = getModuleRepository(db)
+  })
+)
 afterAll(() => teardown(db))
 
 it('Returns true for mods without pre-reqs', async () => {

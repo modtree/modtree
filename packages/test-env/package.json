@@ -8,10 +8,8 @@
   "type": "commonjs",
   "dependencies": {
     "@modtree/types": "*",
-    "@modtree/repo-module": "*",
-    "@modtree/repo-degree": "*",
-    "@modtree/repo-user": "*",
-    "@modtree/repo-graph": "*",
+    "@modtree/typeorm-config": "*",
+    "@modtree/sql": "*",
     "@modtree/entity": "*"
   },
   "scripts": {

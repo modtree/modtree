@@ -8,6 +8,7 @@
   "type": "commonjs",
   "dependencies": {
     "@modtree/entity": "*",
+    "@modtree/test-env": "*",
     "@modtree/repo-base": "*",
     "@modtree/repo-module": "*",
     "@modtree/utils": "*",

@@ -1,24 +1,32 @@
-import { EntityNotFoundError } from 'typeorm'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
 import { Graph, Module, ModuleCondensed } from '@modtree/entity'
-import { setup, teardown, Repo, init } from '@modtree/test-env'
+import { getDegreeRepository } from '@modtree/repo-degree'
+import { getModuleCondensedRepository } from '@modtree/repo-module'
+import { getUserRepository } from '@modtree/repo-user'
+import { init, Repo, setup, teardown } from '@modtree/test-env'
+import { getSource } from '@modtree/typeorm-config'
+import { flatten, oneUp } from '@modtree/utils'
+import { EntityNotFoundError } from 'typeorm'
+
+import { getGraphRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{
-  graph: Graph
-  moduleCodes: string[]
-}> = {}
+const t: Partial<{ graph: Graph; moduleCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      Promise.all([
+    .then(() => {
+      Object.assign(Repo, {
+        User: getUserRepository(db),
+        Degree: getDegreeRepository(db),
+        Graph: getGraphRepository(db),
+        ModuleCondensed: getModuleCondensedRepository(db),
+      })
+      return Promise.all([
         Repo.User.initialize(init.user1),
         Repo.Degree.initialize(init.degree1),
       ])
-    )
+    })
     .then(([user, degree]) =>
       Repo.Graph.initialize({
         userId: user.id,

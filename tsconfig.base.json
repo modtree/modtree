@@ -26,19 +26,18 @@
     "skipDefaultLibCheck": false,
     "baseUrl": ".",
     "paths": {
-      "@modtree/database": ["packages/database/src/index.ts"],
-      "@modtree/test": ["packages/test/src/index.ts"],
-      "@modtree/test-env": ["packages/test-env/src/index.ts"],
-      "@modtree/repo-base": ["packages/repo-base/src/index.ts"],
-      "@modtree/repo-user": ["packages/repo-user/src/index.ts"],
-      "@modtree/sql": ["packages/sql/src/index.ts"],
-      "@modtree/repo-degree": ["packages/repo-degree/src/index.ts"],
-      "@modtree/repo-module": ["packages/repo-module/src/index.ts"],
-      "@modtree/repo-graph": ["packages/repo-graph/src/index.ts"],
-      "@modtree/typeorm-config": ["packages/typeorm-config/src/index.ts"],
+      "@modtree/types": ["packages/types/index.d.ts"],
       "@modtree/entity": ["packages/entity/src/index.ts"],
       "@modtree/utils": ["packages/utils/src/index.ts"],
-      "@modtree/types": ["packages/types/index.d.ts"]
+      "@modtree/typeorm-config": ["packages/typeorm-config/src/index.ts"],
+      "@modtree/sql": ["packages/sql/src/index.ts"],
+      "@modtree/test-env": ["packages/test-env/src/index.ts"],
+      "@modtree/repo-base": ["packages/repo-base/src/index.ts"],
+      "@modtree/repo-module": ["packages/repo-module/src/index.ts"],
+      "@modtree/repo-degree": ["packages/repo-degree/src/index.ts"],
+      "@modtree/repo-user": ["packages/repo-user/src/index.ts"],
+      "@modtree/repo-graph": ["packages/repo-graph/src/index.ts"],
+      "@modtree/server": ["packages/server/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

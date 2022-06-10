@@ -10,7 +10,7 @@ _P_='\033[0;35m'  # Purple
 _C_='\033[0;36m'  # Cyan
 _S_='\033[0;37m'  # Soft (Gray)
 
-DATABASE=./packages/database
+SERVER=./packages/server
 WEB=./apps/web
 [[ $USER == "khang" ]]   && SRC=~/dots/personal/.secrets/modtree
 [[ $USER == "weiseng" ]] && SRC=$REPOS/orbital/env
@@ -19,19 +19,19 @@ WEB=./apps/web
 
 weiseng_env() {
 	cp $SRC/.env.local $WEB/.env.local
-	cp $SRC/.env $DATABASE/.env
+	cp $SRC/.env $SERVER/.env
 }
 
 weiseng_inv() {
 	cp $WEB/.env.local $SRC/.env.local
-	cp $DATABASE/.env $SRC/.env
+	cp $SERVER/.env $SRC/.env
 }
 
 # khang's config
 
 khang_env() {
  	cp $SRC/web/.env* $WEB
- 	cp $SRC/database/.env* $DATABASE
+ 	cp $SRC/database/.env* $SERVER
  	cp $SRC/nx-cloud.env .
 }
 
@@ -39,7 +39,7 @@ khang_inv() {
   mkdir -p $SRC/web
   mkdir -p $SRC/database
   cp $WEB/.env.local $WEB/.env.example $SRC/web
-  cp $DATABASE/.env $DATABASE/.env.example $SRC/database
+  cp $SERVER/.env $SERVER/.env.example $SRC/database
  	cp ./nx-cloud.env $SRC
 }
 
@@ -51,7 +51,7 @@ env_start() {
 }
 
 env_end() {
-  [ -f $DATABASE/.env ] \
+  [ -f $SERVER/.env ] \
     && [ -f $WEB/.env.local ] \
     && printf "📦  Env files loaded.\n\n"
 }

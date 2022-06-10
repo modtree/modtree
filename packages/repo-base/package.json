@@ -8,6 +8,7 @@
   "type": "commonjs",
   "dependencies": {
     "@modtree/typeorm-config": "*",
+    "@modtree/test-env": "*",
     "@modtree/types": "*"
   },
   "scripts": {

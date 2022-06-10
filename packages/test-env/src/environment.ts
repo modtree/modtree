@@ -4,13 +4,6 @@ import { DeleteResult, DataSource, Repository } from 'typeorm'
 import { ModtreeApiResponse, InitProps, Repositories } from '@modtree/types'
 import { config } from '@modtree/typeorm-config'
 import { sql } from '@modtree/sql'
-import {
-  getModuleRepository,
-  getModuleCondensedRepository,
-} from '@modtree/repo-module'
-import { getDegreeRepository } from '@modtree/repo-degree'
-import { getUserRepository } from '@modtree/repo-user'
-import { getGraphRepository } from '@modtree/repo-graph'
 import { User, Graph, Degree } from '@modtree/entity'
 
 type SetupOptions = {
@@ -29,28 +22,17 @@ export async function setup(
   db: DataSource,
   opts?: SetupOptions
 ): Promise<void> {
-  /**
-   * bundle initializing the database and initializing the repositories
-   *
-   * @returns {Promise<void>}
-   */
-  const initializeRepositories = (): Promise<void> =>
-    db.initialize().then(() => {
-      Repo.User = getUserRepository(db)
-      Repo.Degree = getDegreeRepository(db)
-      Repo.Module = getModuleRepository(db)
-      Repo.ModuleCondensed = getModuleCondensedRepository(db)
-      Repo.Graph = getGraphRepository(db)
-    })
   return sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
     .then(async () => {
       // by default, initialize a new connection
       if (!opts) {
-        return initializeRepositories()
+        return db.initialize().then()
       }
       // else, read the config
-      return opts.initialize ? initializeRepositories() : null
+      if (opts.initialize) {
+        return db.initialize().then()
+      }
     })
 }
 
