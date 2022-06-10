@@ -4,7 +4,7 @@ import { Graph } from '@modtree/entity'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { GraphRepository } from '../../src'
 import { getDegreeRepository } from '@modtree/repo-degree'
-import { getUserRepository } from '@modtree/repo-user'
+import { UserRepository } from '@modtree/repo-user'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -13,7 +13,7 @@ beforeAll(() =>
   setup(db)
     .then(() => {
       Object.assign(Repo, {
-        User: getUserRepository(db),
+        User: new UserRepository(db),
         Degree: getDegreeRepository(db),
         Graph: new GraphRepository(db),
       })

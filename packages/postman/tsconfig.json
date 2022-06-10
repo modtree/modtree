@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["es5", "es6", "dom"],
     "skipLibCheck": true,
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "esModuleInterop": true,
     "moduleResolution": "node",

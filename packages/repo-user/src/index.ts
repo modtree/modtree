@@ -1,9 +1,13 @@
-import { DataSource } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { User, Module, Degree } from '@modtree/entity'
-import { InitProps, IUserRepository } from '@modtree/types'
+import {
+  IDegreeRepository,
+  IModuleRepository,
+  InitProps,
+  IUserRepository,
+} from '@modtree/types'
 import { flatten, copy } from '@modtree/utils'
 import {
-  getDataSource,
   getRelationNames,
   useDeleteAll,
   useFindOneByKey,
@@ -11,20 +15,24 @@ import {
 import { getModuleRepository } from '@modtree/repo-module'
 import { getDegreeRepository } from '@modtree/repo-degree'
 
-/**
- * @param {DataSource} database
- * @returns {IUserRepository}
- */
-export function getUserRepository(database?: DataSource): IUserRepository {
-  const db = getDataSource(database)
-  const BaseRepo = db.getRepository(User)
-  const allRelations = getRelationNames(BaseRepo)
-  const deleteAll = useDeleteAll(BaseRepo)
-  const findOneById = useFindOneByKey(BaseRepo, 'id')
-  const [DegreeRepository, ModuleRepository] = [
-    getDegreeRepository(db),
-    getModuleRepository(db),
-  ]
+export class UserRepository
+  extends Repository<User>
+  implements IUserRepository
+{
+  private db: DataSource
+  private allRelations = getRelationNames(this)
+  private moduleRepo: IModuleRepository
+  private degreeRepo: IDegreeRepository
+
+  constructor(db: DataSource) {
+    super(User, db.manager)
+    this.db = db
+    this.moduleRepo = getModuleRepository(this.db)
+    this.degreeRepo = getDegreeRepository(this.db)
+  }
+
+  deleteAll = useDeleteAll(this)
+  findOneById = useFindOneByKey(this, 'id')
 
   /**
    * Adds a User to DB
@@ -32,22 +40,22 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {InitProps['User']} props
    * @returns {Promise<User>}
    */
-  async function initialize(props: InitProps['User']): Promise<User> {
+  async initialize(props: InitProps['User']): Promise<User> {
     // find modules completed and modules doing, to create many-to-many
     // relation
     const queryList = [props.modulesDone, props.modulesDoing]
     const modulesPromise = Promise.all(
-      queryList.map((list) => ModuleRepository.findByCodes(list))
+      queryList.map((list) => this.moduleRepo.findByCodes(list))
     )
     const [modulesDone, modulesDoing] = await modulesPromise
-    const user = BaseRepo.create({
+    const user = this.create({
       ...props,
       modulesDone: modulesDone || [],
       modulesDoing: modulesDoing || [],
       savedDegrees: [],
       savedGraphs: [],
     })
-    await BaseRepo.save(user)
+    await this.save(user)
     return user
   }
 
@@ -59,13 +67,10 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} moduleCode
    * @returns {Promise<boolean>}
    */
-  async function canTakeModule(
-    user: User,
-    moduleCode: string
-  ): Promise<boolean> {
+  async canTakeModule(user: User, moduleCode: string): Promise<boolean> {
     const modulesDone = user.modulesDone.map(flatten.module)
     const modulesDoing = user.modulesDoing.map(flatten.module)
-    return ModuleRepository.canTakeModule(modulesDone, modulesDoing, moduleCode)
+    return this.moduleRepo.canTakeModule(modulesDone, modulesDoing, moduleCode)
   }
 
   /**
@@ -74,13 +79,13 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {User} user
    * @returns {Promise<Module[]>}
    */
-  async function getEligibleModules(user: User): Promise<Module[]> {
+  async getEligibleModules(user: User): Promise<Module[]> {
     // 1. get post-reqs
-    const postReqs = await getPostReqs(user)
+    const postReqs = await this.getPostReqs(user)
     if (!postReqs) return []
     // 2. filter post-reqs
     const results = await Promise.all(
-      postReqs.map((one) => canTakeModule(user, one.moduleCode))
+      postReqs.map((one) => this.canTakeModule(user, one.moduleCode))
     )
     const filtered = postReqs.filter((_, idx) => results[idx])
     return filtered
@@ -93,11 +98,12 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {User} user
    * @returns {Promise<Module[]>}
    */
-  async function getPostReqs(user: User): Promise<Module[]> {
+  async getPostReqs(user: User): Promise<Module[]> {
     const modulesDone = user.modulesDone.map(flatten.module)
-    return ModuleRepository.getPostReqs(modulesDone)
-      .then((res) => filterTakenModules(user, res))
-      .then((res) => ModuleRepository.findByCodes(res))
+    return this.moduleRepo
+      .getPostReqs(modulesDone)
+      .then((res) => this.filterTakenModules(user, res))
+      .then((res) => this.moduleRepo.findByCodes(res))
   }
 
   /**
@@ -107,17 +113,12 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} moduleCode
    * @returns {Promise<Module[]>}
    */
-  async function getUnlockedModules(
-    user: User,
-    moduleCode: string
-  ): Promise<Module[]> {
+  async getUnlockedModules(user: User, moduleCode: string): Promise<Module[]> {
     const modulesDone = user.modulesDone.map(flatten.module)
     const modulesDoing = user.modulesDoing.map(flatten.module)
-    return ModuleRepository.getUnlockedModules(
-      modulesDone,
-      modulesDoing,
-      moduleCode
-    ).then((res) => ModuleRepository.findByCodes(res))
+    return this.moduleRepo
+      .getUnlockedModules(modulesDone, modulesDoing, moduleCode)
+      .then((res) => this.moduleRepo.findByCodes(res))
   }
 
   /**
@@ -128,12 +129,9 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} moduleCode
    * @returns {Promise<boolean>}
    */
-  async function hasTakenModule(
-    user: User,
-    moduleCode: string
-  ): Promise<boolean> {
+  async hasTakenModule(user: User, moduleCode: string): Promise<boolean> {
     // load module relations
-    copy(await findOneById(user.id), user)
+    copy(await this.findOneById(user.id), user)
     const modulesDoneCodes = user.modulesDone.map(flatten.module)
     const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     return (
@@ -153,12 +151,12 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string[]} moduleCodes
    * @returns {Promise<string[]>}
    */
-  async function filterTakenModules(
+  async filterTakenModules(
     user: User,
     moduleCodes: string[]
   ): Promise<string[]> {
     // load module relations
-    copy(await findOneById(user.id), user)
+    copy(await this.findOneById(user.id), user)
     const modulesDoneCodes = user.modulesDone.map(flatten.module)
     const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     const modulesTakenCodes = modulesDoneCodes.concat(modulesDoingCodes)
@@ -174,10 +172,10 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} username
    * @returns {Promise<User>}
    */
-  async function findOneByUsername(username: string): Promise<User> {
-    return BaseRepo.findOneOrFail({
+  async findOneByUsername(username: string): Promise<User> {
+    return this.findOneOrFail({
       where: { username },
-      relations: allRelations,
+      relations: this.allRelations,
     })
   }
 
@@ -188,14 +186,14 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} degreeId
    * @returns {Promise<void>}
    */
-  async function addDegree(user: User, degreeId: string): Promise<void> {
+  async addDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
-    copy(await findOneById(user.id), user)
+    copy(await this.findOneById(user.id), user)
     // 2. find degree in DB
-    const degree = await DegreeRepository.findOneById(degreeId)
+    const degree = await this.degreeRepo.findOneById(degreeId)
     // 3. append degree
     user.savedDegrees.push(degree)
-    await BaseRepo.save(user)
+    await this.save(user)
   }
 
   /**
@@ -205,9 +203,9 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} degreeId
    * @returns {Promise<Degree>}
    */
-  async function findDegree(user: User, degreeId: string): Promise<Degree> {
+  async findDegree(user: User, degreeId: string): Promise<Degree> {
     // 1. load savedDegrees relations
-    copy(await findOneById(user.id), user)
+    copy(await this.findOneById(user.id), user)
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter(
       (degree) => degree.id === degreeId
@@ -223,9 +221,9 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {string} degreeId
    * @returns {Promise<void>}
    */
-  async function removeDegree(user: User, degreeId: string): Promise<void> {
+  async removeDegree(user: User, degreeId: string): Promise<void> {
     // 1. load savedDegrees relations
-    copy(await findOneById(user.id), user)
+    copy(await this.findOneById(user.id), user)
     // 2. find degree among user's savedDegrees
     const filtered = user.savedDegrees.filter(
       (degree) => degree.id !== degreeId
@@ -236,22 +234,6 @@ export function getUserRepository(database?: DataSource): IUserRepository {
     }
     // 4. update entity and save
     user.savedDegrees = filtered
-    await BaseRepo.save(user)
+    await this.save(user)
   }
-
-  return BaseRepo.extend({
-    canTakeModule,
-    initialize,
-    findOneByUsername,
-    getEligibleModules,
-    getPostReqs,
-    getUnlockedModules,
-    hasTakenModule,
-    filterTakenModules,
-    findOneById,
-    addDegree,
-    findDegree,
-    deleteAll,
-    removeDegree,
-  })
 }

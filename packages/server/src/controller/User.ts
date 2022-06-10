@@ -3,12 +3,12 @@ import { Request, Response } from 'express'
 import { IUserController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
-import { getUserRepository } from '@modtree/repo-user'
+import { UserRepository } from '@modtree/repo-user'
 import { getDegreeRepository } from '@modtree/repo-degree'
 
 /** User api controller */
 export class UserController implements IUserController {
-  private userRepo = getUserRepository(db)
+  private userRepo = new UserRepository(db)
 
   private degreeRepo = getDegreeRepository(db)
 

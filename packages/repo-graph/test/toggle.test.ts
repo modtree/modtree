@@ -1,7 +1,7 @@
 import { Graph, Module, ModuleCondensed } from '@modtree/entity'
 import { getDegreeRepository } from '@modtree/repo-degree'
 import { getModuleCondensedRepository } from '@modtree/repo-module'
-import { getUserRepository } from '@modtree/repo-user'
+import { UserRepository } from '@modtree/repo-user'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { flatten, oneUp } from '@modtree/utils'
@@ -17,7 +17,7 @@ beforeAll(() =>
   setup(db)
     .then(() => {
       Object.assign(Repo, {
-        User: getUserRepository(db),
+        User: new UserRepository(db),
         Degree: getDegreeRepository(db),
         Graph: new GraphRepository(db),
         ModuleCondensed: getModuleCondensedRepository(db),
