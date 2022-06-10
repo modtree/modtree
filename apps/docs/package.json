@@ -8,6 +8,7 @@
     "dev": "next --port=3001",
     "start": "next start",
     "build": "next build ",
+    "build:vercel": "nx build docs --prod --skip-nx-cache",
     "lint": "next lint",
     "ci:build": "next lint && next build"
   }

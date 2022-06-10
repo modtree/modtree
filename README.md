@@ -19,10 +19,9 @@ tool in order to:
 │  ├── docs             documentation website source
 │  └── web              main website source
 └── packages            project-wide shared resources
-   ├── config           lint and formatting configs
    ├── database         backend functions
-   ├── tsconfig         typescript configs
-   └── ui               shared UI elements
+   ├── entity           SQL entities
+   └── types            all TypeScript types
 ```
 
 ## Setup
