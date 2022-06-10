@@ -9,7 +9,10 @@
   "dependencies": {
     "@modtree/entity": "*",
     "@modtree/typeorm-config": "*",
-    "@modtree/repo-base": "*",
+    "@modtree/repo-user": "*",
+    "@modtree/repo-degree": "*",
+    "@modtree/repo-module": "*",
+    "@modtree/repo-graph": "*",
     "@modtree/utils": "*",
     "@modtree/types": "*"
   },

@@ -2,10 +2,10 @@ import { Module, ModuleCondensed, Degree, User, Graph } from '@modtree/entity'
 import {
   getModuleRepository,
   getModuleCondensedRepository,
-  getDegreeRepository,
-  getUserRepository,
-  getGraphRepository,
-} from '@repository'
+} from '@modtree/repo-module'
+import { getDegreeRepository } from '@modtree/repo-degree'
+import { getUserRepository } from '@modtree/repo-user'
+import { getGraphRepository } from '@modtree/repo-graph'
 import { oneUp } from '@modtree/utils'
 import { setup, teardown } from '@environment'
 import { getSource } from '@modtree/typeorm-config'

@@ -3,18 +3,18 @@ import { Repositories } from '@modtree/types'
 import { copy, validModuleCode } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import {
+  getModuleRepository,
+  getModuleCondensedRepository,
+} from '@modtree/repo-module'
+import { getDegreeRepository } from '@modtree/repo-degree'
+import { getUserRepository } from '@modtree/repo-user'
+import { getGraphRepository } from '@modtree/repo-graph'
+import {
   ModuleCondensedController,
   UserController,
   DegreeController,
   GraphController,
 } from '../controller'
-import {
-  getModuleRepository,
-  getModuleCondensedRepository,
-  getDegreeRepository,
-  getUserRepository,
-  getGraphRepository,
-} from '../repository'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
 

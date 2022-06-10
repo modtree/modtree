@@ -8,8 +8,8 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from '@modtree/repo-base'
-import { getModuleRepository } from './Module'
-import { getDegreeRepository } from './Degree'
+import { getModuleRepository } from '@modtree/repo-module'
+import { getDegreeRepository } from '@modtree/repo-degree'
 
 /**
  * @param {DataSource} database

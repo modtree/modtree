@@ -1,0 +1,20 @@
+{
+  "name": "@modtree/repo-degree",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "modtree",
+  "description": "modtree Degree repository",
+  "main": "./dist/index.js",
+  "type": "commonjs",
+  "dependencies": {
+    "@modtree/entity": "*",
+    "@modtree/repo-base": "*",
+    "@modtree/repo-module": "*",
+    "@modtree/utils": "*",
+    "@modtree/types": "*"
+  },
+  "scripts": {
+    "lint": "eslint --fix --ext .ts .",
+    "build": "tsc"
+  }
+}

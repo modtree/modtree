@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { db, container } from '@modtree/typeorm-config'
-import { getModuleCondensedRepository } from '../../repository/ModuleCondensed'
+import { getModuleCondensedRepository } from '@modtree/repo-module'
 import { analyze } from '../analyze'
 
 analyze(() =>

@@ -1,6 +1,6 @@
 import { db, container } from '@modtree/typeorm-config'
 import { log } from '@modtree/utils'
-import { getModuleRepository } from '../../repository/Module'
+import { getModuleRepository } from '@modtree/repo-module'
 import { analyze } from '../analyze'
 
 analyze(() =>

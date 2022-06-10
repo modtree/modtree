@@ -8,7 +8,7 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from '@modtree/repo-base'
-import { getModuleRepository } from './Module'
+import { getModuleRepository } from '@modtree/repo-module'
 
 /**
  * @param {DataSource} database

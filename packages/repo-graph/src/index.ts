@@ -8,9 +8,9 @@ import {
   useDeleteAll,
   useFindOneByKey,
 } from '@modtree/repo-base'
-import { getModuleRepository } from './Module'
-import { getUserRepository } from './User'
-import { getDegreeRepository } from './Degree'
+import { getModuleRepository } from '@modtree/repo-module'
+import { getUserRepository } from '@modtree/repo-user'
+import { getDegreeRepository } from '@modtree/repo-degree'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 

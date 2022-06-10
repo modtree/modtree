@@ -5,12 +5,12 @@ import { ModtreeApiResponse, InitProps, Repositories } from '@modtree/types'
 import { config } from '@modtree/typeorm-config'
 import { sql } from '@sql'
 import {
-  getUserRepository,
-  getGraphRepository,
-  getDegreeRepository,
   getModuleRepository,
   getModuleCondensedRepository,
-} from '@repository'
+} from '@modtree/repo-module'
+import { getDegreeRepository } from '@modtree/repo-degree'
+import { getUserRepository } from '@modtree/repo-user'
+import { getGraphRepository } from '@modtree/repo-graph'
 import { User, Graph, Degree } from '@modtree/entity'
 
 type SetupOptions = {
