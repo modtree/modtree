@@ -34,7 +34,7 @@
     "start": "node dist/server",
     "start:test": "NODE_ENV=test node dist/server",
     "dev": "nodemon ./src/server/index.ts",
-    "test": "jest -c ./tests/jest.config.ts --runInBand",
+    "test": "yarn ci:test:server",
     "test:database": "jest -c ./tests/jest.config.ts --runInBand tests/database",
     "test:server": "jest -c ./tests/jest.config.ts --runInBand tests/server",
     "test:pull": "jest -c ./tests/jest.config.ts --runInBand tests/pull",

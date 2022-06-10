@@ -1,4 +1,4 @@
-import { setup, teardown, Repo } from '@environment'
+import { setup, teardown, Repo } from '@modtree/test-env'
 import { ModuleCondensed } from '@modtree/entity'
 import { oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'

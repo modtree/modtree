@@ -1,4 +1,4 @@
-import { join } from 'path'
+import { basename, join } from 'path'
 import { Client } from 'pg'
 import { config } from '@modtree/typeorm-config'
 import { exec } from '@modtree/utils'
@@ -87,11 +87,11 @@ export class Postgresql extends BaseSql {
    */
   async restoreFromFile(database: string, filename: string) {
     await this.clearDatabase(database)
-    const file = join(config.rootDir, '.sql', filename)
+    const sourceFile = join(__dirname, '..', 'snapshots', basename(filename))
     const u = config.username ? `--username=${config.username}` : ''
     const p = config.password ? `PGPASSWORD=${config.password}` : ''
     const h = config.host ? `--host=${config.host}` : ''
-    const cmd = `${p} ${this.coreCmd} ${u} ${h} ${database} < ${file}`
+    const cmd = `${p} ${this.coreCmd} ${u} ${h} ${database} < ${sourceFile}`
     await exec(cmd)
   }
 

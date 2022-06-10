@@ -30,6 +30,7 @@
   },
   "targetDependencies": {
     "lint": [{ "target": "build", "projects": "dependencies" }],
+    "test": [{ "target": "test", "projects": "dependencies" }],
     "build": [
       { "target": "lint", "projects": "self" },
       { "target": "build", "projects": "dependencies" }

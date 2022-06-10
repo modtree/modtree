@@ -27,6 +27,8 @@
     "baseUrl": ".",
     "paths": {
       "@modtree/database": ["packages/database/src/index.ts"],
+      "@modtree/test": ["packages/test/src/index.ts"],
+      "@modtree/test-env": ["packages/test-env/src/index.ts"],
       "@modtree/repo-base": ["packages/repo-base/src/index.ts"],
       "@modtree/repo-user": ["packages/repo-user/src/index.ts"],
       "@modtree/sql": ["packages/sql/src/index.ts"],

@@ -5,7 +5,7 @@
     "strictPropertyInitialization": false,
     "module": "commonjs",
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
     "moduleResolution": "node",
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
@@ -13,6 +13,6 @@
     "declaration": true,
     "sourceMap": true
   },
-  "include": ["src"],
-  "exclude": ["./dist", "node_modules"]
+  "include": ["src", "test", "jest.config.ts"],
+  "exclude": ["dist", "node_modules"]
 }

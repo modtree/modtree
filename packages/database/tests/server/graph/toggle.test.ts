@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios'
 import { ModtreeApiResponse } from '@modtree/types'
-import { init } from '@tests/init'
-import { Create, Delete, server } from '@environment'
+import { Create, Delete, server, init } from '@modtree/test-env'
 
 const t: Partial<{
   graph: ModtreeApiResponse.Graph

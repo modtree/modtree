@@ -1,10 +1,11 @@
 import { param, ValidationChain } from 'express-validator'
 import { Repositories } from '@modtree/types'
-import { copy, validModuleCode } from '@modtree/utils'
+import { copy } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import {
   getModuleRepository,
   getModuleCondensedRepository,
+  validModuleCode
 } from '@modtree/repo-module'
 import { getDegreeRepository } from '@modtree/repo-degree'
 import { getUserRepository } from '@modtree/repo-user'

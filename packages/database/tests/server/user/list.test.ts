@@ -1,10 +1,7 @@
 import { User } from '@modtree/entity'
-import { Create, Delete, server, t } from '@environment'
-import { init } from '@tests/init'
-import { toBeUserResponse } from '@tests/custom-expect'
+import { Create, Delete, server, t, init } from '@modtree/test-env'
 
 beforeAll(async () => {
-  expect.extend({ toBeUserResponse })
   return Promise.all([Create.User(init.user2), Create.User(init.user3)]).then(
     ([user1, user2]) => {
       t.userId1 = user1.id
@@ -21,7 +18,17 @@ test('It should list all users', async () => {
   await server.get('user/list').then((res) => {
     const users: User[] = res.data
     users.forEach((user) => {
-      expect(user).toBeUserResponse()
+      expect(user).toHaveProperty('id')
+      expect(user).toHaveProperty('displayName')
+      expect(user).toHaveProperty('username')
+      expect(user).toHaveProperty('email')
+      expect(user).toHaveProperty('modulesDone')
+      expect(user).toHaveProperty('modulesDoing')
+      expect(user).toHaveProperty('matriculationYear')
+      expect(user).toHaveProperty('graduationYear')
+      expect(user).toHaveProperty('graduationSemester')
+      expect(user).toHaveProperty('savedDegrees')
+      expect(user).toHaveProperty('savedGraphs')
     })
     /**
      * flatten the ids

@@ -10,23 +10,9 @@
     "experimentalDecorators": true,
     "declaration": true,
     "sourceMap": true,
-    "types": ["@types/jest"],
-    "typeRoots": ["./types"],
-    "baseUrl": ".",
-    "paths": {
-      "@entity": ["./src/entity"],
-      "@mtypes/*": ["./types/*"],
-      "@utils": ["./src/utils"],
-      "@repository": ["./src/repository"],
-      "@config": ["./src/config"],
-      "@controller": ["./src/controller"],
-      "@sql": ["./src/sql"],
-      "@environment": ["./tests/environment"],
-      "@tests/*": ["./tests/*"],
-      "@init": ["./tests/init"],
-      "@src/*": ["./src/*"]
-    }
+    "types": ["node", "jest"],
+    "baseUrl": "."
   },
-  "include": ["src", "tests", "types"],
+  "include": ["src", "tests", "types", "jest.config.ts"],
   "exclude": ["dist", "node_modules"]
 }

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-PASS=$(pass mysql-mac-pro)
-USERNAME=calista
-cat << EOF | sudo mysql
-GRANT ALL PRIVILEGES ON *.* TO '$USERNAME'@'localhost' WITH GRANT OPTION;
-ALTER USER '$USERNAME'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-EOF

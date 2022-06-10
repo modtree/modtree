@@ -15,6 +15,8 @@
   },
   "scripts": {
     "lint": "eslint --fix --ext .ts .",
-    "build": "tsc"
+    "build": "tsc --build tsconfig.build.json",
+    "build:test": "tsc --build tsconfig.test.json",
+    "test": "jest --runInBand"
   }
 }

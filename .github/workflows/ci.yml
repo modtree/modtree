@@ -26,7 +26,7 @@ jobs:
           concurrent_skipping: same_content_newer
           paths_ignore: '["**/README.md", "**/docs/**"]'
 
-  backend_tests:
+  ci:
     if: always()
     runs-on: ubuntu-20.04
     steps:
@@ -35,23 +35,12 @@ jobs:
         continue-on-error: true
       - run: yarn install --frozen-lockfile --silent
       - run: ${{ env.POSTGRES_INIT }}
-      - name: 📦 Run all backend tests
-        working-directory: ./packages/database
-        run: ${{ env.PREFIX }} yarn nx ci:test database
-
-  project_build:
-    if: always()
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1.6.0
-        continue-on-error: true
-      - run: yarn install --frozen-lockfile --silent
       - name: 📦 Build & lint entire project
         run: yarn build
+      - run: ${{ env.PREFIX }} yarn nx run-many --target=test --all
 
   telegram:
-    needs: [pre_job, project_build, backend_tests]
+    needs: [pre_job, ci]
     if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ubuntu-20.04
     steps:
@@ -65,8 +54,7 @@ jobs:
           BASE_URL="https://github.com/modtree/modtree/actions/runs"
           echo "RUN_URL=${BASE_URL}/${{ github.run_id }}" >> $GITHUB_ENV
           echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
-          emojize PROJECT_BUILD ${{ needs.project_build.result }}
-          emojize BACKEND_TESTS ${{ needs.backend_tests.result }}
+          emojize CI_TESTS ${{ needs.ci.result }}
 
       - name: Send message (PR)
         if: ${{ github.event_name == 'pull_request' }}
@@ -78,8 +66,7 @@ jobs:
           format: markdown
           message: |
             `${{ env.SHORT_SHA }}`  #${{ github.event.pull_request.number }}  ${{ github.event.pull_request.title }}
-            ${{ env.PROJECT_BUILD }} lint + build
-            ${{ env.BACKEND_TESTS }} backend tests
+            ${{ env.CI_TESTS }} lint + build
             [view logs](${{ env.RUN_URL }})
 
       - name: Send message (Push)
@@ -92,6 +79,5 @@ jobs:
           format: markdown
           message: |
             `${{ env.SHORT_SHA }}` ${{ github.event.head_commit.message }}
-            ${{ env.PROJECT_BUILD }} lint + build
-            ${{ env.BACKEND_TESTS }} backend tests
+            ${{ env.CI_TESTS }} lint + build
             [view logs](${{ env.RUN_URL }})

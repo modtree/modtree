@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { AsyncFunction } from '@modtree/types'
 import { config } from '.'
-import { log } from '@modtree/utils'
 
 /**
  * custom source creator
@@ -48,7 +47,7 @@ export function endpoint<T>(
 ): Promise<T | void> {
   const response = callback()
     .catch((err) => {
-      log.yellow('Endpoint error:', err)
+      console.log('Endpoint error:', err)
     })
     .finally(async () => {
       // close database if still open

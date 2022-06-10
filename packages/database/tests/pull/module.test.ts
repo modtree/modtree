@@ -1,5 +1,5 @@
 import { Module } from '@modtree/entity'
-import { Repo, setup, teardown } from '@environment'
+import { Repo, setup, teardown } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
 

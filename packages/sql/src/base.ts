@@ -114,6 +114,18 @@ export class BaseSql implements BaseSqlInterface {
   }
 
   /**
+   * restores SQL database from a file
+   *
+   * @param {string} database
+   * @param {string} filepath
+   */
+  async restoreFromFilepath(database: string, filepath: string) {
+    throw new Error(
+      `${this.type}: not implemented yet for ${database}, ${filepath}`
+    )
+  }
+
+  /**
    * interactive prompt to guide the user to restore an SQL database
    *
    * @param {string} database

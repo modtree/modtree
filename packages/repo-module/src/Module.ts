@@ -2,15 +2,8 @@ import axios from 'axios'
 import { DataSource, In } from 'typeorm'
 import { Module } from '@modtree/entity'
 import { IModuleRepository, InitProps, NUSMods } from '@modtree/types'
-import {
-  nusmodsApi,
-  flatten,
-  checkTree,
-  hasTakenModule,
-  unique,
-  client,
-  log,
-} from '@modtree/utils'
+import { nusmodsApi, flatten, unique, client, log } from '@modtree/utils'
+import { hasTakenModule, checkTree } from './utils'
 import {
   getDataSource,
   getRelationNames,

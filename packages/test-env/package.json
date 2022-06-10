@@ -1,0 +1,21 @@
+{
+  "name": "@modtree/test-env",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "modtree",
+  "description": "modtree test environment setup",
+  "main": "./dist/index.js",
+  "type": "commonjs",
+  "dependencies": {
+    "@modtree/types": "*",
+    "@modtree/repo-module": "*",
+    "@modtree/repo-degree": "*",
+    "@modtree/repo-user": "*",
+    "@modtree/repo-graph": "*",
+    "@modtree/entity": "*"
+  },
+  "scripts": {
+    "lint": "eslint --fix --ext .ts .",
+    "build": "tsc"
+  }
+}
