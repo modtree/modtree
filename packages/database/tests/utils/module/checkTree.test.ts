@@ -19,7 +19,7 @@ it('Returns true for mods without pre-reqs', async () => {
 
 it('Returns true if necessary pre-reqs for a mod are cleared', async () => {
   const module = await Repo.Module.findOneBy({
-    moduleCode: 'CS2040S'
+    moduleCode: 'CS2040S',
   })
   const modulesDone = ['CS1231', 'CS1010']
   const res = checkTree(module.prereqTree, modulesDone)
@@ -28,7 +28,7 @@ it('Returns true if necessary pre-reqs for a mod are cleared', async () => {
 
 it('Returns false if necessary pre-reqs for a mod are not cleared', async () => {
   const module = await Repo.Module.findOneBy({
-    moduleCode: 'CS2040S'
+    moduleCode: 'CS2040S',
   })
   const modulesDone = []
   const res = checkTree(module.prereqTree, modulesDone)

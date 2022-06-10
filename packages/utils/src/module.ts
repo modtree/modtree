@@ -8,7 +8,10 @@ import { NUSMods } from '@modtree/types'
  * @param {string[]} modulesDone
  * @returns {boolean}
  */
-export function checkTree(prereqTree: NUSMods.PrereqTree, modulesDone: string[]): boolean {
+export function checkTree(
+  prereqTree: NUSMods.PrereqTree,
+  modulesDone: string[]
+): boolean {
   if (prereqTree === '') return true
   if (typeof prereqTree === 'string') {
     return modulesDone.includes(prereqTree)
@@ -35,7 +38,11 @@ export function checkTree(prereqTree: NUSMods.PrereqTree, modulesDone: string[])
  * @param {string} moduleCode
  * @returns {boolean}
  */
-export function hasTakenModule(modulesDone: string[], modulesDoing: string[], moduleCode: string): boolean {
+export function hasTakenModule(
+  modulesDone: string[],
+  modulesDoing: string[],
+  moduleCode: string
+): boolean {
   const modules = modulesDone.concat(modulesDoing)
   return modules.includes(moduleCode)
 }

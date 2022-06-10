@@ -1,7 +1,7 @@
 import { Degree } from '@modtree/entity'
 import { init } from '@tests/init'
 import { setup, teardown, Repo, t } from '@environment'
-import { flatten, oneUp, } from '@modtree/utils'
+import { flatten, oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
 
 const dbName = oneUp(__filename)

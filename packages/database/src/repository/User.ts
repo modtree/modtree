@@ -61,7 +61,7 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    */
   async function canTakeModule(
     user: User,
-    moduleCode: string,
+    moduleCode: string
   ): Promise<boolean> {
     const modulesDone = user.modulesDone.map(flatten.module)
     const modulesDoing = user.modulesDoing.map(flatten.module)
@@ -74,17 +74,13 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {User} user
    * @returns {Promise<Module[]>}
    */
-  async function getEligibleModules(
-    user: User,
-  ): Promise<Module[]> {
+  async function getEligibleModules(user: User): Promise<Module[]> {
     // 1. get post-reqs
     const postReqs = await getPostReqs(user)
     if (!postReqs) return []
     // 2. filter post-reqs
     const results = await Promise.all(
-      postReqs.map((one) =>
-        canTakeModule(user, one.moduleCode)
-      )
+      postReqs.map((one) => canTakeModule(user, one.moduleCode))
     )
     const filtered = postReqs.filter((_, idx) => results[idx])
     return filtered
@@ -97,12 +93,9 @@ export function getUserRepository(database?: DataSource): IUserRepository {
    * @param {User} user
    * @returns {Promise<Module[]>}
    */
-  async function getPostReqs(
-    user: User,
-  ): Promise<Module[]> {
+  async function getPostReqs(user: User): Promise<Module[]> {
     const modulesDone = user.modulesDone.map(flatten.module)
-    return ModuleRepository
-      .getPostReqs(modulesDone)
+    return ModuleRepository.getPostReqs(modulesDone)
       .then((res) => filterTakenModules(user, res))
       .then((res) => ModuleRepository.findByCodes(res))
   }
@@ -120,9 +113,11 @@ export function getUserRepository(database?: DataSource): IUserRepository {
   ): Promise<Module[]> {
     const modulesDone = user.modulesDone.map(flatten.module)
     const modulesDoing = user.modulesDoing.map(flatten.module)
-    return ModuleRepository
-      .getUnlockedModules(modulesDone, modulesDoing, moduleCode)
-      .then((res) => ModuleRepository.findByCodes(res))
+    return ModuleRepository.getUnlockedModules(
+      modulesDone,
+      modulesDoing,
+      moduleCode
+    ).then((res) => ModuleRepository.findByCodes(res))
   }
 
   /**

@@ -1,5 +1,5 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import boxen from "boxen";
+import axios, { AxiosError, AxiosResponse } from 'axios'
+import boxen from 'boxen'
 
 const box = (t: string, color: string) =>
   boxen(t, {
@@ -10,42 +10,42 @@ const box = (t: string, color: string) =>
       top: 0,
       bottom: 0,
     },
-  });
+  })
 
 const print = {
-  status: () => console.log(box("STATUS", "green")),
-  data: () => console.log(box("DATA", "green")),
-};
+  status: () => console.log(box('STATUS', 'green')),
+  data: () => console.log(box('DATA', 'green')),
+}
 
 const log = {
   response: (res: AxiosResponse<any, any>) => {
-    print.status();
-    console.log(res.status);
-    print.data();
-    console.log(res.data);
+    print.status()
+    console.log(res.status)
+    print.data()
+    console.log(res.data)
   },
   error: (err: AxiosError) => {
-    const { status, data } = err.response;
-    console.log(err.code);
-    print.status();
-    console.log("status:", status);
-    print.data();
-    console.log("data:", data);
+    const { status, data } = err.response
+    console.log(err.code)
+    print.status()
+    console.log('status:', status)
+    print.data()
+    console.log('data:', data)
   },
-};
+}
 
 function verbosify(apiCall: () => Promise<any>) {
-  apiCall().then(log.response).catch(log.error);
+  apiCall().then(log.response).catch(log.error)
 }
 
 export class postman {
   static get(url: string) {
-    verbosify(() => axios.get(url));
+    verbosify(() => axios.get(url))
   }
   static post(url: string, params?: any) {
-    verbosify(() => axios.post(url, params));
+    verbosify(() => axios.post(url, params))
   }
   static delete(url: string, params?: any) {
-    verbosify(() => axios.delete(url, params));
+    verbosify(() => axios.delete(url, params))
   }
 }

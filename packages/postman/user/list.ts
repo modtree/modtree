@@ -1,3 +1,3 @@
-import { postman } from "../postman";
+import { postman } from '../postman'
 
-postman.get("http://localhost:8080/user/list");
+postman.get('http://localhost:8080/user/list')

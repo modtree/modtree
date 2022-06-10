@@ -1,4 +1,4 @@
-import { flatten, oneUp, } from '@modtree/utils'
+import { flatten, oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
 import { Graph } from '@modtree/entity'
 import { setup, teardown, Repo, t } from '@environment'

@@ -1,5 +1,5 @@
-import { db } from '@modtree/typeorm-config'
-import { log , container } from '@modtree/utils'
+import { db, container } from '@modtree/typeorm-config'
+import { log } from '@modtree/utils'
 import { getModuleRepository } from '../../repository/Module'
 import { analyze } from '../analyze'
 
