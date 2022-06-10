@@ -22,16 +22,16 @@ export async function setup(
   db: DataSource,
   opts?: SetupOptions
 ): Promise<void> {
-  return sql
+  await sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
     .then(async () => {
       // by default, initialize a new connection
       if (!opts) {
-        return db.initialize().then()
+        return db.initialize()
       }
       // else, read the config
       if (opts.initialize) {
-        return db.initialize().then()
+        return db.initialize()
       }
     })
 }
