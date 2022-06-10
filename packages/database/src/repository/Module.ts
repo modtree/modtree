@@ -9,8 +9,7 @@ import {
   hasTakenModule,
   unique,
   client,
-} from '@modtree/utils'
-import { log } from '../cli'
+ log } from '@modtree/utils'
 import { getModuleCondensedRepository } from './ModuleCondensed'
 import {
   getDataSource,

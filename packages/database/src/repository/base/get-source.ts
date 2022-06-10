@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { db as DefaultSource } from '../../config'
+import { db as DefaultSource } from '@modtree/typeorm-config'
 
 /**
  * ensures a fallback database

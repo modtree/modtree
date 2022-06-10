@@ -8,6 +8,7 @@
   "type": "commonjs",
   "dependencies": {
     "@modtree/entity": "*",
+    "@modtree/typeorm-config": "*",
     "@modtree/utils": "*",
     "@modtree/types": "*"
   },

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Agent } from 'http'
 import { DeleteResult, DataSource, Repository } from 'typeorm'
 import { ModtreeApiResponse, InitProps , Repositories } from '@modtree/types'
-import { config } from '@config'
+import { config } from '@modtree/typeorm-config'
 import { sql } from '@sql'
 import {
   getUserRepository,

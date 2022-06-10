@@ -1,4 +1,4 @@
-import { db } from '../config'
+import { db } from '@modtree/typeorm-config'
 import { getApp } from './app'
 
 db.initialize().then(async () => {

@@ -1,5 +1,5 @@
 import { SupportedDatabases, DataSourceOptions } from '@modtree/types'
-import { box } from '../cli'
+import { box } from '@modtree/utils'
 
 const typeTarget = () =>
   process.env.NODE_ENV === 'test' ? 'TEST_DATABASE_TYPE' : 'DATABASE_TYPE'

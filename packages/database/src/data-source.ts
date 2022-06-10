@@ -1,8 +1,8 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { AsyncFunction } from '@modtree/types'
-import { config } from './config'
-import { log } from './cli'
+import { config } from '@modtree/typeorm-config'
+import { log } from '@modtree/utils'
 
 /**
  * custom source creator

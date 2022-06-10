@@ -1,6 +1,6 @@
 import { join } from 'path'
 import { Client } from 'pg'
-import { config } from '../config'
+import { config } from '@modtree/typeorm-config'
 import { exec } from '../shell'
 import { BaseSql, promptDump, promptRestore } from './base'
 

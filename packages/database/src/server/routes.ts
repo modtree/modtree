@@ -1,6 +1,7 @@
 import { param, ValidationChain } from 'express-validator'
 import { Repositories } from '@modtree/types'
 import { copy, validModuleCode } from '@modtree/utils'
+import { db } from '@modtree/typeorm-config'
 import {
   ModuleCondensedController,
   UserController,
@@ -14,7 +15,6 @@ import {
   getUserRepository,
   getGraphRepository,
 } from '../repository'
-import { db } from '../config'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
 

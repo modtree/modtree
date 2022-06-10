@@ -1,4 +1,4 @@
-import { config } from '../../../config'
+import { config } from '@modtree/typeorm-config'
 import { sql } from '../../../sql'
 import { analyze } from '../../analyze'
 

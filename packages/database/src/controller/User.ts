@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import { IUserController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
-import { db } from '../config'
+import { db } from '@modtree/typeorm-config'
 import { getDegreeRepository, getUserRepository } from '../repository'
 
 /** User api controller */

@@ -1,5 +1,5 @@
 import { DatabaseType } from 'typeorm'
-import { config } from '../config'
+import { config } from '@modtree/typeorm-config'
 // import { Mysql } from './mysql'
 import { Postgresql } from './postgres'
 

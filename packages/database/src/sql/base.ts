@@ -3,7 +3,7 @@ import inquirer from 'inquirer'
 import { join } from 'path'
 import fs from 'fs'
 import input from '@inquirer/input'
-import { config } from '../config'
+import { config } from '@modtree/typeorm-config'
 import { BaseSqlInterface } from './types'
 
 const coreCmdMap: Partial<Record<DatabaseType, string>> = {
