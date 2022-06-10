@@ -2,9 +2,8 @@ import { DatabaseType } from 'typeorm'
 import inquirer from 'inquirer'
 import { join } from 'path'
 import fs from 'fs'
-import input from '@inquirer/input'
 import { config } from '@modtree/typeorm-config'
-import { BaseSqlInterface } from './types'
+import { BaseSqlInterface } from '@modtree/types'
 
 const coreCmdMap: Partial<Record<DatabaseType, string>> = {
   mysql: 'mysql',
@@ -15,12 +14,6 @@ const dumpCmdMap: Partial<Record<DatabaseType, string>> = {
   mysql: 'mysqldump',
   postgres: 'pg_dump',
 }
-
-export const promptDump = () =>
-  input({
-    message: 'Enter filename (without .sql):',
-    default: 'backup',
-  })
 
 type Answers = {
   sql: string
@@ -65,7 +58,7 @@ export class BaseSql implements BaseSqlInterface {
   }
 
   /**
-   * removes a single table from a mysql database
+   * removes a single table from a database
    *
    * @param {string} database
    * @param {string} table
@@ -77,7 +70,7 @@ export class BaseSql implements BaseSqlInterface {
   }
 
   /**
-   * removes a list of tables from a mysql database
+   * removes a list of tables from a database
    *
    * @param {string} database
    * @param {string[]} tables

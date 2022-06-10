@@ -6,7 +6,7 @@ export interface BaseSqlInterface {
   dumpCmd: string
 
   /**
-   * removes a single table from a mysql database
+   * removes a single table from a database
    *
    * @param {string} database
    * @param {string} table
@@ -14,7 +14,7 @@ export interface BaseSqlInterface {
   dropTable(database: string, table: string): Promise<void>
 
   /**
-   * removes a list of tables from a mysql database
+   * removes a list of tables from a database
    *
    * @param {string} database
    * @param {string[]} tables

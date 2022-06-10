@@ -29,6 +29,7 @@
       "@modtree/database": ["packages/database/src/index.ts"],
       "@modtree/repo-base": ["packages/repo-base/src/index.ts"],
       "@modtree/repo-user": ["packages/repo-user/src/index.ts"],
+      "@modtree/sql": ["packages/sql/src/index.ts"],
       "@modtree/repo-degree": ["packages/repo-degree/src/index.ts"],
       "@modtree/repo-module": ["packages/repo-module/src/index.ts"],
       "@modtree/repo-graph": ["packages/repo-graph/src/index.ts"],

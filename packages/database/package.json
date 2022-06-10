@@ -8,6 +8,7 @@
   "type": "commonjs",
   "dependencies": {
     "@modtree/entity": "*",
+    "@modtree/sql": "*",
     "@modtree/typeorm-config": "*",
     "@modtree/repo-user": "*",
     "@modtree/repo-degree": "*",
