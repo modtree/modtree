@@ -18,7 +18,7 @@ describe('User.initialize', () => {
   it('Saves an empty user', async () => {
     expect.assertions(1)
     await container(db, () =>
-      Repo.User.initialize(props).then((res) => {
+      Repo.User!.initialize(props).then((res) => {
         expect(res).toBeInstanceOf(User)
         t.user = res
       })
@@ -28,7 +28,7 @@ describe('User.initialize', () => {
   it('Can find same user (with relations)', async () => {
     expect.assertions(2)
     await container(db, () =>
-      Repo.User.findOneByUsername(props.username).then((res) => {
+      Repo.User!.findOneByUsername(props.username).then((res) => {
         expect(res).toBeInstanceOf(User)
         expect(res).toStrictEqual(t.user)
       })

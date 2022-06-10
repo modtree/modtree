@@ -15,7 +15,7 @@ beforeAll(() =>
   setup(db)
     .then(() => {
       Repo.User = new UserRepository(db)
-      return Repo.User.initialize(userProps)
+      return Repo.User!.initialize(userProps)
     })
     .then((user) => {
       t.user = user
@@ -26,7 +26,7 @@ afterAll(() => teardown(db))
 it('Correctly gets unlocked modules', async () => {
   // Get unlocked modules for CS2100
   const modules = await container(db, () =>
-    Repo.User.getUnlockedModules(t.user, 'CS2100')
+    Repo.User!.getUnlockedModules(t.user!, 'CS2100')
   )
   expect(modules).toBeDefined()
   if (!modules) return
@@ -39,7 +39,7 @@ it('Correctly gets unlocked modules', async () => {
 
 it('Does not modify User.modulesDone', async () => {
   // Also loads relations
-  const res = await container(db, async () => Repo.User.findOneById(t.user.id))
+  const res = await container(db, async () => Repo.User!.findOneById(t.user!.id))
   expect(res).toBeDefined()
   if (!res) return
   const modulesDoneCodes = res.modulesDone.map(flatten.module)
@@ -49,7 +49,7 @@ it('Does not modify User.modulesDone', async () => {
 it('Returns empty array if module in User.modulesDone', async () => {
   // Get unlocked modules for CS1010, which is in User.modulesDone
   const modules = await container(db, () =>
-    Repo.User.getUnlockedModules(t.user, 'CS1010')
+    Repo.User!.getUnlockedModules(t.user!, 'CS1010')
   )
   expect(modules).toBeDefined()
   if (!modules) return

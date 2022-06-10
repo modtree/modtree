@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 import { Degree } from '@modtree/entity'
 import { Delete, server, init, t } from '@modtree/test-env'
 
-afterAll(() => Delete.Degree(t.degreeId))
+afterAll(() => Delete.Degree(t.degreeId!))
 
 /**
  * create a degree

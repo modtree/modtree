@@ -19,7 +19,7 @@ describe('Degree.initialize', () => {
   it('Saves a degree', async () => {
     // write the degree to database
     await container(db, () =>
-      Repo.Degree.initialize(props).then((res) => {
+      Repo.Degree!.initialize(props).then((res) => {
         expect(res).toBeInstanceOf(Degree)
         t.degree = res
       })
@@ -28,7 +28,7 @@ describe('Degree.initialize', () => {
 
   it('Can find same degree (with relations)', async () => {
     await container(db, () =>
-      Repo.Degree.findOneByTitle(props.title).then((res) => {
+      Repo.Degree!.findOneByTitle(props.title).then((res) => {
         expect(res).toBeInstanceOf(Degree)
         expect(res).toStrictEqual(t.degree)
       })
@@ -36,7 +36,7 @@ describe('Degree.initialize', () => {
   })
 
   it('Correctly saves modules', async () => {
-    const moduleCodes = t.degree.modules.map(flatten.module)
+    const moduleCodes = t.degree!.modules.map(flatten.module)
     // match relation's module codes to init props' modules codes
     expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
   })

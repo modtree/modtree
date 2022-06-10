@@ -44,12 +44,12 @@ beforeAll(() =>
         Graph: new GraphRepository(db),
       })
       return Promise.all([
-        Repo.User.initialize(userProps),
-        Repo.Degree.initialize(degreeProps),
+        Repo.User!.initialize(userProps),
+        Repo.Degree!.initialize(degreeProps),
       ])
     })
     .then(([user, degree]) =>
-      Repo.Graph.initialize({
+      Repo.Graph!.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -88,7 +88,7 @@ describe('Graph.suggestModules (from many)', () => {
   it('Suggests post-reqs of the given module which the user is eligible for', async () => {
     const selectedModules = ['CS1010', 'CS1231']
     const res = await container(db, () =>
-      Repo.Graph.suggestModules(t.graph, selectedModules)
+      Repo.Graph!.suggestModules(t.graph!, selectedModules)
     )
     expect(res).toBeDefined()
     if (!res) return

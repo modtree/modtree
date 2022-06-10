@@ -24,8 +24,8 @@ beforeAll(() =>
     .then(() =>
       Create.Graph({
         ...init.graph1,
-        userId: t.userId,
-        degreeId: t.degreeId,
+        userId: t.userId!,
+        degreeId: t.degreeId!,
       })
     )
     .then((graph) => {
@@ -35,8 +35,8 @@ beforeAll(() =>
     })
 )
 afterAll(() =>
-  Delete.Graph(t.graphId).then(() =>
-    Promise.all([Delete.User(t.userId), Delete.Degree(t.degreeId)])
+  Delete.Graph(t.graphId!).then(() =>
+    Promise.all([Delete.User(t.userId!), Delete.Degree(t.degreeId!)])
   )
 )
 
@@ -59,8 +59,8 @@ describe('insert unseen module', () => {
    */
   it('should be a fresh module', () => {
     t.freshCode = 'CM1102'
-    expect(t.graph.modulesPlaced).not.toContain(t.freshCode)
-    expect(t.graph.modulesHidden).not.toContain(t.freshCode)
+    expect(t.graph!.modulesPlaced).not.toContain(t.freshCode)
+    expect(t.graph!.modulesHidden).not.toContain(t.freshCode)
   })
 
   /**
@@ -83,8 +83,8 @@ describe('hidden -> placed', () => {
    */
   it('is a hidden module', () => {
     t.hiddenCode = 'MA2219'
-    expect(t.graph.modulesPlaced).not.toContain(t.hiddenCode)
-    expect(t.graph.modulesHidden).toContain(t.hiddenCode)
+    expect(t.graph!.modulesPlaced).not.toContain(t.hiddenCode)
+    expect(t.graph!.modulesHidden).toContain(t.hiddenCode)
   })
 
   /**
@@ -110,8 +110,8 @@ describe('placed -> hidden', () => {
    */
   it('is a placed module', () => {
     t.placedCode = t.freshCode
-    expect(t.graph.modulesPlaced).toContain(t.placedCode)
-    expect(t.graph.modulesHidden).not.toContain(t.placedCode)
+    expect(t.graph!.modulesPlaced).toContain(t.placedCode)
+    expect(t.graph!.modulesHidden).not.toContain(t.placedCode)
   })
 
   /**

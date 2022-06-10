@@ -22,7 +22,7 @@ beforeAll(() =>
         User: new UserRepository(db),
         Module: new ModuleRepository(db),
       })
-      return Repo.User.initialize(userProps)
+      return Repo.User!.initialize(userProps)
     })
     .then((user) => {
       t.user = user
@@ -34,14 +34,14 @@ it('Gets all post-reqs', async () => {
   // Get post reqs
   expect.assertions(3)
   await container(db, () =>
-    Repo.User.getPostReqs(t.user)
+    Repo.User!.getPostReqs(t.user!)
       .then((res) => {
         expect(res).toBeInstanceOf(Array)
         t.postReqsCodes = res.map(flatten.module)
         return res
       })
       .then(() =>
-        Repo.Module.findOneBy({
+        Repo.Module!.findOneByOrFail({
           moduleCode: 'MA2001',
         })
       )
@@ -52,7 +52,7 @@ it('Gets all post-reqs', async () => {
           (one) => one !== 'MA2101'
         )
         // Compare module codes
-        expect(t.postReqsCodes.sort()).toStrictEqual(expected.sort())
+        expect(t.postReqsCodes!.sort()).toStrictEqual(expected.sort())
       })
   )
 })
@@ -63,13 +63,13 @@ it('Returns empty array for modules with empty string fulfillRequirements', asyn
   const props: InitProps['User'] = init.user1
   props.modulesDone = ['CP2106']
   const res = await container(db, async () => {
-    await Repo.User.initialize(props)
-    return Repo.User.findOneByUsername(props.username)
+    await Repo.User!.initialize(props)
+    return Repo.User!.findOneByUsername(props.username)
   })
   expect(res).toBeDefined()
   if (!res) return
   // Get post reqs
-  const postReqs = await container(db, () => Repo.User.getPostReqs(res))
+  const postReqs = await container(db, () => Repo.User!.getPostReqs(res))
   expect(postReqs).toBeDefined()
   if (!postReqs) return
   expect(postReqs).toEqual([])

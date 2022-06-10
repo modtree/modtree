@@ -43,12 +43,12 @@ beforeAll(() =>
         Module: new ModuleRepository(db),
       })
       return Promise.all([
-        Repo.User.initialize(userProps),
-        Repo.Degree.initialize(degreeProps),
+        Repo.User!.initialize(userProps),
+        Repo.Degree!.initialize(degreeProps),
       ])
     })
     .then(([user, degree]) =>
-      Repo.Graph.initialize({
+      Repo.Graph!.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -77,7 +77,7 @@ describe('Graph.suggestModules (from one)', () => {
     it('Which the user is eligible for', async () => {
       const selectedModules = ['CS1010']
       const res = await container(db, () =>
-        Repo.Graph.suggestModules(t.graph, selectedModules)
+        Repo.Graph!.suggestModules(t.graph!, selectedModules)
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -103,7 +103,7 @@ describe('Graph.suggestModules (from one)', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
       const res = await container(db, () =>
-        Repo.Module.findOneBy({ moduleCode: 'CS1010' })
+        Repo.Module!.findOneBy({ moduleCode: 'CS1010' })
       )
       expect(res).toBeDefined()
       if (!res) return
@@ -112,8 +112,8 @@ describe('Graph.suggestModules (from one)', () => {
       const moduleCodes = ['MA3269', 'DSA3102']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(t.postReqs.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs!.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
       })
     })
 
@@ -121,8 +121,8 @@ describe('Graph.suggestModules (from one)', () => {
       const moduleCodes = ['CG2111A']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(t.postReqs.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs!.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
       })
     })
 
@@ -130,8 +130,8 @@ describe('Graph.suggestModules (from one)', () => {
       const moduleCodes = ['IT2002']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(t.postReqs.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs!.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
       })
     })
   })

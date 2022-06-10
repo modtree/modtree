@@ -10,7 +10,7 @@ beforeAll(() =>
   setup(db)
     .then(() => {
       Repo.User = new UserRepository(db)
-      return Repo.User.initialize(init.user1)
+      return Repo.User!.initialize(init.user1)
     })
     .then((user) => {
       t.user = user
@@ -26,7 +26,7 @@ describe('User.hasTakenModule', () => {
       const modulesDoingCodes = init.user1.modulesDoing
       const moduleCodes = modulesDoneCodes.concat(modulesDoingCodes)
       await Promise.all(
-        moduleCodes.map((x) => Repo.User.hasTakenModule(t.user, x))
+        moduleCodes.map((x) => Repo.User!.hasTakenModule(t.user!, x))
       ).then((res) => {
         res.forEach((mod) => {
           expect(mod).toEqual(true)
@@ -40,7 +40,7 @@ describe('User.hasTakenModule', () => {
     await container(db, async () => {
       const moduleCodes = ['CM1102', 'EL3201']
       await Promise.all(
-        moduleCodes.map((x) => Repo.User.hasTakenModule(t.user, x))
+        moduleCodes.map((x) => Repo.User!.hasTakenModule(t.user!, x))
       ).then((res) => {
         res.forEach((mod) => {
           expect(mod).toEqual(false)
@@ -54,7 +54,7 @@ describe('User.hasTakenModule', () => {
     await container(db, async () => {
       const moduleCodes = [init.invalidModuleCode]
       await Promise.all(
-        moduleCodes.map((x) => Repo.User.hasTakenModule(t.user, x))
+        moduleCodes.map((x) => Repo.User!.hasTakenModule(t.user!, x))
       ).then((res) => {
         res.forEach((mod) => {
           expect(mod).toEqual(false)

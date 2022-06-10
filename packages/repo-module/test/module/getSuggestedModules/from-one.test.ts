@@ -42,7 +42,7 @@ const expected = [
 describe('getSuggestedModules (from one)', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
-      const res = await Repo.Module.getSuggestedModules(
+      const res = await Repo.Module!.getSuggestedModules(
         modulesDone,
         modulesDoing,
         ['CS1010'],
@@ -68,7 +68,7 @@ describe('getSuggestedModules (from one)', () => {
   describe('Does not suggest post-reqs of the given module', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
-      const res = await Repo.Module.findOneBy({ moduleCode: 'CS1010' })
+      const res = await Repo.Module!.findOneBy({ moduleCode: 'CS1010' })
       expect(res).toBeDefined()
       if (!res) return
       t.postReqs = res.fulfillRequirements
@@ -76,8 +76,8 @@ describe('getSuggestedModules (from one)', () => {
       const moduleCodes = ['MA3269', 'DSA3102']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(t.postReqs.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs!.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
       })
     })
 
@@ -85,8 +85,8 @@ describe('getSuggestedModules (from one)', () => {
       const moduleCodes = ['CG2111A']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(t.postReqs.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs!.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
       })
     })
 
@@ -94,8 +94,8 @@ describe('getSuggestedModules (from one)', () => {
       const moduleCodes = ['IT2002']
       // confirm that these modules are indeed CS1010 postReqs
       moduleCodes.forEach((code) => {
-        expect(t.postReqs.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes.includes(code)).toEqual(false)
+        expect(t.postReqs!.includes(code)).toEqual(true)
+        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
       })
     })
   })

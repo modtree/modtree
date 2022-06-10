@@ -10,8 +10,8 @@ beforeAll(() =>
     .then(() =>
       Create.Graph({
         ...init.graph1,
-        userId: t.userId,
-        degreeId: t.degreeId,
+        userId: t.userId!,
+        degreeId: t.degreeId!,
       })
     )
     .then((graph) => {
@@ -19,8 +19,8 @@ beforeAll(() =>
     })
 )
 afterAll(() =>
-  Delete.Graph(t.graphId).then(() =>
-    Promise.all([Delete.User(t.userId), Delete.Degree(t.degreeId)])
+  Delete.Graph(t.graphId!).then(() =>
+    Promise.all([Delete.User(t.userId!), Delete.Degree(t.degreeId!)])
   )
 )
 

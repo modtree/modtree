@@ -21,7 +21,7 @@ it('Correctly handles fresh modules', async () => {
   const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
   await Promise.all(
     modulesTested.map((x) =>
-      Repo.Module.canTakeModule(modulesDone, modulesDoing, x)
+      Repo.Module!.canTakeModule(modulesDone, modulesDoing, x)
     )
   ).then((res) => {
     expect(res).toStrictEqual([true, false, false, true])
@@ -34,7 +34,7 @@ it('Rejects modules done/doing', async () => {
   const modulesTested = ['MA2001', 'MA2219']
   await Promise.all(
     modulesTested.map((x) =>
-      Repo.Module.canTakeModule(modulesDone, modulesDoing, x)
+      Repo.Module!.canTakeModule(modulesDone, modulesDoing, x)
     )
   ).then((res) => {
     expect(res).toStrictEqual([false, false])
@@ -43,7 +43,7 @@ it('Rejects modules done/doing', async () => {
 
 it('Rejects invalid module code', async () => {
   expect.assertions(1)
-  await Repo.Module.canTakeModule(
+  await Repo.Module!.canTakeModule(
     modulesDone,
     modulesDoing,
     init.invalidModuleCode

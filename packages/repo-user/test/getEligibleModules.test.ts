@@ -17,7 +17,7 @@ it('Saves a user', async () => {
   const props = init.emptyUser
   props.modulesDone.push('CS1101S')
   await container(db, () =>
-    Repo.User.initialize(props).then((res) => {
+    Repo.User!.initialize(props).then((res) => {
       expect(res).toBeInstanceOf(User)
       t.user = res
     })
@@ -28,7 +28,7 @@ it('Adds only modules which have pre-reqs cleared', async () => {
   // Get eligible modules
   expect.assertions(2)
   await container(db, () =>
-    Repo.User.getEligibleModules(t.user).then((eligibleModules) => {
+    Repo.User!.getEligibleModules(t.user!).then((eligibleModules) => {
       expect(eligibleModules).toBeInstanceOf(Array)
       const expected = ['CS2109S']
       /**

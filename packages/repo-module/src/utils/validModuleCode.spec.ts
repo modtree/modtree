@@ -17,7 +17,7 @@ afterAll(() => teardown(db))
 const lowerBound = 6000
 
 test('validModuleCode returns true on all existing codes', async () => {
-  await Repo.ModuleCondensed.getCodes().then((moduleCodes) => {
+  await Repo.ModuleCondensed!.getCodes().then((moduleCodes) => {
     t.moduleCodes = moduleCodes
     expect(t.moduleCodes.length).toBeGreaterThan(lowerBound)
     t.moduleCodes.forEach((moduleCode) => {

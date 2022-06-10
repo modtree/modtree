@@ -16,7 +16,7 @@ afterAll(() => teardown(db))
 const lowerBound = 6000
 
 test('moduleCondensed.getCodes', async () => {
-  const moduleList = await container(db, () => Repo.ModuleCondensed.getCodes())
+  const moduleList = await container(db, () => Repo.ModuleCondensed!.getCodes())
   expect(moduleList).toBeDefined()
   if (!moduleList) return
   expect(moduleList).toBeInstanceOf(Array)

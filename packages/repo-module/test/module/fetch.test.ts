@@ -16,7 +16,7 @@ afterAll(() => teardown(db))
 
 test('fetch one module from NUSMods', async () => {
   expect.hasAssertions()
-  await Repo.Module.fetchOne('CS2040S').then((res) => {
+  await Repo.Module!.fetchOne('CS2040S').then((res) => {
     expect(res).toBeInstanceOf(Module)
   })
 })

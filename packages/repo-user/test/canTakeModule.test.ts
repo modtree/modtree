@@ -17,7 +17,7 @@ beforeAll(() =>
   setup(db)
     .then(() => {
       Repo.User = new UserRepository(db)
-      return Repo.User.initialize(userProps)
+      return Repo.User!.initialize(userProps)
     })
     .then((user) => {
       t.user = user
@@ -30,7 +30,7 @@ it('Correctly handles modules not taken before', async () => {
   await container(db, async () => {
     const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
     await Promise.all(
-      modulesTested.map((x) => Repo.User.canTakeModule(t.user, x))
+      modulesTested.map((x) => Repo.User!.canTakeModule(t.user!, x))
     ).then((res) => {
       expect(res).toStrictEqual([true, false, false, true])
     })
@@ -43,7 +43,7 @@ it('Returns false for modules taken before/currently', async () => {
     // one done, one doing
     const modulesTested = ['MA2001', 'MA2219']
     await Promise.all(
-      modulesTested.map((x) => Repo.User.canTakeModule(t.user, x))
+      modulesTested.map((x) => Repo.User!.canTakeModule(t.user!, x))
     ).then((res) => {
       expect(res).toStrictEqual([false, false])
     })
@@ -53,7 +53,7 @@ it('Returns false for modules taken before/currently', async () => {
 it('Returns false if module code passed in does not exist', async () => {
   expect.assertions(1)
   await container(db, () =>
-    Repo.User.canTakeModule(t.user, init.invalidModuleCode).then((res) => {
+    Repo.User!.canTakeModule(t.user!, init.invalidModuleCode).then((res) => {
       expect(res).toStrictEqual(false)
     })
   )

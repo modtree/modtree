@@ -55,7 +55,7 @@ const expected = [
 
 describe('getSuggestedModules (from many)', () => {
   it('Suggests post-reqs of the given module which the user is eligible for', async () => {
-    const res = await Repo.Module.getSuggestedModules(
+    const res = await Repo.Module!.getSuggestedModules(
       modulesDone,
       modulesDoing,
       ['CS1010', 'CS1231'],

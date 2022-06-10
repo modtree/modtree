@@ -9,7 +9,7 @@ beforeAll(async () => {
     }
   )
 })
-afterAll(() => Promise.all([Delete.User(t.userId1), Delete.User(t.userId2)]))
+afterAll(() => Promise.all([Delete.User(t.userId1!), Delete.User(t.userId2!)]))
 
 /**
  * list all users

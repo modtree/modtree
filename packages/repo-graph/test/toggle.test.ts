@@ -23,12 +23,12 @@ beforeAll(() =>
         ModuleCondensed: new ModuleCondensedRepository(db),
       })
       return Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
+        Repo.User!.initialize(init.user1),
+        Repo.Degree!.initialize(init.degree1),
       ])
     })
     .then(([user, degree]) =>
-      Repo.Graph.initialize({
+      Repo.Graph!.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -53,7 +53,7 @@ afterAll(() => teardown(db))
 function returnsGraphAfterToggling(moduleCode: string) {
   expect.hasAssertions()
   it(`toggles ${moduleCode} and returns graph`, async () => {
-    const returned = await Repo.Graph.toggleModule(t.graph, moduleCode)
+    const returned = await Repo.Graph!.toggleModule(t.graph!, moduleCode)
     expect(returned).toStrictEqual(t.graph)
   })
 }
@@ -65,7 +65,7 @@ function returnsGraphAfterToggling(moduleCode: string) {
 function expectInitiallyHidden(moduleCode: string) {
   expect.hasAssertions()
   it(`${moduleCode} is initially hidden`, async () => {
-    await Repo.Graph.findOneById(t.graph.id).then((graph) => {
+    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
       const hidden = graph.modulesHidden.map(flatten.module)
       expect(hidden).toContain(moduleCode)
     })
@@ -79,7 +79,7 @@ function expectInitiallyHidden(moduleCode: string) {
 function expectInitiallyPlaced(moduleCode: string) {
   expect.hasAssertions()
   it(`${moduleCode} is initially placed`, async () => {
-    await Repo.Graph.findOneById(t.graph.id).then((graph) => {
+    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
       const placed = graph.modulesPlaced.map(flatten.module)
       expect(placed).toContain(moduleCode)
     })
@@ -93,7 +93,7 @@ function expectInitiallyPlaced(moduleCode: string) {
 function expectFinallyHidden(moduleCode: string) {
   expect.hasAssertions()
   it(`${moduleCode} successfully hidden`, async () => {
-    const { modulesPlaced, modulesHidden } = t.graph
+    const { modulesPlaced, modulesHidden } = t.graph!
     expect(modulesHidden.map(flatten.module)).toContain(moduleCode)
     expect(modulesPlaced.map(flatten.module)).not.toContain(moduleCode)
   })
@@ -106,7 +106,7 @@ function expectFinallyHidden(moduleCode: string) {
 function expectFinallyPlaced(moduleCode: string) {
   expect.hasAssertions()
   it(`${moduleCode} successfully placed`, async () => {
-    const { modulesPlaced, modulesHidden } = t.graph
+    const { modulesPlaced, modulesHidden } = t.graph!
     expect(modulesHidden.map(flatten.module)).not.toContain(moduleCode)
     expect(modulesPlaced.map(flatten.module)).toContain(moduleCode)
   })
@@ -127,7 +127,7 @@ describe('placed -> hidden', () => {
 describe('insert unseen module', () => {
   it('is a fresh module', async () => {
     expect.hasAssertions()
-    await Repo.Graph.findOneById(t.graph.id).then((graph) => {
+    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
       const { modulesPlaced, modulesHidden } = graph
       const placed = modulesPlaced.map(flatten.module)
       const hidden = modulesHidden.map(flatten.module)
@@ -143,7 +143,7 @@ describe('reject module not in database', () => {
   it('is not in database', async () => {
     expect.hasAssertions()
     await expect(() =>
-      Repo.ModuleCondensed.findOneByOrFail({ moduleCode: 'CS420BZT' })
+      Repo.ModuleCondensed!.findOneByOrFail({ moduleCode: 'CS420BZT' })
     ).rejects.toThrowError(
       new EntityNotFoundError(ModuleCondensed, {
         moduleCode: 'CS420BZT',
@@ -153,7 +153,7 @@ describe('reject module not in database', () => {
   it('rejects the module', async () => {
     expect.hasAssertions()
     await expect(() =>
-      Repo.Graph.toggleModule(t.graph, 'CS420BZT')
+      Repo.Graph!.toggleModule(t.graph!, 'CS420BZT')
     ).rejects.toThrowError(
       new EntityNotFoundError(Module, {
         moduleCode: 'CS420BZT',

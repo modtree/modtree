@@ -15,10 +15,10 @@ afterAll(() => teardown(db))
 
 it('Adds only modules which have pre-reqs cleared', async () => {
   const modulesDone = ['CS1101S']
-  const modulesDoing = []
-  const modulesSelected = []
+  const modulesDoing: string[] = []
+  const modulesSelected: string[] = []
   expect.assertions(2)
-  await Repo.Module.getEligibleModules(
+  await Repo.Module!.getEligibleModules(
     modulesDone,
     modulesDoing,
     modulesSelected
@@ -33,11 +33,11 @@ it('Adds only modules which have pre-reqs cleared', async () => {
 })
 
 it('modulesDone and modulesSelected function the same way', async () => {
-  const modulesDone = []
-  const modulesDoing = []
+  const modulesDone: string[] = []
+  const modulesDoing: string[] = []
   const modulesSelected = ['CS1101S']
   expect.assertions(2)
-  await Repo.Module.getEligibleModules(
+  await Repo.Module!.getEligibleModules(
     modulesDone,
     modulesDoing,
     modulesSelected

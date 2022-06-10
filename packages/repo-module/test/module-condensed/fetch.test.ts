@@ -18,7 +18,7 @@ const lowerBound = 6000
 
 test('moduleCondensed.fetch', async () => {
   await container(db, () =>
-    Repo.ModuleCondensed.fetch().then((moduleList) => {
+    Repo.ModuleCondensed!.fetch().then((moduleList) => {
       expect(moduleList).toBeInstanceOf(Array)
       expect(moduleList[0]).toBeInstanceOf(ModuleCondensed)
       const s = new Set(moduleList.map(flatten.module))

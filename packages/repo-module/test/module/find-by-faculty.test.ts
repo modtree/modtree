@@ -15,7 +15,7 @@ afterAll(() => teardown(db))
 describe('ModuleRepository.findByFaculty', () => {
   it('Valid faculty name', async () => {
     expect.hasAssertions()
-    await Repo.Module.findByFaculty('Computing').then((res) => {
+    await Repo.Module!.findByFaculty('Computing').then((res) => {
       expect(res).toBeInstanceOf(Array)
       res.forEach((module) => {
         expect(module).toBeInstanceOf(Module)
@@ -26,7 +26,7 @@ describe('ModuleRepository.findByFaculty', () => {
 
   it('Invalid faculty name', async () => {
     expect.hasAssertions()
-    await Repo.Module.findByFaculty('ABCDEFGH').then((res) => {
+    await Repo.Module!.findByFaculty('ABCDEFGH').then((res) => {
       expect(res).toBeInstanceOf(Array)
       expect(res.length).toBe(0)
     })

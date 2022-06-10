@@ -12,11 +12,11 @@ beforeAll(() => setup(db).then(() => {
 afterAll(() => teardown(db))
 
 const modulesDone = ['CS1010']
-const modulesDoing = []
+const modulesDoing: string[] = []
 
 it('Correctly gets unlocked modules', async () => {
   // Get unlocked modules for CS2100
-  const codes = await Repo.Module.getUnlockedModules(
+  const codes = await Repo.Module!.getUnlockedModules(
     modulesDone,
     modulesDoing,
     'CS2100'
@@ -31,7 +31,7 @@ it('Correctly gets unlocked modules', async () => {
 
 it('Returns empty array if module in User.modulesDone', async () => {
   // Get unlocked modules for CS1010, which is in User.modulesDone
-  const modules = await Repo.Module.getUnlockedModules(
+  const modules = await Repo.Module!.getUnlockedModules(
     modulesDone,
     modulesDoing,
     'CS1010'

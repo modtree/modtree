@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 import { User } from '@modtree/entity'
 import { Delete, server, t, init } from '@modtree/test-env'
 
-afterAll(() => Delete.User(t.userId))
+afterAll(() => Delete.User(t.userId!))
 
 /**
  * create a user
