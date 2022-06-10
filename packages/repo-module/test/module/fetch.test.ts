@@ -2,11 +2,16 @@ import { Module } from '@modtree/entity'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown, Repo } from '@modtree/test-env'
+import { getModuleRepository } from '../../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db))
+beforeAll(() =>
+  setup(db).then(() => {
+    Repo.Module = getModuleRepository(db)
+  })
+)
 afterAll(() => teardown(db))
 
 test('fetch one module from NUSMods', async () => {

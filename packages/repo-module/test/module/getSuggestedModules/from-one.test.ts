@@ -1,6 +1,7 @@
-import { setup, teardown, Repo, t } from '@modtree/test-env'
+import { setup, teardown, t, Repo } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
+import { getModuleRepository } from '../../../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -21,7 +22,11 @@ const modulesDoing = ['IT2002']
 
 jest.setTimeout(15000)
 
-beforeAll(() => setup(db))
+beforeAll(() =>
+  setup(db).then(() => {
+    Repo.Module = getModuleRepository(db)
+  })
+)
 afterAll(() => teardown(db))
 
 const expected = [

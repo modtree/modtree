@@ -2,9 +2,6 @@ import { Config } from '@jest/types'
 
 const all: Config.InitialOptionsWithRootDir = {
   rootDir: '..',
-  moduleNameMapper: {
-    '@modtree/test-env': '<rootDir>/../test-env/dist',
-  },
   // show console logs
   silent: true,
   // shows results of each test function within each test file

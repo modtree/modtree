@@ -2,11 +2,14 @@ import { User } from '@modtree/entity'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
+import { getUserRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db))
+beforeAll(() => setup(db).then(() => {
+  Repo.User = getUserRepository(db)
+}))
 afterAll(() => teardown(db))
 
 const props = init.user1

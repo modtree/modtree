@@ -1,13 +1,17 @@
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
+import { getDegreeRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => Repo.Degree.initialize(init.degree1))
+    .then(() => {
+      Repo.Degree = getDegreeRepository(db)
+      return Repo.Degree.initialize(init.degree1)
+    })
     .then((degree) => {
       t.degree = degree
       t.combinedModuleCodes = degree.modules.map(flatten.module)

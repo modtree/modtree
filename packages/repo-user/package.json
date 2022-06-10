@@ -10,6 +10,7 @@
     "@modtree/entity": "*",
     "@modtree/utils": "*",
     "@modtree/repo-base": "*",
+    "@modtree/test-env": "*",
     "@modtree/repo-module": "*",
     "@modtree/repo-degree": "*",
     "@modtree/types": "*"

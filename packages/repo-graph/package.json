@@ -9,6 +9,7 @@
   "dependencies": {
     "@modtree/entity": "*",
     "@modtree/repo-base": "*",
+    "@modtree/test-env": "*",
     "@modtree/repo-module": "*",
     "@modtree/repo-user": "*",
     "@modtree/repo-degree": "*",

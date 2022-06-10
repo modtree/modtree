@@ -3,6 +3,10 @@ import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { InitProps } from '@modtree/types'
 import { oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
+import { getUserRepository } from '@modtree/repo-user'
+import { getDegreeRepository } from '@modtree/repo-degree'
+import { getGraphRepository } from '../../src'
+import { getModuleRepository } from '@modtree/repo-module'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -31,12 +35,18 @@ jest.setTimeout(15000)
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      Promise.all([
+    .then(() => {
+      Object.assign(Repo, {
+        User: getUserRepository(db),
+        Degree: getDegreeRepository(db),
+        Graph: getGraphRepository(db),
+        Module: getModuleRepository(db),
+      })
+      return Promise.all([
         Repo.User.initialize(userProps),
         Repo.Degree.initialize(degreeProps),
       ])
-    )
+    })
     .then(([user, degree]) =>
       Repo.Graph.initialize({
         userId: user.id,
