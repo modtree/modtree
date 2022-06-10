@@ -1,27 +1,31 @@
-import { DataSource, In } from 'typeorm'
+import { DataSource, In, Repository } from 'typeorm'
 import { Degree } from '@modtree/entity'
-import { InitProps, IDegreeRepository } from '@modtree/types'
+import { InitProps, IDegreeRepository, IModuleRepository } from '@modtree/types'
 import { copy } from '@modtree/utils'
 import {
-  getDataSource,
   getRelationNames,
   useDeleteAll,
   useFindOneByKey,
 } from '@modtree/repo-base'
 import { getModuleRepository } from '@modtree/repo-module'
 
-/**
- * @param {DataSource} database
- * @returns {IDegreeRepository}
- */
-export function getDegreeRepository(database?: DataSource): IDegreeRepository {
-  const db = getDataSource(database)
-  const BaseRepo = db.getRepository(Degree)
-  const deleteAll = useDeleteAll(BaseRepo)
-  const findOneById = useFindOneByKey(BaseRepo, 'id')
-  const findOneByTitle = useFindOneByKey(BaseRepo, 'title')
-  const allRelations = getRelationNames(BaseRepo)
-  const [ModuleRepository] = [getModuleRepository(db)]
+export class DegreeRepository
+  extends Repository<Degree>
+  implements IDegreeRepository
+{
+  private db: DataSource
+  private allRelations = getRelationNames(this)
+  private moduleRepo: IModuleRepository
+
+  constructor(db: DataSource) {
+    super(Degree, db.manager)
+    this.db = db
+    this.moduleRepo = getModuleRepository(this.db)
+  }
+
+  deleteAll = useDeleteAll(this)
+  findOneById = useFindOneByKey(this, 'id')
+  findOneByTitle = useFindOneByKey(this, 'title')
 
   /**
    * Adds a Degree to DB
@@ -29,13 +33,13 @@ export function getDegreeRepository(database?: DataSource): IDegreeRepository {
    * @param {InitProps['Degree']} props
    * @returns {Promise<Degree>}
    */
-  async function initialize(props: InitProps['Degree']): Promise<Degree> {
+  async initialize(props: InitProps['Degree']): Promise<Degree> {
     const { moduleCodes, title } = props
-    const degree = BaseRepo.create({ title })
+    const degree = this.create({ title })
     // find modules required, to create many-to-many relation
-    const modules = await ModuleRepository.findByCodes(moduleCodes)
+    const modules = await this.moduleRepo.findByCodes(moduleCodes)
     degree.modules = modules
-    await BaseRepo.save(degree)
+    await this.save(degree)
     return degree
   }
 
@@ -45,21 +49,18 @@ export function getDegreeRepository(database?: DataSource): IDegreeRepository {
    * @param {Degree} degree
    * @param {string[]} moduleCodes
    */
-  async function insertModules(
-    degree: Degree,
-    moduleCodes: string[]
-  ): Promise<Degree> {
+  async insertModules(degree: Degree, moduleCodes: string[]): Promise<Degree> {
     // find modules to add
     return Promise.all([
-      ModuleRepository.findBy({
+      this.moduleRepo.findBy({
         moduleCode: In(moduleCodes),
       }),
-      findOneById(degree.id),
+      this.findOneById(degree.id),
     ])
       .then(([newModules, loadedDegree]) => {
         copy(loadedDegree, degree)
         degree.modules.push(...newModules)
-        return BaseRepo.save(degree)
+        return this.save(degree)
       })
       .then((updatedDegree) => {
         copy(updatedDegree, degree)
@@ -71,21 +72,12 @@ export function getDegreeRepository(database?: DataSource): IDegreeRepository {
    * @param {string[]} degreeIds
    * @returns {Promise<Degree[]>}
    */
-  async function findByIds(degreeIds: string[]): Promise<Degree[]> {
-    return BaseRepo.find({
+  async findByIds(degreeIds: string[]): Promise<Degree[]> {
+    return this.find({
       where: {
         id: In(degreeIds),
       },
-      relations: allRelations,
+      relations: this.allRelations,
     })
   }
-
-  return BaseRepo.extend({
-    initialize,
-    insertModules,
-    findOneByTitle,
-    findOneById,
-    findByIds,
-    deleteAll,
-  })
 }

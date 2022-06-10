@@ -4,13 +4,13 @@ import { IUserController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { UserRepository } from '@modtree/repo-user'
-import { getDegreeRepository } from '@modtree/repo-degree'
+import { DegreeRepository } from '@modtree/repo-degree'
 
 /** User api controller */
 export class UserController implements IUserController {
   private userRepo = new UserRepository(db)
 
-  private degreeRepo = getDegreeRepository(db)
+  private degreeRepo = new DegreeRepository(db)
 
   /**
    * creates a Degree

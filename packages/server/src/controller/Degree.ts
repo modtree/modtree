@@ -2,11 +2,11 @@ import { Request, Response } from 'express'
 import { IDegreeController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
-import { getDegreeRepository } from '@modtree/repo-degree'
+import { DegreeRepository } from '@modtree/repo-degree'
 
 /** Degree API controller */
 export class DegreeController implements IDegreeController {
-  private degreeRepo = getDegreeRepository(db)
+  private degreeRepo = new DegreeRepository(db)
 
   /**
    * creates a Degree

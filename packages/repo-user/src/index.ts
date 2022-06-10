@@ -13,7 +13,7 @@ import {
   useFindOneByKey,
 } from '@modtree/repo-base'
 import { getModuleRepository } from '@modtree/repo-module'
-import { getDegreeRepository } from '@modtree/repo-degree'
+import { DegreeRepository } from '@modtree/repo-degree'
 
 export class UserRepository
   extends Repository<User>
@@ -28,7 +28,7 @@ export class UserRepository
     super(User, db.manager)
     this.db = db
     this.moduleRepo = getModuleRepository(this.db)
-    this.degreeRepo = getDegreeRepository(this.db)
+    this.degreeRepo = new DegreeRepository(this.db)
   }
 
   deleteAll = useDeleteAll(this)

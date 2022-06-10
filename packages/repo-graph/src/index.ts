@@ -14,7 +14,7 @@ import {
 } from '@modtree/repo-base'
 import { getModuleRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
-import { getDegreeRepository } from '@modtree/repo-degree'
+import { DegreeRepository } from '@modtree/repo-degree'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
@@ -29,7 +29,7 @@ export class GraphRepository extends Repository<Graph> {
     super(Graph, db.manager)
     this.db = db
     this.ModuleRepository = getModuleRepository(this.db)
-    this.DegreeRepository = getDegreeRepository(this.db)
+    this.DegreeRepository = new DegreeRepository(this.db)
     this.UserRepository = new UserRepository(this.db)
   }
 
