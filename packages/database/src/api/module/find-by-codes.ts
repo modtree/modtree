@@ -1,8 +1,7 @@
-import { getModuleRepository } from '../../repository/Module'
-import { container } from '../../data-source'
-import { db } from '../../config'
+import { db, container } from '@modtree/typeorm-config'
+import { log } from '@modtree/utils'
+import { getModuleRepository } from '@modtree/repo-module'
 import { analyze } from '../analyze'
-import { log } from '../../cli'
 
 analyze(() =>
   container(db, async () => {

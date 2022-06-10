@@ -1,10 +1,7 @@
-import { Degree } from '@entity'
-import { Create, Delete, server, t } from '@environment'
-import { init } from '@tests/init'
-import { toBeUserResponse } from '@tests/custom-expect'
+import { Degree } from '@modtree/entity'
+import { Create, Delete, server, t, init } from '@modtree/test-env'
 
 beforeAll(async () => {
-  expect.extend({ toBeUserResponse })
   return Promise.all([
     Create.Degree(init.degree1),
     Create.Degree(init.degree2),

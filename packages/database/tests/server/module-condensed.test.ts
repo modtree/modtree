@@ -1,4 +1,4 @@
-import { server } from '@environment'
+import { server } from '@modtree/test-env'
 
 /**
  * try a specific full module search

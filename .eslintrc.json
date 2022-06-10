@@ -9,15 +9,20 @@
     "project": ["tsconfig.json"],
     "sourceType": "module"
   },
-  "ignorePatterns": [
-    "**/dist/**/*",
-    ".eslintrc.*",
-    "**/coverage/**/*"
-  ],
+  "ignorePatterns": ["**/dist/**/*", ".eslintrc.*", "**/coverage/**/*", "jest.config.ts"],
   "rules": {
     "indent": ["error", 2],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
     "object-curly-spacing": ["error", "always"]
-  }
+  },
+  "overrides": [
+    {
+      "env": {
+        "jest": true
+      },
+      "files": ["**/tests/**/*.test.[jt]s"],
+      "extends": ["plugin:jest/recommended"]
+    }
+  ]
 }

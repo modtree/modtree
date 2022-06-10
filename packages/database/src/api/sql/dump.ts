@@ -1,4 +1,4 @@
-import { sql } from '../../sql'
-import { config } from '../../config'
+import { config } from '@modtree/typeorm-config'
+import { sql } from '@modtree/sql'
 
 sql.dump(config.database)

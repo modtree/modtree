@@ -1,8 +1,7 @@
 import { inspect } from 'util'
-import { log } from '../cli'
-import { endpoint } from '../data-source'
-import { ModtreeFunction } from '../../types/modtree'
-import { db } from '../config'
+import { AsyncFunction } from '@modtree/types'
+import { db, endpoint } from '@modtree/typeorm-config'
+import { log } from '@modtree/utils'
 
 type Verbosity = 'none' | 'verbose' | 'normal'
 
@@ -91,11 +90,11 @@ function printResponse(response: any, verbosity: Verbosity) {
 /**
  * analyzes the output of an endpoint function
  *
- * @param {ModtreeFunction} callback
+ * @param {AsyncFunction} callback
  * @param {Verbosity} verbosity
  */
 export async function analyze<T>(
-  callback: ModtreeFunction<T>,
+  callback: AsyncFunction<T>,
   verbosity: Verbosity = 'normal'
 ) {
   const response = await endpoint(db, callback)

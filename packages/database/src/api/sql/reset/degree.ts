@@ -1,4 +1,4 @@
-import { config } from '../../../config'
-import { sql } from '../../../sql'
+import { config } from '@modtree/typeorm-config'
+import { sql } from '@modtree/sql'
 
 sql.dropTables(config.database, ['degree_modules_module', 'degree'])

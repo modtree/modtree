@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { copy, emptyInit, flatten } from '../utils'
-import { db } from '../config'
-import { getDegreeRepository } from '../repository'
-import { IDegreeController } from '../../types/controller'
+import { IDegreeController } from '@modtree/types'
+import { copy, emptyInit, flatten } from '@modtree/utils'
+import { db } from '@modtree/typeorm-config'
+import { getDegreeRepository } from '@modtree/repo-degree'
 
 /** Degree API controller */
 export class DegreeController implements IDegreeController {

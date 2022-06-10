@@ -1,6 +1,5 @@
-import { Graph } from '@entity'
-import { init } from '@tests/init'
-import { Create, Delete, server, t } from '@environment'
+import { Graph } from '@modtree/entity'
+import { Create, Delete, server, t, init } from '@modtree/test-env'
 
 beforeAll(() =>
   Promise.all([Create.User(init.user2), Create.Degree(init.degree1)])

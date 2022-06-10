@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 
-import { IUserController } from '../../types/controller'
-import { db } from '../config'
-import { getDegreeRepository, getUserRepository } from '../repository'
-import { copy, emptyInit, flatten } from '../utils'
+import { IUserController } from '@modtree/types'
+import { copy, emptyInit, flatten } from '@modtree/utils'
+import { db } from '@modtree/typeorm-config'
+import { getUserRepository } from '@modtree/repo-user'
+import { getDegreeRepository } from '@modtree/repo-degree'
 
 /** User api controller */
 export class UserController implements IUserController {

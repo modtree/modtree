@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { copy, emptyInit, flatten } from '../utils'
-import { db } from '../config'
-import { getGraphRepository } from '../repository'
-import { IGraphController } from '../../types/controller'
+import { IGraphController } from '@modtree/types'
+import { copy, emptyInit, flatten } from '@modtree/utils'
+import { db } from '@modtree/typeorm-config'
+import { getGraphRepository } from '@modtree/repo-graph'
 import { validate } from './base'
 
 /** Graph API controller */

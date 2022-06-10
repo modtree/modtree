@@ -26,50 +26,51 @@ jobs:
           concurrent_skipping: same_content_newer
           paths_ignore: '["**/README.md", "**/docs/**"]'
 
-  backend_tests:
+  ci: # don't change this name, else will also need to change branch rules
     if: always()
     runs-on: ubuntu-20.04
+    outputs:
+      yarn_build: ${{ steps.yarn_build.outcome }}
+      yarn_test: ${{ steps.yarn_test.outcome }}
     steps:
       - uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1.6.0
-        continue-on-error: true
-      - run: yarn install --frozen-lockfile --silent
-      - run: ${{ env.POSTGRES_INIT }}
-      - name: 📦 Run all backend tests
-        working-directory: ./packages/database
-        run: ${{ env.PREFIX }} yarn nx ci:test:all database
 
-  project_build:
-    if: always()
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
         continue-on-error: true
-      - run: yarn install --frozen-lockfile --silent
+
+      - name: Safely install yarn
+        run: yarn install --frozen-lockfile --silent
+
+      - name: Start postgresql
+        run: ${{ env.POSTGRES_INIT }}
+
       - name: 📦 Build & lint entire project
-        run: yarn nx run-many --target=build --all
+        id: yarn_build
+        run: yarn build
+
+      - name: 📦 Run backend tests
+        id: yarn_test
+        run: ${{ env.PREFIX }} yarn test
 
   telegram:
-    needs: [pre_job, project_build, backend_tests]
+    needs: [pre_job, ci]
     if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
     runs-on: ubuntu-20.04
     steps:
-      - name: Environment prep
+      - name: Get commit SHA
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
+
+      - name: Get status emojis
         run: |
           function emojize() {
-            echo "$1: $2"
             [ "$2" = "success" ] && emoji="✅" || emoji="❌"
             echo "$1=$emoji" >> $GITHUB_ENV
           }
-          BASE_URL="https://github.com/modtree/modtree/actions/runs"
-          echo "RUN_URL=${BASE_URL}/${{ github.run_id }}" >> $GITHUB_ENV
-          echo "SHORT_SHA=`echo ${GITHUB_SHA::7}`" >> $GITHUB_ENV
-          emojize PROJECT_BUILD ${{ needs.project_build.result }}
-          emojize BACKEND_TESTS ${{ needs.backend_tests.result }}
+
+          emojize YARN_TEST ${{ needs.ci.outputs.yarn_test }}
+          emojize YARN_BUILD ${{ needs.ci.outputs.yarn_build }}
 
       - name: Send message (PR)
-        if: ${{ github.event_name == 'pull_request' }}
         uses: appleboy/telegram-action@master
         with:
           disable_web_page_preview: true
@@ -77,21 +78,6 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
-            `${{ env.SHORT_SHA }}`  #${{ github.event.pull_request.number }}  ${{ github.event.pull_request.title }}
-            ${{ env.PROJECT_BUILD }} lint + build
-            ${{ env.BACKEND_TESTS }} backend tests
-            [view logs](${{ env.RUN_URL }})
-
-      - name: Send message (Push)
-        if: ${{ github.event_name == 'push' }}
-        uses: appleboy/telegram-action@master
-        with:
-          disable_web_page_preview: true
-          to: ${{ secrets.TELEGRAM_GROUP }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: |
-            `${{ env.SHORT_SHA }}` ${{ github.event.head_commit.message }}
-            ${{ env.PROJECT_BUILD }} lint + build
-            ${{ env.BACKEND_TESTS }} backend tests
-            [view logs](${{ env.RUN_URL }})
+            `${{ env.SHORT_SHA }}` #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}
+            ${{ env.YARN_BUILD }} yarn build
+            ${{ env.YARN_TEST }} yarn test

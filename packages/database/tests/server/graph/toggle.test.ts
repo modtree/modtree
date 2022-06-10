@@ -1,18 +1,17 @@
 import { AxiosError } from 'axios'
-import { ResponseProps } from '@mtypes/api-response'
-import { init } from '@tests/init'
-import { Create, Delete, server } from '@environment'
+import { ModtreeApiResponse } from '@modtree/types'
+import { Create, Delete, server, init } from '@modtree/test-env'
 
 const t: Partial<{
-  graph: ResponseProps['Graph']
-  user: ResponseProps['User']
+  graph: ModtreeApiResponse.Graph
+  user: ModtreeApiResponse.User
+  original: ModtreeApiResponse.Graph
   graphId: string
   userId: string
   degreeId: string
   freshCode: string
   hiddenCode: string
   placedCode: string
-  original: ResponseProps['Graph']
 }> = {}
 
 beforeAll(() =>
@@ -72,7 +71,7 @@ describe('insert unseen module', () => {
     await server
       .post(`graph/id/${t.graphId}/toggle/${t.freshCode}`)
       .then((res) => {
-        const graph: ResponseProps['Graph'] = res.data
+        const graph: ModtreeApiResponse.Graph = res.data
         expect(graph.modulesPlaced).toContain(t.freshCode)
       })
   })
@@ -96,7 +95,7 @@ describe('hidden -> placed', () => {
     await server
       .post(`graph/id/${t.graphId}/toggle/${t.hiddenCode}`)
       .then((res) => {
-        const graph: ResponseProps['Graph'] = res.data
+        const graph: ModtreeApiResponse.Graph = res.data
         const { modulesPlaced, modulesHidden } = graph
         expect(modulesPlaced).toContain(t.hiddenCode)
         expect(modulesHidden).not.toContain(t.hiddenCode)
@@ -122,7 +121,7 @@ describe('placed -> hidden', () => {
     await server
       .post(`graph/id/${t.graphId}/toggle/${t.hiddenCode}`)
       .then((res) => {
-        const graph: ResponseProps['Graph'] = res.data
+        const graph: ModtreeApiResponse.Graph = res.data
         const { modulesPlaced, modulesHidden } = graph
         expect(modulesPlaced).not.toContain(t.hiddenCode)
         expect(modulesHidden).toContain(t.hiddenCode)

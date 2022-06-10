@@ -1,6 +1,5 @@
-import { getModuleCondensedRepository } from '../../../repository'
-import { db } from '../../../config'
+import { db, container } from '@modtree/typeorm-config'
+import { getModuleCondensedRepository } from '@modtree/repo-module'
 import { analyze } from '../../analyze'
-import { container } from '../../../data-source'
 
 analyze(() => container(db, () => getModuleCondensedRepository(db).deleteAll()))

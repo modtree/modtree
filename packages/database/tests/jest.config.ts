@@ -3,16 +3,7 @@ import { Config } from '@jest/types'
 const all: Config.InitialOptionsWithRootDir = {
   rootDir: '..',
   moduleNameMapper: {
-    '@entity': '<rootDir>/src/entity',
-    '@repository': '<rootDir>/src/repository',
-    '@utils': '<rootDir>/src/utils',
-    '@config': '<rootDir>/src/config',
-    '@sql': '<rootDir>/src/sql',
-    '@environment': '<rootDir>/tests/environment',
-    '@init': '<rootDir>/tests/init',
-    '@src/(.*)': '<rootDir>/src/$1',
-    '@mtypes/(.*)': '<rootDir>/types/$1',
-    '@tests/(.*)': '<rootDir>/tests/$1',
+    '@modtree/test-env': '<rootDir>/../test-env/dist',
   },
   // show console logs
   silent: true,
@@ -24,6 +15,7 @@ const all: Config.InitialOptionsWithRootDir = {
   clearMocks: true,
   // actual stuff
   preset: 'ts-jest',
+  testPathIgnorePatterns: ['pull']
 }
 
 export default all

@@ -1,5 +1,0 @@
-export { getModuleCondensedRepository } from './ModuleCondensed'
-export { getModuleRepository } from './Module'
-export { getDegreeRepository } from './Degree'
-export { getUserRepository } from './User'
-export { getGraphRepository } from './Graph'

@@ -5,21 +5,47 @@
   "affected": {
     "defaultBase": "main"
   },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "packages"
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "ci:test:all"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "ci:test",
+          "ci:test:all",
+          "ci:test:server",
+          "ci:test:database",
+          "ci:test:utils"
+        ],
         "accessToken": "MGI3YzRiY2YtNzIwYS00MmY2LTgxM2QtNzM5NTIxOThiNDA4fHJlYWQtd3JpdGU="
       }
     }
   },
   "targetDependencies": {
+    "lint": [{ "target": "build", "projects": "dependencies" }],
+    "test": [
+      { "target": "build", "projects": "self" },
+      { "target": "test", "projects": "dependencies" }
+    ],
     "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
+      { "target": "lint", "projects": "self" },
+      { "target": "build", "projects": "dependencies" }
+    ],
+    "dev": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test:utils": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test:server": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test:database": [{ "target": "build", "projects": "dependencies" }],
+    "ci:test": [
+      { "target": "ci:test:utils", "projects": "self" },
+      { "target": "ci:test:server", "projects": "self" },
+      { "target": "ci:test:database", "projects": "self" }
     ]
   }
 }

@@ -1,6 +1,5 @@
 import { AxiosError } from 'axios'
-import { init } from '@tests/init'
-import { Create, server, t } from '@environment'
+import { Create, server, t, init } from '@modtree/test-env'
 
 beforeAll(() =>
   /**

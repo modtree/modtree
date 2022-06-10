@@ -1,12 +1,7 @@
 import { AxiosError } from 'axios'
-import { Degree } from '@entity'
-import { Delete, server, t } from '@environment'
-import { init } from '@tests/init'
-import { toBeUserResponse } from '@tests/custom-expect'
+import { Degree } from '@modtree/entity'
+import { Delete, server, init, t } from '@modtree/test-env'
 
-beforeAll(() => {
-  expect.extend({ toBeUserResponse })
-})
 afterAll(() => Delete.Degree(t.degreeId))
 
 /**

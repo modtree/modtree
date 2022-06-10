@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, useEffect } from 'react'
-import { ModuleCondensed } from '@modtree/database'
+import { ModuleCondensed } from '@modtree/entity'
 import { SelectedDisplay } from '@/components/builder/Selected'
 import { useSelector, useDispatch } from 'react-redux'
 import { clearBuilderModules, hideBuilder } from '@/store/builder'
