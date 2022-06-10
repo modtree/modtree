@@ -7,7 +7,7 @@ import {
   getUserRepository,
   getGraphRepository,
 } from '@repository'
-import { oneUp } from '@utils'
+import { oneUp } from '@modtree/utils'
 import { setup, teardown } from '@environment'
 
 const dbName = oneUp(__filename)

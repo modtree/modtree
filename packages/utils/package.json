@@ -1,0 +1,17 @@
+{
+  "name": "@modtree/utils",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "modtree",
+  "description": "modtree utilities",
+  "main": "./dist/index.js",
+  "type": "commonjs",
+  "dependencies": {
+    "@modtree/types": "*",
+    "@modtree/entity": "*"
+  },
+  "scripts": {
+    "lint": "eslint --fix --ext .ts .",
+    "build": "tsc"
+  }
+}

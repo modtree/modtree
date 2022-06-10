@@ -1,5 +1,5 @@
 import { getSource } from '@src/data-source'
-import { oneUp } from '@utils'
+import { oneUp } from '@modtree/utils'
 import { setup, teardown, Repo, t } from '@environment'
 import { init } from '@tests/init'
 

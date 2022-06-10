@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { IGraphController } from '@modtree/types'
-import { copy, emptyInit, flatten } from '../utils'
+import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '../config'
 import { getGraphRepository } from '../repository'
 import { validate } from './base'

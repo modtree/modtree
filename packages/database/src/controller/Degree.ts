@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { IDegreeController } from '@modtree/types'
-import { copy, emptyInit, flatten } from '../utils'
+import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '../config'
 import { getDegreeRepository } from '../repository'
 

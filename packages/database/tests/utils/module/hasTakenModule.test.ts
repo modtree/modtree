@@ -1,4 +1,4 @@
-import { hasTakenModule } from '@utils'
+import { hasTakenModule } from '@modtree/utils'
 
 it('Returns true if module is in modulesDone', () => {
   const modulesDone = ['CS1010']

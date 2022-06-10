@@ -2,7 +2,7 @@ import { container, getSource } from '@src/data-source'
 import { InitProps } from '@modtree/types'
 import { init } from '@tests/init'
 import { setup, teardown, Repo, t } from '@environment'
-import { flatten, oneUp } from '@utils'
+import { flatten, oneUp } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

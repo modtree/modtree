@@ -8,6 +8,7 @@
   "type": "commonjs",
   "dependencies": {
     "@modtree/entity": "*",
+    "@modtree/utils": "*",
     "@modtree/types": "*"
   },
   "scripts": {

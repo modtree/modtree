@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 
 import { IUserController } from '@modtree/types'
+import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '../config'
 import { getDegreeRepository, getUserRepository } from '../repository'
-import { copy, emptyInit, flatten } from '../utils'
 
 /** User api controller */
 export class UserController implements IUserController {

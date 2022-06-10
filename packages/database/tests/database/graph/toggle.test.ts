@@ -1,5 +1,5 @@
 import { EntityNotFoundError } from 'typeorm'
-import { flatten, oneUp } from '@utils'
+import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@src/data-source'
 import { Graph, Module, ModuleCondensed } from '@modtree/entity'
 import { setup, teardown, Repo } from '@environment'

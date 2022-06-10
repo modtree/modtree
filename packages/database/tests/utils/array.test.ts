@@ -1,4 +1,4 @@
-import { quickpop } from '@utils'
+import { quickpop } from '@modtree/utils'
 
 describe('Array.quickpop', () => {
   it('Removes an element in an unordered array', () => {

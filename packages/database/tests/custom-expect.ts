@@ -1,5 +1,5 @@
 import { ModtreeApiResponse } from '@modtree/types'
-import { EmptyResponse } from '@utils'
+import { EmptyResponse } from '@modtree/utils'
 
 type CustomMatcherResult = {
   pass: boolean

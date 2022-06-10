@@ -3,7 +3,7 @@ import { Module } from '@modtree/entity'
 import { setup, teardown, Repo, t } from '@environment'
 import { InitProps } from '@modtree/types'
 import { init } from '@tests/init'
-import { oneUp } from '@utils'
+import { oneUp } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

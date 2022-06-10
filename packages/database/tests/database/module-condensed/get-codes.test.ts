@@ -1,4 +1,4 @@
-import { oneUp } from '@utils'
+import { oneUp } from '@modtree/utils'
 import { container, getSource } from '@src/data-source'
 import { Repo, setup, teardown } from '@environment'
 
