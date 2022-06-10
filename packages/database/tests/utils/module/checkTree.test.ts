@@ -1,5 +1,4 @@
-import { getSource } from '@src/data-source'
-import { oneUp, checkTree } from '@modtree/utils'
+import { oneUp, checkTree, getSource } from '@modtree/utils'
 import { setup, teardown, Repo } from '@environment'
 
 const dbName = oneUp(__filename)

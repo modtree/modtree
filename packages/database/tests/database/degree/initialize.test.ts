@@ -1,8 +1,7 @@
-import { container, getSource } from '@src/data-source'
 import { Degree } from '@modtree/entity'
 import { init } from '@tests/init'
 import { setup, teardown, Repo, t } from '@environment'
-import { flatten, oneUp } from '@modtree/utils'
+import { flatten, oneUp, container, getSource } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

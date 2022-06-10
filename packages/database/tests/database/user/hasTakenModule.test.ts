@@ -1,7 +1,6 @@
-import { container, getSource } from '@src/data-source'
 import { setup, teardown, Repo, t } from '@environment'
 import { init } from '@tests/init'
-import { oneUp } from '@modtree/utils'
+import { oneUp, container, getSource } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

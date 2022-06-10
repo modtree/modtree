@@ -1,9 +1,8 @@
-import { container, getSource } from '@src/data-source'
 import { Module } from '@modtree/entity'
 import { setup, teardown, Repo, t } from '@environment'
 import { InitProps } from '@modtree/types'
 import { init } from '@tests/init'
-import { oneUp } from '@modtree/utils'
+import { oneUp, container, getSource } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -66,7 +65,7 @@ const expected = [
 describe('Graph.suggestModules (from one)', () => {
   describe('Suggests post-reqs of the given module', () => {
     it('Which the user is eligible for', async () => {
-    const selectedModules = ['CS1010']
+      const selectedModules = ['CS1010']
       const res = await container(db, () =>
         Repo.Graph.suggestModules(t.graph, selectedModules)
       )
@@ -93,7 +92,9 @@ describe('Graph.suggestModules (from one)', () => {
   describe('Does not suggest post-reqs of the given module', () => {
     it('Which the user is not eligible for', async () => {
       // get postReqs
-      const res = await container(db, () => Repo.Module.findOneBy({ moduleCode: 'CS1010' }))
+      const res = await container(db, () =>
+        Repo.Module.findOneBy({ moduleCode: 'CS1010' })
+      )
       expect(res).toBeDefined()
       if (!res) return
       t.postReqs = res.fulfillRequirements

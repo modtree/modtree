@@ -1,5 +1,4 @@
-import { flatten, oneUp } from '@modtree/utils'
-import { container, getSource } from '@src/data-source'
+import { flatten, oneUp, container, getSource } from '@modtree/utils'
 import { Graph } from '@modtree/entity'
 import { setup, teardown, Repo, t } from '@environment'
 import { init } from '@tests/init'

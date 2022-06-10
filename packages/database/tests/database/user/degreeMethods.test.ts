@@ -1,6 +1,5 @@
-import { container, getSource } from '@src/data-source'
 import { Degree, User } from '@modtree/entity'
-import { oneUp } from '@modtree/utils'
+import { oneUp, container, getSource } from '@modtree/utils'
 import { setup, teardown, Repo, t } from '@environment'
 import { init } from '@tests/init'
 

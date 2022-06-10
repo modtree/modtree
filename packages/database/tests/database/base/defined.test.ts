@@ -1,4 +1,3 @@
-import { getSource } from '@src/data-source'
 import { Module, ModuleCondensed, Degree, User, Graph } from '@modtree/entity'
 import {
   getModuleRepository,
@@ -7,7 +6,7 @@ import {
   getUserRepository,
   getGraphRepository,
 } from '@repository'
-import { oneUp } from '@modtree/utils'
+import { oneUp, getSource } from '@modtree/utils'
 import { setup, teardown } from '@environment'
 
 const dbName = oneUp(__filename)

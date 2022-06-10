@@ -1,9 +1,8 @@
-import { container, getSource } from '@src/data-source'
 import { Module } from '@modtree/entity'
 import { setup, teardown, Repo, t } from '@environment'
 import { InitProps } from '@modtree/types'
 import { init } from '@tests/init'
-import { oneUp } from '@modtree/utils'
+import { oneUp, container, getSource } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -95,9 +94,26 @@ describe('Graph.suggestModules (from many)', () => {
 
   it('Suggests post-reqs of the given module in our current desired priority', async () => {
     // unlocks 5, 3, 3, 2, 0, 0, 0 mods
-    const degreeModules = ['CS2030', 'CS2100', 'CS2107', 'CS2040S', 'CP2106', 'CS2109S', 'CS3234']
+    const degreeModules = [
+      'CS2030',
+      'CS2100',
+      'CS2107',
+      'CS2040S',
+      'CP2106',
+      'CS2109S',
+      'CS3234',
+    ]
     // unlocks 13, 2, 1, 1, 0, 0, 0, 0 mods
-    const nonDegreeModules = ['CS2040', 'CS2040C', 'MA2214', 'MA3205', 'CS2030S', 'MA2202', 'MA2202S', 'MA2219']
+    const nonDegreeModules = [
+      'CS2040',
+      'CS2040C',
+      'MA2214',
+      'MA3205',
+      'CS2030S',
+      'MA2202',
+      'MA2202S',
+      'MA2219',
+    ]
     const expected = degreeModules.concat(nonDegreeModules)
     expect(t.suggestedModulesCodes).toEqual(expected)
   })

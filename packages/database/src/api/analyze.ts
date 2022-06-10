@@ -1,8 +1,7 @@
 import { inspect } from 'util'
 import { AsyncFunction } from '@modtree/types'
 import { db } from '@modtree/typeorm-config'
-import { log } from '@modtree/utils'
-import { endpoint } from '../data-source'
+import { log, endpoint } from '@modtree/utils'
 
 type Verbosity = 'none' | 'verbose' | 'normal'
 

@@ -1,6 +1,6 @@
 import { db } from '@modtree/typeorm-config'
+import { container } from '@modtree/utils'
 import { getModuleRepository } from '../../repository/Module'
-import { container } from '../../data-source'
 import { analyze } from '../analyze'
 
 const moduleRepo = getModuleRepository(db)

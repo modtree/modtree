@@ -1,6 +1,6 @@
 import { db } from '@modtree/typeorm-config'
+import { container } from '@modtree/utils'
 import { getModuleCondensedRepository } from '../../repository/ModuleCondensed'
-import { container } from '../../data-source'
 import { analyze } from '../analyze'
 
 analyze(() => container(db, () => getModuleCondensedRepository(db).fetch()))

@@ -17,6 +17,7 @@
     "default:env": "turbo run default:env",
     "version": "auto-changelog -p && git add --all",
     "prepare": "bash ./scripts.sh setup",
+    "graph": "nx graph --focus=database",
     "i": "bash ./scripts.sh inverse"
   },
   "private": true,
