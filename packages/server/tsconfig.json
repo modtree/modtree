@@ -1,17 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["es5", "es6"],
-    "target": "es6",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
+    "strictPropertyInitialization": false,
     "outDir": "./dist",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "sourceMap": true,
-    "types": ["node", "jest"],
-    "baseUrl": "."
+    "types": ["node", "jest"]
   },
   "include": ["src", "tests", "types", "jest.config.ts"],
   "exclude": ["dist", "node_modules"]

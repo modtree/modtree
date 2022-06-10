@@ -3,14 +3,14 @@ import inquirer from 'inquirer'
 import { join } from 'path'
 import fs from 'fs'
 import { config } from '@modtree/typeorm-config'
-import { BaseSqlInterface } from '@modtree/types'
+import { BaseSqlInterface, SupportedDatabases } from '@modtree/types'
 
-const coreCmdMap: Partial<Record<DatabaseType, string>> = {
+const coreCmdMap: Record<SupportedDatabases, string> = {
   mysql: 'mysql',
   postgres: 'psql',
 }
 
-const dumpCmdMap: Partial<Record<DatabaseType, string>> = {
+const dumpCmdMap: Record<SupportedDatabases, string> = {
   mysql: 'mysqldump',
   postgres: 'pg_dump',
 }
@@ -51,7 +51,7 @@ export class BaseSql implements BaseSqlInterface {
    *
    * @param {DatabaseType} type
    */
-  constructor(type: DatabaseType) {
+  constructor(type: SupportedDatabases) {
     this.type = type
     this.coreCmd = coreCmdMap[type]
     this.dumpCmd = dumpCmdMap[type]

@@ -8,6 +8,8 @@ import {
   IModuleCondensed,
 } from './entity-interface'
 
+export type FindOneById<T> = (query: string) => Promise<T>
+
 /**
  * BaseRepository, but for now only in types
  * it is a interface that will be extended to form the final Repositories of modtree
@@ -15,7 +17,7 @@ import {
 interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
   initialize(props: InitProps): Promise<Entity>
   deleteAll(): Promise<void>
-  findOneById: (value: string) => Promise<Entity>
+  findOneById: FindOneById<Entity>
 }
 
 /**

@@ -1,7 +1,13 @@
 import axios from 'axios'
 import { DataSource, Repository } from 'typeorm'
 import { ModuleCondensed } from '@modtree/entity'
-import { InitProps, NUSMods, IModuleCondensedRepository } from '@modtree/types'
+import {
+  InitProps,
+  NUSMods,
+  IModuleCondensedRepository,
+  FindOneById,
+  IModuleCondensed,
+} from '@modtree/types'
 import { nusmodsApi, getModuleLevel, flatten } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 
@@ -14,7 +20,7 @@ export class ModuleCondensedRepository
   }
 
   deleteAll = useDeleteAll(this)
-  findOneById = useFindOneByKey(this, 'id')
+  findOneById: FindOneById<IModuleCondensed> = useFindOneByKey(this, 'id')
 
   /**
    * initialize a Module Condensed

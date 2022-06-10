@@ -2,8 +2,10 @@ import axios from 'axios'
 import { DataSource, In, Repository } from 'typeorm'
 import { Module } from '@modtree/entity'
 import {
+  IModule,
   IModuleCondensedRepository,
   IModuleRepository,
+  FindOneById,
   InitProps,
   NUSMods,
 } from '@modtree/types'
@@ -23,17 +25,15 @@ export class ModuleRepository
   extends Repository<Module>
   implements IModuleRepository
 {
-  private db: DataSource
   private moduleCondensedRepo: IModuleCondensedRepository
 
   constructor(db: DataSource) {
     super(Module, db.manager)
-    this.db = db
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
   }
 
   deleteAll = useDeleteAll(this)
-  findOneById = useFindOneByKey(this, 'id')
+  findOneById: FindOneById<IModule> = useFindOneByKey(this, 'id')
 
   /**
    * initialize a Module
@@ -80,7 +80,9 @@ export class ModuleRepository
     const moduleCondesedCodes = await this.moduleCondensedRepo.getCodes()
     const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
     log.yellow(`fetching ${diff.length} modules from NUSMods...`)
-    const [result, fetchQueue, writeQueue] = [[], [], []]
+    const result: Module[] = []
+    const writeQueue: Promise<Module>[] = []
+    const fetchQueue: Promise<void>[] = []
 
     for (let i = 0; i < diff.length; i++) {
       const moduleCode = diff[i]
@@ -159,7 +161,7 @@ export class ModuleRepository
   async getPostReqs(moduleCodes: string[]): Promise<string[]> {
     const modules = await this.findByCodes(moduleCodes)
     // get array of module codes of post-reqs (fulfillRequirements)
-    const postReqCodes = []
+    const postReqCodes: string[] = []
     modules.forEach((module) => {
       // can be empty string
       if (module.fulfillRequirements instanceof Array) {

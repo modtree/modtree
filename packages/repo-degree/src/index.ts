@@ -1,6 +1,6 @@
 import { DataSource, In, Repository } from 'typeorm'
 import { Degree } from '@modtree/entity'
-import { InitProps, IDegreeRepository, IModuleRepository } from '@modtree/types'
+import { InitProps, IDegreeRepository, IModuleRepository, FindOneById, IDegree } from '@modtree/types'
 import { copy } from '@modtree/utils'
 import {
   getRelationNames,
@@ -24,7 +24,7 @@ export class DegreeRepository
   }
 
   deleteAll = useDeleteAll(this)
-  findOneById = useFindOneByKey(this, 'id')
+  findOneById: FindOneById<IDegree> = useFindOneByKey(this, 'id')
   findOneByTitle = useFindOneByKey(this, 'title')
 
   /**

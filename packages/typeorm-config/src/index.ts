@@ -13,7 +13,7 @@ dotenvConfig()
  * @returns {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
-  const prefix = (e: string) => process.env[getPrefix() + e]
+  const prefix = (e: string) => process.env[getPrefix() + e] || '_____'
   const almost = {
     type: getDatabaseType(),
     rootDir: process.cwd(),
@@ -30,10 +30,10 @@ function getConfig(): DataSourceOptions {
     extra:
       prefix('USE_SSL') === 'true'
         ? {
-          ssl: {
-            rejectUnauthorized: false,
-          },
-        }
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          }
         : undefined,
   }
   boxLog(almost)

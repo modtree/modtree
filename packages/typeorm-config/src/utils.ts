@@ -1,18 +1,16 @@
 import { SupportedDatabases, DataSourceOptions } from '@modtree/types'
 import { box } from './box'
 
-const typeTarget = () =>
-  process.env.NODE_ENV === 'test' ? 'TEST_DATABASE_TYPE' : 'DATABASE_TYPE'
-
 /**
  * gets project database type from .env
  *
  * @returns {SupportedDatabases}
  */
 export function getDatabaseType(): SupportedDatabases {
-  if (process.env.NODE_ENV === 'test') return 'postgres'
-  const dbType = process.env[typeTarget()].toLowerCase()
-  if (dbType === 'postgres') return dbType
+  /**
+   * left here as a function for future
+   * e x t e n s i b i r i t y
+   */
   return 'postgres'
 }
 

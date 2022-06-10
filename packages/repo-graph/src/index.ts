@@ -5,6 +5,9 @@ import {
   IModuleRepository,
   IUserRepository,
   IDegreeRepository,
+  IGraphRepository,
+  FindOneById,
+  IGraph,
 } from '@modtree/types'
 import { quickpop, flatten, copy } from '@modtree/utils'
 import {
@@ -18,23 +21,26 @@ import { DegreeRepository } from '@modtree/repo-degree'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
-export class GraphRepository extends Repository<Graph> {
+export class GraphRepository
+  extends Repository<Graph>
+  implements IGraphRepository
+{
   private db: DataSource
   private allRelations = getRelationNames(this)
-  private ModuleRepository: IModuleRepository
-  private DegreeRepository: IDegreeRepository
-  private UserRepository: IUserRepository
+  private moduleRepo: IModuleRepository
+  private degreeRepo: IDegreeRepository
+  private userRepo: IUserRepository
 
   constructor(db: DataSource) {
     super(Graph, db.manager)
     this.db = db
-    this.ModuleRepository = new ModuleRepository(this.db)
-    this.DegreeRepository = new DegreeRepository(this.db)
-    this.UserRepository = new UserRepository(this.db)
+    this.moduleRepo = new ModuleRepository(this.db)
+    this.degreeRepo = new DegreeRepository(this.db)
+    this.userRepo = new UserRepository(this.db)
   }
 
   deleteAll = useDeleteAll(this)
-  findOneById = useFindOneByKey(this, 'id')
+  findOneById: FindOneById<IGraph> = useFindOneByKey(this, 'id')
 
   /**
    * retrieves the degree and user with relations, without blocking each
@@ -43,8 +49,8 @@ export class GraphRepository extends Repository<Graph> {
   private async getUserAndDegree(
     props: InitProps['Graph']
   ): Promise<[User, Degree]> {
-    const getUser = this.UserRepository.findOneById(props.userId)
-    const getDegree = this.DegreeRepository.findOneById(props.degreeId)
+    const getUser = this.userRepo.findOneById(props.userId)
+    const getDegree = this.degreeRepo.findOneById(props.degreeId)
     return Promise.all([getUser, getDegree])
   }
 
@@ -73,7 +79,7 @@ export class GraphRepository extends Repository<Graph> {
     const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
     return Promise.all(
       queryList.map((list) =>
-        this.ModuleRepository.findBy({
+        this.moduleRepo.findBy({
           moduleCode: In(list),
         })
       )
@@ -152,12 +158,10 @@ export class GraphRepository extends Repository<Graph> {
       toggle(graph.modulesHidden, graph.modulesPlaced)
       return this.save(graph)
     }
-    return this.ModuleRepository.findOneByOrFail({ moduleCode }).then(
-      (module) => {
-        graph.modulesPlaced.push(module)
-        return this.save(graph)
-      }
-    )
+    return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
+      graph.modulesPlaced.push(module)
+      return this.save(graph)
+    })
   }
 
   /**
@@ -212,23 +216,22 @@ export class GraphRepository extends Repository<Graph> {
   async suggestModules(graph: Graph, moduleCodes: string[]): Promise<Module[]> {
     // Load relations
     copy(await this.findOneById(graph.id), graph)
-    copy(await this.DegreeRepository.findOneById(graph.degree.id), graph.degree)
-    copy(await this.UserRepository.findOneById(graph.user.id), graph.user)
+    copy(await this.degreeRepo.findOneById(graph.degree.id), graph.degree)
+    copy(await this.userRepo.findOneById(graph.user.id), graph.user)
     // Get data
     const modulesDone = graph.user.modulesDone.map(flatten.module)
     const modulesDoing = graph.user.modulesDoing.map(flatten.module)
     const modulesSelected = moduleCodes
     const requiredModules = graph.degree.modules.map(flatten.module)
     // Results
-    const res = await this.ModuleRepository.getSuggestedModules(
+    const res = await this.moduleRepo.getSuggestedModules(
       modulesDone,
       modulesDoing,
       modulesSelected,
       requiredModules
     )
-    const modules = await Promise.all(
-      res.map((moduleCode) => this.ModuleRepository.findOneBy({ moduleCode }))
+    return Promise.all(
+      res.map((moduleCode) => this.moduleRepo.findOneByOrFail({ moduleCode }))
     )
-    return modules
   }
 }

@@ -137,7 +137,7 @@ export class UserController implements IUserController {
     const { degreeIds } = req.body
     Promise.all([
       this.degreeRepo.findByIds(degreeIds),
-      this.userRepo.findOne({
+      this.userRepo.findOneOrFail({
         where: { id },
         relations: { savedDegrees: true },
       }),

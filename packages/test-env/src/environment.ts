@@ -22,6 +22,7 @@ export async function setup(
   db: DataSource,
   opts?: SetupOptions
 ): Promise<void> {
+  if (db.options.database === undefined) return
   await sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
     .then(async () => {
@@ -42,6 +43,7 @@ export async function setup(
  * @param {DataSource} db
  */
 export async function teardown(db: DataSource) {
+  if (db.options.database === undefined) return
   const drop = sql.dropDatabase(db.options.database.toString())
   if (db.isInitialized) {
     return db.destroy().then(() => drop)

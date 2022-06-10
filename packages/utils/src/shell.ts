@@ -13,10 +13,10 @@ type Response = {
  */
 export function exec(cmd: string): Promise<Response> {
   return new Promise((resolve, reject) => {
-    execDefault(cmd, (error, stdout, stderr) => {
+    execDefault(cmd, (_, stdout, stderr) => {
       resolve({
         output: stdout || stderr,
-        error,
+        error: new Error(`Shell error on cmd: ${cmd}`),
       })
       reject(new Error('rejected, but calmn down and carry on shelling'))
     })

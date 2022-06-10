@@ -1,9 +1,11 @@
 import { DataSource, Repository } from 'typeorm'
 import { User, Module, Degree } from '@modtree/entity'
 import {
+    FindOneById,
   IDegreeRepository,
   IModuleRepository,
   InitProps,
+  IUser,
   IUserRepository,
 } from '@modtree/types'
 import { flatten, copy } from '@modtree/utils'
@@ -32,7 +34,7 @@ export class UserRepository
   }
 
   deleteAll = useDeleteAll(this)
-  findOneById = useFindOneByKey(this, 'id')
+  findOneById: FindOneById<IUser> = useFindOneByKey(this, 'id')
 
   /**
    * Adds a User to DB

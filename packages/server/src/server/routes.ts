@@ -41,7 +41,7 @@ const Repo: Repositories = {}
  * @param {Class<T>} controller
  */
 function addRoutes<T>(
-  arr: RouteWithController<T>[],
+  arr: RouteWithController<any>[],
   routes: Route<T>[],
   controller: Class<T>
 ) {
@@ -183,7 +183,7 @@ export function getRoutes(): RouteWithController<any>[] {
   }
   copy(loadRepositories, Repo)
 
-  const Routes = []
+  const Routes: RouteWithController<any>[] = []
   addRoutes(Routes, moduleCondensedRoutes, ModuleCondensedController)
   addRoutes(Routes, userRoutes, UserController)
   addRoutes(Routes, degreeRoutes, DegreeController)

@@ -1,17 +1,9 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["es5", "es6"],
-    "target": "es6",
     "strictPropertyInitialization": false,
-    "module": "commonjs",
-    "esModuleInterop": true,
     "types": ["node", "jest"],
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "sourceMap": true
+    "outDir": "./dist"
   },
   "include": ["src"],
   "exclude": ["./dist", "node_modules"]
