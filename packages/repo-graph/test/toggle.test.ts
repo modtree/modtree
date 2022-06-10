@@ -7,7 +7,7 @@ import { getSource } from '@modtree/typeorm-config'
 import { flatten, oneUp } from '@modtree/utils'
 import { EntityNotFoundError } from 'typeorm'
 
-import { getGraphRepository } from '../src'
+import { GraphRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -19,7 +19,7 @@ beforeAll(() =>
       Object.assign(Repo, {
         User: getUserRepository(db),
         Degree: getDegreeRepository(db),
-        Graph: getGraphRepository(db),
+        Graph: new GraphRepository(db),
         ModuleCondensed: getModuleCondensedRepository(db),
       })
       return Promise.all([

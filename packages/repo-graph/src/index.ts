@@ -1,9 +1,13 @@
-import { DataSource, In } from 'typeorm'
+import { DataSource, In, Repository } from 'typeorm'
 import { Module, Graph, User, Degree } from '@modtree/entity'
-import { InitProps, IGraphRepository } from '@modtree/types'
+import {
+  InitProps,
+  IModuleRepository,
+  IUserRepository,
+  IDegreeRepository,
+} from '@modtree/types'
 import { quickpop, flatten, copy } from '@modtree/utils'
 import {
-  getDataSource,
   getRelationNames,
   useDeleteAll,
   useFindOneByKey,
@@ -14,21 +18,67 @@ import { getDegreeRepository } from '@modtree/repo-degree'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
-/**
- * @param {DataSource} database
- * @returns {IGraphRepository}
- */
-export function getGraphRepository(database?: DataSource): IGraphRepository {
-  const db = getDataSource(database)
-  const BaseRepo = db.getRepository(Graph)
-  const deleteAll = useDeleteAll(BaseRepo)
-  const findOneById = useFindOneByKey(BaseRepo, 'id')
-  const allRelations = getRelationNames(BaseRepo)
-  const [ModuleRepository, DegreeRepository, UserRepository] = [
-    getModuleRepository(db),
-    getDegreeRepository(db),
-    getUserRepository(db),
-  ]
+export class GraphRepository extends Repository<Graph> {
+  private db: DataSource
+  private allRelations = getRelationNames(this)
+  private ModuleRepository: IModuleRepository
+  private DegreeRepository: IDegreeRepository
+  private UserRepository: IUserRepository
+
+  constructor(db: DataSource) {
+    super(Graph, db.manager)
+    this.db = db
+    this.ModuleRepository = getModuleRepository(this.db)
+    this.DegreeRepository = getDegreeRepository(this.db)
+    this.UserRepository = getUserRepository(this.db)
+  }
+
+  deleteAll = useDeleteAll(this)
+  findOneById = useFindOneByKey(this, 'id')
+
+  /**
+   * retrieves the degree and user with relations, without blocking each
+   * other.
+   */
+  private async getUserAndDegree(
+    props: InitProps['Graph']
+  ): Promise<[User, Degree]> {
+    const getUser = this.UserRepository.findOneById(props.userId)
+    const getDegree = this.DegreeRepository.findOneById(props.degreeId)
+    return Promise.all([getUser, getDegree])
+  }
+
+  /**
+   * gets lists of modules placed and modules hidden
+   *
+   * @returns {Promise<Array<Module[]>>}
+   */
+  private async getModules(
+    user: User,
+    degree: Degree,
+    props: InitProps['Graph']
+  ): Promise<Array<Module[]>> {
+    if (props.pullAll) {
+      /* if don't pass in anything, then by default add ALL of
+       * - user.modulesDoing
+       * - user.modulesDone
+       * - degree.modules
+       */
+      const hidden = [...degree.modules]
+      hidden.push(...user.modulesDone)
+      hidden.push(...user.modulesDoing)
+      return [Array.from(new Set(hidden)), []]
+    }
+    // if passed in, then find the modules
+    const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
+    return Promise.all(
+      queryList.map((list) =>
+        this.ModuleRepository.findBy({
+          moduleCode: In(list),
+        })
+      )
+    )
+  }
 
   /**
    * Adds a Graph to DB
@@ -36,55 +86,21 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * @param {InitProps['Graph']} props
    * @returns {Promise<Graph>}
    */
-  async function initialize(props: InitProps['Graph']): Promise<Graph> {
-    /**
-     * retrieves the degree and user with relations, without blocking each
-     * other.
-     */
-    async function getUserAndDegree(): Promise<[User, Degree]> {
-      const getUser = UserRepository.findOneById(props.userId)
-      const getDegree = DegreeRepository.findOneById(props.degreeId)
-      return Promise.all([getUser, getDegree])
-    }
-    const [user, degree] = await getUserAndDegree()
-
-    /**
-     * gets lists of modules placed and modules hidden
-     *
-     * @returns {Promise<Array<Module[]>>}
-     */
-    async function getModules(): Promise<Array<Module[]>> {
-      if (props.pullAll) {
-        /* if don't pass in anything, then by default add ALL of
-         * - user.modulesDoing
-         * - user.modulesDone
-         * - degree.modules
-         */
-        const hidden = [...degree.modules]
-        hidden.push(...user.modulesDone)
-        hidden.push(...user.modulesDoing)
-        return [Array.from(new Set(hidden)), []]
-      }
-      // if passed in, then find the modules
-      const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
-      return Promise.all(
-        queryList.map((list) =>
-          ModuleRepository.findBy({
-            moduleCode: In(list),
-          })
-        )
-      )
-    }
-    const [modulesHidden, modulesPlaced] = await getModules()
-
-    const graph = BaseRepo.create({
+  async initialize(props: InitProps['Graph']): Promise<Graph> {
+    const [user, degree] = await this.getUserAndDegree(props)
+    const [modulesHidden, modulesPlaced] = await this.getModules(
       user,
       degree,
-      modulesPlaced,
-      modulesHidden,
-    })
-    await BaseRepo.save(graph)
-    return graph
+      props
+    )
+    return this.save(
+      this.create({
+        user,
+        degree,
+        modulesPlaced,
+        modulesHidden,
+      })
+    )
   }
 
   /**
@@ -94,14 +110,11 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * @param {string} moduleCode
    * @returns {Promise<Graph>}
    */
-  async function toggleModule(
-    graph: Graph,
-    moduleCode: string
-  ): Promise<Graph> {
+  async toggleModule(graph: Graph, moduleCode: string): Promise<Graph> {
     /**
      * retrieve a Graph from database given its id
      */
-    copy(await findOneById(graph.id), graph)
+    copy(await this.findOneById(graph.id), graph)
     /**
      * find the index of the given moduleCode to toggle
      */
@@ -133,16 +146,18 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
 
     if (state === 'placed') {
       toggle(graph.modulesPlaced, graph.modulesHidden)
-      return BaseRepo.save(graph)
+      return this.save(graph)
     }
     if (state === 'hidden') {
       toggle(graph.modulesHidden, graph.modulesPlaced)
-      return BaseRepo.save(graph)
+      return this.save(graph)
     }
-    return ModuleRepository.findOneByOrFail({ moduleCode }).then((module) => {
-      graph.modulesPlaced.push(module)
-      return BaseRepo.save(graph)
-    })
+    return this.ModuleRepository.findOneByOrFail({ moduleCode }).then(
+      (module) => {
+        graph.modulesPlaced.push(module)
+        return this.save(graph)
+      }
+    )
   }
 
   /**
@@ -150,12 +165,9 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * @param {string} degreeId
    * @returns {Promise<Graph>}
    */
-  function findOneByUserAndDegreeId(
-    userId: string,
-    degreeId: string
-  ): Promise<Graph> {
-    return BaseRepo.findOneOrFail({
-      relations: allRelations,
+  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
+    return this.findOneOrFail({
+      relations: this.allRelations,
       where: {
         user: {
           id: userId,
@@ -172,12 +184,12 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * @param {string} degreeId
    * @returns {Promise<Graph>}
    */
-  async function findManyByUserAndDegreeId(
+  async findManyByUserAndDegreeId(
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]> {
-    return BaseRepo.findAndCount({
-      relations: allRelations,
+    return this.findAndCount({
+      relations: this.allRelations,
       where: {
         user: {
           id: userId,
@@ -197,39 +209,26 @@ export function getGraphRepository(database?: DataSource): IGraphRepository {
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */
-  async function suggestModules(
-    graph: Graph,
-    moduleCodes: string[]
-  ): Promise<Module[]> {
+  async suggestModules(graph: Graph, moduleCodes: string[]): Promise<Module[]> {
     // Load relations
-    copy(await findOneById(graph.id), graph)
-    copy(await DegreeRepository.findOneById(graph.degree.id), graph.degree)
-    copy(await UserRepository.findOneById(graph.user.id), graph.user)
+    copy(await this.findOneById(graph.id), graph)
+    copy(await this.DegreeRepository.findOneById(graph.degree.id), graph.degree)
+    copy(await this.UserRepository.findOneById(graph.user.id), graph.user)
     // Get data
     const modulesDone = graph.user.modulesDone.map(flatten.module)
     const modulesDoing = graph.user.modulesDoing.map(flatten.module)
     const modulesSelected = moduleCodes
     const requiredModules = graph.degree.modules.map(flatten.module)
     // Results
-    const res = await ModuleRepository.getSuggestedModules(
+    const res = await this.ModuleRepository.getSuggestedModules(
       modulesDone,
       modulesDoing,
       modulesSelected,
       requiredModules
     )
     const modules = await Promise.all(
-      res.map((moduleCode) => ModuleRepository.findOneBy({ moduleCode }))
+      res.map((moduleCode) => this.ModuleRepository.findOneBy({ moduleCode }))
     )
     return modules
   }
-
-  return BaseRepo.extend({
-    initialize,
-    toggleModule,
-    findOneById,
-    findOneByUserAndDegreeId,
-    findManyByUserAndDegreeId,
-    suggestModules,
-    deleteAll,
-  })
 }

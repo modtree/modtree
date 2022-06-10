@@ -2,7 +2,7 @@ import { flatten, oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
 import { Graph } from '@modtree/entity'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { getGraphRepository } from '../../src'
+import { GraphRepository } from '../../src'
 import { getDegreeRepository } from '@modtree/repo-degree'
 import { getUserRepository } from '@modtree/repo-user'
 
@@ -15,7 +15,7 @@ beforeAll(() =>
       Object.assign(Repo, {
         User: getUserRepository(db),
         Degree: getDegreeRepository(db),
-        Graph: getGraphRepository(db),
+        Graph: new GraphRepository(db),
       })
       return Promise.all([
         Repo.User.initialize(init.user1),

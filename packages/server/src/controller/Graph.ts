@@ -2,12 +2,12 @@ import { Request, Response } from 'express'
 import { IGraphController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
-import { getGraphRepository } from '@modtree/repo-graph'
+import { GraphRepository } from '@modtree/repo-graph'
 import { validate } from './base'
 
 /** Graph API controller */
 export class GraphController implements IGraphController {
-  private graphRepo = getGraphRepository(db)
+  private graphRepo = new GraphRepository(db)
 
   /**
    * creates a Graph

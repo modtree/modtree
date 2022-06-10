@@ -9,7 +9,7 @@ import {
 } from '@modtree/repo-module'
 import { getDegreeRepository } from '@modtree/repo-degree'
 import { getUserRepository } from '@modtree/repo-user'
-import { getGraphRepository } from '@modtree/repo-graph'
+import { GraphRepository } from '@modtree/repo-graph'
 import {
   ModuleCondensedController,
   UserController,
@@ -177,7 +177,7 @@ export function getRoutes(): RouteWithController<any>[] {
   const loadRepositories = {
     Degree: getDegreeRepository(db),
     User: getUserRepository(db),
-    Graph: getGraphRepository(db),
+    Graph: new GraphRepository(db),
     Module: getModuleRepository(db),
     ModuleCondensed: getModuleCondensedRepository(db),
   }

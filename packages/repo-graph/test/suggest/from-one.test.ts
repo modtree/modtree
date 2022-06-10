@@ -5,7 +5,7 @@ import { oneUp } from '@modtree/utils'
 import { container, getSource } from '@modtree/typeorm-config'
 import { getUserRepository } from '@modtree/repo-user'
 import { getDegreeRepository } from '@modtree/repo-degree'
-import { getGraphRepository } from '../../src'
+import { GraphRepository } from '../../src'
 import { getModuleRepository } from '@modtree/repo-module'
 
 const dbName = oneUp(__filename)
@@ -39,7 +39,7 @@ beforeAll(() =>
       Object.assign(Repo, {
         User: getUserRepository(db),
         Degree: getDegreeRepository(db),
-        Graph: getGraphRepository(db),
+        Graph: new GraphRepository(db),
         Module: getModuleRepository(db),
       })
       return Promise.all([
