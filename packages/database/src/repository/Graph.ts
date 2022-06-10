@@ -2,15 +2,15 @@ import { DataSource, In } from 'typeorm'
 import { Module, Graph, User, Degree } from '@modtree/entity'
 import { InitProps, IGraphRepository } from '@modtree/types'
 import { quickpop, flatten, copy } from '@modtree/utils'
-import { getModuleRepository } from './Module'
-import { getUserRepository } from './User'
-import { getDegreeRepository } from './Degree'
 import {
   getDataSource,
   getRelationNames,
   useDeleteAll,
   useFindOneByKey,
-} from './base'
+} from '@modtree/repo-base'
+import { getModuleRepository } from './Module'
+import { getUserRepository } from './User'
+import { getDegreeRepository } from './Degree'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 

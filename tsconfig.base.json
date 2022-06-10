@@ -27,6 +27,7 @@
     "baseUrl": ".",
     "paths": {
       "@modtree/database": ["packages/database/src/index.ts"],
+      "@modtree/repo-base": ["packages/repo-base/src/index.ts"],
       "@modtree/typeorm-config": ["packages/typeorm-config/src/index.ts"],
       "@modtree/entity": ["packages/entity/src/index.ts"],
       "@modtree/utils": ["packages/utils/src/index.ts"],

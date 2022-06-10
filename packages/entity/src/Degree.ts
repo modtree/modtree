@@ -11,12 +11,12 @@ import { IDegree, IModule } from '@modtree/types'
 /** Degree entity */
 export class Degree implements IDegree {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @ManyToMany('Module', 'degree')
   @JoinTable()
-  modules: IModule[]
+    modules: IModule[]
 
   @Column()
-  title: string
+    title: string
 }

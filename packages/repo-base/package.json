@@ -1,0 +1,17 @@
+{
+  "name": "@modtree/repo-base",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "modtree",
+  "description": "modtree Base repository",
+  "main": "./dist/index.js",
+  "type": "commonjs",
+  "dependencies": {
+    "@modtree/typeorm-config": "*",
+    "@modtree/types": "*"
+  },
+  "scripts": {
+    "lint": "eslint --fix --ext .ts .",
+    "build": "tsc"
+  }
+}

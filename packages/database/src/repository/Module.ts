@@ -11,13 +11,13 @@ import {
   client,
   log,
 } from '@modtree/utils'
-import { getModuleCondensedRepository } from './ModuleCondensed'
 import {
   getDataSource,
   getRelationNames,
   useDeleteAll,
   useFindOneByKey,
-} from './base'
+} from '@modtree/repo-base'
+import { getModuleCondensedRepository } from './ModuleCondensed'
 
 type Data = {
   moduleCode: string

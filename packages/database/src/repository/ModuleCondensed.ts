@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm'
 import { ModuleCondensed } from '@modtree/entity'
 import { InitProps, NUSMods, IModuleCondensedRepository } from '@modtree/types'
 import { nusmodsApi, getModuleLevel, flatten } from '@modtree/utils'
-import { getDataSource, useDeleteAll, useFindOneByKey } from './base'
+import { getDataSource, useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 
 /**
  * @param {DataSource} database

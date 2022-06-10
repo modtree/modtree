@@ -11,39 +11,39 @@ import { IDegree, IGraph, IModule, IUser } from '@modtree/types'
 /** User entity */
 export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @Column()
-  displayName: string
+    displayName: string
 
   @Column()
-  username: string
+    username: string
 
   @Column()
-  email: string
+    email: string
 
   @ManyToMany('Module', 'user')
   @JoinTable()
-  modulesDone: IModule[]
+    modulesDone: IModule[]
 
   @ManyToMany('Module', 'user')
   @JoinTable()
-  modulesDoing: IModule[]
+    modulesDoing: IModule[]
 
   @Column()
-  matriculationYear: number
+    matriculationYear: number
 
   @Column()
-  graduationYear: number
+    graduationYear: number
 
   @Column()
-  graduationSemester: number
+    graduationSemester: number
 
   @ManyToMany('Degree', 'user')
   @JoinTable()
-  savedDegrees: IDegree[]
+    savedDegrees: IDegree[]
 
   @ManyToMany('Graph', 'user')
   @JoinTable()
-  savedGraphs: IGraph[]
+    savedGraphs: IGraph[]
 }

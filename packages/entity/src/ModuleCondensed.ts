@@ -5,15 +5,15 @@ import { Base } from './Base'
 /** ModuleCondensed entity */
 export class ModuleCondensed extends Base {
   @PrimaryGeneratedColumn('uuid')
-  id: string
+    id: string
 
   @Column()
-  moduleCode: string
+    moduleCode: string
 
   // Numeric part of moduleCode
   @Column()
-  moduleLevel: number
+    moduleLevel: number
 
   @Column()
-  title: string
+    title: string
 }

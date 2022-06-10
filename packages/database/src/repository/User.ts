@@ -2,14 +2,14 @@ import { DataSource } from 'typeorm'
 import { User, Module, Degree } from '@modtree/entity'
 import { InitProps, IUserRepository } from '@modtree/types'
 import { flatten, copy } from '@modtree/utils'
-import { getModuleRepository } from './Module'
-import { getDegreeRepository } from './Degree'
 import {
   getDataSource,
   getRelationNames,
   useDeleteAll,
   useFindOneByKey,
-} from './base'
+} from '@modtree/repo-base'
+import { getModuleRepository } from './Module'
+import { getDegreeRepository } from './Degree'
 
 /**
  * @param {DataSource} database

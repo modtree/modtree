@@ -30,10 +30,10 @@ function getConfig(): DataSourceOptions {
     extra:
       prefix('USE_SSL') === 'true'
         ? {
-            ssl: {
-              rejectUnauthorized: false,
-            },
-          }
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        }
         : undefined,
   }
   boxLog(almost)
