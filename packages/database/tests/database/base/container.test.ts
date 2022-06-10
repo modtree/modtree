@@ -1,5 +1,6 @@
 import { setup, teardown } from '@environment'
-import { oneUp, container, endpoint, getSource } from '@modtree/utils'
+import { oneUp } from '@modtree/utils'
+import { endpoint, container, getSource } from '@modtree/typeorm-config'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

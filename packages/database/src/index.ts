@@ -1,1 +1,1 @@
-export const khang = 'dev'
+export default {}

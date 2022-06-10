@@ -6,8 +6,9 @@ import {
   getUserRepository,
   getGraphRepository,
 } from '@repository'
-import { oneUp, getSource } from '@modtree/utils'
+import { oneUp } from '@modtree/utils'
 import { setup, teardown } from '@environment'
+import { getSource } from '@modtree/typeorm-config'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

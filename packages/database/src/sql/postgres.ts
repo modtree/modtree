@@ -1,7 +1,7 @@
 import { join } from 'path'
 import { Client } from 'pg'
 import { config } from '@modtree/typeorm-config'
-import { exec } from '../shell'
+import { exec } from '@modtree/utils'
 import { BaseSql, promptDump, promptRestore } from './base'
 
 const noDatabaseConfig = {

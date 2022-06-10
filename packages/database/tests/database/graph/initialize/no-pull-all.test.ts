@@ -1,4 +1,5 @@
-import { oneUp, getSource } from '@modtree/utils'
+import { oneUp } from '@modtree/utils'
+import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown, Repo, t } from '@environment'
 import { init } from '@tests/init'
 

@@ -1,6 +1,7 @@
 import { setup, teardown, Repo } from '@environment'
 import { ModuleCondensed } from '@modtree/entity'
-import { oneUp, container, getSource } from '@modtree/utils'
+import { oneUp } from '@modtree/utils'
+import { container, getSource } from '@modtree/typeorm-config'
 
 const lowerBound = 6000
 

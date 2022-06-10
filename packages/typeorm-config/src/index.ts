@@ -45,3 +45,5 @@ export const config = getConfig()
 export const db = new DataSource({
   ...config,
 })
+
+export * from './data-source'
