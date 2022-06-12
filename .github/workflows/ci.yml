@@ -30,7 +30,6 @@ jobs:
     outputs:
       yarn_build: ${{ steps.yarn_build.outcome }}
       yarn_test: ${{ steps.yarn_test.outcome }}
-      yarn_lint: ${{ steps.yarn_lint.outcome }}
     steps:
       - uses: actions/checkout@v3
 
@@ -43,20 +42,13 @@ jobs:
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
 
-      - name: 📦 Lint affected project
-        id: yarn_lint
-        run: yarn lint
-        continue-on-error: true
-
       - name: 📦 Build entire workspace
         id: yarn_build
         run: yarn build
-        continue-on-error: true
 
       - name: 📦 Run backend tests
         id: yarn_test
         run: ${{ env.PREFIX }} yarn test
-        continue-on-error: true
 
   ci_no_cache: # don't change this name, else will also need to change branch rules
     if: always()
@@ -73,17 +65,11 @@ jobs:
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
 
-      - name: 📦 Lint affected project
-        run: yarn lint --skip-nx-cache
-        continue-on-error: true
-
       - name: 📦 Build entire workspace
         run: yarn build --skip-nx-cache
-        continue-on-error: true
 
       - name: 📦 Run backend tests
         run: ${{ env.PREFIX }} yarn test --skip-nx-cache
-        continue-on-error: true
 
   telegram:
     needs: [pre_job, ci]
