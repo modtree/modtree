@@ -1,12 +1,9 @@
 name: ci
 
 on:
-  workflow_dispatch:
   pull_request:
-    types: [opened, synchronize]
   push:
     branches:
-      - json
       - main
 
 env:

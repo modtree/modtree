@@ -1,5 +1,4 @@
-import { SupportedDatabases, DataSourceOptions } from '@modtree/types'
-import { box } from './box'
+import { SupportedDatabases } from '@modtree/types'
 
 /**
  * gets project database type from .env
@@ -33,21 +32,4 @@ export function getPrefix(): string {
   if (nodeEnv === 'test') return `TEST_${dbType}_`
   // defaults to DATABASE_TYPE_
   return `${dbType}_`
-}
-
-/**
- * prints the blue box before each run
- *
- * @param {DataSourceOptions} config
- */
-export function boxLog(config: DataSourceOptions) {
-  const { synchronize, migrationsRun, type, database } = config
-  const output = [
-    `Environment: ${process.env['NODE_ENV']}`,
-    `Database:    ${database}`,
-    `Engine:      ${type}`,
-    `Synchronize: ${synchronize}`,
-    `Migrations:  ${migrationsRun}`,
-  ]
-  box.blue(output.join('\n'))
 }
