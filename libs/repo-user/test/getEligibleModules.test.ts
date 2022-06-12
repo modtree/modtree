@@ -7,9 +7,11 @@ import { UserRepository } from '../src'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db).then(() => {
-  Repo.User = new UserRepository(db)
-}))
+beforeAll(() =>
+  setup(db).then(() => {
+    Repo.User = new UserRepository(db)
+  })
+)
 afterAll(() => teardown(db))
 
 it('Saves a user', async () => {

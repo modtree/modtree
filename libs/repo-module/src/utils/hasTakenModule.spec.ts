@@ -20,4 +20,3 @@ it('Returns false if module is neither in modulesDone nor in modulesDoing', () =
   const res = hasTakenModule(modulesDone, modulesDoing, 'PC1201')
   expect(res).toEqual(false)
 })
-

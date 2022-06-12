@@ -9,9 +9,11 @@ const lowerBound = 6000
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db).then(() => {
-  Repo.ModuleCondensed = new ModuleCondensedRepository(db)
-}))
+beforeAll(() =>
+  setup(db).then(() => {
+    Repo.ModuleCondensed = new ModuleCondensedRepository(db)
+  })
+)
 afterAll(() => teardown(db))
 
 jest.setTimeout(10000)

@@ -13,4 +13,4 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/repo-module',
   testPathIgnorePatterns: ['./test/pull/*'],
-};
+}

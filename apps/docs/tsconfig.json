@@ -3,15 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/styles/*": [
-        "styles/*"
-      ],
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/data/*": [
-        "data/*"
-      ]
+      "@/styles/*": ["styles/*"],
+      "@/components/*": ["components/*"],
+      "@/data/*": ["data/*"]
     },
     "allowJs": true,
     "strict": false,
@@ -29,7 +23,5 @@
     "nextra-theme-docs/**/*.tsx",
     "nextra-theme-docs/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

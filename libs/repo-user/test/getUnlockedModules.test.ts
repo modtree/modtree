@@ -39,7 +39,9 @@ it('Correctly gets unlocked modules', async () => {
 
 it('Does not modify User.modulesDone', async () => {
   // Also loads relations
-  const res = await container(db, async () => Repo.User!.findOneById(t.user!.id))
+  const res = await container(db, async () =>
+    Repo.User!.findOneById(t.user!.id)
+  )
   expect(res).toBeDefined()
   if (!res) return
   const modulesDoneCodes = res.modulesDone.map(flatten.module)

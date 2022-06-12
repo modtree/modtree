@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm'
 import { User, Module, Degree } from '@modtree/entity'
 import {
-    FindOneById,
+  FindOneById,
   IDegreeRepository,
   IModuleRepository,
   InitProps,

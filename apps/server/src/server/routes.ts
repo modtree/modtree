@@ -5,7 +5,7 @@ import { db } from '@modtree/typeorm-config'
 import {
   ModuleRepository,
   ModuleCondensedRepository,
-  validModuleCode
+  validModuleCode,
 } from '@modtree/repo-module'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { UserRepository } from '@modtree/repo-user'

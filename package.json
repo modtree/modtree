@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node dist/apps/server/main.js",
+    "serve": "nx run-many --target=serve --projects=web,server",
     "build": "nx run-many --target=build --all --exclude=docs --parallel=8",
     "build:docs": "nx build docs",
     "build:vercel:docs": "nx build docs --skip-nx-cache",
@@ -15,6 +16,7 @@
     "test": "nx run-many --target=test --parallel=1 --all",
     "test:f": "yarn test --skip-nx-cache",
     "prepare": "bash ./scripts.sh setup",
+    "format": "prettier --write .",
     "i": "bash ./scripts.sh inverse"
   },
   "dependencies": {

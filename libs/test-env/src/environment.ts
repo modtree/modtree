@@ -1,16 +1,16 @@
-import { Degree, Graph, User } from '@modtree/entity';
-import { sql } from '@modtree/sql';
-import { config } from '@modtree/typeorm-config';
-import { InitProps, ModtreeApiResponse, Repositories } from '@modtree/types';
-import axios from 'axios';
-import { Agent } from 'http';
-import { DataSource, DeleteResult, Repository } from 'typeorm';
+import { Degree, Graph, User } from '@modtree/entity'
+import { sql } from '@modtree/sql'
+import { config } from '@modtree/typeorm-config'
+import { InitProps, ModtreeApiResponse, Repositories } from '@modtree/types'
+import axios from 'axios'
+import { Agent } from 'http'
+import { DataSource, DeleteResult, Repository } from 'typeorm'
 
 type SetupOptions = {
-  initialize: boolean;
-};
+  initialize: boolean
+}
 
-const Repo: Repositories = {};
+const Repo: Repositories = {}
 /**
  * pre-test setup
  *
@@ -22,21 +22,21 @@ export async function setup(
   db: DataSource,
   opts?: SetupOptions
 ): Promise<void> {
-  const startConnection = () => db.initialize();
-  if (db.options.database === undefined) return;
+  const startConnection = () => db.initialize()
+  if (db.options.database === undefined) return
   await sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
     .then(async () => {
       // by default, initialize a new connection
       if (!opts) {
-        return startConnection();
+        return startConnection()
       }
       // else, read the config
       if (opts.initialize) {
-        return startConnection();
+        return startConnection()
       }
-      return;
-    });
+      return
+    })
 }
 
 /**
@@ -45,71 +45,71 @@ export async function setup(
  * @param {DataSource} db
  */
 export async function teardown(db: DataSource) {
-  if (db.options.database === undefined) return;
-  const drop = sql.dropDatabase(db.options.database.toString());
+  if (db.options.database === undefined) return
+  const drop = sql.dropDatabase(db.options.database.toString())
   if (db.isInitialized) {
-    return db.destroy().then(() => drop);
+    return db.destroy().then(() => drop)
   }
-  return drop;
+  return drop
 }
 
 type ImportCheckProps = {
-  entities?: any[];
-  repositories?: Repository<any>[];
-};
+  entities?: any[]
+  repositories?: Repository<any>[]
+}
 /**
  * check imports before every test
  *
  * @param {ImportCheckProps} props
  */
 export function importChecks(props: ImportCheckProps) {
-  const entities = props.entities || [];
-  const repositories = props.repositories || [];
+  const entities = props.entities || []
+  const repositories = props.repositories || []
   test('imports are all defined', () => {
     entities.forEach((e) => {
-      expect(e).toBeDefined();
-    });
+      expect(e).toBeDefined()
+    })
     repositories.forEach((e) => {
-      expect(e).toBeDefined();
-    });
-  });
+      expect(e).toBeDefined()
+    })
+  })
 }
 
 type TestProps = {
-  user: User;
-  user1: User;
-  user2: User;
-  degree: Degree;
-  degree1: Degree;
-  degree2: Degree;
-  graph: Graph;
-  graph1: Graph;
-  graph2: Graph;
-  userId: string;
-  userId1: string;
-  userId2: string;
-  degreeId: string;
-  degreeId1: string;
-  degreeId2: string;
-  graphId: string;
-  graphId1: string;
-  graphId2: string;
-  combinedModuleCodes: string[];
-  postReqsCodes: string[];
-  postReqs: string[];
-  moduleCodes: string[];
-  suggestedModulesCodes: string[];
-};
+  user: User
+  user1: User
+  user2: User
+  degree: Degree
+  degree1: Degree
+  degree2: Degree
+  graph: Graph
+  graph1: Graph
+  graph2: Graph
+  userId: string
+  userId1: string
+  userId2: string
+  degreeId: string
+  degreeId1: string
+  degreeId2: string
+  graphId: string
+  graphId1: string
+  graphId2: string
+  combinedModuleCodes: string[]
+  postReqsCodes: string[]
+  postReqs: string[]
+  moduleCodes: string[]
+  suggestedModulesCodes: string[]
+}
 
-export const t: Partial<TestProps> = {};
-export { Repo };
+export const t: Partial<TestProps> = {}
+export { Repo }
 
 export const server = axios.create({
   baseURL: 'http://localhost:8080/',
   timeout: 60000,
   maxRedirects: 10,
   httpsAgent: new Agent({ keepAlive: true }),
-});
+})
 
 /**
  * to be used in setting up server tests
@@ -127,29 +127,29 @@ export class Create {
   private static async request(
     entity: 'User',
     props: InitProps['User']
-  ): Promise<ModtreeApiResponse.User>;
+  ): Promise<ModtreeApiResponse.User>
   private static async request(
     entity: 'Degree',
     props: InitProps['Degree']
-  ): Promise<ModtreeApiResponse.Degree>;
+  ): Promise<ModtreeApiResponse.Degree>
   private static async request(
     entity: 'Graph',
     props: InitProps['Graph']
-  ): Promise<ModtreeApiResponse.Graph>;
+  ): Promise<ModtreeApiResponse.Graph>
   private static async request(
     entity: 'Module',
     props: InitProps['Module']
-  ): Promise<ModtreeApiResponse.Module>;
+  ): Promise<ModtreeApiResponse.Module>
   private static async request(
     entity: 'ModuleCondensed',
     props: InitProps['ModuleCondensed']
-  ): Promise<ModtreeApiResponse.ModuleCondensed>;
+  ): Promise<ModtreeApiResponse.ModuleCondensed>
   private static async request(entity: string, props: any): Promise<any> {
     return server.post(`${entity.toLowerCase()}/create`, props).then((res) => {
-      expect(typeof res.data.id).toBe('string');
-      expect(res.data.id.length).toBeGreaterThan(0);
-      return res.data;
-    });
+      expect(typeof res.data.id).toBe('string')
+      expect(res.data.id.length).toBeGreaterThan(0)
+      return res.data
+    })
   }
 
   /**
@@ -161,7 +161,7 @@ export class Create {
   static async User(
     props: InitProps['User']
   ): Promise<ModtreeApiResponse.User> {
-    return Create.request('User', props);
+    return Create.request('User', props)
   }
 
   /**
@@ -173,7 +173,7 @@ export class Create {
   static async Degree(
     props: InitProps['Degree']
   ): Promise<ModtreeApiResponse.Degree> {
-    return Create.request('Degree', props);
+    return Create.request('Degree', props)
   }
 
   /**
@@ -185,7 +185,7 @@ export class Create {
   static async Graph(
     props: InitProps['Graph']
   ): Promise<ModtreeApiResponse.Graph> {
-    return Create.request('Graph', props);
+    return Create.request('Graph', props)
   }
 }
 
@@ -205,9 +205,9 @@ export class Delete {
     return server.delete(`${entity.toLowerCase()}/delete/${id}`).then((res) => {
       expect(res.data).toMatchObject({
         deleteResult: { raw: [], affected: 1 },
-      });
-      return res.data;
-    });
+      })
+      return res.data
+    })
   }
 
   /**
@@ -217,7 +217,7 @@ export class Delete {
    * @returns {Promise<DeleteResult>}
    */
   static async User(id: string): Promise<DeleteResult> {
-    return Delete.request('User', id);
+    return Delete.request('User', id)
   }
 
   /**
@@ -227,7 +227,7 @@ export class Delete {
    * @returns {Promise<DeleteResult>}
    */
   static async Degree(id: string): Promise<DeleteResult> {
-    return Delete.request('Degree', id);
+    return Delete.request('Degree', id)
   }
 
   /**
@@ -237,6 +237,6 @@ export class Delete {
    * @returns {Promise<DeleteResult>}
    */
   static async Graph(id: string): Promise<DeleteResult> {
-    return Delete.request('Graph', id);
+    return Delete.request('Graph', id)
   }
 }

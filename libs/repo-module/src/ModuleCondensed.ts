@@ -20,7 +20,10 @@ export class ModuleCondensedRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindOneById<IModuleCondensed> = useFindOneByKey(this, 'id')
+  override findOneById: FindOneById<IModuleCondensed> = useFindOneByKey(
+    this,
+    'id'
+  )
 
   /**
    * initialize a Module Condensed

@@ -1,7 +1,7 @@
-import 'reflect-metadata';
-import { DataSource } from 'typeorm';
-import { AsyncFunction } from '@modtree/types';
-import { config } from '.';
+import 'reflect-metadata'
+import { DataSource } from 'typeorm'
+import { AsyncFunction } from '@modtree/types'
+import { config } from '.'
 
 /**
  * custom source creator
@@ -13,8 +13,8 @@ export function getSource(database: string): DataSource {
   const dataSourceOptions = {
     ...config,
     database,
-  };
-  return new DataSource(dataSourceOptions);
+  }
+  return new DataSource(dataSourceOptions)
 }
 
 /**
@@ -29,9 +29,9 @@ export function container<T>(
   fn: () => Promise<T | void>
 ): Promise<T | void> {
   // if already initialized, reattach to old instance
-  if (database.isInitialized) return fn();
+  if (database.isInitialized) return fn()
   // if not initialized, kickstart a new instance
-  return database.initialize().then(fn);
+  return database.initialize().then(fn)
 }
 
 /**
@@ -48,11 +48,11 @@ export function endpoint<T>(
 ): Promise<T | void> {
   const response = callback()
     .catch((err) => {
-      console.log('Endpoint error:', err);
+      console.log('Endpoint error:', err)
     })
     .finally(async () => {
       // close database if still open
-      if (database.isInitialized) await database.destroy();
-    });
-  return response;
+      if (database.isInitialized) await database.destroy()
+    })
+  return response
 }

@@ -31,9 +31,7 @@ export class migration1654059076669 implements MigrationInterface {
     await queryRunner.query(
       'CREATE TABLE `graph_modules_hidden_module` (`graphId` varchar(36) NOT NULL, `moduleId` varchar(36) NOT NULL, INDEX `IDX_6af0127c032fc21654a4277826` (`graphId`), INDEX `IDX_142b842f7dcbc4eb38a796fbd9` (`moduleId`), PRIMARY KEY (`graphId`, `moduleId`)) ENGINE=InnoDB'
     )
-    await queryRunner.query(
-      'ALTER TABLE `module` DROP COLUMN `description`'
-    )
+    await queryRunner.query('ALTER TABLE `module` DROP COLUMN `description`')
     await queryRunner.query(
       'ALTER TABLE `module` ADD `description` varchar(255) NULL'
     )
@@ -124,9 +122,7 @@ export class migration1654059076669 implements MigrationInterface {
     await queryRunner.query(
       'ALTER TABLE `Graph` DROP FOREIGN KEY `FK_f0a9bf89839678324c47bd136f1`'
     )
-    await queryRunner.query(
-      'ALTER TABLE `module` DROP COLUMN `description`'
-    )
+    await queryRunner.query('ALTER TABLE `module` DROP COLUMN `description`')
     await queryRunner.query(
       'ALTER TABLE `module` ADD `description` longblob NOT NULL'
     )

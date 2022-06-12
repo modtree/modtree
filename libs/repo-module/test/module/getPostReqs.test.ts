@@ -6,9 +6,11 @@ import { ModuleRepository } from '../../src'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() => setup(db).then(() => {
-  Repo.Module = new ModuleRepository(db)
-}))
+beforeAll(() =>
+  setup(db).then(() => {
+    Repo.Module = new ModuleRepository(db)
+  })
+)
 afterAll(() => teardown(db))
 
 it('getPostReqs == fulfillRequirements for single mod', async () => {

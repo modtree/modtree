@@ -18,7 +18,9 @@ beforeAll(() =>
       t.graphId = graph.id
     })
 )
-afterAll(() => Promise.all([Delete.User(t.userId!), Delete.Degree(t.degreeId!)]))
+afterAll(() =>
+  Promise.all([Delete.User(t.userId!), Delete.Degree(t.degreeId!)])
+)
 
 /**
  * delete created graph
