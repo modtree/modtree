@@ -10,7 +10,7 @@ _P_='\033[0;35m'  # Purple
 _C_='\033[0;36m'  # Cyan
 _S_='\033[0;37m'  # Soft (Gray)
 
-SERVER=./packages/server
+SERVER=./apps/server
 WEB=./apps/web
 [[ $USER == "khang" ]]   && SRC=~/dots/personal/.secrets/modtree
 [[ $USER == "weiseng" ]] && SRC=$REPOS/orbital/env

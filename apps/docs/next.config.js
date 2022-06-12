@@ -4,10 +4,8 @@ const withNextra = require('nextra')({
 })
 
 module.exports = withNextra({
+  distDir: '../../dist/apps/docs',
   reactStrictMode: true,
-  experiments: {
-    esmExternals: true,
-  },
   images: {
     domains: ['avatars.githubusercontent.com'],
   },
