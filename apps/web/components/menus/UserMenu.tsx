@@ -2,6 +2,8 @@ import { UserProfile, useUser } from '@auth0/nextjs-auth0'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { showUserProfile, hideUserProfile } from '@/store/modal'
 
 const Separator = () => <hr className="border-gray-200 my-3" />
 
@@ -41,6 +43,7 @@ const MenuItem = (props: {
 export default function UserMenu() {
   const { user } = useUser()
   const spacing = 'py-3 mt-1'
+  const dispatch = useDispatch()
 
   const [username, setUsername] = useState('')
 
@@ -50,6 +53,11 @@ export default function UserMenu() {
     })
     const username = res.data.result.username
     setUsername(username)
+  }
+
+  function openUserProfile() {
+    console.log("Clicked on Your profile")
+    dispatch(showUserProfile())
   }
 
   useEffect(() => {
@@ -65,7 +73,7 @@ export default function UserMenu() {
         Username: <span className={'font-bold'}>{username}</span>
       </div>
       <Separator />
-      <MenuItem text="Your Profile" onClick={() => alert('Open Profile')} />
+      <MenuItem text="Your profile" onClick={openUserProfile} />
       <MenuItem text="Settings" onClick={() => alert('Open settings')} />
       <MenuItem text="Sign out" href="/api/auth/logout" />
     </div>

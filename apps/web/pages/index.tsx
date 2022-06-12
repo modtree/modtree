@@ -3,6 +3,8 @@ import ReactFlow, {
   Controls,
   applyNodeChanges,
   applyEdgeChanges,
+  EdgeChange,
+  NodeChange,
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
@@ -15,6 +17,7 @@ import BuilderModal from '@/components/builder'
 import Header from '@/components/header'
 import { SearchState } from '@/store/search'
 import { ModuleCondensed } from '@modtree/entity'
+import UserProfileModal from '@/components/modals/UserProfile'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -33,11 +36,13 @@ export default function Modtree() {
   const [edges, setEdges] = useState(initialEdges)
 
   const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    (changes: NodeChange[]) =>
+      setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   )
   const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    (changes: EdgeChange[]) =>
+      setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   )
 
@@ -101,6 +106,7 @@ export default function Modtree() {
         <FloatingActionButton />
         {showBuilder ? <BuilderModal /> : null}
       </FullScreenOverlay>
+      <UserProfileModal/>
     </div>
   )
 }
