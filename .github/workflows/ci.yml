@@ -44,7 +44,7 @@ jobs:
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
 
-      - name: 📦 Build & lint entire project
+      - name: 📦 Build entire project
         id: yarn_build
         run: yarn build
 
@@ -70,7 +70,7 @@ jobs:
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
 
-      - name: 📦 Build & lint entire project
+      - name: 📦 Build entire project
         id: yarn_build
         run: yarn build --skip-nx-cache
 

@@ -22,8 +22,8 @@ function getConfig(): DataSourceOptions {
     host: prefix('HOST') || 'localhost',
     database: prefix('ACTIVE_DATABASE') || 'mt_test',
     restoreSource: prefix('RESTORE_SOURCE') || 'postgres-modules-only.sql',
-    synchronize: prefix('SYNC') === 'true',
-    migrationsRun: prefix('MIGRATIONS_RUN') === 'true',
+    synchronize: prefix('SYNC') !== 'false', // default to true
+    migrationsRun: prefix('MIGRATIONS_RUN') === 'true', // default to false
     extra:
       prefix('USE_SSL') === 'true'
         ? {
