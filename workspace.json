@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "docs": "apps/docs",
+    "entity": "libs/entity",
+    "repo-base": "libs/repo-base",
+    "repo-degree": "libs/repo-degree",
+    "repo-graph": "libs/repo-graph",
+    "repo-module": "libs/repo-module",
+    "repo-user": "libs/repo-user",
+    "server": "apps/server",
+    "sql": "libs/sql",
+    "test-env": "libs/test-env",
+    "typeorm-config": "libs/typeorm-config",
+    "types": "libs/types",
+    "utils": "libs/utils",
+    "web": "apps/web"
+  }
+}

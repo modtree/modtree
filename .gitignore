@@ -1,6 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
+/dist
 **/dist
 /tmp
 /out-tsc
@@ -33,13 +34,13 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+**/.next
+.env.local
 
 # System Files
 .DS_Store
 Thumbs.db
 
-# next.js
-.next
+# env files
 .env
 .env.local
-nx-cloud.env

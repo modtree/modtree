@@ -1,0 +1,34 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/repo-graph/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
+        "outputPath": "dist/libs/repo-graph",
+        "main": "libs/repo-graph/src/index.ts",
+        "tsConfig": "libs/repo-graph/tsconfig.lib.json",
+        "assets": ["libs/repo-graph/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/repo-graph/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/repo-graph"],
+      "options": {
+        "jestConfig": "libs/repo-graph/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

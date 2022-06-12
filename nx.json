@@ -1,40 +1,51 @@
 {
-  "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "modtree",
   "affected": {
     "defaultBase": "main"
   },
-  "workspaceLayout": {
-    "appsDir": "apps",
-    "libsDir": "packages"
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
   },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e",
-          "ci:test",
-          "ci:test:all",
-          "ci:test:server",
-          "ci:test:database",
-          "ci:test:utils"
-        ],
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
         "accessToken": "MGI3YzRiY2YtNzIwYS00MmY2LTgxM2QtNzM5NTIxOThiNDA4fHJlYWQtd3JpdGU="
       }
     }
   },
   "targetDependencies": {
-    "lint": [{ "target": "build", "projects": "dependencies" }],
-    "build": [{ "target": "build", "projects": "dependencies" }],
-    "test": [
-      { "target": "build", "projects": "self" },
-      { "target": "test", "projects": "dependencies" }
+    "lint": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
     ],
-    "dev": [{ "target": "build", "projects": "dependencies" }]
-  }
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    },
+    "@nrwl/next": {
+      "application": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "defaultProject": "docs"
 }

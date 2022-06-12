@@ -1,0 +1,41 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/web",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": ["dist/apps/web"],
+      "options": {
+        "command": "next build",
+        "cwd": "apps/web"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": ["dist/apps/web"],
+      "options": {
+        "command": "next dev",
+        "cwd": "apps/web",
+        "port": "3000"
+      }
+    },
+    "start": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": ["dist/apps/web"],
+      "options": {
+        "command": "next start",
+        "cwd": "apps/web",
+        "port": "3000"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  },
+  "tags": []
+}

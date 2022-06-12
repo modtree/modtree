@@ -10,7 +10,7 @@ _P_='\033[0;35m'  # Purple
 _C_='\033[0;36m'  # Cyan
 _S_='\033[0;37m'  # Soft (Gray)
 
-SERVER=./packages/server
+SERVER=./apps/server
 WEB=./apps/web
 [[ $USER == "khang" ]]   && SRC=~/dots/personal/.secrets/modtree
 [[ $USER == "weiseng" ]] && SRC=$REPOS/orbital/env
@@ -32,7 +32,6 @@ weiseng_inv() {
 khang_env() {
  	cp $SRC/web/.env* $WEB
  	cp $SRC/database/.env* $SERVER
- 	cp $SRC/nx-cloud.env .
 }
 
 khang_inv() {
@@ -40,7 +39,6 @@ khang_inv() {
   mkdir -p $SRC/database
   cp $WEB/.env.local $WEB/.env.example $SRC/web
   cp $SERVER/.env $SERVER/.env.example $SRC/database
- 	cp ./nx-cloud.env $SRC
 }
 
 # fancy

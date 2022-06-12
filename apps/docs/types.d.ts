@@ -2,6 +2,8 @@ type CustomError = 'Not found' | 'Database Error'
 
 type RequestType = 'POST' | 'GET' | 'DELETE'
 
+type Data = string | number | string[] | number[]
+
 type MethodProps = {
   method: string // short description
   description: string
@@ -15,8 +17,8 @@ type MethodProps = {
 }
 
 type ResponseProps = {
-  fulfilled: Record<string, any>
-  schema: Record<string, any>
+  fulfilled: Record<string, Data>
+  schema: Record<string, Data>
 }
 
 type Parameter = {

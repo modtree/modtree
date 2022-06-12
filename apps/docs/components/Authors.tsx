@@ -20,7 +20,7 @@ export default function Authors({ authors }) {
       className={`authors grid gap-4 py-8 border-b border-gray-400 border-opacity-20 ${grid}`}
     >
       {authors.map((username: string) =>
-        Boolean(team[username]) ? (
+        team[username] ? (
           <Avatar key={username} {...team[username]} />
         ) : (
           console.warn('no author found for', username)

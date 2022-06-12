@@ -4,16 +4,6 @@
   "license": "MIT",
   "author": "modtree",
   "description": "modtree frontend with Next.js and React Flow",
-  "scripts": {
-    "dev": "next dev --port=3000",
-    "build": "next build",
-    "build:vercel": "nx build web --prod --skip-nx-cache",
-    "start": "next start",
-    "lint": "next lint --fix",
-    "ci:build": "next lint && next build",
-    "build:db": "yarn --cwd ../../packages/database ci:build",
-    "default:env": "cp .env.example .env.local"
-  },
   "dependencies": {
     "@modtree/entity": "*"
   }

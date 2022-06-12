@@ -18,7 +18,7 @@ export default function ParameterList(props: ParameterList) {
     )
   }
 
-  function has(arr: any[]) {
+  function has(arr: Parameter[]) {
     if (!arr) return false
     if (arr.length === 0) return false
     return true

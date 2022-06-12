@@ -1,18 +1,28 @@
 {
-  "extends": "../../tsconfig.nextjs.json",
+  "extends": "../../tsconfig.base.json",
   "include": ["next-env.d.ts", "pages", "store", "components", "flow"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
     "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
+      "@modtree/entity": ["../../libs/entity/src/index.ts"],
+      "@modtree/types": ["../../libs/types/src/index.ts"],
       "@/components/*": ["components/*"],
       "@/store/*": ["store/*"],
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
       "@/flow/*": ["flow/*"]
-    }
-  }
+    },
+    "allowJs": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "exclude": ["node_modules", "jest.config.ts"]
 }

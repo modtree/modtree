@@ -3,11 +3,12 @@ const withNextra = require('nextra')({
   themeConfig: './theme.config.js',
 })
 
+const distDir =
+  process.env.NODE_ENV === 'production' ? undefined : '../../dist/apps/docs'
+
 module.exports = withNextra({
+  distDir,
   reactStrictMode: true,
-  experiments: {
-    esmExternals: true,
-  },
   images: {
     domains: ['avatars.githubusercontent.com'],
   },

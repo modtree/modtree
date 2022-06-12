@@ -1,1 +1,1 @@
-web: yarn --cwd ./packages/server start
+web: node dist/apps/server/main.js

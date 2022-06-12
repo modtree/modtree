@@ -13,7 +13,7 @@ env:
   USERNAME: auto-deploy[bot]
 
 jobs:
-  deploy_frontends:
+  deploy:
     runs-on: ubuntu-20.04
     steps:
       - name: 🍺 Check out repository code
