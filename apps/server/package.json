@@ -13,6 +13,7 @@
     "@modtree/repo-base": "*",
     "@modtree/repo-module": "*",
     "@modtree/repo-degree": "*",
+    "@modtree/repo-graph": "*",
     "@modtree/repo-user": "*"
   }
 }

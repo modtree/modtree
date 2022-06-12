@@ -7,6 +7,7 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
         "outputPath": "dist/libs/repo-base",
         "main": "libs/repo-base/src/index.ts",
         "tsConfig": "libs/repo-base/tsconfig.lib.json",

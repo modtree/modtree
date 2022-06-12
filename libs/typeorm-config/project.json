@@ -7,6 +7,7 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
         "outputPath": "dist/libs/typeorm-config",
         "main": "libs/typeorm-config/src/index.ts",
         "tsConfig": "libs/typeorm-config/tsconfig.lib.json",

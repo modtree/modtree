@@ -7,6 +7,7 @@
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
         "outputPath": "dist/libs/repo-graph",
         "main": "libs/repo-graph/src/index.ts",
         "tsConfig": "libs/repo-graph/tsconfig.lib.json",
