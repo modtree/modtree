@@ -9,7 +9,8 @@
       "dependencies": "*",
       "devDependencies": "*"
     },
-    ".eslintrc.json": "*"
+    ".eslintrc.json": "*",
+    "modtree.config.json": "*"
   },
   "tasksRunnerOptions": {
     "default": {
