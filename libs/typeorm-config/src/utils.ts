@@ -42,7 +42,6 @@ export function getPrefix(): string {
  */
 export function boxLog(config: DataSourceOptions) {
   const { synchronize, migrationsRun, type, database } = config
-  console.log(config)
   const output = [
     `Environment: ${process.env['NODE_ENV']}`,
     `Database:    ${database}`,
