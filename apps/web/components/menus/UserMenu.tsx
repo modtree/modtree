@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
-import { showUserProfile, hideUserProfile } from '@/store/modal'
+import { showUserProfile } from '@/store/modal'
 
 const Separator = () => <hr className="border-gray-200 my-3" />
 

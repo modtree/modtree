@@ -106,7 +106,7 @@ export default function Modtree() {
         <FloatingActionButton />
         {showBuilder ? <BuilderModal /> : null}
       </FullScreenOverlay>
-      <UserProfileModal/>
+      <UserProfileModal />
     </div>
   )
 }
