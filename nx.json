@@ -22,12 +22,6 @@
     }
   },
   "targetDependencies": {
-    "lint": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
     "build": [
       {
         "target": "build",
