@@ -3,15 +3,21 @@ import { DataSource } from 'typeorm'
 import { ModuleCondensed, Module, User, Degree, Graph } from '@modtree/entity'
 import { DataSourceOptions } from '@modtree/types'
 import { getDatabaseType, getDatabasePort, getPrefix, boxLog } from './utils'
+import fs from 'fs'
 
-/**
- * generate a config based on the database type
- *
- * @returns {DataSourceOptions}
- */
-function getConfig(): DataSourceOptions {
+function readJson(): Partial<DataSourceOptions> {
+  const nodeEnv = process.env['NODE_ENV']
+  const configFilename = 'modtree.config.json'
+  const modtreeConfigJson = JSON.parse(
+    fs.readFileSync(configFilename).toString()
+  )
+  if (!nodeEnv) return modtreeConfigJson['default']
+  return modtreeConfigJson[nodeEnv]
+}
+
+function readEnv(base: Partial<DataSourceOptions>): DataSourceOptions {
   const prefix = (e: string) => process.env[getPrefix() + e]
-  const almost = {
+  return Object.assign(base, {
     type: getDatabaseType(),
     rootDir: process.cwd(),
     port: getDatabasePort(),
@@ -32,9 +38,18 @@ function getConfig(): DataSourceOptions {
             },
           }
         : undefined,
-  }
-  console.log('getConfig:', almost)
-  return almost
+  })
+}
+
+/**
+ * generate a config based on the database type
+ *
+ * @returns {DataSourceOptions}
+ */
+function getConfig(): DataSourceOptions {
+  const base = readJson()
+  const final = readEnv(base)
+  return final
 }
 
 export const config = getConfig()

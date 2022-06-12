@@ -50,7 +50,7 @@ jobs:
 
       - name: 📦 Run backend tests
         id: yarn_test
-        run: ${{ env.PREFIX }} yarn test
+        run: yarn test
 
   ci_no_cache: # don't change this name, else will also need to change branch rules
     if: always()

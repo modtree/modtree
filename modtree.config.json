@@ -1,0 +1,22 @@
+{
+  "default": {
+    "NODE_ENV": "undefined or null",
+    "type": "postgres",
+    "host": "localhost",
+    "database": "modtree",
+    "restoreSource": "postgres-modules-only.sql",
+    "synchronize": true,
+    "runMigrations": false,
+    "port": 5432
+  },
+  "test": {
+    "NODE_ENV": "test",
+    "type": "postgres",
+    "host": "localhost",
+    "database": "mt_test",
+    "restoreSource": "postgres-modules-only.sql",
+    "synchronize": true,
+    "runMigrations": false,
+    "port": 5432
+  }
+}
