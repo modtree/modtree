@@ -1,7 +1,10 @@
+const distDir =
+  process.env.NODE_ENV === 'production' ? undefined : '../../dist/apps/web'
+
 module.exports = {
-  distDir: '../../dist/apps/docs',
+  distDir,
   reactStrictMode: true,
   experiments: {
     esmExternals: true,
   },
-};
+}

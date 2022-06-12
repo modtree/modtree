@@ -7,6 +7,8 @@
     "start": "node dist/apps/server/main.js",
     "build": "nx run-many --target=build --all --exclude=docs --parallel=8",
     "build:docs": "nx build docs",
+    "build:vercel:docs": "nx build docs --skip-nx-cache",
+    "build:vercel:web": "nx build web --skip-nx-cache",
     "build:f": "yarn build --skip-nx-cache",
     "lint": "nx run-many --target=lint --all --parallel=8",
     "lint:f": "yarn lint --skip-nx-cache",
