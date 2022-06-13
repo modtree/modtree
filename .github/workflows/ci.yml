@@ -1,16 +1,14 @@
 name: ci
 
 on:
-  workflow_dispatch:
   pull_request:
-    types: [opened, synchronize]
   push:
     branches:
       - main
 
 env:
-  PREFIX: TEST_DATABASE_TYPE=POSTGRES TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner TEST_POSTGRES_HOST=localhost TEST_POSTGRES_ACTIVE_DATABASE=base TEST_POSTGRES_RESTORE_SOURCE=postgres-modules-only.sql TEST_POSTGRES_SYNC=true
-  POSTGRES_INIT: sudo systemctl start postgresql.service; echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql; echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql; echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql; sudo su postgres -c "psql --file=/tmp/setup.sql"; createdb base;
+  PREFIX: TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner
+  POSTGRES_INIT: sudo systemctl start postgresql.service; echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql; echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql; echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql; sudo su postgres -c "psql --file=/tmp/setup.sql"
 
 jobs:
   pre_job:
@@ -44,7 +42,7 @@ jobs:
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
 
-      - name: 📦 Build entire project
+      - name: 📦 Build entire workspace
         id: yarn_build
         run: yarn build
 
@@ -55,9 +53,6 @@ jobs:
   ci_no_cache: # don't change this name, else will also need to change branch rules
     if: always()
     runs-on: ubuntu-20.04
-    outputs:
-      yarn_build: ${{ steps.yarn_build.outcome }}
-      yarn_test: ${{ steps.yarn_test.outcome }}
     steps:
       - uses: actions/checkout@v3
 
@@ -70,12 +65,10 @@ jobs:
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
 
-      - name: 📦 Build entire project
-        id: yarn_build
+      - name: 📦 Build entire workspace
         run: yarn build --skip-nx-cache
 
       - name: 📦 Run backend tests
-        id: yarn_test
         run: ${{ env.PREFIX }} yarn test --skip-nx-cache
 
   telegram:

@@ -1,0 +1,12 @@
+{
+  "test": {
+    "NODE_ENV": "test",
+    "type": "postgres",
+    "host": "localhost",
+    "database": "mt_test",
+    "restoreSource": "postgres-modules-only.sql",
+    "synchronize": true,
+    "runMigrations": false,
+    "port": 5432
+  }
+}

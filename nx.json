@@ -9,7 +9,8 @@
       "dependencies": "*",
       "devDependencies": "*"
     },
-    ".eslintrc.json": "*"
+    ".eslintrc.json": "*",
+    "modtree.config.json": "*"
   },
   "tasksRunnerOptions": {
     "default": {
@@ -21,12 +22,6 @@
     }
   },
   "targetDependencies": {
-    "lint": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
     "build": [
       {
         "target": "build",

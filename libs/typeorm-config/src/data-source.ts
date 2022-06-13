@@ -14,6 +14,7 @@ export function getSource(database: string): DataSource {
     ...config,
     database,
   }
+  console.log('Data source options:', dataSourceOptions)
   return new DataSource(dataSourceOptions)
 }
 

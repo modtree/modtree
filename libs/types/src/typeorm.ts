@@ -17,4 +17,9 @@ export type DataSourceOptions = {
   entities: any[]
   synchronize: boolean
   migrationsRun: boolean
+  extra?: {
+    ssl: {
+      rejectUnauthorized: false
+    }
+  }
 }
