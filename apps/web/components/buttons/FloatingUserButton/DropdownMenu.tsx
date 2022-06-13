@@ -2,19 +2,15 @@ import { Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { FC, Fragment, ReactElement } from 'react'
 
-export function MenuLink(
-  props: {
-    href: string
-    children: ReactElement[] | ReactElement
-    passHref: boolean
-  },
-) {
+export function MenuLink(props: {
+  href: string
+  children: ReactElement[] | ReactElement
+  passHref: boolean
+}) {
   const { href, children, passHref, ...rest } = props
   return (
     <Link href={href} passHref={passHref}>
-      <a {...rest}>
-        {children}
-      </a>
+      <a {...rest}>{children}</a>
     </Link>
   )
 }

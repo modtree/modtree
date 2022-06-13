@@ -4,10 +4,7 @@
  * @param {function} check: the same as filter callback
  * @return {[T[], T[]]} the pass-fail array
  */
-export function partition<T>(
-  array: T[],
-  check: (_: T) => boolean
-): [T[], T[]] {
+export function partition<T>(array: T[], check: (_: T) => boolean): [T[], T[]] {
   return array.reduce(
     (result: [pass: T[], fail: T[]], element) => {
       result[check(element) ? 0 : 1].push(element)
