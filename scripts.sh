@@ -64,6 +64,7 @@ inv_end() {
 }
 
 handle_args() {
+  yarn husky install
   [ -z $SRC ] && return 0
   local cmd="$1"
   [[ $cmd == "setup" ]] && env_start; eval ${USER}_env; env_end; return
