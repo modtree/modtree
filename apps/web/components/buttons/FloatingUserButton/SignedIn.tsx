@@ -3,8 +3,9 @@ import { useUser } from '@auth0/nextjs-auth0'
 import { Menu } from '@headlessui/react'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import DropdownMenu from './DropdownMenu'
+import DropdownMenu, { MenuLink } from './DropdownMenu'
+import { useDispatch } from 'react-redux'
+import { showUserProfile } from '@/store/modal'
 
 function UserCircleArea() {
   const bg = 'bg-gradient-to-r from-pink-400 to-orange-400'
@@ -21,6 +22,7 @@ function UserCircleArea() {
 export default function SignedInCircle() {
   const { user } = useUser()
   const [username, setUsername] = useState('')
+  const dispatch = useDispatch()
 
   const getUsername = async (email: string) => {
     axios
@@ -37,7 +39,7 @@ export default function SignedInCircle() {
   }, [user])
 
   const menuItems = [
-    { text: 'Your profile', callback: () => alert('your profile') },
+    { text: 'Your profile', callback: () => dispatch(showUserProfile()) },
     { text: 'Settings', callback: () => alert('open settings') },
     {
       text: 'Sign out',
@@ -46,7 +48,7 @@ export default function SignedInCircle() {
   ]
 
   return (
-    <DropdownMenu UserCircleArea={UserCircleArea}>
+    <DropdownMenu TriggerButton={UserCircleArea}>
       <div>
         <Menu.Item>
           <div className="px-4 py-3 text-sm text-gray-900">
@@ -65,14 +67,14 @@ export default function SignedInCircle() {
       <div className="py-2">
         {menuItems.map((menuItem, index) => (
           <Menu.Item key={`${menuItem.text}-${index}`}>
-            <Link href={menuItem.href || '#'} passHref>
+            <MenuLink href={menuItem.href || '#'} passHref>
               <a
                 className="hover:bg-blue-500 hover:text-white text-gray-900 flex w-full px-4 py-1.5 text-sm"
                 onClick={menuItem.callback}
               >
                 {menuItem.text}
               </a>
-            </Link>
+            </MenuLink>
           </Menu.Item>
         ))}
       </div>
