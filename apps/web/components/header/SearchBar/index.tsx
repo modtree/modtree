@@ -1,41 +1,16 @@
-import { ReactElement, useEffect, useState } from 'react'
-import { IoChevronForwardSharp, IoSearchSharp } from 'react-icons/io5'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   clearSearches,
   SearchState,
   setSearchedModuleCondensed,
 } from '@/store/search'
-import colors from 'tailwindcss/colors'
 import { Input } from '@/components/Html'
 import { ModuleCondensed } from '@modtree/entity'
 import { flatten } from '@/utils/tailwind'
 import { AnyAction, Dispatch } from 'redux'
 import { UseState } from 'types'
-
-const Prompt = () => (
-  <IoChevronForwardSharp color={colors.gray[400]} size={20} className="mx-4" />
-)
-
-const SearchButton = () => (
-  <IoSearchSharp color={colors.gray[400]} size={20} className="mx-4" />
-)
-
-const Base = (props: {
-  focused: boolean
-  hasResults: boolean
-  children: ReactElement[]
-  bg: string
-}) => {
-  const transition = 'transition ease-out delay-50'
-  const shadow =
-    props.focused && !props.hasResults ? 'shadow-lg shadow-gray-300/50' : ''
-  const container = 'flex flex-row items-center'
-  const border = 'border border-gray-200'
-  const round = props.hasResults ? 'rounded-t-xl' : 'rounded-xl'
-  const style = `${container} ${border} ${shadow} ${transition} ${round} ${props.bg}`
-  return <div className={style}>{props.children}</div>
-}
+import { Prompt, SearchButton, Base } from './Components'
 
 /**
  * talk to backend
