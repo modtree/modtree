@@ -30,7 +30,7 @@ function readEnv(target: DataSourceOptions) {
    * for postgres deployments
    */
   if (prefix('USE_SSL') === 'true') {
-    config.extra = {
+    target.extra = {
       ssl: {
         rejectUnauthorized: false,
       },

@@ -8,7 +8,7 @@ import SignedOutRect from './SignedOut'
  */
 const TopRight = (props: { children: ReactElement[] | ReactElement }) => {
   return (
-    <div className="absolute right-4 top-4 select-none">{props.children}</div>
+    <div className="absolute right-3 top-3 select-none">{props.children}</div>
   )
 }
 

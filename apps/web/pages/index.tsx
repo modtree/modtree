@@ -15,9 +15,8 @@ import { setFlowSelection, FlowState } from '@/store/flow'
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
 import Header from '@/components/header'
-import { SearchState } from '@/store/search'
-import { ModuleCondensed } from '@modtree/entity'
 import UserProfileModal from '@/components/modals/UserProfile'
+import ModuleModal from '@/components/modals/ModuleInfo'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -25,9 +24,6 @@ export default function Modtree() {
   const dispatch = useDispatch()
   const treeSelection = useSelector<FlowState, string>(
     (state) => state.flow.moduleCode
-  )
-  const searchResults = useSelector<SearchState, ModuleCondensed[]>(
-    (state) => state.search.moduleCondensed
   )
   const [nodes, setNodes] = useState(initialNodes)
   const [edges, setEdges] = useState(initialEdges)
@@ -49,9 +45,8 @@ export default function Modtree() {
   }
 
   useEffect(() => {
-    console.log(treeSelection)
-    console.log(searchResults)
-  }, [treeSelection, searchResults])
+    console.log('tree selection:', treeSelection)
+  }, [treeSelection])
 
   const [hidden, setHidden] = useState(false)
 
@@ -103,6 +98,7 @@ export default function Modtree() {
         <FloatingActionButton />
       </FullScreenOverlay>
       <UserProfileModal />
+      <ModuleModal />
     </div>
   )
 }
