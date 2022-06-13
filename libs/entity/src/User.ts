@@ -5,7 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import { IDegree, IGraph, IModule, IUser } from '@modtree/types'
+import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
 
 @Entity({ name: 'user' })
 /** User entity */
@@ -13,13 +13,13 @@ export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column('character varying')
   displayName: string
 
-  @Column()
+  @Column('character varying')
   username: string
 
-  @Column()
+  @Column('character varying')
   email: string
 
   @ManyToMany('Module', 'user')
@@ -30,13 +30,13 @@ export class User implements IUser {
   @JoinTable()
   modulesDoing: IModule[]
 
-  @Column()
+  @Column('integer')
   matriculationYear: number
 
-  @Column()
+  @Column('integer')
   graduationYear: number
 
-  @Column()
+  @Column('integer')
   graduationSemester: number
 
   @ManyToMany('Degree', 'user')
