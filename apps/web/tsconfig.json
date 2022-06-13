@@ -11,6 +11,7 @@
       "@modtree/types": ["../../libs/types/src/index.ts"],
       "@/components/*": ["components/*"],
       "@/store/*": ["store/*"],
+      "@/ui/*": ["ui/*"],
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
       "@/flow/*": ["flow/*"]

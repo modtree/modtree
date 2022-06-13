@@ -1,18 +1,11 @@
 import Link from 'next/link'
 
 export default function SignedOutRect() {
-  const padding = 'px-3'
-  const flex = 'flex flex-row'
-  const border = 'border border-gray-400 rounded-md'
-  const hover = 'hover:bg-gray-200'
-  const active = 'active:bg-gray-300'
   return (
-    <div
-      className={`cursor-pointer items-center h-10 ${flex} ${padding} ${border} ${hover} ${active}`}
-    >
-      <Link href="/api/auth/login" passHref>
-        <div className="text-gray-400">Sign in</div>
-      </Link>
+    <div className="inline-flex w-full justify-center rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+       <Link href="/api/auth/login" passHref>
+         <a>Sign in</a>
+       </Link>
     </div>
   )
 }

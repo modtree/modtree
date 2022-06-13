@@ -4,6 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .modtree-gradient {
+    @apply bg-gradient-to-r from-pink-400 to-orange-400;
+  }
+  .modtree-solid {
+    background-color: #ff4000;
+  }
+}
+
 html {
   @apply bg-gray-50 select-none;
 }

@@ -69,7 +69,7 @@ export default function SignedInCircle() {
           <Menu.Item key={`${menuItem.text}-${index}`}>
             <MenuLink href={menuItem.href || '#'} passHref>
               <a
-                className="hover:bg-blue-500 hover:text-white text-gray-900 flex w-full px-4 py-1.5 text-sm"
+                className="hover:bg-modtree-400/80 hover:text-white text-gray-900 flex w-full px-4 py-1.5 text-sm"
                 onClick={menuItem.callback}
               >
                 {menuItem.text}

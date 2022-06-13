@@ -3,12 +3,27 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
+    './ui/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
       fontFamily: {
         sans: ['Inter', ...fontFamily.sans],
+      },
+      colors: {
+        modtree: {
+          50: '#FFCAB8',
+          100: '#FFBAA3',
+          200: '#FF9C7A',
+          300: '#FF7D52',
+          400: '#FF5F29',
+          500: '#FF4000',
+          600: '#C73200',
+          700: '#8F2400',
+          800: '#571600',
+          900: '#1F0800',
+        },
       },
     },
   },
