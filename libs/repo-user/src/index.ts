@@ -57,8 +57,7 @@ export class UserRepository
       savedDegrees: [],
       savedGraphs: [],
     })
-    await this.save(user)
-    return user
+    return this.save(user)
   }
 
   /**
@@ -195,8 +194,7 @@ export class UserRepository
     const degree = await this.degreeRepo.findOneById(degreeId)
     // 3. append degree
     user.savedDegrees.push(degree)
-    await this.save(user)
-    return user
+    return this.save(user)
   }
 
   /**
@@ -237,7 +235,6 @@ export class UserRepository
     }
     // 4. update entity and save
     user.savedDegrees = filtered
-    await this.save(user)
-    return user
+    return this.save(user)
   }
 }
