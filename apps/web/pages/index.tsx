@@ -5,15 +5,15 @@ import ReactFlow, {
   applyEdgeChanges,
   EdgeChange,
   NodeChange,
+  Node,
+  Edge,
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useSelector, useDispatch } from 'react-redux'
 import { setFlowSelection, FlowState } from '@/store/flow'
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
-import { BuilderState } from '@/store/builder'
 import { FullScreenOverlay } from '@/components/Views'
-import BuilderModal from '@/components/builder'
 import Header from '@/components/header'
 import { SearchState } from '@/store/search'
 import { ModuleCondensed } from '@modtree/entity'
@@ -25,9 +25,6 @@ export default function Modtree() {
   const dispatch = useDispatch()
   const treeSelection = useSelector<FlowState, string>(
     (state) => state.flow.moduleCode
-  )
-  const showBuilder = useSelector<BuilderState, boolean>(
-    (state) => state.builder.showBuilder
   )
   const searchResults = useSelector<SearchState, ModuleCondensed[]>(
     (state) => state.search.moduleCondensed
@@ -46,7 +43,7 @@ export default function Modtree() {
     [setEdges]
   )
 
-  const hide = (hidden: boolean) => (nodeOrEdge: any) => {
+  const hide = (hidden: boolean) => (nodeOrEdge: Node | Edge) => {
     nodeOrEdge.hidden = hidden
     return nodeOrEdge
   }
@@ -104,7 +101,6 @@ export default function Modtree() {
       <FullScreenOverlay>
         <FloatingUserButton />
         <FloatingActionButton />
-        {showBuilder ? <BuilderModal /> : null}
       </FullScreenOverlay>
       <UserProfileModal />
     </div>

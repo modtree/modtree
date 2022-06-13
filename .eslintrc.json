@@ -5,6 +5,7 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_$" }],
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {

@@ -50,7 +50,7 @@ type BaseInputProps = DetailedHTMLProps<
 type InputProps = BaseInputProps & {
   displayState: UseState<string>
   /*eslint no-unused-vars: ["error", { "args": "none" }]*/
-  callback?: (value: string) => any | void
+  callback?: (value: string) => void
   className?: string
 }
 
@@ -64,7 +64,7 @@ export const Input = (props: InputProps) => {
     callback(value)
   }
   const customKeys = ['callback', 'displayState', 'className']
-  const vanillaProps: Partial<Record<string, any>> = {}
+  const vanillaProps: Partial<InputProps> = {}
   Object.entries(props).forEach(([key, value]) => {
     if (customKeys.includes(key)) return
     vanillaProps[key] = value
