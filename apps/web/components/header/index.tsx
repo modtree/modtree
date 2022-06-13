@@ -1,7 +1,7 @@
 import { HeaderOverlay } from '@/components/Views'
 import { ReactElement } from 'react'
-import SearchBar from './SearchBar'
-import Results from './Results'
+import SearchBar from './search-bar'
+import Results from './results'
 
 const SearchArea = (props: { children: ReactElement[] | ReactElement }) => {
   return <div className="mx-2 w-96">{props.children}</div>

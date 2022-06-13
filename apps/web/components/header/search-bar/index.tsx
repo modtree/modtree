@@ -10,7 +10,7 @@ import { ModuleCondensed } from '@modtree/entity'
 import { flatten } from '@/utils/tailwind'
 import { AnyAction, Dispatch } from 'redux'
 import { UseState } from 'types'
-import { Prompt, SearchButton, Base } from './Components'
+import { Prompt, SearchButton, Base } from './components'
 
 /**
  * talk to backend
