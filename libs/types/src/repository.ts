@@ -95,7 +95,6 @@ export interface IModuleCondensedRepository extends EModuleCondensed {
   pull(): Promise<IModuleCondensed[]>
   fetch(): Promise<IModuleCondensed[]>
   getCodes(): Promise<string[]>
-  deleteAll(): Promise<void>
 }
 
 export type Repositories = Partial<{
