@@ -1,71 +1,38 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  clearSearches,
-  SearchState,
-  setSearchedModuleCondensed,
-} from '@/store/search'
-import { Input } from '@/components/Html'
-import { ModuleCondensed } from '@modtree/entity'
-import { flatten } from '@/utils/tailwind'
-import { AnyAction, Dispatch } from 'redux'
-import { UseState } from 'types'
-import { Prompt, SearchButton, Base } from './components'
-import SearchBox from '@/ui/search-box'
-
-/**
- * talk to backend
- */
-async function handleQuery(
-  dispatch: Dispatch<AnyAction>,
-  value: string,
-  reload: UseState<boolean>
-) {
-  if (value.length === 0) {
-    dispatch(clearSearches())
-    return
-  }
-  const upper = value.toUpperCase()
-  const backend = process.env.NEXT_PUBLIC_BACKEND
-  const url = `${backend}/modules/find/${upper}`
-  fetch(url)
-    .then((res) => {
-      res.json().then((result) => {
-        const moduleList: ModuleCondensed[] = result
-        dispatch(setSearchedModuleCondensed(moduleList))
-        reload[1](!reload[0])
-      })
-    })
-    .catch(() => true)
-}
+import { useState } from 'react'
+import { Combobox } from '@headlessui/react'
+import { SearchIcon } from '@heroicons/react/solid'
+import { useDispatch } from 'react-redux'
+import { handleSearch, getModuleInfo } from './lib'
+import ResultEntries from './entries'
 
 export default function SearchBar() {
   const dispatch = useDispatch()
-  const displayState = useState('')
-  const hasResults = useSelector<SearchState, boolean>(
-    (state) => state.search.hasResults
+  const [selected, setSelected] = useState('')
+
+  return (
+    <div className="fixed top-3 left-3 w-72">
+      <Combobox
+        value={selected}
+        onChange={(query) =>
+          getModuleInfo(dispatch, query, [selected, setSelected])
+        }
+      >
+        <div className="relative">
+          <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-modtree-300 sm:text-sm">
+            <Combobox.Input
+              className="h-10 w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+              onChange={(event) => handleSearch(dispatch, event.target.value)}
+            />
+            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+              <SearchIcon
+                className="h-5 w-5 text-gray-400"
+                aria-hidden="true"
+              />
+            </Combobox.Button>
+          </div>
+          <ResultEntries setSelected={setSelected} />
+        </div>
+      </Combobox>
+    </div>
   )
-
-  const bg = 'bg-white'
-  const [focused, setFocused] = useState(false)
-  const reload = useState(false)
-
-  useEffect(() => {
-    if (displayState[0].length === 0) {
-      dispatch(clearSearches())
-      return
-    }
-  }, [reload[0]])
-
-  function onFocus() {
-    setFocused(true)
-    handleQuery(dispatch, displayState[0], reload)
-  }
-
-  function onBlur() {
-    setFocused(false)
-    // dispatch(clearSearches())
-  }
-
-  return <SearchBox />
 }
