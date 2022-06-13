@@ -6,7 +6,7 @@
  */
 export function partition<T>(
   array: T[],
-  check: (elem: T) => boolean
+  check: (_: T) => boolean
 ): [T[], T[]] {
   return array.reduce(
     (result: [pass: T[], fail: T[]], element) => {
@@ -17,6 +17,7 @@ export function partition<T>(
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type StrRecord = Record<string, any>
 /**
  * copies props from source entity to the target entity

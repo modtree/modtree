@@ -3,18 +3,21 @@ import ReactFlow, {
   Controls,
   applyNodeChanges,
   applyEdgeChanges,
+  EdgeChange,
+  NodeChange,
+  Node,
+  Edge,
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useSelector, useDispatch } from 'react-redux'
 import { setFlowSelection, FlowState } from '@/store/flow'
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
-import { BuilderState } from '@/store/builder'
 import { FullScreenOverlay } from '@/components/Views'
-import BuilderModal from '@/components/builder'
 import Header from '@/components/header'
 import { SearchState } from '@/store/search'
 import { ModuleCondensed } from '@modtree/entity'
+import UserProfileModal from '@/components/modals/UserProfile'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -23,9 +26,6 @@ export default function Modtree() {
   const treeSelection = useSelector<FlowState, string>(
     (state) => state.flow.moduleCode
   )
-  const showBuilder = useSelector<BuilderState, boolean>(
-    (state) => state.builder.showBuilder
-  )
   const searchResults = useSelector<SearchState, ModuleCondensed[]>(
     (state) => state.search.moduleCondensed
   )
@@ -33,15 +33,17 @@ export default function Modtree() {
   const [edges, setEdges] = useState(initialEdges)
 
   const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    (changes: NodeChange[]) =>
+      setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   )
   const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    (changes: EdgeChange[]) =>
+      setEdges((eds) => applyEdgeChanges(changes, eds)),
     [setEdges]
   )
 
-  const hide = (hidden: boolean) => (nodeOrEdge: any) => {
+  const hide = (hidden: boolean) => (nodeOrEdge: Node | Edge) => {
     nodeOrEdge.hidden = hidden
     return nodeOrEdge
   }
@@ -99,8 +101,8 @@ export default function Modtree() {
       <FullScreenOverlay>
         <FloatingUserButton />
         <FloatingActionButton />
-        {showBuilder ? <BuilderModal /> : null}
       </FullScreenOverlay>
+      <UserProfileModal />
     </div>
   )
 }
