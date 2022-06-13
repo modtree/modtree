@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { ModalState, hideUserProfile } from '@/store/modal'
-import { XIcon } from '@heroicons/react/outline'
+import { CloseButton } from '@/ui/buttons'
 
 export default function UserProfileModal() {
   const showUserProfile = useSelector<ModalState, boolean>(
@@ -12,17 +12,6 @@ export default function UserProfileModal() {
 
   function closeModal() {
     dispatch(hideUserProfile())
-  }
-
-  const CloseButton = () => {
-    const hover = ' hover:bg-gray-200 active:bg-gray-300 cursor-pointer'
-    const center = ' flex flex-row justify-center items-center'
-    const className = 'w-6 h-6 absolute right-6 rounded-md' + hover + center
-    return (
-      <div className={className} onClick={closeModal}>
-        <XIcon className="text-gray-600 h-5 w-5" />
-      </div>
-    )
   }
 
   const UserProfileContents = () => {
@@ -65,7 +54,7 @@ export default function UserProfileModal() {
                   as="h2"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  <CloseButton />
+                  <CloseButton close={closeModal} />
                   User Profile
                   <UserProfileContents />
                 </Dialog.Title>
