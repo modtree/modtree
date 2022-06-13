@@ -16,11 +16,33 @@ export default function UserProfileModal() {
 
   const UserProfileContents = () => {
     return (
-      <div className="mt-2">
-        <p className="text-sm text-gray-500">
-          Saved graphs, degrees, modules done, modules doing.
-        </p>
+      <div className="mt-2 grid grid-cols-3">
+        <h3>Saved Graphs</h3>
+        <h3>Saved Degrees</h3>
+        <h3>Modules Done</h3>
       </div>
+    )
+  }
+
+  const Panel = () => {
+    return (
+      <Transition.Child
+        as={Fragment}
+        enter="ease-out duration-300"
+        enterFrom="opacity-0 scale-95"
+        enterTo="opacity-100 scale-100"
+        leave="ease-in duration-200"
+        leaveFrom="opacity-100 scale-100"
+        leaveTo="opacity-0 scale-95"
+      >
+        <div className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+          <CloseButton close={closeModal} />
+          <h2 className="text-lg font-medium leading-6 text-gray-900">
+            User Profile
+          </h2>
+          <UserProfileContents />
+        </div>
+      </Transition.Child>
     )
   }
 
@@ -38,28 +60,9 @@ export default function UserProfileModal() {
         >
           <div className="fixed inset-0 bg-gray-900 bg-opacity-10" />
         </Transition.Child>
-        <div className="fixed inset-0 overflow-y-auto">
+        <div className="fixed inset-0 overflow-y-hidden">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h2"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  <CloseButton close={closeModal} />
-                  User Profile
-                  <UserProfileContents />
-                </Dialog.Title>
-              </Dialog.Panel>
-            </Transition.Child>
+            <Panel />
           </div>
         </div>
       </Dialog>
