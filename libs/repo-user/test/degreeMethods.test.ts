@@ -32,15 +32,13 @@ describe('User.addDegree', () => {
     expect.assertions(4)
     await container(db, () =>
       // get user with all relations
-      Repo.User!.addDegree(t.user!, t.degree!.id)
-        .then(() => Repo.User!.findOneById(t.user!.id))
-        .then((user) => {
-          expect(user).toBeInstanceOf(User)
-          expect(user.savedDegrees).toBeInstanceOf(Array)
-          expect(user.savedDegrees.length).toEqual(1)
-          expect(user.savedDegrees[0].id).toEqual(t.degree!.id)
-          t.user = user
-        })
+      Repo.User!.addDegree(t.user!, t.degree!.id).then((user) => {
+        expect(user).toBeInstanceOf(User)
+        expect(user.savedDegrees).toBeInstanceOf(Array)
+        expect(user.savedDegrees.length).toEqual(1)
+        expect(user.savedDegrees[0].id).toEqual(t.degree!.id)
+        t.user = user
+      })
     )
   })
 })
