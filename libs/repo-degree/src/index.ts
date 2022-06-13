@@ -54,6 +54,7 @@ export class DegreeRepository
    *
    * @param {Degree} degree
    * @param {string[]} moduleCodes
+   * @returns {Promise<Degree>}
    */
   async insertModules(degree: Degree, moduleCodes: string[]): Promise<Degree> {
     // find modules to add
