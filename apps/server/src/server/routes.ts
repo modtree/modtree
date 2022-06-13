@@ -12,6 +12,7 @@ import { UserRepository } from '@modtree/repo-user'
 import { GraphRepository } from '@modtree/repo-graph'
 import {
   ModuleCondensedController,
+  ModuleController,
   UserController,
   DegreeController,
   GraphController,
@@ -30,8 +31,6 @@ type RouteWithController<T> = Route<T> & {
   controller: Class<T>
   validators: ValidationChain[]
 }
-
-const Repo: Repositories = {}
 
 /**
  * a factory function that adds routes to an existing route list
@@ -60,6 +59,15 @@ const moduleCondensedRoutes: Route<ModuleCondensedController>[] = [
   {
     action: 'find',
     route: '/modules/find/:moduleCode',
+    method: 'get',
+    validators: [],
+  },
+]
+
+const moduleRoutes: Route<ModuleController>[] = [
+  {
+    action: 'get',
+    route: '/modules/info/:moduleCode',
     method: 'get',
     validators: [],
   },
@@ -174,19 +182,11 @@ const graphRoutes: Route<GraphController>[] = [
  * @returns {RouteWithController<any>[]}
  */
 export function getRoutes(): RouteWithController<any>[] {
-  const loadRepositories = {
-    Degree: new DegreeRepository(db),
-    User: new UserRepository(db),
-    Graph: new GraphRepository(db),
-    Module: new ModuleRepository(db),
-    ModuleCondensed: new ModuleCondensedRepository(db),
-  }
-  copy(loadRepositories, Repo)
-
   const Routes: RouteWithController<any>[] = []
   addRoutes(Routes, moduleCondensedRoutes, ModuleCondensedController)
   addRoutes(Routes, userRoutes, UserController)
   addRoutes(Routes, degreeRoutes, DegreeController)
   addRoutes(Routes, graphRoutes, GraphController)
+  addRoutes(Routes, moduleRoutes, ModuleController)
   return Routes
 }
