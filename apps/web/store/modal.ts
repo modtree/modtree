@@ -1,8 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ModtreeApiResponse } from '@modtree/types'
+import { EmptyResponse } from '@modtree/utils'
 
 type State = {
   showUserProfile: boolean
   showModuleModal: boolean
+  modalModule: ModtreeApiResponse.Module
 }
 
 export type ModalState = {
@@ -12,6 +15,7 @@ export type ModalState = {
 const initialState: State = {
   showUserProfile: false,
   showModuleModal: false,
+  modalModule: EmptyResponse.Module,
 }
 
 export const modal = createSlice({

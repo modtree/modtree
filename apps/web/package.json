@@ -5,6 +5,11 @@
   "author": "modtree",
   "description": "modtree frontend with Next.js and React Flow",
   "dependencies": {
-    "@modtree/entity": "*"
+    "@modtree/types": "*",
+    "@modtree/entity": "*",
+    "@modtree/utils": "*"
+  },
+  "browser": {
+    "child_process": false
   }
 }
