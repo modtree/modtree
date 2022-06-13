@@ -11,7 +11,6 @@ import { flatten } from '@/utils/tailwind'
 import { AnyAction, Dispatch } from 'redux'
 import { UseState } from 'types'
 import { Prompt, SearchButton, Base } from './components'
-import SearchBox from '@/ui/search-box'
 
 /**
  * talk to backend
@@ -67,5 +66,17 @@ export default function SearchBar() {
     // dispatch(clearSearches())
   }
 
-  return <SearchBox />
+  return (
+    <Base focused={focused} bg={bg} hasResults={hasResults}>
+      <Prompt />
+      <Input
+        onFocus={onFocus}
+        onBlur={onBlur}
+        displayState={displayState}
+        className={flatten('flex-1 text-sm h-12', bg)}
+        callback={(e) => handleQuery(dispatch, e, reload)}
+      />
+      <SearchButton />
+    </Base>
+  )
 }

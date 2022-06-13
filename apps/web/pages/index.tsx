@@ -49,9 +49,8 @@ export default function Modtree() {
   }
 
   useEffect(() => {
-    console.log(treeSelection)
-    console.log(searchResults)
-  }, [treeSelection, searchResults])
+    console.log('tree selection:', treeSelection)
+  }, [treeSelection])
 
   const [hidden, setHidden] = useState(false)
 

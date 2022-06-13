@@ -15,6 +15,7 @@ export default function ResultDisplay() {
   /**
    * default return
    */
+  return null
   return (
     <ResultContainer hasResults={hasResults}>
       {moduleCondensed.slice(0, 8).map((m, index) => (

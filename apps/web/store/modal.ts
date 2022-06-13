@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ModtreeApiResponse } from '@modtree/types'
 import { EmptyResponse } from '@modtree/utils'
 
@@ -34,6 +34,12 @@ export const modal = createSlice({
     showModuleModal: (state) => {
       state.showModuleModal = true
     },
+    setModalModule: (
+      state,
+      payload: PayloadAction<ModtreeApiResponse.Module>
+    ) => {
+      state.modalModule = payload.payload
+    },
   },
 })
 
@@ -42,5 +48,6 @@ export const {
   hideUserProfile,
   showModuleModal,
   hideModuleModal,
+  setModalModule,
 } = modal.actions
 export default modal.reducer
