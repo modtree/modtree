@@ -14,7 +14,7 @@ export function clickify(children: ReactChild) {
  */
 export function FullScreenOverlay(props: { children: ReactChild }) {
   return (
-    <div className="z-10 absolute left-0 top-0 h-screen w-screen pointer-events-none select-none">
+    <div className="z-10 fixed inset-0 pointer-events-none select-none">
       {clickify(props.children)}
     </div>
   )
@@ -28,7 +28,7 @@ export function HeaderOverlay(props: {
   children: ReactChild
 }) {
   return (
-    <div className="z-10 absolute left-0 top-0 h-16 w-screen py-2 pointer-events-none select-none">
+    <div className="z-10 fixed inset-0 h-16 w-screen py-2 pointer-events-none select-none">
       {clickify(props.children)}
     </div>
   )
