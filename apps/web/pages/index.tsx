@@ -18,6 +18,7 @@ import Header from '@/components/header'
 import { SearchState } from '@/store/search'
 import { ModuleCondensed } from '@modtree/entity'
 import UserProfileModal from '@/components/modals/UserProfile'
+import ModuleModal from '@/components/modals/ModuleInfo'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -102,6 +103,7 @@ export default function Modtree() {
         <FloatingActionButton />
       </FullScreenOverlay>
       <UserProfileModal />
+      <ModuleModal />
     </div>
   )
 }
