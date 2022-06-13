@@ -45,8 +45,7 @@ export class DegreeRepository
     // find modules required, to create many-to-many relation
     const modules = await this.moduleRepo.findByCodes(moduleCodes)
     degree.modules = modules
-    await this.save(degree)
-    return degree
+    return this.save(degree)
   }
 
   /**
@@ -54,6 +53,7 @@ export class DegreeRepository
    *
    * @param {Degree} degree
    * @param {string[]} moduleCodes
+   * @returns {Promise<Degree>}
    */
   async insertModules(degree: Degree, moduleCodes: string[]): Promise<Degree> {
     // find modules to add

@@ -71,7 +71,6 @@ export class ModuleCondensedRepository
     const modulesToSave = freshModules.filter(
       (x) => !existingModules.has(x.moduleCode)
     )
-    await this.save(modulesToSave)
-    return modulesToSave
+    return this.save(modulesToSave)
   }
 }
