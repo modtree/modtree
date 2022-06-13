@@ -56,9 +56,7 @@ export default function SavedGraphs() {
                               checked ? 'text-modtree-50' : 'text-gray-500'
                             }`}
                           >
-                            <span>
-                              {graph.degree}
-                            </span>{' '}
+                            <span>{graph.degree}</span>{' '}
                             <span aria-hidden="true">&middot;</span>{' '}
                             <span>{graph.count}</span>
                           </RadioGroup.Description>
