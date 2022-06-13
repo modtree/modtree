@@ -32,6 +32,7 @@ export default function SignedInCircle() {
       .then((res) => {
         setUsername(res.data.result.username)
       })
+      .catch(() => setUsername('404'))
   }
 
   useEffect(() => {
