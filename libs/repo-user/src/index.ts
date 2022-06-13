@@ -186,9 +186,9 @@ export class UserRepository
    *
    * @param {User} user
    * @param {string} degreeId
-   * @returns {Promise<void>}
+   * @returns {Promise<User>}
    */
-  async addDegree(user: User, degreeId: string): Promise<void> {
+  async addDegree(user: User, degreeId: string): Promise<User> {
     // 1. load savedDegrees relations
     copy(await this.findOneById(user.id), user)
     // 2. find degree in DB
@@ -196,6 +196,7 @@ export class UserRepository
     // 3. append degree
     user.savedDegrees.push(degree)
     await this.save(user)
+    return user
   }
 
   /**
@@ -221,9 +222,9 @@ export class UserRepository
    *
    * @param {User} user
    * @param {string} degreeId
-   * @returns {Promise<void>}
+   * @returns {Promise<User>}
    */
-  async removeDegree(user: User, degreeId: string): Promise<void> {
+  async removeDegree(user: User, degreeId: string): Promise<User> {
     // 1. load savedDegrees relations
     copy(await this.findOneById(user.id), user)
     // 2. find degree among user's savedDegrees
@@ -237,5 +238,6 @@ export class UserRepository
     // 4. update entity and save
     user.savedDegrees = filtered
     await this.save(user)
+    return user
   }
 }

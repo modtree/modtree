@@ -50,9 +50,9 @@ export interface IUserRepository extends EUser {
   getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
   hasTakenModule(user: IUser, moduleCode: string): Promise<boolean>
   filterTakenModules(user: IUser, moduleCodes: string[]): Promise<string[]>
-  addDegree(user: IUser, degreeId: string): Promise<void>
+  addDegree(user: IUser, degreeId: string): Promise<IUser>
   findDegree(user: IUser, degreeId: string): Promise<IDegree>
-  removeDegree(user: IUser, degreeId: string): Promise<void>
+  removeDegree(user: IUser, degreeId: string): Promise<IUser>
 }
 
 export interface IDegreeRepository extends EDegree {
