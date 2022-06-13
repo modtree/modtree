@@ -32,6 +32,7 @@ export default function SignedInCircle() {
       .then((res) => {
         setUsername(res.data.result.username)
       })
+      .catch(() => setUsername('404'))
   }
 
   useEffect(() => {
@@ -67,7 +68,7 @@ export default function SignedInCircle() {
       <div className="py-2">
         {menuItems.map((menuItem, index) => (
           <Menu.Item key={`${menuItem.text}-${index}`}>
-            <MenuLink href={menuItem.href || '#'} passHref>
+            <MenuLink href={menuItem.href || ''} passHref>
               <a
                 className="hover:bg-modtree-400/80 hover:text-white text-gray-900 flex w-full px-4 py-1.5 text-sm"
                 onClick={menuItem.callback}

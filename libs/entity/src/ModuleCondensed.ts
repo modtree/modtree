@@ -7,13 +7,13 @@ export class ModuleCondensed extends Base {
   @PrimaryGeneratedColumn('uuid')
   override id: string
 
-  @Column()
+  @Column('character varying')
   moduleCode: string
 
   // Numeric part of moduleCode
-  @Column()
+  @Column('integer')
   moduleLevel: number
 
-  @Column()
+  @Column('character varying')
   title: string
 }

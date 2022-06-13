@@ -5,7 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import { IDegree, IGraph, IModule, IUser } from '@modtree/types'
+import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
 
 @Entity({ name: 'graph' })
 /** Graph entity */

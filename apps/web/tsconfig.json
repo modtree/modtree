@@ -9,6 +9,7 @@
     "paths": {
       "@modtree/entity": ["../../libs/entity/src/index.ts"],
       "@modtree/types": ["../../libs/types/src/index.ts"],
+      "@modtree/utils": ["../../libs/utils/src/index.ts"],
       "@/components/*": ["components/*"],
       "@/store/*": ["store/*"],
       "@/ui/*": ["ui/*"],

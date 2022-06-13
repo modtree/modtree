@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 export { ModuleCondensed } from './ModuleCondensed'
 export { Module } from './Module'
 export { Degree } from './Degree'
