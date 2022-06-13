@@ -19,7 +19,7 @@ export default function UserProfileModal() {
     return (
       <div className="mt-2 grid grid-cols-3 space-x-6">
         <div>
-          <h3 className='mb-4'>Saved Graphs</h3>
+          <h3 className="mb-4">Saved Graphs</h3>
           <SavedGraphs />
         </div>
         <h3>Saved Degrees</h3>
@@ -39,13 +39,13 @@ export default function UserProfileModal() {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <div className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
           <CloseButton close={closeModal} />
           <h2 className="text-lg font-medium leading-6 text-gray-900 mb-4">
             User Profile
           </h2>
           <UserProfileContents />
-        </div>
+        </Dialog.Panel>
       </Transition.Child>
     )
   }
