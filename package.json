@@ -18,6 +18,7 @@
     "i": "bash ./scripts.sh inverse",
     "format": "prettier --write .",
     "prepare": "bash ./scripts.sh setup",
+    "heroku-postbuild": "nx build server",
     "version": "auto-changelog -p && git add --all"
   },
   "dependencies": {

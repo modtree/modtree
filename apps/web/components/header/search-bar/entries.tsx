@@ -33,7 +33,7 @@ export default function ResultEntries(props: {
             <Combobox.Option
               key={module.moduleCode}
               className={({ active }) =>
-                `relative cursor-default select-none py-2 px-4 ${
+                `relative cursor-pointer select-none py-2 px-4 ${
                   active ? 'bg-modtree-300 text-white' : 'text-gray-900'
                 }`
               }
