@@ -15,17 +15,31 @@ After a successful build, you can do some things:
 1. Serve a local version of modtree
 
 <Tabs items={['turbo', 'manual']}>
-  <Tab>``` yarn dev ```</Tab>
   <Tab>
-    ``` cd packages/database && yarn dev cd ../../apps/web && yarn dev ```
+    ```
+    yarn dev
+    ```
+  </Tab>
+  <Tab>
+    ```
+    cd packages/database && yarn dev cd ../../apps/web && yarn dev
+    ```
   </Tab>
 </Tabs>
 
 2. Serve a local version of the documentation site
 
 <Tabs items={['turbo', 'manual']}>
-  <Tab>``` yarn dev:docs ```</Tab>
-  <Tab>``` cd apps/docs && yarn dev ```</Tab>
+  <Tab>
+    ```
+    yarn dev:docs
+    ```
+  </Tab>
+  <Tab>
+    ```
+    cd apps/docs && yarn dev
+    ```
+  </Tab>
 </Tabs>
 
 3. Run some [Yarn Scripts](/docs/developer-guide/yarn-scripts)
