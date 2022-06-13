@@ -6,7 +6,7 @@ import { ModuleCondensedRepository } from '@modtree/repo-module'
 
 /** ModuleCondensed api controller */
 export class ModuleCondensedController implements IModuleCondensedController {
-  private moduleRepo = new ModuleCondensedRepository(db)
+  private moduleCondensedRepo = new ModuleCondensedRepository(db)
 
   /**
    * returns all the modules in the database
@@ -15,7 +15,7 @@ export class ModuleCondensedController implements IModuleCondensedController {
    * @param {Response} res
    */
   async list(req: Request, res: Response) {
-    this.moduleRepo.find().then((results) => {
+    this.moduleCondensedRepo.find().then((results) => {
       res.json(results)
     })
   }
@@ -27,7 +27,7 @@ export class ModuleCondensedController implements IModuleCondensedController {
    * @param {Response} res
    */
   async find(req: Request, res: Response) {
-    this.moduleRepo
+    this.moduleCondensedRepo
       .find({
         where: {
           moduleCode: Like(`%${req.params.moduleCode}%`),

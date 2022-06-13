@@ -26,3 +26,7 @@ export interface IGraphController extends IController {
 export interface IModuleCondensedController extends IReads {
   find: APIEndpoint
 }
+
+export interface IModuleController extends IReads {
+  get: APIEndpoint
+}
