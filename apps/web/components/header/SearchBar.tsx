@@ -28,10 +28,11 @@ const Base = (props: {
   bg: string
 }) => {
   const transition = 'transition ease-out delay-50'
-  const shadow = props.focused && !props.hasResults ? 'shadow-md' : ''
+  const shadow =
+    props.focused && !props.hasResults ? 'shadow-lg shadow-gray-300/50' : ''
   const container = 'flex flex-row items-center'
   const border = 'border border-gray-200'
-  const round = props.hasResults ? 'rounded-t-md' : 'rounded-md'
+  const round = props.hasResults ? 'rounded-t-xl' : 'rounded-xl'
   const style = `${container} ${border} ${shadow} ${transition} ${round} ${props.bg}`
   return <div className={style}>{props.children}</div>
 }

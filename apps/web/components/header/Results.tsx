@@ -10,7 +10,7 @@ const ResultContainer = (props: {
   const border = 'border border-gray-200'
   return props.hasResults ? (
     <div
-      className={`flex-col shadow-md rounded-b-md overflow-hidden ${border}`}
+      className={`flex-col shadow-md rounded-b-xl overflow-hidden ${border}`}
     >
       {props.children}
     </div>
