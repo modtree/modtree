@@ -7,6 +7,7 @@ import {
   InitProps,
   IUser,
   IUserRepository,
+  ModuleStatus,
 } from '@modtree/types'
 import { flatten, copy } from '@modtree/utils'
 import {
@@ -235,6 +236,39 @@ export class UserRepository
     }
     // 4. update entity and save
     user.savedDegrees = filtered
+    return this.save(user)
+  }
+
+  /**
+   * Updates the status of a module for a user.
+   *
+   * @param {User} user
+   * @param {string} moduleCode
+   * @param {ModuleStatus} status
+   * @return {Promise<User>}
+   */
+  async setModuleStatus(
+    user: IUser,
+    moduleCode: string,
+    status: ModuleStatus
+  ): Promise<IUser> {
+    // 1. load relations
+    copy(await this.findOneById(user.id), user)
+    // 2. remove moduleCode from user if exists
+    user.modulesDone = user.modulesDone.filter(
+      (one) => one.moduleCode !== moduleCode
+    )
+    user.modulesDoing = user.modulesDoing.filter(
+      (one) => one.moduleCode !== moduleCode
+    )
+    // 3. add module to appropriate array (if necessary)
+    if (status === ModuleStatus.DONE) {
+      const module = await this.moduleRepo.findOneByOrFail({ moduleCode })
+      user.modulesDone.push(module)
+    } else if (status === ModuleStatus.DOING) {
+      const module = await this.moduleRepo.findOneByOrFail({ moduleCode })
+      user.modulesDoing.push(module)
+    }
     return this.save(user)
   }
 }
