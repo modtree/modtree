@@ -129,6 +129,8 @@ export const EmptyResponse: EmptyResponseProps = {
     degree: '',
     modulesPlaced: [],
     modulesHidden: [],
+    flowNodes: [],
+    flowEdges: [],
   },
 
   /**
