@@ -4,7 +4,7 @@ import {
   InitProps,
   IDegreeRepository,
   IModuleRepository,
-  FindOneById,
+  FindByKey,
   IDegree,
 } from '@modtree/types'
 import { copy } from '@modtree/utils'
@@ -30,7 +30,7 @@ export class DegreeRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindOneById<IDegree> = useFindOneByKey(this, 'id')
+  override findOneById: FindByKey<IDegree> = useFindOneByKey(this, 'id')
   findOneByTitle = useFindOneByKey(this, 'title')
 
   /**

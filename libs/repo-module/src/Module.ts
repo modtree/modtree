@@ -5,7 +5,7 @@ import {
   IModule,
   IModuleCondensedRepository,
   IModuleRepository,
-  FindOneById,
+  FindByKey,
   InitProps,
   NUSMods,
 } from '@modtree/types'
@@ -33,7 +33,7 @@ export class ModuleRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindOneById<IModule> = useFindOneByKey(this, 'id')
+  override findOneById: FindByKey<IModule> = useFindOneByKey(this, 'id')
 
   /**
    * initialize a Module

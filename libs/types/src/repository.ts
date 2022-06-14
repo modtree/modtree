@@ -9,7 +9,7 @@ import {
   GraphFrontendProps,
 } from './entity-interface'
 
-export type FindOneById<T> = (query: string) => Promise<T>
+export type FindByKey<T> = (query: string) => Promise<T>
 
 /**
  * BaseRepository, but for now only in types
@@ -18,7 +18,7 @@ export type FindOneById<T> = (query: string) => Promise<T>
 interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
   initialize(props: InitProps): Promise<Entity>
   deleteAll(): Promise<void>
-  findOneById: FindOneById<Entity>
+  findOneById: FindByKey<Entity>
 }
 
 /**
@@ -47,6 +47,7 @@ export interface IGraphRepository extends EGraph {
 export interface IUserRepository extends EUser {
   canTakeModule(user: IUser, moduleCode: string): Promise<boolean>
   findOneByUsername(username: string): Promise<IUser>
+  findOneByEmail(email: string): Promise<IUser>
   getEligibleModules(user: IUser): Promise<IModule[]>
   getPostReqs(user: IUser): Promise<IModule[]>
   getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
