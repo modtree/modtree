@@ -3,6 +3,7 @@ import flowReducer from './flow'
 import builderReducer from './builder'
 import searchReducer from './search'
 import modalReducer from './modal'
+import baseReducer from './base'
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     builder: builderReducer,
     search: searchReducer,
     modal: modalReducer,
+    base: baseReducer,
   },
 })
