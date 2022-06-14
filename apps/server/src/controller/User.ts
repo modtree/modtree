@@ -5,6 +5,7 @@ import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
+import { validate } from './base'
 
 /** User api controller */
 export class UserController implements IUserController {
@@ -19,15 +20,9 @@ export class UserController implements IUserController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
+    console.log(req.body)
+    if (!validate(req, res)) return
     const props = emptyInit.User
-    const requestKeys = Object.keys(req.body)
-    const requiredKeys = Object.keys(props)
-    if (!requiredKeys.every((val) => requestKeys.includes(val))) {
-      res
-        .status(400)
-        .json({ message: 'insufficient keys', requestKeys, requiredKeys })
-      return
-    }
     copy(req.body, props)
     this.userRepo.initialize(props).then((user) => {
       res.json(user)
@@ -86,6 +81,24 @@ export class UserController implements IUserController {
       })
       .then((deleteResult) => {
         res.json({ deleteResult })
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'User not found' })
+      })
+  }
+
+  /**
+   * gets one User by email
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async getByEmail(req: Request, res: Response) {
+    if (!validate(req, res)) return
+    this.userRepo
+      .findOneByEmail(req.body.email)
+      .then((user) => {
+        res.json(flatten.user(user))
       })
       .catch(() => {
         res.status(404).json({ message: 'User not found' })

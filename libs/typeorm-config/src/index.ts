@@ -6,12 +6,19 @@ import { getPrefix } from './utils'
 import fs from 'fs'
 import { join } from 'path'
 
+function rawJson(filename: string) {
+  return JSON.parse(fs.readFileSync(join(process.cwd(), filename)).toString())
+}
+
 function readJson(target: DataSourceOptions) {
   const nodeEnv = process.env['NODE_ENV']
   if (!nodeEnv) return
-  const filepath = join(process.cwd(), 'modtree.config.json')
-  const modtreeConfigJson = JSON.parse(fs.readFileSync(filepath).toString())
+  const modtreeConfigJson = rawJson('modtree.config.json')
   Object.assign(target, modtreeConfigJson[nodeEnv])
+  try {
+    const adminConfigJson = rawJson('admin.config.json')
+    Object.assign(target, adminConfigJson[nodeEnv])
+  } catch {}
 }
 
 function readEnv(target: DataSourceOptions) {
@@ -44,6 +51,7 @@ function readEnv(target: DataSourceOptions) {
  * @returns {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
+  console.log('NODE_ENV:', process.env['NODE_ENV'])
   const base: DataSourceOptions = {
     type: 'postgres',
     rootDir: process.cwd(),

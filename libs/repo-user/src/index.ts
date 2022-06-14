@@ -1,7 +1,7 @@
 import { DataSource, Repository } from 'typeorm'
 import { User, Module, Degree } from '@modtree/entity'
 import {
-  FindOneById,
+  FindByKey,
   IDegreeRepository,
   IModuleRepository,
   InitProps,
@@ -9,12 +9,8 @@ import {
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
-import { flatten, copy } from '@modtree/utils'
-import {
-  getRelationNames,
-  useDeleteAll,
-  useFindOneByKey,
-} from '@modtree/repo-base'
+import { flatten, copy, emptyInit } from '@modtree/utils'
+import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 import { ModuleRepository } from '@modtree/repo-module'
 import { DegreeRepository } from '@modtree/repo-degree'
 
@@ -23,7 +19,6 @@ export class UserRepository
   implements IUserRepository
 {
   private db: DataSource
-  private allRelations = getRelationNames(this)
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
 
@@ -35,7 +30,9 @@ export class UserRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindOneById<IUser> = useFindOneByKey(this, 'id')
+  override findOneById: FindByKey<IUser> = useFindOneByKey(this, 'id')
+  findOneByUsername: FindByKey<IUser> = useFindOneByKey(this, 'username')
+  findOneByEmail: FindByKey<IUser> = useFindOneByKey(this, 'email')
 
   /**
    * Adds a User to DB
@@ -168,17 +165,6 @@ export class UserRepository
     )
     const filtered = moduleCodes.filter((_, idx) => result[idx])
     return filtered
-  }
-
-  /**
-   * @param {string} username
-   * @returns {Promise<User>}
-   */
-  async findOneByUsername(username: string): Promise<User> {
-    return this.findOneOrFail({
-      where: { username },
-      relations: this.allRelations,
-    })
   }
 
   /**

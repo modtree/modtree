@@ -6,8 +6,9 @@ import {
   IUserRepository,
   IDegreeRepository,
   IGraphRepository,
-  FindOneById,
+  FindByKey,
   IGraph,
+  GraphFrontendProps,
 } from '@modtree/types'
 import { quickpop, flatten, copy } from '@modtree/utils'
 import {
@@ -40,7 +41,7 @@ export class GraphRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindOneById<IGraph> = useFindOneByKey(this, 'id')
+  override findOneById: FindByKey<IGraph> = useFindOneByKey(this, 'id')
 
   /**
    * retrieves the degree and user with relations, without blocking each
@@ -59,7 +60,7 @@ export class GraphRepository
    *
    * @returns {Promise<Array<Module[]>>}
    */
-  private async Modules(
+  private async getModulesFromUserAndDegree(
     user: User,
     degree: Degree,
     props: InitProps['Graph']
@@ -93,75 +94,19 @@ export class GraphRepository
    * @returns {Promise<Graph>}
    */
   async initialize(props: InitProps['Graph']): Promise<Graph> {
-    const [user, degree] = await this.getUserAndDegree(props)
-    const [modulesHidden, modulesPlaced] = await this.Modules(
-      user,
-      degree,
-      props
+    return this.getUserAndDegree(props).then(([user, degree]) =>
+      this.getModulesFromUserAndDegree(user, degree, props).then(
+        ([modulesHidden, modulesPlaced]) =>
+          this.save(
+            this.create({
+              user,
+              degree,
+              modulesPlaced,
+              modulesHidden,
+            })
+          )
+      )
     )
-    return this.save(
-      this.create({
-        user,
-        degree,
-        modulesPlaced,
-        modulesHidden,
-      })
-    )
-  }
-
-  /**
-   * Toggle a Module's status between placed and hidden.
-   *
-   * @param {Graph} graph
-   * @param {string} moduleCode
-   * @returns {Promise<Graph>}
-   */
-  async toggleModule(graph: Graph, moduleCode: string): Promise<Graph> {
-    /**
-     * retrieve a Graph from database given its id
-     */
-    copy(await this.findOneById(graph.id), graph)
-    /**
-     * find the index of the given moduleCode to toggle
-     */
-    const index: Record<ModuleState, number> = {
-      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
-      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
-      new: -1,
-    }
-    /**
-     * @returns {ModuleState}
-     */
-    function getState(): ModuleState {
-      if (index.placed !== -1) return 'placed'
-      if (index.hidden !== -1) return 'hidden'
-      return 'new'
-    }
-    const state = getState()
-
-    /**
-     * toggles the modules between placed and hidden
-     * if the module is not found, append it to placed
-     *
-     * @param {Module[]} src
-     * @param {Module[]} dest
-     */
-    function toggle(src: Module[], dest: Module[]) {
-      dest.push(quickpop(src, index[state]))
-    }
-
-    if (state === 'placed') {
-      toggle(graph.modulesPlaced, graph.modulesHidden)
-      return this.save(graph)
-    }
-    if (state === 'hidden') {
-      toggle(graph.modulesHidden, graph.modulesPlaced)
-      return this.save(graph)
-    }
-    return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
-      graph.modulesPlaced.push(module)
-      return this.save(graph)
-    })
   }
 
   /**
@@ -203,6 +148,78 @@ export class GraphRepository
         },
       },
     })
+  }
+
+  /**
+   * Toggle a Module's status between placed and hidden.
+   *
+   * @param {Graph} graph
+   * @param {string} moduleCode
+   * @returns {Promise<Graph>}
+   */
+  async toggleModule(graph: Graph, moduleCode: string): Promise<Graph> {
+    /**
+     * retrieve a Graph from database given its id
+     */
+    copy(await this.findOneById(graph.id), graph)
+    /**
+     * find the index of the given moduleCode to toggle
+     */
+    const index: Record<ModuleState, number> = {
+      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
+      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
+      new: -1,
+    }
+    /**
+     * @returns {ModuleState}
+     */
+    function getState(): ModuleState {
+      if (index.placed !== -1) return 'placed'
+      if (index.hidden !== -1) return 'hidden'
+      return 'new'
+    }
+    const state = getState()
+    /**
+     * toggles the modules between placed and hidden
+     * if the module is not found, append it to placed
+     *
+     * @param {Module[]} src
+     * @param {Module[]} dest
+     */
+    function toggle(src: Module[], dest: Module[]) {
+      dest.push(quickpop(src, index[state]))
+    }
+    if (state === 'placed') {
+      toggle(graph.modulesPlaced, graph.modulesHidden)
+      return this.save(graph)
+    }
+    if (state === 'hidden') {
+      toggle(graph.modulesHidden, graph.modulesPlaced)
+      return this.save(graph)
+    }
+    return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
+      graph.modulesPlaced.push(module)
+      return this.save(graph)
+    })
+  }
+
+  /**
+   * Updates the frontend part of the Graph
+   * note that this method will NOT retrieve any relations.
+   * @param {Graph} graph
+   * @param {GraphFrontendProps} graph
+   */
+  async updateFrontendProps(
+    graph: Graph,
+    props: GraphFrontendProps
+  ): Promise<Graph> {
+    return this.findOneByOrFail({ id: graph.id }).then((graph) =>
+      this.save({
+        ...graph,
+        flowEdges: props.flowEdges,
+        flowNodes: props.flowNodes,
+      })
+    )
   }
 
   /**

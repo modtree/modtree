@@ -103,5 +103,10 @@
     "ts-node": "~10.8.0",
     "typescript": "4.6.4",
     "webpack": "5.65.0"
+  },
+  "engines": {
+    "npm": "8.x",
+    "node": "16.x",
+    "yarn": "1.x"
   }
 }

@@ -4,7 +4,8 @@ const users = [
   {
     displayName: 'Nguyen Vu Khang',
     username: 'khang',
-    email: 'khang@modtree.com',
+    email: 'brew4k@gmail.com',
+    authZeroId: 'auth0|something',
     modulesDone: [
       'MA2001,',
       'MA1100,',
@@ -30,6 +31,7 @@ const users = [
     displayName: 'Tan Wei Seng',
     username: 'weiseng',
     email: 'weiseng@modtree.com',
+    authZeroId: 'auth0|something',
     modulesDone: [
       'MA1521',
       'MA2001',
@@ -51,6 +53,11 @@ const users = [
     graduationYear: 2024,
     graduationSemester: 2,
   },
+  {
+    username: 'base',
+    email: 'base@modtree.com',
+    authZeroId: 'auth0|something',
+  },
 ]
 
 function help() {
@@ -62,4 +69,4 @@ function help() {
 const args = new ParseArgs(__filename, help)
 const user = users.find((u) => u.username === args.last)
 if (!user) help()
-postman.post('user/create', user)
+postman.post('user/create', user).then(console.log)

@@ -31,14 +31,14 @@ weiseng_inv() {
 
 khang_env() {
  	cp $SRC/web/.env* $WEB
- 	cp $SRC/database/.env* $SERVER
+ 	cp $SRC/admin.config.json .
 }
 
 khang_inv() {
   mkdir -p $SRC/web
   mkdir -p $SRC/database
+  cp admin.config.json $SRC
   cp $WEB/.env.local $WEB/.env.example $SRC/web
-  cp $SERVER/.env $SERVER/.env.example $SRC/database
 }
 
 # fancy
@@ -63,12 +63,24 @@ inv_end() {
   printf "📦  Env files saved.\n\n"
 }
 
-handle_args() {
+setup() {
   yarn husky install
+  env_start
+  eval ${USER}_env
+  env_end
+}
+
+inverse() {
+  inv_start
+  eval ${USER}_inv
+  inv_end
+}
+
+handle_args() {
   [ -z $SRC ] && return 0
   local cmd="$1"
-  [[ $cmd == "setup" ]] && env_start; eval ${USER}_env; env_end; return
-  [[ $cmd == "inverse" ]] && inv_start; eval ${USER}_inv; inv_end; return
+  [[ $cmd == "setup" ]] && setup && return
+  [[ $cmd == "inverse" ]] && inverse && return
   return 0
 }
 

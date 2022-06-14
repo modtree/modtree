@@ -33,6 +33,7 @@ const log = {
     // console.log('status:', status)
     // print.data()
     // console.log('data:', data)
+    return err
   },
 }
 
@@ -61,7 +62,6 @@ export class ParseArgs {
     this.args = process.argv
     this.last = this.args[this.args.length - 1]
     if (this.last === filename) {
-      console.log('GONNA CALL BACK')
       callback()
     }
     this.postArgs = this.args.slice(

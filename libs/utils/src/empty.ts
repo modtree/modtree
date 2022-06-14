@@ -6,6 +6,7 @@ export const emptyInit: InitProps = {
    * empty User init props
    */
   User: {
+    authZeroId: '',
     displayName: '',
     username: '',
     modulesDone: [],
@@ -99,6 +100,7 @@ export const EmptyResponse: EmptyResponseProps = {
    */
   User: {
     id: '',
+    authZeroId: '',
     displayName: '',
     username: '',
     modulesDone: [],

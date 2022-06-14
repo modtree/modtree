@@ -2,10 +2,12 @@ import { IoPerson } from 'react-icons/io5'
 import { useUser } from '@auth0/nextjs-auth0'
 import { Menu } from '@headlessui/react'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import DropdownMenu, { MenuLink } from './DropdownMenu'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showUserProfile } from '@/store/modal'
+import { setBaseUser, UserState } from '@/store/base'
+import { ModtreeApiResponse } from '@modtree/types'
 
 function UserCircleArea() {
   const bg = 'bg-gradient-to-r from-pink-400 to-orange-400'
@@ -21,22 +23,25 @@ function UserCircleArea() {
 
 export default function SignedInCircle() {
   const { user } = useUser()
-  const [username, setUsername] = useState('')
   const dispatch = useDispatch()
+  const reduxUser = useSelector<UserState, ModtreeApiResponse.User>(
+    (state) => state.base.user
+  )
 
-  const getUsername = async (email: string) => {
+  const getBaseUserData = async (email: string) => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND
     axios
-      .post('http://localhost:8080/user', {
+      .post(`${backend}/user/get-by-email`, {
         email,
       })
       .then((res) => {
-        setUsername(res.data.result.username)
+        dispatch(setBaseUser(res.data))
       })
-      .catch(() => setUsername('404'))
+      .catch(() => console.log('User not found. Own time own target carry on.'))
   }
 
   useEffect(() => {
-    if (user && user.email) getUsername(user.email)
+    if (user && user.email) getBaseUserData(user.email)
   }, [user])
 
   const menuItems = [
@@ -61,7 +66,7 @@ export default function SignedInCircle() {
       <div>
         <Menu.Item>
           <div className="px-4 py-3 text-sm text-gray-900">
-            <div className="flex w-full">Username: {username}</div>
+            <div className="flex w-full">Username: {reduxUser.username}</div>
           </div>
         </Menu.Item>
       </div>

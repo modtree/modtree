@@ -1,11 +1,4 @@
-import { Repository } from 'typeorm'
-import {
-  IUser,
-  IGraph,
-  IDegree,
-  IModule,
-  IModuleCondensed,
-} from '@modtree/types'
+import { ObjectLiteral, Repository } from 'typeorm'
 
 /**
  * example usage:
@@ -16,14 +9,6 @@ import {
  *   log(user)
  * })
  */
-
-/**
- * list of usable find keys:
- * the second argument of useFindOneByKey() is constrained by the
- * keys of Searchables
- */
-type Searchables = { id: string; title: string; username: string }
-type AllEntities = IUser | IGraph | IDegree | IModuleCondensed | IModule
 
 /**
  * function that useFindOneByKey returns
@@ -39,8 +24,12 @@ type FindByKey<T> = (value: string) => Promise<T>
  * @param {T} key
  * @returns {FindByKey<any>}
  */
+export function useFindOneByKey<Entity, T extends keyof Entity>(
+  repository: Repository<Entity>,
+  key: T
+): FindByKey<Entity>
 export function useFindOneByKey<
-  Entity extends Searchables,
+  Entity extends ObjectLiteral,
   T extends keyof Entity
 >(repository: Repository<any>, key: T): FindByKey<any> {
   const relations: Record<string, boolean> = {}
@@ -61,8 +50,12 @@ export function useFindOneByKey<
  * @param {T} key
  * @returns {FindByKey<any[]>}
  */
+export function useFindByKey<Entity, T extends keyof Entity>(
+  repository: Repository<Entity>,
+  key: T
+): FindByKey<Entity[]>
 export function useFindByKey<
-  Entity extends AllEntities,
+  Entity extends ObjectLiteral,
   T extends keyof Entity
 >(repository: Repository<any>, key: T): FindByKey<any[]> {
   const relations: Record<string, boolean> = {}

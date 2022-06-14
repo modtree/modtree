@@ -42,5 +42,5 @@
       }
     }
   },
-  "defaultProject": "docs"
+  "defaultProject": "server"
 }

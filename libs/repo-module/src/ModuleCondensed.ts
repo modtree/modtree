@@ -5,7 +5,7 @@ import {
   InitProps,
   NUSMods,
   IModuleCondensedRepository,
-  FindOneById,
+  FindByKey,
   IModuleCondensed,
 } from '@modtree/types'
 import { nusmodsApi, getModuleLevel, flatten } from '@modtree/utils'
@@ -20,7 +20,7 @@ export class ModuleCondensedRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindOneById<IModuleCondensed> = useFindOneByKey(
+  override findOneById: FindByKey<IModuleCondensed> = useFindOneByKey(
     this,
     'id'
   )
