@@ -1,20 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+type State = {
+  selection: string[]
+}
+
+export type FlowState = {
+  flow: State
+}
+
+const initialState: State = {
+  selection: [],
+}
 
 export const flow = createSlice({
   name: 'flow',
-  initialState: { moduleCode: [] },
+  initialState,
   reducers: {
-    setFlowSelection: (state, action) => {
-      state.moduleCode = action.payload
+    setFlowSelection: (state, action: PayloadAction<string[]>) => {
+      state.selection = action.payload
     },
   },
 })
-
-export type FlowState = {
-  flow: {
-    moduleCode: string
-  }
-}
 
 export const { setFlowSelection } = flow.actions
 export default flow.reducer

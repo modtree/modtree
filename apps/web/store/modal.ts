@@ -36,9 +36,9 @@ export const modal = createSlice({
     },
     setModalModule: (
       state,
-      payload: PayloadAction<ModtreeApiResponse.Module>
+      action: PayloadAction<ModtreeApiResponse.Module>
     ) => {
-      state.modalModule = payload.payload
+      state.modalModule = action.payload
     },
   },
 })
