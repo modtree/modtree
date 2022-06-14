@@ -44,3 +44,4 @@ Thumbs.db
 # env files
 .env
 .env.local
+admin.config.json
