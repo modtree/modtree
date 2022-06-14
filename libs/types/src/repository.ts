@@ -10,6 +10,12 @@ import {
 
 export type FindOneById<T> = (query: string) => Promise<T>
 
+export enum ModuleStatus {
+  NOT_TAKEN = 0,
+  DONE = 1,
+  DOING = 2,
+}
+
 /**
  * BaseRepository, but for now only in types
  * it is a interface that will be extended to form the final Repositories of modtree
@@ -53,6 +59,11 @@ export interface IUserRepository extends EUser {
   addDegree(user: IUser, degreeId: string): Promise<IUser>
   findDegree(user: IUser, degreeId: string): Promise<IDegree>
   removeDegree(user: IUser, degreeId: string): Promise<IUser>
+  setModuleStatus(
+    user: IUser,
+    moduleCode: string,
+    status: ModuleStatus
+  ): Promise<IUser>
 }
 
 export interface IDegreeRepository extends EDegree {
