@@ -1,7 +1,7 @@
 import { Dispatch, AnyAction } from 'redux'
 import { ModuleCondensed } from '@modtree/entity'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
-import { UseState } from 'types'
+import { UseState } from '@modtree/types'
 import { setModalModule, showModuleModal } from '@/store/modal'
 
 /**

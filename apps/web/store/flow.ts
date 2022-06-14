@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Edge, Node } from 'react-flow-renderer'
-import { FlowNodeCondensed, FlowEdgeCondensed } from 'types'
+import { FlowNodeCondensed, FlowEdgeCondensed } from '@modtree/types'
 
 type State = {
   selection: string[]
