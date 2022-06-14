@@ -13,4 +13,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/repo-graph',
+  testTimeout: 15000,
 }
