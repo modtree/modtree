@@ -95,6 +95,12 @@ const userRoutes: Route<UserController>[] = [
     validators: [],
   },
   {
+    action: 'getByEmail',
+    route: '/user/get-by-email',
+    method: 'post',
+    validators: [body('email').isEmail()],
+  },
+  {
     action: 'delete',
     route: '/user/delete/:userId',
     method: 'delete',
