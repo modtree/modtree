@@ -24,9 +24,10 @@ export default function SignedInCircle() {
   const [username, setUsername] = useState('')
   const dispatch = useDispatch()
 
-  const getUsername = async (email: string) => {
+  const getBaseUserData = async (email: string) => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND
     axios
-      .post('http://localhost:8080/user', {
+      .post(`${backend}/user`, {
         email,
       })
       .then((res) => {
@@ -36,7 +37,7 @@ export default function SignedInCircle() {
   }
 
   useEffect(() => {
-    if (user && user.email) getUsername(user.email)
+    if (user && user.email) getBaseUserData(user.email)
   }, [user])
 
   const menuItems = [
