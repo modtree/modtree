@@ -41,14 +41,20 @@ export class UserRepository
    * @returns {Promise<User>}
    */
   async initialize(props: InitProps['User']): Promise<User> {
+    // find modules completed and modules doing, to create many-to-many
+    // relation
+    const queryList = [props.modulesDone, props.modulesDoing]
+    const modulesPromise = Promise.all(
+      queryList.map((list) => this.moduleRepo.findByCodes(list))
+    )
+    const [modulesDone, modulesDoing] = await modulesPromise
     const user = this.create({
       ...props,
-      modulesDone: [],
-      modulesDoing: [],
+      modulesDone: modulesDone || [],
+      modulesDoing: modulesDoing || [],
       savedDegrees: [],
       savedGraphs: [],
     })
-    copy(user, emptyInit.User)
     return this.save(user)
   }
 
