@@ -6,7 +6,7 @@ import {
   IUserRepository,
   IDegreeRepository,
   IGraphRepository,
-  FindOneById,
+  FindByKey,
   IGraph,
   GraphFrontendProps,
 } from '@modtree/types'
@@ -41,7 +41,7 @@ export class GraphRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindOneById<IGraph> = useFindOneByKey(this, 'id')
+  override findOneById: FindByKey<IGraph> = useFindOneByKey(this, 'id')
 
   /**
    * retrieves the degree and user with relations, without blocking each
