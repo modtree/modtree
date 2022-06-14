@@ -102,4 +102,16 @@ describe('User.setModuleStatus', () => {
       expectUserModules(['MA2001'], ['MA2219'])
     })
   })
+
+  it('Throws error if invalid module code is passed in', async () => {
+    await container(db, () =>
+      expect(() =>
+        Repo.User!.setModuleStatus(
+          t.user!,
+          init.invalidModuleCode,
+          ModuleStatus.DONE
+        )
+      ).rejects.toThrow(Error)
+    )
+  })
 })
