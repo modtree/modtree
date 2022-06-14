@@ -99,6 +99,7 @@ export const EmptyResponse: EmptyResponseProps = {
    */
   User: {
     id: '',
+    authZeroId: '',
     displayName: '',
     username: '',
     modulesDone: [],

@@ -11,6 +11,7 @@ export type GraphFrontendProps = {
 }
 
 export type IUser = IBase & {
+  authZeroId: string
   displayName: string
   username: string
   email: string

@@ -4,6 +4,7 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  PrimaryColumn,
 } from 'typeorm'
 import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
 
@@ -12,6 +13,9 @@ import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
 export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string
+
+  @PrimaryColumn('text', { default: '' })
+  authZeroId: string
 
   @Column('character varying')
   displayName: string
