@@ -21,6 +21,7 @@ export type IDegreeController = IController
 
 export interface IGraphController extends IController {
   toggle: APIEndpoint
+  updateFrontendProps: APIEndpoint
 }
 
 export interface IModuleCondensedController extends IReads {
