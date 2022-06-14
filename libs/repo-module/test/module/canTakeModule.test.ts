@@ -16,8 +16,6 @@ afterAll(() => teardown(db))
 const modulesDone = ['MA2001']
 const modulesDoing = ['MA2219']
 
-jest.setTimeout(10000)
-
 it('Correctly handles fresh modules', async () => {
   expect.assertions(1)
   const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']

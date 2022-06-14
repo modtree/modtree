@@ -23,8 +23,6 @@ const requiredModules = [
 const modulesDone = ['CS1010', 'CG2111A', 'CS1231']
 const modulesDoing = ['IT2002']
 
-jest.setTimeout(15000)
-
 beforeAll(() =>
   setup(db).then(() => {
     Repo.Module = new ModuleRepository(db)
