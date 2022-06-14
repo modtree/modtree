@@ -116,4 +116,30 @@ export class GraphController implements IGraphController {
       })
       .catch(() => res.status(500).json({ message: 'Unable to toggle module' }))
   }
+
+  /**
+   * finds a graph by its id and updates it with request props
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async updateFrontendProps(req: Request, res: Response) {
+    if (!validate(req, res)) return
+    const { flowNodes, flowEdges } = req.body
+    const { graphId } = req.params
+    this.graphRepo
+      .findOneById(graphId)
+      .then((graph) =>
+        this.graphRepo.updateFrontendProps(graph, {
+          flowEdges,
+          flowNodes,
+        })
+      )
+      .then((graph) => {
+        res.json(flatten.graph(graph))
+      })
+      .catch(() =>
+        res.status(500).json({ message: 'Unable to update frontend props' })
+      )
+  }
 }

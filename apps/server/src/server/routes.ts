@@ -1,15 +1,5 @@
-import { param, ValidationChain } from 'express-validator'
-import { Repositories } from '@modtree/types'
-import { copy } from '@modtree/utils'
-import { db } from '@modtree/typeorm-config'
-import {
-  ModuleRepository,
-  ModuleCondensedRepository,
-  validModuleCode,
-} from '@modtree/repo-module'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { UserRepository } from '@modtree/repo-user'
-import { GraphRepository } from '@modtree/repo-graph'
+import { body, param, ValidationChain } from 'express-validator'
+import { validModuleCode } from '@modtree/repo-module'
 import {
   ModuleCondensedController,
   ModuleController,
@@ -173,6 +163,12 @@ const graphRoutes: Route<GraphController>[] = [
         .custom(validModuleCode)
         .withMessage('must be a valid module code'),
     ],
+  },
+  {
+    action: 'updateFrontendProps',
+    route: '/graph/update-frontend/:graphId',
+    method: 'post',
+    validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },
 ]
 
