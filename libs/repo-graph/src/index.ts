@@ -8,8 +8,7 @@ import {
   IGraphRepository,
   FindOneById,
   IGraph,
-  FlowNodeCondensed,
-  FlowEdgeCondensed,
+  GraphFrontendProps,
 } from '@modtree/types'
 import { quickpop, flatten, copy } from '@modtree/utils'
 import {
@@ -207,13 +206,12 @@ export class GraphRepository
   /**
    * Updates the frontend part of the Graph
    * note that this method will NOT retrieve any relations.
+   * @param {Graph} graph
+   * @param {GraphFrontendProps} graph
    */
   async updateFrontendProps(
     graph: Graph,
-    props: {
-      flowNodes: FlowNodeCondensed[]
-      flowEdges: FlowEdgeCondensed[]
-    }
+    props: GraphFrontendProps
   ): Promise<Graph> {
     return this.findOneByOrFail({ id: graph.id }).then((graph) =>
       this.save({

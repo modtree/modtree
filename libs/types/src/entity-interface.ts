@@ -5,6 +5,11 @@ export type IBase = {
   id: string
 }
 
+export type GraphFrontendProps = {
+  flowNodes: FlowNodeCondensed[]
+  flowEdges: FlowEdgeCondensed[]
+}
+
 export type IUser = IBase & {
   displayName: string
   username: string
@@ -28,9 +33,7 @@ export type IGraph = IBase & {
   degree: IDegree
   modulesPlaced: IModule[]
   modulesHidden: IModule[]
-  flowNodes: FlowNodeCondensed[]
-  flowEdges: FlowEdgeCondensed[]
-}
+} & GraphFrontendProps
 
 export type IModule = IBase & {
   acadYear: string
