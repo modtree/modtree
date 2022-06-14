@@ -8,7 +8,7 @@ import ReactFlow, {
 import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useSelector, useDispatch } from 'react-redux'
-import { setFlowSelection, FlowState } from '@/store/flow'
+import { setFlowSelection, setFlowNodes, FlowState } from '@/store/flow'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -41,7 +41,9 @@ export default function ModtreeFlow() {
     (_: MouseEvent, node: Node) => {
       console.log('released a node')
       console.log('current nodes state:', nodes)
+      console.log('current edges state:', edges)
       console.log('node that moved:', node)
+      dispatch(setFlowNodes(nodes))
     },
     [setNodes]
   )
