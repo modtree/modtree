@@ -41,6 +41,7 @@ export const flatten = {
    */
   graph(graph: Graph): ModtreeApiResponse.Graph {
     return {
+      ...graph,
       id: graph.id,
       user: graph.user.id,
       degree: graph.degree.id,

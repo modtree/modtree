@@ -4,7 +4,7 @@ import {
   InputHTMLAttributes,
   ReactElement,
 } from 'react'
-import { UseState } from 'types'
+import { UseState } from '@modtree/types'
 
 function composeCss(base: string, added: string | undefined): string {
   return added ? `${base} ${added}` : base

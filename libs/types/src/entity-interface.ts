@@ -1,3 +1,4 @@
+import { FlowEdgeCondensed, FlowNodeCondensed } from './flow'
 import { SemesterData, NUSModuleAttributes, PrereqTree } from './nusmods'
 
 export type IBase = {
@@ -27,6 +28,8 @@ export type IGraph = IBase & {
   degree: IDegree
   modulesPlaced: IModule[]
   modulesHidden: IModule[]
+  flowNodes: FlowNodeCondensed[]
+  flowEdges: FlowEdgeCondensed[]
 }
 
 export type IModule = IBase & {

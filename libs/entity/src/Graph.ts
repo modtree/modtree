@@ -4,8 +4,16 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  Column,
 } from 'typeorm'
-import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
+import type {
+  FlowEdgeCondensed,
+  FlowNodeCondensed,
+  IDegree,
+  IGraph,
+  IModule,
+  IUser,
+} from '@modtree/types'
 
 @Entity({ name: 'graph' })
 /** Graph entity */
@@ -28,4 +36,10 @@ export class Graph implements IGraph {
   @ManyToMany('Module', 'graph')
   @JoinTable()
   modulesHidden: IModule[]
+
+  @Column('json', { nullable: true })
+  flowNodes: FlowNodeCondensed[]
+
+  @Column('json', { nullable: true })
+  flowEdges: FlowEdgeCondensed[]
 }

@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction } from 'react'
-
-export type SetState<Type> = Dispatch<SetStateAction<Type>>
-export type UseState<Type> = [Type, SetState<Type>]
+/**
+ * for frontend-specific types.
+ * importable from within this project with
+ * `import { Placeholder } from 'types'`
+ */
+export type Placeholder = string
