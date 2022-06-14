@@ -6,6 +6,7 @@ import {
   IDegree,
   IModule,
   IModuleCondensed,
+  GraphFrontendProps,
 } from './entity-interface'
 
 export type FindOneById<T> = (query: string) => Promise<T>
@@ -40,6 +41,7 @@ export interface IGraphRepository extends EGraph {
     degreeId: string
   ): Promise<[IGraph[], number]>
   suggestModules(graph: IGraph, moduleCodes: string[]): Promise<IModule[]>
+  updateFrontendProps(graph: IGraph, props: GraphFrontendProps): Promise<IGraph>
 }
 
 export interface IUserRepository extends EUser {
