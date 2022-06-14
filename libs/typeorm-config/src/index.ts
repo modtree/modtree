@@ -14,9 +14,11 @@ function readJson(target: DataSourceOptions) {
   const nodeEnv = process.env['NODE_ENV']
   if (!nodeEnv) return
   const modtreeConfigJson = rawJson('modtree.config.json')
-  const adminConfigJson = rawJson('admin.config.json')
   Object.assign(target, modtreeConfigJson[nodeEnv])
-  Object.assign(target, adminConfigJson[nodeEnv])
+  try {
+    const adminConfigJson = rawJson('admin.config.json')
+    Object.assign(target, adminConfigJson[nodeEnv])
+  } catch {}
 }
 
 function readEnv(target: DataSourceOptions) {
@@ -49,7 +51,7 @@ function readEnv(target: DataSourceOptions) {
  * @returns {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
-  console.log('NODE_ENV:', process.env.NODE_ENV)
+  console.log('NODE_ENV:', process.env['NODE_ENV'])
   const base: DataSourceOptions = {
     type: 'postgres',
     rootDir: process.cwd(),

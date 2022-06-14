@@ -20,16 +20,9 @@ export class UserController implements IUserController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
+    console.log(req.body)
     if (!validate(req, res)) return
     const props = emptyInit.User
-    const requestKeys = Object.keys(req.body)
-    const requiredKeys = Object.keys(props)
-    if (!requiredKeys.every((val) => requestKeys.includes(val))) {
-      res
-        .status(400)
-        .json({ message: 'insufficient keys', requestKeys, requiredKeys })
-      return
-    }
     copy(req.body, props)
     this.userRepo.initialize(props).then((user) => {
       res.json(user)

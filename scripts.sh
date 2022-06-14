@@ -31,7 +31,6 @@ weiseng_inv() {
 
 khang_env() {
  	cp $SRC/web/.env* $WEB
- 	cp $SRC/database/.env* $SERVER
  	cp $SRC/admin.config.json .
 }
 
@@ -40,7 +39,6 @@ khang_inv() {
   mkdir -p $SRC/database
   cp admin.config.json $SRC
   cp $WEB/.env.local $WEB/.env.example $SRC/web
-  cp $SERVER/.env $SERVER/.env.example $SRC/database
 }
 
 # fancy

@@ -53,6 +53,11 @@ const users = [
     graduationYear: 2024,
     graduationSemester: 2,
   },
+  {
+    username: 'base',
+    email: 'base@modtree.com',
+    authZeroId: 'auth0|something',
+  },
 ]
 
 function help() {

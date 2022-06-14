@@ -33,6 +33,7 @@ db.initialize()
     const app = getApp()
     app.listen(process.env.PORT || 8080)
   })
-  .catch(() => {
+  .catch((err) => {
+    console.log(err)
     console.log('Failed to initialize connection to database.')
   })

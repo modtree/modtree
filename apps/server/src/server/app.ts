@@ -1,6 +1,7 @@
-import cors, { CorsOptions } from 'cors'
+import cors from 'cors'
 import express, { NextFunction, Request, Response, Express } from 'express'
 import { getRoutes } from './routes'
+import { corsOpts } from './cors'
 
 /**
  * requires database connection to be initialized
@@ -8,9 +9,6 @@ import { getRoutes } from './routes'
  * @returns {Express} an express app
  */
 export function getApp(): Express {
-  const corsOpts: CorsOptions = {
-    origin: ['https://modtree.vercel.app', 'http://localhost:3000'],
-  }
   // create express app
   const app = express()
   app.use(cors(corsOpts))

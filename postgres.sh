@@ -30,4 +30,7 @@ EOF
 }
 
 # drop_all_tables
-restore
+# restore
+
+# postgres cli: Delete an entry/row
+# delete from "user" where id = '2bcff5a5-b03f-43f1-9a03-609dd252d111';
