@@ -4,7 +4,7 @@ const users = [
   {
     displayName: 'Nguyen Vu Khang',
     username: 'khang',
-    email: 'khang@modtree.com',
+    email: 'brew4k@gmail.com',
     modulesDone: [
       'MA2001,',
       'MA1100,',
