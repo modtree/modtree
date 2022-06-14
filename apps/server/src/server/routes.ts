@@ -68,7 +68,7 @@ const userRoutes: Route<UserController>[] = [
     action: 'create',
     route: '/user/create',
     method: 'post',
-    validators: [],
+    validators: [body('authZeroId').notEmpty()],
   },
   {
     action: 'insertDegree',

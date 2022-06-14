@@ -20,6 +20,7 @@ export class UserController implements IUserController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
+    if (!validate(req, res)) return
     const props = emptyInit.User
     const requestKeys = Object.keys(req.body)
     const requiredKeys = Object.keys(props)

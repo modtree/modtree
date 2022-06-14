@@ -47,6 +47,7 @@ export const init: Init = {
   },
 
   user1: {
+    authZeroId: 'auth0|id',
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
     email: 'khang@modtree.com',
@@ -58,6 +59,7 @@ export const init: Init = {
   },
 
   user2: {
+    authZeroId: 'auth0|id',
     displayName: 'Nguyen Vu Khang',
     username: 'nguyenvukhang',
     email: 'khang@modtree.com',
@@ -84,6 +86,7 @@ export const init: Init = {
   },
 
   user3: {
+    authZeroId: 'auth0|id',
     displayName: 'Tan Wei Seng',
     username: 'tanweiseng',
     email: 'weiseng@modtree.com',
@@ -118,6 +121,7 @@ export const init: Init = {
   },
 
   emptyUser: {
+    authZeroId: 'auth0|id',
     displayName: 'Khang Vu Nguyen',
     username: 'definitelynotkhang',
     email: 'user@modtree.com',

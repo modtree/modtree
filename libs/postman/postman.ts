@@ -33,6 +33,7 @@ const log = {
     // console.log('status:', status)
     // print.data()
     // console.log('data:', data)
+    return err
   },
 }
 

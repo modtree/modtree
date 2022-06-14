@@ -5,6 +5,7 @@ export type InitProps = {
    * props to initialize a User
    */
   User: {
+    authZeroId: string
     displayName: string
     username: string
     modulesDone: string[]
