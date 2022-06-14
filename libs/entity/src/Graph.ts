@@ -37,9 +37,9 @@ export class Graph implements IGraph {
   @JoinTable()
   modulesHidden: IModule[]
 
-  @Column('json', { nullable: true })
+  @Column('json', { default: [] })
   flowNodes: FlowNodeCondensed[]
 
-  @Column('json', { nullable: true })
+  @Column('json', { default: [] })
   flowEdges: FlowEdgeCondensed[]
 }

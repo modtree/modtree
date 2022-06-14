@@ -1,10 +1,10 @@
-import { Graph, Module, ModuleCondensed } from '@modtree/entity'
+import { Graph } from '@modtree/entity'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { UserRepository } from '@modtree/repo-user'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
-import { flatten, oneUp } from '@modtree/utils'
-import { EntityNotFoundError } from 'typeorm'
+import { GraphFrontendProps } from '@modtree/types'
+import { oneUp } from '@modtree/utils'
 
 import { GraphRepository } from '../src'
 
@@ -36,126 +36,83 @@ beforeAll(() =>
     )
     .then((graph) => {
       t.graph = graph
-      const all = graph.degree.modules.map(flatten.module)
-      all.push(...graph.user.modulesDone.map(flatten.module))
-      all.push(...graph.user.modulesDoing.map(flatten.module))
-      t.moduleCodes = Array.from(new Set(all))
     })
 )
 afterAll(() => teardown(db))
 
-/**
- *
- * @param {string} moduleCode
- */
-function returnsGraphAfterToggling(moduleCode: string) {
-  expect.hasAssertions()
-  it(`toggles ${moduleCode} and returns graph`, async () => {
-    const returned = await Repo.Graph!.toggleModule(t.graph!, moduleCode)
-    expect(returned).toStrictEqual(t.graph)
+async function updateFrontendProps(props: GraphFrontendProps): Promise<Graph> {
+  return Repo.Graph!.updateFrontendProps(t.graph!, props).then((graph) => {
+    t.graph! = graph
+    return graph
   })
 }
 
-/**
- *
- * @param {string} moduleCode
- */
-function expectInitiallyHidden(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} is initially hidden`, async () => {
-    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
-      const hidden = graph.modulesHidden.map(flatten.module)
-      expect(hidden).toContain(moduleCode)
-    })
+describe('shape check', () => {
+  it('has prop: flowEdges', async () => {
+    expect(t.graph!).toHaveProperty('flowEdges')
+    const flowEdges = t.graph!.flowNodes
+    expect(flowEdges).toBeInstanceOf(Array)
+    expect(flowEdges).toHaveLength(0)
   })
-}
-
-/**
- *
- * @param {string} moduleCode
- */
-function expectInitiallyPlaced(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} is initially placed`, async () => {
-    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
-      const placed = graph.modulesPlaced.map(flatten.module)
-      expect(placed).toContain(moduleCode)
-    })
+  it('has prop: flowNodes', async () => {
+    expect(t.graph!).toHaveProperty('flowNodes')
+    const flowNodes = t.graph!.flowNodes
+    expect(flowNodes).toBeInstanceOf(Array)
+    expect(flowNodes).toHaveLength(0)
   })
-}
-
-/**
- *
- * @param {string} moduleCode
- */
-function expectFinallyHidden(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} successfully hidden`, async () => {
-    const { modulesPlaced, modulesHidden } = t.graph!
-    expect(modulesHidden.map(flatten.module)).toContain(moduleCode)
-    expect(modulesPlaced.map(flatten.module)).not.toContain(moduleCode)
-  })
-}
-
-/**
- *
- * @param {string} moduleCode
- */
-function expectFinallyPlaced(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} successfully placed`, async () => {
-    const { modulesPlaced, modulesHidden } = t.graph!
-    expect(modulesHidden.map(flatten.module)).not.toContain(moduleCode)
-    expect(modulesPlaced.map(flatten.module)).toContain(moduleCode)
-  })
-}
-
-describe('hidden -> placed', () => {
-  expectInitiallyHidden('MA2001')
-  returnsGraphAfterToggling('MA2001')
-  expectFinallyPlaced('MA2001')
 })
 
-describe('placed -> hidden', () => {
-  expectInitiallyPlaced('MA2001')
-  returnsGraphAfterToggling('MA2001')
-  expectFinallyHidden('MA2001')
-})
-
-describe('insert unseen module', () => {
-  it('is a fresh module', async () => {
+describe('insert check', () => {
+  it('inserts a flow node', async () => {
     expect.hasAssertions()
-    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
-      const { modulesPlaced, modulesHidden } = graph
-      const placed = modulesPlaced.map(flatten.module)
-      const hidden = modulesHidden.map(flatten.module)
-      expect(placed).not.toContain('EE1111A')
-      expect(hidden).not.toContain('EE1111A')
+    await updateFrontendProps({
+      flowNodes: [
+        {
+          moduleCode: 'CS1010S',
+          position: {
+            x: 420,
+            y: 68,
+          },
+        },
+      ],
+      flowEdges: [],
+    }).then(() => {
+      expect(t.graph!.flowNodes).toHaveLength(1)
     })
   })
-  returnsGraphAfterToggling('EE1111A')
-  expectFinallyPlaced('EE1111A')
+  it('inserts correct moduleCode', () => {
+    const codes = t.graph!.flowNodes.map((node) => node.moduleCode)
+    expect(codes).toContain('CS1010S')
+  })
+  it('inserts correct position', () => {
+    const nodes = t.graph!.flowNodes
+    const positions = nodes.map((n) => n.position)
+    expect(positions).toContainEqual({ x: 420, y: 68 })
+  })
 })
 
-describe('reject module not in database', () => {
-  it('is not in database', async () => {
+describe('update check', () => {
+  it('updates a flow node', async () => {
     expect.hasAssertions()
-    await expect(() =>
-      Repo.ModuleCondensed!.findOneByOrFail({ moduleCode: 'CS420BZT' })
-    ).rejects.toThrowError(
-      new EntityNotFoundError(ModuleCondensed, {
-        moduleCode: 'CS420BZT',
-      })
+    await updateFrontendProps({
+      flowNodes: [
+        {
+          moduleCode: 'CS1010S',
+          position: {
+            x: 300,
+            y: -27,
+          },
+        },
+      ],
+      flowEdges: [],
+    }).then(() => {
+      expect(t.graph!.flowNodes).toHaveLength(1)
+    })
+  })
+  it('updates correct flowNode', () => {
+    const node = t.graph!.flowNodes.find(
+      (node) => node.moduleCode === 'CS1010S'
     )
-  })
-  it('rejects the module', async () => {
-    expect.hasAssertions()
-    await expect(() =>
-      Repo.Graph!.toggleModule(t.graph!, 'CS420BZT')
-    ).rejects.toThrowError(
-      new EntityNotFoundError(Module, {
-        moduleCode: 'CS420BZT',
-      })
-    )
+    expect(node!.position).toEqual({ x: 300, y: -27 })
   })
 })
