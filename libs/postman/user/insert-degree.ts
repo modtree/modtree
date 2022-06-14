@@ -5,6 +5,8 @@ const user = {
   savedDegrees: ['456ffd23-1d48-48da-beec-532ce058f902'],
 }
 
-postman.post(`user/insert-degree/${user.id}`, {
-  degreeIds: user.savedDegrees,
-})
+postman
+  .post(`user/insert-degree/${user.id}`, {
+    degreeIds: user.savedDegrees,
+  })
+  .then(console.log)
