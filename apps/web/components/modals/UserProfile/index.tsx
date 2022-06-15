@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ModalState, hideUserProfile } from '@/store/modal'
 import { CloseButton } from '@/ui/buttons'
 import SavedGraphs from './SavedGraphs'
+import ModulesDone from './ModulesDone'
 
 export default function UserProfileModal() {
   const showUserProfile = useSelector<ModalState, boolean>(
@@ -17,13 +18,16 @@ export default function UserProfileModal() {
 
   const UserProfileContents = () => {
     return (
-      <div className="mt-2 grid grid-cols-3 space-x-6">
+      <div className="mt-2 h-full grid grid-cols-3 space-x-6">
         <div>
           <h3 className="mb-4">Saved Graphs</h3>
           <SavedGraphs />
         </div>
         <h3>Saved Degrees</h3>
-        <h3>Modules Done</h3>
+        <div className="h-full overflow-y-hidden">
+          <h3 className="mb-4">Modules Done</h3>
+          <ModulesDone />
+        </div>
       </div>
     )
   }
@@ -39,7 +43,7 @@ export default function UserProfileModal() {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Panel className="h-96 w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
           <CloseButton close={closeModal} />
           <h2 className="text-lg font-medium leading-6 text-gray-900 mb-4">
             User Profile
