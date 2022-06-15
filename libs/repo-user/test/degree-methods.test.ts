@@ -28,30 +28,38 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 describe('User.addDegree', () => {
-  it('adds degree to user', async () => {
-    expect.assertions(4)
+  beforeEach(() => expect.hasAssertions())
+
+  it('Returns a user', async () => {
     // get user with all relations
     await Repo.User!.addDegree(t.user!, t.degree!.id).then((user) => {
       expect(user).toBeInstanceOf(User)
-      expect(user.savedDegrees).toBeInstanceOf(Array)
-      expect(user.savedDegrees.length).toEqual(t.user!.savedDegrees.length + 1)
-      expect(user.savedDegrees[0].id).toEqual(t.degree!.id)
       t.user = user
     })
+  })
+
+  it('Adds correct degree id', () => {
+    const degreeIds = t.user!.savedDegrees.map((d) => d.id)
+    expect(degreeIds).toContain(t.degree!.id)
   })
 })
 
 describe('User.findDegree', () => {
-  it('Successfully finds a saved degree of a user', async () => {
-    expect.assertions(2)
+  beforeEach(() => expect.hasAssertions())
+
+  it('Returns a degree', async () => {
     await Repo.User!.findDegree(t.user!, t.degree!.id).then((degree) => {
       expect(degree).toBeInstanceOf(Degree)
-      expect(degree.id).toEqual(t.degree!.id)
+    })
+  })
+
+  it('Finds correct degree id', async () => {
+    await Repo.User!.findDegree(t.user!, t.degree!.id).then((degree) => {
+      expect(degree.id).toBe(t.degree!.id)
     })
   })
 
   it('Throws error if degree not found', async () => {
-    expect.assertions(1)
     await expect(() =>
       Repo.User!.findDegree(t.user!, init.invalidUUID)
     ).rejects.toThrowError(Error('Degree not found in User'))
@@ -59,15 +67,20 @@ describe('User.findDegree', () => {
 })
 
 describe('User.removeDegree', () => {
-  it('Successfully removes a saved degree', async () => {
+  beforeEach(() => expect.hasAssertions())
+
+  it('Returns a user', async () => {
     await Repo.User!.removeDegree(t.user!, t.degree!.id).then((user) => {
-      expect(user.savedDegrees).toBeInstanceOf(Array)
-      expect(user.savedDegrees.length).toEqual(0)
+      expect(user).toBeInstanceOf(User)
+      t.user = user
     })
   })
 
+  it('removes a degree', () => {
+    expect(t.user!.savedDegrees).toHaveLength(0)
+  })
+
   it('Throws error if degree not found', async () => {
-    expect.assertions(1)
     await expect(() =>
       Repo.User!.removeDegree(t.user!, init.invalidUUID)
     ).rejects.toThrowError(Error('Degree not found in User'))
