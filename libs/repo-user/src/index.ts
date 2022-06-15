@@ -9,7 +9,7 @@ import {
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
-import { flatten, copy } from '@modtree/utils'
+import { flatten } from '@modtree/utils'
 import {
   getRelationNames,
   useDeleteAll,
@@ -144,9 +144,9 @@ export class UserRepository
    */
   async hasTakenModule(user: User, moduleCode: string): Promise<boolean> {
     // load module relations
-    copy(await this.findOneById(user.id), user)
-    const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
+    const _user = await this.findOneById(user.id)
+    const modulesDoneCodes = _user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = _user.modulesDoing.map(flatten.module)
     return (
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)
@@ -169,9 +169,9 @@ export class UserRepository
     moduleCodes: string[]
   ): Promise<string[]> {
     // load module relations
-    copy(await this.findOneById(user.id), user)
-    const modulesDoneCodes = user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
+    const _user = await this.findOneById(user.id)
+    const modulesDoneCodes = _user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = _user.modulesDoing.map(flatten.module)
     const modulesTakenCodes = modulesDoneCodes.concat(modulesDoingCodes)
     // result
     const result = await Promise.all(
@@ -190,12 +190,12 @@ export class UserRepository
    */
   async addDegree(user: User, degreeId: string): Promise<User> {
     // 1. load savedDegrees relations
-    copy(await this.findOneById(user.id), user)
+    const _user = await this.findOneById(user.id)
     // 2. find degree in DB
     const degree = await this.degreeRepo.findOneById(degreeId)
     // 3. append degree
-    user.savedDegrees.push(degree)
-    return this.save(user)
+    _user.savedDegrees.push(degree)
+    return this.save(_user)
   }
 
   /**
@@ -207,9 +207,9 @@ export class UserRepository
    */
   async findDegree(user: User, degreeId: string): Promise<Degree> {
     // 1. load savedDegrees relations
-    copy(await this.findOneById(user.id), user)
+    const _user = await this.findOneById(user.id)
     // 2. find degree among user's savedDegrees
-    const filtered = user.savedDegrees.filter(
+    const filtered = _user.savedDegrees.filter(
       (degree) => degree.id === degreeId
     )
     if (filtered.length === 0) throw new Error('Degree not found in User')
@@ -225,18 +225,18 @@ export class UserRepository
    */
   async removeDegree(user: User, degreeId: string): Promise<User> {
     // 1. load savedDegrees relations
-    copy(await this.findOneById(user.id), user)
+    const _user = await this.findOneById(user.id)
     // 2. find degree among user's savedDegrees
-    const filtered = user.savedDegrees.filter(
+    const filtered = _user.savedDegrees.filter(
       (degree) => degree.id !== degreeId
     )
     // 3. find degree among user's savedDegrees
-    if (filtered.length === user.savedDegrees.length) {
+    if (filtered.length === _user.savedDegrees.length) {
       throw new Error('Degree not found in User')
     }
     // 4. update entity and save
-    user.savedDegrees = filtered
-    return this.save(user)
+    _user.savedDegrees = filtered
+    return this.save(_user)
   }
 
   /**
@@ -248,27 +248,27 @@ export class UserRepository
    * @return {Promise<User>}
    */
   async setModuleStatus(
-    user: IUser,
+    user: User,
     moduleCode: string,
     status: ModuleStatus
-  ): Promise<IUser> {
+  ): Promise<User> {
     // 1. load relations
-    copy(await this.findOneById(user.id), user)
+    const _user = await this.findOneById(user.id)
     // 2. remove moduleCode from user if exists
-    user.modulesDone = user.modulesDone.filter(
+    _user.modulesDone = _user.modulesDone.filter(
       (one) => one.moduleCode !== moduleCode
     )
-    user.modulesDoing = user.modulesDoing.filter(
+    _user.modulesDoing = _user.modulesDoing.filter(
       (one) => one.moduleCode !== moduleCode
     )
     // 3. add module to appropriate array (if necessary)
     if (status === ModuleStatus.DONE) {
       const module = await this.moduleRepo.findOneByOrFail({ moduleCode })
-      user.modulesDone.push(module)
+      _user.modulesDone.push(module)
     } else if (status === ModuleStatus.DOING) {
       const module = await this.moduleRepo.findOneByOrFail({ moduleCode })
-      user.modulesDoing.push(module)
+      _user.modulesDoing.push(module)
     }
-    return this.save(user)
+    return this.save(_user)
   }
 }

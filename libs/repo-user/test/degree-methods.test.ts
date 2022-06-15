@@ -28,13 +28,13 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 describe('User.addDegree', () => {
-  it('Successfully adds a degree to a user', async () => {
+  it('adds degree to user', async () => {
     expect.assertions(4)
     // get user with all relations
     await Repo.User!.addDegree(t.user!, t.degree!.id).then((user) => {
       expect(user).toBeInstanceOf(User)
       expect(user.savedDegrees).toBeInstanceOf(Array)
-      expect(user.savedDegrees.length).toEqual(1)
+      expect(user.savedDegrees.length).toEqual(t.user!.savedDegrees.length + 1)
       expect(user.savedDegrees[0].id).toEqual(t.degree!.id)
       t.user = user
     })
@@ -60,9 +60,10 @@ describe('User.findDegree', () => {
 
 describe('User.removeDegree', () => {
   it('Successfully removes a saved degree', async () => {
-    await Repo.User!.removeDegree(t.user!, t.degree!.id)
-    expect(t.user!.savedDegrees).toBeInstanceOf(Array)
-    expect(t.user!.savedDegrees.length).toEqual(0)
+    await Repo.User!.removeDegree(t.user!, t.degree!.id).then((user) => {
+      expect(user.savedDegrees).toBeInstanceOf(Array)
+      expect(user.savedDegrees.length).toEqual(0)
+    })
   })
 
   it('Throws error if degree not found', async () => {
