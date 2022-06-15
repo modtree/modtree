@@ -1,8 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0'
 import { useDispatch, useSelector } from 'react-redux'
-import { setBaseUser, UserState } from '@/store/base'
+import { getBaseUserData, UserState } from '@/store/base'
 import { ModtreeApiResponse } from '@modtree/types'
-import axios from 'axios'
 import { useEffect } from 'react'
 
 export default function ModulesDone() {
@@ -12,20 +11,8 @@ export default function ModulesDone() {
     (state) => state.base.user
   )
 
-  const getBaseUserData = async (email: string) => {
-    const backend = process.env.NEXT_PUBLIC_BACKEND
-    axios
-      .post(`${backend}/user/get-by-email`, {
-        email,
-      })
-      .then((res) => {
-        dispatch(setBaseUser(res.data))
-      })
-      .catch(() => console.log('User not found. Own time own target carry on.'))
-  }
-
   useEffect(() => {
-    if (user && user.email) getBaseUserData(user.email)
+    if (user && user.email) getBaseUserData(dispatch, user.email)
   }, [user])
 
   return (

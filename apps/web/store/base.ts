@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ModtreeApiResponse } from '@modtree/types'
 import { EmptyResponse } from '@modtree/utils'
+import axios from 'axios'
+import { Dispatch, AnyAction } from 'redux'
 
 type State = {
   user: ModtreeApiResponse.User
@@ -16,6 +18,21 @@ const initialState: State = {
   user: EmptyResponse.User,
   degree: EmptyResponse.Degree,
   graph: EmptyResponse.Graph,
+}
+
+export const getBaseUserData = async (
+  dispatch: Dispatch<AnyAction>,
+  email: string
+) => {
+  const backend = process.env.NEXT_PUBLIC_BACKEND
+  axios
+    .post(`${backend}/user/get-by-email`, {
+      email,
+    })
+    .then((res) => {
+      dispatch(setBaseUser(res.data))
+    })
+    .catch(() => console.log('User not found. Own time own target carry on.'))
 }
 
 export const base = createSlice({
