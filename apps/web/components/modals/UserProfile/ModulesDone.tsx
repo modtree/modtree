@@ -20,7 +20,10 @@ export default function ModulesDone() {
       <div className="mx-auto w-full h-full max-w-md">
         <div className="space-y-2 h-full overflow-y-scroll">
           {reduxUser.modulesDone.map((code: string) => (
-            <div className="bg-modtree-300 text-white rounded-lg px-5 py-2">
+            <div
+              key={code}
+              className="bg-modtree-300 text-white rounded-lg px-5 py-2"
+            >
               {code}
             </div>
           ))}
