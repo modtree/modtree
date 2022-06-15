@@ -9,7 +9,7 @@ import {
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
-import { flatten, copy, emptyInit } from '@modtree/utils'
+import { flatten, copy } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 import { ModuleRepository } from '@modtree/repo-module'
 import { DegreeRepository } from '@modtree/repo-degree'
