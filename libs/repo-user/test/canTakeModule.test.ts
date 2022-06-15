@@ -8,7 +8,7 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 const userProps: InitProps['User'] = {
-  ...init.emptyUser,
+  ...init.user1,
   modulesDone: ['MA2001'],
   modulesDoing: ['MA2219'],
 }
@@ -24,9 +24,9 @@ beforeAll(() =>
     })
 )
 afterAll(() => teardown(db))
+beforeEach(() => expect.assertions(1))
 
-it('Correctly handles modules not taken before', async () => {
-  expect.assertions(1)
+it('modules not taken before -> maybe', async () => {
   const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
   await Promise.all(
     modulesTested.map((x) => Repo.User!.canTakeModule(t.user!, x))
@@ -35,8 +35,7 @@ it('Correctly handles modules not taken before', async () => {
   })
 })
 
-it('Returns false for modules taken before/currently', async () => {
-  expect.assertions(1)
+it('modules taken before/currently -> false', async () => {
   // one done, one doing
   const modulesTested = ['MA2001', 'MA2219']
   await Promise.all(
@@ -46,11 +45,8 @@ it('Returns false for modules taken before/currently', async () => {
   })
 })
 
-it('Returns false if module code passed in does not exist', async () => {
-  expect.assertions(1)
-  await Repo.User!.canTakeModule(t.user!, init.invalidModuleCode).then(
-    (res) => {
-      expect(res).toStrictEqual(false)
-    }
-  )
+it('invalid code', async () => {
+  await Repo.User!.canTakeModule(t.user!, 'NOT_VALID').then((res) => {
+    expect(res).toStrictEqual(false)
+  })
 })
