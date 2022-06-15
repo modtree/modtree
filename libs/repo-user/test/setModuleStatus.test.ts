@@ -1,6 +1,6 @@
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
-import { container, getSource } from '@modtree/typeorm-config'
+import { getSource } from '@modtree/typeorm-config'
 import { UserRepository } from '../src'
 import { ModuleStatus } from '@modtree/types'
 
@@ -45,73 +45,65 @@ function expectUserModules(
 describe('User.setModuleStatus', () => {
   it('done -> doing -> done', async () => {
     expect.assertions(4)
-    await container(db, async () => {
-      // done -> doing
-      t.user = await Repo.User!.setModuleStatus(
-        t.user!,
-        'MA2001',
-        ModuleStatus.DOING
-      )
-      expectUserModules([], ['MA2001', 'MA2219'])
-      // doing -> done
-      t.user = await Repo.User!.setModuleStatus(
-        t.user!,
-        'MA2001',
-        ModuleStatus.DONE
-      )
-      expectUserModules(['MA2001'], ['MA2219'])
-    })
+    // done -> doing
+    t.user = await Repo.User!.setModuleStatus(
+      t.user!,
+      'MA2001',
+      ModuleStatus.DOING
+    )
+    expectUserModules([], ['MA2001', 'MA2219'])
+    // doing -> done
+    t.user = await Repo.User!.setModuleStatus(
+      t.user!,
+      'MA2001',
+      ModuleStatus.DONE
+    )
+    expectUserModules(['MA2001'], ['MA2219'])
   })
 
   it('done -> not taken -> done', async () => {
     expect.assertions(4)
-    await container(db, async () => {
-      // done -> not taken
-      t.user = await Repo.User!.setModuleStatus(
-        t.user!,
-        'MA2001',
-        ModuleStatus.NOT_TAKEN
-      )
-      expectUserModules([], ['MA2219'])
-      // not taken -> done
-      t.user = await Repo.User!.setModuleStatus(
-        t.user!,
-        'MA2001',
-        ModuleStatus.DONE
-      )
-      expectUserModules(['MA2001'], ['MA2219'])
-    })
+    // done -> not taken
+    t.user = await Repo.User!.setModuleStatus(
+      t.user!,
+      'MA2001',
+      ModuleStatus.NOT_TAKEN
+    )
+    expectUserModules([], ['MA2219'])
+    // not taken -> done
+    t.user = await Repo.User!.setModuleStatus(
+      t.user!,
+      'MA2001',
+      ModuleStatus.DONE
+    )
+    expectUserModules(['MA2001'], ['MA2219'])
   })
 
   it('doing -> not taken -> doing', async () => {
     expect.assertions(4)
-    await container(db, async () => {
-      // doing -> not taken
-      t.user = await Repo.User!.setModuleStatus(
-        t.user!,
-        'MA2219',
-        ModuleStatus.NOT_TAKEN
-      )
-      expectUserModules(['MA2001'], [])
-      // not taken -> doing
-      t.user = await Repo.User!.setModuleStatus(
-        t.user!,
-        'MA2219',
-        ModuleStatus.DOING
-      )
-      expectUserModules(['MA2001'], ['MA2219'])
-    })
+    // doing -> not taken
+    t.user = await Repo.User!.setModuleStatus(
+      t.user!,
+      'MA2219',
+      ModuleStatus.NOT_TAKEN
+    )
+    expectUserModules(['MA2001'], [])
+    // not taken -> doing
+    t.user = await Repo.User!.setModuleStatus(
+      t.user!,
+      'MA2219',
+      ModuleStatus.DOING
+    )
+    expectUserModules(['MA2001'], ['MA2219'])
   })
 
   it('Throws error if invalid module code is passed in', async () => {
-    await container(db, () =>
-      expect(() =>
-        Repo.User!.setModuleStatus(
-          t.user!,
-          init.invalidModuleCode,
-          ModuleStatus.DONE
-        )
-      ).rejects.toThrow(Error)
-    )
+    await expect(() =>
+      Repo.User!.setModuleStatus(
+        t.user!,
+        init.invalidModuleCode,
+        ModuleStatus.DONE
+      )
+    ).rejects.toThrow(Error)
   })
 })
