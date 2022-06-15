@@ -99,6 +99,7 @@ type TestProps = {
   postReqs: string[]
   moduleCodes: string[]
   suggestedModulesCodes: string[]
+  count: number
 }
 
 export const t: Partial<TestProps> = {}

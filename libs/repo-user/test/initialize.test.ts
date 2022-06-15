@@ -13,23 +13,27 @@ beforeAll(() =>
   })
 )
 afterAll(() => teardown(db))
-
-const props = init.user1
+beforeEach(() => {
+  expect.hasAssertions()
+})
 
 describe('User.initialize', () => {
-  it('Saves an empty user', async () => {
-    expect.assertions(1)
-    await Repo.User!.initialize(props).then((res) => {
-      expect(res).toBeInstanceOf(User)
-      t.user = res
+  it('initial count', async () => {
+    await Repo.User!.count().then((count) => {
+      expect(count).toEqual(expect.any(Number))
+      t.count = count
     })
   })
 
-  it('Can find same user (with relations)', async () => {
-    expect.assertions(2)
-    await Repo.User!.findOneByUsername(props.username).then((res) => {
-      expect(res).toBeInstanceOf(User)
-      expect(res).toStrictEqual(t.user)
+  it('returns a user', async () => {
+    await Repo.User!.initialize(init.user1).then((user) => {
+      expect(user).toBeInstanceOf(User)
+    })
+  })
+
+  it('increments the count by 1', async () => {
+    await Repo.User!.count().then((count) => {
+      expect(count).toEqual(t.count! + 1)
     })
   })
 })
