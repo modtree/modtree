@@ -61,8 +61,8 @@ it('suggests correct modules', async () => {
   ])
 })
 
-it('ranks modules correctly', async () => {
-  expect(t.suggestedModulesCodes).toStrictEqual([
+it('ranks modules correctly', () => {
+  expect(t.moduleCodes).toStrictEqual([
     /**
      * part of degree
      */

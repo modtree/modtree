@@ -2,7 +2,6 @@ import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { Repo, setup, teardown } from '@modtree/test-env'
 import { ModuleCondensedRepository } from '../../src'
-import { ModuleCondensed } from '@modtree/entity'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -14,9 +13,9 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-test('moduleCondensed.getCodes', async () => {
-  await Repo.ModuleCondensed!.getCodes().then((moduleList) => {
-    expect(moduleList).toBeArrayOf(ModuleCondensed)
-    expect(moduleList.length).toBeGreaterThan(6000)
+test('returns an array of strings', async () => {
+  await Repo.ModuleCondensed!.getCodes().then((codes) => {
+    codes.forEach((e) => expect(typeof e).toBe('string'))
+    expect(codes.length).toBeGreaterThan(6000)
   })
 })
