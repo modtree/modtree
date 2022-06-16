@@ -58,33 +58,34 @@ export class GraphRepository
   /**
    * gets lists of modules placed and modules hidden
    *
-   * @returns {Promise<Array<Module[]>>}
+   * @returns {Promise<[Module[], Module[]]>}
    */
   private async getModulesFromUserAndDegree(
     user: User,
     degree: Degree,
     props: InitProps['Graph']
-  ): Promise<Array<Module[]>> {
-    if (props.pullAll) {
-      /* if don't pass in anything, then by default add ALL of
-       * - user.modulesDoing
-       * - user.modulesDone
-       * - degree.modules
-       */
-      const hidden = [...degree.modules]
-      hidden.push(...user.modulesDone)
-      hidden.push(...user.modulesDoing)
-      return [Array.from(new Set(hidden)), []]
-    }
+  ): Promise<[Module[], Module[]]> {
     // if passed in, then find the modules
-    const queryList = [props.modulesPlacedCodes, props.modulesHiddenCodes]
+    const queryList = [props.modulesHiddenCodes, props.modulesPlacedCodes]
     return Promise.all(
       queryList.map((list) =>
         this.moduleRepo.findBy({
           moduleCode: In(list),
         })
       )
-    )
+    ).then(([modulesHidden, modulesPlaced]) => {
+      if (props.pullAll) {
+        /* if don't pass in anything, then by default add ALL of
+         * - user.modulesDoing
+         * - user.modulesDone
+         * - degree.modules
+         */
+        modulesHidden.push(...degree.modules)
+        modulesHidden.push(...user.modulesDone)
+        modulesHidden.push(...user.modulesDoing)
+      }
+      return [modulesHidden, modulesPlaced]
+    })
   }
 
   /**
@@ -208,6 +209,7 @@ export class GraphRepository
    * note that this method will NOT retrieve any relations.
    * @param {Graph} graph
    * @param {GraphFrontendProps} graph
+   * @returns {Promise<Graph>}
    */
   async updateFrontendProps(
     graph: Graph,

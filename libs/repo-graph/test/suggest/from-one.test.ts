@@ -1,17 +1,13 @@
 import { Module } from '@modtree/entity'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { InitProps } from '@modtree/types'
-import { oneUp } from '@modtree/utils'
-import { container, getSource } from '@modtree/typeorm-config'
-import { UserRepository } from '@modtree/repo-user'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { GraphRepository } from '../../src'
-import { ModuleRepository } from '@modtree/repo-module'
+import { Repo, init, t, teardown } from '@modtree/test-env'
+import { getSource } from '@modtree/typeorm-config'
+import { flatten, oneUp } from '@modtree/utils'
+import { suggest, suggestSetup } from './utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-const degreeProps: InitProps['Degree'] = {
+const degreeProps = {
   moduleCodes: [
     'CS1010',
     'CG2111A', // in modulesDone, should not suggest
@@ -25,112 +21,112 @@ const degreeProps: InitProps['Degree'] = {
   title: 'Custom Degree',
 }
 
-const userProps: InitProps['User'] = {
-  ...init.emptyUser,
+const userProps = {
+  ...init.user1,
   modulesDone: ['CS1010', 'CG2111A'],
   modulesDoing: ['IT2002'],
 }
 
-beforeAll(() =>
-  setup(db)
-    .then(() => {
-      Object.assign(Repo, {
-        User: new UserRepository(db),
-        Degree: new DegreeRepository(db),
-        Graph: new GraphRepository(db),
-        Module: new ModuleRepository(db),
-      })
-      return Promise.all([
-        Repo.User!.initialize(userProps),
-        Repo.Degree!.initialize(degreeProps),
-      ])
-    })
-    .then(([user, degree]) =>
-      Repo.Graph!.initialize({
-        userId: user.id,
-        degreeId: degree.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: false,
-      })
-    )
-    .then((graph) => {
-      t.graph = graph
-    })
-)
+beforeAll(() => suggestSetup(db, userProps, degreeProps))
 afterAll(() => teardown(db))
 
-const expected = [
-  'CS2107',
-  'CS2100',
-  'CS2030',
-  'CP2106',
-  'CS2040C',
-  'CS2040',
-  'CS2030S',
-]
+it('returns an array of modules', async () => {
+  await suggest(t.graph!, ['CS1010']).then((m) => {
+    expect(m).toBeArrayOf(Module)
+    // cache because this operation is expensive
+    t.moduleCodes = m.map(flatten.module)
+  })
+})
 
-describe('Graph.suggestModules (from one)', () => {
-  describe('Suggests post-reqs of the given module', () => {
-    it('Which the user is eligible for', async () => {
-      const selectedModules = ['CS1010']
-      const res = await container(db, () =>
-        Repo.Graph!.suggestModules(t.graph!, selectedModules)
-      )
-      expect(res).toBeDefined()
-      if (!res) return
-      res.forEach((one) => {
-        expect(one).toBeInstanceOf(Module)
-      })
-      t.suggestedModulesCodes = res.map((one) => one.moduleCode)
-      const copy = [...t.suggestedModulesCodes]
-      expect(copy.sort()).toStrictEqual(expected.sort())
-    })
+it('suggests correct modules', () => {
+  expect(t.moduleCodes).toIncludeSameMembers([
+    'CS2107',
+    'CS2100',
+    'CS2030',
+    'CP2106',
+    'CS2040C',
+    'CS2040',
+    'CS2030S',
+  ])
+})
 
-    it('In our current desired priority', async () => {
-      // unlocks 4, 3, 3, 0 mods
-      const degreeModules = ['CS2030', 'CS2100', 'CS2107', 'CP2106']
-      // unlocks 7, 2, 0 mods
-      const nonDegreeModules = ['CS2040', 'CS2040C', 'CS2030S']
-      const expected = degreeModules.concat(nonDegreeModules)
-      expect(t.suggestedModulesCodes).toEqual(expected)
+it('ranks modules correctly', () => {
+  expect(t.moduleCodes).toEqual([
+    /**
+     * part of degree
+     */
+    'CS2030', // unlocks 4 mods
+    'CS2100', // unlocks 3 mods
+    'CS2107', // unlocks 3 mods
+    'CP2106', // unlocks 0 mods
+    /**
+     * outside of degree
+     */
+    'CS2040', // unlocks 7 mods
+    'CS2040C', // unlocks 2 mods
+    'CS2030S', // unlocks 0 mods
+  ])
+})
+
+test('CS1010 has post-reqs', async () => {
+  await Repo.Module!.findOneByOrFail({ moduleCode: 'CS1010' }).then(
+    (module) => {
+      const codes = module.fulfillRequirements
+      expect(codes).toBeInstanceOf(Array)
+      expect(codes.length).toBeGreaterThan(0)
+      t.postReqsCodes = codes
+    }
+  )
+})
+
+describe('MA3269: not eligible, hence not suggested', () => {
+  it('MA3269 is a post-req of CS1010', () => {
+    expect(t.postReqsCodes).toContain('MA3269')
+  })
+
+  it('user is not eligible for MA3269', async () => {
+    await Repo.User!.canTakeModule(t.user!, 'MA3269').then((res) => {
+      expect(res).toBe(false)
     })
   })
 
-  describe('Does not suggest post-reqs of the given module', () => {
-    it('Which the user is not eligible for', async () => {
-      // get postReqs
-      const res = await container(db, () =>
-        Repo.Module!.findOneBy({ moduleCode: 'CS1010' })
-      )
-      expect(res).toBeDefined()
-      if (!res) return
-      t.postReqs = res.fulfillRequirements
-      // main test
-      const moduleCodes = ['MA3269', 'DSA3102']
-      // confirm that these modules are indeed CS1010 postReqs
-      moduleCodes.forEach((code) => {
-        expect(t.postReqs!.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
-      })
-    })
+  it('MA3269 is not suggested', () => {
+    expect(t.moduleCodes).not.toContain('MA3269')
+  })
+})
 
-    it('Which the user has done', async () => {
-      const moduleCodes = ['CG2111A']
-      // confirm that these modules are indeed CS1010 postReqs
-      moduleCodes.forEach((code) => {
-        expect(t.postReqs!.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
-      })
-    })
+describe('DSA3102: not eligible, hence not suggested', () => {
+  it('DSA3102 is a post-req of CS1010', () => {
+    expect(t.postReqsCodes).toContain('DSA3102')
+  })
 
-    it('Which the user is doing', async () => {
-      const moduleCodes = ['IT2002']
-      // confirm that these modules are indeed CS1010 postReqs
-      moduleCodes.forEach((code) => {
-        expect(t.postReqs!.includes(code)).toEqual(true)
-        expect(t.suggestedModulesCodes!.includes(code)).toEqual(false)
-      })
+  it('user is not eligible for DSA3102', async () => {
+    await Repo.User!.canTakeModule(t.user!, 'DSA3102').then((res) => {
+      expect(res).toBe(false)
     })
+  })
+
+  it('DSA3102 is not suggested', () => {
+    expect(t.moduleCodes).not.toContain('DSA3102')
+  })
+})
+
+describe('CG2111A: already done, hence not suggested', () => {
+  it('CG2111A is already done', () => {
+    expect(t.user!.modulesDone.map(flatten.module)).toContain('CG2111A')
+  })
+
+  it('CG2111A is not suggested', () => {
+    expect(t.moduleCodes).not.toContain('CG2111A')
+  })
+})
+
+describe('IT2002: already done, hence not suggested', () => {
+  it('IT2002 is already in progress', () => {
+    expect(t.user!.modulesDoing.map(flatten.module)).toContain('IT2002')
+  })
+
+  it('IT2002 is not suggested', () => {
+    expect(t.moduleCodes).not.toContain('IT2002')
   })
 })

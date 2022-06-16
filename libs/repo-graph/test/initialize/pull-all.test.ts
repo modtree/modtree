@@ -1,5 +1,5 @@
 import { flatten, oneUp } from '@modtree/utils'
-import { container, getSource } from '@modtree/typeorm-config'
+import { getSource } from '@modtree/typeorm-config'
 import { Graph } from '@modtree/entity'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { GraphRepository } from '../../src'
@@ -12,14 +12,19 @@ const db = getSource(dbName)
 beforeAll(() =>
   setup(db)
     .then(() => {
-      Object.assign(Repo, {
-        User: new UserRepository(db),
-        Degree: new DegreeRepository(db),
-        Graph: new GraphRepository(db),
-      })
+      Repo.User = new UserRepository(db)
+      Repo.Degree = new DegreeRepository(db)
+      Repo.Graph = new GraphRepository(db)
       return Promise.all([
-        Repo.User!.initialize(init.user1),
-        Repo.Degree!.initialize(init.degree1),
+        Repo.User!.initialize({
+          ...init.user1,
+          modulesDone: ['MA2001'],
+          modulesDoing: ['MA2219'],
+        }),
+        Repo.Degree!.initialize({
+          moduleCodes: ['CS1101S', 'MA2001'],
+          title: 'Test Degree',
+        }),
       ])
     })
     .then(([user, degree]) => {
@@ -29,52 +34,36 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-describe('Graph.initialize', () => {
-  it('Initializes a graph', async () => {
-    expect.assertions(1)
-    /**
-     * initialize a test graph instance
-     */
-    await container(db, () =>
-      Repo.Graph!.initialize({
-        userId: t.user!.id,
-        degreeId: t.degree!.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: true,
-      }).then((res) => {
-        expect(res).toBeInstanceOf(Graph)
-        t.graph = res
-      })
-    )
+it('initial count', async () => {
+  await Repo.Graph!.count().then((count) => {
+    expect(count).toEqual(0)
   })
+})
 
-  it('Can find same graph (excluding nested relations)', async () => {
-    expect.assertions(1)
-    await container(db, () =>
-      Repo.Graph!.findOneById(t.graph!.id).then((res) => {
-        expect(res).toBeInstanceOf(Graph)
-        // currently not strictly equal, because Graph.findOneById
-        // does not load nested relations, but Graph.initialize does
-        // expect(res).toStrictEqual(t.graph)
-      })
-    )
+it('returns a graph', async () => {
+  await Repo.Graph!.initialize({
+    userId: t.user!.id,
+    degreeId: t.degree!.id,
+    modulesPlacedCodes: [],
+    modulesHiddenCodes: [],
+    pullAll: true,
+  }).then((graph) => {
+    expect(graph).toBeInstanceOf(Graph)
+    t.graph = graph
   })
+})
 
-  it('Correctly populates modulesHidden', async () => {
-    /**
-     * with pull all set to true, it will take modules from
-     * both the degree and the user
-     */
-    const all = t.degree!.modules.map(flatten.module)
-    all.push(...t.user!.modulesDone.map(flatten.module))
-    all.push(...t.user!.modulesDoing.map(flatten.module))
-    t.moduleCodes = Array.from(new Set(all))
-    /**
-     * all these module codes should show up in the hidden codes
-     */
-    const hidden = t.graph!.modulesHidden.map(flatten.module)
-    expect(hidden.sort()).toStrictEqual(t.moduleCodes.sort())
-    expect(t.graph!.modulesPlaced.length).toEqual(0)
+it('increments the count by 1', async () => {
+  await Repo.Graph!.count().then((count) => {
+    expect(count).toEqual(1)
   })
+})
+
+it('saves correct hidden modules', async () => {
+  const codes = t.graph!.modulesHidden.map(flatten.module)
+  expect(codes).toIncludeSameMembers(['CS1101S', 'MA2001', 'MA2219'])
+})
+
+it('has no modules placed', () => {
+  expect(t.graph!.modulesPlaced).toHaveLength(0)
 })

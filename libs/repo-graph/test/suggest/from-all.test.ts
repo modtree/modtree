@@ -1,16 +1,13 @@
 import { Module } from '@modtree/entity'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { InitProps } from '@modtree/types'
-import { oneUp } from '@modtree/utils'
-import { container, getSource } from '@modtree/typeorm-config'
-import { UserRepository } from '@modtree/repo-user'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { GraphRepository } from '../../src'
+import { teardown, t, init } from '@modtree/test-env'
+import { flatten, oneUp } from '@modtree/utils'
+import { getSource } from '@modtree/typeorm-config'
+import { suggest, suggestSetup } from './utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-const degreeProps: InitProps['Degree'] = {
+const degreeProps = {
   moduleCodes: [
     'CS1010',
     'CS1231',
@@ -24,103 +21,71 @@ const degreeProps: InitProps['Degree'] = {
     'CS3234', // unlocks 0 mods
     'CS2109S', // unlocks 0 mods
   ],
-  title: 'Custom Degree',
+  title: 'Test Degree',
 }
 
-const userProps: InitProps['User'] = {
-  ...init.emptyUser,
+const userProps = {
+  ...init.user1,
   modulesDone: ['CS1010', 'CS1231'],
   modulesDoing: ['IT2002', 'CG2111A'],
 }
 
-beforeAll(() =>
-  setup(db)
-    .then(() => {
-      Object.assign(Repo, {
-        User: new UserRepository(db),
-        Degree: new DegreeRepository(db),
-        Graph: new GraphRepository(db),
-      })
-      return Promise.all([
-        Repo.User!.initialize(userProps),
-        Repo.Degree!.initialize(degreeProps),
-      ])
-    })
-    .then(([user, degree]) =>
-      Repo.Graph!.initialize({
-        userId: user.id,
-        degreeId: degree.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: false,
-      })
-    )
-    .then((graph) => {
-      t.graph = graph
-    })
-)
+beforeAll(() => suggestSetup(db, userProps, degreeProps))
 afterAll(() => teardown(db))
 
-const expected = [
-  /* CS1010 unlocks */
-  'CS2107',
-  'CS2100',
-  'CS2030',
-  'CP2106',
-  'CS2040C',
-  'CS2040',
-  'CS2030S',
-  /* CS1231 unlocks */
-  'CS3234',
-  'MA2202',
-  'MA2202S',
-  'MA2214',
-  'MA2219',
-  'MA3205',
-  'CS2109S',
-  /* both required to unlock */
-  'CS2040S',
-]
-
-describe('Graph.suggestModules (from many)', () => {
-  it('Suggests post-reqs of the given module which the user is eligible for', async () => {
-    const selectedModules = userProps.modulesDone
-    const res = await container(db, () =>
-      Repo.Graph!.suggestModules(t.graph!, selectedModules)
-    )
-    expect(res).toBeDefined()
-    if (!res) return
-    res.forEach((one) => {
-      expect(one).toBeInstanceOf(Module)
-    })
-    t.suggestedModulesCodes = res.map((one) => one.moduleCode)
-    const copy = [...t.suggestedModulesCodes]
-    expect(copy.sort()).toStrictEqual(expected.sort())
+it('returns an array of modules', async () => {
+  await suggest(t.graph!, userProps.modulesDone).then((m) => {
+    expect(m).toBeArrayOf(Module)
+    // cache because this operation is expensive
+    t.moduleCodes = m.map(flatten.module)
   })
+})
 
-  it('Suggests post-reqs of the given module in our current desired priority', async () => {
-    // unlocks 5, 3, 3, 2, 0, 0, 0 mods
-    const degreeModules = [
-      'CS2030',
-      'CS2100',
-      'CS2107',
-      'CS2040S',
-      'CP2106',
-      'CS2109S',
-      'CS3234',
-    ]
-    // unlocks 13, 2, 1, 1, 0, 0, 0, 0 mods
-    const nonDegreeModules = [
-      'CS2040',
-      'CS2040C',
-      'MA2214',
-      'MA3205',
-      'CS2030S',
-      'MA2202',
-      'MA2202S',
-      'MA2219',
-    ]
-    const expected = degreeModules.concat(nonDegreeModules)
-    expect(t.suggestedModulesCodes).toEqual(expected)
-  })
+it('suggests correct modules', () => {
+  expect(t.moduleCodes).toIncludeSameMembers([
+    /* CS1010 unlocks */
+    'CS2107',
+    'CS2100',
+    'CS2030',
+    'CP2106',
+    'CS2040C',
+    'CS2040',
+    'CS2030S',
+    /* CS1231 unlocks */
+    'CS3234',
+    'MA2202',
+    'MA2202S',
+    'MA2214',
+    'MA2219',
+    'MA3205',
+    'CS2109S',
+    /* both required to unlock */
+    'CS2040S',
+  ])
+})
+
+it('ranks modules correctly', () => {
+  expect(t.moduleCodes).toStrictEqual([
+    /**
+     * part of degree
+     */
+    'CS2030', // unlocks 5 mods
+    'CS2100', // unlocks 3 mods
+    'CS2107', // unlocks 3 mods
+    'CS2040S', // unlocks 2 mods
+    'CP2106', // unlocks 0 mods
+    'CS2109S', // unlocks 0 mods
+    'CS3234', // unlocks 0 mods
+    /**
+     * outside of degree
+     */
+    'CS2040', // unlocks 13 mods
+    'CS2040C', // unlocks 2 mods
+    'MA2214', // unlocks 1 mods
+    'MA3205', // unlocks 1 mods
+    'CS2030S', // unlocks 0 mods
+    'MA2202', // unlocks 0 mods
+    'MA2202S', // unlocks 0 mods
+    'MA2219', // unlocks 0 mods
+  ])
 })

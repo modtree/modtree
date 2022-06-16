@@ -1,7 +1,7 @@
 import { Degree } from '@modtree/entity'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
+import { setup, teardown, Repo, t } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
-import { container, getSource } from '@modtree/typeorm-config'
+import { getSource } from '@modtree/typeorm-config'
 import { DegreeRepository } from '../src'
 
 const dbName = oneUp(__filename)
@@ -14,30 +14,41 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-describe('Degree.initialize', () => {
-  const props = init.degree1
-  it('Saves a degree', async () => {
-    // write the degree to database
-    await container(db, () =>
-      Repo.Degree!.initialize(props).then((res) => {
-        expect(res).toBeInstanceOf(Degree)
-        t.degree = res
-      })
-    )
-  })
+const props = {
+  moduleCodes: [
+    'CS1101S',
+    'CS1231S',
+    'CS2030S',
+    'CS2040S',
+    'CS2100',
+    'CS2103T',
+    'CS2106',
+    'CS2109S',
+    'CS3230',
+  ],
+  title: 'Test Degree',
+}
 
-  it('Can find same degree (with relations)', async () => {
-    await container(db, () =>
-      Repo.Degree!.findOneByTitle(props.title).then((res) => {
-        expect(res).toBeInstanceOf(Degree)
-        expect(res).toStrictEqual(t.degree)
-      })
-    )
+it('initial count', async () => {
+  await Repo.Degree!.count().then((count) => {
+    expect(count).toEqual(0)
   })
+})
 
-  it('Correctly saves modules', async () => {
-    const moduleCodes = t.degree!.modules.map(flatten.module)
-    // match relation's module codes to init props' modules codes
-    expect(moduleCodes.sort()).toStrictEqual(props.moduleCodes.sort())
+it('returns a degree', async () => {
+  await Repo.Degree!.initialize(props).then((res) => {
+    expect(res).toBeInstanceOf(Degree)
+    t.degree = res
   })
+})
+
+it('increments the count by 1', async () => {
+  await Repo.Degree!.count().then((count) => {
+    expect(count).toEqual(1)
+  })
+})
+
+it('saves correct modules', async () => {
+  const codes = t.degree!.modules.map(flatten.module)
+  expect(codes).toIncludeSameMembers(props.moduleCodes)
 })
