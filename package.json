@@ -54,8 +54,8 @@
     "typeorm": "^0.3.6"
   },
   "devDependencies": {
-    "@types/prismjs": "^1.26.0",
     "@nrwl/cli": "14.2.2",
+    "@nrwl/cypress": "^14.3.5",
     "@nrwl/eslint-plugin-nx": "14.2.4",
     "@nrwl/express": "^14.2.4",
     "@nrwl/jest": "14.2.4",
@@ -75,6 +75,7 @@
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
     "@types/pg": "^8.6.5",
+    "@types/prismjs": "^1.26.0",
     "@types/react": "17.0.37",
     "@types/react-dom": "17.0.17",
     "@types/supertest": "^2.0.12",
