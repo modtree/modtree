@@ -22,3 +22,9 @@ export type ModtreeUserContext = {
   isLoading: boolean
   checkSession: () => Promise<void>
 }
+
+export type UserMenuItem = {
+  text: string
+  href?: string
+  callback?: () => void
+}

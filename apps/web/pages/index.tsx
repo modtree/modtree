@@ -4,6 +4,7 @@ import Header from '@/components/header'
 import UserProfileModal from '@/components/modals/UserProfile'
 import ModuleModal from '@/components/modals/ModuleInfo'
 import ModtreeFlow from '../flow'
+import DebugModal from '@/components/modals/Debug'
 
 export default function Modtree() {
   return (
@@ -15,6 +16,7 @@ export default function Modtree() {
         <FloatingActionButton />
       </FullScreenOverlay>
       <UserProfileModal />
+      <DebugModal />
       <ModuleModal />
     </div>
   )
