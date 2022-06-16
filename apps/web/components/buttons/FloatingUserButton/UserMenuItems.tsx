@@ -3,7 +3,7 @@ import { createRef } from 'react'
 import { ModtreeUserContext } from 'types'
 import { MenuLink } from './MenuLink'
 import { Dispatch } from 'redux'
-import { showUserProfile } from '@/store/modal'
+import { showDebugModal, showUserProfile } from '@/store/modal'
 
 export default function UserMenuItems(props: {
   dispatch: Dispatch
@@ -18,6 +18,12 @@ export default function UserMenuItems(props: {
       href: '/api/auth/logout',
     },
   ]
+  if (process.env['NODE_ENV'] === 'development') {
+    menuItems.splice(1, 0, {
+      text: 'Debug',
+      callback: () => dispatch(showDebugModal()),
+    })
+  }
 
   return (
     <>

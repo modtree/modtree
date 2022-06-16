@@ -5,6 +5,7 @@ import { EmptyResponse } from '@modtree/utils'
 type State = {
   showUserProfile: boolean
   showModuleModal: boolean
+  showDebugModal: boolean
   modalModule: ModtreeApiResponse.Module
 }
 
@@ -15,6 +16,7 @@ export type ModalState = {
 const initialState: State = {
   showUserProfile: false,
   showModuleModal: false,
+  showDebugModal: false,
   modalModule: EmptyResponse.Module,
 }
 
@@ -34,6 +36,12 @@ export const modal = createSlice({
     showModuleModal: (state) => {
       state.showModuleModal = true
     },
+    hideDebugModal: (state) => {
+      state.showDebugModal = false
+    },
+    showDebugModal: (state) => {
+      state.showDebugModal = true
+    },
     setModalModule: (
       state,
       action: PayloadAction<ModtreeApiResponse.Module>
@@ -49,5 +57,7 @@ export const {
   showModuleModal,
   hideModuleModal,
   setModalModule,
+  hideDebugModal,
+  showDebugModal,
 } = modal.actions
 export default modal.reducer
