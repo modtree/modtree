@@ -20,17 +20,10 @@ beforeAll(() =>
     })
 )
 afterAll(() => teardown(db))
-beforeEach(expect.hasAssertions)
 
-it('Adds only modules which have pre-reqs cleared', async () => {
-  // Get eligible modules
-  await Repo.User!.getEligibleModules(t.user!).then((eligibleModules) => {
-    // expect(eligibleModules).toBeInstanceOf(Array)
-    const expected = ['CS2109S']
-    /**
-     * Compare module codes
-     */
-    const eligibleModuleCodes = eligibleModules.map(flatten.module)
-    expect(eligibleModuleCodes).toIncludeSameMembers(expected)
+it('adds correct modules', async () => {
+  await Repo.User!.getEligibleModules(t.user!).then((modules) => {
+    const codes = modules.map(flatten.module)
+    expect(codes).toIncludeSameMembers(['CS2109S'])
   })
 })

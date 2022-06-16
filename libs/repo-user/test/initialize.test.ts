@@ -13,27 +13,35 @@ beforeAll(() =>
   })
 )
 afterAll(() => teardown(db))
-beforeEach(() => {
-  expect.hasAssertions()
+
+it('initial count', async () => {
+  await Repo.User!.count().then((count) => {
+    expect(count).toEqual(0)
+  })
 })
 
-describe('User.initialize', () => {
-  it('initial count', async () => {
-    await Repo.User!.count().then((count) => {
-      expect(count).toEqual(expect.any(Number))
-      t.count = count
-    })
+it('returns a user', async () => {
+  await Repo.User!.initialize(init.user1).then((user) => {
+    expect(user).toBeInstanceOf(User)
+    t.user = user
   })
+})
 
-  it('returns a user', async () => {
-    await Repo.User!.initialize(init.user1).then((user) => {
-      expect(user).toBeInstanceOf(User)
-    })
+it('increments the count by 1', async () => {
+  await Repo.User!.count().then((count) => {
+    expect(count).toEqual(1)
   })
+})
 
-  it('increments the count by 1', async () => {
-    await Repo.User!.count().then((count) => {
-      expect(count).toEqual(t.count! + 1)
-    })
+it('gets the user if exists', async () => {
+  await Repo.User!.initialize(init.user1).then((user) => {
+    expect(user).toEqual(t.user!)
+  })
+})
+
+it("doesn't init conflicting authZeroId", async () => {
+  await Repo.User!.count().then((count) => {
+    // same as previous count
+    expect(count).toEqual(1)
   })
 })

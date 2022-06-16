@@ -21,7 +21,6 @@ beforeAll(() =>
     })
 )
 afterAll(() => teardown(db))
-beforeEach(expect.hasAssertions)
 
 it('resolves modules not taken', async () => {
   const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
@@ -32,7 +31,7 @@ it('resolves modules not taken', async () => {
   })
 })
 
-it('rejects modules taking/taken before', async () => {
+it('errors on modules taking/taken before', async () => {
   // one done, one doing
   const modulesTested = ['MA2001', 'MA2219']
   await Promise.all(
@@ -42,7 +41,7 @@ it('rejects modules taking/taken before', async () => {
   })
 })
 
-it('rejects invalid code', async () => {
+it('errors on invalid code', async () => {
   await Repo.User!.canTakeModule(t.user!, 'NOT_VALID').then((res) => {
     expect(res).toStrictEqual(false)
   })

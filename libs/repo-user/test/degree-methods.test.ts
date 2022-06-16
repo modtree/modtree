@@ -57,7 +57,7 @@ describe('User.findDegree', () => {
     })
   })
 
-  it('rejects if degree not found', async () => {
+  it('errors if degree not found', async () => {
     await expect(() =>
       Repo.User!.findDegree(t.user!, 'NOT_VALID')
     ).rejects.toThrowError(Error('Degree not found in User'))
@@ -78,7 +78,7 @@ describe('User.removeDegree', () => {
     expect(t.user!.savedDegrees).toHaveLength(0)
   })
 
-  it('rejects if degree not found', async () => {
+  it('errors if degree not found', async () => {
     await expect(() =>
       Repo.User!.removeDegree(t.user!, 'NOT_VALID')
     ).rejects.toThrowError(Error('Degree not found in User'))
