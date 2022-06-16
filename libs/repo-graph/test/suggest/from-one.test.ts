@@ -95,22 +95,6 @@ describe('MA3269: not eligible, hence not suggested', () => {
   })
 })
 
-describe('DSA3102: not eligible, hence not suggested', () => {
-  it('DSA3102 is a post-req of CS1010', () => {
-    expect(t.postReqsCodes).toContain('DSA3102')
-  })
-
-  it('user is not eligible for DSA3102', async () => {
-    await Repo.User!.canTakeModule(t.user!, 'DSA3102').then((res) => {
-      expect(res).toBe(false)
-    })
-  })
-
-  it('DSA3102 is not suggested', () => {
-    expect(t.moduleCodes).not.toContain('DSA3102')
-  })
-})
-
 describe('CG2111A: already done, hence not suggested', () => {
   it('CG2111A is already done', () => {
     expect(t.user!.modulesDone.map(flatten.module)).toContain('CG2111A')
@@ -121,7 +105,7 @@ describe('CG2111A: already done, hence not suggested', () => {
   })
 })
 
-describe('IT2002: already done, hence not suggested', () => {
+describe('IT2002: already doing, hence not suggested', () => {
   it('IT2002 is already in progress', () => {
     expect(t.user!.modulesDoing.map(flatten.module)).toContain('IT2002')
   })
