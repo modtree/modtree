@@ -5,7 +5,7 @@ const users = [
     displayName: 'Nguyen Vu Khang',
     username: 'khang',
     email: 'brew4k@gmail.com',
-    authZeroId: 'auth0|something',
+    authZeroId: 'auth0|khang',
     modulesDone: [
       'MA2001,',
       'MA1100,',
@@ -31,7 +31,7 @@ const users = [
     displayName: 'Tan Wei Seng',
     username: 'weiseng',
     email: 'weiseng@modtree.com',
-    authZeroId: 'auth0|something',
+    authZeroId: 'auth0|weiseng',
     modulesDone: [
       'MA1521',
       'MA2001',
@@ -56,7 +56,7 @@ const users = [
   {
     username: 'base',
     email: 'base@modtree.com',
-    authZeroId: 'auth0|something',
+    authZeroId: 'auth0|base',
   },
 ]
 

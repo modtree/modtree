@@ -51,7 +51,6 @@ function readEnv(target: DataSourceOptions) {
  * @returns {DataSourceOptions}
  */
 function getConfig(): DataSourceOptions {
-  console.log('NODE_ENV:', process.env['NODE_ENV'])
   const base: DataSourceOptions = {
     type: 'postgres',
     rootDir: process.cwd(),

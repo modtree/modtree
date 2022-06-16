@@ -1,19 +1,33 @@
 import { Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
-import { FC, Fragment, ReactElement } from 'react'
+import { FC, ForwardedRef, forwardRef, Fragment, ReactElement } from 'react'
 
-export function MenuLink(props: {
-  href: string
-  children: ReactElement[] | ReactElement
-  passHref: boolean
-}) {
-  const { href, children, passHref, ...rest } = props
-  return (
-    <Link href={href} passHref={passHref}>
-      <a {...rest}>{children}</a>
-    </Link>
+function getMenuLink() {
+  const MenuLink = forwardRef(
+    (
+      props: {
+        href: string
+        children: string
+        className: string
+        onClick: () => void
+      },
+      ref: ForwardedRef<HTMLAnchorElement>
+    ) => {
+      const { href, children, className, onClick } = props
+      return (
+        <Link href={href} passHref>
+          <a className={className} onClick={onClick} ref={ref}>
+            {children}
+          </a>
+        </Link>
+      )
+    }
   )
+  MenuLink.displayName = 'MenuLink'
+  return MenuLink
 }
+
+export const MenuLink = getMenuLink()
 
 export default function DropdownMenu(props: {
   TriggerButton: FC

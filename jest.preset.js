@@ -1,3 +1,7 @@
 const nxPreset = require('@nrwl/jest/preset').default
+const join = require('path').join
 
-module.exports = { ...nxPreset }
+module.exports = {
+  ...nxPreset,
+  setupFilesAfterEnv: [join(__dirname, 'libs/test-env/src/jest-matchers.ts')],
+}

@@ -1,8 +1,8 @@
 import { IoPerson } from 'react-icons/io5'
-import { useUser } from '@auth0/nextjs-auth0'
+import { useUser } from '@/utils/auth0'
 import { Menu } from '@headlessui/react'
 import axios from 'axios'
-import { useEffect } from 'react'
+import { createRef, useEffect } from 'react'
 import DropdownMenu, { MenuLink } from './DropdownMenu'
 import { useDispatch, useSelector } from 'react-redux'
 import { showUserProfile } from '@/store/modal'
@@ -71,18 +71,21 @@ export default function SignedInCircle() {
         </Menu.Item>
       </div>
       <div className="py-2">
-        {menuItems.map((menuItem, index) => (
-          <Menu.Item key={`${menuItem.text}-${index}`}>
-            <MenuLink href={menuItem.href || ''} passHref>
-              <a
+        {menuItems.map((menuItem, index) => {
+          const ref = createRef<HTMLAnchorElement>()
+          return (
+            <Menu.Item key={`${menuItem.text}-${index}`}>
+              <MenuLink
+                ref={ref}
+                href={menuItem.href || ''}
                 className="hover:bg-modtree-400/80 hover:text-white text-gray-900 flex w-full px-4 py-1.5 text-sm"
                 onClick={menuItem.callback}
               >
                 {menuItem.text}
-              </a>
-            </MenuLink>
-          </Menu.Item>
-        ))}
+              </MenuLink>
+            </Menu.Item>
+          )
+        })}
       </div>
     </DropdownMenu>
   )

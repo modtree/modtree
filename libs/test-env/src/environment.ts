@@ -5,6 +5,10 @@ import { InitProps, ModtreeApiResponse, Repositories } from '@modtree/types'
 import axios from 'axios'
 import { Agent } from 'http'
 import { DataSource, DeleteResult, Repository } from 'typeorm'
+/**
+ * imports custom matcher types
+ */
+import '@modtree/test-env/jest'
 
 type SetupOptions = {
   initialize: boolean
@@ -99,6 +103,7 @@ type TestProps = {
   postReqs: string[]
   moduleCodes: string[]
   suggestedModulesCodes: string[]
+  count: number
 }
 
 export const t: Partial<TestProps> = {}
