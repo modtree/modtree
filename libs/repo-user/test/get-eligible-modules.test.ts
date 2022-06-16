@@ -2,7 +2,6 @@ import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { UserRepository } from '../src'
-import '@modtree/test-env/jest'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

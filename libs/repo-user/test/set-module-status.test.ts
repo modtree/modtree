@@ -29,8 +29,8 @@ function expectUserModules(
 ) {
   const modulesDone = t.user!.modulesDone.map(flatten.module)
   const modulesDoing = t.user!.modulesDoing.map(flatten.module)
-  expect(modulesDone.sort()).toStrictEqual(modulesDoneCodes.sort())
-  expect(modulesDoing.sort()).toStrictEqual(modulesDoingCodes.sort())
+  expect(modulesDone).toIncludeSameMembers(modulesDoneCodes)
+  expect(modulesDoing).toIncludeSameMembers(modulesDoingCodes)
 }
 
 /**

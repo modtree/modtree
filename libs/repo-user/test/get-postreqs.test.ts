@@ -4,7 +4,6 @@ import { init, Repo, setup, t, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { InitProps } from '@modtree/types'
 import { flatten, oneUp } from '@modtree/utils'
-
 import { UserRepository } from '../src'
 
 const dbName = oneUp(__filename)
@@ -50,7 +49,7 @@ it('Gets all post-reqs', async () => {
       // Remove modules doing
       const expected = mod.fulfillRequirements.filter((one) => one !== 'MA2101')
       // Compare module codes
-      expect(t.postReqsCodes!.sort()).toStrictEqual(expected.sort())
+      expect(t.postReqsCodes!).toIncludeSameMembers(expected)
     })
 })
 

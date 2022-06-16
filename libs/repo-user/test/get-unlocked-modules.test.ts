@@ -31,7 +31,7 @@ it('Correctly gets unlocked modules', async () => {
     const expected = ['CS2106', 'CS3210', 'CS3237']
     // Compare module codes
     const codes = modules.map(flatten.module)
-    expect(codes.sort()).toStrictEqual(expected.sort())
+    expect(codes).toIncludeSameMembers(expected)
   })
 })
 
