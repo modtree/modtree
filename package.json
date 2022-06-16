@@ -15,6 +15,7 @@
     "build:docs": "nx build docs",
     "build:vercel:docs": "nx build docs --skip-nx-cache",
     "build:vercel:web": "nx build web --skip-nx-cache",
+    "e2e": "nx e2e web-e2e --watch",
     "i": "bash ./scripts.sh inverse",
     "format": "prettier --write .",
     "prepare": "bash ./scripts.sh setup",

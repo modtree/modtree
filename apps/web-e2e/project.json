@@ -6,13 +6,8 @@
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/web-e2e/cypress.json",
+        "cypressConfig": "apps/web-e2e/cypress.config.js",
         "devServerTarget": "web:serve:development"
-      },
-      "configurations": {
-        "production": {
-          "devServerTarget": "web:serve:production"
-        }
       }
     },
     "lint": {
