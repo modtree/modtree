@@ -15,10 +15,10 @@ function readJson(target: DataSourceOptions) {
   if (!nodeEnv) return
   const modtreeConfigJson = rawJson('modtree.config.json')
   Object.assign(target, modtreeConfigJson[nodeEnv])
-  try {
+  if (fs.existsSync('admin.config.json')) {
     const adminConfigJson = rawJson('admin.config.json')
     Object.assign(target, adminConfigJson[nodeEnv])
-  } catch {}
+  }
 }
 
 function readEnv(target: DataSourceOptions) {

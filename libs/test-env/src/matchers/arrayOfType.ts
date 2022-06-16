@@ -1,6 +1,7 @@
 /**
  * checks deeply if two arrays contains the same elements
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function arrayOfType<T>(received: T[], expected: any) {
   if (
     /**

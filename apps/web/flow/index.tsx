@@ -7,8 +7,8 @@ import ReactFlow, {
 } from 'react-flow-renderer'
 import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
-import { useSelector, useDispatch } from 'react-redux'
-import { setFlowSelection, setFlowNodes, FlowState } from '@/store/flow'
+import { useDispatch } from 'react-redux'
+import { setFlowSelection, setFlowNodes } from '@/store/flow'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -22,9 +22,9 @@ export default function ModtreeFlow() {
    * retrieve redux state for tree selection
    * (Array of selected module nodes)
    */
-  const flowSelection = useSelector<FlowState, string[]>(
-    (state) => state.flow.selection
-  )
+  // const flowSelection = useSelector<FlowState, string[]>(
+  //   (state) => state.flow.selection
+  // )
 
   /**
    * builtin react flow hooks that handle node/edge movement
@@ -33,6 +33,7 @@ export default function ModtreeFlow() {
    */
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  console.log(setEdges.name)
 
   /**
    * called when user drops a module node. (after having dragged it)

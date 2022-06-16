@@ -2,16 +2,14 @@ import { Graph, Module, ModuleCondensed } from '@modtree/entity'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { ModuleCondensedRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
-import { init, Repo, setup, teardown } from '@modtree/test-env'
+import { init, Repo, setup, teardown, t } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { flatten, oneUp } from '@modtree/utils'
 import { EntityNotFoundError } from 'typeorm'
-
 import { GraphRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const t: Partial<{ graph: Graph; moduleCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(db)
@@ -31,133 +29,108 @@ beforeAll(() =>
       Repo.Graph!.initialize({
         userId: user.id,
         degreeId: degree.id,
-        modulesPlacedCodes: [],
+        modulesPlacedCodes: ['CM1501'],
         modulesHiddenCodes: [],
         pullAll: true,
       })
     )
     .then((graph) => {
       t.graph = graph
-      const all = graph.degree.modules.map(flatten.module)
-      all.push(...graph.user.modulesDone.map(flatten.module))
-      all.push(...graph.user.modulesDoing.map(flatten.module))
-      t.moduleCodes = Array.from(new Set(all))
     })
 )
 afterAll(() => teardown(db))
 
-/**
- *
- * @param {string} moduleCode
- */
-function returnsGraphAfterToggling(moduleCode: string) {
-  expect.hasAssertions()
-  it(`toggles ${moduleCode} and returns graph`, async () => {
-    const returned = await Repo.Graph!.toggleModule(t.graph!, moduleCode)
-    expect(returned).toStrictEqual(t.graph)
-  })
+async function findGraph(id: string) {
+  return Repo.Graph!.findOneById(id)
 }
 
-/**
- *
- * @param {string} moduleCode
- */
-function expectInitiallyHidden(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} is initially hidden`, async () => {
-    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
-      const hidden = graph.modulesHidden.map(flatten.module)
-      expect(hidden).toContain(moduleCode)
-    })
-  })
+async function toggle(graph: Graph, moduleCode: string) {
+  return Repo.Graph!.toggleModule(graph, moduleCode)
 }
 
-/**
- *
- * @param {string} moduleCode
- */
-function expectInitiallyPlaced(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} is initially placed`, async () => {
-    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
-      const placed = graph.modulesPlaced.map(flatten.module)
-      expect(placed).toContain(moduleCode)
-    })
+test('MA2001 is hidden', async () => {
+  await findGraph(t.graph!.id).then((graph) => {
+    const codes = graph.modulesHidden.map(flatten.module)
+    expect(codes).toContain('MA2001')
   })
-}
-
-/**
- *
- * @param {string} moduleCode
- */
-function expectFinallyHidden(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} successfully hidden`, async () => {
-    const { modulesPlaced, modulesHidden } = t.graph!
-    expect(modulesHidden.map(flatten.module)).toContain(moduleCode)
-    expect(modulesPlaced.map(flatten.module)).not.toContain(moduleCode)
-  })
-}
-
-/**
- *
- * @param {string} moduleCode
- */
-function expectFinallyPlaced(moduleCode: string) {
-  expect.hasAssertions()
-  it(`${moduleCode} successfully placed`, async () => {
-    const { modulesPlaced, modulesHidden } = t.graph!
-    expect(modulesHidden.map(flatten.module)).not.toContain(moduleCode)
-    expect(modulesPlaced.map(flatten.module)).toContain(moduleCode)
-  })
-}
-
-describe('hidden -> placed', () => {
-  expectInitiallyHidden('MA2001')
-  returnsGraphAfterToggling('MA2001')
-  expectFinallyPlaced('MA2001')
 })
 
-describe('placed -> hidden', () => {
-  expectInitiallyPlaced('MA2001')
-  returnsGraphAfterToggling('MA2001')
-  expectFinallyHidden('MA2001')
+test('toggling MA2001 returns a graph', async () => {
+  await toggle(t.graph!, 'MA2001').then((graph) => {
+    expect(graph).toBeInstanceOf(Graph)
+  })
 })
 
-describe('insert unseen module', () => {
-  it('is a fresh module', async () => {
-    expect.hasAssertions()
-    await Repo.Graph!.findOneById(t.graph!.id).then((graph) => {
-      const { modulesPlaced, modulesHidden } = graph
-      const placed = modulesPlaced.map(flatten.module)
-      const hidden = modulesHidden.map(flatten.module)
-      expect(placed).not.toContain('EE1111A')
-      expect(hidden).not.toContain('EE1111A')
+test('MA2001 becomes placed', async () => {
+  await findGraph(t.graph!.id).then((graph) => {
+    const codes = graph.modulesPlaced.map(flatten.module)
+    expect(codes).toContain('MA2001')
+  })
+})
+
+test('CM1501 is placed', async () => {
+  await findGraph(t.graph!.id).then((graph) => {
+    const codes = graph.modulesPlaced.map(flatten.module)
+    expect(codes).toContain('CM1501')
+  })
+})
+
+test('toggling CM1501 returns a graph', async () => {
+  await toggle(t.graph!, 'CM1501').then((graph) => {
+    expect(graph).toBeInstanceOf(Graph)
+  })
+})
+
+test('CM1501 becomes hidden', async () => {
+  await findGraph(t.graph!.id).then((graph) => {
+    const codes = graph.modulesHidden.map(flatten.module)
+    expect(codes).toContain('CM1501')
+  })
+})
+
+test('EE1111A is not placed', async () => {
+  await findGraph(t.graph!.id).then((graph) => {
+    const codes = graph.modulesPlaced.map(flatten.module)
+    expect(codes).not.toContain('EE1111A')
+  })
+})
+
+test('EE1111A is not hidden', async () => {
+  await findGraph(t.graph!.id).then((graph) => {
+    const codes = graph.modulesHidden.map(flatten.module)
+    expect(codes).not.toContain('EE1111A')
+  })
+})
+
+test('toggling EE1111A returns a graph', async () => {
+  await toggle(t.graph!, 'EE1111A').then((graph) => {
+    expect(graph).toBeInstanceOf(Graph)
+  })
+})
+
+test('EE1111A becomes placed', async () => {
+  await findGraph(t.graph!.id).then((graph) => {
+    const codes = graph.modulesPlaced.map(flatten.module)
+    expect(codes).toContain('EE1111A')
+  })
+})
+
+test('CS420BZT is not in database', async () => {
+  await expect(() =>
+    Repo.ModuleCondensed!.findOneByOrFail({ moduleCode: 'CS420BZT' })
+  ).rejects.toThrowError(
+    new EntityNotFoundError(ModuleCondensed, {
+      moduleCode: 'CS420BZT',
     })
-  })
-  returnsGraphAfterToggling('EE1111A')
-  expectFinallyPlaced('EE1111A')
+  )
 })
 
-describe('reject module not in database', () => {
-  it('is not in database', async () => {
-    expect.hasAssertions()
-    await expect(() =>
-      Repo.ModuleCondensed!.findOneByOrFail({ moduleCode: 'CS420BZT' })
-    ).rejects.toThrowError(
-      new EntityNotFoundError(ModuleCondensed, {
-        moduleCode: 'CS420BZT',
-      })
-    )
-  })
-  it('rejects the module', async () => {
-    expect.hasAssertions()
-    await expect(() =>
-      Repo.Graph!.toggleModule(t.graph!, 'CS420BZT')
-    ).rejects.toThrowError(
-      new EntityNotFoundError(Module, {
-        moduleCode: 'CS420BZT',
-      })
-    )
-  })
+test('error on toggling CS420BZT', async () => {
+  await expect(() =>
+    Repo.Graph!.toggleModule(t.graph!, 'CS420BZT')
+  ).rejects.toThrowError(
+    new EntityNotFoundError(Module, {
+      moduleCode: 'CS420BZT',
+    })
+  )
 })

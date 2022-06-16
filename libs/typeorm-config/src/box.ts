@@ -12,6 +12,7 @@ type Color =
   | 'gray'
   | 'grey'
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type TextPrinter = (...e: any[]) => void
 
 /**

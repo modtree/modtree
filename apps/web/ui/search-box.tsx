@@ -9,8 +9,7 @@ import {
   SearchState,
   setSearchedModuleCondensed,
 } from '@/store/search'
-import { ModtreeApiResponse } from '@modtree/types'
-import { ModalState, setModalModule, showModuleModal } from '@/store/modal'
+import { setModalModule, showModuleModal } from '@/store/modal'
 
 export default function Example() {
   const dispatch = useDispatch()

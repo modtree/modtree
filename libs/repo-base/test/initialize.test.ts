@@ -1,6 +1,6 @@
 import { setup, teardown } from '@modtree/test-env'
+import { container, endpoint, getSource } from '@modtree/typeorm-config'
 import { oneUp } from '@modtree/utils'
-import { endpoint, container, getSource } from '@modtree/typeorm-config'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -11,34 +11,39 @@ beforeAll(() => setup(db, { initialize: false }))
  */
 afterAll(() => teardown(db))
 
-test('AppDataSource is defined', () => {
+test('data source is defined', () => {
   expect(db).toBeDefined()
 })
 
-test('AppDataSource can be initialized and destroyed', async () => {
+test('data source can be initialized', async () => {
   await db.initialize()
   expect(db.isInitialized).toBe(true)
+})
+
+test('data source can be destroyed', async () => {
   await db.destroy()
   expect(db.isInitialized).toBe(false)
 })
 
-test('container is working', async () => {
-  const res = await container(db, async () => {
+test('container opens connection', async () => {
+  await container(db, async () => {
     expect(db.isInitialized).toBe(true)
-    return true
   })
-  expect(res).toBe(true)
+})
+
+test('container leaves connection open', async () => {
   expect(db.isInitialized).toBe(true)
   await db.destroy()
 })
 
-test('endpoint is working', async () => {
-  const res = await endpoint(db, () =>
+test('endpoint opens connection', async () => {
+  await endpoint(db, () =>
     container(db, async () => {
       expect(db.isInitialized).toBe(true)
-      return true
     })
   )
-  expect(res).toBe(true)
+})
+
+test('endpoint closes connection', () => {
   expect(db.isInitialized).toBe(false)
 })

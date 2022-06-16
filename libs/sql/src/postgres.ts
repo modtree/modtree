@@ -4,6 +4,9 @@ import { config } from '@modtree/typeorm-config'
 import { exec } from '@modtree/utils'
 import { BaseSql, promptRestore } from './base'
 
+/* eslint no-useless-escape: 0 */
+// some piped shell commands below require seemingly useless escapes
+
 const noDatabaseConfig = {
   host: config.host,
   user: config.username,
