@@ -231,7 +231,7 @@ export class GraphRepository
    * @param {string[]} modulesSelected
    * @returns {Promise<[string[], string[], string[], string[]]>}
    */
-  async getSuggestedModulesParams(
+  async getSuggestModulesParams(
     graph: Graph,
     modulesSelected: string[]
   ): Promise<[string[], string[], string[], string[]]> {
@@ -262,7 +262,7 @@ export class GraphRepository
     graph: Graph,
     modulesSelected: string[]
   ): Promise<Module[]> {
-    return this.getSuggestedModulesParams(graph, modulesSelected)
+    return this.getSuggestModulesParams(graph, modulesSelected)
       .then((params) => this.moduleRepo.getSuggestedModules(...params))
       .then((moduleCodes) =>
         Promise.all(

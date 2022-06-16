@@ -46,6 +46,10 @@ export interface IGraphRepository extends EGraph {
     userId: string,
     degreeId: string
   ): Promise<[IGraph[], number]>
+  getSuggestModulesParams(
+    graph: IGraph,
+    modulesSelected: string[]
+  ): Promise<[string[], string[], string[], string[]]>
   suggestModules(graph: IGraph, moduleCodes: string[]): Promise<IModule[]>
   updateFrontendProps(graph: IGraph, props: GraphFrontendProps): Promise<IGraph>
 }

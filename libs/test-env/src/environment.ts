@@ -84,6 +84,7 @@ type TestProps = {
   moduleCodes: string[]
   suggestedModulesCodes: string[]
   count: number
+  arrayOfArrays: string[][]
 }
 
 export const t: Partial<TestProps> = {}
