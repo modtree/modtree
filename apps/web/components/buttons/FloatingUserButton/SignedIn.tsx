@@ -1,13 +1,10 @@
 import { IoPerson } from 'react-icons/io5'
 import { useUser } from '@/utils/auth0'
 import { Menu } from '@headlessui/react'
-import axios from 'axios'
-import { createRef, useEffect } from 'react'
+import { createRef } from 'react'
 import DropdownMenu, { MenuLink } from './DropdownMenu'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { showUserProfile } from '@/store/modal'
-import { setBaseUser, UserState } from '@/store/base'
-import { ModtreeApiResponse } from '@modtree/types'
 
 function UserCircleArea() {
   const bg = 'bg-gradient-to-r from-pink-400 to-orange-400'
@@ -24,25 +21,7 @@ function UserCircleArea() {
 export default function SignedInCircle() {
   const { user } = useUser()
   const dispatch = useDispatch()
-  const reduxUser = useSelector<UserState, ModtreeApiResponse.User>(
-    (state) => state.base.user
-  )
-
-  const getBaseUserData = async (email: string) => {
-    const backend = process.env.NEXT_PUBLIC_BACKEND
-    axios
-      .post(`${backend}/user/get-by-email`, {
-        email,
-      })
-      .then((res) => {
-        dispatch(setBaseUser(res.data))
-      })
-      .catch(() => console.log('User not found. Own time own target carry on.'))
-  }
-
-  useEffect(() => {
-    if (user && user.email) getBaseUserData(user.email)
-  }, [user])
+  console.log(user.modtree)
 
   const menuItems = [
     { text: 'Your profile', callback: () => dispatch(showUserProfile()) },
@@ -59,14 +38,14 @@ export default function SignedInCircle() {
         <Menu.Item>
           <div className="px-4 py-3 text-sm text-gray-900">
             <div className="flex w-full">Signed in as</div>
-            <div className="flex w-full font-bold">{user?.email}</div>
+            <div className="flex w-full font-bold">{user.email}</div>
           </div>
         </Menu.Item>
       </div>
       <div>
         <Menu.Item>
           <div className="px-4 py-3 text-sm text-gray-900">
-            <div className="flex w-full">Username: {reduxUser.username}</div>
+            <div className="flex w-full">Username: {user.modtree.email}</div>
           </div>
         </Menu.Item>
       </div>
