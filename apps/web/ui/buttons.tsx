@@ -5,7 +5,11 @@ export const CloseButton = (props: { close: () => void }) => {
   const center = ' flex flex-row justify-center items-center'
   const className = 'w-6 h-6 absolute right-6 rounded-md' + hover + center
   return (
-    <div className={className} onClick={props.close}>
+    <div
+      className={className}
+      onClick={props.close}
+      id="module-modal-close-button"
+    >
       <XIcon className="text-gray-600 h-5 w-5" />
     </div>
   )
