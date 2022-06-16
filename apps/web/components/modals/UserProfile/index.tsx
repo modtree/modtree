@@ -18,13 +18,13 @@ export default function UserProfileModal() {
 
   const UserProfileContents = () => {
     return (
-      <div className="mt-2 h-96 grid grid-cols-3 space-x-6">
+      <div className="mt-2 grid grid-cols-3 space-x-6">
         <div>
           <h3 className="mb-4">Saved Graphs</h3>
           <SavedGraphs />
         </div>
         <h3>Saved Degrees</h3>
-        <div className="h-full overflow-y-hidden">
+        <div>
           <h3 className="mb-4">Modules Done</h3>
           <ModulesDone />
         </div>

@@ -22,16 +22,19 @@ export default function ModulesDone() {
   }, [])
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-96">
       <div className="mx-auto w-full h-full max-w-md">
         <div className="space-y-2 h-full overflow-y-scroll">
           {reduxUser.modulesDone.map((code: string) => (
             <div
               key={code}
-              className="bg-modtree-300 text-white rounded-lg px-5 py-2"
+              className="bg-modtree-300 text-sm text-white rounded-lg px-5 py-2 shadow-md"
             >
-              {code}{' '}
-              {reduxModulesCondensed[code] && reduxModulesCondensed[code].title}
+              <span className="font-semibold">{code}</span>{' '}
+              <span className="text-modtree-50">
+                {reduxModulesCondensed[code] &&
+                  reduxModulesCondensed[code].title}
+              </span>
             </div>
           ))}
         </div>
