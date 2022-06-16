@@ -1,7 +1,9 @@
-import { teardown, t, init, Repo } from '@modtree/test-env'
+import { setup, teardown, t, init, Repo } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { suggestSetup } from './suggest/utils'
+import { UserRepository } from '@modtree/repo-user'
+import { DegreeRepository } from '@modtree/repo-degree'
+import { GraphRepository } from '@modtree/repo-graph'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -29,7 +31,31 @@ const userProps = {
   modulesDoing: ['IT2002', 'CG2111A'],
 }
 
-beforeAll(() => suggestSetup(db, userProps, degreeProps))
+beforeAll(() =>
+  setup(db)
+    .then(() => {
+      Repo.User = new UserRepository(db)
+      Repo.Degree = new DegreeRepository(db)
+      Repo.Graph = new GraphRepository(db)
+      return Promise.all([
+        Repo.User!.initialize(userProps),
+        Repo.Degree!.initialize(degreeProps),
+      ])
+    })
+    .then(([user, degree]) => {
+      t.user = user
+      return Repo.Graph!.initialize({
+        userId: user.id,
+        degreeId: degree.id,
+        modulesPlacedCodes: [],
+        modulesHiddenCodes: [],
+        pullAll: false,
+      })
+    })
+    .then((graph) => {
+      t.graph = graph
+    })
+)
 afterAll(() => teardown(db))
 
 it('returns an array of arrays', async () => {
