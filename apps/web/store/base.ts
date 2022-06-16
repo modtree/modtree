@@ -26,21 +26,6 @@ const initialState: State = {
   modulesCondensed: {},
 }
 
-export const getBaseUserData = async (
-  dispatch: Dispatch<AnyAction>,
-  email: string
-) => {
-  const backend = process.env.NEXT_PUBLIC_BACKEND
-  axios
-    .post(`${backend}/user/get-by-email`, {
-      email,
-    })
-    .then((res) => {
-      dispatch(setBaseUser(res.data))
-    })
-    .catch(() => console.log('User not found. Own time own target carry on.'))
-}
-
 export const getModulesCondensed = async (
   dispatch: Dispatch<AnyAction>,
   moduleCodes: string[]
