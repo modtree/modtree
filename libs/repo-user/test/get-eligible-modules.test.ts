@@ -1,39 +1,37 @@
-import { User } from '@modtree/entity'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { UserRepository } from '../src'
+import '@modtree/test-env/jest'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
-  setup(db).then(() => {
-    Repo.User = new UserRepository(db)
-  })
+  setup(db)
+    .then(() => {
+      Repo.User = new UserRepository(db)
+      return Repo.User!.initialize({
+        ...init.user1,
+        modulesDone: ['CS1101S'],
+      })
+    })
+    .then((user) => {
+      t.user = user
+    })
 )
 afterAll(() => teardown(db))
-
-it('Saves a user', async () => {
-  expect.assertions(1)
-  const props = init.emptyUser
-  props.modulesDone.push('CS1101S')
-  await Repo.User!.initialize(props).then((res) => {
-    expect(res).toBeInstanceOf(User)
-    t.user = res
-  })
-})
+beforeEach(expect.hasAssertions)
 
 it('Adds only modules which have pre-reqs cleared', async () => {
   // Get eligible modules
-  expect.assertions(2)
   await Repo.User!.getEligibleModules(t.user!).then((eligibleModules) => {
-    expect(eligibleModules).toBeInstanceOf(Array)
+    // expect(eligibleModules).toBeInstanceOf(Array)
     const expected = ['CS2109S']
     /**
      * Compare module codes
      */
     const eligibleModuleCodes = eligibleModules.map(flatten.module)
-    expect(eligibleModuleCodes.sort()).toStrictEqual(expected.sort())
+    expect(eligibleModuleCodes).toIncludeSameMembers(expected)
   })
 })
