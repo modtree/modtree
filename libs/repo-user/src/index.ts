@@ -53,17 +53,17 @@ export class UserRepository
       where: { authZeroId: props.authZeroId },
       relations: this.allRelations,
     }).catch(async () => {
-      /**
-       * find modules completed and modules doing, to create many-to-many relation
-       */
       const queryList = [props.modulesDone, props.modulesDoing]
       return Promise.all(
+        /**
+         * retrieve relations
+         */
         queryList.map((list) => this.moduleRepo.findByCodes(list))
       ).then(([modulesDone, modulesDoing]) => {
         const user = this.create({
           ...props,
-          modulesDone: modulesDone || [],
-          modulesDoing: modulesDoing || [],
+          modulesDone,
+          modulesDoing,
           savedDegrees: [],
           savedGraphs: [],
         })
