@@ -32,7 +32,7 @@
       "rules": {}
     },
     {
-      "files": ["*.test.ts"],
+      "files": ["*.test.ts", "*.spec.ts"],
       "extends": ["plugin:@nrwl/nx/typescript"],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": 0

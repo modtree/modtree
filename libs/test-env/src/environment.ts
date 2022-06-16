@@ -4,11 +4,11 @@ import { config } from '@modtree/typeorm-config'
 import { InitProps, ModtreeApiResponse, Repositories } from '@modtree/types'
 import axios from 'axios'
 import { Agent } from 'http'
-import { DataSource, DeleteResult, Repository } from 'typeorm'
+import { DataSource, DeleteResult } from 'typeorm'
 /**
  * imports custom matcher types
  */
-import '@modtree/test-env/jest'
+import './jest-matchers'
 
 type SetupOptions = {
   initialize: boolean
@@ -55,28 +55,6 @@ export async function teardown(db: DataSource) {
     return db.destroy().then(() => drop)
   }
   return drop
-}
-
-type ImportCheckProps = {
-  entities?: any[]
-  repositories?: Repository<any>[]
-}
-/**
- * check imports before every test
- *
- * @param {ImportCheckProps} props
- */
-export function importChecks(props: ImportCheckProps) {
-  const entities = props.entities || []
-  const repositories = props.repositories || []
-  test('imports are all defined', () => {
-    entities.forEach((e) => {
-      expect(e).toBeDefined()
-    })
-    repositories.forEach((e) => {
-      expect(e).toBeDefined()
-    })
-  })
 }
 
 type TestProps = {
@@ -149,6 +127,7 @@ export class Create {
     entity: 'ModuleCondensed',
     props: InitProps['ModuleCondensed']
   ): Promise<ModtreeApiResponse.ModuleCondensed>
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   private static async request(entity: string, props: any): Promise<any> {
     return server.post(`${entity.toLowerCase()}/create`, props).then((res) => {
       expect(typeof res.data.id).toBe('string')

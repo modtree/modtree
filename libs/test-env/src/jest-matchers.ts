@@ -1,6 +1,7 @@
 import { arrayDeepEqual, arrayOfType } from './matchers'
 
 declare global {
+  /* eslint-disable @typescript-eslint/no-namespace */
   namespace jest {
     interface Matchers<R> {
       toBeYes: () => R

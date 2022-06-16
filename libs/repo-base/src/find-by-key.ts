@@ -1,5 +1,9 @@
 import { ObjectLiteral, Repository } from 'typeorm'
 
+/* eslint @typescript-eslint/no-explicit-any: 0 */
+// all the 'any' types in this file are overloaded.
+// still waiting on TypeORM to sort their stuff out.
+
 /**
  * example usage:
  *
@@ -8,12 +12,6 @@ import { ObjectLiteral, Repository } from 'typeorm'
  * findOneById('3316ace0-a791-494a-b1a7-3537e090e61c').then((user) => {
  *   log(user)
  * })
- */
-
-/**
- * function that useFindOneByKey returns
- * a function that takes in just one parameter: value,
- * and returns a Promise to one and only one Entity
  */
 type FindByKey<T> = (value: string) => Promise<T>
 

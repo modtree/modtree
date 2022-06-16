@@ -1,5 +1,5 @@
 import { ColumnType } from 'typeorm'
-import { createEmpty } from '@modtree/utils'
+import { createEmpty } from '../src'
 
 describe('Object.createEmpty', () => {
   it('Returns 0 for number', () => {
