@@ -1,4 +1,4 @@
-import { useUser } from '@auth0/nextjs-auth0'
+import { useUser } from '@/utils/auth0'
 import { ReactElement } from 'react'
 import SignedInCircle from './SignedIn'
 import SignedOutRect from './SignedOut'
