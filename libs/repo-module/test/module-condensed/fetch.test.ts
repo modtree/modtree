@@ -1,5 +1,5 @@
 import { flatten, oneUp } from '@modtree/utils'
-import { container, getSource } from '@modtree/typeorm-config'
+import { getSource } from '@modtree/typeorm-config'
 import { ModuleCondensed } from '@modtree/entity'
 import { setup, teardown, Repo } from '@modtree/test-env'
 import { ModuleCondensedRepository } from '../../src/ModuleCondensed'
@@ -14,19 +14,12 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-const lowerBound = 6000
-
 test('moduleCondensed.fetch', async () => {
-  await container(db, () =>
-    Repo.ModuleCondensed!.fetch().then((moduleList) => {
-      expect(moduleList).toBeInstanceOf(Array)
-      expect(moduleList[0]).toBeInstanceOf(ModuleCondensed)
-      const s = new Set(moduleList.map(flatten.module))
-      /**
-       * expect all module codes to be unique
-       */
-      expect(s.size).toBe(moduleList.length)
-      expect(s.size).toBeGreaterThan(lowerBound)
-    })
-  )
+  await Repo.ModuleCondensed!.fetch().then((modules) => {
+    expect(modules).toBeArrayOf(ModuleCondensed)
+    const s = new Set(modules.map(flatten.module))
+    /* expect all module codes to be unique */
+    expect(s.size).toBe(modules.length)
+    expect(s.size).toBeGreaterThan(6000)
+  })
 })
