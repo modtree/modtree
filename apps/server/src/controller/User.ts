@@ -20,13 +20,15 @@ export class UserController implements IUserController {
    * @param {Response} res
    */
   async create(req: Request, res: Response) {
-    console.log(req.body)
     if (!validate(req, res)) return
     const props = emptyInit.User
     copy(req.body, props)
-    this.userRepo.initialize(props).then((user) => {
-      res.json(user)
-    })
+    this.userRepo
+      .initialize(props)
+      .then((user) => {
+        res.json(user)
+      })
+      .catch(() => res.status(500))
   }
 
   /**
