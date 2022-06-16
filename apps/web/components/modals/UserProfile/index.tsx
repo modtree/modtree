@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ModalState, hideUserProfile } from '@/store/modal'
 import { CloseButton } from '@/ui/buttons'
 import SavedGraphs from './SavedGraphs'
+import ModulesDone from './ModulesDone'
 
 export default function UserProfileModal() {
   const showUserProfile = useSelector<ModalState, boolean>(
@@ -23,7 +24,10 @@ export default function UserProfileModal() {
           <SavedGraphs />
         </div>
         <h3>Saved Degrees</h3>
-        <h3>Modules Done</h3>
+        <div>
+          <h3 className="mb-4">Modules Done</h3>
+          <ModulesDone />
+        </div>
       </div>
     )
   }

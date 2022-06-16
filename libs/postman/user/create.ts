@@ -30,7 +30,7 @@ const users = [
   {
     displayName: 'Tan Wei Seng',
     username: 'weiseng',
-    email: 'weiseng@modtree.com',
+    email: 'tanweiseng18@gmail.com',
     authZeroId: 'auth0|weiseng',
     modulesDone: [
       'MA1521',

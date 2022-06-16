@@ -10,6 +10,7 @@ import {
 } from '@modtree/types'
 import { nusmodsApi, getModuleLevel, flatten } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
+import { In } from 'typeorm'
 
 export class ModuleCondensedRepository
   extends Repository<ModuleCondensed>
@@ -72,5 +73,13 @@ export class ModuleCondensedRepository
       (x) => !existingModules.has(x.moduleCode)
     )
     return this.save(modulesToSave)
+  }
+
+  /**
+   * @param {string[]} moduleCodes
+   * @returns {Promise<Module[]>}
+   */
+  findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]> {
+    return this.find({ where: { moduleCode: In(moduleCodes) } })
   }
 }

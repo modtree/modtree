@@ -52,6 +52,12 @@ const moduleCondensedRoutes: Route<ModuleCondensedController>[] = [
     method: 'get',
     validators: [],
   },
+  {
+    action: 'findByCodes',
+    route: '/modules/find-by-codes/',
+    method: 'post',
+    validators: [body('moduleCodes').notEmpty()],
+  },
 ]
 
 const moduleRoutes: Route<ModuleController>[] = [

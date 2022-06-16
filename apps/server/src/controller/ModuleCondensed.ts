@@ -40,4 +40,18 @@ export class ModuleCondensedController implements IModuleCondensedController {
         res.status(500).json({ error })
       })
   }
+
+  /**
+   * find many by codes
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async findByCodes(req: Request, res: Response) {
+    this.moduleCondensedRepo
+      .findByCodes(req.body.moduleCodes)
+      .then((result) => {
+        res.json(result)
+      })
+  }
 }
