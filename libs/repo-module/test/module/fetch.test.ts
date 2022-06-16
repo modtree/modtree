@@ -1,7 +1,7 @@
 import { Module } from '@modtree/entity'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { setup, teardown, Repo } from '@modtree/test-env'
+import { setup, teardown, Repo, t } from '@modtree/test-env'
 import { ModuleRepository } from '../../src'
 
 const dbName = oneUp(__filename)
@@ -14,9 +14,13 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-test('fetch one module from NUSMods', async () => {
-  expect.hasAssertions()
+test('returns a module', async () => {
   await Repo.Module!.fetchOne('CS2040S').then((res) => {
     expect(res).toBeInstanceOf(Module)
+    t.modules = [res]
   })
+})
+
+test('has correct module code', () => {
+  expect(t.modules![0].moduleCode).toBe('CS2040S')
 })

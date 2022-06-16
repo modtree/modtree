@@ -1,7 +1,7 @@
 import { validModuleCode } from '.'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { setup, teardown, Repo, t } from '@modtree/test-env'
+import { setup, teardown, Repo } from '@modtree/test-env'
 import { ModuleCondensedRepository } from '../ModuleCondensed'
 
 const dbName = oneUp(__filename)
@@ -14,20 +14,24 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-const lowerBound = 6000
-
-test('validModuleCode returns true on all existing codes', async () => {
+test('returns true on all existing codes', async () => {
   await Repo.ModuleCondensed!.getCodes().then((moduleCodes) => {
-    t.moduleCodes = moduleCodes
-    expect(t.moduleCodes.length).toBeGreaterThan(lowerBound)
-    t.moduleCodes.forEach((moduleCode) => {
+    moduleCodes.forEach((moduleCode) => {
       expect(validModuleCode(moduleCode)).toBe(true)
     })
   })
 })
 
-test('validModuleCode throws error on invalid code', async () => {
-  const err = Error('Invalid module code')
+const err = Error('Invalid module code')
+
+test('error on cs1010s', () => {
   expect(() => validModuleCode('cs1010s')).toThrowError(err)
+})
+
+test('error on blank', () => {
   expect(() => validModuleCode('')).toThrowError(err)
+})
+
+test('error on NOT_VALID', () => {
+  expect(() => validModuleCode('NOT_VALID')).toThrowError(err)
 })

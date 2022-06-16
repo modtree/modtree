@@ -12,6 +12,5 @@ export function hasTakenModule(
   modulesDoing: string[],
   moduleCode: string
 ): boolean {
-  const modules = modulesDone.concat(modulesDoing)
-  return modules.includes(moduleCode)
+  return modulesDone.includes(moduleCode) || modulesDoing.includes(moduleCode)
 }

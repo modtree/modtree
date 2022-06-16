@@ -10,7 +10,7 @@ import {
   IGraph,
   GraphFrontendProps,
 } from '@modtree/types'
-import { quickpop, flatten, copy } from '@modtree/utils'
+import { quickpop, flatten } from '@modtree/utils'
 import {
   getRelationNames,
   useDeleteAll,
@@ -162,13 +162,13 @@ export class GraphRepository
     /**
      * retrieve a Graph from database given its id
      */
-    copy(await this.findOneById(graph.id), graph)
+    const _graph = await this.findOneById(graph.id)
     /**
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
-      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
+      placed: _graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
+      hidden: _graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
       new: -1,
     }
     /**
@@ -191,16 +191,16 @@ export class GraphRepository
       dest.push(quickpop(src, index[state]))
     }
     if (state === 'placed') {
-      toggle(graph.modulesPlaced, graph.modulesHidden)
-      return this.save(graph)
+      toggle(_graph.modulesPlaced, _graph.modulesHidden)
+      return this.save(_graph)
     }
     if (state === 'hidden') {
-      toggle(graph.modulesHidden, graph.modulesPlaced)
-      return this.save(graph)
+      toggle(_graph.modulesHidden, _graph.modulesPlaced)
+      return this.save(_graph)
     }
     return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
-      graph.modulesPlaced.push(module)
-      return this.save(graph)
+      _graph.modulesPlaced.push(module)
+      return this.save(_graph)
     })
   }
 
@@ -225,32 +225,51 @@ export class GraphRepository
   }
 
   /**
+   * extracts the parameters for suggestModules
+   *
+   * @param {Graph} graph
+   * @param {string[]} modulesSelected
+   * @returns {Promise<[string[], string[], string[], string[]]>}
+   */
+  async getSuggestModulesParams(
+    graph: Graph,
+    modulesSelected: string[]
+  ): Promise<[string[], string[], string[], string[]]> {
+    return this.findOneById(graph.id)
+      .then((graph) =>
+        Promise.all([
+          this.userRepo.findOneById(graph.user.id),
+          this.degreeRepo.findOneById(graph.degree.id),
+        ])
+      )
+      .then(([user, degree]) => {
+        const modulesDone = user.modulesDone.map(flatten.module)
+        const modulesDoing = user.modulesDoing.map(flatten.module)
+        const requiredModules = degree.modules.map(flatten.module)
+        return [modulesDone, modulesDoing, modulesSelected, requiredModules]
+      })
+  }
+
+  /**
    * Suggests modules from a single module.
    * Returns a subset of post-reqs for this module.
    *
    * @param {Graph} graph
-   * @param {string[]} moduleCodes
+   * @param {string[]} modulesSelected
    * @returns {Promise<Module[]>}
    */
-  async suggestModules(graph: Graph, moduleCodes: string[]): Promise<Module[]> {
-    // Load relations
-    copy(await this.findOneById(graph.id), graph)
-    copy(await this.degreeRepo.findOneById(graph.degree.id), graph.degree)
-    copy(await this.userRepo.findOneById(graph.user.id), graph.user)
-    // Get data
-    const modulesDone = graph.user.modulesDone.map(flatten.module)
-    const modulesDoing = graph.user.modulesDoing.map(flatten.module)
-    const modulesSelected = moduleCodes
-    const requiredModules = graph.degree.modules.map(flatten.module)
-    // Results
-    const res = await this.moduleRepo.getSuggestedModules(
-      modulesDone,
-      modulesDoing,
-      modulesSelected,
-      requiredModules
-    )
-    return Promise.all(
-      res.map((moduleCode) => this.moduleRepo.findOneByOrFail({ moduleCode }))
-    )
+  async suggestModules(
+    graph: Graph,
+    modulesSelected: string[]
+  ): Promise<Module[]> {
+    return this.getSuggestModulesParams(graph, modulesSelected)
+      .then((params) => this.moduleRepo.getSuggestedModules(...params))
+      .then((moduleCodes) =>
+        Promise.all(
+          moduleCodes.map((moduleCode) =>
+            this.moduleRepo.findOneByOrFail({ moduleCode })
+          )
+        )
+      )
   }
 }

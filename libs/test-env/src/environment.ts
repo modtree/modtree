@@ -1,4 +1,4 @@
-import { Degree, Graph, User } from '@modtree/entity'
+import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/entity'
 import { sql } from '@modtree/sql'
 import { config } from '@modtree/typeorm-config'
 import { InitProps, ModtreeApiResponse, Repositories } from '@modtree/types'
@@ -76,12 +76,15 @@ type TestProps = {
   graphId: string
   graphId1: string
   graphId2: string
+  modules: Module[]
+  modulesCondensed: ModuleCondensed[]
   combinedModuleCodes: string[]
   postReqsCodes: string[]
   postReqs: string[]
   moduleCodes: string[]
   suggestedModulesCodes: string[]
   count: number
+  arrayOfArrays: string[][]
 }
 
 export const t: Partial<TestProps> = {}
