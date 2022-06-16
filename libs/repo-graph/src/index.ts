@@ -225,6 +225,32 @@ export class GraphRepository
   }
 
   /**
+   * extracts the parameters for suggestModules
+   *
+   * @param {Graph} graph
+   * @param {string[]} modulesSelected
+   * @returns {Promise<[string[], string[], string[], string[]]>}
+   */
+  async getSuggestedModulesParams(
+    graph: Graph,
+    modulesSelected: string[]
+  ): Promise<[string[], string[], string[], string[]]> {
+    return this.findOneById(graph.id)
+      .then((graph) =>
+        Promise.all([
+          this.userRepo.findOneById(graph.user.id),
+          this.degreeRepo.findOneById(graph.degree.id),
+        ])
+      )
+      .then(([user, degree]) => {
+        const modulesDone = user.modulesDone.map(flatten.module)
+        const modulesDoing = user.modulesDoing.map(flatten.module)
+        const requiredModules = degree.modules.map(flatten.module)
+        return [modulesDone, modulesDoing, modulesSelected, requiredModules]
+      })
+  }
+
+  /**
    * Suggests modules from a single module.
    * Returns a subset of post-reqs for this module.
    *
@@ -236,23 +262,14 @@ export class GraphRepository
     graph: Graph,
     modulesSelected: string[]
   ): Promise<Module[]> {
-    // Load relations
-    const _graph = await this.findOneById(graph.id)
-    const degree = await this.degreeRepo.findOneById(_graph.degree.id)
-    const user = await this.userRepo.findOneById(_graph.user.id)
-    // Get data
-    const modulesDone = user.modulesDone.map(flatten.module)
-    const modulesDoing = user.modulesDoing.map(flatten.module)
-    const requiredModules = degree.modules.map(flatten.module)
-    // Results
-    const res = await this.moduleRepo.getSuggestedModules(
-      modulesDone,
-      modulesDoing,
-      modulesSelected,
-      requiredModules
-    )
-    return Promise.all(
-      res.map((moduleCode) => this.moduleRepo.findOneByOrFail({ moduleCode }))
-    )
+    return this.getSuggestedModulesParams(graph, modulesSelected)
+      .then((params) => this.moduleRepo.getSuggestedModules(...params))
+      .then((moduleCodes) =>
+        Promise.all(
+          moduleCodes.map((moduleCode) =>
+            this.moduleRepo.findOneByOrFail({ moduleCode })
+          )
+        )
+      )
   }
 }
