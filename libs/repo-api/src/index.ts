@@ -31,13 +31,14 @@ export class Api {
    * asked for at user sign-up
    *
    * @param {string} authZeroId
-   * @returns {string} email
+   * @param {string} email
+   * @returns {Promise<User>}
    */
   async initializeUser(authZeroId: string, email: string): Promise<User> {
     return Promise.all([
       /** initialize a user and an empty degree */
       this.userRepo.initialize({ ...emptyInit.User, authZeroId, email }),
-      this.degreeRepo.initialize({ title: 'Untitled', moduleCodes: [] }),
+      this.degreeRepo.initialize({ ...emptyInit.Degree, title: 'Untitled' }),
     ])
       .then(([user, degree]) => {
         return Promise.all([
@@ -45,11 +46,9 @@ export class Api {
           degree,
           /** initialize an empty graph */
           this.graphRepo.initialize({
+            ...emptyInit.Graph,
             userId: user.id,
             degreeId: degree.id,
-            modulesHiddenCodes: [],
-            modulesPlacedCodes: [],
-            pullAll: false,
           }),
         ])
       })
@@ -61,5 +60,24 @@ export class Api {
         /** save and return the user */
         return this.userRepo.save(user)
       })
+  }
+
+  /**
+   * Handles a user logging in.
+   *
+   * If the auth0 id already exists in database, then return that
+   * user's data
+   *
+   * If not, then initialize a full user (empty degree, empty graph),
+   * and return that newly created user instead.
+   *
+   * @param {string} authZeroId
+   * @param {string} email
+   * @returns {Promise<User>}
+   */
+  async userLogin(authZeroId: string, email: string): Promise<User> {
+    return this.userRepo.findOneByAuthZeroId(authZeroId).catch(() => {
+      return this.initializeUser(authZeroId, email)
+    })
   }
 }

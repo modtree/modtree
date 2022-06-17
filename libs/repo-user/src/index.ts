@@ -42,21 +42,19 @@ export class UserRepository
    * @returns {Promise<User>}
    */
   async initialize(props: InitProps['User']): Promise<User> {
-    return this.findOneByAuthZeroId(props.authZeroId).catch(() =>
-      Promise.all([
-        this.moduleRepo.findByCodes(props.modulesDone),
-        this.moduleRepo.findByCodes(props.modulesDoing),
-      ]).then(([modulesDone, modulesDoing]) => {
-        const user = this.create({
-          ...props,
-          modulesDone,
-          modulesDoing,
-          savedDegrees: [],
-          savedGraphs: [],
-        })
-        return this.save(user)
+    return Promise.all([
+      this.moduleRepo.findByCodes(props.modulesDone),
+      this.moduleRepo.findByCodes(props.modulesDoing),
+    ]).then(([modulesDone, modulesDoing]) => {
+      const user = this.create({
+        ...props,
+        modulesDone,
+        modulesDoing,
+        savedDegrees: [],
+        savedGraphs: [],
       })
-    )
+      return this.save(user)
+    })
   }
 
   /**
