@@ -17,7 +17,7 @@ export function generateSchema(
  * @params {any} data
  */
 function helper(data: any): SchemaItem {
-  let schema = {}
+  const schema = {}
 
   // handle non objects separately
   if (typeof data !== 'object')
