@@ -33,7 +33,7 @@ export function getApp(): Express {
       }
     )
   })
-  app.get('/', (req: Request, res: Response) => {
+  app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
   })
   return app

@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { Api } from '@modtree/repo-api'
-import { validate } from './base'
+import { validate } from '../validate'
 
 /** Generic API controller */
 export class ApiController {

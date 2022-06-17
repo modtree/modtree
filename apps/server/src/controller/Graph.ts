@@ -3,7 +3,7 @@ import { IGraphController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { GraphRepository } from '@modtree/repo-graph'
-import { validate } from './base'
+import { validate } from '../validate'
 
 /** Graph API controller */
 export class GraphController implements IGraphController {

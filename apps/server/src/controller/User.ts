@@ -1,15 +1,24 @@
 import { Request, Response } from 'express'
-
 import { IUserController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
-import { validate } from './base'
+import { validate } from '../validate'
+import { getRelationNames } from '@modtree/repo-base'
+
+type CustomRequest<T, Q> = Request<{}, {}, T, Q>
+
+type ListRequest = {
+  id?: string
+  authZeroId?: string
+  email?: string
+}
 
 /** User api controller */
 export class UserController implements IUserController {
   private userRepo = new UserRepository(db)
+  private userRelations = getRelationNames(this.userRepo)
 
   private degreeRepo = new DegreeRepository(db)
 
@@ -37,14 +46,21 @@ export class UserController implements IUserController {
    * @param {Request} req
    * @param {Response} res
    */
-  async get(req: Request, res: Response) {
+  async get(req: CustomRequest<{}, ListRequest>, res: Response) {
+    if (!validate(req, res)) return
+    const { id, authZeroId, email } = req.query
+    if ([id, authZeroId, email].every((x) => x === undefined)) {
+      res
+        .status(400)
+        .json({ message: 'needs at least one of id, authZeroId, or email' })
+    }
     this.userRepo
-      .findOneById(req.params.userId)
+      .findOneOrFail({
+        where: { id, authZeroId, email },
+        relations: this.userRelations,
+      })
       .then((user) => {
         res.json(flatten.user(user))
-      })
-      .catch(() => {
-        res.status(404).json({ message: 'User not found' })
       })
   }
 
@@ -54,9 +70,12 @@ export class UserController implements IUserController {
    * @param {Request} req
    * @param {Response} res
    */
-  async list(req: Request, res: Response) {
+  async list(req: CustomRequest<{}, ListRequest>, res: Response) {
+    if (!validate(req, res)) return
+    const { id, authZeroId, email } = req.query
     this.userRepo
       .find({
+        where: { id, authZeroId, email },
         relations: {
           modulesDone: true,
           modulesDoing: true,
