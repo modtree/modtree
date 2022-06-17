@@ -15,11 +15,13 @@ export default function Modtree() {
   const dispatch = useDispatch()
 
   if (!isLoading && user) {
+    console.log('GOT HERE')
     const { data, error } = useSWR(
-      `/graph/get/${user.modtree.savedGraphs[0]}`,
+      `/api/graph/get/${user.modtree.savedGraphs[0]}`,
       fetcher
     )
     dispatch(setBaseGraph(data))
+    console.log(data)
     if (error) console.log('SWR error:', error)
   }
 

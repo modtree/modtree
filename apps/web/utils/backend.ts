@@ -5,5 +5,5 @@ export const backend = axios.create({
 })
 
 export async function fetcher(url: string) {
-  return backend.get(url).then((res) => res.data)
+  return axios.get(url).then((res) => res.data)
 }
