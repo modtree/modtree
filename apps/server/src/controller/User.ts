@@ -4,7 +4,7 @@ import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
-import { validate } from './base'
+import { validate } from '../validate'
 import { getRelationNames } from '@modtree/repo-base'
 
 type CustomRequest<T, Q> = Request<{}, {}, T, Q>

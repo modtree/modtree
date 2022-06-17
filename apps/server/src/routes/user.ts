@@ -1,5 +1,8 @@
 import { body, query } from 'express-validator'
+
 import { UserController } from '../controller'
+import { hasOneOf, hasOnly } from '../validate'
+
 import { Route } from './types'
 
 export const userRoutes: Route<UserController>[] = [
@@ -10,24 +13,21 @@ export const userRoutes: Route<UserController>[] = [
     validators: [
       query('id').isUUID().optional(),
       query('email').normalizeEmail().isEmail().optional(),
-      query('authZeroId').isString().optional(),
       query('authZeroId')
-        .custom((value: string) => value.startsWith('auth0|'))
+        .custom((s: string) => s.startsWith('auth0|'))
         .optional(),
-      query()
-        .custom((_, { req }) => {
-          const required = [req.query.id, req.query.authZeroId, req.query.email]
-          if (required.every((x) => x === undefined)) return false
-          return true
-        })
-        .withMessage('Please specify either an id, email, or authZeroId.'),
+      query().custom(hasOneOf(['id', 'email', 'authZeroId'])),
+      query().custom(hasOnly(['id', 'email', 'authZeroId'])),
     ],
   },
   {
     action: 'create',
-    route: '/users/create',
+    route: '/users',
     method: 'post',
-    validators: [body('authZeroId').notEmpty()],
+    validators: [
+      body('authZeroId').isString().notEmpty(),
+      body('email').isEmail(),
+    ],
   },
   {
     action: 'insertDegree',
@@ -36,14 +36,8 @@ export const userRoutes: Route<UserController>[] = [
     validators: [],
   },
   {
-    action: 'getByEmail',
-    route: '/users/get-by-email',
-    method: 'post',
-    validators: [body('email').isEmail()],
-  },
-  {
     action: 'delete',
-    route: '/users/delete/:userId',
+    route: '/users/:userId',
     method: 'delete',
     validators: [],
   },
