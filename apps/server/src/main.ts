@@ -6,7 +6,7 @@ import {
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
-import { getApp } from './server/app'
+import { getApp } from './app'
 import { DataSource } from 'typeorm'
 
 function checkhealth(db: DataSource) {
