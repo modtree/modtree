@@ -1,12 +1,10 @@
 export function generateSchema(sampleResponse: any): SchemaItem {
   let schema = {}
 
-  // handle string separately
-  // because Object.entries makes string be treated as
-  // array of chars
-  if (typeof sampleResponse === 'string')
+  // handle non objects separately
+  if (typeof sampleResponse !== 'object')
     return {
-      type: 'string',
+      type: typeof sampleResponse,
     }
 
   // Assume for now we can only have arrays on
