@@ -57,6 +57,7 @@ export interface IGraphRepository extends EGraph {
 export interface IUserRepository extends EUser {
   canTakeModule(user: IUser, moduleCode: string): Promise<boolean>
   findOneByUsername(username: string): Promise<IUser>
+  findOneByAuthZeroId(authZeroId: string): Promise<IUser>
   findOneByEmail(email: string): Promise<IUser>
   getEligibleModules(user: IUser): Promise<IModule[]>
   getPostReqs(user: IUser): Promise<IModule[]>

@@ -10,11 +10,7 @@ import {
   ModuleStatus,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
-import {
-  getRelationNames,
-  useDeleteAll,
-  useFindOneByKey,
-} from '@modtree/repo-base'
+import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 import { ModuleRepository } from '@modtree/repo-module'
 import { DegreeRepository } from '@modtree/repo-degree'
 
@@ -37,7 +33,7 @@ export class UserRepository
   override findOneById: FindByKey<IUser> = useFindOneByKey(this, 'id')
   findOneByUsername: FindByKey<IUser> = useFindOneByKey(this, 'username')
   findOneByEmail: FindByKey<IUser> = useFindOneByKey(this, 'email')
-  private allRelations = getRelationNames(this)
+  findOneByAuthZeroId: FindByKey<IUser> = useFindOneByKey(this, 'authZeroId')
 
   /**
    * Adds a User to DB
@@ -46,20 +42,11 @@ export class UserRepository
    * @returns {Promise<User>}
    */
   async initialize(props: InitProps['User']): Promise<User> {
-    return this.findOneOrFail({
-      /**
-       * if auth zero id already exists, return that and don't initialize
-       */
-      where: { authZeroId: props.authZeroId },
-      relations: this.allRelations,
-    }).catch(async () => {
-      const queryList = [props.modulesDone, props.modulesDoing]
-      return Promise.all(
-        /**
-         * retrieve relations
-         */
-        queryList.map((list) => this.moduleRepo.findByCodes(list))
-      ).then(([modulesDone, modulesDoing]) => {
+    return this.findOneByAuthZeroId(props.authZeroId).catch(() =>
+      Promise.all([
+        this.moduleRepo.findByCodes(props.modulesDone),
+        this.moduleRepo.findByCodes(props.modulesDoing),
+      ]).then(([modulesDone, modulesDoing]) => {
         const user = this.create({
           ...props,
           modulesDone,
@@ -69,7 +56,7 @@ export class UserRepository
         })
         return this.save(user)
       })
-    })
+    )
   }
 
   /**
