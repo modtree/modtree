@@ -1,25 +1,42 @@
-export function generateSchema(sampleResponse: any): SchemaItem {
+/**
+ * Generates a schema given a sample response.
+ * Assumes that there are no nested arrays.
+ * Assumes that arrays have at least one element (so that type can be inferred)
+ *
+ * @params {Record<string, any>} sampleResponse
+ */
+export function generateSchema(
+  sampleResponse: Record<string, any>
+): SchemaItem {
+  return helper(sampleResponse)
+}
+
+/**
+ * Helper function for generateSchema
+ *
+ * @params {any} data
+ */
+function helper(data: any): SchemaItem {
   let schema = {}
 
   // handle non objects separately
-  if (typeof sampleResponse !== 'object')
+  if (typeof data !== 'object')
     return {
-      type: typeof sampleResponse,
+      type: typeof data,
     }
 
-  // Assume for now we can only have arrays on
-  // the first layer keys of API response
-  Object.entries(sampleResponse).forEach(([key, value]) => {
+  // assume no nested arrays
+  Object.entries(data).forEach(([key, value]) => {
     if (value instanceof Array) {
       let items
       // assume that array is not empty
       if (value[0] instanceof Object) {
         items = {
           type: 'object',
-          properties: generateSchema(value[0]),
+          properties: helper(value[0]),
         }
       } else {
-        items = generateSchema(value[0])
+        items = helper(value[0])
       }
       schema[key] = {
         type: 'array',
@@ -28,7 +45,7 @@ export function generateSchema(sampleResponse: any): SchemaItem {
     } else if (value instanceof Object) {
       schema[key] = {
         type: 'object',
-        properties: generateSchema(value),
+        properties: helper(value),
       }
     } else {
       schema[key] = {
