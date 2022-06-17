@@ -1,4 +1,4 @@
-export function generateSchema(sampleResponse: any) {
+export function generateSchema(sampleResponse: any): SchemaItem {
   let schema = {}
 
   // handle string separately
