@@ -2,7 +2,20 @@ type CustomError = 'Not found' | 'Database Error'
 
 type RequestType = 'POST' | 'GET' | 'DELETE'
 
-type Data = string | number | string[] | number[]
+type Data = string | number | string[] | number[] | Record<string, any>
+
+type SchemaItem = SchemaObject | SchemaNonObject | {}
+
+type SchemaNonObject = {
+  type: string
+  items?: SchemaItem // this param
+}
+
+type SchemaObject = {
+  // for objects in the schema
+  type: string
+  properties: Record<string, SchemaItem>
+}
 
 type MethodProps = {
   method: string // short description
@@ -18,7 +31,7 @@ type MethodProps = {
 
 type ResponseProps = {
   fulfilled: Record<string, Data>
-  schema: Record<string, Data>
+  schema: SchemaItem
 }
 
 type Parameter = {
