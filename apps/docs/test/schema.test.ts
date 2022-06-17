@@ -7,11 +7,11 @@ const tests = Object.keys(response)
 /**
  * validates the sample input and output provided in init.ts
  */
-it('generates correct keys', () => {
+it('checks that every sample input has a corresponding output', () => {
   expect(response).toHaveSameKeysAs(expected)
 })
 
-it('generates correct nested keys', () => {
+it('generates correct keys', () => {
   tests.forEach((key) => {
     const expected = response[key]
     const generated = generateSchema(expected)
