@@ -16,7 +16,7 @@ beforeAll(() =>
         Module: new ModuleRepository(db),
       })
       return Repo.User!.initialize({
-        ...init.emptyUser,
+        ...init.user1,
         modulesDone: ['MA2001'],
         modulesDoing: ['MA2101'],
       })
@@ -65,7 +65,7 @@ describe('handles empty fulfillRequirements', () => {
   it('returns []', async () => {
     // init new user with CP2106
     // CP2106 has empty string fulfillRequirements
-    await Repo.User!.initialize({ ...init.user1, modulesDone: ['CP2106'] })
+    await Repo.User!.initialize({ ...init.user2, modulesDone: ['CP2106'] })
       .then((res) => Repo.User!.getPostReqs(res))
       .then((postReqs) => {
         expect(postReqs).toStrictEqual([])
