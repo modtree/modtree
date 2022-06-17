@@ -22,9 +22,9 @@
       "@/store/*": ["store/*"],
       "@/ui/*": ["ui/*"],
       "@/styles/*": ["styles/*"],
-      "@/utils/*": ["utils/*", "utils/index.ts"],
-      "@/utils": ["utils/index.ts"],
-      "@/flow/*": ["flow/*"]
+      "@/utils/*": ["utils/*"],
+      "@/flow/*": ["flow/*"],
+      "@/*": ["*"]
     },
     "allowJs": true,
     "strict": false,

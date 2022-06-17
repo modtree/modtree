@@ -1,4 +1,4 @@
-import { useCallback, MouseEvent, useEffect } from 'react'
+import { useCallback, MouseEvent } from 'react'
 import ReactFlow, {
   Controls,
   Node,
@@ -10,29 +10,14 @@ import ReactFlow, {
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useDispatch } from 'react-redux'
 import { setFlowSelection, setFlowNodes } from '@/store/flow'
-import { useUser, backend } from '@/utils'
-import { setBaseGraph } from '@/store/base'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
 export default function ModtreeFlow() {
-  const { user, isLoading } = useUser()
   /**
    * redux dispatcher
    */
   const dispatch = useDispatch()
-
-  /**
-   * load the first graph
-   */
-  useEffect(() => {
-    if (user) {
-      const graphId = user.modtree.savedGraphs[0]
-      backend.get(`/graph/get/${graphId}`).then((res) => {
-        dispatch(setBaseGraph(res.data))
-      })
-    }
-  }, [isLoading])
 
   /**
    * retrieve redux state for tree selection
