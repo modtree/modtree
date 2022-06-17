@@ -4,7 +4,7 @@ type RequestType = 'POST' | 'GET' | 'DELETE'
 
 type Data = string | number | string[] | number[] | Record<string, any>
 
-type SchemaItem = SchemaObject | SchemaNonObject | {}
+type SchemaItem = SchemaObject | SchemaNonObject | Record<string, unknown>
 
 type SchemaNonObject = {
   type: string

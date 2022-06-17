@@ -4,8 +4,8 @@
   "projects": {
     "docs": "apps/docs",
     "entity": "libs/entity",
-    "repo-base": "libs/repo-base",
     "repo-api": "libs/repo-api",
+    "repo-base": "libs/repo-base",
     "repo-degree": "libs/repo-degree",
     "repo-graph": "libs/repo-graph",
     "repo-module": "libs/repo-module",
