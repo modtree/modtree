@@ -4,8 +4,9 @@ import ReactFlow, {
   Node,
   useNodesState,
   useEdgesState,
+  Background,
 } from 'react-flow-renderer'
-import { initialNodes, initialEdges } from '@/flow/graph'
+// import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useDispatch } from 'react-redux'
 import { setFlowSelection, setFlowNodes } from '@/store/flow'
@@ -46,8 +47,8 @@ export default function ModtreeFlow() {
    * here, the variables `nodes` and `edges` store the current state of all
    * nodes and edges on-screen.
    */
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+  const [nodes, setNodes, onNodesChange] = useNodesState([])
+  const [edges, setEdges, onEdgesChange] = useEdgesState([])
   console.log(setEdges.name)
 
   /**
@@ -83,6 +84,7 @@ export default function ModtreeFlow() {
       maxZoom={2}
     >
       <Controls showInteractive={false} />
+      <Background />
     </ReactFlow>
   )
 }
