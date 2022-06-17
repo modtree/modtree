@@ -1,4 +1,4 @@
-import { body } from 'express-validator'
+import { body, query } from 'express-validator'
 import { UserController } from '../controller'
 import { Route } from './types'
 
@@ -19,7 +19,14 @@ export const userRoutes: Route<UserController>[] = [
     action: 'list',
     route: '/users',
     method: 'get',
-    validators: [body('userId').isString()],
+    validators: [
+      query('id').isUUID().optional(),
+      query('email').normalizeEmail().isEmail().optional(),
+      query('authZeroId').isString().optional(),
+      query('authZeroId')
+        .custom((value: string) => value.startsWith('auth0|'))
+        .optional(),
+    ],
   },
   {
     action: 'getByEmail',

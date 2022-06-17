@@ -1,11 +1,19 @@
 import { Request, Response } from 'express'
-
 import { IUserController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { validate } from './base'
+import { check, validationResult } from 'express-validator'
+
+type CustomRequest<T, Q> = Request<{}, {}, T, Q>
+
+type ListRequest = {
+  id?: string
+  authZeroId?: string
+  email?: string
+}
 
 /** User api controller */
 export class UserController implements IUserController {
@@ -54,9 +62,12 @@ export class UserController implements IUserController {
    * @param {Request} req
    * @param {Response} res
    */
-  async list(req: Request, res: Response) {
+  async list(req: CustomRequest<{}, ListRequest>, res: Response) {
+    if (!validate(req, res)) return
+    const { id, authZeroId, email } = req.query
     this.userRepo
       .find({
+        where: { id, authZeroId, email },
         relations: {
           modulesDone: true,
           modulesDoing: true,
