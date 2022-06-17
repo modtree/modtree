@@ -1,5 +1,17 @@
-import { postman } from '../postman'
+import axios from 'axios'
 
-const id = '9f0b22dd-e076-4677-9968-5ac4c49155d1'
-
-postman.get(`user/get/${id}`).then(console.log)
+axios
+  .get('http://localhost:8080/users', {
+    params: {
+      id: '58201858-5ce5-4ceb-8568-eecf55841b9f',
+      // authZeroId: 'auth0|62a8b56d430b9f20930583f7',
+      // email: 'brew4k@gmail.com',
+    },
+  })
+  .then((res) => {
+    console.log(res.data)
+  })
+  .catch((err) => {
+    console.log(err.response.data)
+    console.log(Object.keys(err.response))
+  })
