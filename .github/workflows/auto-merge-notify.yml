@@ -1,0 +1,19 @@
+name: auto merge notify
+
+on:
+  pull_request:
+    types: [auto_merge_enabled]
+
+jobs:
+  telegram:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Send message
+        uses: appleboy/telegram-action@master
+        with:
+          disable_web_page_preview: true
+          to: ${{ secrets.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            PR #${{ github.event.pull_request.number }} has auto-merge enabled 🚀

@@ -38,6 +38,7 @@ jobs:
 
       - name: Safely install yarn
         run: yarn install --frozen-lockfile --silent
+        continue-on-error: true
 
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
@@ -61,6 +62,7 @@ jobs:
 
       - name: Safely install yarn
         run: yarn install --frozen-lockfile --silent
+        continue-on-error: true
 
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
