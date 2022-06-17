@@ -29,7 +29,7 @@ export const flatten = {
       modulesDoing: user.modulesDoing.map(flatten.module),
       modulesDone: user.modulesDone.map(flatten.module),
       savedDegrees: user.savedDegrees.map((d) => d.id),
-      savedGraphs: [],
+      savedGraphs: user.savedGraphs.map((g) => g.id),
     }
   },
 
