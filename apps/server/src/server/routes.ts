@@ -73,43 +73,43 @@ const moduleRoutes: Route<ModuleController>[] = [
 const userRoutes: Route<UserController>[] = [
   {
     action: 'create',
-    route: '/user/create',
+    route: '/users/create',
     method: 'post',
     validators: [body('authZeroId').notEmpty()],
   },
   {
     action: 'insertDegree',
-    route: '/user/insert-degree/:userId',
+    route: '/users/insert-degree/:userId',
     method: 'post',
     validators: [],
   },
   {
     action: 'list',
-    route: '/user/list',
+    route: '/users/list',
     method: 'get',
     validators: [],
   },
   {
     action: 'getFull',
-    route: '/user/get-full/:userId',
+    route: '/users/get-full/:userId',
     method: 'get',
     validators: [],
   },
   {
     action: 'get',
-    route: '/user/get/:userId',
+    route: '/users/get/:userId',
     method: 'get',
     validators: [],
   },
   {
     action: 'getByEmail',
-    route: '/user/get-by-email',
+    route: '/users/get-by-email',
     method: 'post',
     validators: [body('email').isEmail()],
   },
   {
     action: 'delete',
-    route: '/user/delete/:userId',
+    route: '/users/delete/:userId',
     method: 'delete',
     validators: [],
   },
@@ -118,25 +118,25 @@ const userRoutes: Route<UserController>[] = [
 const degreeRoutes: Route<DegreeController>[] = [
   {
     action: 'create',
-    route: '/degree/create',
+    route: '/degrees/create',
     method: 'post',
     validators: [],
   },
   {
     action: 'get',
-    route: '/degree/get/:degreeId',
+    route: '/degrees/get/:degreeId',
     method: 'get',
     validators: [],
   },
   {
     action: 'delete',
-    route: '/degree/delete/:degreeId',
+    route: '/degrees/delete/:degreeId',
     method: 'delete',
     validators: [],
   },
   {
     action: 'list',
-    route: '/degree/list',
+    route: '/degrees/list',
     method: 'get',
     validators: [],
   },
@@ -145,31 +145,31 @@ const degreeRoutes: Route<DegreeController>[] = [
 const graphRoutes: Route<GraphController>[] = [
   {
     action: 'create',
-    route: '/graph/create',
+    route: '/graphs/create',
     method: 'post',
     validators: [],
   },
   {
     action: 'get',
-    route: '/graph/get/:graphId',
+    route: '/graphs/get/:graphId',
     method: 'get',
     validators: [],
   },
   {
     action: 'delete',
-    route: '/graph/delete/:graphId',
+    route: '/graphs/delete/:graphId',
     method: 'delete',
     validators: [],
   },
   {
     action: 'list',
-    route: '/graph/list',
+    route: '/graphs/list',
     method: 'get',
     validators: [],
   },
   {
     action: 'toggle',
-    route: '/graph/id/:graphId/toggle/:moduleCode',
+    route: '/graphs/id/:graphId/toggle/:moduleCode',
     method: 'post',
     validators: [
       param('moduleCode')
@@ -179,7 +179,7 @@ const graphRoutes: Route<GraphController>[] = [
   },
   {
     action: 'updateFrontendProps',
-    route: '/graph/update-frontend/:graphId',
+    route: '/graphs/update-frontend/:graphId',
     method: 'post',
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },
@@ -188,7 +188,7 @@ const graphRoutes: Route<GraphController>[] = [
 const apiRoutes: Route<ApiController>[] = [
   {
     action: 'userLogin',
-    route: '/user/login',
+    route: '/users/login',
     method: 'post',
     validators: [
       /**

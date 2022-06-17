@@ -9,7 +9,7 @@ interface NextApiRequest extends IncomingMessage {
 }
 
 const valid = {
-  entities: ['user', 'degree', 'graph', 'module'],
+  entities: ['users', 'degrees', 'graphs', 'modules'],
   actions: [],
 }
 
