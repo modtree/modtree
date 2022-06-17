@@ -4,7 +4,7 @@ import { db } from '@modtree/typeorm-config'
 import { Api } from '@modtree/repo-api'
 import { validate } from './base'
 
-/** Graph API controller */
+/** Generic API controller */
 export class ApiController {
   private api = new Api(db)
 
