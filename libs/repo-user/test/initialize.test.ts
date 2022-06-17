@@ -33,15 +33,16 @@ it('increments the count by 1', async () => {
   })
 })
 
-it('gets the user if exists', async () => {
+it('creates new user even with same auth0 id', async () => {
   await Repo.User!.initialize(init.user1).then((user) => {
-    expect(user).toEqual(t.user!)
+    expect(user.id).not.toEqual(t.user!.id)
+    expect(user.authZeroId).toEqual(t.user!.authZeroId)
   })
 })
 
-it("doesn't init conflicting authZeroId", async () => {
+it('increments the count by 1 again', async () => {
   await Repo.User!.count().then((count) => {
     // same as previous count
-    expect(count).toEqual(1)
+    expect(count).toEqual(2)
   })
 })

@@ -11,7 +11,7 @@ beforeAll(() =>
     .then(() => {
       Repo.User = new UserRepository(db)
       return Repo.User!.initialize({
-        ...init.emptyUser,
+        ...init.user1,
         modulesDone: ['CS1010'],
       })
     })

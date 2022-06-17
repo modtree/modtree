@@ -6,6 +6,7 @@ import {
   UserController,
   DegreeController,
   GraphController,
+  ApiController,
 } from '../controller'
 
 type Class<I, Args extends any[] = any[]> = new (...args: Args) => I
@@ -184,6 +185,22 @@ const graphRoutes: Route<GraphController>[] = [
   },
 ]
 
+const apiRoutes: Route<ApiController>[] = [
+  {
+    action: 'userLogin',
+    route: '/user/login',
+    method: 'post',
+    validators: [
+      /**
+       * example:
+       * auth0|62a8b56d430b9f20930583f7
+       */
+      body('authZeroId').matches(/^auth0\|\S{24}/),
+      body('email').isEmail(),
+    ],
+  },
+]
+
 /**
  * gets all the routes for modtree's API
  *
@@ -196,5 +213,6 @@ export function getRoutes(): RouteWithController<any>[] {
   addRoutes(Routes, degreeRoutes, DegreeController)
   addRoutes(Routes, graphRoutes, GraphController)
   addRoutes(Routes, moduleRoutes, ModuleController)
+  addRoutes(Routes, apiRoutes, ApiController)
   return Routes
 }

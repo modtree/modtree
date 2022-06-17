@@ -4,12 +4,33 @@ import { useSelector, useDispatch } from 'react-redux'
 import { ModalState, hideDebugModal } from '@/store/modal'
 import { CloseButton } from '@/ui/buttons'
 import { useUser } from '@/utils/auth0'
+import { UserState } from '@/store/base'
+import { ObjectLiteral } from 'typeorm'
+
+const Header = (props: { children: string }) => {
+  return (
+    <code className="text-xl font-medium text-modtree-400 mb-2">
+      {props.children}
+    </code>
+  )
+}
+
+const Content = (props: { children: ObjectLiteral }) => {
+  return (
+    <div className="p-4 bg-gray-100 mb-4">
+      <pre className="text-sm overflow-hidden">
+        {JSON.stringify(props.children, null, 2)}
+      </pre>
+    </div>
+  )
+}
 
 export default function DebugModal() {
   const { user } = useUser()
-  const showDebugModal = useSelector<ModalState, boolean>(
-    (state) => state.modal.showDebugModal
-  )
+  const redux = {
+    modal: useSelector<ModalState, ModalState['modal']>((state) => state.modal),
+    user: useSelector<UserState, UserState['base']>((state) => state.base),
+  }
   const dispatch = useDispatch()
 
   function closeModal() {
@@ -18,11 +39,13 @@ export default function DebugModal() {
 
   const DebugModalContents = () => {
     return (
-      <div className="mt-2 border border-blue-400">
-        <code>useUser().user</code>
-        <pre className="p-2 bg-gray-100 overflow-hidden">
-          {JSON.stringify(user, null, 2)}
-        </pre>
+      <div className="mt-2">
+        <Header>useUser().user</Header>
+        <Content>{user}</Content>
+        <Header>Redux UserState</Header>
+        <Content>{redux.user}</Content>
+        <Header>Redux ModalState</Header>
+        <Content>{redux.modal}</Content>
       </div>
     )
   }
@@ -50,7 +73,7 @@ export default function DebugModal() {
   }
 
   return (
-    <Transition appear show={showDebugModal} as={Fragment}>
+    <Transition appear show={redux.modal.showDebugModal} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}

@@ -122,14 +122,14 @@ export const init: Init = {
 
   emptyUser: {
     authZeroId: 'auth0|no-modules',
-    displayName: 'Khang Vu Nguyen',
-    username: 'definitelynotkhang',
-    email: 'user@modtree.com',
+    displayName: '',
+    username: '',
+    email: '',
     modulesDone: [],
     modulesDoing: [],
-    matriculationYear: 2021,
-    graduationYear: 2025,
-    graduationSemester: 2,
+    matriculationYear: 0,
+    graduationYear: 0,
+    graduationSemester: 0,
   },
 
   invalidModuleCode: 'XXYYZZ',

@@ -9,7 +9,7 @@ const afterCallback = async (
 ) => {
   const backend = process.env.NEXT_PUBLIC_BACKEND
   return axios
-    .post(`${backend}/user/create`, {
+    .post(`${backend}/user/login`, {
       authZeroId: session.user.sub,
       email: session.user.email,
     })

@@ -76,11 +76,24 @@ inverse() {
   inv_end
 }
 
+rg_tests() {
+  rg "^\s*(it|test|describe)\("
+}
+
+rg_imports() {
+  # package json imports
+  rg "\"@modtree/(\w|-)*\": \"\*\"" -g 'package.json'
+  # code imports
+  rg "'@modtree/(\w|-)*'" -g '!package.json'
+}
+
 handle_args() {
   [ -z $SRC ] && return 0
   local cmd="$1"
   [[ $cmd == "setup" ]] && setup && return
   [[ $cmd == "inverse" ]] && inverse && return
+  [[ $cmd == "rg-tests" ]] && rg_tests && return
+  [[ $cmd == "rg-imports" ]] && rg_imports && return
   return 0
 }
 

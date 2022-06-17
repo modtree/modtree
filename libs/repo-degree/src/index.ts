@@ -40,12 +40,11 @@ export class DegreeRepository
    * @returns {Promise<Degree>}
    */
   async initialize(props: InitProps['Degree']): Promise<Degree> {
-    const { moduleCodes, title } = props
-    const degree = this.create({ title })
-    // find modules required, to create many-to-many relation
-    const modules = await this.moduleRepo.findByCodes(moduleCodes)
-    degree.modules = modules
-    return this.save(degree)
+    return this.moduleRepo
+      .findByCodes(props.moduleCodes)
+      .then((modules) =>
+        this.save(this.create({ title: props.title, modules }))
+      )
   }
 
   /**
