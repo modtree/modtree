@@ -17,21 +17,9 @@ export const userRoutes: Route<UserController>[] = [
   },
   {
     action: 'list',
-    route: '/users/list',
+    route: '/users',
     method: 'get',
-    validators: [],
-  },
-  {
-    action: 'getFull',
-    route: '/users/get-full/:userId',
-    method: 'get',
-    validators: [],
-  },
-  {
-    action: 'get',
-    route: '/users/get/:userId',
-    method: 'get',
-    validators: [],
+    validators: [body('userId').isString()],
   },
   {
     action: 'getByEmail',
