@@ -14,7 +14,7 @@ const fulfilled = {
     'cb70ebf4-6733-4bcf-b605-a98170f6f0e2',
     'ab4eceaf-ee9c-4032-88dd-687b38322249',
   ],
-  savedGraphs: [],
+  savedGraphs: ['4dcf096d-fc1a-4b01-99df-17cc01cba16c'],
 }
 
 export const get: MethodProps = {
