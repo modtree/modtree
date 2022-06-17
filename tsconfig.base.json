@@ -18,8 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@modtree/entity": ["libs/entity/src/index.ts"],
-      "@modtree/repo-base": ["libs/repo-base/src/index.ts"],
       "@modtree/repo-api": ["libs/repo-api/src/index.ts"],
+      "@modtree/repo-base": ["libs/repo-base/src/index.ts"],
       "@modtree/repo-degree": ["libs/repo-degree/src/index.ts"],
       "@modtree/repo-graph": ["libs/repo-graph/src/index.ts"],
       "@modtree/repo-module": ["libs/repo-module/src/index.ts"],
