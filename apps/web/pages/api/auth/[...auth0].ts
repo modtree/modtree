@@ -9,15 +9,17 @@ const afterCallback = async (
 ) => {
   const backend = process.env.NEXT_PUBLIC_BACKEND
   return axios
-    .post(`${backend}/user/login`, {
+    .post(`${backend}/users/login`, {
       authZeroId: session.user.sub,
       email: session.user.email,
     })
     .then((res) => {
+      console.log(res)
       session.user.modtree = res.data
       return session
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err)
       console.log('User not found. Own time own target carry on.')
       return session
     })

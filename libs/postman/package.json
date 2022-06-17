@@ -19,6 +19,7 @@
     "graph:list": "yarn ts ./dist/graph/list.js",
     "graph:delete": "yarn ts ./dist/graph/delete.js",
     "modules:find-by-codes": "yarn ts ./dist/modules/find-by-codes.js",
+    "next:user:login": "yarn ts ./dist/next-api/user-login.js",
     "ug": "yarn user:get",
     "ugf": "yarn user:get-full",
     "ube": "yarn user:by-email",
@@ -32,6 +33,7 @@
     "gc": "yarn graph:create",
     "gl": "yarn graph:list",
     "gd": "yarn graph:delete",
-    "mfbc": "yarn modules:find-by-codes"
+    "mfbc": "yarn modules:find-by-codes",
+    "nul": "yarn next:user:login"
   }
 }

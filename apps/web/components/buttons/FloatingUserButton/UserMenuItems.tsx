@@ -38,7 +38,7 @@ export default function UserMenuItems(props: {
       <div>
         <Menu.Item>
           <div className="px-4 py-3 text-sm text-gray-900">
-            <div className="flex w-full">Username: {user.modtree.email}</div>
+            <div className="flex w-full">Username: {user.modtree?.email}</div>
           </div>
         </Menu.Item>
       </div>
