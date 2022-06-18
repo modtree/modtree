@@ -1,3 +1,5 @@
+import { H1 } from './html'
+
 export default function Account() {
-  return <h1>Account</h1>
+  return <H1>Change username</H1>
 }

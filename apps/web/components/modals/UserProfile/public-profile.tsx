@@ -12,6 +12,7 @@ export default function PublicProfile() {
       <H1>Public profile</H1>
       <H3>Name</H3>
       <Input state={state.name} />
+      <button>Update profile</button>
     </div>
   )
 }
