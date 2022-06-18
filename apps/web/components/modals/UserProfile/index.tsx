@@ -1,24 +1,12 @@
 import { Panel } from '../base'
 import { hideUserProfile, ModalState } from '@/store/modal'
 import { useSelector } from 'react-redux'
-import { Tab } from '@headlessui/react'
-import Sidebar from './sidebar'
-
-const Contents = () => {
-  return (
-    <Tab.Group as="div">
-      <div className="flex flex-row space-x-6">
-        <Sidebar />
-        <Tab.Panels>
-          <Tab.Panel>Content 1</Tab.Panel>
-          <Tab.Panel>Content 2</Tab.Panel>
-          <Tab.Panel>Content 3</Tab.Panel>
-          <Tab.Panel>Content 4</Tab.Panel>
-        </Tab.Panels>
-      </div>
-    </Tab.Group>
-  )
-}
+import PublicProfile from './public-profile'
+import Account from './account'
+import Modules from './modules'
+import Graphs from './graphs'
+import Degrees from './degrees'
+import SidebarWithContents from './sidebar'
 
 export default function UserProfile() {
   const showState = useSelector<ModalState, boolean>(
@@ -26,7 +14,15 @@ export default function UserProfile() {
   )
   return (
     <Panel showState={showState} hideAction={hideUserProfile}>
-      <Contents />
+      <SidebarWithContents
+        contents={[
+          ['Public profile', <PublicProfile />],
+          ['Account', <Account />],
+          ['Graphs', <Graphs />],
+          ['Modules', <Modules />],
+          ['Degrees', <Degrees />],
+        ]}
+      />
     </Panel>
   )
 }

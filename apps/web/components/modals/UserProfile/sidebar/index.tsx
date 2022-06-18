@@ -1,13 +1,36 @@
 import { Tab } from '@headlessui/react'
+import { ReactElement } from 'react'
 import SidebarButton from './button'
 
-export default function Sidebar() {
+function Sidebar(props: { titles: string[] }) {
   return (
     <Tab.List className="w-48 flex flex-col">
-      <SidebarButton>Public profile</SidebarButton>
-      <SidebarButton>Account</SidebarButton>
-      <SidebarButton>Graphs</SidebarButton>
-      <SidebarButton>Degrees</SidebarButton>
+      {props.titles.map((title) => (
+        <SidebarButton>{title}</SidebarButton>
+      ))}
     </Tab.List>
+  )
+}
+
+function Panels(props: { contents: ReactElement[] }) {
+  return (
+    <Tab.Panels>
+      {props.contents.map((content) => (
+        <Tab.Panel>{content}</Tab.Panel>
+      ))}
+    </Tab.Panels>
+  )
+}
+
+export default function SidebarWithContents(props: {
+  contents: [string, ReactElement][]
+}) {
+  return (
+    <Tab.Group>
+      <div className="flex flex-row space-x-6">
+        <Sidebar titles={props.contents.map((e) => e[0])} />
+        <Panels contents={props.contents.map((e) => e[1])} />
+      </div>
+    </Tab.Group>
   )
 }
