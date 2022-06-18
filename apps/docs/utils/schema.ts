@@ -3,11 +3,9 @@
  * Assumes that there are no nested arrays.
  * Assumes that arrays have at least one element (so that type can be inferred)
  *
- * @params {Record<string, any>} sampleResponse
+ * @params {SampleResponse} sampleResponse
  */
-export function generateSchema(
-  sampleResponse: Record<string, any>
-): SchemaItem {
+export function generateSchema(sampleResponse: SampleResponse): SchemaItem {
   return helper(sampleResponse)
 }
 
@@ -19,13 +17,28 @@ export function generateSchema(
 function helper(data: any): SchemaItem {
   const schema = {}
 
-  // handle non objects separately
+  // handle non objects
   if (typeof data !== 'object')
     return {
       type: typeof data,
     }
 
-  // assume no nested arrays
+  // handle top-level arrays
+  if (data instanceof Array) {
+    let items
+    // assume that array is not empty
+    if (data[0] instanceof Object) {
+      items = {
+        type: 'object',
+        properties: helper(data[0]),
+      }
+    } else {
+      items = helper(data[0])
+    }
+    return [items]
+  }
+
+  // is a object
   Object.entries(data).forEach(([key, value]) => {
     if (value instanceof Array) {
       let items

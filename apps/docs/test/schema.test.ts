@@ -32,4 +32,32 @@ describe('generates correct schema', () => {
   it.each(results)('for %s', (_dataType, expected, generated) => {
     expect(expected).toStrictEqual(generated)
   })
+
+  it('top level array', () => {
+    const input = [
+      {
+        title: 'Programming Methodology',
+        moduleCode: 'CS1010S',
+      },
+      {
+        title: 'Linear Algebra I',
+        moduleCode: 'MA2001',
+      },
+    ]
+    const output = [
+      {
+        type: 'object',
+        properties: {
+          title: {
+            type: 'string',
+          },
+          moduleCode: {
+            type: 'string',
+          },
+        },
+      },
+    ]
+    const generated = generateSchema(input)
+    expect(generated).toStrictEqual(output)
+  })
 })
