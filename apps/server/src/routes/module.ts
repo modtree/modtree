@@ -5,19 +5,19 @@ import { Route } from './types'
 export const moduleCondensedRoutes: Route<ModuleCondensedController>[] = [
   {
     action: 'list',
-    route: '/modules/list',
+    route: '/modulesCondensed/',
     method: 'get',
     validators: [],
   },
   {
     action: 'find',
-    route: '/modules/find/:moduleCode',
+    route: '/modulesCondensed/:moduleCode',
     method: 'get',
     validators: [],
   },
   {
     action: 'findByCodes',
-    route: '/modules/find-by-codes/',
+    route: '/modulesCondensed/find-by-codes/',
     method: 'post',
     validators: [body('moduleCodes').notEmpty()],
   },
