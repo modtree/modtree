@@ -8,7 +8,6 @@ export default function Debug() {
   }
   return (
     <div>
-      <H2 underline>Debug</H2>
       <H1>Heading 1</H1>
       <H2>Heading 2</H2>
       <H3>Heading 3</H3>
