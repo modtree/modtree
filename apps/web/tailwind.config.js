@@ -8,6 +8,35 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        spin: 'spin 3s linear infinite',
+      },
+      keyframes: {
+        spin: {
+          to: {
+            transform: 'rotate(360deg)',
+          },
+        },
+        bounce: {
+          '50%': {
+            transform: 'translateY(-10%)',
+            animationTimingFunction: 'cubic-bezier(0.8,0,1,1)',
+          },
+          '0%, 100%': {
+            transform: 'translateY(10%)',
+            animationTimingFunction: 'cubic-bezier(0,0,0.2,1)',
+          },
+        },
+        ping: {
+          '75%, 100%': {
+            transform: 'scale(2)',
+            opacity: '0',
+          },
+        },
+      },
+      backgroundImage: {
+        logo: "url('/logo.svg')",
+      },
       fontFamily: {
         sans: ['Inter', ...fontFamily.sans],
       },
