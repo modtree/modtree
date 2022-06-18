@@ -67,10 +67,11 @@ export function Button(props: ButtonProps) {
   )
 }
 
-export function AddButton(props: ButtonProps) {
+export function AddButton(props: Omit<ButtonProps, 'children'>) {
+  const { className, innerClass, ...rest } = props
   return (
-    <Button innerClass="px-2">
-      <PlusIcon className="text-gray-600 h-4 w-4" />
+    <Button innerClass={`px-2 ${innerClass}`} {...rest}>
+      <PlusIcon className={`text-gray-600 h-4 w-4 ${className}`} />
     </Button>
   )
 }

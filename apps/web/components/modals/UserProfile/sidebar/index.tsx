@@ -2,21 +2,24 @@ import { Tab } from '@headlessui/react'
 import { ReactElement } from 'react'
 import SidebarButton from './button'
 import { SidebarCategoryProps } from 'types'
+import { dashed } from '@/utils/array'
 
 function Sidebar(props: { contents: SidebarCategoryProps[] }) {
   return (
     <Tab.List className="w-48 flex flex-col">
-      {props.contents.map(({ category, entries }) => (
-        <>
+      {props.contents.map(({ category, entries }, index) => (
+        <div key={dashed(category, index)}>
           {category !== '' && (
             <div className="text-xs font-semibold tracking-normal text-gray-500 mt-3 mb-1">
               {category}
             </div>
           )}
-          {entries.map(({ icon, title }) => (
-            <SidebarButton icon={icon}>{title}</SidebarButton>
+          {entries.map(({ icon, title }, index) => (
+            <SidebarButton key={dashed(title, index)} icon={icon}>
+              {title}
+            </SidebarButton>
           ))}
-        </>
+        </div>
       ))}
     </Tab.List>
   )
@@ -25,8 +28,10 @@ function Sidebar(props: { contents: SidebarCategoryProps[] }) {
 function Panels(props: { contents: ReactElement[] }) {
   return (
     <Tab.Panels className="flex-1">
-      {props.contents.map((content) => (
-        <Tab.Panel>{content}</Tab.Panel>
+      {props.contents.map((content, index) => (
+        <Tab.Panel key={dashed('user-profile-panel', index)}>
+          {content}
+        </Tab.Panel>
       ))}
     </Tab.Panels>
   )
