@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ModtreeApiResponse } from '@modtree/types'
 import { EmptyResponse } from '@modtree/utils'
 import axios from 'axios'
-import { Dispatch, AnyAction } from 'redux'
 
 export type ModuleCondensedMap = {
   [key: string]: ModtreeApiResponse.ModuleCondensed
@@ -26,25 +25,7 @@ const initialState: State = {
   modulesCondensed: {},
 }
 
-export const getModulesCondensed = async (
-  dispatch: Dispatch<AnyAction>,
-  moduleCodes: string[]
-) => {
-  const backend = process.env.NEXT_PUBLIC_BACKEND
-  axios
-    .post(`${backend}/modules/find-by-codes`, {
-      moduleCodes,
-    })
-    .then((res) => {
-      // replace entirely for now
-      let modulesMap = {}
-      res.data.forEach((one: ModtreeApiResponse.ModuleCondensed) => {
-        modulesMap[one.moduleCode] = one
-      })
-      dispatch(setModulesCondensed(modulesMap))
-    })
-    .catch(() => console.log('Database error'))
-}
+const backend = process.env.NEXT_PUBLIC_BACKEND
 
 export const base = createSlice({
   name: 'base',
@@ -62,9 +43,19 @@ export const base = createSlice({
     setBaseGraph: (state, action: PayloadAction<ModtreeApiResponse.Graph>) => {
       state.graph = action.payload
     },
-    setModulesCondensed: (state, action: PayloadAction<ModuleCondensedMap>) => {
-      console.log(action.payload)
-      state.modulesCondensed = action.payload
+    setModulesCondensed: (state, action: PayloadAction<string[]>) => {
+      axios
+        .post(`${backend}/modules/find-by-codes`, {
+          moduleCodes: action.payload,
+        })
+        .then((res) => {
+          // replace entirely for now
+          state.modulesCondensed = {}
+          res.data.forEach((module: ModtreeApiResponse.ModuleCondensed) => {
+            state.modulesCondensed[module.moduleCode] = module
+          })
+        })
+        .catch(() => console.log('Database error'))
     },
   },
 })

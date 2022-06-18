@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  getModulesCondensed,
   UserState,
   ModuleCondensedMap,
+  setModulesCondensed,
 } from '@/store/base'
 import { ModtreeApiResponse } from '@modtree/types'
 import { useEffect } from 'react'
@@ -18,7 +18,7 @@ export default function ModulesDone() {
 
   useEffect(() => {
     const modules = reduxUser.modulesDone.concat(reduxUser.modulesDoing)
-    getModulesCondensed(dispatch, modules)
+    dispatch(setModulesCondensed(modules))
   }, [])
 
   return (
