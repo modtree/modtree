@@ -14,7 +14,7 @@
 }
 
 html {
-  @apply bg-gray-50 select-none;
+  @apply bg-gray-50 select-none text-gray-900;
 }
 
 body {

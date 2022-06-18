@@ -14,7 +14,7 @@ function Sidebar(props: { titles: string[] }) {
 
 function Panels(props: { contents: ReactElement[] }) {
   return (
-    <Tab.Panels>
+    <Tab.Panels className="flex-1">
       {props.contents.map((content) => (
         <Tab.Panel>{content}</Tab.Panel>
       ))}
