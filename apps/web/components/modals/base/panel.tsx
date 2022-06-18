@@ -8,6 +8,7 @@ export default function Panel(props: {
   children: ReactElement[] | ReactElement
   showState: boolean
   hideAction: ActionCreatorWithoutPayload<string>
+  closeButton?: boolean
 }) {
   const dispatch = useDispatch()
   function closeModal() {
@@ -26,7 +27,9 @@ export default function Panel(props: {
         leaveTo="opacity-0 scale-95"
       >
         <Dialog.Panel className="w-full max-w-4xl h-full overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-          <CloseButton close={closeModal} bg="bg-white" />
+          {props.closeButton && (
+            <CloseButton close={closeModal} bg="bg-white" />
+          )}
           <div className="h-full overflow-y-auto">{props.children}</div>
         </Dialog.Panel>
       </Transition.Child>
