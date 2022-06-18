@@ -34,7 +34,7 @@ const Sidebar = () => {
 const Contents = () => {
   return (
     <Tab.Group as="div">
-      <div className="flex flex-row">
+      <div className="flex flex-row space-x-6">
         <Sidebar />
         <Tab.Panels>
           <Tab.Panel>Content 1</Tab.Panel>
