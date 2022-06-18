@@ -1,6 +1,6 @@
 import { useUser } from '@/utils/auth0'
 import { useState } from 'react'
-import { H1, H3, H4, Input } from '@/components/html'
+import { H2, H3, H4, Input } from '@/components/html'
 import { Button } from '@/components/buttons'
 
 export default function PublicProfile() {
@@ -10,7 +10,7 @@ export default function PublicProfile() {
   }
   return (
     <div>
-      <H1 underline>Public profile</H1>
+      <H2 underline>Public profile</H2>
       <H3>Name</H3>
       <H4>Name</H4>
       <Input className="w-full mb-4" state={state.name} />

@@ -9,10 +9,10 @@ type ExtendedProps = {
   }
 }
 
-const base = 'text-gray-800'
+const base = 'text-gray-700'
 const className = {
   h1: `text-3xl font-normal   mb-3 ${base}`,
-  h2: `text-2xl font-medium   mb-3 ${base}`,
+  h2: `text-2xl font-normal   mb-3 ${base}`,
   h3: `text-xl  font-semibold mb-2 ${base}`,
   h4: `text-lg  font-semibold mb-2 ${base}`,
   h5: `text-md  font-semibold mb-2 ${base}`,
