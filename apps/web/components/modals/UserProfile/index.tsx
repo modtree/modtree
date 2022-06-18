@@ -8,14 +8,21 @@ import Graphs from './graphs'
 import Degrees from './degrees'
 import Debug from './debug'
 import SidebarWithContents from './sidebar'
-import { UserIcon } from '@heroicons/react/outline'
+import {
+  AcademicCapIcon,
+  CogIcon,
+  CubeIcon,
+  ShareIcon,
+  TerminalIcon,
+  UserIcon,
+} from '@heroicons/react/outline'
 
 const contents = [
   { title: 'Public profile', content: <PublicProfile />, icon: UserIcon },
-  { title: 'Account', content: <Account />, icon: UserIcon },
-  { title: 'Graphs', content: <Graphs />, icon: UserIcon },
-  { title: 'Modules', content: <Modules />, icon: UserIcon },
-  { title: 'Degrees', content: <Degrees />, icon: UserIcon },
+  { title: 'Account', content: <Account />, icon: CogIcon },
+  { title: 'Graphs', content: <Graphs />, icon: ShareIcon },
+  { title: 'Modules', content: <Modules />, icon: CubeIcon },
+  { title: 'Degrees', content: <Degrees />, icon: AcademicCapIcon },
 ]
 
 export default function UserProfile() {
@@ -26,7 +33,7 @@ export default function UserProfile() {
     contents.push({
       title: 'Debug',
       content: <Debug />,
-      icon: UserIcon,
+      icon: TerminalIcon,
     })
   }
   return (
