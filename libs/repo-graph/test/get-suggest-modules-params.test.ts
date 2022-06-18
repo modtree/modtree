@@ -3,7 +3,7 @@ import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
-import { GraphRepository } from '@modtree/repo-graph'
+import { GraphRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

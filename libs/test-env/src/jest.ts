@@ -1,16 +1,5 @@
 import { arrayDeepEqual, arrayOfType } from './matchers'
-
-declare global {
-  /* eslint-disable @typescript-eslint/no-namespace */
-  namespace jest {
-    interface Matchers<R> {
-      toBeYes: () => R
-      toIncludeSameMembers: <T>(expected: T[]) => R
-      toBeArrayOf: <T>(expected: T) => R
-      toHaveSameKeysAs: <T>(expected: T) => R
-    }
-  }
-}
+import './matcher-types'
 
 const extendMap: jest.ExpectExtendMap = {
   /**
