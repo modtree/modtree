@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { H1, H3, H4, Input } from './html'
 import { Button } from '@/components/buttons'
 
-export default function PublicProfile() {
+export default function Debug() {
   const { user } = useUser()
   const state = {
     name: useState<string>(user.nickname),

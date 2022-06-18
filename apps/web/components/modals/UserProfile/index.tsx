@@ -6,23 +6,27 @@ import Account from './account'
 import Modules from './modules'
 import Graphs from './graphs'
 import Degrees from './degrees'
+import Debug from './debug'
 import SidebarWithContents from './sidebar'
+import { ReactElement } from 'react'
 
 export default function UserProfile() {
   const showState = useSelector<ModalState, boolean>(
     (state) => state.modal.showUserProfile
   )
+  const contents: [string, ReactElement][] = [
+    ['Public profile', <PublicProfile />],
+    ['Account', <Account />],
+    ['Graphs', <Graphs />],
+    ['Modules', <Modules />],
+    ['Degrees', <Degrees />],
+  ]
+  if (process.env['NODE_ENV'] === 'development') {
+    contents.push(['Debug', <Debug />])
+  }
   return (
     <Panel showState={showState} hideAction={hideUserProfile}>
-      <SidebarWithContents
-        contents={[
-          ['Public profile', <PublicProfile />],
-          ['Account', <Account />],
-          ['Graphs', <Graphs />],
-          ['Modules', <Modules />],
-          ['Degrees', <Degrees />],
-        ]}
-      />
+      <SidebarWithContents contents={contents} />
     </Panel>
   )
 }
