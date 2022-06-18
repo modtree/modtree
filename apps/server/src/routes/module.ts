@@ -26,7 +26,7 @@ export const moduleCondensedRoutes: Route<ModuleCondensedController>[] = [
 export const moduleRoutes: Route<ModuleController>[] = [
   {
     action: 'get',
-    route: '/modules/info/:moduleCode',
+    route: '/modules/:moduleCode',
     method: 'get',
     validators: [],
   },
