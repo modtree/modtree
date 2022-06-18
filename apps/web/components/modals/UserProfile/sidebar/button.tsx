@@ -6,7 +6,7 @@ export default function SidebarButton(props: {
   children: string
   icon: HeroIcon
 }) {
-  const text = 'text-left text-sm text-gray-500'
+  const text = 'text-left text-sm text-gray-600'
   const shape = 'rounded-md'
   const interact = 'hover:bg-gray-100'
   const selectedCss = (s: boolean) =>
