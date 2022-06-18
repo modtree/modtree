@@ -2,6 +2,7 @@ import { NextApiResponse } from 'next'
 import { backend } from '@/utils/backend'
 import { IncomingMessage } from 'http'
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface NextApiRequest extends IncomingMessage {
   query: { entity: string; params: string[] }
   cookies: { [key: string]: string }

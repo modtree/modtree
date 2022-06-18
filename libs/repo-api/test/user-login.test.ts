@@ -1,7 +1,7 @@
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown } from '@modtree/test-env'
-import { Api } from '@modtree/repo-api'
+import { Api } from '../src'
 import { User } from '@modtree/entity'
 import { IUserRepository } from '@modtree/types'
 import { UserRepository } from '@modtree/repo-user'

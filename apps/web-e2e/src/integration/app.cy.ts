@@ -19,6 +19,8 @@ describe('web', () => {
 
   it('should select the search box', () => {
     cy.get('[id^=headlessui-combobox-input-]').type('CS1010S')
+    /* eslint-disable cypress/no-unnecessary-waiting */
+    // TODO: wait for the resolution of the search itself, instead of an arbitrary time.
     cy.wait(1000)
     cy.get('[id^=headlessui-combobox-option]')
       .contains('Programming Methodology')
