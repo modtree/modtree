@@ -26,3 +26,15 @@ export function copy(source: StrRecord, target: StrRecord) {
     target[key] = source[key]
   })
 }
+
+/**
+ * make a dash-separated string out of an array
+ *
+ * intended use: for keys in React element mapping
+ *
+ * @param {string[]} ...arr
+ * @returns {string}
+ */
+export function dashed(...arr: (string | number)[]): string {
+  return arr.join('-')
+}

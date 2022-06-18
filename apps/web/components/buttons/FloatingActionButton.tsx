@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { IoReceiptOutline } from 'react-icons/io5'
-// import { useDispatch } from 'react-redux'
-// import { showBuilder } from '@/store/builder'
 import colors from 'tailwindcss/colors'
 
-export default function FloatingActionButton() {
+export function FloatingActionButton() {
   const [showTooltip, setShowTooltip] = useState(false)
   // const dispatch = useDispatch()
   return (

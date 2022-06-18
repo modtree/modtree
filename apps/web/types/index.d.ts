@@ -1,5 +1,6 @@
 import { UserProfile } from '@auth0/nextjs-auth0'
 import { ModtreeApiResponse } from '@modtree/types'
+import { HTMLAttributes, ReactElement } from 'react'
 
 /**
  * for frontend-specific types.
@@ -27,4 +28,23 @@ export type UserMenuItem = {
   text: string
   href?: string
   callback?: () => void
+}
+
+export type ButtonProps = HTMLAttributes<HTMLDivElement> & {
+  disabled?: boolean
+  innerClass?: string
+  color?: 'red' | 'blue' | 'green' | 'gray'
+}
+
+export type HeroIcon = (props: React.ComponentProps<'svg'>) => JSX.Element
+
+export type SidebarEntryProps = {
+  title: string
+  content: ReactElement
+  icon: HeroIcon
+}
+
+export type SidebarCategoryProps = {
+  category: string
+  entries: SidebarEntryProps[]
 }

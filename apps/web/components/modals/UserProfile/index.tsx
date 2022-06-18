@@ -1,79 +1,52 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { ModalState, hideUserProfile } from '@/store/modal'
-import { CloseButton } from '@/ui/buttons'
-import SavedGraphs from './SavedGraphs'
-import ModulesDone from './ModulesDone'
+import { Panel } from '../base'
+import { hideUserProfile, ModalState } from '@/store/modal'
+import { useSelector } from 'react-redux'
+import PublicProfile from './public-profile'
+import Account from './account'
+import Modules from './modules'
+import Graphs from './graphs'
+import Degrees from './degrees'
+import Debug from './debug'
+import SidebarWithContents from './sidebar'
+import { SidebarCategoryProps } from 'types'
+import {
+  AcademicCapIcon,
+  BeakerIcon,
+  CogIcon,
+  CubeIcon,
+  ShareIcon,
+  UserIcon,
+} from '@heroicons/react/outline'
 
-export default function UserProfileModal() {
-  const showUserProfile = useSelector<ModalState, boolean>(
+const contents: SidebarCategoryProps[] = [
+  {
+    category: '',
+    entries: [
+      { title: 'Public profile', content: <PublicProfile />, icon: UserIcon },
+      { title: 'Account', content: <Account />, icon: CogIcon },
+    ],
+  },
+  {
+    category: 'Academics',
+    entries: [
+      { title: 'Graphs', content: <Graphs />, icon: ShareIcon },
+      { title: 'Modules', content: <Modules />, icon: CubeIcon },
+      { title: 'Degrees', content: <Degrees />, icon: AcademicCapIcon },
+    ],
+  },
+  {
+    category: 'Developer',
+    entries: [{ title: 'Debug', content: <Debug />, icon: BeakerIcon }],
+  },
+]
+
+export default function UserProfile() {
+  const showState = useSelector<ModalState, boolean>(
     (state) => state.modal.showUserProfile
   )
-  const dispatch = useDispatch()
-
-  function closeModal() {
-    dispatch(hideUserProfile())
-  }
-
-  const UserProfileContents = () => {
-    return (
-      <div className="mt-2 grid grid-cols-3 space-x-6">
-        <div>
-          <h3 className="mb-4">Saved Graphs</h3>
-          <SavedGraphs />
-        </div>
-        <h3>Saved Degrees</h3>
-        <div>
-          <h3 className="mb-4">Modules Done</h3>
-          <ModulesDone />
-        </div>
-      </div>
-    )
-  }
-
-  const Panel = () => {
-    return (
-      <Transition.Child
-        as={Fragment}
-        enter="ease-out duration-300"
-        enterFrom="opacity-0 scale-95"
-        enterTo="opacity-100 scale-100"
-        leave="ease-in duration-200"
-        leaveFrom="opacity-100 scale-100"
-        leaveTo="opacity-0 scale-95"
-      >
-        <Dialog.Panel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-          <CloseButton close={closeModal} />
-          <h2 className="text-lg font-medium leading-6 text-gray-900 mb-4">
-            User Profile
-          </h2>
-          <UserProfileContents />
-        </Dialog.Panel>
-      </Transition.Child>
-    )
-  }
-
   return (
-    <Transition appear show={showUserProfile} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={closeModal}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-900 bg-opacity-10" />
-        </Transition.Child>
-        <div className="fixed inset-0 overflow-y-hidden">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Panel />
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
+    <Panel showState={showState} hideAction={hideUserProfile}>
+      <SidebarWithContents contents={contents} />
+    </Panel>
   )
 }

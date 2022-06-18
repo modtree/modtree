@@ -3,6 +3,9 @@
     "browser": true,
     "node": true
   },
+  "globals": {
+    "JSX": "readonly"
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
