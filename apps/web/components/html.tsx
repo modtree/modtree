@@ -6,14 +6,14 @@ type ExtendedProps = {
   h1: JSX.IntrinsicElements['h1'] & { children: string; underline?: boolean }
 }
 
-const base = ''
+const base = 'text-gray-800'
 const className = {
-  h1: `text-xl mb-3 ${base}`,
-  h2: `text-lg mb-3 ${base}`,
-  h3: `text-sm font-semibold mb-2 text-gray-800 ${base}`,
-  h4: `text-sm font-semibold mb-2 text-gray-800 ${base}`,
-  h5: `text-sm font-semibold mb-2 text-gray-800 ${base}`,
-  h6: `text-sm font-semibold mb-2 text-gray-800 ${base}`,
+  h1: `text-3xl font-normal   mb-3 ${base}`,
+  h2: `text-2xl  font-medium   mb-3 ${base}`,
+  h3: `text-xl  font-semibold mb-2 ${base}`,
+  h4: `text-lg  font-semibold mb-2 ${base}`,
+  h5: `text-md  font-semibold mb-2 ${base}`,
+  h6: `text-sm  font-semibold mb-2 ${base}`,
 }
 
 export const H1 = (props: ExtendedProps['h1']) => {

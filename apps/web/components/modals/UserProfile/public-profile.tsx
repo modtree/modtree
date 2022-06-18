@@ -1,6 +1,6 @@
 import { useUser } from '@/utils/auth0'
 import { useState } from 'react'
-import { H1, H3, H4, Input } from './html'
+import { H1, H3, H4, Input } from '@/components/html'
 import { Button } from '@/components/buttons'
 
 export default function PublicProfile() {
