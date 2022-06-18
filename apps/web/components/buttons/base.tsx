@@ -13,7 +13,12 @@ export const base = 'h-8 w-min'
 export const container =
   'flex justify-center items-center cursor-pointer ' +
   'h-8 w-min border text-sm font-medium ' +
-  'rounded-md hover:bg-opacity-90 active:bg-opacity-80 whitespace-nowrap'
+  'rounded-md whitespace-nowrap select-none'
+
+/**
+ * all buttons' interactions
+ */
+export const interact = 'hover:bg-opacity-90 active:bg-opacity-80'
 
 /**
  * exists because tailwind only takes literals
@@ -30,15 +35,32 @@ export const colorMap = {
     'hover:text-white',
     'hover:border-red-700',
   ],
+  disabled: ['bg-gray-100', 'border-gray-300', 'text-gray-800'],
 }
 
 export function Button(props: ButtonProps) {
   const color = props.color || 'gray'
   const accents = flatten(...colorMap[color])
-  const { className, children, innerClass, ...rest } = props
+  const { className, children, innerClass, disabled, ...rest } = props
   return (
-    <div className={`bg-black rounded-lg ${base} ${className}`}>
-      <div className={`${container} ${accents} px-4 ${innerClass}`} {...rest}>
+    <div
+      className={flatten(
+        'rounded-lg',
+        base,
+        disabled ? 'bg-gray-200' : 'bg-black',
+        className
+      )}
+    >
+      <div
+        className={flatten(
+          container,
+          accents,
+          'px-4',
+          innerClass,
+          disabled ? 'opacity-50' : interact
+        )}
+        {...rest}
+      >
         {children}
       </div>
     </div>

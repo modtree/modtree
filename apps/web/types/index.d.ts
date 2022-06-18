@@ -31,6 +31,7 @@ export type UserMenuItem = {
 }
 
 export type ButtonProps = HTMLAttributes<HTMLDivElement> & {
+  disabled?: boolean
   innerClass?: string
   color?: 'red' | 'blue' | 'green' | 'gray'
 }
