@@ -8,7 +8,12 @@ export default function Account() {
       <P className="mb-4">
         Changing your username can have unintended side effects.
       </P>
-      <Button>Change username</Button>
+      <Button className="mb-4">Change username</Button>
+      <H2 underline>Export account data</H2>
+      <P>
+        Export all repositories and profile metadata for @nguyenvukhang. Exports
+        will be available for 7 days.
+      </P>
     </>
   )
 }

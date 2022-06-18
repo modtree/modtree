@@ -35,10 +35,10 @@ export const colorMap = {
 export function Button(props: ButtonProps) {
   const color = props.color || 'gray'
   const accents = flatten(...colorMap[color])
-  const { className, children, ...rest } = props
+  const { className, children, innerClass, ...rest } = props
   return (
-    <div className={`bg-black rounded-lg ${base}`}>
-      <div className={`${container} ${accents} px-4 ${className}`} {...rest}>
+    <div className={`bg-black rounded-lg ${base} ${className}`}>
+      <div className={`${container} ${accents} px-4 ${innerClass}`} {...rest}>
         {children}
       </div>
     </div>
@@ -47,7 +47,7 @@ export function Button(props: ButtonProps) {
 
 export function AddButton(props: ButtonProps) {
   return (
-    <Button className="px-2">
+    <Button innerClass="px-2">
       <PlusIcon className="text-gray-600 h-4 w-4" />
     </Button>
   )

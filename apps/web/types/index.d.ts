@@ -31,6 +31,7 @@ export type UserMenuItem = {
 }
 
 export type ButtonProps = HTMLAttributes<HTMLDivElement> & {
+  innerClass?: string
   color?: 'red' | 'blue' | 'green' | 'gray'
 }
 
