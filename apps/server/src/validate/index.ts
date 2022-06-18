@@ -34,7 +34,7 @@ export function hasOnly(arr: string[]): CustomValidator {
       !Object.keys(props.req[props.location]).every((key) => arr.includes(key))
     ) {
       throw new Error(
-        `The only ${location} attributes allowed are: ${arr.join(', ')}.`
+        `The only ${props.location} attributes allowed are: ${arr.join(', ')}.`
       )
     }
   }
