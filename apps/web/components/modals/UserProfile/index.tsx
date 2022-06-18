@@ -8,21 +8,26 @@ import Graphs from './graphs'
 import Degrees from './degrees'
 import Debug from './debug'
 import SidebarWithContents from './sidebar'
-import { ReactElement } from 'react'
+import { UserIcon } from '@heroicons/react/outline'
+
+const contents = [
+  { title: 'Public profile', content: <PublicProfile />, icon: UserIcon },
+  { title: 'Account', content: <Account />, icon: UserIcon },
+  { title: 'Graphs', content: <Graphs />, icon: UserIcon },
+  { title: 'Modules', content: <Modules />, icon: UserIcon },
+  { title: 'Degrees', content: <Degrees />, icon: UserIcon },
+]
 
 export default function UserProfile() {
   const showState = useSelector<ModalState, boolean>(
     (state) => state.modal.showUserProfile
   )
-  const contents: [string, ReactElement][] = [
-    ['Public profile', <PublicProfile />],
-    ['Account', <Account />],
-    ['Graphs', <Graphs />],
-    ['Modules', <Modules />],
-    ['Degrees', <Degrees />],
-  ]
   if (process.env['NODE_ENV'] === 'development') {
-    contents.push(['Debug', <Debug />])
+    contents.push({
+      title: 'Debug',
+      content: <Debug />,
+      icon: UserIcon,
+    })
   }
   return (
     <Panel showState={showState} hideAction={hideUserProfile}>

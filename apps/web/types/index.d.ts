@@ -33,3 +33,5 @@ export type UserMenuItem = {
 export type ButtonProps = HTMLAttributes<HTMLDivElement> & {
   color?: 'red' | 'blue' | 'green' | 'gray'
 }
+
+export type HeroIconProps = (props: React.ComponentProps<'svg'>) => JSX.Element
