@@ -11,9 +11,7 @@ export default function PublicProfile() {
   return (
     <div>
       <H2 underline>Public profile</H2>
-      <H3>Name</H3>
-      <H4>Name</H4>
-      <Input className="w-full mb-4" state={state.name} />
+      <Input className="w-full mb-4" state={state.name} grayed />
       <Button>Update profile</Button>
       <Button color="red">Transfer</Button>
       <Button color="green">Set up sponsor button</Button>

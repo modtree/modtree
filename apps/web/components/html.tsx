@@ -1,7 +1,10 @@
 import { UseState } from '@modtree/types'
 
 type ExtendedProps = {
-  input: JSX.IntrinsicElements['input'] & { state: UseState<string> }
+  input: JSX.IntrinsicElements['input'] & {
+    state: UseState<string>
+    grayed?: boolean
+  }
   header: JSX.IntrinsicElements['h1'] & { children: string }
   headerWithUnderline: JSX.IntrinsicElements['h1'] & {
     children: string
@@ -54,9 +57,10 @@ export const H6 = makeHeader('h6')
 export const Input = (props: ExtendedProps['input']) => {
   const [value, setValue] = props.state
   const interact = 'focus:outline focus:outline-2 outline-blue-300'
+  const grayed = props.grayed ? 'focus:bg-white bg-gray-100' : ''
   return (
     <input
-      className={`text-sm py-1 px-2 border rounded-md ${interact} ${props.className}`}
+      className={`text-sm py-1 px-2 border border-gray-300 rounded-md ${interact} ${props.className} ${grayed}`}
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
