@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { H1, H2, H3, H4, H5, H6, Input } from '@/components/html'
-import { Button } from '@/components/buttons'
+import { AddButton, Button } from '@/components/buttons'
 
 export default function Debug() {
   const state = {
@@ -18,10 +18,11 @@ export default function Debug() {
       <H1 underline>Heading 1 underlined</H1>
       <H2 underline>Heading 2 underlined</H2>
       <Input className="w-full mb-4" state={state.markdownTest} />
-      <div className="space-x-4">
+      <div className="space-x-4 bg-green-100">
         <Button>Update profile</Button>
         <Button color="red">Delete user</Button>
         <Button color="green">Upgrade</Button>
+        <AddButton />
       </div>
     </div>
   )
