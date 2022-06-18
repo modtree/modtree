@@ -8,7 +8,7 @@ import { DataSource, DeleteResult } from 'typeorm'
 /**
  * imports custom matcher types
  */
-import './jest-matchers'
+import './matcher-types'
 
 type SetupOptions = {
   initialize: boolean
