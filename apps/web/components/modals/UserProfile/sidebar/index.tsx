@@ -14,11 +14,13 @@ function Sidebar(props: { contents: SidebarCategoryProps[] }) {
               {category}
             </div>
           )}
-          {entries.map(({ icon, title }, index) => (
-            <SidebarButton key={dashed(title, index)} icon={icon}>
-              {title}
-            </SidebarButton>
-          ))}
+          <div className="flex flex-col">
+            {entries.map(({ icon, title }, index) => (
+              <SidebarButton key={dashed(title, index)} icon={icon}>
+                {title}
+              </SidebarButton>
+            ))}
+          </div>
         </div>
       ))}
     </Tab.List>
