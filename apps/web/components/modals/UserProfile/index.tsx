@@ -2,34 +2,7 @@ import { Panel } from '../base'
 import { hideUserProfile, ModalState } from '@/store/modal'
 import { useSelector } from 'react-redux'
 import { Tab } from '@headlessui/react'
-
-const SidebarButton = (props: { children: string }) => {
-  const text = 'text-left text-sm'
-  const shape = 'rounded-md'
-  const interact = 'hover:bg-gray-100 active:bg-red-200'
-  const selectedCss = (s: boolean) =>
-    s ? ' font-semibold text-gray-800 bg-gray-100' : ''
-  return (
-    <Tab
-      className={({ selected }) =>
-        `px-2 py-1 h-8 ${text} ${shape} ${interact}` + selectedCss(selected)
-      }
-    >
-      {props.children}
-    </Tab>
-  )
-}
-
-const Sidebar = () => {
-  return (
-    <Tab.List className="w-48 flex flex-col">
-      <SidebarButton>Public profile</SidebarButton>
-      <SidebarButton>Account</SidebarButton>
-      <SidebarButton>Graphs</SidebarButton>
-      <SidebarButton>Degrees</SidebarButton>
-    </Tab.List>
-  )
-}
+import Sidebar from './sidebar'
 
 const Contents = () => {
   return (
