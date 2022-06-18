@@ -10,7 +10,7 @@ const fulfilled = {
 export const get: MethodProps = {
   method: 'Get a module condensed',
   description: 'Retrieve basic information about one module',
-  endpoint: '/moduleCondensed/{moduleCode}',
+  endpoint: '/modulesCondensed/{moduleCode}',
   requestType: 'GET',
   parameters: {
     pathParams: [

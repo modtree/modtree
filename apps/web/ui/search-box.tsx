@@ -23,7 +23,7 @@ export default function Example() {
     }
     const upper = value.toUpperCase()
     const backend = process.env.NEXT_PUBLIC_BACKEND
-    const url = `${backend}/modules/find/${upper}`
+    const url = `${backend}/modulesCondensed/${upper}`
     fetch(url)
       .then((res) => {
         res.json().then((result) => {
@@ -43,7 +43,7 @@ export default function Example() {
     console.log('GOT HERE WITH', value)
     if (value.length === 0) return
     const backend = process.env.NEXT_PUBLIC_BACKEND
-    const url = `${backend}/modules/info/${value}`
+    const url = `${backend}/modules/${value}`
     fetch(url)
       .then((res) => {
         res.json().then((result) => {

@@ -4,7 +4,15 @@ type RequestType = 'POST' | 'GET' | 'DELETE'
 
 type Data = string | number | string[] | number[] | Record<string, any>
 
-type SchemaItem = SchemaObject | SchemaNonObject | Record<string, unknown>
+/* start of generateSchema */
+
+type SampleResponse = Record<string, any> | Array<Record<string, any>>
+
+type SchemaItem =
+  | SchemaObject
+  | SchemaNonObject
+  | Record<string, unknown>
+  | Array<Record<string, unknown>>
 
 type SchemaNonObject = {
   type: string
@@ -16,6 +24,8 @@ type SchemaObject = {
   type: string
   properties: Record<string, SchemaItem>
 }
+
+/* end of generateSchema */
 
 type MethodProps = {
   method: string // short description
@@ -30,7 +40,7 @@ type MethodProps = {
 }
 
 type ResponseProps = {
-  fulfilled: Record<string, Data>
+  fulfilled: Record<string, Data> | Array<Record<string, Data>>
   schema: SchemaItem
 }
 
