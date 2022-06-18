@@ -1,5 +1,10 @@
-import { H1 } from '@/components/html'
+import { H2, P } from '@/components/html'
 
 export default function Account() {
-  return <H1>Change username</H1>
+  return (
+    <>
+      <H2>Change username</H2>
+      <P>Changing your username can have unintended side effects.</P>
+    </>
+  )
 }

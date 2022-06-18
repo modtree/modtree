@@ -10,6 +10,7 @@ type ExtendedProps = {
     children: string
     underline?: boolean
   }
+  p: JSX.IntrinsicElements['p'] & { children: string }
 }
 
 const base = 'text-gray-700'
@@ -20,6 +21,7 @@ const className = {
   h4: `text-lg  font-semibold mb-2 ${base}`,
   h5: `text-md  font-semibold mb-2 ${base}`,
   h6: `text-sm  font-semibold mb-2 ${base}`,
+  p: `text-sm`,
 }
 
 function makeHeaderWithUnderline(Tag: 'h1' | 'h2') {
@@ -64,5 +66,14 @@ export const Input = (props: ExtendedProps['input']) => {
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
+  )
+}
+
+export const P = (props: ExtendedProps['p']) => {
+  const { children, ...rest } = props
+  return (
+    <p className={`${className.p} ${rest.className}`} {...rest}>
+      {children}
+    </p>
   )
 }

@@ -46,7 +46,7 @@ export default function SidebarWithContents(props: {
 
   return (
     <Tab.Group>
-      <div className="flex flex-row space-x-6">
+      <div className="flex flex-row space-x-10">
         <Sidebar contents={contents} />
         <Panels contents={panelContents} />
       </div>
