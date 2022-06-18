@@ -3,29 +3,33 @@ import { UseState } from '@modtree/types'
 type ExtendedProps = {
   input: JSX.IntrinsicElements['input'] & { state: UseState<string> }
   header: JSX.IntrinsicElements['h1'] & { children: string }
-  h1: JSX.IntrinsicElements['h1'] & { children: string; underline?: boolean }
+  headerWithUnderline: JSX.IntrinsicElements['h1'] & {
+    children: string
+    underline?: boolean
+  }
 }
 
 const base = 'text-gray-800'
 const className = {
   h1: `text-3xl font-normal   mb-3 ${base}`,
-  h2: `text-2xl  font-medium   mb-3 ${base}`,
+  h2: `text-2xl font-medium   mb-3 ${base}`,
   h3: `text-xl  font-semibold mb-2 ${base}`,
   h4: `text-lg  font-semibold mb-2 ${base}`,
   h5: `text-md  font-semibold mb-2 ${base}`,
   h6: `text-sm  font-semibold mb-2 ${base}`,
 }
 
-export const H1 = (props: ExtendedProps['h1']) => {
-  const { children, underline, ...rest } = props
-  return (
-    <>
-      <h1 className={className.h1} {...rest}>
+function makeHeaderWithUnderline(Tag: 'h1' | 'h2') {
+  const Header = (props: ExtendedProps['headerWithUnderline']) => {
+    const { children, underline, ...rest } = props
+    return (
+      <Tag className={className[Tag]} {...rest}>
         {children}
-      </h1>
-      {underline && <hr className="border-gray-200 mb-3" />}
-    </>
-  )
+        {underline && <hr className="border-gray-200 bg-green-100 mt-3" />}
+      </Tag>
+    )
+  }
+  return Header
 }
 
 function makeHeader(Tag: 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
@@ -40,15 +44,8 @@ function makeHeader(Tag: 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
   return Header
 }
 
-export const H2 = (props: ExtendedProps['header']) => {
-  const { children, ...rest } = props
-  return (
-    <h2 className={className.h2} {...rest}>
-      {children}
-    </h2>
-  )
-}
-
+export const H1 = makeHeaderWithUnderline('h1')
+export const H2 = makeHeaderWithUnderline('h2')
 export const H3 = makeHeader('h3')
 export const H4 = makeHeader('h4')
 export const H5 = makeHeader('h5')
