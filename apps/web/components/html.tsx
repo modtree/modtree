@@ -53,7 +53,7 @@ export const H6 = makeHeader('h6')
 
 export const Input = (props: ExtendedProps['input']) => {
   const [value, setValue] = props.state
-  const interact = 'focus:outline-none focus:border-modtree-200'
+  const interact = 'focus:outline focus:outline-2 outline-blue-300'
   return (
     <input
       className={`text-sm py-1 px-2 border rounded-md ${interact} ${props.className}`}

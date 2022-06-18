@@ -26,11 +26,11 @@ export default function Panel(props: {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Dialog.Panel className="w-full max-w-4xl h-full overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+        <Dialog.Panel className="w-full max-w-4xl h-full overflow-hidden rounded-2xl bg-white py-6 px-4 text-left align-middle shadow-xl transition-all">
           {props.closeButton && (
             <CloseButton close={closeModal} bg="bg-white" />
           )}
-          <div className="h-full overflow-y-auto">{props.children}</div>
+          <div className="h-full overflow-y-auto px-2">{props.children}</div>
         </Dialog.Panel>
       </Transition.Child>
     )
