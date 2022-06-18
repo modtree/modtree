@@ -14,7 +14,7 @@
 }
 
 html {
-  @apply bg-gray-50 select-none text-gray-900;
+  @apply bg-gray-50 text-gray-900;
 }
 
 body {
@@ -23,6 +23,10 @@ body {
 
 span {
   @apply select-text;
+}
+
+.react-flow__pane {
+  @apply select-none;
 }
 
 .react-flow__node {

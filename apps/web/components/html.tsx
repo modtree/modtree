@@ -14,7 +14,7 @@ type ExtendedProps = {
 }
 
 const base = 'text-gray-700'
-const className = {
+const baseClass = {
   h1: `text-3xl font-normal   mb-3 ${base}`,
   h2: `text-2xl font-normal   mb-3 ${base}`,
   h3: `text-xl  font-semibold mb-2 ${base}`,
@@ -28,7 +28,7 @@ function makeHeaderWithUnderline(Tag: 'h1' | 'h2') {
   const Header = (props: ExtendedProps['headerWithUnderline']) => {
     const { children, underline, ...rest } = props
     return (
-      <Tag className={className[Tag]} {...rest}>
+      <Tag className={baseClass[Tag]} {...rest}>
         {children}
         {underline && <hr className="border-gray-200 bg-green-100 mt-3" />}
       </Tag>
@@ -41,7 +41,7 @@ function makeHeader(Tag: 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
   const Header = (props: ExtendedProps['header']) => {
     const { children, ...rest } = props
     return (
-      <Tag className={className[Tag]} {...rest}>
+      <Tag className={baseClass[Tag]} {...rest}>
         {children}
       </Tag>
     )
@@ -70,9 +70,9 @@ export const Input = (props: ExtendedProps['input']) => {
 }
 
 export const P = (props: ExtendedProps['p']) => {
-  const { children, ...rest } = props
+  const { children, className, ...rest } = props
   return (
-    <p className={`${className.p} ${rest.className}`} {...rest}>
+    <p className={`${baseClass.p} ${className}`} {...rest}>
       {children}
     </p>
   )
