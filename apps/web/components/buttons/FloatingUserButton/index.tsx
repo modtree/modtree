@@ -15,7 +15,7 @@ const TopRight = (props: { children: ReactElement[] | ReactElement }) => {
 /**
  * hidden while loading, handles login state.
  */
-export default function FloatingUserButton() {
+export function FloatingUserButton() {
   const { user, isLoading } = useUser()
   return !isLoading ? (
     <TopRight>{user ? <SignedInCircle /> : <SignedOutRect />}</TopRight>

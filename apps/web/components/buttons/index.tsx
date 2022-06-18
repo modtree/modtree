@@ -1,4 +1,3 @@
-import FloatingActionButton from './FloatingActionButton'
-import FloatingUserButton from './FloatingUserButton'
-
-export { FloatingActionButton, FloatingUserButton }
+export { FloatingActionButton } from './FloatingActionButton'
+export { FloatingUserButton } from './FloatingUserButton'
+export { Button } from './multi-purpose'
