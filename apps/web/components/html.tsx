@@ -10,7 +10,7 @@ type ExtendedProps = {
     children: string
     underline?: boolean
   }
-  p: JSX.IntrinsicElements['p'] & { children: string }
+  p: JSX.IntrinsicElements['p']
 }
 
 const base = 'text-gray-700'
