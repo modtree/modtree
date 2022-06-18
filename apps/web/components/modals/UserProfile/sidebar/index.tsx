@@ -35,7 +35,7 @@ export default function SidebarWithContents(props: {
         <Sidebar
           contents={contents.map((e) => ({ title: e.title, icon: e.icon }))}
         />
-        <Panels contents={props.contents.map((e) => e[1])} />
+        <Panels contents={props.contents.map((e) => e.content)} />
       </div>
     </Tab.Group>
   )

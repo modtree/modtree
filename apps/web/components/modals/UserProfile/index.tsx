@@ -29,7 +29,10 @@ export default function UserProfile() {
   const showState = useSelector<ModalState, boolean>(
     (state) => state.modal.showUserProfile
   )
-  if (process.env['NODE_ENV'] === 'development') {
+  if (
+    process.env['NODE_ENV'] === 'development' &&
+    contents.every((e) => e.title !== 'Debug')
+  ) {
     contents.push({
       title: 'Debug',
       content: <Debug />,
