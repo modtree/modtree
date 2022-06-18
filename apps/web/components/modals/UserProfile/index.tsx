@@ -8,37 +8,42 @@ import Graphs from './graphs'
 import Degrees from './degrees'
 import Debug from './debug'
 import SidebarWithContents from './sidebar'
+import { SidebarCategoryProps } from 'types'
 import {
   AcademicCapIcon,
+  BeakerIcon,
   CogIcon,
   CubeIcon,
   ShareIcon,
-  TerminalIcon,
   UserIcon,
 } from '@heroicons/react/outline'
 
-const contents = [
-  { title: 'Public profile', content: <PublicProfile />, icon: UserIcon },
-  { title: 'Account', content: <Account />, icon: CogIcon },
-  { title: 'Graphs', content: <Graphs />, icon: ShareIcon },
-  { title: 'Modules', content: <Modules />, icon: CubeIcon },
-  { title: 'Degrees', content: <Degrees />, icon: AcademicCapIcon },
+const contents: SidebarCategoryProps[] = [
+  {
+    category: '',
+    entries: [
+      { title: 'Public profile', content: <PublicProfile />, icon: UserIcon },
+      { title: 'Account', content: <Account />, icon: CogIcon },
+    ],
+  },
+  {
+    category: 'Academics',
+    entries: [
+      { title: 'Graphs', content: <Graphs />, icon: ShareIcon },
+      { title: 'Modules', content: <Modules />, icon: CubeIcon },
+      { title: 'Degrees', content: <Degrees />, icon: AcademicCapIcon },
+    ],
+  },
+  {
+    category: 'Developer',
+    entries: [{ title: 'Debug', content: <Debug />, icon: BeakerIcon }],
+  },
 ]
 
 export default function UserProfile() {
   const showState = useSelector<ModalState, boolean>(
     (state) => state.modal.showUserProfile
   )
-  if (
-    process.env['NODE_ENV'] === 'development' &&
-    contents.every((e) => e.title !== 'Debug')
-  ) {
-    contents.push({
-      title: 'Debug',
-      content: <Debug />,
-      icon: TerminalIcon,
-    })
-  }
   return (
     <Panel showState={showState} hideAction={hideUserProfile}>
       <SidebarWithContents contents={contents} />

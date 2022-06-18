@@ -1,15 +1,22 @@
-import { HeroIconProps } from '@/types'
 import { Tab } from '@headlessui/react'
 import { ReactElement } from 'react'
 import SidebarButton from './button'
+import { SidebarCategoryProps } from 'types'
 
-function Sidebar(props: {
-  contents: { title: string; icon: HeroIconProps }[]
-}) {
+function Sidebar(props: { contents: SidebarCategoryProps[] }) {
   return (
     <Tab.List className="w-48 flex flex-col">
-      {props.contents.map(({ title, icon }) => (
-        <SidebarButton icon={icon}>{title}</SidebarButton>
+      {props.contents.map(({ category, entries }) => (
+        <>
+          {category !== '' && (
+            <div className="text-xs font-semibold tracking-normal text-gray-500 mt-3 mb-1">
+              {category}
+            </div>
+          )}
+          {entries.map(({ icon, title }) => (
+            <SidebarButton icon={icon}>{title}</SidebarButton>
+          ))}
+        </>
       ))}
     </Tab.List>
   )
@@ -26,16 +33,22 @@ function Panels(props: { contents: ReactElement[] }) {
 }
 
 export default function SidebarWithContents(props: {
-  contents: { title: string; content: ReactElement; icon: HeroIconProps }[]
+  contents: SidebarCategoryProps[]
 }) {
   const { contents } = props
+
+  const panelContents: ReactElement[] = []
+  contents.forEach((category) => {
+    category.entries.forEach((entry) => {
+      panelContents.push(entry.content)
+    })
+  })
+
   return (
     <Tab.Group>
       <div className="flex flex-row space-x-6">
-        <Sidebar
-          contents={contents.map((e) => ({ title: e.title, icon: e.icon }))}
-        />
-        <Panels contents={props.contents.map((e) => e.content)} />
+        <Sidebar contents={contents} />
+        <Panels contents={panelContents} />
       </div>
     </Tab.Group>
   )

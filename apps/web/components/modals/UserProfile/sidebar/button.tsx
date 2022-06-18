@@ -1,10 +1,10 @@
 import { Tab } from '@headlessui/react'
 import { useState } from 'react'
-import { HeroIconProps } from 'types'
+import { HeroIcon } from 'types'
 
 export default function SidebarButton(props: {
   children: string
-  icon: HeroIconProps
+  icon: HeroIcon
 }) {
   const text = 'text-left text-sm text-gray-500'
   const shape = 'rounded-md'
