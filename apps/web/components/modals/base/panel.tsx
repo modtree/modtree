@@ -1,34 +1,17 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, ReactElement } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { ModalState, hideUserProfile } from '@/store/modal'
+import { useDispatch } from 'react-redux'
 import { CloseButton } from '@/ui/buttons'
-import { flatten } from '@/utils/tailwind'
-
-const panel = flatten(
-  'w-full',
-  'max-w-4xl',
-  'h-full',
-  'overflow-hidden',
-  'rounded-2xl',
-  'bg-white',
-  'p-6',
-  'text-left',
-  'align-middle',
-  'shadow-xl',
-  'transition-all'
-)
+import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
 
 export default function Panel(props: {
   children: ReactElement[] | ReactElement
+  showState: boolean
+  hideAction: ActionCreatorWithoutPayload<string>
 }) {
-  const showUserProfile = useSelector<ModalState, boolean>(
-    (state) => state.modal.showUserProfile
-  )
   const dispatch = useDispatch()
-
   function closeModal() {
-    dispatch(hideUserProfile())
+    dispatch(props.hideAction())
   }
 
   const Panel = () => {
@@ -42,16 +25,16 @@ export default function Panel(props: {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Dialog.Panel className={panel}>
-          <CloseButton close={closeModal} />
-          {props.children}
+        <Dialog.Panel className="w-full max-w-4xl h-full overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+          <CloseButton close={closeModal} bg="bg-white" />
+          <div className="h-full overflow-y-auto">{props.children}</div>
         </Dialog.Panel>
       </Transition.Child>
     )
   }
 
   return (
-    <Transition appear show={showUserProfile} as={Fragment}>
+    <Transition appear show={props.showState} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
