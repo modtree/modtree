@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { H2, H6, Input } from '@/components/html'
 import { Button } from '@/components/buttons'
 
-export default function PublicProfile() {
+export default function PublicProfileTabContent() {
   const { user } = useUser()
   const state = {
     name: useState<string>(user.nickname),

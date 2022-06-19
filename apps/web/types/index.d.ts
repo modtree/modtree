@@ -56,7 +56,6 @@ type ExtendedPropsPure = {
   }
   header: HTML['h1'] & { children: string }
   headerWithUnderline: HTML['h1'] & {
-    children: string
     underline?: boolean
   }
   table: HTML['table'] & { containerClass?: string }

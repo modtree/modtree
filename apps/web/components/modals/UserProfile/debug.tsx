@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { H1, H2, H3, H4, H5, H6, Input } from '@/components/html'
 import { AddButton, Button } from '@/components/buttons'
 
-export default function Debug() {
+export default function DebugTabContent() {
   const state = {
     markdownTest: useState('input field'),
   }

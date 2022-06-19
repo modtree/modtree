@@ -12,9 +12,9 @@ import {
 export type FindByKey<T> = (query: string) => Promise<T>
 
 export enum ModuleStatus {
-  NOT_TAKEN = 0,
-  DONE = 1,
-  DOING = 2,
+  NOT_TAKEN = 'notTaken',
+  DONE = 'done',
+  DOING = 'doing',
 }
 
 /**

@@ -2,7 +2,7 @@ import { H2, P } from '@/components/html'
 import { Button } from '@/components/buttons'
 import { useUser } from '@/utils/auth0'
 
-export default function Account() {
+export default function AccountTabContent() {
   const { user } = useUser()
   return (
     <>
