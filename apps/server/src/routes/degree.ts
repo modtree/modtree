@@ -16,7 +16,7 @@ export const degreeRoutes: Route<DegreeController>[] = [
   },
   {
     action: 'delete',
-    route: '/degrees/delete/:degreeId',
+    route: '/degrees/:degreeId',
     method: 'delete',
     validators: [],
   },
