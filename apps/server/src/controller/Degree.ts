@@ -26,7 +26,7 @@ export class DegreeController implements IDegreeController {
     }
     copy(req.body, props)
     this.degreeRepo.initialize(props).then((degree) => {
-      res.json(degree)
+      res.json(flatten.degree(degree))
     })
   }
 

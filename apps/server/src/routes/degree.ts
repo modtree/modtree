@@ -4,7 +4,7 @@ import { Route } from './types'
 export const degreeRoutes: Route<DegreeController>[] = [
   {
     action: 'create',
-    route: '/degrees/create',
+    route: '/degrees/',
     method: 'post',
     validators: [],
   },
