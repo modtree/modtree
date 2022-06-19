@@ -66,6 +66,7 @@ function Row(props: ExtendedProps['div']) {
 function ModulesSection(props: {
   contents: ModuleSimple[]
   title: string
+  message: string
   emptyMessage: string
 }) {
   const hasModules = props.contents.length !== 0
@@ -78,15 +79,18 @@ function ModulesSection(props: {
         </div>
       </H2>
       {hasModules ? (
-        <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
-          {moduleContent.doing.map((module, index) => (
-            <Row key={dashed(module.moduleCode, index)}>
-              <span className="font-semibold">{module.moduleCode}</span>
-              <span className="mx-1">/</span>
-              {module.title}
-            </Row>
-          ))}
-        </div>
+        <>
+          <P className="mb-4">{props.message}</P>
+          <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
+            {moduleContent.doing.map((module, index) => (
+              <Row key={dashed(module.moduleCode, index)}>
+                <span className="font-semibold">{module.moduleCode}</span>
+                <span className="mx-1">/</span>
+                {module.title}
+              </Row>
+            ))}
+          </div>
+        </>
       ) : (
         <P>{props.emptyMessage}</P>
       )}
@@ -100,21 +104,26 @@ export default function ModulesTabContent() {
       <ModulesSection
         title="Modules Doing"
         contents={moduleContent.doing}
+        message="This is a list of modules that are currently in progess this semester. They will be automatically marked as when finals week is over."
         emptyMessage="There are no modules that are currently in progress."
       />
       <ModulesSection
         title="Modules Done"
         contents={moduleContent.done}
+        message="This is a list of completed modules."
         emptyMessage="There are no modules that are completed."
       />
+      <div className="my-12 text-center">Empty debug ↓</div>
       <ModulesSection
         title="Modules Doing"
         contents={[]}
+        message="This is a list of modules that are currently in progess this semester. They will be automatically marked as when finals week is over."
         emptyMessage="There are no modules that are currently in progress."
       />
       <ModulesSection
         title="Modules Done"
         contents={[]}
+        message="This is a list of completed modules."
         emptyMessage="There are no modules that are completed."
       />
     </>
