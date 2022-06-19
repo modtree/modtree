@@ -1,20 +1,34 @@
-import { UseState } from '@modtree/types'
+import { ExtendedProps } from 'types'
 
-type ExtendedProps = {
-  input: JSX.IntrinsicElements['input'] & {
-    state: UseState<string>
-    grayed?: boolean
-  }
-  header: JSX.IntrinsicElements['h1'] & { children: string }
-  headerWithUnderline: JSX.IntrinsicElements['h1'] & {
-    children: string
-    underline?: boolean
-  }
-  p: JSX.IntrinsicElements['p']
-}
+// function HeaderRow(props: ExtendedProps['div']) {
+//   const { className, ...rest } = props
+//   return (
+//     <div
+//       className={`flex flex-row items-center px-4 py-3 ${className}`}
+//       {...rest}
+//     />
+//   )
+// }
+//
+// function Row(props: ExtendedProps['div']) {
+//   const { className, ...rest } = props
+//   return <HeaderRow className={`bg-white ${className}`} {...rest} />
+// }
+//
+// function Graphs() {
+//   return (
+//     <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
+//       <HeaderRow className="font-semibold">
+//         <GraphIcon />
+//         Graphs
+//       </HeaderRow>
+//       <Row>something</Row>
+//     </div>
+//   )
+// }
 
 const base = 'text-gray-700'
-const baseClass = {
+const baseClass: Partial<Record<keyof JSX.IntrinsicElements, string>> = {
   h1: `text-3xl font-normal   mb-3 ${base}`,
   h2: `text-2xl font-normal   mb-3 ${base}`,
   h3: `text-xl  font-semibold mb-2 ${base}`,
@@ -22,6 +36,11 @@ const baseClass = {
   h5: `text-md  font-semibold mb-2 ${base}`,
   h6: `text-sm  font-semibold mb-2 ${base}`,
   p: `text-sm`,
+  table: 'px-4 border-collapse',
+  thead: 'border border-gray-300',
+  th: 'px-4 py-3',
+  td: 'px-4 py-3 bg-white',
+  tbody: 'border border-gray-300 bg-white',
 }
 
 function makeHeaderWithUnderline(Tag: 'h1' | 'h2') {
@@ -76,4 +95,38 @@ export const P = (props: ExtendedProps['p']) => {
       {children}
     </p>
   )
+}
+
+export const Table = (props: ExtendedProps['table']) => {
+  const { containerClass, className, ...rest } = props
+  return (
+    <div className={containerClass}>
+      <table className={`${baseClass.table} ${className}`} {...rest} />
+    </div>
+  )
+}
+
+export const Thead = (props: ExtendedProps['thead']) => {
+  const { className, ...rest } = props
+  return <thead className={`${baseClass.thead} ${className}`} {...rest} />
+}
+
+export const Tbody = (props: ExtendedProps['tbody']) => {
+  const { className, ...rest } = props
+  return <tbody className={`${baseClass.tbody} ${className}`} {...rest} />
+}
+
+export const Th = (props: ExtendedProps['th']) => {
+  const { className, ...rest } = props
+  return <th className={`${baseClass.th} ${className}`} {...rest} />
+}
+
+export const Tr = (props: ExtendedProps['tr']) => {
+  const { className, ...rest } = props
+  return <tr className={`${baseClass.tr} ${className}`} {...rest} />
+}
+
+export const Td = (props: ExtendedProps['td']) => {
+  const { className, ...rest } = props
+  return <td className={`${baseClass.td} ${className}`} {...rest} />
 }

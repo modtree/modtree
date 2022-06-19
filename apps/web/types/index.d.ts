@@ -1,6 +1,6 @@
 import { UserProfile } from '@auth0/nextjs-auth0'
-import { ModtreeApiResponse } from '@modtree/types'
-import { HTMLAttributes, ReactElement } from 'react'
+import { ModtreeApiResponse, UseState, Modify } from '@modtree/types'
+import { ButtonHTMLAttributes, ReactElement } from 'react'
 
 /**
  * for frontend-specific types.
@@ -30,9 +30,7 @@ export type UserMenuItem = {
   callback?: () => void
 }
 
-export type ButtonProps = HTMLAttributes<HTMLDivElement> & {
-  disabled?: boolean
-  innerClass?: string
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   color?: 'red' | 'blue' | 'green' | 'gray'
 }
 
@@ -48,3 +46,20 @@ export type SidebarCategoryProps = {
   category: string
   entries: SidebarEntryProps[]
 }
+
+type HTML = JSX.IntrinsicElements
+
+type ExtendedPropsPure = {
+  input: HTML['input'] & {
+    state: UseState<string>
+    grayed?: boolean
+  }
+  header: HTML['h1'] & { children: string }
+  headerWithUnderline: HTML['h1'] & {
+    children: string
+    underline?: boolean
+  }
+  table: HTML['table'] & { containerClass?: string }
+}
+
+export type ExtendedProps = Modify<HTML, ExtendedPropsPure>

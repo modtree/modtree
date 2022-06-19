@@ -11,6 +11,45 @@
   .modtree-solid {
     background-color: #ff4000;
   }
+  .ui-rectangle {
+    @apply bg-gray-100 border border-gray-300 rounded-md;
+  }
+  .button-base {
+    @apply ui-rectangle h-8 w-min px-4
+      flex justify-center items-center
+      select-none cursor-pointer
+      text-sm font-medium whitespace-nowrap
+      disabled:text-neutral-400 disabled:cursor-auto;
+  }
+  .button-gray {
+    @apply button-base
+      border-gray-300
+      text-gray-800
+      bg-gray-100;
+  }
+  .button-gray:enabled {
+    @apply hover:bg-gray-200
+      active:bg-gray-300;
+  }
+  .button-red {
+    @apply button-gray
+      text-red-600;
+  }
+  .button-red:enabled {
+    @apply hover:text-white
+      hover:bg-red-700
+      hover:border-red-700
+      active:bg-red-800;
+  }
+  .button-green {
+    @apply button-base
+      text-neutral-50
+      border-green-700
+      bg-green-600;
+  }
+  .button-green:enabled {
+    @apply hover:bg-green-700 active:bg-green-800;
+  }
 }
 
 html {
