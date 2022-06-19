@@ -22,7 +22,7 @@ const degrees = [
 ]
 
 function help() {
-  console.log('Please supply a username as an argument:')
+  console.log('Please supply a degree name as an argument:')
   console.log(degrees.map((d) => d.title))
   process.exit()
 }
@@ -30,4 +30,4 @@ function help() {
 const args = new ParseArgs(__filename, help)
 const degree = degrees.find((u) => u.title === args.last)
 if (!degree) help()
-postman.post('degree/create', degree)
+postman.post('degrees/', degree).then(console.log)
