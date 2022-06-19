@@ -45,8 +45,8 @@ export default function UserProfile() {
     (state) => state.modal.showUserProfile
   )
   return (
-    <Panel showState={showState} hideAction={hideUserProfile}>
-      <SidebarWithContents contents={contents} />
+    <Panel showState={showState} hideAction={hideUserProfile} className="pr-0">
+      <SidebarWithContents show={showState} contents={contents} />
     </Panel>
   )
 }

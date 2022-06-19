@@ -29,7 +29,7 @@ function Sidebar(props: { contents: SidebarCategoryProps[] }) {
 
 function Panels(props: { contents: ReactElement[] }) {
   return (
-    <Tab.Panels className="flex-1">
+    <Tab.Panels className="flex-1 px-6 overflow-y-auto">
       {props.contents.map((content, index) => (
         <Tab.Panel key={dashed('user-profile-panel', index)}>
           {content}
@@ -41,8 +41,9 @@ function Panels(props: { contents: ReactElement[] }) {
 
 export default function SidebarWithContents(props: {
   contents: SidebarCategoryProps[]
+  show: boolean
 }) {
-  const { contents } = props
+  const { contents, show } = props
 
   const panelContents: ReactElement[] = []
   contents.forEach((category) => {
@@ -51,12 +52,12 @@ export default function SidebarWithContents(props: {
     })
   })
 
-  return (
+  return show ? (
     <Tab.Group>
-      <div className="flex flex-row space-x-10">
+      <div className="flex flex-row space-x-4 h-full">
         <Sidebar contents={contents} />
         <Panels contents={panelContents} />
       </div>
     </Tab.Group>
-  )
+  ) : null
 }

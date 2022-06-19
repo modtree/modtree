@@ -3,12 +3,15 @@ import { Fragment, ReactElement } from 'react'
 import { useDispatch } from 'react-redux'
 import { CloseButton } from '@/ui/buttons'
 import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
+import { flatten } from '@/utils/tailwind'
 
 export default function Panel(props: {
   children: ReactElement[] | ReactElement
   showState: boolean
   hideAction: ActionCreatorWithoutPayload<string>
   closeButton?: boolean
+  scrollable?: boolean
+  className?: string
 }) {
   const dispatch = useDispatch()
   function closeModal() {
@@ -26,11 +29,19 @@ export default function Panel(props: {
         leaveFrom="opacity-100 scale-100"
         leaveTo="opacity-0 scale-95"
       >
-        <Dialog.Panel className="w-full max-w-4xl h-full overflow-hidden rounded-2xl bg-white py-6 px-4 text-left align-middle shadow-xl transition-all">
+        <Dialog.Panel className="w-full max-w-4xl h-full overflow-hidden rounded-2xl bg-white py-6 text-left align-middle shadow-xl transition-all">
           {props.closeButton && (
             <CloseButton close={closeModal} bg="bg-white" />
           )}
-          <div className="h-full overflow-y-auto px-2">{props.children}</div>
+          <div
+            className={flatten(
+              'h-full px-6',
+              props.scrollable ? 'overflow-y-auto' : 'overflow-y-hidden',
+              props.className
+            )}
+          >
+            {props.children}
+          </div>
         </Dialog.Panel>
       </Transition.Child>
     )
