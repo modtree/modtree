@@ -1,31 +1,5 @@
 import { ExtendedProps } from 'types'
-
-// function HeaderRow(props: ExtendedProps['div']) {
-//   const { className, ...rest } = props
-//   return (
-//     <div
-//       className={`flex flex-row items-center px-4 py-3 ${className}`}
-//       {...rest}
-//     />
-//   )
-// }
-//
-// function Row(props: ExtendedProps['div']) {
-//   const { className, ...rest } = props
-//   return <HeaderRow className={`bg-white ${className}`} {...rest} />
-// }
-//
-// function Graphs() {
-//   return (
-//     <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
-//       <HeaderRow className="font-semibold">
-//         <GraphIcon />
-//         Graphs
-//       </HeaderRow>
-//       <Row>something</Row>
-//     </div>
-//   )
-// }
+import { flatten } from '../utils'
 
 const base = 'text-gray-700'
 const baseClass: Partial<Record<keyof JSX.IntrinsicElements, string>> = {
@@ -35,7 +9,7 @@ const baseClass: Partial<Record<keyof JSX.IntrinsicElements, string>> = {
   h4: `text-lg  font-semibold mb-2 ${base}`,
   h5: `text-md  font-semibold mb-2 ${base}`,
   h6: `text-sm  font-semibold mb-2 ${base}`,
-  p: `text-sm`,
+  p: `text-sm tracking-normal`,
   table: 'px-4 border-collapse',
   thead: 'border border-gray-300',
   th: 'px-4 py-3',
@@ -45,9 +19,9 @@ const baseClass: Partial<Record<keyof JSX.IntrinsicElements, string>> = {
 
 function makeHeaderWithUnderline(Tag: 'h1' | 'h2') {
   const Header = (props: ExtendedProps['headerWithUnderline']) => {
-    const { children, underline, ...rest } = props
+    const { children, className, underline, ...rest } = props
     return (
-      <Tag className={baseClass[Tag]} {...rest}>
+      <Tag className={flatten(baseClass[Tag], className)} {...rest}>
         {children}
         {underline && <hr className="border-gray-200 bg-green-100 mt-3" />}
       </Tag>

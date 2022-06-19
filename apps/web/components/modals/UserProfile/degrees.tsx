@@ -1,3 +1,3 @@
-export default function Degrees() {
+export default function DegreesTabContent() {
   return <h1>Degrees</h1>
 }
