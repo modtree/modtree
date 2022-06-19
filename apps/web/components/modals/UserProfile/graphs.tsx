@@ -59,7 +59,8 @@ const graphContent: DegreeGraphs[] = [
 
 function Graphs(props: { contents: DegreeGraphs[] }) {
   const { contents } = props
-  return (
+  const hasGraphs = contents.length !== 0
+  return hasGraphs ? (
     <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
       <HeaderRow>
         <GraphIcon />
@@ -75,6 +76,13 @@ function Graphs(props: { contents: DegreeGraphs[] }) {
           ))}
         </>
       ))}
+    </div>
+  ) : (
+    <div className="ui-rectangle bg-inherit flex flex-col text-sm overflow-hidden items-center py-8 text-center">
+      <div className="text-xl font-semibold mb-3">
+        There are no graphs for this user
+      </div>
+      <Button color="green">New graph</Button>
     </div>
   )
 }
@@ -100,6 +108,9 @@ export default function GraphTabContent() {
       </div>
       <H2 underline>Graphs</H2>
       <Graphs contents={graphContent} />
+      <div className="my-12 text-center">Empty debug ↓</div>
+      <H2 underline>Graphs</H2>
+      <Graphs contents={[]} />
     </>
   )
 }

@@ -44,20 +44,33 @@ const degreeContent: DegreeSummary[] = [
   { title: 'mathematics', graphCount: 420 },
 ]
 
-function Degrees(props: { contents: DegreeSummary[]; emptyMessage: string }) {
+function Degrees(props: {
+  contents: DegreeSummary[]
+  emptyMessage: string
+  message: string
+}) {
   const hasDegree = props.contents.length !== 0
   return (
     <>
-      {hasDegree ? (
-        <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
-          {props.contents.map((degree, index) => (
-            <Row key={dashed(degree.title, index)}>
-              <span className="font-semibold">{degree.title}</span>
-              <span className="mx-1">/</span>
-              {degree.graphCount} graphs
-            </Row>
-          ))}
+      <H2 underline>
+        <div className="flex flex-row">
+          <span className="flex-1">Degrees</span>
+          <Button color="green">New Degree</Button>
         </div>
+      </H2>
+      {hasDegree ? (
+        <>
+          <P className="mb-4">{props.message}</P>
+          <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
+            {props.contents.map((degree, index) => (
+              <Row key={dashed(degree.title, index)}>
+                <span className="font-semibold">{degree.title}</span>
+                <span className="mx-1">/</span>
+                {degree.graphCount} graphs
+              </Row>
+            ))}
+          </div>
+        </>
       ) : (
         <P>{props.emptyMessage}</P>
       )}
@@ -66,16 +79,20 @@ function Degrees(props: { contents: DegreeSummary[]; emptyMessage: string }) {
 }
 
 export default function DegreesTabContent() {
+  const message =
+    'This is a list of degrees. Degrees provide a list of required modules ' +
+    'to complete. Module suggestions are affected by the current degree.'
   return (
     <div className="mb-12">
-      <H2 underline>
-        <div className="flex flex-row">
-          <span className="flex-1">Degrees</span>
-          <Button color="green">New Degree</Button>
-        </div>
-      </H2>
       <Degrees
         contents={degreeContent}
+        message={message}
+        emptyMessage="There are no degrees associated with this account."
+      />
+      <div className="my-12 text-center">Empty debug ↓</div>
+      <Degrees
+        contents={[]}
+        message="This is a list of completed modules."
         emptyMessage="There are no degrees associated with this account."
       />
     </div>
