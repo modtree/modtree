@@ -64,3 +64,7 @@ export const P = (props: ExtendedProps['p']) => {
     </p>
   )
 }
+
+export const Table = (props: ExtendedProps['table']) => {
+  return null
+}

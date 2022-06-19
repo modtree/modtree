@@ -1,11 +1,29 @@
 import { Button } from '@/components/buttons'
 import { H2, Input, P } from '@/components/html'
+import { ShareIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
+
+const iconSize = '1.3em'
 
 function Graphs() {
   return (
-    <div className="bg-gray-100 h-96 w-96">
-      <div></div>
+    <div className="ui-rectangle text-sm">
+      <table className="p-0 m-0 bg-green-100 px-4 py-3">
+        <tr className="font-semibold flex flex-row border">
+          <ShareIcon
+            style={{ height: iconSize, width: iconSize }}
+            className="mr-2"
+          />
+          Graphs
+        </tr>
+        <tr>something</tr>
+        <tr>something</tr>
+        <tr>something</tr>
+        <tr>something</tr>
+        <tr>something</tr>
+        <tr>something</tr>
+        <tr>something</tr>
+      </table>
     </div>
   )
 }
