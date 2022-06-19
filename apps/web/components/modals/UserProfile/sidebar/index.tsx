@@ -41,8 +41,9 @@ function Panels(props: { contents: ReactElement[] }) {
 
 export default function SidebarWithContents(props: {
   contents: SidebarCategoryProps[]
+  show: boolean
 }) {
-  const { contents } = props
+  const { contents, show } = props
 
   const panelContents: ReactElement[] = []
   contents.forEach((category) => {
@@ -51,12 +52,12 @@ export default function SidebarWithContents(props: {
     })
   })
 
-  return (
+  return show ? (
     <Tab.Group>
       <div className="flex flex-row space-x-4 h-full">
         <Sidebar contents={contents} />
         <Panels contents={panelContents} />
       </div>
     </Tab.Group>
-  )
+  ) : null
 }

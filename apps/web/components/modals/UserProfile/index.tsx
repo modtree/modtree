@@ -46,7 +46,7 @@ export default function UserProfile() {
   )
   return (
     <Panel showState={showState} hideAction={hideUserProfile} className="pr-0">
-      <SidebarWithContents contents={contents} />
+      <SidebarWithContents show={showState} contents={contents} />
     </Panel>
   )
 }
