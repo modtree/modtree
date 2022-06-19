@@ -25,7 +25,7 @@ export class Graph implements IGraph {
   @JoinTable()
   user: IUser
 
-  @ManyToOne('Degree', 'graph')
+  @ManyToOne('Degree', 'graph', { onDelete: 'CASCADE' })
   @JoinTable()
   degree: IDegree
 
