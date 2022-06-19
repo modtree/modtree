@@ -2,7 +2,15 @@ import { Button } from '@/components/buttons'
 import { H2, Input, P } from '@/components/html'
 import { useState } from 'react'
 
-export default function Graphs() {
+function Graphs() {
+  return (
+    <div className="bg-gray-100 h-96 w-96">
+      <div></div>
+    </div>
+  )
+}
+
+export default function GraphTabContent() {
   const original = 'The Plan'
   const state = {
     graphName: useState<string>(original),
@@ -11,7 +19,7 @@ export default function Graphs() {
     <>
       <H2 underline>Default graph</H2>
       <P className="mb-4">Choose the default graph to display.</P>
-      <div className="flex flex-row space-x-2">
+      <div className="flex flex-row space-x-2 mb-4">
         <Input className="w-48 mb-4" state={state.graphName} grayed />
         <Button
           disabled={
@@ -21,6 +29,8 @@ export default function Graphs() {
           Update
         </Button>
       </div>
+      <H2 underline>Graphs</H2>
+      <Graphs />
     </>
   )
 }

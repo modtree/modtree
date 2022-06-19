@@ -1,6 +1,6 @@
 import { UserProfile } from '@auth0/nextjs-auth0'
 import { ModtreeApiResponse } from '@modtree/types'
-import { HTMLAttributes, ReactElement } from 'react'
+import { ButtonHTMLAttributes, ReactElement } from 'react'
 
 /**
  * for frontend-specific types.
@@ -30,9 +30,7 @@ export type UserMenuItem = {
   callback?: () => void
 }
 
-export type ButtonProps = HTMLAttributes<HTMLDivElement> & {
-  disabled?: boolean
-  innerClass?: string
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   color?: 'red' | 'blue' | 'green' | 'gray'
 }
 
