@@ -22,7 +22,7 @@ export const degreeRoutes: Route<DegreeController>[] = [
   },
   {
     action: 'list',
-    route: '/degrees/list',
+    route: '/degrees/',
     method: 'get',
     validators: [],
   },
