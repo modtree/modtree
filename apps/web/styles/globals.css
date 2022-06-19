@@ -11,11 +11,13 @@
   .modtree-solid {
     background-color: #ff4000;
   }
+  .ui-rectangle {
+    @apply bg-gray-100 border border-gray-300 rounded-md;
+  }
   .button-base {
-    @apply h-8 w-min px-4
+    @apply ui-rectangle h-8 w-min px-4
       flex justify-center items-center
       select-none cursor-pointer
-      border rounded-md
       text-sm font-medium whitespace-nowrap
       disabled:text-neutral-400 disabled:cursor-auto;
   }

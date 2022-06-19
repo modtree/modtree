@@ -1,17 +1,4 @@
-import { UseState } from '@modtree/types'
-
-type ExtendedProps = {
-  input: JSX.IntrinsicElements['input'] & {
-    state: UseState<string>
-    grayed?: boolean
-  }
-  header: JSX.IntrinsicElements['h1'] & { children: string }
-  headerWithUnderline: JSX.IntrinsicElements['h1'] & {
-    children: string
-    underline?: boolean
-  }
-  p: JSX.IntrinsicElements['p']
-}
+import { ExtendedProps } from 'types'
 
 const base = 'text-gray-700'
 const baseClass = {

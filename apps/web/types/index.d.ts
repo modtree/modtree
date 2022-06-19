@@ -1,5 +1,5 @@
 import { UserProfile } from '@auth0/nextjs-auth0'
-import { ModtreeApiResponse } from '@modtree/types'
+import { ModtreeApiResponse, UseState } from '@modtree/types'
 import { ButtonHTMLAttributes, ReactElement } from 'react'
 
 /**
@@ -45,4 +45,18 @@ export type SidebarEntryProps = {
 export type SidebarCategoryProps = {
   category: string
   entries: SidebarEntryProps[]
+}
+
+export type ExtendedProps = {
+  input: JSX.IntrinsicElements['input'] & {
+    state: UseState<string>
+    grayed?: boolean
+  }
+  header: JSX.IntrinsicElements['h1'] & { children: string }
+  headerWithUnderline: JSX.IntrinsicElements['h1'] & {
+    children: string
+    underline?: boolean
+  }
+  p: JSX.IntrinsicElements['p']
+  div: JSX.IntrinsicElements['div']
 }
