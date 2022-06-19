@@ -11,7 +11,7 @@ export default function SidebarButton(props: {
   const interact = 'hover:bg-gray-100'
   const selectedCss = (s: boolean) =>
     s ? ' font-semibold text-gray-800 bg-gray-100' : ''
-  const iconSize = '1.3em'
+  const iconSize = '16px'
   const [_selected, setSelected] = useState(false)
   return (
     <Tab

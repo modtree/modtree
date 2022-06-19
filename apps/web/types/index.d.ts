@@ -49,17 +49,17 @@ export type SidebarCategoryProps = {
 
 type HTML = JSX.IntrinsicElements
 
-export type ExtendedProps = Modify<
-  HTML,
-  {
-    input: HTML['input'] & {
-      state: UseState<string>
-      grayed?: boolean
-    }
-    header: HTML['h1'] & { children: string }
-    headerWithUnderline: HTML['h1'] & {
-      children: string
-      underline?: boolean
-    }
+type ExtendedPropsPure = {
+  input: HTML['input'] & {
+    state: UseState<string>
+    grayed?: boolean
   }
->
+  header: HTML['h1'] & { children: string }
+  headerWithUnderline: HTML['h1'] & {
+    children: string
+    underline?: boolean
+  }
+  table: HTML['table'] & { containerClass?: string }
+}
+
+export type ExtendedProps = Modify<HTML, ExtendedPropsPure>

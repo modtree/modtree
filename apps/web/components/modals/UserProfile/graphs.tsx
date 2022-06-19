@@ -1,35 +1,86 @@
 import { Button } from '@/components/buttons'
 import { H2, Input, P } from '@/components/html'
+import { ExtendedProps } from '@/types'
 import { ShareIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
+import { flatten } from '@/utils/tailwind'
+import { dashed } from '@/utils/array'
 
-const iconSize = '1.3em'
+const iconSize = '16px'
+const GraphIcon = () => (
+  <ShareIcon
+    style={{ height: iconSize, width: iconSize }}
+    className="mr-2 text-gray-700 inline"
+  />
+)
 
-function Graphs() {
+function HeaderRow(props: ExtendedProps['div']) {
+  const { className, ...rest } = props
   return (
-    <div className="ui-rectangle text-sm">
-      <table className="p-0 m-0 bg-green-100 px-4 py-3">
-        <tr className="font-semibold flex flex-row border">
-          <ShareIcon
-            style={{ height: iconSize, width: iconSize }}
-            className="mr-2"
-          />
-          Graphs
-        </tr>
-        <tr>something</tr>
-        <tr>something</tr>
-        <tr>something</tr>
-        <tr>something</tr>
-        <tr>something</tr>
-        <tr>something</tr>
-        <tr>something</tr>
-      </table>
+    <div
+      className={flatten(
+        'border-b border-b-gray-300 last:border-none',
+        'flex flex-row items-center px-4 py-4',
+        'font-semibold tracking-normal',
+        className
+      )}
+      {...rest}
+    />
+  )
+}
+
+function GraphRow(props: ExtendedProps['div']) {
+  const { className, children, ...rest } = props
+  return (
+    <HeaderRow className={flatten('bg-white font-normal', className)} {...rest}>
+      <GraphIcon />
+      <span className="text-blue-500 cursor-pointer hover:underline">
+        {children}
+      </span>
+    </HeaderRow>
+  )
+}
+
+type DegreeGraphs = {
+  degree: string
+  graphs: string[]
+}
+
+const graphContent: DegreeGraphs[] = [
+  {
+    degree: 'computer-science',
+    graphs: ['main', 'whack', 'blockchain', 'security'],
+  },
+  {
+    degree: 'mathematics',
+    graphs: ['minor', 'sidehustle'],
+  },
+]
+
+function Graphs(props: { contents: DegreeGraphs[] }) {
+  const { contents } = props
+  return (
+    <div className="ui-rectangle flex flex-col text-sm overflow-hidden">
+      <HeaderRow>
+        <GraphIcon />
+        Graphs
+      </HeaderRow>
+      {contents.map(({ degree, graphs }, index) => (
+        <>
+          <HeaderRow key={dashed(degree, index)}>{degree}</HeaderRow>
+          {graphs.map((graph, index) => (
+            <GraphRow key={dashed(degree, graph, index)}>
+              {degree}/{graph}
+            </GraphRow>
+          ))}
+        </>
+      ))}
     </div>
   )
 }
 
 export default function GraphTabContent() {
-  const original = 'The Plan'
+  const original = 'computer-science/main'
   const state = {
     graphName: useState<string>(original),
   }
@@ -48,7 +99,7 @@ export default function GraphTabContent() {
         </Button>
       </div>
       <H2 underline>Graphs</H2>
-      <Graphs />
+      <Graphs contents={graphContent} />
     </>
   )
 }
