@@ -1,19 +1,20 @@
 import { Request, Response } from 'express'
 import { IModuleController } from '@modtree/types'
 import { db } from '@modtree/typeorm-config'
-import { ModuleRepository } from '@modtree/repo-module'
+import { Api } from '@modtree/repo-api'
 
 /** Module api controller */
 export class ModuleController implements IModuleController {
-  private moduleRepo = new ModuleRepository(db)
+  private api = new Api(db)
+  private moduleRepo = this.api.moduleRepo
 
   /**
    * returns all the modules in the database
    *
-   * @param {Request} req
+   * @param {Request} _req
    * @param {Response} res
    */
-  async list(req: Request, res: Response) {
+  async list(_req: Request, res: Response) {
     this.moduleRepo.find().then((results) => {
       res.json(results)
     })

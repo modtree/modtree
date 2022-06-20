@@ -2,11 +2,12 @@ import { Request, Response } from 'express'
 import { IDegreeController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
-import { DegreeRepository } from '@modtree/repo-degree'
+import { Api } from '@modtree/repo-api'
 
 /** Degree API controller */
 export class DegreeController implements IDegreeController {
-  private degreeRepo = new DegreeRepository(db)
+  private api = new Api(db)
+  private degreeRepo = this.api.degreeRepo
 
   /**
    * creates a Degree
@@ -50,10 +51,10 @@ export class DegreeController implements IDegreeController {
   /**
    * list all degrees in the database
    *
-   * @param {Request} req
+   * @param {Request} _req
    * @param {Response} res
    */
-  async list(req: Request, res: Response) {
+  async list(_req: Request, res: Response) {
     this.degreeRepo.find({ relations: { modules: true } }).then((results) => {
       res.json(results.map((degree) => flatten.degree(degree)))
     })

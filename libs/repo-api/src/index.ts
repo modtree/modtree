@@ -3,24 +3,34 @@ import {
   IUserRepository,
   IDegreeRepository,
   IGraphRepository,
+  IModuleRepository,
+  IModuleCondensedRepository,
 } from '@modtree/types'
 import { emptyInit } from '@modtree/utils'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
 import { User } from '@modtree/entity'
+import {
+  ModuleCondensedRepository,
+  ModuleRepository,
+} from '@modtree/repo-module'
 
 export class Api {
-  private db: DataSource
-  private degreeRepo: IDegreeRepository
-  private userRepo: IUserRepository
-  private graphRepo: IGraphRepository
+  db: DataSource
+  degreeRepo: IDegreeRepository
+  userRepo: IUserRepository
+  graphRepo: IGraphRepository
+  moduleRepo: IModuleRepository
+  moduleCondensedRepo: IModuleCondensedRepository
 
   constructor(db: DataSource) {
     this.db = db
     this.degreeRepo = new DegreeRepository(this.db)
     this.userRepo = new UserRepository(this.db)
     this.graphRepo = new GraphRepository(this.db)
+    this.moduleRepo = new ModuleRepository(this.db)
+    this.moduleCondensedRepo = new ModuleCondensedRepository(this.db)
   }
 
   /**

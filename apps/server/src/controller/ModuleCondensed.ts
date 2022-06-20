@@ -2,19 +2,20 @@ import { Request, Response } from 'express'
 import { Like } from 'typeorm'
 import { IModuleCondensedController } from '@modtree/types'
 import { db } from '@modtree/typeorm-config'
-import { ModuleCondensedRepository } from '@modtree/repo-module'
+import { Api } from '@modtree/repo-api'
 
 /** ModuleCondensed api controller */
 export class ModuleCondensedController implements IModuleCondensedController {
-  private moduleCondensedRepo = new ModuleCondensedRepository(db)
+  private api = new Api(db)
+  private moduleCondensedRepo = this.api.moduleCondensedRepo
 
   /**
    * returns all the modules in the database
    *
-   * @param {Request} req
+   * @param {Request} _req
    * @param {Response} res
    */
-  async list(req: Request, res: Response) {
+  async list(_req: Request, res: Response) {
     this.moduleCondensedRepo.find().then((results) => {
       res.json(results)
     })

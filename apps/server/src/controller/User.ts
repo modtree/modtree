@@ -2,10 +2,9 @@ import { Request, Response } from 'express'
 import { IUserController, CustomReqQuery } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
-import { UserRepository } from '@modtree/repo-user'
-import { DegreeRepository } from '@modtree/repo-degree'
 import { validate } from '../validate'
 import { getRelationNames } from '@modtree/repo-base'
+import { Api } from '@modtree/repo-api'
 
 type ListRequest = {
   id?: string
@@ -15,10 +14,9 @@ type ListRequest = {
 
 /** User api controller */
 export class UserController implements IUserController {
-  private userRepo = new UserRepository(db)
+  private api = new Api(db)
+  private userRepo = this.api.userRepo
   private userRelations = getRelationNames(this.userRepo)
-
-  private degreeRepo = new DegreeRepository(db)
 
   /**
    * creates a User
@@ -168,7 +166,7 @@ export class UserController implements IUserController {
     }
     const { degreeIds } = req.body
     Promise.all([
-      this.degreeRepo.findByIds(degreeIds),
+      this.api.degreeRepo.findByIds(degreeIds),
       this.userRepo.findOneOrFail({
         where: { id },
         relations: this.userRelations,
