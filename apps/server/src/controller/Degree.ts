@@ -68,7 +68,7 @@ export class DegreeController implements IDegreeController {
    */
   async delete(req: Request, res: Response) {
     this.degreeRepo
-      .findOneById(req.params.id)
+      .findOneById(req.params.degreeId)
       .then((degree) => this.degreeRepo.remove(degree))
       .then((degree) => {
         res.json(flatten.degree(degree))
