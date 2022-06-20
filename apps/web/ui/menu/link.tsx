@@ -1,3 +1,4 @@
+import { flatten } from '@/utils/tailwind'
 import Link from 'next/link'
 import { ForwardedRef, forwardRef } from 'react'
 
@@ -15,7 +16,11 @@ function getMenuLink() {
       const { href, children, className, onClick } = props
       return (
         <Link href={href} passHref>
-          <a className={className} onClick={onClick} ref={ref}>
+          <a
+            className={flatten('hover:no-underline', className)}
+            onClick={onClick}
+            ref={ref}
+          >
             {children}
           </a>
         </Link>

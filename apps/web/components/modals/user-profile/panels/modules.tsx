@@ -1,5 +1,5 @@
 import { Button } from '@/ui/buttons'
-import { ExtendedProps, ModuleSimple } from '@/types'
+import { ExtendedProps, ModuleSimple } from 'types'
 import { flatten } from '@/utils/tailwind'
 import { ModuleIcon } from '@/ui/icons'
 import { ModuleStatus } from '@modtree/types'

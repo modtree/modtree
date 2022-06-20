@@ -1,4 +1,4 @@
-import { HeroIcon } from '@/types'
+import { HeroIcon } from 'types'
 import {
   AcademicCapIcon,
   CubeIcon,

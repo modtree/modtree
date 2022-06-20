@@ -1,5 +1,5 @@
 import { Button } from '@/ui/buttons'
-import { ExtendedProps } from '@/types'
+import { ExtendedProps } from 'types'
 import { dashed } from '@/utils/array'
 import { flatten } from '@/utils/tailwind'
 import { DegreeIcon } from '@/ui/icons'

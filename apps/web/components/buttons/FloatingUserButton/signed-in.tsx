@@ -1,9 +1,9 @@
 import { UserIcon } from '@heroicons/react/solid'
 import { useUser } from '@/utils/auth0'
-import DropdownMenu, { MenuItems } from '@/components/dropdown-menu'
+import { DropdownMenu, MenuItems } from '@/ui/menu'
 import { useDispatch } from 'react-redux'
 import { hideContextMenu, showDebugModal, showUserProfile } from '@/store/modal'
-import { DropdownMenuEntry } from '@/types'
+import { DropdownMenuEntry } from 'types'
 
 export default function SignedInCircle() {
   const { user } = useUser()
