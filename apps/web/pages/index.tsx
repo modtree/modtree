@@ -3,10 +3,14 @@ import { FullScreenOverlay } from '@/components/Views'
 import Header from '@/components/header'
 import ModtreeFlow from '@/flow'
 import { HomeLoader } from '@/components/Loader'
-import { useUser } from '../utils'
+import { useUser } from '@/utils/auth0'
 import { useEffect, useState } from 'react'
 import { ContextMenu } from '@/components/context-menu'
-import dynamic from 'next/dynamic'
+import {
+  ModuleInfoModal,
+  UserProfileModal,
+  DebugModal,
+} from '@/components/modals'
 
 export default function Modtree() {
   const { isLoading } = useUser()
@@ -19,18 +23,6 @@ export default function Modtree() {
     }, 1000)
     return () => clearTimeout(fn)
   }, [])
-
-  const Dynamic = {
-    UserProfileModal: dynamic(() =>
-      import('@/components/modals').then((mod) => mod.UserProfileModal)
-    ),
-    DebugModal: dynamic(() =>
-      import('@/components/modals').then((mod) => mod.DebugModal)
-    ),
-    ModuleInfoModal: dynamic(() =>
-      import('@/components/modals').then((mod) => mod.ModuleInfoModal)
-    ),
-  }
 
   return (
     <div className="fixed inset-0 bg-gray-50">
@@ -49,9 +41,9 @@ export default function Modtree() {
             <FloatingUserButton />
             <FloatingActionButton />
           </FullScreenOverlay>
-          <Dynamic.UserProfileModal />
-          <Dynamic.DebugModal />
-          <Dynamic.ModuleInfoModal />
+          <UserProfileModal />
+          <DebugModal />
+          <ModuleInfoModal />
           <ContextMenu.FlowPane />
         </>
       )}
