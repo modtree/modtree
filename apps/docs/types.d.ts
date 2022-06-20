@@ -41,7 +41,7 @@ type MethodProps = {
 
 type ResponseProps = {
   fulfilled: Record<string, Data> | Array<Record<string, Data>>
-  schema: SchemaItem
+  schema?: SchemaItem
 }
 
 type Parameter = {

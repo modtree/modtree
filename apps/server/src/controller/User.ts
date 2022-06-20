@@ -21,7 +21,7 @@ export class UserController implements IUserController {
   private degreeRepo = new DegreeRepository(db)
 
   /**
-   * creates a Degree
+   * creates a User
    *
    * @param {Request} req
    * @param {Response} res
@@ -33,7 +33,7 @@ export class UserController implements IUserController {
     this.userRepo
       .initialize(props)
       .then((user) => {
-        res.json(user)
+        res.json(flatten.user(user))
       })
       .catch(() => res.status(500))
   }
@@ -45,6 +45,24 @@ export class UserController implements IUserController {
    * @param {Response} res
    */
   async get(req: CustomReqQuery<ListRequest>, res: Response) {
+    this.userRepo
+      .findOneById(req.params.userId)
+      .then((user) => {
+        res.json(flatten.user(user))
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'User not found' })
+      })
+  }
+
+  /**
+   * gets one User by primary keys
+   * at least one of id, authZeroId, or email
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async getByPrimaryKeys(req: CustomReqQuery<ListRequest>, res: Response) {
     if (!validate(req, res)) return
     const { id, authZeroId, email } = req.query
     if ([id, authZeroId, email].every((x) => x === undefined)) {
@@ -107,24 +125,6 @@ export class UserController implements IUserController {
   }
 
   /**
-   * gets one User by email
-   *
-   * @param {Request} req
-   * @param {Response} res
-   */
-  async getByEmail(req: Request, res: Response) {
-    if (!validate(req, res)) return
-    this.userRepo
-      .findOneByEmail(req.body.email)
-      .then((user) => {
-        res.json(flatten.user(user))
-      })
-      .catch(() => {
-        res.status(404).json({ message: 'User not found' })
-      })
-  }
-
-  /**
    * gets one User by id
    *
    * @param {Request} req
@@ -156,7 +156,7 @@ export class UserController implements IUserController {
    * @param {Request} req
    * @param {Response} res
    */
-  async insertDegree(req: Request, res: Response) {
+  async insertDegrees(req: Request, res: Response) {
     const id = req.params.userId
     const requestKeys = Object.keys(req.body)
     const requiredKeys = ['degreeIds']
@@ -171,12 +171,13 @@ export class UserController implements IUserController {
       this.degreeRepo.findByIds(degreeIds),
       this.userRepo.findOneOrFail({
         where: { id },
-        relations: { savedDegrees: true },
+        relations: this.userRelations,
       }),
     ]).then(([degrees, user]) => {
       user.savedDegrees.push(...degrees)
-      const result = this.userRepo.save(user)
-      res.json(result)
+      this.userRepo.save(user).then((userRes) => {
+        res.json(flatten.user(userRes))
+      })
     })
   }
 }

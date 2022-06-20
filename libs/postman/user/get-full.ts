@@ -1,5 +1,5 @@
 import { postman } from '../postman'
 
-const id = '9f0b22dd-e076-4677-9968-5ac4c49155d1'
+const id = 'e9f66c30-c96f-4ebd-b771-99ae8646f438'
 
-postman.get(`user/get-full/${id}`).then(console.log)
+postman.get(`users/${id}/get-full`).then(console.log)

@@ -11,24 +11,29 @@ const fulfilled = {
   matriculationYear: 2021,
   graduationYear: 2024,
   graduationSemester: 2,
-  savedDegrees: [
-    'cb70ebf4-6733-4bcf-b605-a98170f6f0e2',
-    'ab4eceaf-ee9c-4032-88dd-687b38322249',
-  ],
-  savedGraphs: ['4dcf096d-fc1a-4b01-99df-17cc01cba16c'],
+  savedDegrees: ['cb70ebf4-6733-4bcf-b605-a98170f6f0e2'],
+  savedGraphs: [],
 }
 
-export const get: MethodProps = {
-  method: 'Get a user',
-  description: 'Retrieve information about one user',
-  endpoint: '/users/{userId}',
-  requestType: 'GET',
+export const insertDegrees: MethodProps = {
+  method: 'Insert degrees',
+  description: 'Adds degrees to a user',
+  endpoint: '/users/{userId}/degree',
+  requestType: 'POST',
   parameters: {
     pathParams: [
       {
         name: 'userId',
         dataType: 'string',
         description: 'The id of the user.',
+        required: true,
+      },
+    ],
+    queryParams: [
+      {
+        name: 'degreeIds',
+        dataType: 'string[]',
+        description: 'An array of degree ids to add to the user.',
         required: true,
       },
     ],

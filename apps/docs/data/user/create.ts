@@ -18,21 +18,12 @@ const fulfilled = {
   savedGraphs: ['4dcf096d-fc1a-4b01-99df-17cc01cba16c'],
 }
 
-export const get: MethodProps = {
-  method: 'Get a user',
-  description: 'Retrieve information about one user',
+export const create: MethodProps = {
+  method: 'Create a user',
+  description: 'Create a user',
   endpoint: '/users/{userId}',
-  requestType: 'GET',
-  parameters: {
-    pathParams: [
-      {
-        name: 'userId',
-        dataType: 'string',
-        description: 'The id of the user.',
-        required: true,
-      },
-    ],
-  },
+  requestType: 'POST',
+  parameters: {},
   response: {
     fulfilled,
     schema: generateSchema(fulfilled),

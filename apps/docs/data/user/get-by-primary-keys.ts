@@ -18,18 +18,31 @@ const fulfilled = {
   savedGraphs: ['4dcf096d-fc1a-4b01-99df-17cc01cba16c'],
 }
 
-export const get: MethodProps = {
-  method: 'Get a user',
-  description: 'Retrieve information about one user',
-  endpoint: '/users/{userId}',
+export const getByPrimaryKeys: MethodProps = {
+  method: 'Get a user by primary keys',
+  description:
+    'Retrieve information about one user. At least one of the following primary keys must be specified.',
+  endpoint: '/users/get-by-primary-keys',
   requestType: 'GET',
   parameters: {
-    pathParams: [
+    queryParams: [
       {
-        name: 'userId',
+        name: 'id',
         dataType: 'string',
         description: 'The id of the user.',
-        required: true,
+        required: false,
+      },
+      {
+        name: 'authZeroId',
+        dataType: 'string',
+        description: 'The id of the user registered in Auth0.',
+        required: false,
+      },
+      {
+        name: 'email',
+        dataType: 'string',
+        description: 'The email address of the user',
+        required: false,
       },
     ],
   },

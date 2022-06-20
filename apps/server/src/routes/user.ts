@@ -7,8 +7,8 @@ import { Route } from './types'
 
 export const userRoutes: Route<UserController>[] = [
   {
-    action: 'get',
-    route: '/users',
+    action: 'getByPrimaryKeys',
+    route: '/users/get-by-primary-keys',
     method: 'get',
     validators: [
       query('id').isUUID().optional(),
@@ -21,6 +21,24 @@ export const userRoutes: Route<UserController>[] = [
     ],
   },
   {
+    action: 'get',
+    route: '/users/:userId',
+    method: 'get',
+    validators: [],
+  },
+  {
+    action: 'getFull',
+    route: '/users/:userId/get-full',
+    method: 'get',
+    validators: [],
+  },
+  {
+    action: 'list',
+    route: '/users/',
+    method: 'get',
+    validators: [],
+  },
+  {
     action: 'create',
     route: '/users',
     method: 'post',
@@ -30,8 +48,8 @@ export const userRoutes: Route<UserController>[] = [
     ],
   },
   {
-    action: 'insertDegree',
-    route: '/users/insert-degree/:userId',
+    action: 'insertDegrees',
+    route: '/users/:userId/degree',
     method: 'post',
     validators: [],
   },
