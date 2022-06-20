@@ -9,10 +9,12 @@ interface IReads {
 interface IController extends IReads {
   create: APIEndpoint
   get: APIEndpoint
+  list: APIEndpoint
   delete: APIEndpoint
 }
 
 export interface IUserController extends IController {
+  getByPrimaryKeys: APIEndpoint
   getFull: APIEndpoint
   insertDegrees: APIEndpoint
 }
@@ -25,9 +27,12 @@ export interface IGraphController extends IController {
 }
 
 export interface IModuleCondensedController extends IReads {
-  find: APIEndpoint
+  list: APIEndpoint
+  get: APIEndpoint
+  findByCodes: APIEndpoint
 }
 
 export interface IModuleController extends IReads {
+  list: APIEndpoint
   get: APIEndpoint
 }
