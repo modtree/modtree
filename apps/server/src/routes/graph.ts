@@ -1,7 +1,7 @@
 import { body, param } from 'express-validator'
 import { GraphController } from '../controller'
 import { Route } from './types'
-import { validModuleCode } from '@modtree/repo-module'
+import { validModuleCode } from '@modtree/utils'
 
 export const graphRoutes: Route<GraphController>[] = [
   {

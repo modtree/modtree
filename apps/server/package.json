@@ -10,6 +10,7 @@
     "@modtree/types": "*",
     "@modtree/entity": "*",
     "@modtree/test-env": "*",
-    "@modtree/repo-api": "*"
+    "@modtree/repo-api": "*",
+    "@modtree/repo-base": "*"
   }
 }
