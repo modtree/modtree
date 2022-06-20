@@ -1,6 +1,7 @@
 import { generateSchema } from 'utils'
 
 const fulfilled = {
+  id: 'e9f66c30-c96f-4ebd-b771-99ae8646f438',
   authZeroId: 'auth0|6294dbffdc4dea0068d77f61',
   displayName: 'Nguyen Vu Khang',
   username: 'nguyenvukhang',
@@ -20,7 +21,7 @@ const fulfilled = {
 export const get: MethodProps = {
   method: 'Get a user',
   description: 'Retrieve information about one user',
-  endpoint: '/user/{userId}',
+  endpoint: '/users/{userId}',
   requestType: 'GET',
   parameters: {
     pathParams: [
