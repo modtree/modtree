@@ -12,9 +12,11 @@ const iconSize = '16px'
 const style = { height: iconSize, width: iconSize }
 
 function getIcon(Icon: HeroIcon) {
-  return (props: { className?: string }) => (
+  const component = (props: { className?: string }) => (
     <Icon style={style} className={`ui-icon ${props.className}`} />
   )
+  component.displayName = Icon.name
+  return component
 }
 
 export const GraphIcon = getIcon(ShareIcon)

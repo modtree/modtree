@@ -3,14 +3,14 @@ import { useUser } from '@/utils/auth0'
 import { DropdownMenu, MenuItems } from '@/ui/menu'
 import { useDispatch } from 'react-redux'
 import { hideContextMenu, showDebugModal, showUserProfile } from '@/store/modal'
-import { DropdownMenuEntry } from 'types'
+import { MenuItem } from 'types'
 
 export default function SignedInCircle() {
   const { user } = useUser()
   const dispatch = useDispatch()
   const dev = process.env['NODE_ENV'] === 'development'
 
-  const items: DropdownMenuEntry[] = [
+  const items: MenuItem[] = [
     { text: 'Your profile', callback: () => dispatch(showUserProfile()) },
     {
       text: 'Debug',

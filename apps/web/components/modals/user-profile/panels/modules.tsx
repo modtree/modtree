@@ -1,9 +1,5 @@
-import { Button } from '@/ui/buttons'
-import { ExtendedProps, ModuleSimple } from 'types'
-import { flatten } from '@/utils/tailwind'
-import { ModuleIcon } from '@/ui/icons'
+import { ModuleSimple } from 'types'
 import { ModuleStatus } from '@modtree/types'
-import { dashed } from '@/utils/array'
 import { ModulesSection } from '@/ui/settings'
 
 type ModuleContent = Record<ModuleStatus, ModuleSimple[]>
@@ -33,29 +29,6 @@ const moduleContent: ModuleContent = {
 }
 
 export function ModulesTabContent() {
-  // return (
-  //   <>
-  //     <ModulesSection
-  //       title="Modules Done"
-  //       contents={moduleContent.done}
-  //       message="This is a list of completed modules."
-  //       emptyMessage="There are no modules that are completed."
-  //     />
-  //     <div className="my-12 text-center">Empty debug ↓</div>
-  //     <ModulesSection
-  //       title="Modules Doing"
-  //       contents={[]}
-  //       message="This is a list of modules that are currently in progess this semester. They will be automatically marked as when finals week is over."
-  //       emptyMessage="There are no modules that are currently in progress."
-  //     />
-  //     <ModulesSection
-  //       title="Modules Done"
-  //       contents={[]}
-  //       message="This is a list of completed modules."
-  //       emptyMessage="There are no modules that are completed."
-  //     />
-  //   </>
-  // )
   return (
     <>
       <ModulesSection

@@ -1,7 +1,7 @@
 import { UserProfile } from '@auth0/nextjs-auth0'
 import { ModuleCondensed } from '@modtree/entity'
 import { ModtreeApiResponse, UseState, Modify } from '@modtree/types'
-import { ButtonHTMLAttributes, ReactElement } from 'react'
+import { ButtonHTMLAttributes, ReactElement, ComponentProps } from 'react'
 
 /**
  * for frontend-specific types.
@@ -31,7 +31,7 @@ export type UserMenuItem = {
   callback?: () => void
 }
 
-export type DropdownMenuEntry = {
+export type MenuItem = {
   text: string
   href?: string
   callback?: () => void
@@ -41,7 +41,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   color?: 'red' | 'blue' | 'green' | 'gray'
 }
 
-export type HeroIcon = (props: React.ComponentProps<'svg'>) => JSX.Element
+export type HeroIcon = (_: ComponentProps<'svg'>) => JSX.Element
 
 export type SidebarEntryProps = {
   title: string

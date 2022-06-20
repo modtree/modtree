@@ -11,7 +11,6 @@ import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useDispatch } from 'react-redux'
 import { setFlowSelection, setFlowNodes } from '@/store/flow'
 import { onContextMenu } from '@/components/context-menu'
-import { hideContextMenu } from '@/store/modal'
 
 const nodeTypes = { moduleNode: ModuleNode }
 

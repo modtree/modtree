@@ -52,7 +52,7 @@ export default function Modtree() {
           <Dynamic.UserProfileModal />
           <Dynamic.DebugModal />
           <Dynamic.ModuleInfoModal />
-          <ContextMenu />
+          <ContextMenu.FlowPane />
         </>
       )}
     </div>
