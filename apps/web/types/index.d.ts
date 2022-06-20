@@ -1,4 +1,5 @@
 import { UserProfile } from '@auth0/nextjs-auth0'
+import { ModuleCondensed } from '@modtree/entity'
 import { ModtreeApiResponse, UseState, Modify } from '@modtree/types'
 import { ButtonHTMLAttributes, ReactElement } from 'react'
 
@@ -25,6 +26,12 @@ export type ModtreeUserContext = {
 }
 
 export type UserMenuItem = {
+  text: string
+  href?: string
+  callback?: () => void
+}
+
+export type DropdownMenuEntry = {
   text: string
   href?: string
   callback?: () => void
@@ -62,3 +69,12 @@ type ExtendedPropsPure = {
 }
 
 export type ExtendedProps = Modify<HTML, ExtendedPropsPure>
+
+/**
+ * settings panel data types
+ */
+export type ModuleSimple = Pick<ModuleCondensed, 'title' | 'moduleCode'>
+export type DegreeGraphs = {
+  degree: string
+  graphs: string[]
+}

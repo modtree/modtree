@@ -1,4 +1,6 @@
 import '@/styles/globals.css'
+import '@/styles/react-flow.css'
+import '@/styles/html.css'
 import store from '@/store/redux'
 import { Provider } from 'react-redux'
 import { UserProvider } from '@auth0/nextjs-auth0'

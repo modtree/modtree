@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tracking-custom {
+  letter-spacing: -0.015em;
+}
+
+.ui-header {
+  @apply text-gray-700 tracking-custom;
+}
+
+.subtitle {
+  @apply text-sm text-gray-500;
+}
+
+@layer base {
+  html {
+    @apply bg-gray-50;
+  }
+
+  body {
+    @apply text-base text-gray-600 focus:outline-none;
+  }
+
+  /**
+   * everything below this point should be in alphabetical order of tag
+   * navigation:
+   *  - HEADERS
+   *  - TEXT_FIELDS
+   *  - NON_TEXT
+   */
+
+  /**
+   * HEADERS
+   */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply ui-header;
+  }
+
+  h1 {
+    @apply text-4xl
+    font-semibold
+    mb-3;
+  }
+  h2 {
+    @apply text-3xl
+    font-medium
+    mb-3;
+  }
+  h3 {
+    @apply text-2xl
+    font-medium
+    mb-2;
+  }
+  h4 {
+    @apply text-xl
+    font-medium
+    mb-2;
+  }
+  h5 {
+    @apply text-lg
+    font-medium
+    mb-2;
+  }
+  h6 {
+    @apply text-base
+    font-medium
+    mb-2;
+  }
+
+  /**
+   * TEXT_FIELDS
+   */
+  p {
+    @apply text-base mb-4;
+  }
+  b {
+    @apply font-semibold;
+  }
+  a {
+    @apply cursor-pointer
+    text-blue-500
+    hover:underline;
+  }
+
+  /**
+   * NON_TEXT
+   */
+  hr {
+    @apply border-gray-200 mb-4;
+  }
+}

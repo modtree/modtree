@@ -23,7 +23,7 @@ export default function ResultEntries(props: {
       leaveTo="opacity-0"
       afterLeave={() => setSelected('')}
     >
-      <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+      <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
         {moduleCondensed.length === 0 && !hasResults ? (
           <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
             Nothing found.
@@ -41,7 +41,7 @@ export default function ResultEntries(props: {
             >
               <span className="block truncate">
                 <div className="w-28 font-semibold">{module.moduleCode}</div>
-                <div className="opacity-75 flex-1 mr-2 truncate">
+                <div className="opacity-75 flex-1 mr-2 truncate text-sm">
                   {module.title}
                 </div>
               </span>

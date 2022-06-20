@@ -5,6 +5,9 @@
 @tailwind utilities;
 
 @layer components {
+  .centered {
+    @apply items-center justify-center;
+  }
   .modtree-gradient {
     @apply bg-gradient-to-r from-pink-400 to-orange-400;
   }
@@ -14,11 +17,14 @@
   .ui-rectangle {
     @apply bg-gray-100 border border-gray-300 rounded-md;
   }
+  .ui-icon {
+    @apply inline text-gray-600;
+  }
   .button-base {
     @apply ui-rectangle h-8 w-min px-4
       flex justify-center items-center
       select-none cursor-pointer
-      text-sm font-medium whitespace-nowrap
+      text-base font-medium whitespace-nowrap
       disabled:text-neutral-400 disabled:cursor-auto;
   }
   .button-gray {
@@ -50,32 +56,4 @@
   .button-green:enabled {
     @apply hover:bg-green-700 active:bg-green-800;
   }
-}
-
-html {
-  @apply bg-gray-50 text-gray-900;
-}
-
-body {
-  @apply tracking-tight;
-}
-
-span {
-  @apply select-text;
-}
-
-.react-flow__pane {
-  @apply select-none;
-}
-
-.react-flow__node {
-  @apply bg-transparent rounded-lg p-0.5;
-}
-
-.react-flow__node.selected {
-  @apply bg-gradient-to-r from-orange-400 to-pink-400;
-}
-
-.react-flow__attribution {
-  @apply hidden;
 }

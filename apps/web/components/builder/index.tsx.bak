@@ -27,7 +27,7 @@ export function Builder(props: {
         <h2 className="px-4 py-3 text-xl tracking-tight font-semibold text-gray-500 flex-1">
           Module List
         </h2>
-        <div className="flex flex-col justify-center mr-4 tracking-normal">
+        <div className="flex flex-col justify-center mr-4">
           <div
             className="text-gray-400 rounded-md px-1.5 hover:bg-gray-200 cursor-pointer active:bg-gray-300"
             onClick={() => dispatch(clearBuilderModules())}

@@ -1,23 +1,16 @@
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
 import Header from '@/components/header'
-import UserProfileModal from '@/components/modals/UserProfile'
-import ModuleModal from '@/components/modals/ModuleInfo'
 import ModtreeFlow from '@/flow'
-import DebugModal from '@/components/modals/Debug'
 import { HomeLoader } from '@/components/Loader'
 import { useUser } from '../utils'
 import { useEffect, useState } from 'react'
 import { ContextMenu } from '@/components/context-menu'
-// import { setBaseGraph } from '@/store/base'
-// import { useDispatch } from 'react-redux'
-// import useSWR from 'swr'
+import dynamic from 'next/dynamic'
 
 export default function Modtree() {
   const { isLoading } = useUser()
   const [loader, setLoader] = useState(true)
-  // const isLoading = true
-  // const dispatch = useDispatch()
 
   useEffect(() => {
     /** only for debugging the loader */
@@ -27,15 +20,17 @@ export default function Modtree() {
     return () => clearTimeout(fn)
   }, [])
 
-  // if (!isLoading && user) {
-  //   const { data, error } = useSWR(
-  //     `/api/graphs/get/${user.modtree.savedGraphs[0]}`,
-  //     fetcher
-  //   )
-  //   dispatch(setBaseGraph(data))
-  //   console.log(data)
-  //   if (error) console.log('SWR error:', error)
-  // }
+  const Dynamic = {
+    UserProfileModal: dynamic(() =>
+      import('@/components/modals').then((mod) => mod.UserProfileModal)
+    ),
+    DebugModal: dynamic(() =>
+      import('@/components/modals').then((mod) => mod.DebugModal)
+    ),
+    ModuleInfoModal: dynamic(() =>
+      import('@/components/modals').then((mod) => mod.ModuleInfoModal)
+    ),
+  }
 
   return (
     <div className="fixed inset-0 bg-gray-50">
@@ -54,9 +49,9 @@ export default function Modtree() {
             <FloatingUserButton />
             <FloatingActionButton />
           </FullScreenOverlay>
-          <UserProfileModal />
-          <DebugModal />
-          <ModuleModal />
+          <Dynamic.UserProfileModal />
+          <Dynamic.DebugModal />
+          <Dynamic.ModuleInfoModal />
           <ContextMenu />
         </>
       )}
