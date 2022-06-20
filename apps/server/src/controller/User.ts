@@ -33,7 +33,7 @@ export class UserController implements IUserController {
     this.userRepo
       .initialize(props)
       .then((user) => {
-        res.json(user)
+        res.json(flatten.user(user))
       })
       .catch(() => res.status(500))
   }
