@@ -1,9 +1,9 @@
-import { User, Graph } from '@modtree/entity'
+import { User } from '@modtree/entity'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { DegreeRepository } from '../src'
 import { UserRepository } from '@modtree/repo-user'
+import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
 
 const dbName = oneUp(__filename)
