@@ -10,7 +10,7 @@ export const moduleCondensedRoutes: Route<ModuleCondensedController>[] = [
     validators: [],
   },
   {
-    action: 'find',
+    action: 'get',
     route: '/modulesCondensed/:moduleCode',
     method: 'get',
     validators: [],

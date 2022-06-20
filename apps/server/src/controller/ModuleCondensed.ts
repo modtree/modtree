@@ -27,7 +27,7 @@ export class ModuleCondensedController implements IModuleCondensedController {
    * @param {Request} req
    * @param {Response} res
    */
-  async find(req: Request, res: Response) {
+  async get(req: Request, res: Response) {
     this.moduleCondensedRepo
       .find({
         where: {
