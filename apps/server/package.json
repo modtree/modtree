@@ -10,10 +10,6 @@
     "@modtree/types": "*",
     "@modtree/entity": "*",
     "@modtree/test-env": "*",
-    "@modtree/repo-base": "*",
-    "@modtree/repo-module": "*",
-    "@modtree/repo-degree": "*",
-    "@modtree/repo-graph": "*",
-    "@modtree/repo-user": "*"
+    "@modtree/repo-api": "*"
   }
 }

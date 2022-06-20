@@ -2,12 +2,13 @@ import { Request, Response } from 'express'
 import { IGraphController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
-import { GraphRepository } from '@modtree/repo-graph'
 import { validate } from '../validate'
+import { Api } from '@modtree/repo-api'
 
 /** Graph API controller */
 export class GraphController implements IGraphController {
-  private graphRepo = new GraphRepository(db)
+  private api = new Api(db)
+  private graphRepo = this.api.graphRepo
 
   /**
    * creates a Graph
@@ -58,10 +59,10 @@ export class GraphController implements IGraphController {
   /**
    * list all graphs in the database
    *
-   * @param {Request} req
+   * @param {Request} _req
    * @param {Response} res
    */
-  async list(req: Request, res: Response) {
+  async list(_req: Request, res: Response) {
     this.graphRepo
       .find({
         relations: {

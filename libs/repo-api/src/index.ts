@@ -17,12 +17,12 @@ import {
 } from '@modtree/repo-module'
 
 export class Api {
-  private db: DataSource
-  private degreeRepo: IDegreeRepository
-  private userRepo: IUserRepository
-  private graphRepo: IGraphRepository
-  private moduleRepo: IModuleRepository
-  private moduleCondensedRepo: IModuleCondensedRepository
+  db: DataSource
+  degreeRepo: IDegreeRepository
+  userRepo: IUserRepository
+  graphRepo: IGraphRepository
+  moduleRepo: IModuleRepository
+  moduleCondensedRepo: IModuleCondensedRepository
 
   constructor(db: DataSource) {
     this.db = db
