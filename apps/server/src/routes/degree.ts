@@ -4,7 +4,7 @@ import { Route } from './types'
 export const degreeRoutes: Route<DegreeController>[] = [
   {
     action: 'create',
-    route: '/degrees/create',
+    route: '/degrees/',
     method: 'post',
     validators: [],
   },
@@ -16,13 +16,13 @@ export const degreeRoutes: Route<DegreeController>[] = [
   },
   {
     action: 'delete',
-    route: '/degrees/delete/:degreeId',
+    route: '/degrees/:degreeId',
     method: 'delete',
     validators: [],
   },
   {
     action: 'list',
-    route: '/degrees/list',
+    route: '/degrees/',
     method: 'get',
     validators: [],
   },

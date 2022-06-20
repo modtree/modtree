@@ -1,7 +1,6 @@
 import { generateSchema } from 'utils'
 
 const fulfilled = {
-  id: 'ea65f888-cde5-424e-9fa4-552ecc9ad275',
   title: 'Computer Science',
   modules: [
     'CS1101S',
@@ -26,11 +25,11 @@ const fulfilled = {
   ],
 }
 
-export const get: MethodProps = {
-  method: 'Get a degree',
-  description: 'Retrieve information about one degree',
+export const deleteMethod: MethodProps = {
+  method: 'Deletes a degree',
+  description: 'Deletes a degree. Also deletes associated graphs.',
   endpoint: '/degrees/{degreeId}',
-  requestType: 'GET',
+  requestType: 'DELETE',
   parameters: {
     pathParams: [
       {

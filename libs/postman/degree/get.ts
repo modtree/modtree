@@ -4,4 +4,4 @@ const args = new ParseArgs(__filename, () => {
   console.log('Please supply an id as an argument:')
 })
 
-postman.delete(`degrees/${args.last}`).then(console.log)
+postman.get(`degrees/${args.last}`).then(console.log)

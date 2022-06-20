@@ -26,21 +26,12 @@ const fulfilled = {
   ],
 }
 
-export const get: MethodProps = {
-  method: 'Get a degree',
-  description: 'Retrieve information about one degree',
-  endpoint: '/degrees/{degreeId}',
-  requestType: 'GET',
-  parameters: {
-    pathParams: [
-      {
-        name: 'degreeId',
-        dataType: 'string',
-        description: 'The id of the degree.',
-        required: true,
-      },
-    ],
-  },
+export const create: MethodProps = {
+  method: 'Create a degree',
+  description: 'Create a degree',
+  endpoint: '/degrees/',
+  requestType: 'POST',
+  parameters: {},
   response: {
     fulfilled,
     schema: generateSchema(fulfilled),
