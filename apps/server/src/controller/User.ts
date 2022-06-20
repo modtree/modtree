@@ -111,9 +111,8 @@ export class UserController implements IUserController {
    */
   async delete(req: Request, res: Response) {
     this.userRepo
-      .delete({
-        id: req.params.userId,
-      })
+      .findOneById(req.params.userId)
+      .then((user) => this.userRepo.remove(user))
       .then((deleteResult) => {
         res.json({ deleteResult })
       })
