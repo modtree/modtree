@@ -17,7 +17,7 @@ beforeAll(() =>
     .then(([user, degree]) => {
       t.user = user
       t.degree = degree
-      return Repo.User!.addDegree(t.user, t.degree.id)
+      return Repo.User!.insertDegrees(t.user, [t.degree.id])
     })
     .then(() =>
       Repo.Graph!.initialize({

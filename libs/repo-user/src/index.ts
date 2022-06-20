@@ -167,13 +167,13 @@ export class UserRepository
   }
 
   /**
-   * Adds previously saved degrees to a user.
+   * Insert previously saved degrees to a user.
    *
    * @param {User} user
    * @param {string[]} degreeIds
    * @returns {Promise<User>}
    */
-  async addDegrees(user: User, degreeIds: string[]): Promise<User> {
+  async insertDegrees(user: User, degreeIds: string[]): Promise<User> {
     // 1. load savedDegrees relations
     const _user = await this.findOneById(user.id)
     // 2. find degrees in DB
