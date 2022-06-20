@@ -21,12 +21,12 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-describe('User.addDegree', () => {
+describe('User.addDegrees', () => {
   beforeEach(expect.hasAssertions)
 
   it('returns a user', async () => {
     // get user with all relations
-    await Repo.User!.addDegree(t.user!, t.degree!.id).then((user) => {
+    await Repo.User!.addDegrees(t.user!, [t.degree!.id]).then((user) => {
       expect(user).toBeInstanceOf(User)
       t.user = user
     })
