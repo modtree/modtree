@@ -21,7 +21,7 @@ export class Graph implements IGraph {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @ManyToOne('User', 'graph')
+  @ManyToOne('User', 'graph', { onDelete: 'CASCADE' })
   @JoinTable()
   user: IUser
 
