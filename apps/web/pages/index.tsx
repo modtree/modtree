@@ -8,6 +8,7 @@ import DebugModal from '@/components/modals/Debug'
 import { HomeLoader } from '@/components/Loader'
 import { useUser } from '../utils'
 import { useEffect, useState } from 'react'
+import { ContextMenu } from '@/components/context-menu'
 // import { setBaseGraph } from '@/store/base'
 // import { useDispatch } from 'react-redux'
 // import useSWR from 'swr'
@@ -56,6 +57,7 @@ export default function Modtree() {
           <UserProfileModal />
           <DebugModal />
           <ModuleModal />
+          <ContextMenu />
         </>
       )}
     </div>
