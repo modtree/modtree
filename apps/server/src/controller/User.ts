@@ -39,6 +39,23 @@ export class UserController implements IUserController {
   }
 
   /**
+   * gets one User by id
+   *
+   * @param {Request} req
+   * @param {Response} res
+   */
+  async get(req: CustomReqQuery<ListRequest>, res: Response) {
+    this.userRepo
+      .findOneById(req.params.userId)
+      .then((user) => {
+        res.json(flatten.user(user))
+      })
+      .catch(() => {
+        res.status(404).json({ message: 'User not found' })
+      })
+  }
+
+  /**
    * gets one User by primary keys
    * at least one of id, authZeroId, or email
    *

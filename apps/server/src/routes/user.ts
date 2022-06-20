@@ -21,6 +21,12 @@ export const userRoutes: Route<UserController>[] = [
     ],
   },
   {
+    action: 'get',
+    route: '/users/:userId',
+    method: 'get',
+    validators: [],
+  },
+  {
     action: 'create',
     route: '/users',
     method: 'post',
