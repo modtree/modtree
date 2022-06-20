@@ -40,7 +40,7 @@ it('user has 1 degree', async () => {
   })
 })
 
-it('successfully deletes', async () => {
+it('successfully deletes degree', async () => {
   await Repo.Degree!.remove(t.degree!).then((degree) => {
     expect(degree.id).toEqual(undefined)
   })
