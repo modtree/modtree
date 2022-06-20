@@ -27,6 +27,12 @@ export const userRoutes: Route<UserController>[] = [
     validators: [],
   },
   {
+    action: 'list',
+    route: '/users/',
+    method: 'get',
+    validators: [],
+  },
+  {
     action: 'create',
     route: '/users',
     method: 'post',
