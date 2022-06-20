@@ -14,10 +14,10 @@ export function ModuleNode({ data }: ModuleNodeProps) {
         <Handle type="target" position={Position.Left} />
         <Handle type="source" position={Position.Right} />
         <div className="h-min">
-          <div className="select-text text-2xl font-semibold text-gray-700 text-center">
+          <div className="text-2xl font-semibold text-gray-700 text-center">
             {data.moduleCode}
           </div>
-          <div className="select-text text-sm font-medium tracking-tight text-gray-400 text-center leading-5">
+          <div className="text-sm font-medium tracking-custom text-gray-400 text-center leading-5">
             {data.title}
           </div>
         </div>

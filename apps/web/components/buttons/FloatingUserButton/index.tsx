@@ -1,7 +1,7 @@
 import { useUser } from '@/utils/auth0'
 import { ReactElement } from 'react'
-import SignedInCircle from './SignedIn'
-import SignedOutRect from './SignedOut'
+import SignedInCircle from './signed-in'
+import SignedOutRect from './signed-out'
 
 /**
  * sends this entire operation to the top-right of the screen

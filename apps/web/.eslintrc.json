@@ -4,7 +4,8 @@
     "node": true
   },
   "globals": {
-    "JSX": "readonly"
+    "JSX": "readonly",
+    "globalThis": "readonly"
   },
   "extends": [
     "eslint:recommended",

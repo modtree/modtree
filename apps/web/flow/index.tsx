@@ -10,6 +10,7 @@ import ReactFlow, {
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useDispatch } from 'react-redux'
 import { setFlowSelection, setFlowNodes } from '@/store/flow'
+import { onContextMenu } from '@/components/context-menu'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -58,6 +59,7 @@ export default function ModtreeFlow() {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onNodeDragStop={onNodeDragStop}
+      onContextMenu={(e) => onContextMenu(dispatch, e)}
       nodeTypes={nodeTypes}
       fitView={true}
       onSelectionChange={(e) => {

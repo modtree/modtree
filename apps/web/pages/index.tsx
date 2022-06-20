@@ -1,22 +1,20 @@
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
 import Header from '@/components/header'
-import UserProfileModal from '@/components/modals/UserProfile'
-import ModuleModal from '@/components/modals/ModuleInfo'
 import ModtreeFlow from '@/flow'
-import DebugModal from '@/components/modals/Debug'
 import { HomeLoader } from '@/components/Loader'
-import { useUser } from '../utils'
+import { useUser } from '@/utils/auth0'
 import { useEffect, useState } from 'react'
-// import { setBaseGraph } from '@/store/base'
-// import { useDispatch } from 'react-redux'
-// import useSWR from 'swr'
+import { ContextMenu } from '@/components/context-menu'
+import {
+  ModuleInfoModal,
+  UserProfileModal,
+  DebugModal,
+} from '@/components/modals'
 
 export default function Modtree() {
   const { isLoading } = useUser()
   const [loader, setLoader] = useState(true)
-  // const isLoading = true
-  // const dispatch = useDispatch()
 
   useEffect(() => {
     /** only for debugging the loader */
@@ -25,16 +23,6 @@ export default function Modtree() {
     }, 1000)
     return () => clearTimeout(fn)
   }, [])
-
-  // if (!isLoading && user) {
-  //   const { data, error } = useSWR(
-  //     `/api/graphs/get/${user.modtree.savedGraphs[0]}`,
-  //     fetcher
-  //   )
-  //   dispatch(setBaseGraph(data))
-  //   console.log(data)
-  //   if (error) console.log('SWR error:', error)
-  // }
 
   return (
     <div className="fixed inset-0 bg-gray-50">
@@ -55,7 +43,8 @@ export default function Modtree() {
           </FullScreenOverlay>
           <UserProfileModal />
           <DebugModal />
-          <ModuleModal />
+          <ModuleInfoModal />
+          <ContextMenu.FlowPane />
         </>
       )}
     </div>
