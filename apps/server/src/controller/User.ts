@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import { IUserController, CustomReqQuery } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
-import { db } from '@modtree/typeorm-config'
 import { validate } from '../validate'
 import { getRelationNames } from '@modtree/repo-base'
 import { Api } from '@modtree/repo-api'
+import { Controller } from './base'
 
 type ListRequest = {
   id?: string
@@ -13,9 +13,10 @@ type ListRequest = {
 }
 
 /** User api controller */
-export class UserController implements IUserController {
-  private api = new Api(db)
-  private userRepo = this.api.userRepo
+export class UserController extends Controller implements IUserController {
+  constructor(api: Api) {
+    super(api)
+  }
   private userRelations = getRelationNames(this.userRepo)
 
   /**

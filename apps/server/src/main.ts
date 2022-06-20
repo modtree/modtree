@@ -25,7 +25,8 @@ db.initialize()
   .then(async () => {
     console.log('Connection to database established.')
     checkhealth(db)
-    const app = getApp()
+    const api = new Api(db)
+    const app = getApp(api)
     app.listen(process.env.PORT || 8080)
   })
   .catch((err) => {

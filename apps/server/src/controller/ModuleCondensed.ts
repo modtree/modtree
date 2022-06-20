@@ -1,13 +1,17 @@
 import { Request, Response } from 'express'
 import { Like } from 'typeorm'
 import { IModuleCondensedController } from '@modtree/types'
-import { db } from '@modtree/typeorm-config'
 import { Api } from '@modtree/repo-api'
+import { Controller } from './base'
 
 /** ModuleCondensed api controller */
-export class ModuleCondensedController implements IModuleCondensedController {
-  private api = new Api(db)
-  private moduleCondensedRepo = this.api.moduleCondensedRepo
+export class ModuleCondensedController
+  extends Controller
+  implements IModuleCondensedController
+{
+  constructor(api: Api) {
+    super(api)
+  }
 
   /**
    * returns all the modules in the database
