@@ -189,12 +189,13 @@ export class UserController implements IUserController {
       this.degreeRepo.findByIds(degreeIds),
       this.userRepo.findOneOrFail({
         where: { id },
-        relations: { savedDegrees: true },
+        relations: this.userRelations,
       }),
     ]).then(([degrees, user]) => {
       user.savedDegrees.push(...degrees)
-      const result = this.userRepo.save(user)
-      res.json(result)
+      this.userRepo.save(user).then((userRes) => {
+        res.json(flatten.user(userRes))
+      })
     })
   }
 }
