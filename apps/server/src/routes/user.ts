@@ -43,7 +43,7 @@ export const userRoutes: Route<UserController>[] = [
   },
   {
     action: 'insertDegree',
-    route: '/users/insert-degree/:userId',
+    route: '/users/:userId/degree',
     method: 'post',
     validators: [],
   },
