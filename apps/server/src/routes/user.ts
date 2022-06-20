@@ -27,6 +27,12 @@ export const userRoutes: Route<UserController>[] = [
     validators: [],
   },
   {
+    action: 'getFull',
+    route: '/users/:userId/get-full',
+    method: 'get',
+    validators: [],
+  },
+  {
     action: 'list',
     route: '/users/',
     method: 'get',
