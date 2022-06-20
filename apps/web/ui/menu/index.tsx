@@ -1,5 +1,5 @@
 import DropdownMenu from './dropdown'
+import BaseMenu from './base'
 import MenuItems from './entries'
 
-export { DropdownMenu }
-export { MenuItems }
+export { DropdownMenu, BaseMenu, MenuItems }

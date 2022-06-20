@@ -13,7 +13,7 @@ export function ContextMenu() {
     <div
       id="modtree-context-menu"
       style={contextMenuProps}
-      className="absolute"
+      className="absolute z-20"
     >
       <ContextMenuContents />
     </div>

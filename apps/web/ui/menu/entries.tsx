@@ -2,12 +2,10 @@ import { Menu } from '@headlessui/react'
 import { createRef, ReactElement } from 'react'
 import { DropdownMenuEntry } from 'types'
 import { MenuLink } from './link'
-import { Dispatch } from 'redux'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
 
 export default function MenuItems(props: {
-  dispatch: Dispatch
   items: DropdownMenuEntry[]
   children?: ReactElement | ReactElement[]
 }) {

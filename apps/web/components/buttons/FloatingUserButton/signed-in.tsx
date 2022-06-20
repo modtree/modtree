@@ -34,10 +34,7 @@ export default function SignedInCircle() {
 
   return (
     <DropdownMenu TriggerButton={UserCircle}>
-      <MenuItems
-        dispatch={dispatch}
-        items={items.filter((item) => dev || item.text !== 'Debug')}
-      >
+      <MenuItems items={items.filter((item) => dev || item.text !== 'Debug')}>
         <>
           <div>Signed in as{dev && ' (auth0)'}</div>
           <b>{user.nickname}</b>
