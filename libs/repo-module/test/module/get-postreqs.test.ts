@@ -1,17 +1,12 @@
 import { setup, teardown, t, Repo } from '@modtree/test-env'
 import { oneUp, unique } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { ModuleRepository } from '../../src'
 import { In } from 'typeorm'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() =>
-  setup(db).then(() => {
-    Repo.Module = new ModuleRepository(db)
-  })
-)
+beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 describe('single query', () => {
