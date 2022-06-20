@@ -38,5 +38,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["!test-env"]
 }

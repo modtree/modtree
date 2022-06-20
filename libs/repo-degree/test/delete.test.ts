@@ -2,9 +2,6 @@ import { User } from '@modtree/entity'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { UserRepository } from '@modtree/repo-user'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { GraphRepository } from '@modtree/repo-graph'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -12,11 +9,6 @@ const db = getSource(dbName)
 beforeAll(() =>
   setup(db)
     .then(() => {
-      Object.assign(Repo, {
-        User: new UserRepository(db),
-        Degree: new DegreeRepository(db),
-        Graph: new GraphRepository(db),
-      })
       return Promise.all([
         Repo.User!.initialize(init.user1),
         Repo.Degree!.initialize(init.degree1),

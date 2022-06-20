@@ -5,6 +5,15 @@ import { InitProps, ModtreeApiResponse, Repositories } from '@modtree/types'
 import axios from 'axios'
 import { Agent } from 'http'
 import { DataSource, DeleteResult } from 'typeorm'
+import {
+  ModuleRepository,
+  ModuleCondensedRepository,
+} from '@modtree/repo-module'
+import { DegreeRepository } from '@modtree/repo-degree'
+import { GraphRepository } from '@modtree/repo-graph'
+import { UserRepository } from '@modtree/repo-user'
+import { db } from '@modtree/typeorm-config'
+
 /**
  * imports custom matcher types
  */
@@ -14,7 +23,11 @@ type SetupOptions = {
   initialize: boolean
 }
 
+/**
+ * initialize with default db
+ */
 const Repo: Repositories = {}
+
 /**
  * pre-test setup
  *
@@ -26,7 +39,17 @@ export async function setup(
   db: DataSource,
   opts?: SetupOptions
 ): Promise<void> {
-  const startConnection = () => db.initialize()
+  const startConnection = () =>
+    db.initialize().then((db) => {
+      /**
+       * overwrite default db with the setup function's db parameter
+       */
+      Repo.User = new UserRepository(db)
+      Repo.Degree = new DegreeRepository(db)
+      Repo.Graph = new GraphRepository(db)
+      Repo.Module = new ModuleRepository(db)
+      Repo.ModuleCondensed = new ModuleCondensedRepository(db)
+    })
   if (db.options.database === undefined) return
   await sql
     .restoreFromFile(db.options.database.toString(), config.restoreSource)
