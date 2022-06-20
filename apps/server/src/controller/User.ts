@@ -125,24 +125,6 @@ export class UserController implements IUserController {
   }
 
   /**
-   * gets one User by email
-   *
-   * @param {Request} req
-   * @param {Response} res
-   */
-  async getByEmail(req: Request, res: Response) {
-    if (!validate(req, res)) return
-    this.userRepo
-      .findOneByEmail(req.body.email)
-      .then((user) => {
-        res.json(flatten.user(user))
-      })
-      .catch(() => {
-        res.status(404).json({ message: 'User not found' })
-      })
-  }
-
-  /**
    * gets one User by id
    *
    * @param {Request} req
