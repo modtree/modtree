@@ -1,21 +1,16 @@
 import { db } from '@modtree/typeorm-config'
-import {
-  ModuleRepository,
-  ModuleCondensedRepository,
-} from '@modtree/repo-module'
-import { UserRepository } from '@modtree/repo-user'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { GraphRepository } from '@modtree/repo-graph'
 import { getApp } from './app'
 import { DataSource } from 'typeorm'
+import { Api } from '@modtree/repo-api'
 
 function checkhealth(db: DataSource) {
+  const api = new Api(db)
   const repos = [
-    new ModuleRepository(db),
-    new ModuleCondensedRepository(db),
-    new UserRepository(db),
-    new DegreeRepository(db),
-    new GraphRepository(db),
+    api.moduleRepo,
+    api.moduleCondensedRepo,
+    api.userRepo,
+    api.degreeRepo,
+    api.graphRepo,
   ]
   Promise.all(repos.map((r) => r.count())).then((results) => {
     const names = ['Modules', 'Condensed', 'Users', 'Degrees', 'Graphs']
