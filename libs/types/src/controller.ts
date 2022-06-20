@@ -14,7 +14,7 @@ interface IController extends IReads {
 
 export interface IUserController extends IController {
   getFull: APIEndpoint
-  insertDegree: APIEndpoint
+  insertDegrees: APIEndpoint
 }
 
 export type IDegreeController = IController

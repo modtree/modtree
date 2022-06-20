@@ -174,7 +174,7 @@ export class UserController implements IUserController {
    * @param {Request} req
    * @param {Response} res
    */
-  async insertDegree(req: Request, res: Response) {
+  async insertDegrees(req: Request, res: Response) {
     const id = req.params.userId
     const requestKeys = Object.keys(req.body)
     const requiredKeys = ['degreeIds']
