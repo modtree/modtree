@@ -39,12 +39,13 @@ export class UserController implements IUserController {
   }
 
   /**
-   * gets one User by id
+   * gets one User by primary keys
+   * at least one of id, authZeroId, or email
    *
    * @param {Request} req
    * @param {Response} res
    */
-  async get(req: CustomReqQuery<ListRequest>, res: Response) {
+  async getByPrimaryKeys(req: CustomReqQuery<ListRequest>, res: Response) {
     if (!validate(req, res)) return
     const { id, authZeroId, email } = req.query
     if ([id, authZeroId, email].every((x) => x === undefined)) {

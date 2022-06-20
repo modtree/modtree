@@ -7,8 +7,8 @@ import { Route } from './types'
 
 export const userRoutes: Route<UserController>[] = [
   {
-    action: 'get',
-    route: '/users',
+    action: 'getByPrimaryKeys',
+    route: '/users/get-by-primary-keys',
     method: 'get',
     validators: [
       query('id').isUUID().optional(),
