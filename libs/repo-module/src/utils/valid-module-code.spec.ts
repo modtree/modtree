@@ -2,16 +2,11 @@ import { validModuleCode } from '.'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown, Repo } from '@modtree/test-env'
-import { ModuleCondensedRepository } from '../ModuleCondensed'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() =>
-  setup(db).then(() => {
-    Repo.ModuleCondensed = new ModuleCondensedRepository(db)
-  })
-)
+beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 test('returns true on all existing codes', async () => {

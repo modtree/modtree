@@ -1,20 +1,18 @@
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { UserRepository } from '../src'
 import { User, Module } from '@modtree/entity'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 beforeAll(() =>
   setup(db)
-    .then(() => {
-      Repo.User = new UserRepository(db)
-      return Repo.User!.initialize({
+    .then(() =>
+      Repo.User!.initialize({
         ...init.user1,
         modulesDone: ['CS1010'],
       })
-    })
+    )
     .then((user) => {
       t.user = user
     })
