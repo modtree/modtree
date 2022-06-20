@@ -117,10 +117,10 @@ export interface IModuleCondensedRepository extends EModuleCondensed {
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
 }
 
-export type Repositories = Partial<{
-  Module: IModuleRepository
-  ModuleCondensed: IModuleCondensedRepository
-  User: IUserRepository
-  Degree: IDegreeRepository
-  Graph: IGraphRepository
-}>
+export type Repositories = {
+  Module?: IModuleRepository
+  ModuleCondensed?: IModuleCondensedRepository
+  User?: IUserRepository
+  Degree?: IDegreeRepository
+  Graph?: IGraphRepository
+}

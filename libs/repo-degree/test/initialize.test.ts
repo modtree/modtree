@@ -2,16 +2,11 @@ import { Degree } from '@modtree/entity'
 import { setup, teardown, Repo, t } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { DegreeRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() =>
-  setup(db).then(() => {
-    Repo.Degree = new DegreeRepository(db)
-  })
-)
+beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 const props = {
