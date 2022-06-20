@@ -165,17 +165,14 @@ export class UserController implements IUserController {
       return
     }
     const { degreeIds } = req.body
-    Promise.all([
-      this.api.degreeRepo.findByIds(degreeIds),
-      this.userRepo.findOneOrFail({
+    this.userRepo
+      .findOneOrFail({
         where: { id },
         relations: this.userRelations,
-      }),
-    ]).then(([degrees, user]) => {
-      user.savedDegrees.push(...degrees)
-      this.userRepo.save(user).then((userRes) => {
+      })
+      .then((user) => this.userRepo.insertDegrees(user, degreeIds))
+      .then((userRes) => {
         res.json(flatten.user(userRes))
       })
-    })
   }
 }
