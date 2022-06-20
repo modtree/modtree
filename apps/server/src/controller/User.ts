@@ -21,7 +21,7 @@ export class UserController implements IUserController {
   private degreeRepo = new DegreeRepository(db)
 
   /**
-   * creates a Degree
+   * creates a User
    *
    * @param {Request} req
    * @param {Response} res
