@@ -1,6 +1,0 @@
-export { ModuleCondensedController } from './ModuleCondensed'
-export { ModuleController } from './Module'
-export { UserController } from './User'
-export { DegreeController } from './Degree'
-export { GraphController } from './Graph'
-export { ApiController } from './Api'

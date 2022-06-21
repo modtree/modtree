@@ -5,7 +5,7 @@ import {
   GraphController,
   ModuleController,
   ModuleCondensedController,
-} from './controller2'
+} from './api'
 import { body, param, query } from 'express-validator'
 import { validModuleCode } from '@modtree/utils'
 
