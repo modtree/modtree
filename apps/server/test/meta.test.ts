@@ -2,7 +2,6 @@ import fs from 'fs'
 import { join, basename } from 'path'
 
 function getAllFiles(ignore: string[] = []) {
-  process.chdir(__dirname)
   const allFiles: string[] = []
   const ls = (cwd: string) => {
     fs.readdirSync(cwd)
@@ -16,7 +15,7 @@ function getAllFiles(ignore: string[] = []) {
         }
       })
   }
-  ls('.')
+  ls(__dirname)
   return allFiles
 }
 
@@ -29,10 +28,10 @@ test('all files end with `.test.ts`', () => {
   })
 })
 
-test('all tests end with [METHOD]', () => {
+test('all filenames are [METHOD]', () => {
   allFiles.forEach((file) => {
     const name = file.replace(/\.test\.ts$/, '')
-    const re = new RegExp(`.*\\[${methodList.join('|')}\\]$`)
+    const re = new RegExp(`.*\/\\[${methodList.join('|')}\\]$`)
     expect(name).toMatch(re)
   })
 })

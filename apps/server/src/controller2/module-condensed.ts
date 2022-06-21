@@ -23,7 +23,6 @@ export class ModuleCondensedController {
             res.json(result)
           })
       } else {
-        console.log('GOT HERE')
         api.moduleCondensedRepo.find().then((results) => {
           res.json(results)
         })
