@@ -1,6 +1,6 @@
 import { ModuleSimple } from 'types'
 import { ModuleStatus } from '@modtree/types'
-import { ModulesSection } from '@/ui/settings'
+import { ModuleListSection } from '@/ui/settings'
 
 type ModuleContent = Record<ModuleStatus, ModuleSimple[]>
 
@@ -31,14 +31,14 @@ const moduleContent: ModuleContent = {
 export function ModulesTabContent() {
   return (
     <>
-      <ModulesSection
+      <ModuleListSection
         contents={moduleContent.doing}
         title="Modules Doing"
         addButtonText="Add doing"
         summary="This is a list of modules that are currently in progess this semester. They will be automatically marked as when finals week is over."
         emptySummary="There are no modules that are currently in progress."
       />
-      <ModulesSection
+      <ModuleListSection
         contents={moduleContent.done}
         title="Modules Done"
         addButtonText="Add done"
@@ -46,14 +46,14 @@ export function ModulesTabContent() {
         emptySummary="There are no modules that are completed."
       />
       <div className="my-12 text-center">Empty debug ↓</div>
-      <ModulesSection
+      <ModuleListSection
         contents={[]}
         title="Modules Doing"
         addButtonText="Add doing"
         summary="This is a list of modules that are currently in progess this semester. They will be automatically marked as when finals week is over."
         emptySummary="There are no modules that are currently in progress."
       />
-      <ModulesSection
+      <ModuleListSection
         contents={[]}
         title="Modules Done"
         addButtonText="Add done"
