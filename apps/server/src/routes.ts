@@ -169,4 +169,10 @@ export const routes: Route[] = [
     fn: ModuleCondensedApi.get,
     validators: [],
   },
+  {
+    method: 'get',
+    route: '/modules-condensed/:moduleCode/search',
+    fn: ModuleCondensedApi.search,
+    validators: [],
+  },
 ]

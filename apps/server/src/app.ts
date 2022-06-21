@@ -40,10 +40,6 @@ export function getApp(api: Api): Express {
           })
       } else if (result !== null && result !== undefined) {
         res.json(result)
-      } else {
-        res
-          .status(500)
-          .json({ message: "Amazingly, you've reached this error." })
       }
     })
   })

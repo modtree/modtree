@@ -17,7 +17,7 @@ export async function handleSearch(
   }
   const upper = value.toUpperCase()
   const backend = process.env.NEXT_PUBLIC_BACKEND
-  const url = `${backend}/modules-condensed/${upper}`
+  const url = `${backend}/modules-condensed/${upper}/search`
   fetch(url)
     .then((res) => {
       res.json().then((result) => {
