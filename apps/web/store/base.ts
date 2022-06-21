@@ -24,7 +24,7 @@ export const base = createSlice({
     },
     setModulesCondensed: (state, action: PayloadAction<string[]>) => {
       backend
-        .post('/modules/find-by-codes', {
+        .post('/modules', {
           moduleCodes: action.payload,
         })
         .then((res) => {
