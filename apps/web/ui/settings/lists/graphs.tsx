@@ -1,36 +1,11 @@
 import { GraphIcon } from '@/ui/icons'
 import { dashed } from '@/utils/array'
-import { flatten } from '@/utils/tailwind'
-import { ExtendedProps, DegreeGraphs } from 'types'
+import { DegreeGraphs } from 'types'
 import { SettingsSection } from './base'
 import { EmptyBox } from '@/ui/settings/empty-box'
+import { Row } from './rows'
 
-function HeaderRow(props: ExtendedProps['div']) {
-  const { className, ...rest } = props
-  return (
-    <div
-      className={flatten(
-        'border-b border-b-gray-300 last:border-none',
-        'flex flex-row items-center px-4 py-4',
-        'font-semibold',
-        className
-      )}
-      {...rest}
-    />
-  )
-}
-
-function GraphRow(props: ExtendedProps['div']) {
-  const { className, children, ...rest } = props
-  return (
-    <HeaderRow className={flatten('bg-white font-normal', className)} {...rest}>
-      <GraphIcon className="mr-2" />
-      <a>{children}</a>
-    </HeaderRow>
-  )
-}
-
-export function GraphsSection(props: {
+export function GraphListSection(props: {
   contents: DegreeGraphs[]
   title: string
   summary?: string
@@ -44,17 +19,17 @@ export function GraphsSection(props: {
           <>
             {summary && <p>{summary}</p>}
             <div className="ui-rectangle flex flex-col overflow-hidden">
-              <HeaderRow>
+              <Row.Header>
                 <GraphIcon className="mr-2" />
                 Graphs
-              </HeaderRow>
+              </Row.Header>
               {contents.map(({ degree, graphs }, index) => (
                 <>
-                  <HeaderRow key={dashed(degree, index)}>{degree}</HeaderRow>
+                  <Row.Header key={dashed(degree, index)}>{degree}</Row.Header>
                   {graphs.map((graph, index) => (
-                    <GraphRow key={dashed(degree, graph, index)}>
+                    <Row.Graph key={dashed(degree, graph, index)}>
                       {degree}/{graph}
-                    </GraphRow>
+                    </Row.Graph>
                   ))}
                 </>
               ))}

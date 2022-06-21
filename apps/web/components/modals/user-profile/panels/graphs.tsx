@@ -1,8 +1,8 @@
 import { Button } from '@/ui/buttons'
 import { Input } from '@/components/html'
 import { useState } from 'react'
-import { GraphsSection } from '@/ui/settings/section/graphs'
 import { DegreeGraphs } from 'types'
+import { GraphListSection } from '@/ui/settings/lists'
 
 const graphContent: DegreeGraphs[] = [
   {
@@ -34,9 +34,13 @@ export function GraphsTabContent() {
           Update
         </Button>
       </div>
-      <GraphsSection contents={graphContent} title="Graphs" />
+      <GraphListSection contents={graphContent} title="Graphs" />
       <div className="my-12 text-center">Empty debug ↓</div>
-      <GraphsSection contents={[]} title="Graphs" summary="List of graphs." />
+      <GraphListSection
+        contents={[]}
+        title="Graphs"
+        summary="List of graphs."
+      />
     </>
   )
 }

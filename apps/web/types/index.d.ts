@@ -78,3 +78,8 @@ export type DegreeGraphs = {
   degree: string
   graphs: string[]
 }
+
+export type DegreeSummary = {
+  title: string
+  graphCount: number
+}
