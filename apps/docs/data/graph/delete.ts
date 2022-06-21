@@ -1,7 +1,6 @@
 import { generateSchema } from 'utils'
 
 const fulfilled = {
-  id: 'f0331baf-383a-48fd-8d36-3ba3b84eb531',
   user: 'e9f66c30-c96f-4ebd-b771-99ae8646f438',
   degree: 'fbeba80e-74bf-4a21-a6d6-b200f11a6fec',
   modulesPlaced: ['MA1521'],
@@ -39,11 +38,11 @@ const fulfilled = {
   ],
 }
 
-export const get: MethodProps = {
-  method: 'Get a graph',
-  description: 'Retrieve information about one graph',
-  endpoint: '/graphs/{graphId}',
-  requestType: 'GET',
+export const deleteMethod: MethodProps = {
+  method: 'Deletes a graph',
+  description: 'Deletes a graph',
+  endpoint: '/degrees/{graphId}',
+  requestType: 'DELETE',
   parameters: {
     pathParams: [
       {

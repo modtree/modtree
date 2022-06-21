@@ -6,31 +6,31 @@ import { validModuleCode } from '@modtree/utils'
 export const graphRoutes: Route<GraphController>[] = [
   {
     action: 'create',
-    route: '/graphs/create',
+    route: '/graphs/',
     method: 'post',
     validators: [],
   },
   {
     action: 'get',
-    route: '/graphs/get/:graphId',
+    route: '/graphs/:graphId',
     method: 'get',
     validators: [],
   },
   {
     action: 'delete',
-    route: '/graphs/delete/:graphId',
+    route: '/graphs/:graphId',
     method: 'delete',
     validators: [],
   },
   {
     action: 'list',
-    route: '/graphs/list',
+    route: '/graphs/',
     method: 'get',
     validators: [],
   },
   {
     action: 'toggle',
-    route: '/graphs/id/:graphId/toggle/:moduleCode',
+    route: '/graphs/:graphId/toggle/:moduleCode',
     method: 'post',
     validators: [
       param('moduleCode')
@@ -40,7 +40,7 @@ export const graphRoutes: Route<GraphController>[] = [
   },
   {
     action: 'updateFrontendProps',
-    route: '/graphs/update-frontend/:graphId',
+    route: '/graphs/:graphId/update-frontend',
     method: 'post',
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },

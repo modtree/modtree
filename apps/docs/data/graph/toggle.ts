@@ -39,17 +39,23 @@ const fulfilled = {
   ],
 }
 
-export const get: MethodProps = {
-  method: 'Get a graph',
-  description: 'Retrieve information about one graph',
-  endpoint: '/graphs/{graphId}',
-  requestType: 'GET',
+export const toggle: MethodProps = {
+  method: 'Toggle a module',
+  description: 'Toggle the visibility of a module in a graph',
+  endpoint: '/graphs/{graphId}/toggle/{moduleCode}',
+  requestType: 'POST',
   parameters: {
     pathParams: [
       {
         name: 'graphId',
         dataType: 'string',
         description: 'The id of the graph',
+        required: true,
+      },
+      {
+        name: 'moduleCode',
+        dataType: 'string',
+        description: 'The module code of the module to be toggled',
         required: true,
       },
     ],
