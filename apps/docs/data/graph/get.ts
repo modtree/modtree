@@ -29,7 +29,7 @@ const fulfilled = {
 
 export const get: MethodProps = {
   method: 'Get a Graph',
-  description: 'Retrieve information about one Graph.',
+  description: 'Retrieve information about one Graph',
   endpoint: '/graph/{graphId}',
   requestType: 'GET',
   parameters: {
@@ -37,7 +37,7 @@ export const get: MethodProps = {
       {
         name: 'graphId',
         dataType: 'string',
-        description: 'The id of the Graph.',
+        description: 'The id of the Graph',
         required: true,
       },
     ],

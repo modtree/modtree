@@ -25,7 +25,7 @@ export const insertDegrees: MethodProps = {
       {
         name: 'userId',
         dataType: 'string',
-        description: 'The id of the user.',
+        description: 'The id of the user',
         required: true,
       },
     ],
@@ -33,7 +33,7 @@ export const insertDegrees: MethodProps = {
       {
         name: 'degreeIds',
         dataType: 'string[]',
-        description: 'An array of degree ids to add to the user.',
+        description: 'An array of degree ids to add to the user',
         required: true,
       },
     ],

@@ -25,7 +25,7 @@ export const findByCodes: MethodProps = {
       {
         name: 'moduleCodes',
         dataType: 'array',
-        description: 'An array of module codes.',
+        description: 'An array of module codes',
         required: true,
       },
     ],

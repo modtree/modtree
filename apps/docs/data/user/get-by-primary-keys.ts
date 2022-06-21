@@ -29,13 +29,13 @@ export const getByPrimaryKeys: MethodProps = {
       {
         name: 'id',
         dataType: 'string',
-        description: 'The id of the user.',
+        description: 'The id of the user',
         required: false,
       },
       {
         name: 'authZeroId',
         dataType: 'string',
-        description: 'The id of the user registered in Auth0.',
+        description: 'The id of the user registered in Auth0',
         required: false,
       },
       {

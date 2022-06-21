@@ -27,7 +27,7 @@ export const deleteMethod: MethodProps = {
       {
         name: 'userId',
         dataType: 'string',
-        description: 'The id of the user.',
+        description: 'The id of the user',
         required: true,
       },
     ],

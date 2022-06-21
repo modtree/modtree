@@ -36,7 +36,7 @@ export const get: MethodProps = {
       {
         name: 'degreeId',
         dataType: 'string',
-        description: 'The id of the degree.',
+        description: 'The id of the degree',
         required: true,
       },
     ],
