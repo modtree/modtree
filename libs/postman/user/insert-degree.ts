@@ -6,7 +6,7 @@ const user = {
 }
 
 postman
-  .post(`users/${user.id}/degree`, {
+  .post(`users/${user.id}/degrees`, {
     degreeIds: user.savedDegrees,
   })
   .then(console.log)
