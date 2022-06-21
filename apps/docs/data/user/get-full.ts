@@ -1,5 +1,3 @@
-import { generateSchema } from 'utils'
-
 const fulfilled = {
   id: 'e9f66c30-c96f-4ebd-b771-99ae8646f438',
   authZeroId: 'auth0|something',
@@ -92,7 +90,7 @@ export const getFull: MethodProps = {
       {
         name: 'userId',
         dataType: 'string',
-        description: 'The id of the user.',
+        description: 'The id of the user',
         required: true,
       },
     ],

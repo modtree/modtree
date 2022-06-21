@@ -26,14 +26,17 @@ export default function ParameterList(props: ParameterList) {
 
   return (
     <div>
-      {(has(props.pathParams) || has(props.queryParams)) && (
-        <h3 className="my-0">Parameters</h3>
-      )}
+      {(has(props.pathParams) ||
+        has(props.queryParams) ||
+        has(props.bodyParams)) && <h3 className="my-0">Parameters</h3>}
       {has(props.pathParams) && (
         <SomeParams title="Path Parameters" data={props.pathParams} />
       )}
       {has(props.queryParams) && (
         <SomeParams title="Query Parameters" data={props.queryParams} />
+      )}
+      {has(props.bodyParams) && (
+        <SomeParams title="Body Parameters" data={props.bodyParams} />
       )}
     </div>
   )

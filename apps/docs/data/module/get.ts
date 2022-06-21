@@ -48,7 +48,7 @@ export const get: MethodProps = {
       {
         name: 'moduleCode',
         dataType: 'string',
-        description: 'The code of the module.',
+        description: 'The code of the module',
         required: true,
       },
     ],

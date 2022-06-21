@@ -9,15 +9,15 @@ export const userRoutes: Route<UserController>[] = [
   {
     action: 'getByPrimaryKeys',
     route: '/users/get-by-primary-keys',
-    method: 'get',
+    method: 'post',
     validators: [
-      query('id').isUUID().optional(),
-      query('email').normalizeEmail().isEmail().optional(),
-      query('authZeroId')
+      body('id').isUUID().optional(),
+      body('email').normalizeEmail().isEmail().optional(),
+      body('authZeroId')
         .custom((s: string) => s.startsWith('auth0|'))
         .optional(),
-      query().custom(hasOneOf(['id', 'email', 'authZeroId'])),
-      query().custom(hasOnly(['id', 'email', 'authZeroId'])),
+      body().custom(() => hasOneOf(['id', 'email', 'authZeroId'])),
+      body().custom(() => hasOnly(['id', 'email', 'authZeroId'])),
     ],
   },
   {

@@ -23,19 +23,19 @@ export const getByPrimaryKeys: MethodProps = {
   description:
     'Retrieve information about one user. At least one of the following primary keys must be specified.',
   endpoint: '/users/get-by-primary-keys',
-  requestType: 'GET',
+  requestType: 'POST',
   parameters: {
-    queryParams: [
+    bodyParams: [
       {
         name: 'id',
         dataType: 'string',
-        description: 'The id of the user.',
+        description: 'The id of the user',
         required: false,
       },
       {
         name: 'authZeroId',
         dataType: 'string',
-        description: 'The id of the user registered in Auth0.',
+        description: 'The id of the user registered in Auth0',
         required: false,
       },
       {

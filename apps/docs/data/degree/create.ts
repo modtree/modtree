@@ -31,7 +31,22 @@ export const create: MethodProps = {
   description: 'Create a degree',
   endpoint: '/degrees/',
   requestType: 'POST',
-  parameters: {},
+  parameters: {
+    bodyParams: [
+      {
+        name: 'title',
+        dataType: 'string',
+        description: 'Title of the degree',
+        required: true,
+      },
+      {
+        name: 'modules',
+        dataType: 'string[]',
+        description: 'Module codes of degree requirements',
+        required: true,
+      },
+    ],
+  },
   response: {
     fulfilled,
     schema: generateSchema(fulfilled),
