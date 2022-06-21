@@ -1,4 +1,4 @@
-import { ExtendedProps, HeroIcon } from '@/types'
+import { ExtendedProps, HeroIcon } from 'types'
 import { flatten } from '@/utils/tailwind'
 import { Button } from '@/ui/buttons'
 
@@ -10,7 +10,7 @@ export function BaseRow(
     <div
       className={flatten(
         'border-b border-b-gray-300 last:border-none',
-        'flex flex-row items-center px-4 py-4',
+        'flex items-center px-4 h-14',
         'bg-white',
         className
       )}
