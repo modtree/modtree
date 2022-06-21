@@ -1,7 +1,6 @@
-import { useSelector } from 'react-redux'
-import { ModalState, hideDebugModal } from '@/store/modal'
+import { useAppSelector } from '@/store/redux'
+import { hideDebugModal } from '@/store/modal'
 import { useUser } from '@/utils/auth0'
-import { UserState } from '@/store/base'
 import { ObjectLiteral } from 'typeorm'
 import Modal from '@/ui/modal'
 
@@ -17,10 +16,10 @@ const Content = (props: { children: ObjectLiteral }) => {
 
 export function DebugModal() {
   const { user } = useUser()
-  const redux = {
-    modal: useSelector<ModalState, ModalState['modal']>((state) => state.modal),
-    user: useSelector<UserState, UserState['base']>((state) => state.base),
-  }
+  /**
+   * get entire redux store
+   */
+  const redux = useAppSelector((s) => s)
 
   const DebugModalContents = () => {
     return (
@@ -28,7 +27,7 @@ export function DebugModal() {
         <h2>useUser().user</h2>
         <Content>{user}</Content>
         <h2>Redux UserState</h2>
-        <Content>{redux.user}</Content>
+        <Content>{redux.base}</Content>
         <h2>Redux ModalState</h2>
         <Content>{redux.modal}</Content>
       </div>

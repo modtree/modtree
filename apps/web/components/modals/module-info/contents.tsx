@@ -1,14 +1,16 @@
-import { ModtreeApiResponse } from '@modtree/types'
 import { Dot } from '@/components/inline'
-import { ModalState } from '@/store/modal'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
 import { addNode } from './add-node'
 
+const testNode = {
+  moduleCode: 'CS1010',
+  title: 'Programming Methodology',
+  position: { x: 100, y: 200 },
+}
+
 export function ModuleDetails() {
-  const module = useSelector<ModalState, ModtreeApiResponse.Module>(
-    (state) => state.modal.modalModule
-  )
+  const module = useAppSelector((state) => state.modal.modalModule)
   return (
     <div>
       <h1 className="text-modtree-400">{module.moduleCode}</h1>
@@ -23,7 +25,7 @@ export function ModuleDetails() {
       <hr />
       <p className="mb-6">{module.description}</p>
       <div className="flex flex-row-reverse">
-        <Button>Add to graph</Button>
+        <Button onClick={() => addNode(testNode)}>Add to graph</Button>
       </div>
     </div>
   )
