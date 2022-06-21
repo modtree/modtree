@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { IUserController, CustomReqQuery } from '@modtree/types'
+import { IUserController, CustomReqQuery, CustomReqBody } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { validate } from '../validate'
 import { getRelationNames } from '@modtree/repo-base'
@@ -61,9 +61,9 @@ export class UserController extends Controller implements IUserController {
    * @param {Request} req
    * @param {Response} res
    */
-  async getByPrimaryKeys(req: CustomReqQuery<ListRequest>, res: Response) {
+  async getByPrimaryKeys(req: CustomReqBody<ListRequest>, res: Response) {
     if (!validate(req, res)) return
-    const { id, authZeroId, email } = req.query
+    const { id, authZeroId, email } = req.body
     if ([id, authZeroId, email].every((x) => x === undefined)) {
       res
         .status(400)

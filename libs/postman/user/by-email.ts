@@ -5,6 +5,8 @@ const args = new ParseArgs(__filename, () => {
   process.exit()
 })
 
-postman.post('user/get-by-email', { email: args.last }).then((res) => {
-  console.log(res)
-})
+postman
+  .post('users/get-by-primary-keys', { email: args.last })
+  .then(console.log)
+
+// console.log(res.response.data.errors)
