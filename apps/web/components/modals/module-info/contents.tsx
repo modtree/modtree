@@ -1,16 +1,29 @@
 import { Dot } from '@/components/inline'
-import { useAppSelector } from '@/store/redux'
+import { addModuleNode } from '@/store/base'
+import { hideModuleModal } from '@/store/modal'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
-import { addNode } from './add-node'
-
-const testNode = {
-  moduleCode: 'CS1010',
-  title: 'Programming Methodology',
-  position: { x: 100, y: 200 },
-}
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
+  const dispatch = useAppDispatch()
+  function handleAddButton() {
+    dispatch(
+      addModuleNode({
+        id: module.moduleCode,
+        position: {
+          x: 0,
+          y: 0,
+        },
+        type: 'moduleNode',
+        data: {
+          moduleCode: module.moduleCode,
+          title: module.title,
+        },
+      })
+    )
+    dispatch(hideModuleModal())
+  }
   return (
     <div>
       <h1 className="text-modtree-400">{module.moduleCode}</h1>
@@ -25,7 +38,7 @@ export function ModuleDetails() {
       <hr />
       <p className="mb-6">{module.description}</p>
       <div className="flex flex-row-reverse">
-        <Button onClick={() => addNode(testNode)}>Add to graph</Button>
+        <Button onClick={handleAddButton}>Add to graph</Button>
       </div>
     </div>
   )

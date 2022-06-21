@@ -1,13 +1,14 @@
-import { FlowEdgeCondensed, FlowNodeCondensed } from './flow'
-import { SemesterData, NUSModuleAttributes, PrereqTree } from './nusmods'
+import type { Node, Edge } from 'react-flow-renderer'
+import { ModuleNodeProps } from './flow'
+import type { SemesterData, NUSModuleAttributes, PrereqTree } from './nusmods'
 
 export type IBase = {
   id: string
 }
 
 export type GraphFrontendProps = {
-  flowNodes: FlowNodeCondensed[]
-  flowEdges: FlowEdgeCondensed[]
+  flowNodes: Node<ModuleNodeProps>[]
+  flowEdges: Edge[]
 }
 
 export type IUser = IBase & {

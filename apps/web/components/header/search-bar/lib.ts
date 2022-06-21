@@ -40,7 +40,6 @@ export async function getModuleInfo(
   const setSelected = selectedState[1]
   setSelected(value)
   dispatch(showModuleModal())
-  console.log('GOT HERE WITH', value)
   const backend = process.env.NEXT_PUBLIC_BACKEND
   const url = `${backend}/modules/${value}`
   fetch(url)

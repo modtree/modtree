@@ -1,7 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { FlowNodeCondensed, ModtreeApiResponse } from '@modtree/types'
-import { baseInitialState } from './initial-state'
 import { backend } from '@/utils'
+import { FlowNodeCondensed, ModtreeApiResponse } from '@modtree/types'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Node } from 'react-flow-renderer'
+import { ModuleNodeProps } from '@modtree/types'
+
+import { baseInitialState } from './initial-state'
 
 export const base = createSlice({
   name: 'base',
@@ -33,17 +36,34 @@ export const base = createSlice({
         })
         .catch(() => console.log('Database error'))
     },
-    toggleGraphModule: (state, action: PayloadAction<FlowNodeCondensed>) => {
+    toggleModuleNode: (state, action: PayloadAction<Node<ModuleNodeProps>>) => {
       const node = action.payload
       const currentNodes = state.graph.flowNodes
-      const currentCodes = currentNodes.map((n) => n.moduleCode)
-      if (currentCodes.includes(node.moduleCode)) {
-        state.graph.flowNodes = currentNodes.filter(
-          (n) => n.moduleCode !== node.moduleCode
-        )
+      const currentCodes = currentNodes.map((n) => n.id)
+      if (currentCodes.includes(node.id)) {
+        state.graph.flowNodes = currentNodes.filter((n) => n.id !== node.id)
       } else {
         state.graph.flowNodes.push(node)
       }
+    },
+    addModuleNode: (state, action: PayloadAction<Node<ModuleNodeProps>>) => {
+      const node = action.payload
+      const currentNodes = state.graph.flowNodes
+      const currentCodes = currentNodes.map((n) => n.id)
+      console.log(
+        'positions',
+        state.graph.flowNodes.map((x) => x.position)
+      )
+      if (!currentCodes.includes(node.id)) {
+        const arr = [...currentNodes, node]
+        console.log(arr)
+        state.graph.flowNodes = arr
+      }
+    },
+    updateModuleNode: (state, action: PayloadAction<Node<ModuleNodeProps>>) => {
+      const node = action.payload
+      const index = state.graph.flowNodes.findIndex((x) => x.id === node.id)
+      state.graph.flowNodes[index] = node
     },
   },
 })
@@ -53,7 +73,9 @@ export const {
   setBaseDegree,
   setBaseGraph,
   setModulesCondensed,
-  toggleGraphModule,
+  toggleModuleNode,
+  addModuleNode,
+  updateModuleNode,
 } = base.actions
 
 export default base.reducer

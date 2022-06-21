@@ -6,14 +6,8 @@ import {
   JoinTable,
   Column,
 } from 'typeorm'
-import type {
-  FlowEdgeCondensed,
-  FlowNodeCondensed,
-  IDegree,
-  IGraph,
-  IModule,
-  IUser,
-} from '@modtree/types'
+import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
+import type { Node, Edge } from 'react-flow-renderer'
 
 @Entity({ name: 'graph' })
 /** Graph entity */
@@ -38,8 +32,8 @@ export class Graph implements IGraph {
   modulesHidden: IModule[]
 
   @Column('json', { default: [] })
-  flowNodes: FlowNodeCondensed[]
+  flowNodes: Node[]
 
   @Column('json', { default: [] })
-  flowEdges: FlowEdgeCondensed[]
+  flowEdges: Edge[]
 }

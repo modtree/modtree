@@ -1,4 +1,5 @@
 export type FlowNodeCondensed = {
+  title: string
   moduleCode: string
   position: {
     x: number
@@ -10,4 +11,9 @@ export type FlowEdgeCondensed = {
   id: string
   source: string
   target: string
+}
+
+export type ModuleNodeProps = {
+  moduleCode: string
+  title: string
 }
