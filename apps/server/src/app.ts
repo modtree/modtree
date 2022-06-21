@@ -29,11 +29,21 @@ export function getApp(api: Api): Express {
     app[route.method](route.route, ...route.validators, (req, res, next) => {
       const result = route.fn(api)(req, res, next)
       if (result instanceof Promise) {
-        result.then((result) =>
-          result !== null && result !== undefined ? res.json(result) : undefined
-        )
+        result
+          .then((result) =>
+            result !== null && result !== undefined
+              ? res.json(result)
+              : undefined
+          )
+          .catch((error) => {
+            res.status(500).json({ error })
+          })
       } else if (result !== null && result !== undefined) {
         res.json(result)
+      } else {
+        res
+          .status(500)
+          .json({ message: "Amazingly, you've reached this error." })
       }
     })
   })
