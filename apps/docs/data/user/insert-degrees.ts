@@ -29,7 +29,7 @@ export const insertDegrees: MethodProps = {
         required: true,
       },
     ],
-    queryParams: [
+    bodyParams: [
       {
         name: 'degreeIds',
         dataType: 'string[]',
