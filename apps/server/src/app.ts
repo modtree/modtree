@@ -1,8 +1,8 @@
 import cors from 'cors'
-import express, { NextFunction, Request, Response, Express } from 'express'
-import { getRoutes } from './routes'
+import express, { Request, Response, Express } from 'express'
 import { corsOpts } from './cors'
 import { Api } from '@modtree/repo-api'
+import { routes2 } from './routes2'
 
 /**
  * **********************************************
@@ -22,37 +22,20 @@ export function getApp(api: Api): Express {
   /**
    * register express routes from defined application routes
    */
-  const routes = getRoutes()
-  routes.forEach((route) => {
-    app[route.method](
-      route.route,
-      ...route.validators,
-      (req: Request, res: Response, next: NextFunction) => {
-        /**
-         * instantiate controller class
-         */
-        const controller = new route.controller(api)
-        /**
-         * call the method
-         */
-        const result = controller[route.action](req, res, next)
-        /**
-         * handle async/sync functions differently
-         */
-        if (result instanceof Promise) {
-          result.then((result) =>
-            result !== null && result !== undefined
-              ? res.send(result)
-              : undefined
-          )
-        } else if (result !== null && result !== undefined) {
-          res.json(result)
-        }
-      }
-    )
-  })
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
+  })
+  routes2.forEach((route) => {
+    app[route.method](route.route, ...route.validators, (req, res, next) => {
+      const result = route.fn(api)(req, res, next)
+      if (result instanceof Promise) {
+        result.then((result) =>
+          result !== null && result !== undefined ? res.json(result) : undefined
+        )
+      } else if (result !== null && result !== undefined) {
+        res.json(result)
+      }
+    })
   })
   return app
 }

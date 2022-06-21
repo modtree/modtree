@@ -2,7 +2,9 @@
 import axios from 'axios'
 
 axios
-  .get('http://localhost:8080/users')
+  .get('http://localhost:8080/users', {
+    params: { yes: 'a@b.com' },
+  })
   .then((res) => {
     console.log(res.data)
   })

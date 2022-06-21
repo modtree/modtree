@@ -3,7 +3,24 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "baseUrl": ".",
+    "paths": {
+      "app": ["./src/app.ts"],
+      "@modtree/entity": ["../../libs/entity/src/index.ts"],
+      "@modtree/repo-api": ["../../libs/repo-api/src/index.ts"],
+      "@modtree/repo-base": ["../../libs/repo-base/src/index.ts"],
+      "@modtree/repo-degree": ["../../libs/repo-degree/src/index.ts"],
+      "@modtree/repo-graph": ["../../libs/repo-graph/src/index.ts"],
+      "@modtree/repo-module": ["../../libs/repo-module/src/index.ts"],
+      "@modtree/repo-user": ["../../libs/repo-user/src/index.ts"],
+      "@modtree/sql": ["../../libs/sql/src/index.ts"],
+      "@modtree/test-env": ["../../libs/test-env/src/index.ts"],
+      "@modtree/test-env/jest": ["../../libs/test-env/src/matcher-types.ts"],
+      "@modtree/typeorm-config": ["../../libs/typeorm-config/src/index.ts"],
+      "@modtree/types": ["../../libs/types/src/index.ts"],
+      "@modtree/utils": ["../../libs/utils/src/index.ts"]
+    }
   },
   "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"]
 }
