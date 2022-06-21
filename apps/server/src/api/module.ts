@@ -1,5 +1,5 @@
 import { Api } from '@modtree/repo-api'
-import { Request, Response } from 'express'
+import { Request } from 'express'
 
 export class ModuleApi {
   /**
@@ -7,10 +7,8 @@ export class ModuleApi {
    *
    * @param {Api} api
    */
-  static list = (api: Api) => (_req: Request, res: Response) => {
-    api.moduleRepo.find().then((results) => {
-      res.json(results)
-    })
+  static list = (api: Api) => () => {
+    return api.moduleRepo.find()
   }
 
   /**
@@ -18,14 +16,7 @@ export class ModuleApi {
    *
    * @param {Api} api
    */
-  static get = (api: Api) => (req: Request, res: Response) => {
-    api.moduleRepo
-      .findOneByOrFail({ moduleCode: req.params.moduleCode })
-      .then((result) => {
-        res.json(result)
-      })
-      .catch((error) => {
-        res.status(404).json({ error })
-      })
+  static get = (api: Api) => (req: Request) => {
+    return api.moduleRepo.findOneByOrFail({ moduleCode: req.params.moduleCode })
   }
 }

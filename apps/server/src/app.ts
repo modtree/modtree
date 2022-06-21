@@ -3,6 +3,7 @@ import express, { Request, Response, Express } from 'express'
 import { corsOpts } from './cors'
 import { Api } from '@modtree/repo-api'
 import { routes } from './routes'
+import { validate } from './validate'
 
 /**
  * **********************************************
@@ -27,6 +28,7 @@ export function getApp(api: Api): Express {
   })
   routes.forEach((route) => {
     app[route.method](route.route, ...route.validators, (req, res, next) => {
+      if (!validate(req, res)) return
       const result = route.fn(api)(req, res, next)
       if (result instanceof Promise) {
         result

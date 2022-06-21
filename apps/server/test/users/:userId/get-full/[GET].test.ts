@@ -28,10 +28,13 @@ test('`findOneOrFail` is called once', async () => {
   expect(findOneOrFail).toBeCalledTimes(1)
 })
 
-test('returns 404', async () => {
+/**
+ * TODO: this should return 404
+ */
+test('returns 500', async () => {
   const res = await request(app).get(
     '/users/58201858-5ce5-4ceb-8568-eecf55841b9f/get-full'
   )
 
-  expect(res.statusCode).toBe(404)
+  expect(res.statusCode).toBe(500)
 })

@@ -1,8 +1,7 @@
 import { Api } from '@modtree/repo-api'
 import { CustomReqQuery } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
-import { Request, Response } from 'express'
-import { validate } from '../validate'
+import { Request } from 'express'
 
 type ListRequest = {
   id?: string
@@ -16,27 +15,10 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static create = (api: Api) => (req: Request, res: Response) => {
+  static create = (api: Api) => async (req: Request) => {
     const props = emptyInit.Graph
-    const requestKeys = Object.keys(req.body)
-    const requiredKeys = Object.keys(props)
-    if (!requiredKeys.every((val) => requestKeys.includes(val))) {
-      res
-        .status(400)
-        .json({ message: 'insufficient keys', requestKeys, requiredKeys })
-      return
-    }
     copy(req.body, props)
-    api.graphRepo
-      .initialize(props)
-      .then((graph) => {
-        res.json(flatten.graph(graph))
-      })
-      .catch(() => {
-        res
-          .status(400)
-          .json({ message: 'invalid ids', requestKeys, requiredKeys })
-      })
+    return api.graphRepo.initialize(props).then(flatten.graph)
   }
 
   /**
@@ -44,48 +26,30 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static get =
-    (api: Api) => (req: CustomReqQuery<ListRequest>, res: Response) => {
-      if (!validate(req, res)) return
-      api.graphRepo
-        .findOneById(req.params.graphId)
-        .then((graph) => {
-          res.json(flatten.graph(graph))
-        })
-        .catch(() => {
-          res.status(404).json({ message: 'Graph not found' })
-        })
-    }
+  static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
+    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
+  }
 
   /**
    * lists all Graphs
    *
    * @param {Api} api
    */
-  static list =
-    (api: Api) => (req: CustomReqQuery<ListRequest>, res: Response) => {
-      if (!validate(req, res)) return
-      api.graphRepo.find({ relations: api.relations.graph }).then((results) => {
-        res.json(results.map((graph) => flatten.graph(graph)))
-      })
-    }
+  static list = (api: Api) => async () => {
+    return api.graphRepo
+      .find({ relations: api.relations.graph })
+      .then((results) => results.map(flatten.graph))
+  }
 
   /**
    * hard-deletes a Graph
    *
    * @param {Api} api
    */
-  static delete = (api: Api) => (req: Request, res: Response) => {
-    api.graphRepo
-      .delete({
-        id: req.params.graphId,
-      })
-      .then((deleteResult) => {
-        res.json({ deleteResult })
-      })
-      .catch(() => {
-        res.status(404).json({ message: 'Graph not found' })
-      })
+  static delete = (api: Api) => (req: Request) => {
+    return api.graphRepo.delete({
+      id: req.params.graphId,
+    })
   }
 
   /**
@@ -93,16 +57,12 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static toggle = (api: Api) => (req: Request, res: Response) => {
-    if (!validate(req, res)) return
+  static toggle = (api: Api) => async (req: Request) => {
     const { moduleCode, graphId } = req.params
-    api.graphRepo
+    return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.toggleModule(graph, moduleCode))
-      .then((graph) => {
-        res.json(flatten.graph(graph))
-      })
-      .catch(() => res.status(500).json({ message: 'Unable to toggle module' }))
+      .then(flatten.graph)
   }
 
   /**
@@ -110,11 +70,10 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static updateFrontendProps = (api: Api) => (req: Request, res: Response) => {
-    if (!validate(req, res)) return
+  static updateFrontendProps = (api: Api) => async (req: Request) => {
     const { flowNodes, flowEdges } = req.body
     const { graphId } = req.params
-    api.graphRepo
+    return api.graphRepo
       .findOneById(graphId)
       .then((graph) =>
         api.graphRepo.updateFrontendProps(graph, {
@@ -122,11 +81,6 @@ export class GraphApi {
           flowNodes,
         })
       )
-      .then((graph) => {
-        res.json(flatten.graph(graph))
-      })
-      .catch(() =>
-        res.status(500).json({ message: 'Unable to update frontend props' })
-      )
+      .then(flatten.graph)
   }
 }
