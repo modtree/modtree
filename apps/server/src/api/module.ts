@@ -1,7 +1,7 @@
 import { Api } from '@modtree/repo-api'
 import { Request, Response } from 'express'
 
-export class ModuleController {
+export class ModuleApi {
   /**
    * returns all the modules in the database
    *
@@ -14,7 +14,7 @@ export class ModuleController {
   }
 
   /**
-   * gets one module from the database (using its module code)
+   * gets one module from the database using its module code
    *
    * @param {Api} api
    */

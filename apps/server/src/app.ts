@@ -2,7 +2,7 @@ import cors from 'cors'
 import express, { Request, Response, Express } from 'express'
 import { corsOpts } from './cors'
 import { Api } from '@modtree/repo-api'
-import { routes2 } from './routes2'
+import { routes } from './routes'
 
 /**
  * **********************************************
@@ -25,7 +25,7 @@ export function getApp(api: Api): Express {
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
   })
-  routes2.forEach((route) => {
+  routes.forEach((route) => {
     app[route.method](route.route, ...route.validators, (req, res, next) => {
       const result = route.fn(api)(req, res, next)
       if (result instanceof Promise) {

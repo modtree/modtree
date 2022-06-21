@@ -7,7 +7,7 @@ type ModuleCodes = {
   moduleCodes: string[]
 }
 
-export class ModuleCondensedController {
+export class ModuleCondensedApi {
   /**
    * returns all the modules in the database
    *
@@ -30,7 +30,7 @@ export class ModuleCondensedController {
     }
 
   /**
-   * gets one module from the database (using its module code)
+   * gets one module from the database using its module code
    *
    * @param {Api} api
    */

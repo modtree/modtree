@@ -10,7 +10,7 @@ type ListRequest = {
   email?: string
 }
 
-export class UserController {
+export class UserApi {
   /**
    * creates a User
    *
@@ -71,7 +71,7 @@ export class UserController {
     }
 
   /**
-   * get all Users
+   * lists all Users
    *
    * @param {Api} api
    */
@@ -96,7 +96,7 @@ export class UserController {
     }
 
   /**
-   * hard-deletes a User by id
+   * hard-deletes a User
    *
    * @param {Api} api
    */

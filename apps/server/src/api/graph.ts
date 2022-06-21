@@ -10,9 +10,9 @@ type ListRequest = {
   email?: string
 }
 
-export class GraphController {
+export class GraphApi {
   /**
-   * creates a User
+   * creates a Graph
    *
    * @param {Api} api
    */
@@ -40,7 +40,7 @@ export class GraphController {
   }
 
   /**
-   * gets one User by id
+   * gets one Graph
    *
    * @param {Api} api
    */
@@ -58,7 +58,7 @@ export class GraphController {
     }
 
   /**
-   * get all Users
+   * lists all Graphs
    *
    * @param {Api} api
    */
@@ -71,7 +71,7 @@ export class GraphController {
     }
 
   /**
-   * hard-deletes a User by id
+   * hard-deletes a Graph
    *
    * @param {Api} api
    */
@@ -89,7 +89,7 @@ export class GraphController {
   }
 
   /**
-   * finds a graph by its id and updates it with request props
+   * finds a graph by its id and toggles one module code
    *
    * @param {Api} api
    */

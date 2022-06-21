@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { CustomValidator, Location, validationResult } from 'express-validator'
+import { CustomValidator, validationResult } from 'express-validator'
 
 /**
  * meant to be used as a one-liner at the top of each controller method

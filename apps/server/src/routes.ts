@@ -1,22 +1,22 @@
-import type { Route } from '.'
+import type { Route } from './types'
 import {
-  UserController,
-  DegreeController,
-  GraphController,
-  ModuleController,
-  ModuleCondensedController,
+  UserApi,
+  DegreeApi,
+  GraphApi,
+  ModuleApi,
+  ModuleCondensedApi,
 } from './api'
 import { body, param, query } from 'express-validator'
 import { validModuleCode } from '@modtree/utils'
 
-export const routes2: Route[] = [
+export const routes: Route[] = [
   /**
    * User API
    */
   {
     method: 'get',
     route: '/users',
-    fn: UserController.list,
+    fn: UserApi.list,
     validators: [
       body('id').isUUID().optional(),
       body('email').normalizeEmail().isEmail().optional(),
@@ -28,26 +28,26 @@ export const routes2: Route[] = [
   {
     method: 'get',
     route: '/users/:userId',
-    fn: UserController.get,
+    fn: UserApi.get,
     validators: [],
   },
   {
     method: 'post',
     route: '/users/:authZeroId/login',
-    fn: UserController.login,
+    fn: UserApi.login,
     // validators: [body('email').isEmail()],
     validators: [],
   },
   {
     method: 'get',
     route: '/users/:userId/get-full',
-    fn: UserController.getFull,
+    fn: UserApi.getFull,
     validators: [],
   },
   {
     method: 'post',
     route: '/users',
-    fn: UserController.create,
+    fn: UserApi.create,
     validators: [
       body('authZeroId').isString().notEmpty(),
       body('email').isEmail(),
@@ -56,13 +56,13 @@ export const routes2: Route[] = [
   {
     method: 'post',
     route: '/users/:userId/degrees',
-    fn: UserController.insertDegrees,
+    fn: UserApi.insertDegrees,
     validators: [],
   },
   {
     method: 'delete',
     route: '/users/:userId',
-    fn: UserController.delete,
+    fn: UserApi.delete,
     validators: [],
   },
 
@@ -72,25 +72,25 @@ export const routes2: Route[] = [
   {
     method: 'get',
     route: '/degrees',
-    fn: DegreeController.list,
+    fn: DegreeApi.list,
     validators: [],
   },
   {
     method: 'get',
     route: '/degrees/:degreeId',
-    fn: DegreeController.get,
+    fn: DegreeApi.get,
     validators: [],
   },
   {
     method: 'post',
     route: '/degrees',
-    fn: DegreeController.create,
+    fn: DegreeApi.create,
     validators: [],
   },
   {
     method: 'delete',
     route: '/degrees/:degreeId',
-    fn: DegreeController.delete,
+    fn: DegreeApi.delete,
     validators: [],
   },
 
@@ -100,31 +100,31 @@ export const routes2: Route[] = [
   {
     method: 'get',
     route: '/graphs',
-    fn: GraphController.list,
+    fn: GraphApi.list,
     validators: [],
   },
   {
     method: 'get',
     route: '/graphs/:graphId',
-    fn: GraphController.get,
+    fn: GraphApi.get,
     validators: [],
   },
   {
     method: 'delete',
     route: '/graphs/:graphId',
-    fn: GraphController.delete,
+    fn: GraphApi.delete,
     validators: [],
   },
   {
     method: 'post',
     route: '/graphs',
-    fn: GraphController.create,
+    fn: GraphApi.create,
     validators: [],
   },
   {
     method: 'post',
     route: '/graphs/:graphId/toggle/:moduleCode',
-    fn: GraphController.toggle,
+    fn: GraphApi.toggle,
     validators: [
       param('moduleCode')
         .custom(validModuleCode)
@@ -134,7 +134,7 @@ export const routes2: Route[] = [
   {
     method: 'post',
     route: '/graphs/:graphId/flow',
-    fn: GraphController.updateFrontendProps,
+    fn: GraphApi.updateFrontendProps,
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },
 
@@ -144,13 +144,13 @@ export const routes2: Route[] = [
   {
     method: 'get',
     route: '/modules',
-    fn: ModuleController.list,
+    fn: ModuleApi.list,
     validators: [],
   },
   {
     method: 'get',
     route: '/modules/:moduleCode',
-    fn: ModuleController.get,
+    fn: ModuleApi.get,
     validators: [],
   },
 
@@ -160,13 +160,13 @@ export const routes2: Route[] = [
   {
     method: 'get',
     route: '/modules-condensed',
-    fn: ModuleCondensedController.list,
+    fn: ModuleCondensedApi.list,
     validators: [query('moduleCodes').optional().isArray()],
   },
   {
     method: 'get',
     route: '/modules-condensed/:moduleCode',
-    fn: ModuleCondensedController.get,
+    fn: ModuleCondensedApi.get,
     validators: [],
   },
 ]

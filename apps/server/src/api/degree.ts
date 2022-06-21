@@ -10,9 +10,9 @@ type ListRequest = {
   email?: string
 }
 
-export class DegreeController {
+export class DegreeApi {
   /**
-   * creates a User
+   * creates a Degree
    *
    * @param {Api} api
    */
@@ -33,7 +33,7 @@ export class DegreeController {
   }
 
   /**
-   * gets one User by id
+   * gets one Degree
    *
    * @param {Api} api
    */
@@ -50,7 +50,7 @@ export class DegreeController {
     }
 
   /**
-   * get all Users
+   * lists all Degrees
    *
    * @param {Api} api
    */
@@ -63,7 +63,7 @@ export class DegreeController {
     }
 
   /**
-   * hard-deletes a User by id
+   * hard-deletes a Degree
    *
    * @param {Api} api
    */
