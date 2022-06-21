@@ -5,7 +5,7 @@ import ModtreeFlow from '@/flow'
 import { HomeLoader } from '@/components/Loader'
 import { useUser } from '@/utils/auth0'
 import { useEffect, useState } from 'react'
-import { ContextMenu } from '@/components/context-menu'
+import { ContextMenus } from '@/components/context-menu'
 import {
   ModuleInfoModal,
   UserProfileModal,
@@ -44,7 +44,7 @@ export default function Modtree() {
           <UserProfileModal />
           <DebugModal />
           <ModuleInfoModal />
-          <ContextMenu.FlowPane />
+          <ContextMenus />
         </>
       )}
     </div>
