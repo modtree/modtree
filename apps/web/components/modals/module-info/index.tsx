@@ -1,12 +1,10 @@
-import { useSelector } from 'react-redux'
-import { ModalState, hideModuleModal } from '@/store/modal'
+import { useAppSelector } from '@/store/redux'
+import { hideModuleModal } from '@/store/modal'
 import Modal from '@/ui/modal'
 import { ModuleDetails } from './contents'
 
 export function ModuleInfoModal() {
-  const showModuleModal = useSelector<ModalState, boolean>(
-    (state) => state.modal.showModuleModal
-  )
+  const showModuleModal = useAppSelector((state) => state.modal.showModuleModal)
 
   return (
     <Modal

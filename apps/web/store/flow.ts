@@ -1,26 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Edge, Node } from 'react-flow-renderer'
-import { FlowNodeCondensed, FlowEdgeCondensed } from '@modtree/types'
-
-type State = {
-  selection: string[]
-  nodes: FlowNodeCondensed[]
-  edges: FlowEdgeCondensed[]
-}
-
-export type FlowState = {
-  flow: State
-}
-
-const initialState: State = {
-  selection: [],
-  nodes: [],
-  edges: [],
-}
+import { baseInitialState } from './initial-state'
 
 export const flow = createSlice({
   name: 'flow',
-  initialState,
+  initialState: baseInitialState.flow,
   reducers: {
     setFlowSelection: (state, action: PayloadAction<string[]>) => {
       state.selection = action.payload

@@ -1,5 +1,4 @@
-import { ModalState } from '@/store/modal'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '@/store/redux'
 import { ContextMenu } from './base'
 
 const items = [
@@ -8,9 +7,7 @@ const items = [
 ]
 
 export default function FlowPaneContextMenu() {
-  const show = useSelector<ModalState, ModalState['modal']['showContextMenu']>(
-    (state) => state.modal.showContextMenu
-  )
+  const show = useAppSelector((state) => state.modal.showContextMenu)
 
   return <ContextMenu show={show} items={items} />
 }

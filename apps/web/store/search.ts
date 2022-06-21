@@ -1,25 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Module, ModuleCondensed } from '@modtree/entity'
-
-type State = {
-  moduleCondensed: ModuleCondensed[]
-  module: Module[]
-  hasResults: boolean
-}
-
-export type SearchState = {
-  search: State
-}
-
-const initialState: State = {
-  moduleCondensed: [],
-  module: [],
-  hasResults: false,
-}
+import { baseInitialState } from './initial-state'
 
 export const search = createSlice({
   name: 'search',
-  initialState,
+  initialState: baseInitialState.search,
   reducers: {
     setSearchedModuleCondensed: (
       state,

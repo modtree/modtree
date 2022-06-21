@@ -1,5 +1,4 @@
-import { ModalState } from '@/store/modal'
-import { useSelector } from 'react-redux'
+import { useAppSelector } from '@/store/redux'
 import { BaseContextMenu, MenuItems } from '@/ui/menu'
 import { MenuItem } from 'types'
 
@@ -8,10 +7,9 @@ export function ContextMenu(props: { items: MenuItem[]; show: boolean }) {
    * all context menus share the same redux state for coordinates
    * since there is only one context menu on the screen at any time.
    */
-  const contextMenuProps = useSelector<
-    ModalState,
-    ModalState['modal']['contextMenuProps']
-  >((state) => state.modal.contextMenuProps)
+  const contextMenuProps = useAppSelector(
+    (state) => state.modal.contextMenuProps
+  )
 
   return props.show ? (
     <div

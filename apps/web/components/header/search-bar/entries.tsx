@@ -1,20 +1,14 @@
 import { Dispatch, Fragment, SetStateAction } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
-import { useSelector } from 'react-redux'
-import { ModuleCondensed } from '@modtree/entity'
-import { SearchState } from '@/store/search'
+import { useAppSelector } from '@/store/redux'
 
 export default function ResultEntries(props: {
   setSelected: Dispatch<SetStateAction<string>>
 }) {
   const { setSelected } = props
-  const { moduleCondensed, hasResults } = useSelector<
-    SearchState,
-    {
-      moduleCondensed: ModuleCondensed[]
-      hasResults: boolean
-    }
-  >((state) => state.search)
+  const { moduleCondensed, hasResults } = useAppSelector(
+    (state) => state.search
+  )
   return (
     <Transition
       as={Fragment}
