@@ -1,43 +1,55 @@
 import { generateSchema } from 'utils'
 
 const fulfilled = {
-  id: 'ab0b6e0d-19cc-4c2e-ad7b-7e840cb04f38',
-  user: 'nguyenvukhang',
-  degree: 'Mathematics',
-  modulesPlaced: ['MA2001', 'MA2002'],
-  modulesHidden: ['CS2040S'],
+  id: 'f0331baf-383a-48fd-8d36-3ba3b84eb531',
+  user: 'e9f66c30-c96f-4ebd-b771-99ae8646f438',
+  degree: 'fbeba80e-74bf-4a21-a6d6-b200f11a6fec',
+  modulesPlaced: ['MA1521'],
+  modulesHidden: ['CS2030S', 'MA2001'],
   flowNodes: [
     {
-      moduleCode: 'CS1010',
-      title: 'Programming Methodology',
-      position: { x: 100, y: 200 },
+      id: 'CS1010S',
+      position: {
+        x: 300,
+        y: -27,
+      },
+      data: {
+        moduleCode: 'CS1010S',
+        title: 'Programming Methodology',
+      },
     },
     {
-      moduleCode: 'CS2030S',
-      title: 'Programming Methodology II',
-      position: { x: 450, y: 100 },
+      id: 'CS2030S',
+      position: {
+        x: 80,
+        y: 193,
+      },
+      data: {
+        moduleCode: 'CS2030S',
+        title: 'Programming Methodology II',
+      },
     },
   ],
   flowEdges: [
     {
-      id: 'CS1010-CS2030S',
-      source: 'CS1010',
+      id: 'CS1010S-CS2030S',
+      source: 'CS1010S',
       target: 'CS2030S',
     },
   ],
 }
 
 export const get: MethodProps = {
-  method: 'Get a Graph',
-  description: 'Retrieve information about one Graph',
-  endpoint: '/graph/{graphId}',
+  method: 'Get a graph',
+  description: 'Retrieve information about one graph',
+  endpoint: '/graphs/{graphId}',
   requestType: 'GET',
   parameters: {
     pathParams: [
       {
         name: 'graphId',
         dataType: 'string',
-        description: 'The id of the Graph',
+        description: 'The id of the graph',
         required: true,
       },
     ],
