@@ -35,6 +35,7 @@ type MethodProps = {
   parameters: {
     pathParams?: Parameter[]
     queryParams?: Parameter[]
+    bodyParams?: Parameter[]
   }
   response: ResponseProps
 }
@@ -56,4 +57,5 @@ type ParameterList = {
   path: string
   pathParams?: Parameter[]
   queryParams?: Parameter[]
+  bodyParams?: Parameter[]
 }

@@ -7,6 +7,7 @@ const Left = (props: MethodProps) => {
     path: props.endpoint,
     pathParams: props.parameters.pathParams,
     queryParams: props.parameters.queryParams,
+    bodyParams: props.parameters.bodyParams,
   }
   return (
     <div>
