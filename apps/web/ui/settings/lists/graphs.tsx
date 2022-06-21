@@ -19,15 +19,13 @@ export function GraphListSection(props: {
           <>
             {summary && <p>{summary}</p>}
             <div className="ui-rectangle flex flex-col overflow-hidden">
-              <Row.GraphHeader>
+              <Row.Header>
                 <GraphIcon className="mr-2" />
                 Graphs
-              </Row.GraphHeader>
+              </Row.Header>
               {contents.map(({ degree, graphs }, index) => (
                 <>
-                  <Row.GraphHeader key={dashed(degree, index)}>
-                    {degree}
-                  </Row.GraphHeader>
+                  <Row.Header key={dashed(degree, index)}>{degree}</Row.Header>
                   {graphs.map((graph, index) => (
                     <Row.Graph key={dashed(degree, graph, index)}>
                       {degree}/{graph}
