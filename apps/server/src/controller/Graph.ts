@@ -1,14 +1,15 @@
 import { Request, Response } from 'express'
 import { IGraphController } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
-import { db } from '@modtree/typeorm-config'
 import { validate } from '../validate'
 import { Api } from '@modtree/repo-api'
+import { Controller } from './base'
 
 /** Graph API controller */
-export class GraphController implements IGraphController {
-  private api = new Api(db)
-  private graphRepo = this.api.graphRepo
+export class GraphController extends Controller implements IGraphController {
+  constructor(api: Api) {
+    super(api)
+  }
 
   /**
    * creates a Graph

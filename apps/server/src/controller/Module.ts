@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
 import { IModuleController } from '@modtree/types'
-import { db } from '@modtree/typeorm-config'
 import { Api } from '@modtree/repo-api'
+import { Controller } from './base'
 
 /** Module api controller */
-export class ModuleController implements IModuleController {
-  private api = new Api(db)
-  private moduleRepo = this.api.moduleRepo
+export class ModuleController extends Controller implements IModuleController {
+  constructor(api: Api) {
+    super(api)
+  }
 
   /**
    * returns all the modules in the database

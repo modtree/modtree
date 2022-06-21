@@ -26,11 +26,11 @@ export class Api {
 
   constructor(db: DataSource) {
     this.db = db
-    this.degreeRepo = new DegreeRepository(this.db)
-    this.userRepo = new UserRepository(this.db)
-    this.graphRepo = new GraphRepository(this.db)
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.moduleCondensedRepo = new ModuleCondensedRepository(this.db)
+    this.degreeRepo = new DegreeRepository(db)
+    this.userRepo = new UserRepository(db)
+    this.graphRepo = new GraphRepository(db)
+    this.moduleRepo = new ModuleRepository(db)
+    this.moduleCondensedRepo = new ModuleCondensedRepository(db)
   }
 
   /**
