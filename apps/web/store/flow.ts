@@ -11,6 +11,7 @@ export const flow = createSlice({
     },
     setFlowNodes: (state, action: PayloadAction<Node[]>) => {
       state.nodes = action.payload.map((node) => ({
+        title: node.data.title,
         moduleCode: node.id,
         position: node.position,
       }))

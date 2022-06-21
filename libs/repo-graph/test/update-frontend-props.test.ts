@@ -51,10 +51,14 @@ it('returns a relationless graph', async () => {
   await updateFrontendProps({
     flowNodes: [
       {
-        moduleCode: 'CS1010S',
+        id: 'CS1010S',
         position: {
           x: 420,
           y: 68,
+        },
+        data: {
+          moduleCode: 'CS1010S',
+          title: 'Programming',
         },
       },
     ],
@@ -74,7 +78,7 @@ it('inserts a flow node', async () => {
 
 it('inserts correct module', async () => {
   await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.flowNodes.map((node) => node.moduleCode)
+    const codes = graph.flowNodes.map((node) => node.id)
     expect(codes).toContain('CS1010S')
   })
 })
@@ -90,10 +94,14 @@ it('updates a flow node', async () => {
   await updateFrontendProps({
     flowNodes: [
       {
-        moduleCode: 'CS1010S',
+        id: 'CS1010S',
         position: {
           x: 300,
           y: -27,
+        },
+        data: {
+          moduleCode: 'CS1010S',
+          title: 'Programming',
         },
       },
     ],
@@ -105,7 +113,7 @@ it('updates a flow node', async () => {
 
 it('updates correct flow node', async () => {
   await findGraph(t.graph!.id).then((graph) => {
-    const node = graph.flowNodes.find((node) => node.moduleCode === 'CS1010S')
+    const node = graph.flowNodes.find((node) => node.id === 'CS1010S')
     expect(node!.position).toEqual({ x: 300, y: -27 })
   })
 })

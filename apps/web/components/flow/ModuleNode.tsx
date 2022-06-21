@@ -1,13 +1,7 @@
 import { Handle, Position } from 'react-flow-renderer'
+import { ModuleNodeProps } from '@modtree/types'
 
-type ModuleNodeProps = {
-  data: {
-    moduleCode: string
-    title: string
-  }
-}
-
-export function ModuleNode({ data }: ModuleNodeProps) {
+export function ModuleNode(props: { data: ModuleNodeProps }) {
   return (
     <div>
       <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md border-2 border-gray-300">
@@ -15,10 +9,10 @@ export function ModuleNode({ data }: ModuleNodeProps) {
         <Handle type="source" position={Position.Right} />
         <div className="h-min">
           <div className="text-2xl font-semibold text-gray-700 text-center">
-            {data.moduleCode}
+            {props.data.moduleCode}
           </div>
           <div className="text-sm font-medium tracking-custom text-gray-400 text-center leading-5">
-            {data.title}
+            {props.data.title}
           </div>
         </div>
       </div>
