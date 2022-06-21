@@ -1,6 +1,15 @@
-import { DegreeRow } from './degree'
+import { ExtendedProps } from '@/types'
 import { GraphHeaderRow, GraphRow } from './graph'
-import { ModuleRow } from './module'
+import { DegreeIcon, ModuleIcon } from '@/ui/icons'
+import { BaseRow } from './base'
+
+const ModuleRow = (props: ExtendedProps['div']) => (
+  <BaseRow {...props} icon={ModuleIcon} deletable />
+)
+
+const DegreeRow = (props: ExtendedProps['div']) => (
+  <BaseRow {...props} icon={DegreeIcon} deletable />
+)
 
 export const Row = {
   Degree: DegreeRow,

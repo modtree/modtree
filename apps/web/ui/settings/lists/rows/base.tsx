@@ -1,9 +1,10 @@
-import { Button } from '@/ui/buttons'
-import { ExtendedProps } from 'types'
+import { ExtendedProps, HeroIcon } from '@/types'
 import { flatten } from '@/utils/tailwind'
-import { DegreeIcon } from '@/ui/icons'
+import { Button } from '@/ui/buttons'
 
-export function DegreeRow(props: ExtendedProps['div']) {
+export function BaseRow(
+  props: ExtendedProps['div'] & { deletable?: boolean; icon?: HeroIcon }
+) {
   const { className, children, ...rest } = props
   return (
     <div
@@ -15,11 +16,13 @@ export function DegreeRow(props: ExtendedProps['div']) {
       )}
       {...rest}
     >
-      <DegreeIcon className="mr-2" />
+      {props.icon && <props.icon className="mr-2" />}
       <div className="flex-1">{children}</div>
-      <Button className="text-sm px-3" color="red">
-        Delete
-      </Button>
+      {props.deletable && (
+        <Button className="text-sm px-3" color="red">
+          Delete
+        </Button>
+      )}
     </div>
   )
 }
