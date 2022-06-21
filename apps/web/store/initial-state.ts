@@ -17,6 +17,7 @@ export const baseInitialState: ReduxState = {
     contextMenuProps: {
       top: 0,
       left: 0,
+      menu: 'pane',
     },
     showUserProfile: false,
     showContextMenu: false,

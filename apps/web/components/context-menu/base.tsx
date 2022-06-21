@@ -1,20 +1,16 @@
-import { useAppSelector } from '@/store/redux'
+import { ContextMenuProps } from '@/store/types'
 import { BaseContextMenu, MenuItems } from '@/ui/menu'
 import { MenuItem } from 'types'
 
-export function ContextMenu(props: { items: MenuItem[]; show: boolean }) {
-  /**
-   * all context menus share the same redux state for coordinates
-   * since there is only one context menu on the screen at any time.
-   */
-  const contextMenuProps = useAppSelector(
-    (state) => state.modal.contextMenuProps
-  )
-
+export function ContextMenu(props: {
+  items: MenuItem[]
+  contextMenuProps: ContextMenuProps
+  show: boolean
+}) {
   return props.show ? (
     <div
-      id="modtree-context-menu" // context menus share the same id too
-      style={contextMenuProps}
+      id="modtree-context-menu"
+      style={props.contextMenuProps}
       className="absolute z-20"
     >
       <BaseContextMenu>

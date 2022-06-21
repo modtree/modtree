@@ -11,7 +11,8 @@ type Event = globalThis.MouseEvent
 
 export function onContextMenu(
   dispatch: Dispatch,
-  event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+  event: MouseEvent<Element, globalThis.MouseEvent>,
+  menu: 'pane' | 'node'
 ) {
   const getMenu = () => document.getElementById('modtree-context-menu')
   /**
@@ -21,7 +22,7 @@ export function onContextMenu(
   /**
    * set redux state to open the menu
    */
-  dispatch(showContextMenu({ left: event.pageX, top: event.pageY }))
+  dispatch(showContextMenu({ left: event.pageX, top: event.pageY, menu }))
   /**
    * hides the context menu upon any click outside the menu
    */

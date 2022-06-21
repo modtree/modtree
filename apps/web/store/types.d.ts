@@ -9,7 +9,11 @@ export type ModuleCondensedMap = {
   [key: string]: ModtreeApiResponse.ModuleCondensed
 }
 
-export type ContextMenuProps = { top: number; left: number }
+export type ContextMenuProps = {
+  top: number
+  left: number
+  menu: 'pane' | 'node'
+}
 
 export type ReduxState = {
   base: {
