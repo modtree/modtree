@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Combobox } from '@headlessui/react'
 import { SearchIcon } from '@heroicons/react/solid'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '@/store/redux'
 import { handleSearch, getModuleInfo } from './lib'
 import ResultEntries from './entries'
 
 export default function SearchBar() {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const [selected, setSelected] = useState('')
 
   return (

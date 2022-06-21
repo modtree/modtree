@@ -3,6 +3,7 @@ import { Dot } from '@/components/inline'
 import { ModalState } from '@/store/modal'
 import { useSelector } from 'react-redux'
 import { Button } from '@/ui/buttons'
+import { addNode } from './add-node'
 
 export function ModuleDetails() {
   const module = useSelector<ModalState, ModtreeApiResponse.Module>(

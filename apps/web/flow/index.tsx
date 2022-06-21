@@ -8,7 +8,7 @@ import ReactFlow, {
 } from 'react-flow-renderer'
 // import { initialNodes, initialEdges } from '@/flow/graph'
 import { ModuleNode } from '@/components/flow/ModuleNode'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '@/store/redux'
 import { setFlowSelection, setFlowNodes } from '@/store/flow'
 import { onContextMenu } from '@/components/context-menu'
 
@@ -18,7 +18,7 @@ export default function ModtreeFlow() {
   /**
    * redux dispatcher
    */
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   /**
    * retrieve redux state for tree selection

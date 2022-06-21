@@ -1,6 +1,6 @@
 import { Panel, ModalPanelProps } from './panel'
 import { Base, ModalBaseProps } from './base'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '@/store/redux'
 import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
 
 type ModalProps = Omit<ModalBaseProps & ModalPanelProps, 'closeModal'> & {
@@ -8,7 +8,7 @@ type ModalProps = Omit<ModalBaseProps & ModalPanelProps, 'closeModal'> & {
 }
 
 export default function Modal(props: ModalProps) {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const {
     showState,
     hideAction,
