@@ -1,18 +1,45 @@
 import { ReactElement } from 'react'
 import { Button } from '@/ui/buttons'
+import { Slash } from '@/components/inline'
 
-export function SettingsSection(props: {
+type TitleProps = {
   title: string
+  baseTitle?: string
+  onBack?: () => void
+}
+
+type SettingsSectionProps = {
   addButtonText?: string
+  onAddClick?: () => void
   children: ReactElement | ReactElement[]
-}) {
+} & TitleProps
+
+const Title = (props: TitleProps) => {
+  return (
+    <span className="flex-1">
+      {props.baseTitle ? (
+        <>
+          <a onClick={props.onBack}>{props.baseTitle}</a>
+          <Slash />
+          <span>{props.title}</span>
+        </>
+      ) : (
+        <span>{props.title}</span>
+      )}
+    </span>
+  )
+}
+
+export function SettingsSection(props: SettingsSectionProps) {
   return (
     <div className="mb-12">
       <h2>
         <div className="flex flex-row items-center">
-          <span className="flex-1">{props.title}</span>
+          <Title {...props} />
           {props.addButtonText && (
-            <Button color="green">{props.addButtonText}</Button>
+            <Button color="green" onClick={props.onAddClick}>
+              {props.addButtonText}
+            </Button>
           )}
         </div>
       </h2>
