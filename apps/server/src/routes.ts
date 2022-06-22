@@ -18,9 +18,9 @@ export const routes: Route[] = [
     route: '/users',
     fn: UserApi.list,
     validators: [
-      body('id').isUUID().optional(),
-      body('email').normalizeEmail().isEmail().optional(),
-      body('authZeroId')
+      query('id').isUUID().optional(),
+      query('email').normalizeEmail().isEmail().optional(),
+      query('authZeroId')
         .custom((s: string) => s.startsWith('auth0|'))
         .optional(),
     ],
