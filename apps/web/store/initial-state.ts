@@ -26,6 +26,7 @@ export const baseInitialState: ReduxState = {
     modalModule: EmptyResponse.Module,
   },
   search: {
+    buildList: [],
     searchResults: [],
     module: [],
     hasResults: false,

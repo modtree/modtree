@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { useAppDispatch } from '@/store/redux'
 import { getModuleInfo } from './lib'
-import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
+import {
+  addToBuildList,
+  clearSearches,
+  setSearchedModuleCondensed,
+} from '@/store/search'
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
@@ -52,6 +56,7 @@ export function SettingsSearchBox() {
   const onSelect = (query: ModuleCondensed) => {
     selectState[1](query)
     console.log(query)
+    dispatch(addToBuildList(query))
   }
 
   return (

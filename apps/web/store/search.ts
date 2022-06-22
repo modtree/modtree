@@ -22,9 +22,28 @@ export const search = createSlice({
       state.module = []
       state.hasResults = false
     },
+    addToBuildList: (state, action: PayloadAction<ModuleCondensed>) => {
+      const codes = new Set(state.buildList.map((m) => m.moduleCode))
+      if (!codes.has(action.payload.moduleCode)) {
+        state.buildList = [...state.buildList, action.payload]
+      }
+    },
+    removeFromBuildList: (state, action: PayloadAction<ModuleCondensed>) => {
+      const codes = new Set(state.buildList.map((m) => m.moduleCode))
+      if (codes.has(action.payload.moduleCode)) {
+        state.buildList = state.buildList.filter(
+          (x) => x.moduleCode !== action.payload.moduleCode
+        )
+      }
+    },
   },
 })
 
-export const { setSearchedModule, setSearchedModuleCondensed, clearSearches } =
-  search.actions
+export const {
+  setSearchedModule,
+  setSearchedModuleCondensed,
+  clearSearches,
+  addToBuildList,
+  removeFromBuildList,
+} = search.actions
 export default search.reducer

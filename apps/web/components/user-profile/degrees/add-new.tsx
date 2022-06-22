@@ -1,4 +1,4 @@
-import { ModuleSimple, Pages } from 'types'
+import { Pages } from 'types'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { useState } from 'react'
 import { Input } from '@/components/html'
@@ -8,14 +8,21 @@ import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
 import { ModuleCondensed } from '@modtree/entity'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { removeFromBuildList } from '@/store/search'
 
-function SelectedModules(props: { modules: ModuleSimple[] }) {
+function SelectedModules(props: { modules: ModuleCondensed[] }) {
+  const dispatch = useAppDispatch()
   return (
     <>
       {props.modules.length !== 0 && (
         <div className="ui-rectangle flex flex-col overflow-hidden">
           {props.modules.map((module, index) => (
-            <Row.Module key={dashed(module.moduleCode, index)}>
+            <Row.Module
+              key={dashed(module.moduleCode, index)}
+              deletable
+              onDelete={() => dispatch(removeFromBuildList(module))}
+            >
               <span className="font-semibold">{module.moduleCode}</span>
               <span className="mx-1">/</span>
               {module.title}
@@ -35,8 +42,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
       { title: 'yes', moduleCode: 'MA1000', moduleLevel: 1000, id: '' },
     ]),
   }
-  // const searchResults = useAppSelector((state) => state.search.moduleCondensed)
-  const [modules] = state.modules
+  const buildList = useAppSelector((state) => state.search.buildList)
   return (
     <div className="flex flex-col">
       <SettingsSection
@@ -56,7 +62,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
           </div>
           <Button>Add Module</Button>
         </div>
-        <SelectedModules modules={modules} />
+        <SelectedModules modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green">Save degree</Button>
