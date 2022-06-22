@@ -6,7 +6,7 @@ export const Input = (props: ExtendedProps['input']) => {
   const grayed = props.grayed ? 'focus:bg-white bg-gray-100' : ''
   return (
     <input
-      className={`py-1 px-2 border border-gray-300 rounded-md ${interact} ${props.className} ${grayed}`}
+      className={`h-8 px-2 border border-gray-300 rounded-md ${interact} ${props.className} ${grayed}`}
       value={value}
       onChange={(e) => setValue(e.target.value)}
     />
