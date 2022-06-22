@@ -6,11 +6,8 @@ import { HomeLoader } from '@/components/Loader'
 import { useUser } from '@/utils/auth0'
 import { useEffect, useState } from 'react'
 import { ContextMenus } from '@/components/context-menu'
-import {
-  ModuleInfoModal,
-  UserProfileModal,
-  DebugModal,
-} from '@/components/modals'
+import { ModuleInfoModal, DebugModal } from '@/components/modals'
+import { UserProfileModal } from '@/components/user-profile'
 
 export default function Modtree() {
   const { isLoading } = useUser()
