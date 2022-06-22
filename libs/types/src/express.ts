@@ -15,3 +15,5 @@ export type CustomReqQuery<ReqQuery> = Request<
   unknown,
   ReqQuery
 >
+
+export type CustomReqParams<ReqParams> = Request<ReqParams, unknown, unknown>

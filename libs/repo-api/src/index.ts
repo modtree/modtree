@@ -5,6 +5,7 @@ import {
   IGraphRepository,
   IModuleRepository,
   IModuleCondensedRepository,
+  EntityName,
 } from '@modtree/types'
 import { emptyInit } from '@modtree/utils'
 import { UserRepository } from '@modtree/repo-user'
@@ -15,6 +16,9 @@ import {
   ModuleCondensedRepository,
   ModuleRepository,
 } from '@modtree/repo-module'
+import { getRelationNames } from '@modtree/repo-base'
+
+type Relations = Record<string, boolean>
 
 export class Api {
   db: DataSource
@@ -23,6 +27,7 @@ export class Api {
   graphRepo: IGraphRepository
   moduleRepo: IModuleRepository
   moduleCondensedRepo: IModuleCondensedRepository
+  relations: Record<EntityName, Relations>
 
   constructor(db: DataSource) {
     this.db = db
@@ -31,6 +36,13 @@ export class Api {
     this.graphRepo = new GraphRepository(db)
     this.moduleRepo = new ModuleRepository(db)
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
+    this.relations = {
+      user: getRelationNames(this.userRepo),
+      degree: getRelationNames(this.degreeRepo),
+      graph: getRelationNames(this.graphRepo),
+      module: getRelationNames(this.moduleRepo),
+      moduleCondensed: getRelationNames(this.moduleCondensedRepo),
+    }
   }
 
   /**

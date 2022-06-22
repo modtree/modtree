@@ -33,4 +33,10 @@ export function oneUp(fullPath: string): string {
   const parent = basename(dirname(fullPath))
   const child = basename(fullPath)
   return join(parent, child)
+    .replace('[', '-')
+    .replace(']', '-')
+    .replace('(', '-')
+    .replace(')', '-')
+    .replace('/', '-')
+    .replace('.', '-')
 }

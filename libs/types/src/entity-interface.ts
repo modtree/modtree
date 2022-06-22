@@ -2,6 +2,13 @@ import type { Node, Edge } from 'react-flow-renderer'
 import { ModuleNodeProps } from './flow'
 import type { SemesterData, NUSModuleAttributes, PrereqTree } from './nusmods'
 
+export type EntityName =
+  | 'user'
+  | 'degree'
+  | 'graph'
+  | 'module'
+  | 'moduleCondensed'
+
 export type IBase = {
   id: string
 }
