@@ -26,7 +26,7 @@ export async function handleSearch<T>(props: {
   }
   const upper = value.toUpperCase()
   const backend = process.env.NEXT_PUBLIC_BACKEND
-  const url = `${backend}/modules-condensed/${upper}/search`
+  const url = `${backend}/modules-condensed/search/${upper}`
   fetch(url)
     .then((res) => {
       res.json().then((result) => {

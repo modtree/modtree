@@ -27,6 +27,7 @@ export function RootSearchBox() {
         selectState={selectState}
         onSelect={onSelect}
         dispatch={dispatch}
+        inputContainerClass="h-10"
         searchIcon
       />
     </div>
