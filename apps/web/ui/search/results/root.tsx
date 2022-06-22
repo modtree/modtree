@@ -2,6 +2,8 @@ import { Fragment } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { useAppSelector } from '@/store/redux'
 import { ModuleCondensed } from '@modtree/entity'
+import { flatten } from '@/utils/tailwind'
+import { dashed } from '@/utils/array'
 
 function SearchResult(props: { module: ModuleCondensed }) {
   return (
@@ -14,10 +16,34 @@ function SearchResult(props: { module: ModuleCondensed }) {
   )
 }
 
-export function SearchResults() {
-  const { moduleCondensed, hasResults } = useAppSelector(
-    (state) => state.search
+function SearchResultList(props: { modules: ModuleCondensed[] }) {
+  if (props.modules.length === 0) {
+    return (
+      <div className="select-none py-2 px-4 text-gray-700">Nothing found.</div>
+    )
+  }
+  return (
+    <>
+      {props.modules.map((module, index) => (
+        <Combobox.Option
+          key={dashed(module.moduleCode, index)}
+          value={module.moduleCode}
+          className={({ active }) =>
+            flatten(
+              'cursor-pointer select-none py-2 px-4',
+              active ? 'bg-modtree-300 text-white' : 'text-gray-900'
+            )
+          }
+        >
+          <SearchResult module={module} />
+        </Combobox.Option>
+      ))}
+    </>
   )
+}
+
+export function SearchResults() {
+  const { moduleCondensed } = useAppSelector((state) => state.search)
   return (
     <Transition
       as={Fragment}
@@ -25,26 +51,13 @@ export function SearchResults() {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <Combobox.Options className="mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-        {moduleCondensed.length === 0 && !hasResults ? (
-          <div className="select-none py-2 px-4 text-gray-700">
-            Nothing found.
-          </div>
-        ) : (
-          moduleCondensed.map((module) => (
-            <Combobox.Option
-              key={module.moduleCode}
-              className={({ active }) =>
-                `cursor-pointer select-none py-2 px-4 ${
-                  active ? 'bg-modtree-300 text-white' : 'text-gray-900'
-                }`
-              }
-              value={module.moduleCode}
-            >
-              <SearchResult module={module} />
-            </Combobox.Option>
-          ))
+      <Combobox.Options
+        className={flatten(
+          'mt-1 max-h-60 w-full overflow-auto rounded-md bg-white',
+          'shadow-lg focus:outline-none'
         )}
+      >
+        <SearchResultList modules={moduleCondensed} />
       </Combobox.Options>
     </Transition>
   )
