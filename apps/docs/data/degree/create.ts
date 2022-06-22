@@ -40,7 +40,7 @@ export const create: MethodProps = {
         required: true,
       },
       {
-        name: 'modules',
+        name: 'moduleCodes',
         dataType: 'string[]',
         description: 'Module codes of degree requirements',
         required: true,
