@@ -5,30 +5,9 @@ import { Input } from '@/components/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
-import { handleSearch } from '@/utils/backend'
-import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
-import { useDispatch } from 'react-redux'
-import { SetState, UseState } from '@modtree/types'
-import { Dispatch } from 'redux'
-// import { useAppSelector } from '@/store/redux'
-
-function Search(props: { state: UseState<string>; dispatch: Dispatch }) {
-  return (
-    <input
-      className="w-48 mb-4 mr-2"
-      value={props.state[0]}
-      onChange={(e) => {
-        handleSearch({
-          clear: clearSearches,
-          set: setSearchedModuleCondensed,
-          dispatch: props.dispatch,
-          value: e.target.value,
-        })
-        props.state[1](e.target.value)
-      }}
-    />
-  )
-}
+import { SetState } from '@modtree/types'
+import { SettingsSearchBox } from '@/ui/search'
+import { ModuleCondensed } from '@modtree/entity'
 
 function SelectedModules(props: { modules: ModuleSimple[] }) {
   return (
@@ -52,10 +31,11 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   const state = {
     title: useState<string>(''),
     moduleCode: useState<string>(''),
-    modules: useState<ModuleSimple[]>([{ title: 'yes', moduleCode: 'MA1000' }]),
+    modules: useState<ModuleCondensed[]>([
+      { title: 'yes', moduleCode: 'MA1000', moduleLevel: 1000, id: '' },
+    ]),
   }
   // const searchResults = useAppSelector((state) => state.search.moduleCondensed)
-  const dispatch = useDispatch()
   const [modules] = state.modules
   return (
     <div className="flex flex-col">
@@ -68,9 +48,8 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         <h6>Title</h6>
         <Input className="w-full mb-4" state={state.title} grayed />
         <h6>Modules</h6>
-        {/* <SearchBox inputClass="ui-rectangle h-8" /> */}
-        <div className="flex flex-row">
-          <Search state={state.moduleCode} dispatch={dispatch} />
+        <div className="flex flex-row space-x-2 mb-4">
+          <SettingsSearchBox />
           <Button>Add Module</Button>
         </div>
         <SelectedModules modules={modules} />

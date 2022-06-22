@@ -11,8 +11,11 @@ export function SearchContainer<T>(props: {
   onSelect: (_: string) => void
   clear: () => AnyAction
   set: ActionCreatorWithOptionalPayload<T[], string>
-  hideResults?: boolean
   resultsComponent: FC<{ setSelected: SetState<string> }>
+  inputClass?: string
+  inputContainerClass?: string
+  hideResults?: boolean
+  searchIcon?: boolean
 }) {
   const [selected, setSelected] = props.selectState
 
@@ -22,6 +25,9 @@ export function SearchContainer<T>(props: {
         dispatch={props.dispatch}
         clear={props.clear}
         set={props.set}
+        inputClass={props.inputClass}
+        inputContainerClass={props.inputContainerClass}
+        searchIcon={props.searchIcon}
       />
       {!props.hideResults && (
         <props.resultsComponent setSelected={setSelected} />

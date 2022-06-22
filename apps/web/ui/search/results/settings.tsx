@@ -42,7 +42,7 @@ function SearchResultList(props: { modules: ModuleCondensed[] }) {
   )
 }
 
-export function RootSearchResults() {
+export function SettingsSearchResults() {
   const { moduleCondensed } = useAppSelector((state) => state.search)
   return (
     <Transition
@@ -53,8 +53,9 @@ export function RootSearchResults() {
     >
       <Combobox.Options
         className={flatten(
-          'mt-1 max-h-60 w-full overflow-auto rounded-md bg-white',
-          'shadow-lg focus:outline-none'
+          'absolute mt-1 max-h-60 overflow-auto rounded-md bg-white',
+          'shadow-lg focus:outline-none',
+          'w-64'
         )}
       >
         <SearchResultList modules={moduleCondensed} />
