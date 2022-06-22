@@ -18,28 +18,36 @@ const fulfilled = [
     ],
     savedGraphs: ['4dcf096d-fc1a-4b01-99df-17cc01cba16c'],
   },
-  {
-    id: '7aedb747-cd78-4116-ab67-c72fcce198a5',
-    authZeroId: 'auth0|2f4dcee5164e459ab8fcd3a2',
-    displayName: 'Tan Wei Seng',
-    username: 'weiseng',
-    email: 'weiseng@modtree.com',
-    matriculationYear: 2021,
-    graduationYear: 2024,
-    graduationSemester: 2,
-    modulesDone: ['CS1101S', 'MA2001'],
-    modulesDoing: [],
-    savedDegrees: ['d44ff19f-c054-43a2-93bb-ee94e87b68f5'],
-    savedGraphs: [],
-  },
 ]
 
 export const list: MethodProps = {
-  method: 'List all users',
-  description: 'Retrieve information about all users',
+  method: 'List many users',
+  description:
+    'Retrieve information about all users that match the search query. At least one of the keys must be specified.',
   endpoint: '/users/',
   requestType: 'GET',
-  parameters: {},
+  parameters: {
+    queryParams: [
+      {
+        name: 'id',
+        dataType: 'string',
+        description: 'The id of the user',
+        required: false,
+      },
+      {
+        name: 'authZeroId',
+        dataType: 'string',
+        description: 'The id of the user registered in Auth0',
+        required: false,
+      },
+      {
+        name: 'email',
+        dataType: 'string',
+        description: 'The email address of the user',
+        required: false,
+      },
+    ],
+  },
   response: {
     fulfilled,
     schema: generateSchema(fulfilled),

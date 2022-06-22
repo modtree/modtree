@@ -1,5 +1,4 @@
 export * from './get'
-export * from './get-by-primary-keys'
 export * from './list'
 export * from './create'
 export * from './insert-degrees'

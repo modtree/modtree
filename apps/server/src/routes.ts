@@ -57,7 +57,7 @@ export const routes: Route[] = [
     method: 'post',
     route: '/users/:userId/degrees',
     fn: UserApi.insertDegrees,
-    validators: [],
+    validators: [body('degreeIds').isArray().notEmpty()],
   },
   {
     method: 'delete',
@@ -85,7 +85,10 @@ export const routes: Route[] = [
     method: 'post',
     route: '/degrees',
     fn: DegreeApi.create,
-    validators: [],
+    validators: [
+      body('title').notEmpty(),
+      body('moduleCodes').isArray().notEmpty(),
+    ],
   },
   {
     method: 'delete',
@@ -171,7 +174,7 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/modules-condensed/:moduleCode/search',
+    route: '/modules-condensed/search/:searchQuery',
     fn: ModuleCondensedApi.search,
     validators: [],
   },

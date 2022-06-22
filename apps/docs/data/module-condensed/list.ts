@@ -10,11 +10,21 @@ const fulfilled = [
 ]
 
 export const list: MethodProps = {
-  method: 'List all modules condensed',
-  description: 'Retrieve basic information about all modules',
-  endpoint: '/modulesCondensed/',
+  method: 'List many modules condensed',
+  description: 'Retrieve basic information about many modules',
+  endpoint: '/modules-condensed/',
   requestType: 'GET',
-  parameters: {},
+  parameters: {
+    queryParams: [
+      {
+        name: 'moduleCodes',
+        dataType: 'string[]',
+        description:
+          'An array of module codes. Leave empty to retrieve all modules condensed.',
+        required: false,
+      },
+    ],
+  },
   response: {
     fulfilled,
     schema: generateSchema(fulfilled),

@@ -81,8 +81,7 @@ const fulfilled = {
 
 export const getFull: MethodProps = {
   method: 'Get a full user',
-  description:
-    'Retrieve information about one user, including first-layer relations',
+  description: 'Retrieve information about one user, including relations',
   endpoint: '/users/{userId}/get-full',
   requestType: 'GET',
   parameters: {

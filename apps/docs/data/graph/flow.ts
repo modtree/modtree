@@ -39,7 +39,7 @@ const fulfilled = {
   ],
 }
 
-export const updateFrontendProps: MethodProps = {
+export const flow: MethodProps = {
   method: 'Update frontend props',
   description:
     'This endpoint updates frontend-related props. This includes moving a node.',

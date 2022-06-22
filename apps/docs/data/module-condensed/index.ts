@@ -1,3 +1,3 @@
 export * from './get'
 export * from './list'
-export * from './find-by-codes'
+export * from './search'

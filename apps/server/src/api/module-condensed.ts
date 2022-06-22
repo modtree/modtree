@@ -33,14 +33,14 @@ export class ModuleCondensedApi {
   }
 
   /**
-   * gets one module from the database using its module code
+   * gets a list of modules from the database using LIKE query
    *
    * @param {Api} api
    */
   static search =
-    (api: Api) => (req: CustomReqParams<{ moduleCode: string }>) => {
+    (api: Api) => (req: CustomReqParams<{ searchQuery: string }>) => {
       return api.moduleCondensedRepo.find({
-        where: { moduleCode: Like(`${req.params.moduleCode}%`) },
+        where: { moduleCode: Like(`${req.params.searchQuery}%`) },
       })
     }
 }

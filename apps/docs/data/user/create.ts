@@ -23,7 +23,16 @@ export const create: MethodProps = {
   description: 'Create a user',
   endpoint: '/users/{userId}',
   requestType: 'POST',
-  parameters: {},
+  parameters: {
+    bodyParams: [
+      {
+        name: 'authZeroId',
+        dataType: 'string',
+        description: 'The id of the user registered in Auth0',
+        required: true,
+      },
+    ],
+  },
   response: {
     fulfilled,
     schema: generateSchema(fulfilled),
