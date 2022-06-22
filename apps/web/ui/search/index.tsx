@@ -43,7 +43,7 @@ export function SettingsSearchBox() {
 
   const onSelect = (query: string) => {
     selectState[1](query)
-    getModuleInfo(dispatch, query)
+    console.log(query)
   }
 
   return (
