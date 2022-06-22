@@ -41,13 +41,13 @@ const fulfilled = [
 
 export const search: MethodProps = {
   method: 'Search all modules condensed',
-  description: "Searches modules condensed using SQL's LIKE query",
-  endpoint: '/modules-condensed/{moduleCode}/search',
+  description: "Returns modules condensed, whose module code is a prefix match with the search query",
+  endpoint: '/modules-condensed/search/{searchQuery}',
   requestType: 'GET',
   parameters: {
     pathParams: [
       {
-        name: 'moduleCode',
+        name: 'searchQuery',
         dataType: 'string',
         description: 'The search query',
         required: true,
