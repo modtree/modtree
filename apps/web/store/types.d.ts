@@ -36,7 +36,7 @@ export type ReduxState = {
     modalModule: ModtreeApiResponse.Module
   }
   search: {
-    moduleCondensed: ModuleCondensed[]
+    searchResults: ModuleCondensed[]
     module: Module[]
     hasResults: boolean
   }

@@ -10,7 +10,7 @@ export const search = createSlice({
       state,
       action: PayloadAction<ModuleCondensed[]>
     ) => {
-      state.moduleCondensed = action.payload
+      state.searchResults = action.payload
       state.hasResults = action.payload.length > 0
     },
     setSearchedModule: (state, action: PayloadAction<Module[]>) => {
@@ -18,7 +18,7 @@ export const search = createSlice({
       state.hasResults = action.payload.length > 0
     },
     clearSearches: (state) => {
-      state.moduleCondensed = []
+      state.searchResults = []
       state.module = []
       state.hasResults = false
     },

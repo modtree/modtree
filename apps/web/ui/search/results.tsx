@@ -43,7 +43,7 @@ function SearchResultList(props: { modules: ModuleCondensed[] }) {
 }
 
 export function SearchResultContainer() {
-  const { moduleCondensed } = useAppSelector((state) => state.search)
+  const { searchResults } = useAppSelector((state) => state.search)
   return (
     <Transition
       as={Fragment}
@@ -57,7 +57,7 @@ export function SearchResultContainer() {
           'shadow-lg focus:outline-none'
         )}
       >
-        <SearchResultList modules={moduleCondensed} />
+        <SearchResultList modules={searchResults} />
       </Combobox.Options>
     </Transition>
   )
