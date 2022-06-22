@@ -1,6 +1,6 @@
 import { flatten } from '@/utils/tailwind'
 import { useState } from 'react'
-import { IoReceiptOutline } from 'react-icons/io5'
+import { DegreeIcon } from '@/ui/icons'
 import colors from 'tailwindcss/colors'
 
 export function FloatingActionButton() {
@@ -27,7 +27,7 @@ export function FloatingActionButton() {
           // TODO: re-enable this button after fixing search
           // onClick={() => dispatch(showBuilder())}
         >
-          <IoReceiptOutline color={colors.gray[800]} size={22} />
+          <DegreeIcon px={24} className="text-gray-500" />
         </button>
       </div>
     </div>
