@@ -5,17 +5,25 @@ import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 import { SearchContainer } from './container'
 import { RootSearchResults, SettingsSearchResults } from './results'
 import { flatten } from '@/utils/tailwind'
+import { ModuleCondensed } from '@modtree/entity'
+
+const emptyModuleCondensed: ModuleCondensed = {
+  title: '',
+  id: '',
+  moduleCode: '',
+  moduleLevel: 0,
+}
 
 export function RootSearchBox() {
   const dispatch = useAppDispatch()
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState('')
+  const selectState = useState(emptyModuleCondensed)
 
-  const onSelect = (query: string) => {
+  const onSelect = (query: ModuleCondensed) => {
     selectState[1](query)
-    getModuleInfo(dispatch, query)
+    getModuleInfo(dispatch, query.moduleCode)
   }
 
   return (
@@ -39,9 +47,9 @@ export function SettingsSearchBox() {
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState('')
+  const selectState = useState(emptyModuleCondensed)
 
-  const onSelect = (query: string) => {
+  const onSelect = (query: ModuleCondensed) => {
     selectState[1](query)
     console.log(query)
   }
