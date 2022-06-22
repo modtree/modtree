@@ -12,8 +12,10 @@ export function RootSearchBox() {
    */
   const selectState = useState('')
 
-  const onSelect = (query: string) =>
-    getModuleInfo(dispatch, query, selectState)
+  const onSelect = (query: string) => {
+    selectState[1](query)
+    getModuleInfo(dispatch, query)
+  }
   const props = {
     selectState,
     dispatch,

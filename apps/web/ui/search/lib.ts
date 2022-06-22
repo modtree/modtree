@@ -33,12 +33,9 @@ export async function handleSearch(
  */
 export async function getModuleInfo(
   dispatch: Dispatch<AnyAction>,
-  value: string,
-  selectedState: UseState<string>
+  value: string
 ) {
   if (!value) return
-  const setSelected = selectedState[1]
-  setSelected(value)
   dispatch(showModuleModal())
   const backend = process.env.NEXT_PUBLIC_BACKEND
   const url = `${backend}/modules/${value}`
