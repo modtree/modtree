@@ -1,7 +1,6 @@
 import { flatten } from '@/utils/tailwind'
 import { useState } from 'react'
 import { DegreeIcon } from '@/ui/icons'
-import colors from 'tailwindcss/colors'
 
 export function FloatingActionButton() {
   const [showTooltip, setShowTooltip] = useState(false)
