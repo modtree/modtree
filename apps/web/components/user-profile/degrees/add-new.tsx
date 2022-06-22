@@ -1,6 +1,6 @@
 import { ModuleSimple, Pages } from 'types'
 import { SettingsSection } from '@/ui/settings/lists/base'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { Input } from '@/components/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
@@ -9,10 +9,28 @@ import { handleSearch } from '@/utils/backend'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from '@/store/redux'
+import { UseState } from '@modtree/types'
+import { Dispatch } from 'redux'
 
-export function AddNew(props: {
-  setPage: Dispatch<SetStateAction<Pages['Degrees']>>
-}) {
+function Search(props: { state: UseState<string>; dispatch: Dispatch }) {
+  return (
+    <input
+      className="w-48 mb-4 mr-2"
+      value={props.state[0]}
+      onChange={(e) => {
+        handleSearch({
+          clear: clearSearches,
+          set: setSearchedModuleCondensed,
+          dispatch: props.dispatch,
+          value: e.target.value,
+        })
+        props.state[1](e.target.value)
+      }}
+    />
+  )
+}
+
+export function AddNew(props: { setPage: UseState<Pages['Degrees']>[1] }) {
   const state = {
     title: useState<string>(''),
     moduleCode: useState<string>(''),
@@ -33,19 +51,7 @@ export function AddNew(props: {
         <Input className="w-full mb-4" state={state.title} grayed />
         <h6>Modules</h6>
         <div className="flex flex-row">
-          <input
-            className="w-48 mb-4 mr-2"
-            value={state.moduleCode[0]}
-            onChange={(e) => {
-              handleSearch({
-                clear: clearSearches,
-                set: setSearchedModuleCondensed,
-                dispatch,
-                value: e.target.value,
-              })
-              state.moduleCode[1](e.target.value)
-            }}
-          />
+          <Search state={state.moduleCode} dispatch={dispatch} />
           <Button>Add Module</Button>
         </div>
         <div>{JSON.stringify(searchResults)}</div>
