@@ -3,7 +3,7 @@ import { useAppDispatch } from '@/store/redux'
 import { getModuleInfo } from './lib'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 import { SearchContainer } from './container'
-import { RootSearchResults, SettingsSearchResults } from './results'
+import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
 import { ModuleCondensed } from '@modtree/entity'
 
@@ -29,7 +29,7 @@ export function RootSearchBox() {
   return (
     <div className="fixed top-3 left-3 w-72 z-10">
       <SearchContainer
-        resultsComponent={RootSearchResults}
+        resultsComponent={SearchResultContainer}
         set={setSearchedModuleCondensed}
         clear={clearSearches}
         selectState={selectState}
@@ -59,21 +59,20 @@ export function SettingsSearchBox() {
       className={flatten(
         // 'border border-red-500',
         'ui-rectangle',
+        'overflow-hidden',
         'shadow-none',
-        'h-8',
-        'z-10 w-64',
-        'overflow-hidden'
+        'h-8'
       )}
     >
       <SearchContainer
-        resultsComponent={SettingsSearchResults}
+        resultsComponent={SearchResultContainer}
         set={setSearchedModuleCondensed}
         clear={clearSearches}
         selectState={selectState}
         onSelect={onSelect}
         dispatch={dispatch}
-        inputContainerClass="h-8"
-        inputClass="h-8"
+        inputContainerClass="h-8 shadow-none"
+        inputClass="h-8 shadow-none"
       />
     </div>
   )
