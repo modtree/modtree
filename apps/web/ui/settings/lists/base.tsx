@@ -12,6 +12,7 @@ type SettingsSectionProps = {
   addButtonText?: string
   onAddClick?: () => void
   children: ReactElement | ReactElement[]
+  className?: string
 } & TitleProps
 
 const Title = (props: TitleProps) => {
@@ -32,7 +33,7 @@ const Title = (props: TitleProps) => {
 
 export function SettingsSection(props: SettingsSectionProps) {
   return (
-    <div className="mb-12">
+    <div className={props.className}>
       <h2>
         <div className="flex flex-row items-center">
           <Title {...props} />
