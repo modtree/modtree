@@ -13,7 +13,7 @@ export function GraphListSection(props: {
   const hasGraphs = props.contents.length !== 0
   const { title, contents, summary } = props
   return (
-    <div className="mb-12">
+    <div>
       <SettingsSection title={title} addButtonText={hasGraphs && 'New graph'}>
         {hasGraphs ? (
           <>
