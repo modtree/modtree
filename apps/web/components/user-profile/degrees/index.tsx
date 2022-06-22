@@ -1,5 +1,5 @@
 import { DegreeSummary } from 'types'
-import { text } from './text'
+import { text } from 'text'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { Row } from '@/ui/settings/lists/rows'
 import { dashed } from '@/utils/array'

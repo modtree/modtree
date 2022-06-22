@@ -6,7 +6,7 @@ import {
   GraphListSection,
   ModuleListSection,
 } from '@/ui/settings'
-import { text } from './text'
+import { text } from 'text'
 
 export function DebugTabContent() {
   const state = {
