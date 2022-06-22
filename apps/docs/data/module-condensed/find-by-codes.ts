@@ -18,7 +18,7 @@ const fulfilled = [
 export const findByCodes: MethodProps = {
   method: 'Find some modules condensed',
   description: 'Retrieve basic information about some modules',
-  endpoint: '/modulesCondensed/find-by-codes',
+  endpoint: '/modules-condensed/find-by-codes',
   requestType: 'GET',
   parameters: {
     queryParams: [

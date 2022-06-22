@@ -12,7 +12,7 @@ const fulfilled = [
 export const list: MethodProps = {
   method: 'List all modules condensed',
   description: 'Retrieve basic information about all modules',
-  endpoint: '/modulesCondensed/',
+  endpoint: '/modules-condensed/',
   requestType: 'GET',
   parameters: {},
   response: {
