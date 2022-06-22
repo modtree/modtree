@@ -1,6 +1,12 @@
 import { useState } from 'react'
 import { Input } from '@/components/html'
 import { AddButton, Button } from '@/ui/buttons'
+import {
+  DegreeListSection,
+  GraphListSection,
+  ModuleListSection,
+} from '@/ui/settings'
+import { text } from './text'
 
 export function DebugTabContent() {
   const state = {
@@ -23,6 +29,29 @@ export function DebugTabContent() {
         <Button color="green">Upgrade</Button>
         <AddButton />
       </div>
+      <div className="my-12 text-center">Empty debug ↓</div>
+      <GraphListSection contents={[]} title="Graphs" />
+      <ModuleListSection
+        contents={[]}
+        title="Modules Doing"
+        addButtonText="Add doing"
+        summary={text.moduleListSection.doing.summary}
+        emptySummary={text.moduleListSection.doing.emptySummary}
+      />
+      <ModuleListSection
+        contents={[]}
+        title="Modules Done"
+        addButtonText="Add done"
+        summary={text.moduleListSection.done.summary}
+        emptySummary={text.moduleListSection.done.emptySummary}
+      />
+      <DegreeListSection
+        title="Degrees"
+        addButtonText="Add degree"
+        contents={[]}
+        summary={text.degreeListSection.summary}
+        emptySummary={text.degreeListSection.emptySummary}
+      />
     </div>
   )
 }

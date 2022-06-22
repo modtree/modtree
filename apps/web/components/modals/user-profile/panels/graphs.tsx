@@ -35,12 +35,6 @@ export function GraphsTabContent() {
         </Button>
       </div>
       <GraphListSection contents={graphContent} title="Graphs" />
-      <div className="my-12 text-center">Empty debug ↓</div>
-      <GraphListSection
-        contents={[]}
-        title="Graphs"
-        summary="List of graphs."
-      />
     </>
   )
 }
