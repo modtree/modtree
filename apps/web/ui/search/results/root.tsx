@@ -1,10 +1,9 @@
-import { Dispatch, Fragment, SetStateAction } from 'react'
+import { Fragment } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { useAppSelector } from '@/store/redux'
+import { SetState } from '@modtree/types'
 
-export default function ResultEntries(props: {
-  setSelected: Dispatch<SetStateAction<string>>
-}) {
+export function SearchResults(props: { setSelected: SetState<string> }) {
   const { setSelected } = props
   const { moduleCondensed, hasResults } = useAppSelector(
     (state) => state.search

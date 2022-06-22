@@ -89,7 +89,7 @@
     hover:underline;
   }
   input {
-    @apply h-8 px-2
+    @apply h-10 px-2
     border border-gray-300
     bg-gray-100
     outline-blue-300

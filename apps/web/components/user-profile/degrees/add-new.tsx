@@ -8,9 +8,9 @@ import { Button } from '@/ui/buttons'
 import { handleSearch } from '@/utils/backend'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
 import { useDispatch } from 'react-redux'
-import { useAppSelector } from '@/store/redux'
-import { UseState } from '@modtree/types'
+import { SetState, UseState } from '@modtree/types'
 import { Dispatch } from 'redux'
+// import { useAppSelector } from '@/store/redux'
 
 function Search(props: { state: UseState<string>; dispatch: Dispatch }) {
   return (
@@ -30,13 +30,31 @@ function Search(props: { state: UseState<string>; dispatch: Dispatch }) {
   )
 }
 
-export function AddNew(props: { setPage: UseState<Pages['Degrees']>[1] }) {
+function SelectedModules(props: { modules: ModuleSimple[] }) {
+  return (
+    <>
+      {props.modules.length !== 0 && (
+        <div className="ui-rectangle flex flex-col overflow-hidden">
+          {props.modules.map((module, index) => (
+            <Row.Module key={dashed(module.moduleCode, index)}>
+              <span className="font-semibold">{module.moduleCode}</span>
+              <span className="mx-1">/</span>
+              {module.title}
+            </Row.Module>
+          ))}
+        </div>
+      )}
+    </>
+  )
+}
+
+export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   const state = {
     title: useState<string>(''),
     moduleCode: useState<string>(''),
     modules: useState<ModuleSimple[]>([{ title: 'yes', moduleCode: 'MA1000' }]),
   }
-  const searchResults = useAppSelector((state) => state.search.moduleCondensed)
+  // const searchResults = useAppSelector((state) => state.search.moduleCondensed)
   const dispatch = useDispatch()
   const [modules] = state.modules
   return (
@@ -50,22 +68,12 @@ export function AddNew(props: { setPage: UseState<Pages['Degrees']>[1] }) {
         <h6>Title</h6>
         <Input className="w-full mb-4" state={state.title} grayed />
         <h6>Modules</h6>
+        {/* <SearchBox inputClass="ui-rectangle h-8" /> */}
         <div className="flex flex-row">
           <Search state={state.moduleCode} dispatch={dispatch} />
           <Button>Add Module</Button>
         </div>
-        <div>{JSON.stringify(searchResults)}</div>
-        {modules.length !== 0 && (
-          <div className="ui-rectangle flex flex-col overflow-hidden">
-            {modules.map((module, index) => (
-              <Row.Module key={dashed(module.moduleCode, index)}>
-                <span className="font-semibold">{module.moduleCode}</span>
-                <span className="mx-1">/</span>
-                {module.title}
-              </Row.Module>
-            ))}
-          </div>
-        )}
+        <SelectedModules modules={modules} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green">Save degree</Button>
