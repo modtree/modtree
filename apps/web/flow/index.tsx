@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setFlowSelection } from '@/store/flow'
 import { onContextMenu } from '@/components/context-menu'
 import { updateModuleNode } from '@/store/base'
+import { hideContextMenu } from '@/store/modal'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -19,6 +20,7 @@ export default function ModtreeFlow() {
    */
   const dispatch = useAppDispatch()
   const graph = useAppSelector((state) => state.base.graph)
+  document.addEventListener('click', () => dispatch(hideContextMenu()))
 
   /**
    * retrieve redux state for tree selection
