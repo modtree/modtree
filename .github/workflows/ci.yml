@@ -69,9 +69,14 @@ jobs:
 
       - name: 📦 Build entire workspace
         run: yarn build --skip-nx-cache
+        continue-on-error: true
 
       - name: 📦 Run backend tests
         run: ${{ env.PREFIX }} yarn test --skip-nx-cache
+        continue-on-error: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
   telegram:
     needs: [pre_job, ci]
