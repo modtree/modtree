@@ -27,6 +27,7 @@ const navigation = {
     { name: 'API Reference', href: '/reference' },
     { name: 'Releases', href: 'https://github.com/modtree/modtree/releases' },
     { name: 'FAQ', href: '/docs/faq' },
+    { name: 'About', href: '/docs/about' },
   ],
   support: [
     {
