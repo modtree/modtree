@@ -42,14 +42,20 @@ jobs:
 
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
+        continue-on-error: true
 
       - name: 📦 Build entire workspace
         id: yarn_build
         run: yarn build
+        continue-on-error: true
 
       - name: 📦 Run backend tests
         id: yarn_test
-        run: ${{ env.PREFIX }} yarn test
+        run: ${{ env.PREFIX }} yarn test --coverage
+        continue-on-error: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
   ci_no_cache: # don't change this name, else will also need to change branch rules
     if: always()
@@ -69,14 +75,9 @@ jobs:
 
       - name: 📦 Build entire workspace
         run: yarn build --skip-nx-cache
-        continue-on-error: true
 
       - name: 📦 Run backend tests
         run: ${{ env.PREFIX }} yarn test --skip-nx-cache
-        continue-on-error: true
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
 
   telegram:
     needs: [pre_job, ci]
