@@ -9,6 +9,13 @@
       "layout": "raw"
     }
   },
+  "about": {
+    "title": "About",
+    "hidden": true,
+    "theme": {
+      "layout": "raw"
+    }
+  },
   "docs": "Docs",
   "reference": "API",
   "blog": "Blog"
