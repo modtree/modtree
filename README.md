@@ -4,9 +4,9 @@
 
 [![GitHub CI](https://github.com/modtree/modtree/workflows/ci/badge.svg)](https://github.com/modtree/modtree/actions)
 [![codecov](https://img.shields.io/codecov/c/github/modtree/modtree.svg)](https://codecov.io/gh/modtree/modtree)
-![languages](https://img.shields.io/github/languages/count/modtree/modtree)
 ![code size](https://img.shields.io/github/languages/code-size/modtree/modtree)
 ![lines of code](https://img.shields.io/tokei/lines/github/modtree/modtree)
+![version](https://img.shields.io/github/package-json/v/modtree/modtree)
 
 Modtree is a project that seeks to leverage [existing
 data](https://api.nusmods.com/v2/) in a graph-oriented visualization
