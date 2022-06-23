@@ -1,7 +1,6 @@
 import { Dispatch, AnyAction } from 'redux'
 import { ModuleCondensed } from '@modtree/entity'
 import { clearSearches, setSearchedModuleCondensed } from '@/store/search'
-import { UseState } from '@modtree/types'
 import { setModalModule, showModuleModal } from '@/store/modal'
 
 /**
@@ -33,12 +32,9 @@ export async function handleSearch(
  */
 export async function getModuleInfo(
   dispatch: Dispatch<AnyAction>,
-  value: string,
-  selectedState: UseState<string>
+  value: string
 ) {
   if (!value) return
-  const setSelected = selectedState[1]
-  setSelected(value)
   dispatch(showModuleModal())
   const backend = process.env.NEXT_PUBLIC_BACKEND
   const url = `${backend}/modules/${value}`

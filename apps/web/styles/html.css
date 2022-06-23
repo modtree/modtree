@@ -88,6 +88,17 @@
     text-blue-500
     hover:underline;
   }
+  input {
+    @apply h-10 px-2
+    border border-gray-300
+    bg-gray-100
+    outline-blue-300
+    rounded-md
+    focus:outline
+    focus:outline-2
+    focus:outline-blue-300
+    focus:bg-white;
+  }
 
   /**
    * NON_TEXT

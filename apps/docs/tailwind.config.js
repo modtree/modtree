@@ -16,10 +16,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // backgroundImage: {
-      //   light: "url('/logo-light.svg')",
-      //   dark: "url('/logo-dark.svg')",
-      // },
       fontFamily: {
         sans: [`"Inter"`, 'sans-serif'],
         mono: [

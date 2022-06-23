@@ -1,16 +1,13 @@
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
-import Header from '@/components/header'
 import ModtreeFlow from '@/flow'
 import { HomeLoader } from '@/components/Loader'
 import { useUser } from '@/utils/auth0'
 import { useEffect, useState } from 'react'
 import { ContextMenus } from '@/components/context-menu'
-import {
-  ModuleInfoModal,
-  UserProfileModal,
-  DebugModal,
-} from '@/components/modals'
+import { ModuleInfoModal, DebugModal } from '@/components/modals'
+import { UserProfileModal } from '@/components/user-profile'
+import { RootSearchBox } from '@/ui/search'
 
 export default function Modtree() {
   const { isLoading } = useUser()
@@ -36,7 +33,7 @@ export default function Modtree() {
       ) : (
         <>
           <ModtreeFlow />
-          <Header />
+          <RootSearchBox />
           <FullScreenOverlay>
             <FloatingUserButton />
             <FloatingActionButton />

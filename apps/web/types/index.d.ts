@@ -83,3 +83,7 @@ export type DegreeSummary = {
   title: string
   graphCount: number
 }
+
+export type Pages = {
+  Degrees: 'main' | 'add-new'
+}

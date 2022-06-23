@@ -1,11 +1,11 @@
 import {
   PublicProfileTabContent,
   AccountTabContent,
-  ModulesTabContent,
-  GraphsTabContent,
-  DegreesTabContent,
   DebugTabContent,
 } from './panels'
+import { DegreesTabContent } from './degrees'
+import { ModulesTabContent } from './modules'
+import { GraphsTabContent } from './graphs'
 import { SidebarCategoryProps } from 'types'
 import {
   AccountIcon,
