@@ -3,5 +3,6 @@
   "build-prerequisites": "Build prerequisites",
   "tests": "Tests",
   "yarn-scripts": "Yarn scripts",
-  "contributing": "Contributing"
+  "contributing": "Contributing",
+  "tech-stack": "Tech Stack"
 }
