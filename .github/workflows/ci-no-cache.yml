@@ -11,21 +11,7 @@ env:
   POSTGRES_INIT: sudo systemctl start postgresql.service; echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql; echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql; echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql; sudo su postgres -c "psql --file=/tmp/setup.sql"
 
 jobs:
-  pre_job:
-    # skip duplicate checks
-    # https://github.com/marketplace/actions/skip-duplicate-actions
-    runs-on: ubuntu-20.04
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-    steps:
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@master
-        with:
-          concurrent_skipping: same_content_newer
-          paths_ignore: '["**/README.md", "**/docs/**"]'
-
   ci_no_cache: # don't change this name, else will also need to change branch rules
-    if: always()
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
