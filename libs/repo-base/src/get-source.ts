@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm'
-import { db as DefaultSource } from '@modtree/typeorm-config'
+import { db as defaultSource } from '@modtree/typeorm-config'
 
 /**
  * ensures a fallback database
@@ -7,6 +7,6 @@ import { db as DefaultSource } from '@modtree/typeorm-config'
  * @param {DataSource} db
  * @returns {DataSource}
  */
-export function getDataSource(db: DataSource): DataSource {
-  return db || DefaultSource
+export function getDataSource(db?: DataSource): DataSource {
+  return db || defaultSource
 }
