@@ -12,7 +12,6 @@ import {
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
 import { UserRepository } from '@modtree/repo-user'
-import { db } from '@modtree/typeorm-config'
 
 /**
  * imports custom matcher types

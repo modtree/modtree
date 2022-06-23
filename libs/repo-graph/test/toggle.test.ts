@@ -1,30 +1,20 @@
 import { Graph, Module, ModuleCondensed } from '@modtree/entity'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { ModuleCondensedRepository } from '@modtree/repo-module'
-import { UserRepository } from '@modtree/repo-user'
 import { init, Repo, setup, teardown, t } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { flatten, oneUp } from '@modtree/utils'
 import { EntityNotFoundError } from 'typeorm'
-import { GraphRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => {
-      Object.assign(Repo, {
-        User: new UserRepository(db),
-        Degree: new DegreeRepository(db),
-        Graph: new GraphRepository(db),
-        ModuleCondensed: new ModuleCondensedRepository(db),
-      })
-      return Promise.all([
+    .then(() =>
+      Promise.all([
         Repo.User!.initialize(init.user1),
         Repo.Degree!.initialize(init.degree1),
       ])
-    })
+    )
     .then(([user, degree]) =>
       Repo.Graph!.initialize({
         userId: user.id,

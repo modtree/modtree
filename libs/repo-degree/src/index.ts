@@ -7,7 +7,6 @@ import {
   FindByKey,
   IDegree,
 } from '@modtree/types'
-import { copy } from '@modtree/utils'
 import {
   getRelationNames,
   useDeleteAll,
