@@ -18,12 +18,12 @@ sub > p {
 
 .logo,
 .dark .logo {
-  background-image: url('/logo-light.svg');
+  background-image: url('/banner-light-bg.svg');
   @apply bg-auto bg-no-repeat h-14 w-64;
 }
 
 .dark .logo {
-  background-image: url('/logo-dark.svg');
+  background-image: url('/banner-dark-bg.svg');
 }
 
 ol > li > ol,
