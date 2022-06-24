@@ -43,7 +43,9 @@ describe('nested codes', () => {
   const codes = new Set<string>()
   it('> 1000 codes', () => {
     modules.forEach((m) => {
-      getNestedCodes(m.prereqTree, codes)
+      const res = getNestedCodes(m.prereqTree)
+      expect(res.valid).toBe(true)
+      res.codes.forEach((code) => codes.add(code))
     })
     expect(codes.size).toBeGreaterThan(1000)
   })
