@@ -2,7 +2,7 @@ import { setup, teardown, Repo } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { Module } from '@modtree/entity'
-import { getNestedCodes } from './get-nested-codes'
+import { getNestedCodes } from '../../../src/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

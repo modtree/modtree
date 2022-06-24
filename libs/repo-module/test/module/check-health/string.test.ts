@@ -26,8 +26,6 @@ const tree: PrereqTreeTestProps = {
   json: [],
 }
 
-const codesInJson = new Set<string>()
-
 const notInDb = new Set<string>()
 let modules: Module[]
 
