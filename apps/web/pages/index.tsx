@@ -1,4 +1,4 @@
-import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
+import { FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
 import ModtreeFlow from '@/flow'
 import { HomeLoader } from '@/components/Loader'
@@ -36,7 +36,6 @@ export default function Modtree() {
           <RootSearchBox />
           <FullScreenOverlay>
             <FloatingUserButton />
-            <FloatingActionButton />
           </FullScreenOverlay>
           <UserProfileModal />
           <DebugModal />

@@ -9,7 +9,8 @@ export const CloseButton = (props: { close: () => void; bg?: string }) => {
         className={flatten(
           'h-full w-full rounded-md',
           'hover:bg-gray-200 active:bg-gray-300',
-          'flex flex-row centered'
+          'flex flex-row centered',
+          'focus:outline-none'
         )}
         onClick={props.close}
         id="module-modal-close-button"

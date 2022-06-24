@@ -30,6 +30,7 @@ export function SearchInput<T>(props: {
             'flex-1 bg-inherit border-none pl-3 focus:outline-none',
             inputClass
           )}
+          placeholder="Search for a module"
           onChange={(event) =>
             handleSearch({
               clear: props.clear,
