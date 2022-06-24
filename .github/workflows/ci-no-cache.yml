@@ -1,0 +1,33 @@
+name: ci (no nx cache)
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  PREFIX: TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner
+  POSTGRES_INIT: sudo systemctl start postgresql.service; echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql; echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql; echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql; sudo su postgres -c "psql --file=/tmp/setup.sql"
+
+jobs:
+  ci_no_cache: # don't change this name, else will also need to change branch rules
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
+
+      - name: Safely install yarn
+        run: yarn install --frozen-lockfile --silent
+        continue-on-error: true
+
+      - name: Start postgresql
+        run: ${{ env.POSTGRES_INIT }}
+
+      - name: 📦 Build entire workspace
+        run: yarn build --skip-nx-cache
+
+      - name: 📦 Run backend tests
+        run: ${{ env.PREFIX }} yarn test --skip-nx-cache

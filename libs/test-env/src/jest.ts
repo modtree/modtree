@@ -1,4 +1,4 @@
-import { arrayDeepEqual, arrayOfType } from './matchers'
+import { arrayDeepEqual, arrayOfType, validJsonPrereqTree } from './matchers'
 import './matcher-types'
 
 const extendMap: jest.ExpectExtendMap = {
@@ -82,6 +82,50 @@ const extendMap: jest.ExpectExtendMap = {
       Object.keys(actual),
       Object.keys(expected)
     )
+    return { pass, message: () => (pass ? passMessage : failMessage) }
+  },
+
+  /**
+   * check if is an array of the provided argument
+   */
+  toBeInArray(received, expected) {
+    const { printReceived, printExpected, matcherHint } = this.utils
+    const passMessage =
+      matcherHint('.not.toBeInArray') +
+      '\n\n' +
+      'Expected value to not be an element of:\n' +
+      `  ${printExpected(expected)}\n` +
+      'Received:\n' +
+      `  ${printReceived(received)}`
+    const failMessage =
+      matcherHint('.toBeInArray') +
+      '\n\n' +
+      'Expected input to be an element of:\n' +
+      `  ${printExpected(expected)}\n` +
+      'Received:\n' +
+      `  ${printReceived(received)}`
+    const pass = expected.includes(received)
+    return { pass, message: () => (pass ? passMessage : failMessage) }
+  },
+
+  /**
+   * check if is an array of the provided argument
+   */
+  toBePrereqTree(received) {
+    const { printReceived, matcherHint } = this.utils
+    const passMessage =
+      matcherHint('.not.toBeInArray') +
+      '\n\n' +
+      'Expected value to not be a pre-requisite tree:\n' +
+      'Received:\n' +
+      `  ${printReceived(received)}`
+    const failMessage =
+      matcherHint('.toBeInArray') +
+      '\n\n' +
+      'Expected value to be a pre-requisite tree:\n' +
+      'Received:\n' +
+      `  ${printReceived(received)}`
+    const pass = validJsonPrereqTree(received)
     return { pass, message: () => (pass ? passMessage : failMessage) }
   },
 }

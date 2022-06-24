@@ -35,13 +35,12 @@ yarn-error.log
 testem.log
 /typings
 **/.next
-.env.local
 
 # System Files
 .DS_Store
 Thumbs.db
 
-# env files
+# modtree
 .env
 .env.local
 admin.config.json

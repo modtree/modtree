@@ -1,22 +1,18 @@
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { setup, teardown } from '@modtree/test-env'
+import { setup, teardown, Repo } from '@modtree/test-env'
 import { Api } from '../src'
 import { User } from '@modtree/entity'
-import { IUserRepository } from '@modtree/types'
-import { UserRepository } from '@modtree/repo-user'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 let api: Api
 let initializedUser: User
-let userRepo: IUserRepository
 let retrievedUser: User
 
 beforeAll(() =>
   setup(db).then(() => {
     api = new Api(db)
-    userRepo = new UserRepository(db)
   })
 )
 afterAll(() => teardown(db))
@@ -33,7 +29,7 @@ it('returns a user', async () => {
 })
 
 it('user id exists in database', async () => {
-  await userRepo.findOneByAuthZeroId(initializedUser.authZeroId).then((u) => {
+  await Repo.User!.findOneByAuthZeroId(initializedUser.authZeroId).then((u) => {
     expect(u.id).toStrictEqual(initializedUser.id)
     retrievedUser = u
   })

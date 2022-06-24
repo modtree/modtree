@@ -1,11 +1,8 @@
 import { Graph } from '@modtree/entity'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { UserRepository } from '@modtree/repo-user'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { GraphFrontendProps } from '@modtree/types'
 import { oneUp } from '@modtree/utils'
-import { GraphRepository } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -13,17 +10,12 @@ const t: Partial<{ graph: Graph; moduleCodes: string[] }> = {}
 
 beforeAll(() =>
   setup(db)
-    .then(() => {
-      Object.assign(Repo, {
-        User: new UserRepository(db),
-        Degree: new DegreeRepository(db),
-        Graph: new GraphRepository(db),
-      })
-      return Promise.all([
+    .then(() =>
+      Promise.all([
         Repo.User!.initialize(init.user1),
         Repo.Degree!.initialize(init.degree1),
       ])
-    })
+    )
     .then(([user, degree]) =>
       Repo.Graph!.initialize({
         userId: user.id,

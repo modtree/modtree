@@ -40,29 +40,3 @@ export function useFindOneByKey<
       relations,
     })
 }
-
-/**
- * Returns an Array Entities with all relations loaded
- *
- * @param {Repository<any>} repository
- * @param {T} key
- * @returns {FindByKey<any[]>}
- */
-export function useFindByKey<Entity, T extends keyof Entity>(
-  repository: Repository<Entity>,
-  key: T
-): FindByKey<Entity[]>
-export function useFindByKey<
-  Entity extends ObjectLiteral,
-  T extends keyof Entity
->(repository: Repository<any>, key: T): FindByKey<any[]> {
-  const relations: Record<string, boolean> = {}
-  repository.metadata.relations.forEach((r) => {
-    relations[r.propertyName] = true
-  })
-  return (value: string) =>
-    repository.find({
-      where: { [key]: value },
-      relations,
-    })
-}

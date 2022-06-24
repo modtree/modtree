@@ -42,36 +42,20 @@ jobs:
 
       - name: Start postgresql
         run: ${{ env.POSTGRES_INIT }}
+        continue-on-error: true
 
       - name: 📦 Build entire workspace
         id: yarn_build
         run: yarn build
+        continue-on-error: true
 
       - name: 📦 Run backend tests
         id: yarn_test
-        run: ${{ env.PREFIX }} yarn test
-
-  ci_no_cache: # don't change this name, else will also need to change branch rules
-    if: always()
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: bahmutov/npm-install@v1.6.0
+        run: ${{ env.PREFIX }} yarn test --coverage
         continue-on-error: true
 
-      - name: Safely install yarn
-        run: yarn install --frozen-lockfile --silent
-        continue-on-error: true
-
-      - name: Start postgresql
-        run: ${{ env.POSTGRES_INIT }}
-
-      - name: 📦 Build entire workspace
-        run: yarn build --skip-nx-cache
-
-      - name: 📦 Run backend tests
-        run: ${{ env.PREFIX }} yarn test --skip-nx-cache
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
 
   telegram:
     needs: [pre_job, ci]
