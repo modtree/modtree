@@ -3,9 +3,11 @@ import { addModuleNode } from '@/store/base'
 import { hideModuleModal } from '@/store/modal'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
+import { useUser } from '@/utils/auth0'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
+  const { user } = useUser()
   const dispatch = useAppDispatch()
   function handleAddButton() {
     dispatch(
@@ -37,9 +39,11 @@ export function ModuleDetails() {
       </p>
       <hr />
       <p className="mb-6">{module.description}</p>
-      <div className="flex flex-row-reverse">
-        <Button onClick={handleAddButton}>Add to graph</Button>
-      </div>
+      {user && (
+        <div className="flex flex-row-reverse">
+          <Button onClick={handleAddButton}>Add to graph</Button>
+        </div>
+      )}
     </div>
   )
 }
