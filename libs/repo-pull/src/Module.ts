@@ -4,6 +4,7 @@ import { Module } from '@modtree/entity'
 import { IModuleCondensedRepository, NUSMods } from '@modtree/types'
 import { nusmodsApi, flatten, client, log } from '@modtree/utils'
 import { ModuleCondensedRepository } from '@modtree/repo-module'
+import { useDeleteAll } from '@modtree/repo-base'
 
 export class ModuleRepository extends Repository<Module> {
   private moduleCondensedRepo: IModuleCondensedRepository
@@ -12,6 +13,7 @@ export class ModuleRepository extends Repository<Module> {
     super(Module, db.manager)
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
   }
+  deleteAll = useDeleteAll(this)
 
   /**
    * get all module codes from the module table

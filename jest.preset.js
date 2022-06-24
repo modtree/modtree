@@ -5,4 +5,5 @@ module.exports = {
   ...nxPreset,
   setupFilesAfterEnv: [join(__dirname, 'libs/test-env/src/jest.ts')],
   coverageReporters: ['cobertura', 'text', 'lcov'],
+  coveragePathIgnorePatterns: ['/repo-pull/'],
 }

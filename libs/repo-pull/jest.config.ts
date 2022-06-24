@@ -12,6 +12,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/repo-pull',
-  testPathIgnorePatterns: ['./test/pull/*'],
   testTimeout: 15000,
 }
