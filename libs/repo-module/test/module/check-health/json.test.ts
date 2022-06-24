@@ -12,9 +12,9 @@ const notInDb = new Set<string>()
 
 beforeAll(() =>
   setup(db)
-    .then(() => Repo.Module!.findAndCount())
+    .then(() => Repo.Module!.find())
     .then((res) => {
-      modules = res[0].filter((m) => typeof m.prereqTree !== 'string')
+      modules = res.filter((m) => typeof m.prereqTree !== 'string')
     })
 )
 afterAll(() => teardown(db))

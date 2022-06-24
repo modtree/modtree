@@ -5,16 +5,8 @@ import { Module } from '@modtree/entity'
 import { validModuleCode } from '@modtree/utils'
 import { NUSMods } from '@modtree/types'
 
-type Category = 'string' | 'json' | 'modules' | 'condensed'
-
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-const count: Record<Category, number> = {
-  modules: 0,
-  condensed: 0,
-  string: 0,
-  json: 0,
-}
 
 type PrereqTreeTestProps = {
   string: string[]
@@ -31,10 +23,9 @@ let modules: Module[]
 
 beforeAll(() =>
   setup(db)
-    .then(() => Repo.Module!.findAndCount())
+    .then(() => Repo.Module!.find())
     .then((res) => {
-      count.modules = res[1]
-      modules = res[0]
+      modules = res
     })
 )
 afterAll(() => teardown(db))
