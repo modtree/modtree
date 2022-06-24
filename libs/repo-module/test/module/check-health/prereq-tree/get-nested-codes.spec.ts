@@ -49,4 +49,14 @@ describe('invalid', () => {
     expect(res.valid).toBe(false)
     expect(res.codes).toEqual([])
   })
+  test('undefined', () => {
+    const res = testFn(undefined)
+    expect(res.valid).toBe(false)
+    expect(res.codes).toEqual([])
+  })
+  test('null', () => {
+    const res = testFn(null)
+    expect(res.valid).toBe(false)
+    expect(res.codes).toEqual([])
+  })
 })

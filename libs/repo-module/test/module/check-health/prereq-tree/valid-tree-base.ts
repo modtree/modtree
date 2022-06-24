@@ -18,6 +18,12 @@ export function validTreeBase(tree: Tree): boolean {
     return true
   }
   /**
+   * reject empties
+   */
+  if (tree === undefined || tree == null) {
+    return false
+  }
+  /**
    * tree must have at least one key
    */
   if (Object.keys(tree).length === 0) {
