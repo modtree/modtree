@@ -16,10 +16,8 @@ type Tree = NUSMods.PrereqTree
  * @returns {Result}
  */
 export function getNestedCodes(tree: Tree): Result {
+  if (tree === '') return { valid: true, codes: [] }
   let valid = validTreeBase(tree)
-  if (!valid) {
-    return { valid, codes: [] }
-  }
   const codes = new Set<string>()
   function recurse(tree: Tree) {
     if (!validTreeBase(tree) && !Array.isArray(tree)) {
