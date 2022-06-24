@@ -25,11 +25,28 @@ describe('valid', () => {
 
   test('big json tree', () => {
     const res = testFn({
-      and: ['CS1010', 'CS1231'],
-      or: ['MA1100'],
+      and: [
+        {
+          or: ['MA2001', 'MA2002'],
+        },
+        {
+          or: ['CS2030', 'CS2040'],
+        },
+        'CS1231',
+      ],
+      or: ['MA1100', { and: ['CM1102', 'PC1431'] }],
     })
     expect(res.valid).toBe(true)
-    expect(res.codes).toIncludeSameMembers(['CS1010', 'CS1231', 'MA1100'])
+    expect(res.codes).toIncludeSameMembers([
+      'MA2001',
+      'MA2002',
+      'CS1231',
+      'MA1100',
+      'CS2030',
+      'CS2040',
+      'CM1102',
+      'PC1431',
+    ])
   })
 })
 

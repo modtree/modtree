@@ -22,6 +22,10 @@ export function getNestedCodes(tree: Tree): Result {
   }
   const codes = new Set<string>()
   function recurse(tree: Tree) {
+    if (!validTreeBase(tree) && !Array.isArray(tree)) {
+      valid = false
+      return
+    }
     if (typeof tree === 'string') {
       codes.add(tree)
       return
@@ -40,5 +44,5 @@ export function getNestedCodes(tree: Tree): Result {
     })
   }
   recurse(tree)
-  return { valid, codes: Array.from(codes) }
+  return valid ? { valid, codes: Array.from(codes) } : { valid, codes: [] }
 }
