@@ -6,6 +6,7 @@ declare global {
       toIncludeSameMembers: <T>(expected: T[]) => R
       toBeArrayOf: <T>(expected: T) => R
       toHaveSameKeysAs: <T>(expected: T) => R
+      toBeInArray: <T>(expected: T[]) => R
     }
   }
 }

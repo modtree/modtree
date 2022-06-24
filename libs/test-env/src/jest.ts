@@ -84,6 +84,28 @@ const extendMap: jest.ExpectExtendMap = {
     )
     return { pass, message: () => (pass ? passMessage : failMessage) }
   },
+  /**
+   * check if is an array of the provided argument
+   */
+  toBeInArray(received, expected) {
+    const { printReceived, printExpected, matcherHint } = this.utils
+    const passMessage =
+      matcherHint('.not.toBeInArray') +
+      '\n\n' +
+      'Expected value to not be an element of:\n' +
+      `  ${printExpected(expected)}\n` +
+      'Received:\n' +
+      `  ${printReceived(received)}`
+    const failMessage =
+      matcherHint('.toBeInArray') +
+      '\n\n' +
+      'Expected input to be an element of:\n' +
+      `  ${printExpected(expected)}\n` +
+      'Received:\n' +
+      `  ${printReceived(received)}`
+    const pass = expected.includes(received)
+    return { pass, message: () => (pass ? passMessage : failMessage) }
+  },
 }
 
 if (expect === undefined) {
