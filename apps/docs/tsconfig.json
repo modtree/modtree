@@ -6,7 +6,8 @@
       "@/styles/*": ["styles/*"],
       "@/components/*": ["components/*"],
       "@/data/*": ["data/*"],
-      "@modtree/test-env/jest": ["../../libs/test-env/src/matcher-types.ts"]
+      "@modtree/test-env/jest": ["../../libs/test-env/src/matcher-types.ts"],
+      "@modtree/types": ["../../libs/types/src"]
     },
     "allowJs": true,
     "strict": false,
