@@ -10,11 +10,11 @@ export const flatten = {
    * @returns {string} module code
    */
   module(module: Module | ModuleCondensed): string {
-    try {
-      return module.moduleCode
-    } catch (err) {
-      throw new Error(`Failed flattening module: ${module}`)
+    const keys = Object.keys(module)
+    if (!keys.includes('moduleCode')) {
+      throw new Error("Can't flatten a module without a module code.")
     }
+    return module.moduleCode
   },
 
   /**
