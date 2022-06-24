@@ -1,4 +1,4 @@
-import { arrayDeepEqual, arrayOfType, validPrereqTree } from './matchers'
+import { arrayDeepEqual, arrayOfType, validJsonPrereqTree } from './matchers'
 import './matcher-types'
 
 const extendMap: jest.ExpectExtendMap = {
@@ -125,7 +125,7 @@ const extendMap: jest.ExpectExtendMap = {
       'Expected value to be a pre-requisite tree:\n' +
       'Received:\n' +
       `  ${printReceived(received)}`
-    const pass = validPrereqTree(received, this.equals)
+    const pass = validJsonPrereqTree(received)
     return { pass, message: () => (pass ? passMessage : failMessage) }
   },
 }
