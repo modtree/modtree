@@ -12,6 +12,6 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/repo-module',
-  testPathIgnorePatterns: ['./test/pull/*'],
+  testPathIgnorePatterns: ['json-dump'],
   testTimeout: 15000,
 }

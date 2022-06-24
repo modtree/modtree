@@ -6,8 +6,10 @@ import { getPrefix } from './utils'
 import fs from 'fs'
 import { join } from 'path'
 
+const rootDir = join(__dirname, '../../..')
+
 function rawJson(filename: string) {
-  return JSON.parse(fs.readFileSync(join(process.cwd(), filename)).toString())
+  return JSON.parse(fs.readFileSync(join(rootDir, filename)).toString())
 }
 
 function readJson(target: DataSourceOptions) {
@@ -53,7 +55,7 @@ function readEnv(target: DataSourceOptions) {
 function getConfig(): DataSourceOptions {
   const base: DataSourceOptions = {
     type: 'postgres',
-    rootDir: process.cwd(),
+    rootDir,
     port: 5432,
     entities: [ModuleCondensed, Module, User, Degree, Graph],
     migrations: [],
