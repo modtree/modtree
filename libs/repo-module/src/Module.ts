@@ -42,7 +42,7 @@ export class ModuleRepository
    * @returns {Promise<Module>}
    */
   async initialize(props: InitProps['Module']): Promise<Module> {
-    return this.create(props)
+    return this.save(this.create(props))
   }
 
   /**
