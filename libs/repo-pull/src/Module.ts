@@ -40,11 +40,7 @@ export class ModuleRepository extends Repository<Module> {
   /**
    * fetches exactly one module with full details
    */
-  async pull(): Promise<Module[]> {
-    const config = {
-      freq: 0.1,
-      buffer: 100,
-    }
+  async pull(limit?: number): Promise<Module[]> {
     let buffer = 0
     const moduleCodes = new Set(await this.getCodes())
     const moduleCondesedCodes = await this.moduleCondensedRepo.getCodes()
@@ -54,7 +50,13 @@ export class ModuleRepository extends Repository<Module> {
     const writeQueue: Promise<Module>[] = []
     const fetchQueue: Promise<void>[] = []
 
-    for (let i = 0; i < diff.length; i++) {
+    const config = {
+      freq: 0.1,
+      buffer: 100,
+      limit: limit || diff.length,
+    }
+
+    for (let i = 0; i < diff.length && i < config.limit; i++) {
       const moduleCode = diff[i]
       while (buffer > config.buffer) {
         await new Promise((resolve) => setTimeout(resolve, config.freq))
