@@ -81,9 +81,7 @@ export interface IDegreeRepository extends EDegree {
 }
 
 export interface IModuleRepository extends EModule {
-  fetchOne(moduleCode: string): Promise<IModule>
   getCodes(): Promise<string[]>
-  pull(): Promise<IModule[]>
   findByFaculty(faculty: string): Promise<IModule[]>
   findByCodes(moduleCodes: string[]): Promise<IModule[]>
   canTakeModule(
@@ -111,8 +109,6 @@ export interface IModuleRepository extends EModule {
 }
 
 export interface IModuleCondensedRepository extends EModuleCondensed {
-  pull(): Promise<IModuleCondensed[]>
-  fetch(): Promise<IModuleCondensed[]>
   getCodes(): Promise<string[]>
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
 }
