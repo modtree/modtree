@@ -35,7 +35,12 @@ export class ModuleCondensedRepository
   async initialize(
     props: InitProps['ModuleCondensed']
   ): Promise<ModuleCondensed> {
-    return this.create(props)
+    return this.save(
+      this.create({
+        ...props,
+        moduleLevel: getModuleLevel(props.moduleCode),
+      })
+    )
   }
 
   /**
