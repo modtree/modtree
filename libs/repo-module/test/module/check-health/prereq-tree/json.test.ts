@@ -2,7 +2,7 @@ import { setup, teardown, Repo } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { Module } from '@modtree/entity'
-import { NUSMods } from '@modtree/types'
+import { getNestedCodes } from './get-nested-codes'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -33,24 +33,11 @@ it('contains and/or key', () => {
   })
 })
 
-function getNestedCodes(tree: NUSMods.PrereqTree, codes: Set<string>) {
-  function recurse(tree: NUSMods.PrereqTree) {
-    if (typeof tree === 'string') {
-      codes.add(tree)
-      return
-    }
-    if (tree.or) {
-      tree.or.forEach(recurse)
-    }
-    if (tree.and) {
-      tree.and.forEach(recurse)
-    }
-    if (Array.isArray(tree)) {
-      tree.forEach((code) => codes.add(code))
-    }
-  }
-  recurse(tree)
-}
+it('is a json prereqTree', () => {
+  modules.forEach((m) => {
+    expect(m.prereqTree).toBePrereqTree()
+  })
+})
 
 describe('nested codes', () => {
   const codes = new Set<string>()
@@ -70,11 +57,5 @@ describe('nested codes', () => {
       }
     })
     expect(notInDb.size).toBeLessThan(800)
-  })
-})
-
-it('is a json prereqTree', () => {
-  modules.forEach((m) => {
-    expect(m.prereqTree).toBePrereqTree()
   })
 })

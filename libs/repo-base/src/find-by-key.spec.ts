@@ -23,9 +23,3 @@ test('retrieves correct title', async () => {
     expect(module.title).toEqual(title)
   })
 })
-
-test('retrieves correct title', async () => {
-  await Repo.Module!.findOneById(id).then((module) => {
-    expect(module.title).toEqual(title)
-  })
-})

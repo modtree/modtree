@@ -42,7 +42,6 @@ export function validJsonPrereqTree(received: NUSMods.PrereqTree) {
       if (!Array.isArray(nestedList)) {
         flag = false
       }
-
       /**
        * recurse down each entry of the nested list
        */
