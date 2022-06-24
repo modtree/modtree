@@ -7,6 +7,7 @@ declare global {
       toBeArrayOf: <T>(expected: T) => R
       toHaveSameKeysAs: <T>(expected: T) => R
       toBeInArray: <T>(expected: T[]) => R
+      toBePrereqTree: () => R
     }
   }
 }
