@@ -8,6 +8,11 @@ import '@modtree/test-env/jest'
 const testFn = (tree: any) => validTreeBase(tree)
 
 describe('valid', () => {
+  test('empty string', () => {
+    const res = testFn('')
+    expect(res).toBe(true)
+  })
+
   test('string tree', () => {
     const res = testFn('CS1010S')
     expect(res).toBe(true)

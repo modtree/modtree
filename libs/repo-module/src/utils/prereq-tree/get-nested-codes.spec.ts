@@ -8,6 +8,12 @@ import '@modtree/test-env/jest'
 const testFn = (tree: any) => getNestedCodes(tree)
 
 describe('valid', () => {
+  test('empty string', () => {
+    const res = testFn('')
+    expect(res.valid).toBe(true)
+    expect(res.codes).toIncludeSameMembers([])
+  })
+
   test('string tree', () => {
     const res = testFn('CS1010S')
     expect(res.valid).toBe(true)
