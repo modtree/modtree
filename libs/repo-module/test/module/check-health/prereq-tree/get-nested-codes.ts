@@ -1,21 +1,27 @@
 import { NUSMods } from '@modtree/types'
+import { validTreeBase } from './valid-tree-base'
 
 type Result = {
   valid: boolean
   codes: string[]
 }
 
+type Tree = NUSMods.PrereqTree
+
 /**
  * gets an array of all module codes in a tree
  * and also checks if it's valid
  *
- * @param {NUSMods.PrereqTree} tree
+ * @param {Tree} tree
  * @returns {Result}
  */
-export function getNestedCodes(tree: NUSMods.PrereqTree): Result {
-  let valid = !Array.isArray(tree)
+export function getNestedCodes(tree: Tree): Result {
+  let valid = validTreeBase(tree)
+  if (!valid) {
+    return { valid, codes: [] }
+  }
   const codes = new Set<string>()
-  function recurse(tree: NUSMods.PrereqTree) {
+  function recurse(tree: Tree) {
     if (typeof tree === 'string') {
       codes.add(tree)
       return
@@ -34,8 +40,5 @@ export function getNestedCodes(tree: NUSMods.PrereqTree): Result {
     })
   }
   recurse(tree)
-  return {
-    valid,
-    codes: Array.from(codes),
-  }
+  return { valid, codes: Array.from(codes) }
 }
