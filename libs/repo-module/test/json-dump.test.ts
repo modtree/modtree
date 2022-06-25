@@ -41,5 +41,9 @@ describe('modules condensed', () => {
       join(__dirname, 'modules-condensed.json'),
       JSON.stringify(modules)
     )
+    fs.writeFileSync(
+      join(__dirname, 'module-codes.json'),
+      JSON.stringify(modules.map((m) => m.moduleCode))
+    )
   })
 })
