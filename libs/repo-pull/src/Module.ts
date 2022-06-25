@@ -28,6 +28,7 @@ export class ModuleRepository extends Repository<Module> {
    * fetches exactly one module with full details
    *
    * @param {string} moduleCode
+   * @returns {Promise<Module>}
    */
   async fetchOne(moduleCode: string): Promise<Module> {
     return axios.get(nusmodsApi(`modules/${moduleCode}`)).then((res) => {
@@ -38,7 +39,13 @@ export class ModuleRepository extends Repository<Module> {
   }
 
   /**
-   * fetches exactly one module with full details
+   * Fetches modules with full details. These modules are found in
+   * ModuleCondensed, but not yet in Module.
+   *
+   * If limit is specified, only fetches exactly that number of modules.
+   *
+   * @param {number} limit
+   * @returns {Promise<Module[]>}
    */
   async pull(limit?: number): Promise<Module[]> {
     let buffer = 0
