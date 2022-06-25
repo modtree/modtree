@@ -1,10 +1,6 @@
 import { Module } from '@modtree/entity'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown, Repo } from '@modtree/test-env'
-
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+import { db } from '@modtree/typeorm-config'
 
 beforeAll(() => setup(db))
 afterAll(() => teardown(db))

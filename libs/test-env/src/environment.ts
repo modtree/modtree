@@ -19,7 +19,8 @@ import { UserRepository } from '@modtree/repo-user'
 import './matcher-types'
 
 type SetupOptions = {
-  initialize: boolean
+  initialize?: boolean
+  restore?: boolean
 }
 
 /**
@@ -36,7 +37,7 @@ const Repo: Repositories = {}
  */
 export async function setup(
   db: DataSource,
-  opts?: SetupOptions
+  opts: SetupOptions = { initialize: true, restore: true }
 ): Promise<void> {
   const startConnection = () =>
     db.initialize().then((db) => {
@@ -50,19 +51,21 @@ export async function setup(
       Repo.ModuleCondensed = new ModuleCondensedRepository(db)
     })
   if (db.options.database === undefined) return
-  await sql
-    .restoreFromFile(db.options.database.toString(), config.restoreSource)
-    .then(async () => {
-      // by default, initialize a new connection
-      if (!opts) {
-        return startConnection()
-      }
-      // else, read the config
-      if (opts.initialize) {
-        return startConnection()
-      }
-      return
-    })
+  if (opts.restore) {
+    await sql.restoreFromFile(
+      db.options.database.toString(),
+      config.restoreSource
+    )
+  }
+  // by default, initialize a new connection
+  if (!opts) {
+    return startConnection()
+  }
+  // else, read the config
+  if (opts.initialize) {
+    return startConnection()
+  }
+  return
 }
 
 /**
