@@ -26,7 +26,7 @@ afterAll(() => teardown(db))
 
 async function testRequest() {
   await request(app)
-    .post('/users/924a4c06-4ccb-4208-8791-ecae4099a763/degrees')
+    .patch('/users/924a4c06-4ccb-4208-8791-ecae4099a763/degrees')
     .send({ degreeIds: ['a', 'b'] })
 }
 

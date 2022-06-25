@@ -54,7 +54,7 @@ export const routes: Route[] = [
     ],
   },
   {
-    method: 'post',
+    method: 'patch',
     route: '/users/:userId/degrees',
     fn: UserApi.insertDegrees,
     validators: [body('degreeIds').isArray().notEmpty()],
@@ -125,7 +125,7 @@ export const routes: Route[] = [
     validators: [],
   },
   {
-    method: 'post',
+    method: 'patch',
     route: '/graphs/:graphId/toggle/:moduleCode',
     fn: GraphApi.toggle,
     validators: [
@@ -135,7 +135,7 @@ export const routes: Route[] = [
     ],
   },
   {
-    method: 'post',
+    method: 'patch',
     route: '/graphs/:graphId/flow',
     fn: GraphApi.updateFrontendProps,
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],

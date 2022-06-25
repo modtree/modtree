@@ -40,11 +40,11 @@ const fulfilled = {
 }
 
 export const flow: MethodProps = {
-  method: 'Update frontend props',
+  method: 'Update flow props',
   description:
-    'This endpoint updates frontend-related props. This includes moving a node.',
-  endpoint: '/graphs/{graphId}/update-frontend',
-  requestType: 'POST',
+    'This endpoint updates React Flow props. This includes moving a node.',
+  endpoint: '/graphs/{graphId}/flow',
+  requestType: 'PATCH',
   parameters: {
     pathParams: [
       {

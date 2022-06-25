@@ -1,6 +1,6 @@
 type CustomError = 'Not found' | 'Database Error'
 
-type RequestType = 'POST' | 'GET' | 'DELETE'
+type RequestType = 'POST' | 'GET' | 'DELETE' | 'PATCH'
 
 type Data = string | number | string[] | number[] | Record<string, any>
 
