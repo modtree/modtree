@@ -28,6 +28,6 @@ test('pull 50 modules from NUSMods', async () => {
   const limit = 50
   await moduleRepo.pull(limit).then((res: Module[]) => {
     expect(res).toBeArrayOf(Module)
-    expect(res.length).toBeGreaterThanOrEqual(limit)
+    expect(res.length).toEqual(limit)
   })
 })
