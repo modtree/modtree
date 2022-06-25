@@ -28,6 +28,7 @@ export class ModuleRepository extends Repository<Module> {
    * fetches exactly one module with full details
    *
    * @param {string} moduleCode
+   * @returns {Promise<Module>}
    */
   async fetchOne(moduleCode: string): Promise<Module> {
     return axios.get(nusmodsApi(`modules/${moduleCode}`)).then((res) => {
@@ -38,13 +39,19 @@ export class ModuleRepository extends Repository<Module> {
   }
 
   /**
-   * fetches exactly one module with full details
+   * Fetches modules with full details. These modules are found in
+   * ModuleCondensed, but not yet in Module.
+   *
+   * If limit is specified, only fetches exactly that number of modules.
+   *
+   * @param {number} limit
+   * @returns {Promise<Module[]>}
    */
   async pull(limit?: number): Promise<Module[]> {
     let buffer = 0
     const moduleCodes = new Set(await this.getCodes())
-    const moduleCondesedCodes = await this.moduleCondensedRepo.getCodes()
-    const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
+    const moduleCondensedCodes = await this.moduleCondensedRepo.getCodes()
+    const diff = moduleCondensedCodes.filter((x) => !moduleCodes.has(x))
     log.yellow(`fetching ${diff.length} modules from NUSMods...`)
     const result: Module[] = []
     const writeQueue: Promise<Module>[] = []
