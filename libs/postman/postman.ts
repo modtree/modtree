@@ -49,6 +49,9 @@ export class postman {
   static post(endpoint: string, params?: any) {
     return verbosify(() => axios.post(postman.url + endpoint, params))
   }
+  static patch(endpoint: string, params?: any) {
+    return verbosify(() => axios.patch(postman.url + endpoint, params))
+  }
   static delete(endpoint: string, params?: any) {
     return verbosify(() => axios.delete(postman.url + endpoint, params))
   }
