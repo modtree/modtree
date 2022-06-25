@@ -54,7 +54,7 @@ export const routes: Route[] = [
     ],
   },
   {
-    method: 'post',
+    method: 'patch',
     route: '/users/:userId/degrees',
     fn: UserApi.insertDegrees,
     validators: [body('degreeIds').isArray().notEmpty()],

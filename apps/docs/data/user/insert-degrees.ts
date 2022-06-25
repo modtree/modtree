@@ -19,7 +19,7 @@ export const insertDegrees: MethodProps = {
   method: 'Insert degrees',
   description: 'Adds degrees to a user',
   endpoint: '/users/{userId}/degrees',
-  requestType: 'POST',
+  requestType: 'PATCH',
   parameters: {
     pathParams: [
       {
