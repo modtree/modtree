@@ -1,13 +1,8 @@
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { setup, teardown, Repo } from '@modtree/test-env'
+import { db } from '@modtree/typeorm-config'
+import { setup, Repo } from '@modtree/test-env'
 import { checkTree } from '.'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+beforeAll(() => setup(db, { restore: false }))
 
 it('true for mods without pre-reqs', async () => {
   await Repo.Module!.findByCodes(['CS1010', 'MA1301', 'EL1101E']).then(
