@@ -81,7 +81,6 @@ export const emptyInit: InitProps = {
   ModuleCondensed: {
     moduleCode: '',
     title: '',
-    semesters: [],
   },
 }
 

@@ -1,0 +1,36 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/repo-pull/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
+        "outputPath": "dist/libs/repo-pull",
+        "main": "libs/repo-pull/src/index.ts",
+        "tsConfig": "libs/repo-pull/tsconfig.lib.json",
+        "assets": ["libs/repo-pull/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/repo-pull/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/repo-pull"],
+      "options": {
+        "jestConfig": "libs/repo-pull/jest.config.ts",
+        "passWithNoTests": true,
+        "runInBand": true
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["!test-env"]
+}

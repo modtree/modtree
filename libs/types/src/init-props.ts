@@ -43,5 +43,8 @@ export type InitProps = {
   /**
    * props to initialize a ModuleCondensed
    */
-  ModuleCondensed: NMC
+  ModuleCondensed: {
+    moduleCode: string
+    title: string
+  }
 }

@@ -1,14 +1,12 @@
-import axios from 'axios'
 import { DataSource, Repository } from 'typeorm'
 import { ModuleCondensed } from '@modtree/entity'
 import {
   InitProps,
-  NUSMods,
   IModuleCondensedRepository,
   FindByKey,
   IModuleCondensed,
 } from '@modtree/types'
-import { nusmodsApi, getModuleLevel, flatten } from '@modtree/utils'
+import { getModuleLevel, flatten } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 import { In } from 'typeorm'
 
@@ -35,7 +33,12 @@ export class ModuleCondensedRepository
   async initialize(
     props: InitProps['ModuleCondensed']
   ): Promise<ModuleCondensed> {
-    return this.create(props)
+    return this.save(
+      this.create({
+        ...props,
+        moduleLevel: getModuleLevel(props.moduleCode),
+      })
+    )
   }
 
   /**
@@ -46,33 +49,6 @@ export class ModuleCondensedRepository
   async getCodes(): Promise<string[]> {
     const modules = await this.find()
     return modules.map(flatten.module)
-  }
-
-  /**
-   * fetches a list of condensed modules from NUSMods API
-   *
-   * @returns {Promise<ModuleCondensed[]>}
-   */
-  async fetch(): Promise<ModuleCondensed[]> {
-    const res = await axios.get(nusmodsApi('moduleList'))
-    const { data } = res
-    return data.map((n: NUSMods.ModuleCondensed) =>
-      this.create({ ...n, moduleLevel: getModuleLevel(n.moduleCode) })
-    )
-  }
-
-  /**
-   * pulls a list of condensed modules from NUSMods API
-   *
-   * @returns {Promise<ModuleCondensed[]>}
-   */
-  async pull(): Promise<ModuleCondensed[]> {
-    const existingModules = new Set(await this.getCodes())
-    const freshModules = await this.fetch()
-    const modulesToSave = freshModules.filter(
-      (x) => !existingModules.has(x.moduleCode)
-    )
-    return this.save(modulesToSave)
   }
 
   /**
