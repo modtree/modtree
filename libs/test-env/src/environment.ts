@@ -32,13 +32,15 @@ const Repo: Repositories = {}
  * pre-test setup
  *
  * @param {DataSource} db
- * @param {SetupOptions} opts
+ * @param {SetupOptions} _opts
  * @returns {Promise<void>}
  */
 export async function setup(
   db: DataSource,
-  opts: SetupOptions = { initialize: true, restore: true }
+  _opts?: SetupOptions
 ): Promise<void> {
+  const opts = { initialize: true, restore: true }
+  Object.assign(opts, _opts)
   const startConnection = () =>
     db.initialize().then((db) => {
       /**
@@ -73,13 +75,14 @@ export async function setup(
  *
  * @param {DataSource} db
  */
-export async function teardown(db: DataSource) {
+export async function teardown(db: DataSource, dropDatabase: boolean = false) {
   if (db.options.database === undefined) return
-  const drop = sql.dropDatabase(db.options.database.toString())
   if (db.isInitialized) {
-    return db.destroy().then(() => drop)
+    await db.destroy()
   }
-  return drop
+  if (dropDatabase) {
+    return sql.dropDatabase(db.options.database.toString())
+  }
 }
 
 type TestProps = {

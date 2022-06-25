@@ -1,17 +1,14 @@
-import { setup, teardown, Repo } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { setup, Repo, teardown } from '@modtree/test-env'
+import { flatten } from '@modtree/utils'
 import { Module } from '@modtree/entity'
 import { getNestedCodes } from '../../../src/utils'
-
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+import { db } from '@modtree/typeorm-config'
 
 let modules: Module[]
 const notInDb = new Set<string>()
 
 beforeAll(() =>
-  setup(db)
+  setup(db, { restore: false })
     .then(() => Repo.Module!.find())
     .then((res) => {
       modules = res.filter((m) => typeof m.prereqTree !== 'string')

@@ -17,7 +17,7 @@ m.faculty = ''
 m.moduleCode = 'TST1000MD'
 
 beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+afterAll(() => teardown(db, true))
 
 it('initial count', async () => {
   await Repo.Module!.count().then((c) => {
