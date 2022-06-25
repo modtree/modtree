@@ -26,7 +26,7 @@ afterAll(() => teardown(db))
 // 017fc011-486c-4ec6-a038-9a92ab85a8f3
 
 const testRequest = async () =>
-  request(app).post(
+  request(app).patch(
     '/graphs/017fc011-486c-4ec6-a038-9a92ab85a8f3/toggle/MA1100'
   )
 
@@ -43,7 +43,7 @@ test('`findOneById` is called with correct args', async () => {
 })
 
 const badRequest = async () =>
-  request(app).post(
+  request(app).patch(
     '/graphs/017fc011-486c-4ec6-a038-9a92ab85a8f3/toggle/NOT_VALID'
   )
 

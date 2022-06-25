@@ -125,7 +125,7 @@ export const routes: Route[] = [
     validators: [],
   },
   {
-    method: 'post',
+    method: 'patch',
     route: '/graphs/:graphId/toggle/:moduleCode',
     fn: GraphApi.toggle,
     validators: [
