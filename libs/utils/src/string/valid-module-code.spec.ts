@@ -1,5 +1,5 @@
 import { validModuleCode } from '.'
-import allCodes from './module-codes'
+import allCodes from './module-codes.json'
 
 test('returns true on all existing codes', async () => {
   allCodes.forEach((code) => {
