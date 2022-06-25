@@ -8,7 +8,11 @@ export { validModuleCode } from './valid-module-code'
  * @returns {number}
  */
 export function getModuleLevel(moduleCode: string): number {
-  return parseInt(moduleCode.replace(/\D*([0-9]*)\D*.*$/, '$1'), 10) || 0
+  try {
+    return parseInt(moduleCode.replace(/\D*([0-9]*)\D*.*$/, '$1'), 10)
+  } catch {
+    return 0
+  }
 }
 
 /**
@@ -33,10 +37,12 @@ export function oneUp(fullPath: string): string {
   const parent = basename(dirname(fullPath))
   const child = basename(fullPath)
   return join(parent, child)
-    .replace('[', '-')
-    .replace(']', '-')
-    .replace('(', '-')
-    .replace(')', '-')
-    .replace('/', '-')
-    .replace('.', '-')
+    .replace('.', '_')
+    .replace('[', '_')
+    .replace(']', '_')
+    .replace('(', '_')
+    .replace(')', '_')
+    .replace('/', '_')
+    .replace('.', '_')
+    .replace('-', '_')
 }
