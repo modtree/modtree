@@ -43,8 +43,8 @@ export class ModuleRepository extends Repository<Module> {
   async pull(limit?: number): Promise<Module[]> {
     let buffer = 0
     const moduleCodes = new Set(await this.getCodes())
-    const moduleCondesedCodes = await this.moduleCondensedRepo.getCodes()
-    const diff = moduleCondesedCodes.filter((x) => !moduleCodes.has(x))
+    const moduleCondensedCodes = await this.moduleCondensedRepo.getCodes()
+    const diff = moduleCondensedCodes.filter((x) => !moduleCodes.has(x))
     log.yellow(`fetching ${diff.length} modules from NUSMods...`)
     const result: Module[] = []
     const writeQueue: Promise<Module>[] = []
