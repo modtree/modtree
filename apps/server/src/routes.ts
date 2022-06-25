@@ -135,7 +135,7 @@ export const routes: Route[] = [
     ],
   },
   {
-    method: 'post',
+    method: 'patch',
     route: '/graphs/:graphId/flow',
     fn: GraphApi.updateFrontendProps,
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
