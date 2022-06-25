@@ -11,7 +11,7 @@
     "users:list": "yarn ts ./dist/users/list.js",
     "users:create": "yarn ts ./dist/users/create.js",
     "users:delete": "yarn ts ./dist/users/delete.js",
-    "users:insert-degrees": "yarn ts ./dist/users/insert-degree.js",
+    "users:insert-degrees": "yarn ts ./dist/users/insert-degrees.js",
     "degrees:create": "yarn ts ./dist/degrees/create.js",
     "degrees:list": "yarn ts ./dist/degrees/list.js",
     "degrees:delete": "yarn ts ./dist/degrees/delete.js",
