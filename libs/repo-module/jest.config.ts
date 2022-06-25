@@ -14,4 +14,6 @@ export default {
   coverageDirectory: '../../coverage/libs/repo-module',
   testPathIgnorePatterns: ['json-dump'],
   testTimeout: 15000,
+  maxWorkers: 3,
+  testSequencer: './test/sequencer.js',
 }

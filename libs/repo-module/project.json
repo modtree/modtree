@@ -26,8 +26,7 @@
       "outputs": ["coverage/libs/repo-module"],
       "options": {
         "jestConfig": "libs/repo-module/jest.config.ts",
-        "passWithNoTests": true,
-        "runInBand": true
+        "passWithNoTests": true
       }
     }
   },

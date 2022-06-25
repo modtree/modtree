@@ -1,9 +1,10 @@
 import { flatten } from '@modtree/utils'
-import { Repo, setup, t } from '@modtree/test-env'
+import { Repo, setup, t, teardown } from '@modtree/test-env'
 import { ModuleCondensed } from '@modtree/entity'
 import { db } from '@modtree/typeorm-config'
 
 beforeAll(() => setup(db, { restore: false }))
+afterAll(() => teardown(db))
 
 async function findByCodes(moduleCodes: string[]) {
   return Repo.ModuleCondensed!.findByCodes(moduleCodes)

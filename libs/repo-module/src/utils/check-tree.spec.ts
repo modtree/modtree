@@ -1,8 +1,9 @@
 import { db } from '@modtree/typeorm-config'
-import { setup, Repo } from '@modtree/test-env'
+import { setup, Repo, teardown } from '@modtree/test-env'
 import { checkTree } from '.'
 
 beforeAll(() => setup(db, { restore: false }))
+afterAll(() => teardown(db))
 
 it('true for mods without pre-reqs', async () => {
   await Repo.Module!.findByCodes(['CS1010', 'MA1301', 'EL1101E']).then(
