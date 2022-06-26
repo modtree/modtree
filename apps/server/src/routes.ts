@@ -27,26 +27,26 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/users/:userId',
+    route: '/user/:userId',
     fn: UserApi.get,
     validators: [],
   },
   {
     method: 'post',
-    route: '/users/:authZeroId/login',
+    route: '/user/:authZeroId/login',
     fn: UserApi.login,
     // validators: [body('email').isEmail()],
     validators: [],
   },
   {
     method: 'get',
-    route: '/users/:userId/get-full',
+    route: '/user/:userId/get-full',
     fn: UserApi.getFull,
     validators: [],
   },
   {
     method: 'post',
-    route: '/users',
+    route: '/user',
     fn: UserApi.create,
     validators: [
       body('authZeroId').isString().notEmpty(),
@@ -55,13 +55,13 @@ export const routes: Route[] = [
   },
   {
     method: 'patch',
-    route: '/users/:userId/degrees',
+    route: '/user/:userId/degrees',
     fn: UserApi.insertDegrees,
     validators: [body('degreeIds').isArray().notEmpty()],
   },
   {
     method: 'delete',
-    route: '/users/:userId',
+    route: '/user/:userId',
     fn: UserApi.delete,
     validators: [],
   },
