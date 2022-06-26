@@ -42,7 +42,7 @@ const fulfilled = {
 export const toggle: MethodProps = {
   method: 'Toggle a module',
   description: 'Toggle the visibility of a module in a graph',
-  endpoint: '/graphs/{graphId}/toggle/{moduleCode}',
+  endpoint: '/graph/{graphId}/toggle/{moduleCode}',
   requestType: 'PATCH',
   parameters: {
     pathParams: [

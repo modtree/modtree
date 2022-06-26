@@ -43,7 +43,7 @@ export const flow: MethodProps = {
   method: 'Update flow props',
   description:
     'This endpoint updates React Flow props. This includes moving a node.',
-  endpoint: '/graphs/{graphId}/flow',
+  endpoint: '/graph/{graphId}/flow',
   requestType: 'PATCH',
   parameters: {
     pathParams: [
