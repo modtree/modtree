@@ -77,13 +77,13 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/degrees/:degreeId',
+    route: '/degree/:degreeId',
     fn: DegreeApi.get,
     validators: [],
   },
   {
     method: 'post',
-    route: '/degrees',
+    route: '/degree',
     fn: DegreeApi.create,
     validators: [
       body('title').notEmpty(),
@@ -92,7 +92,7 @@ export const routes: Route[] = [
   },
   {
     method: 'delete',
-    route: '/degrees/:degreeId',
+    route: '/degree/:degreeId',
     fn: DegreeApi.delete,
     validators: [],
   },
