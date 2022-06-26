@@ -130,24 +130,21 @@ export class ModuleRepository
       )
     )
     return Promise.all([postReqsPromise, canTakePromise]).then(
-      ([postReqs, canTake]) => {
-        return (
+      ([postReqs, canTake]) =>
+        /**
+         * return all the post requisites
+         */
+        postReqs
           /**
-           * return all the post requisites
+           * that can be taken
            */
-          postReqs
-            /**
-             * that can be taken
-             */
-            .filter((_, index) => canTake[index])
-            /**
-             * and that has not been taken before
-             */
-            .filter(
-              (module) => !hasTakenModule(modulesDone, modulesDoing, module)
-            )
-        )
-      }
+          .filter((_, index) => canTake[index])
+          /**
+           * and that has not been taken before
+           */
+          .filter(
+            (module) => !hasTakenModule(modulesDone, modulesDoing, module)
+          )
     )
   }
 
