@@ -108,25 +108,25 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/graphs/:graphId',
+    route: '/graph/:graphId',
     fn: GraphApi.get,
     validators: [],
   },
   {
     method: 'delete',
-    route: '/graphs/:graphId',
+    route: '/graph/:graphId',
     fn: GraphApi.delete,
     validators: [],
   },
   {
     method: 'post',
-    route: '/graphs',
+    route: '/graph',
     fn: GraphApi.create,
     validators: [],
   },
   {
     method: 'patch',
-    route: '/graphs/:graphId/toggle/:moduleCode',
+    route: '/graph/:graphId/toggle/:moduleCode',
     fn: GraphApi.toggle,
     validators: [
       param('moduleCode')
@@ -136,7 +136,7 @@ export const routes: Route[] = [
   },
   {
     method: 'patch',
-    route: '/graphs/:graphId/flow',
+    route: '/graph/:graphId/flow',
     fn: GraphApi.updateFrontendProps,
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },
