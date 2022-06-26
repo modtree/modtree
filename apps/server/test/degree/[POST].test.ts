@@ -10,29 +10,34 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 let app: Express
 let api: Api
-let findOneById: jest.SpyInstance
+let initialize: jest.SpyInstance
 
 beforeAll(() =>
   setup(db).then(() => {
     api = new Api(db)
     app = getApp(api)
-    findOneById = jest.spyOn(api.degreeRepo, 'findOneById')
+    initialize = jest.spyOn(api.degreeRepo, 'initialize')
   })
 )
 beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
 const testRequest = async () =>
-  request(app).get('/degrees/58201858-5ce5-4ceb-8568-eecf55841b9f')
+  request(app)
+    .post('/degree')
+    .send({ moduleCodes: ['CS1010', 'MA1100'], title: 'Test Degree' })
 
-test('`findOneById` is called once', async () => {
+test('`initialize` is called once', async () => {
   await testRequest()
 
-  expect(findOneById).toBeCalledTimes(1)
+  expect(initialize).toBeCalledTimes(1)
 })
 
-test('`findOneById` is called with correct args', async () => {
+test('`initialize` is called with correct args', async () => {
   await testRequest()
 
-  expect(findOneById).toBeCalledWith('58201858-5ce5-4ceb-8568-eecf55841b9f')
+  expect(initialize).toBeCalledWith({
+    moduleCodes: ['CS1010', 'MA1100'],
+    title: 'Test Degree',
+  })
 })
