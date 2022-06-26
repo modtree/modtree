@@ -29,7 +29,7 @@ const fulfilled = {
 export const get: MethodProps = {
   method: 'Get a degree',
   description: 'Retrieve information about one degree',
-  endpoint: '/degrees/{degreeId}',
+  endpoint: '/degree/{degreeId}',
   requestType: 'GET',
   parameters: {
     pathParams: [

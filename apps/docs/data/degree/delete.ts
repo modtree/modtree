@@ -28,7 +28,7 @@ const fulfilled = {
 export const deleteMethod: MethodProps = {
   method: 'Deletes a degree',
   description: 'Deletes a degree. Also deletes associated graphs.',
-  endpoint: '/degrees/{degreeId}',
+  endpoint: '/degree/{degreeId}',
   requestType: 'DELETE',
   parameters: {
     pathParams: [
