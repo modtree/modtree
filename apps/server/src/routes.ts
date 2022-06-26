@@ -152,7 +152,7 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/modules/:moduleCode',
+    route: '/module/:moduleCode',
     fn: ModuleApi.get,
     validators: [],
   },

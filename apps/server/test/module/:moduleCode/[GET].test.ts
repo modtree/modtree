@@ -22,7 +22,7 @@ beforeAll(() =>
 beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
-const testRequest = () => request(app).get('/modules/MA1100')
+const testRequest = () => request(app).get('/module/MA1100')
 
 test('`findOneByOrFail` is called once', async () => {
   await testRequest()

@@ -41,7 +41,7 @@ const fulfilled = {
 export const get: MethodProps = {
   method: 'Get a module',
   description: 'Retrieve full information about one module',
-  endpoint: '/modules/{moduleCode}',
+  endpoint: '/module/{moduleCode}',
   requestType: 'GET',
   parameters: {
     pathParams: [
