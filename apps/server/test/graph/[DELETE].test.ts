@@ -23,7 +23,7 @@ beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
 async function testRequest() {
-  await request(app).delete('/graphs/924a4c06-4ccb-4208-8791-ecae4099a763')
+  await request(app).delete('/graph/924a4c06-4ccb-4208-8791-ecae4099a763')
 }
 
 test('`delete` is called once', async () => {

@@ -26,10 +26,9 @@ afterAll(() => teardown(db))
 // 017fc011-486c-4ec6-a038-9a92ab85a8f3
 
 const testRequest = async () =>
-  request(app).patch('/graphs/017fc011-486c-4ec6-a038-9a92ab85a8f3/flow').send({
-    flowNodes: [],
-    flowEdges: [],
-  })
+  request(app).patch(
+    '/graph/017fc011-486c-4ec6-a038-9a92ab85a8f3/toggle/MA1100'
+  )
 
 test('`findOneById` is called once', async () => {
   await testRequest()
@@ -44,12 +43,11 @@ test('`findOneById` is called with correct args', async () => {
 })
 
 const badRequest = async () =>
-  request(app).patch('/graphs/017fc011-486c-4ec6-a038-9a92ab85a8f3/flow').send({
-    flowNodes: 'NOT_VALID', // supposed to be array
-    flowEdges: 'NOT_VALID', // supposed to be array
-  })
+  request(app).patch(
+    '/graph/017fc011-486c-4ec6-a038-9a92ab85a8f3/toggle/NOT_VALID'
+  )
 
-test('status 400 on invalid body', async () => {
+test('status 400 on invalid module', async () => {
   const res = await badRequest()
 
   expect(res.statusCode).toBe(400)

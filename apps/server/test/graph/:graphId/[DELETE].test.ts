@@ -10,29 +10,29 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 let app: Express
 let api: Api
-let findOneById: jest.SpyInstance
+let _delete: jest.SpyInstance
 
 beforeAll(() =>
   setup(db).then(() => {
     api = new Api(db)
     app = getApp(api)
-    findOneById = jest.spyOn(api.graphRepo, 'findOneById')
+    _delete = jest.spyOn(api.graphRepo, 'delete')
   })
 )
 beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
 const testRequest = async () =>
-  request(app).get('/graphs/58201858-5ce5-4ceb-8568-eecf55841b9f')
+  request(app).delete('/graph/58201858-5ce5-4ceb-8568-eecf55841b9f')
 
-test('`findOneById` is called once', async () => {
+test('`_delete` is called once', async () => {
   await testRequest()
 
-  expect(findOneById).toBeCalledTimes(1)
+  expect(_delete).toBeCalledTimes(1)
 })
 
-test('`findOneById` is called with correct args', async () => {
+test('`_delete` is called with correct args', async () => {
   await testRequest()
 
-  expect(findOneById).toBeCalledWith('58201858-5ce5-4ceb-8568-eecf55841b9f')
+  expect(_delete).toBeCalledWith({ id: '58201858-5ce5-4ceb-8568-eecf55841b9f' })
 })

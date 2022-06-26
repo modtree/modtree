@@ -10,13 +10,13 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 let app: Express
 let api: Api
-let findOneById: jest.SpyInstance
+let initialize: jest.SpyInstance
 
 beforeAll(() =>
   setup(db).then(() => {
     api = new Api(db)
     app = getApp(api)
-    findOneById = jest.spyOn(api.graphRepo, 'findOneById')
+    initialize = jest.spyOn(api.graphRepo, 'initialize')
   })
 )
 beforeEach(() => jest.clearAllMocks())
@@ -26,29 +26,28 @@ afterAll(() => teardown(db))
 // 017fc011-486c-4ec6-a038-9a92ab85a8f3
 
 const testRequest = async () =>
-  request(app).patch(
-    '/graphs/017fc011-486c-4ec6-a038-9a92ab85a8f3/toggle/MA1100'
-  )
+  request(app).post('/graph').send({
+    userId: '017fc011-486c-4ec6-a038-9a92ab85a8f3',
+    degreeId: 'dd9f2725-7a08-45f8-bbbb-10bb7e002bb3',
+    modulesHiddenCodes: [],
+    modulesPlacedCodes: [],
+    pullAll: false,
+  })
 
-test('`findOneById` is called once', async () => {
+test('`initialize` is called once', async () => {
   await testRequest()
 
-  expect(findOneById).toBeCalledTimes(1)
+  expect(initialize).toBeCalledTimes(1)
 })
 
-test('`findOneById` is called with correct args', async () => {
+test('`initialize` is called with correct args', async () => {
   await testRequest()
 
-  expect(findOneById).toBeCalledWith('017fc011-486c-4ec6-a038-9a92ab85a8f3')
-})
-
-const badRequest = async () =>
-  request(app).patch(
-    '/graphs/017fc011-486c-4ec6-a038-9a92ab85a8f3/toggle/NOT_VALID'
-  )
-
-test('status 400 on invalid module', async () => {
-  const res = await badRequest()
-
-  expect(res.statusCode).toBe(400)
+  expect(initialize).toBeCalledWith({
+    userId: '017fc011-486c-4ec6-a038-9a92ab85a8f3',
+    degreeId: 'dd9f2725-7a08-45f8-bbbb-10bb7e002bb3',
+    modulesPlacedCodes: [],
+    modulesHiddenCodes: [],
+    pullAll: false,
+  })
 })
