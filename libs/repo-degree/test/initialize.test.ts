@@ -25,20 +25,20 @@ const props = {
 }
 
 it('initial count', async () => {
-  await Repo.Degree!.count().then((count) => {
+  await Repo.Degree.count().then((count) => {
     expect(count).toEqual(0)
   })
 })
 
 it('returns a degree', async () => {
-  await Repo.Degree!.initialize(props).then((res) => {
+  await Repo.Degree.initialize(props).then((res) => {
     expect(res).toBeInstanceOf(Degree)
     t.degree = res
   })
 })
 
 it('increments the count by 1', async () => {
-  await Repo.Degree!.count().then((count) => {
+  await Repo.Degree.count().then((count) => {
     expect(count).toEqual(1)
   })
 })

@@ -7,7 +7,7 @@ beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 async function findByCodes(moduleCodes: string[]) {
-  return Repo.ModuleCondensed!.findByCodes(moduleCodes)
+  return Repo.ModuleCondensed.findByCodes(moduleCodes)
 }
 
 it('returns an array of condensed modules', async () => {

@@ -6,7 +6,7 @@ beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 async function findByFaculty(faculty: string) {
-  return Repo.Module!.findByFaculty(faculty)
+  return Repo.Module.findByFaculty(faculty)
 }
 
 it('returns an array of modules', async () => {
@@ -17,7 +17,7 @@ it('returns an array of modules', async () => {
 })
 
 it('returns [] on invalid faculty', async () => {
-  await Repo.Module!.findByFaculty('NOT_VALID').then((res) => {
+  await Repo.Module.findByFaculty('NOT_VALID').then((res) => {
     expect(res).toStrictEqual([])
   })
 })

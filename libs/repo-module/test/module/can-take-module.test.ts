@@ -5,7 +5,7 @@ beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 async function canTakeModule(done: string[], doing: string[], query: string) {
-  return Repo.Module!.canTakeModule(done, doing, query)
+  return Repo.Module.canTakeModule(done, doing, query)
 }
 
 it('returns correct results', async () => {

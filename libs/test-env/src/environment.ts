@@ -26,7 +26,7 @@ type SetupOptions = {
 /**
  * initialize with default db
  */
-const Repo: Repositories = {}
+let Repo: Repositories
 
 /**
  * pre-test setup
@@ -46,11 +46,13 @@ export async function setup(
       /**
        * overwrite default db with the setup function's db parameter
        */
-      Repo.User = new UserRepository(db)
-      Repo.Degree = new DegreeRepository(db)
-      Repo.Graph = new GraphRepository(db)
-      Repo.Module = new ModuleRepository(db)
-      Repo.ModuleCondensed = new ModuleCondensedRepository(db)
+      Repo = {
+        User: new UserRepository(db),
+        Degree: new DegreeRepository(db),
+        Graph: new GraphRepository(db),
+        Module: new ModuleRepository(db),
+        ModuleCondensed: new ModuleCondensedRepository(db),
+      }
     })
   if (db.options.database === undefined) return
   if (opts.restore) {

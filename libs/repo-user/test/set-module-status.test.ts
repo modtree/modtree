@@ -10,7 +10,7 @@ const db = getSource(dbName)
 beforeAll(() =>
   setup(db)
     .then(() =>
-      Repo.User!.initialize({
+      Repo.User.initialize({
         ...init.user1,
         modulesDone: ['MA2001'],
         modulesDoing: ['MA2219'],
@@ -41,7 +41,7 @@ async function setModuleStatus(
   moduleCode: string,
   status: ModuleStatus
 ) {
-  return Repo.User!.setModuleStatus(user, moduleCode, status)
+  return Repo.User.setModuleStatus(user, moduleCode, status)
 }
 
 it('done -> doing', async () => {

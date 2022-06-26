@@ -11,12 +11,12 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User!.initialize(init.user1),
-        Repo.Degree!.initialize(init.degree1),
+        Repo.User.initialize(init.user1),
+        Repo.Degree.initialize(init.degree1),
       ])
     )
     .then(([user, degree]) =>
-      Repo.Graph!.initialize({
+      Repo.Graph.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: ['CM1501'],
@@ -31,11 +31,11 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 async function findGraph(id: string) {
-  return Repo.Graph!.findOneById(id)
+  return Repo.Graph.findOneById(id)
 }
 
 async function toggle(graph: Graph, moduleCode: string) {
-  return Repo.Graph!.toggleModule(graph, moduleCode)
+  return Repo.Graph.toggleModule(graph, moduleCode)
 }
 
 test('MA2001 is hidden', async () => {
@@ -107,7 +107,7 @@ test('EE1111A becomes placed', async () => {
 
 test('CS420BZT is not in database', async () => {
   await expect(() =>
-    Repo.ModuleCondensed!.findOneByOrFail({ moduleCode: 'CS420BZT' })
+    Repo.ModuleCondensed.findOneByOrFail({ moduleCode: 'CS420BZT' })
   ).rejects.toThrowError(
     new EntityNotFoundError(ModuleCondensed, {
       moduleCode: 'CS420BZT',
@@ -117,7 +117,7 @@ test('CS420BZT is not in database', async () => {
 
 test('error on toggling CS420BZT', async () => {
   await expect(() =>
-    Repo.Graph!.toggleModule(t.graph!, 'CS420BZT')
+    Repo.Graph.toggleModule(t.graph!, 'CS420BZT')
   ).rejects.toThrowError(
     new EntityNotFoundError(Module, {
       moduleCode: 'CS420BZT',

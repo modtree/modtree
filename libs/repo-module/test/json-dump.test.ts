@@ -13,8 +13,8 @@ let moduleCondensedRepo: IModuleCondensedRepository
 
 beforeAll(() =>
   setup(db).then(() => {
-    moduleRepo = Repo.Module!
-    moduleCondensedRepo = Repo.ModuleCondensed!
+    moduleRepo = Repo.Module
+    moduleCondensedRepo = Repo.ModuleCondensed
   })
 )
 afterAll(() => teardown(db))

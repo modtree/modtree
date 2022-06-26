@@ -8,7 +8,7 @@ const db = getSource(dbName)
 beforeAll(() =>
   setup(db)
     .then(() =>
-      Repo.User!.initialize({
+      Repo.User.initialize({
         ...init.user1,
         modulesDone: ['CS1010'],
       })
@@ -20,7 +20,7 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 async function getUnlockedModules(user: User, moduleCode: string) {
-  return Repo.User!.getUnlockedModules(user, moduleCode)
+  return Repo.User.getUnlockedModules(user, moduleCode)
 }
 
 it('returns an array of modules', async () => {
@@ -39,7 +39,7 @@ it('gets correct modules', async () => {
 
 it('does not modify User', async () => {
   // Also loads relations
-  await Repo.User!.findOneById(t.user!.id).then((res) => {
+  await Repo.User.findOneById(t.user!.id).then((res) => {
     const modulesDoneCodes = res.modulesDone.map(flatten.module)
     expect(modulesDoneCodes).toEqual(['CS1010'])
   })

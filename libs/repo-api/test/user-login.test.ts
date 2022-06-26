@@ -29,7 +29,7 @@ it('returns a user', async () => {
 })
 
 it('user id exists in database', async () => {
-  await Repo.User!.findOneByAuthZeroId(initializedUser.authZeroId).then((u) => {
+  await Repo.User.findOneByAuthZeroId(initializedUser.authZeroId).then((u) => {
     expect(u.id).toStrictEqual(initializedUser.id)
     retrievedUser = u
   })

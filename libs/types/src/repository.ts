@@ -114,9 +114,9 @@ export interface IModuleCondensedRepository extends EModuleCondensed {
 }
 
 export type Repositories = {
-  Module?: IModuleRepository
-  ModuleCondensed?: IModuleCondensedRepository
-  User?: IUserRepository
-  Degree?: IDegreeRepository
-  Graph?: IGraphRepository
+  Module: IModuleRepository
+  ModuleCondensed: IModuleCondensedRepository
+  User: IUserRepository
+  Degree: IDegreeRepository
+  Graph: IGraphRepository
 }

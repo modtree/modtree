@@ -39,31 +39,31 @@ const expectedRelations = {
 }
 
 test('User has correct relations', () => {
-  const received = getRelationNames(Repo.User!)
+  const received = getRelationNames(Repo.User)
   const expected = expectedRelations.User
   expect(received).toStrictEqual(expected)
 })
 
 test('Degree has correct relations', () => {
-  const received = getRelationNames(Repo.Degree!)
+  const received = getRelationNames(Repo.Degree)
   const expected = expectedRelations.Degree
   expect(received).toStrictEqual(expected)
 })
 
 test('Graph has correct relations', () => {
-  const received = getRelationNames(Repo.Graph!)
+  const received = getRelationNames(Repo.Graph)
   const expected = expectedRelations.Graph
   expect(received).toStrictEqual(expected)
 })
 
 test('Module has correct relations', () => {
-  const received = getRelationNames(Repo.Module!)
+  const received = getRelationNames(Repo.Module)
   const expected = expectedRelations.Module
   expect(received).toStrictEqual(expected)
 })
 
 test('ModuleCondensed has correct relations', () => {
-  const received = getRelationNames(Repo.ModuleCondensed!)
+  const received = getRelationNames(Repo.ModuleCondensed)
   const expected = expectedRelations.ModuleCondensed
   expect(received).toStrictEqual(expected)
 })
