@@ -20,7 +20,7 @@ const fulfilled = {
 export const deleteMethod: MethodProps = {
   method: 'Delete a user',
   description: 'Deletes a user. Also deletes associated graphs.',
-  endpoint: '/users/{userId}',
+  endpoint: '/user/{userId}',
   requestType: 'DELETE',
   parameters: {
     pathParams: [

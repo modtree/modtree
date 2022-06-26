@@ -21,7 +21,7 @@ const fulfilled = {
 export const create: MethodProps = {
   method: 'Create a user',
   description: 'Create a user',
-  endpoint: '/users/{userId}',
+  endpoint: '/user/{userId}',
   requestType: 'POST',
   parameters: {
     bodyParams: [

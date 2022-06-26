@@ -21,16 +21,18 @@ const fulfilled = {
 export const login: MethodProps = {
   method: 'Login',
   description: 'Login into modtree',
-  endpoint: '/users/login',
+  endpoint: '/user/{authZeroId}/login',
   requestType: 'POST',
   parameters: {
-    bodyParams: [
+    pathParams: [
       {
         name: 'authZeroId',
         dataType: 'string',
         description: 'The id of the user registered in Auth0',
-        required: false,
+        required: true,
       },
+    ],
+    bodyParams: [
       {
         name: 'email',
         dataType: 'string',
