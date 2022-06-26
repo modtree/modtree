@@ -10,34 +10,31 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 let app: Express
 let api: Api
-let userLogin: jest.SpyInstance
+let findOneOrFail: jest.SpyInstance
 
 beforeAll(() =>
   setup(db).then(() => {
     api = new Api(db)
     app = getApp(api)
-    userLogin = jest.spyOn(api, 'userLogin')
+    findOneOrFail = jest.spyOn(api.userRepo, 'findOneOrFail')
   })
 )
 beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
-const testRequest = () =>
-  request(app)
-    .post('/users/auth0|012345678901234567890123/login')
-    .send({ email: 'test@test.test' })
+test('`findOneOrFail` is called once', async () => {
+  await request(app).get('/user/58201858-5ce5-4ceb-8568-eecf55841b9f/get-full')
 
-test('`userLogin` is called once', async () => {
-  await testRequest()
-
-  expect(userLogin).toBeCalledTimes(1)
+  expect(findOneOrFail).toBeCalledTimes(1)
 })
 
-test('`userLogin` is called with correct args', async () => {
-  await testRequest()
-
-  expect(userLogin).toBeCalledWith(
-    'auth0|012345678901234567890123',
-    'test@test.test'
+/**
+ * TODO: this should return 404
+ */
+test('returns 500', async () => {
+  const res = await request(app).get(
+    '/user/58201858-5ce5-4ceb-8568-eecf55841b9f/get-full'
   )
+
+  expect(res.statusCode).toBe(500)
 })

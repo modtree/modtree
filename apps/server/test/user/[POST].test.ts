@@ -23,7 +23,7 @@ beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
 test('`initialize` is called once', async () => {
-  await request(app).post('/users').send({
+  await request(app).post('/user').send({
     authZeroId: 'auth0|012345678901234567890123',
     email: 'test@test.test',
   })
@@ -32,7 +32,7 @@ test('`initialize` is called once', async () => {
 })
 
 test('`initialize` is called with correct args', async () => {
-  await request(app).post('/users').send({
+  await request(app).post('/user').send({
     authZeroId: 'auth0|012345678901234567890123',
     email: 'test@test.test',
   })

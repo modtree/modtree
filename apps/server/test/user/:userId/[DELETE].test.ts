@@ -25,7 +25,7 @@ beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
 async function testRequest() {
-  await request(app).delete('/users/924a4c06-4ccb-4208-8791-ecae4099a763')
+  await request(app).delete('/user/924a4c06-4ccb-4208-8791-ecae4099a763')
 }
 
 test('`findOneById` is called once', async () => {
