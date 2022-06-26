@@ -1,12 +1,9 @@
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { Repo, setup, teardown, t } from '@modtree/test-env'
+import { flatten } from '@modtree/utils'
+import { Repo, setup, t, teardown } from '@modtree/test-env'
 import { ModuleCondensed } from '@modtree/entity'
+import { db } from '@modtree/typeorm-config'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
+beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 async function findByCodes(moduleCodes: string[]) {

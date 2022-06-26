@@ -1,11 +1,7 @@
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
 import { Repo, setup, teardown } from '@modtree/test-env'
+import { db } from '@modtree/typeorm-config'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
+beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 test('returns an array of strings', async () => {

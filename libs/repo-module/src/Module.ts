@@ -76,15 +76,17 @@ export class ModuleRepository
     modulesDoing: string[],
     moduleCode: string
   ): Promise<boolean> {
-    // 1. find module
-    const module = await this.findOneBy({ moduleCode })
-    if (!module) return false
-    // 2. filter modulesDone and modulesDoing
+    // 1. filter modulesDone and modulesDoing
     if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) {
       return false
     }
-    // 3. check if PrereqTree is fulfilled
-    return checkTree(module.prereqTree, modulesDone)
+    // 2. find module
+    return this.findOneByOrFail({ moduleCode })
+      .then((module) =>
+        // 3. check if PrereqTree is fulfilled
+        checkTree(module.prereqTree, modulesDone)
+      )
+      .catch(() => false)
   }
 
   /**
@@ -94,17 +96,15 @@ export class ModuleRepository
    * @returns {Promise<string[]>}
    */
   async getPostReqs(moduleCodes: string[]): Promise<string[]> {
-    const modules = await this.findByCodes(moduleCodes)
-    // get array of module codes of post-reqs (fulfillRequirements)
-    const postReqCodes: string[] = []
-    modules.forEach((module) => {
-      // can be empty string
-      if (module.fulfillRequirements instanceof Array) {
-        postReqCodes.push(...module.fulfillRequirements)
-      }
+    const result = new Set<string>()
+    return this.findByCodes(moduleCodes).then((modules) => {
+      modules.forEach((module) => {
+        if (Array.isArray(module.fulfillRequirements)) {
+          module.fulfillRequirements.forEach((m) => result.add(m))
+        }
+      })
+      return Array.from(result)
     })
-    const uniqueCodes = unique(postReqCodes)
-    return uniqueCodes
   }
 
   /**
@@ -123,19 +123,29 @@ export class ModuleRepository
     modulesSelected: string[]
   ): Promise<string[]> {
     const modules = unique(modulesDone.concat(modulesSelected))
-    // 1. get post-reqs
-    const postReqs = await this.getPostReqs(modules)
-    if (!postReqs) return []
-    // 2. filter post-reqs
-    const results = await Promise.all(
-      postReqs.map((one) => this.canTakeModule(modules, modulesDoing, one))
+    const postReqsPromise = this.getPostReqs(modules)
+    const canTakePromise = postReqsPromise.then((postReqs) =>
+      Promise.all(
+        postReqs.map((p) => this.canTakeModule(modules, modulesDoing, p))
+      )
     )
-    const filtered = postReqs.filter((_, idx) => results[idx])
-    // 3. remove modulesDone and modulesDoing
-    const final = filtered.filter(
-      (one) => !hasTakenModule(modulesDone, modulesDoing, one)
+    return Promise.all([postReqsPromise, canTakePromise]).then(
+      ([postReqs, canTake]) =>
+        /**
+         * return all the post requisites
+         */
+        postReqs
+          /**
+           * that can be taken
+           */
+          .filter((_, index) => canTake[index])
+          /**
+           * and that has not been taken before
+           */
+          .filter(
+            (module) => !hasTakenModule(modulesDone, modulesDoing, module)
+          )
     )
-    return final
   }
 
   /**

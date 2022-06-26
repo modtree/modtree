@@ -1,11 +1,7 @@
-import { setup, teardown, Repo } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { setup, Repo, teardown } from '@modtree/test-env'
+import { db } from '@modtree/typeorm-config'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
+beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 async function canTakeModule(done: string[], doing: string[], query: string) {

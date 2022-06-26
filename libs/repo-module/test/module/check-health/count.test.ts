@@ -1,10 +1,8 @@
-import { setup, teardown, Repo } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { setup, Repo, teardown } from '@modtree/test-env'
+import { flatten } from '@modtree/utils'
 import { Module, ModuleCondensed } from '@modtree/entity'
+import { db } from '@modtree/typeorm-config'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
 const count = {
   modules: 0,
   condensed: 0,
@@ -13,7 +11,7 @@ let modules: Module[]
 let condensed: ModuleCondensed[]
 
 beforeAll(() =>
-  setup(db).then(() =>
+  setup(db, { restore: false }).then(() =>
     Promise.all([
       Repo.ModuleCondensed!.findAndCount(),
       Repo.Module!.findAndCount(),

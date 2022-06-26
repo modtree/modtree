@@ -19,7 +19,8 @@ import { UserRepository } from '@modtree/repo-user'
 import './matcher-types'
 
 type SetupOptions = {
-  initialize: boolean
+  initialize?: boolean
+  restore?: boolean
 }
 
 /**
@@ -31,13 +32,15 @@ const Repo: Repositories = {}
  * pre-test setup
  *
  * @param {DataSource} db
- * @param {SetupOptions} opts
+ * @param {SetupOptions} _opts
  * @returns {Promise<void>}
  */
 export async function setup(
   db: DataSource,
-  opts?: SetupOptions
+  _opts?: SetupOptions
 ): Promise<void> {
+  const opts = { initialize: true, restore: true }
+  Object.assign(opts, _opts)
   const startConnection = () =>
     db.initialize().then((db) => {
       /**
@@ -50,19 +53,21 @@ export async function setup(
       Repo.ModuleCondensed = new ModuleCondensedRepository(db)
     })
   if (db.options.database === undefined) return
-  await sql
-    .restoreFromFile(db.options.database.toString(), config.restoreSource)
-    .then(async () => {
-      // by default, initialize a new connection
-      if (!opts) {
-        return startConnection()
-      }
-      // else, read the config
-      if (opts.initialize) {
-        return startConnection()
-      }
-      return
-    })
+  if (opts.restore) {
+    await sql.restoreFromFile(
+      db.options.database.toString(),
+      config.restoreSource
+    )
+  }
+  // by default, initialize a new connection
+  if (!opts) {
+    return startConnection()
+  }
+  // else, read the config
+  if (opts.initialize) {
+    return startConnection()
+  }
+  return
 }
 
 /**
@@ -70,13 +75,14 @@ export async function setup(
  *
  * @param {DataSource} db
  */
-export async function teardown(db: DataSource) {
+export async function teardown(db: DataSource, dropDatabase: boolean = false) {
   if (db.options.database === undefined) return
-  const drop = sql.dropDatabase(db.options.database.toString())
   if (db.isInitialized) {
-    return db.destroy().then(() => drop)
+    await db.destroy()
   }
-  return drop
+  if (dropDatabase) {
+    return sql.dropDatabase(db.options.database.toString())
+  }
 }
 
 type TestProps = {

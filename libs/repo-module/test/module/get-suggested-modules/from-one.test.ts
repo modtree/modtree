@@ -1,11 +1,7 @@
-import { setup, teardown, t, Repo } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { setup, Repo, t, teardown } from '@modtree/test-env'
+import { db } from '@modtree/typeorm-config'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
+beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 export async function suggest(
