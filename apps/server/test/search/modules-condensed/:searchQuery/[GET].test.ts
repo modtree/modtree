@@ -23,7 +23,7 @@ beforeAll(() =>
 beforeEach(() => jest.clearAllMocks())
 afterAll(() => teardown(db))
 
-const testRequest = () => request(app).get('/modules-condensed/search/CS1010')
+const testRequest = () => request(app).get('/search/modules-condensed/CS1010')
 
 test('`find` is called once', async () => {
   await testRequest()

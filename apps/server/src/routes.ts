@@ -174,7 +174,7 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/modules-condensed/search/:searchQuery',
+    route: '/search/modules-condensed/:searchQuery',
     fn: ModuleCondensedApi.search,
     validators: [],
   },
