@@ -49,7 +49,7 @@ jobs:
       - run: yarn --frozen-lockfile
 
       - name: Start PostgreSQL
-        run: ${{ env.POSTGRES_INIT }}
+        run: ./.github/scripts/postgres.sh
 
       - name: 📦 Load database environment
         run: ${{ env.PREFIX }} yarn nx test test-env --skip-nx-cache
