@@ -30,4 +30,4 @@ function help() {
 const args = new ParseArgs(__filename, help)
 const degree = degrees.find((u) => u.title === args.last)
 if (!degree) help()
-postman.post('degrees/', degree).then(console.log)
+postman.post('degree/', degree).then(console.log)

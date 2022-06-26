@@ -69,4 +69,4 @@ function help() {
 const args = new ParseArgs(__filename, help)
 const user = users.find((u) => u.username === args.last)
 if (!user) help()
-postman.post('users/', user).then(console.log)
+postman.post('user/', user).then(console.log)

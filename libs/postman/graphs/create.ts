@@ -15,7 +15,7 @@ function help() {
 
 const args = new ParseArgs(__filename, help)
 const [userId, degreeId] = args.postArgs
-postman.post('graphs/', {
+postman.post('graph/', {
   userId,
   degreeId,
   modulesPlacedCodes: [],
