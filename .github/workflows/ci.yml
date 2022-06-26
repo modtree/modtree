@@ -8,7 +8,6 @@ on:
 
 env:
   PREFIX: TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner
-  POSTGRES_INIT: sudo systemctl start postgresql.service; echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql; echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql; echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql; sudo su postgres -c "psql --file=/tmp/setup.sql"; createdb mt_test
 
 jobs:
   pre_job:
@@ -56,7 +55,7 @@ jobs:
 
       - name: 📦 Run tests for ${{ matrix.project }}
         id: yarn_test
-        run: ${{ env.PREFIX }} yarn nx test ${{ matrix.project }} --coverage
+        run: ${{ env.PREFIX }} yarn nx test ${{ matrix.project }} --coverage --skip-nx-cache
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
