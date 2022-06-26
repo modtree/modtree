@@ -168,7 +168,7 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/modules-condensed/:moduleCode',
+    route: '/module-condensed/:moduleCode',
     fn: ModuleCondensedApi.get,
     validators: [],
   },
