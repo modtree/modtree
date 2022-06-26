@@ -41,18 +41,17 @@ jobs:
           - server
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'yarn'
-      - run: yarn --frozen-lockfile
+      - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
+      - run: yarn install --frozen-lockfile --silent
+        continue-on-error: true
 
       - name: Start PostgreSQL
         run: ./.github/scripts/postgres.sh
 
       - name: 📦 Run tests for ${{ matrix.project }}
         id: yarn_test
-        run: ${{ env.PREFIX }} yarn nx test ${{ matrix.project }} --coverage --skip-nx-cache
+        run: ${{ env.PREFIX }} yarn nx test ${{ matrix.project }} --coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
