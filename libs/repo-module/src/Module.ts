@@ -164,23 +164,15 @@ export class ModuleRepository
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
     if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) return []
-    // 2. Get current eligible modules
-    const eligibleModules = await this.getEligibleModules(
-      modulesDone,
-      modulesDoing,
-      []
+    return Promise.all([
+      // 2. Get current eligible modules
+      this.getEligibleModules(modulesDone, modulesDoing, []),
+      // 3. Get unlocked eligible modules
+      this.getEligibleModules(modulesDone, modulesDoing, addedModuleCodes),
+    ]).then(([eligible, unlocked]) =>
+      // 4. Compare unlockedModules to eligibleModules
+      unlocked.filter((code) => !eligible.includes(code))
     )
-    // 3. Get unlocked eligible modules
-    const unlockedModules = await this.getEligibleModules(
-      modulesDone,
-      modulesDoing,
-      addedModuleCodes
-    )
-    // 4. Compare unlockedModules to eligibleModules
-    const filtered = unlockedModules.filter(
-      (moduleCode) => !eligibleModules.includes(moduleCode)
-    )
-    return filtered
   }
 
   /**
