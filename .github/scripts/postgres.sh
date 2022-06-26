@@ -15,3 +15,7 @@ sudo su postgres -c "psql --file=/tmp/setup.sql"
 
 # create databases for testing
 createdb mt_test
+
+# fill the database with modules
+PGPASSWORD=runner psql -U runner \
+  mt_test < ./libs/sql/snapshots/postgres-modules-only.sql
