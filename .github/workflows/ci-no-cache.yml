@@ -7,7 +7,6 @@ on:
 
 env:
   PREFIX: TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner
-  POSTGRES_INIT: sudo systemctl start postgresql.service; echo "CREATE USER runner PASSWORD 'runner';" > /tmp/setup.sql; echo "ALTER ROLE runner WITH CREATEDB;" >> /tmp/setup.sql; echo "ALTER ROLE runner WITH SUPERUSER;" >> /tmp/setup.sql; sudo su postgres -c "psql --file=/tmp/setup.sql"; createdb mt_test
 
 jobs:
   pre_job:
@@ -48,7 +47,7 @@ jobs:
       - run: yarn --frozen-lockfile
 
       - name: Start PostgreSQL
-        run: ${{ env.POSTGRES_INIT }}
+        run: ./.github/scripts/postgres.sh
 
       - name: 📦 Load database environment
         run: ${{ env.PREFIX }} yarn nx test test-env --skip-nx-cache
