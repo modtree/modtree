@@ -42,7 +42,7 @@ const fulfilled = {
 export const get: MethodProps = {
   method: 'Get a graph',
   description: 'Retrieve information about one graph',
-  endpoint: '/graphs/{graphId}',
+  endpoint: '/graph/{graphId}',
   requestType: 'GET',
   parameters: {
     pathParams: [

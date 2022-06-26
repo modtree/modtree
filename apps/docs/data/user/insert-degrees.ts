@@ -18,7 +18,7 @@ const fulfilled = {
 export const insertDegrees: MethodProps = {
   method: 'Insert degrees',
   description: 'Adds degrees to a user',
-  endpoint: '/users/{userId}/degrees',
+  endpoint: '/user/{userId}/degree',
   requestType: 'PATCH',
   parameters: {
     pathParams: [

@@ -82,7 +82,7 @@ const fulfilled = {
 export const getFull: MethodProps = {
   method: 'Get a full user',
   description: 'Retrieve information about one user, including relations',
-  endpoint: '/users/{userId}/get-full',
+  endpoint: '/user/{userId}/get-full',
   requestType: 'GET',
   parameters: {
     pathParams: [

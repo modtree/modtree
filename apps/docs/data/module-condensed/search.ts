@@ -41,8 +41,9 @@ const fulfilled = [
 
 export const search: MethodProps = {
   method: 'Search all modules condensed',
-  description: "Returns modules condensed, whose module code is a prefix match with the search query",
-  endpoint: '/modules-condensed/search/{searchQuery}',
+  description:
+    'Returns modules condensed, whose module code is a prefix match with the search query',
+  endpoint: '/search/modules-condensed/{searchQuery}',
   requestType: 'GET',
   parameters: {
     pathParams: [

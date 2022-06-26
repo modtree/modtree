@@ -42,7 +42,7 @@ const fulfilled = {
 export const create: MethodProps = {
   method: 'Create a graph',
   description: 'Create a graph',
-  endpoint: '/graphs/',
+  endpoint: '/graph/',
   requestType: 'POST',
   parameters: {
     bodyParams: [

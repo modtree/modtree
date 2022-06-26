@@ -21,7 +21,7 @@ const fulfilled = {
 export const get: MethodProps = {
   method: 'Get a user',
   description: 'Retrieve information about one user',
-  endpoint: '/users/{userId}',
+  endpoint: '/user/{userId}',
   requestType: 'GET',
   parameters: {
     pathParams: [

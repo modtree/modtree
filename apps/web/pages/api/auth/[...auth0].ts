@@ -9,7 +9,7 @@ const afterCallback = async (
 ) => {
   const backend = process.env.NEXT_PUBLIC_BACKEND
   return axios
-    .post(`${backend}/users/${session.user.sub}/login`, {
+    .post(`${backend}/user/${session.user.sub}/login`, {
       email: session.user.email,
     })
     .then((res) => {

@@ -6,7 +6,7 @@ const user = {
 }
 
 postman
-  .patch(`users/${user.id}/degrees`, {
+  .patch(`user/${user.id}/degree`, {
     degreeIds: user.savedDegrees,
   })
   .then(console.log)

@@ -16,7 +16,7 @@ export async function handleSearch(
   }
   const upper = value.toUpperCase()
   const backend = process.env.NEXT_PUBLIC_BACKEND
-  const url = `${backend}/modules-condensed/search/${upper}`
+  const url = `${backend}/search/modules-condensed/${upper}`
   fetch(url)
     .then((res) => {
       res.json().then((result) => {
@@ -37,7 +37,7 @@ export async function getModuleInfo(
   if (!value) return
   dispatch(showModuleModal())
   const backend = process.env.NEXT_PUBLIC_BACKEND
-  const url = `${backend}/modules/${value}`
+  const url = `${backend}/module/${value}`
   fetch(url)
     .then((res) => {
       res.json().then((result) => {

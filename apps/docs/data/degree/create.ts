@@ -29,7 +29,7 @@ const fulfilled = {
 export const create: MethodProps = {
   method: 'Create a degree',
   description: 'Create a degree',
-  endpoint: '/degrees/',
+  endpoint: '/degree/',
   requestType: 'POST',
   parameters: {
     bodyParams: [

@@ -27,26 +27,26 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/users/:userId',
+    route: '/user/:userId',
     fn: UserApi.get,
     validators: [],
   },
   {
     method: 'post',
-    route: '/users/:authZeroId/login',
+    route: '/user/:authZeroId/login',
     fn: UserApi.login,
     // validators: [body('email').isEmail()],
     validators: [],
   },
   {
     method: 'get',
-    route: '/users/:userId/get-full',
+    route: '/user/:userId/get-full',
     fn: UserApi.getFull,
     validators: [],
   },
   {
     method: 'post',
-    route: '/users',
+    route: '/user',
     fn: UserApi.create,
     validators: [
       body('authZeroId').isString().notEmpty(),
@@ -55,13 +55,13 @@ export const routes: Route[] = [
   },
   {
     method: 'patch',
-    route: '/users/:userId/degrees',
+    route: '/user/:userId/degree',
     fn: UserApi.insertDegrees,
     validators: [body('degreeIds').isArray().notEmpty()],
   },
   {
     method: 'delete',
-    route: '/users/:userId',
+    route: '/user/:userId',
     fn: UserApi.delete,
     validators: [],
   },
@@ -77,13 +77,13 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/degrees/:degreeId',
+    route: '/degree/:degreeId',
     fn: DegreeApi.get,
     validators: [],
   },
   {
     method: 'post',
-    route: '/degrees',
+    route: '/degree',
     fn: DegreeApi.create,
     validators: [
       body('title').notEmpty(),
@@ -92,7 +92,7 @@ export const routes: Route[] = [
   },
   {
     method: 'delete',
-    route: '/degrees/:degreeId',
+    route: '/degree/:degreeId',
     fn: DegreeApi.delete,
     validators: [],
   },
@@ -108,25 +108,25 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/graphs/:graphId',
+    route: '/graph/:graphId',
     fn: GraphApi.get,
     validators: [],
   },
   {
     method: 'delete',
-    route: '/graphs/:graphId',
+    route: '/graph/:graphId',
     fn: GraphApi.delete,
     validators: [],
   },
   {
     method: 'post',
-    route: '/graphs',
+    route: '/graph',
     fn: GraphApi.create,
     validators: [],
   },
   {
     method: 'patch',
-    route: '/graphs/:graphId/toggle/:moduleCode',
+    route: '/graph/:graphId/toggle/:moduleCode',
     fn: GraphApi.toggle,
     validators: [
       param('moduleCode')
@@ -136,7 +136,7 @@ export const routes: Route[] = [
   },
   {
     method: 'patch',
-    route: '/graphs/:graphId/flow',
+    route: '/graph/:graphId/flow',
     fn: GraphApi.updateFrontendProps,
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },
@@ -152,7 +152,7 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/modules/:moduleCode',
+    route: '/module/:moduleCode',
     fn: ModuleApi.get,
     validators: [],
   },
@@ -168,13 +168,13 @@ export const routes: Route[] = [
   },
   {
     method: 'get',
-    route: '/modules-condensed/:moduleCode',
+    route: '/module-condensed/:moduleCode',
     fn: ModuleCondensedApi.get,
     validators: [],
   },
   {
     method: 'get',
-    route: '/modules-condensed/search/:searchQuery',
+    route: '/search/modules-condensed/:searchQuery',
     fn: ModuleCondensedApi.search,
     validators: [],
   },
