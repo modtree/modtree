@@ -34,6 +34,8 @@ export class UserApi {
    * gets one User by primary keys
    * at least one of id, authZeroId, or email
    *
+   * UNUSED
+   *
    * @param {Api} api
    */
   static getByPrimaryKeys =
