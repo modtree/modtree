@@ -18,7 +18,7 @@ beforeAll(() =>
     api = new Api(db)
     app = getApp(api)
     findOneOrFail = jest.spyOn(api.userRepo, 'findOneOrFail')
-    insertGraphs = jest.spyOn(api, 'insertGraphs')
+    insertGraphs = jest.spyOn(api.userRepo, 'insertGraphs')
   })
 )
 beforeEach(() => jest.clearAllMocks())

@@ -2,17 +2,12 @@ import { User } from '@modtree/entity'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { Api } from '../src'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
-let api: Api
 
 beforeAll(() =>
   setup(db)
-    .then(() => {
-      api = new Api(db)
-    })
     .then(() =>
       Promise.all([
         Repo.User.initialize(init.user1),
@@ -40,7 +35,7 @@ describe('insertGraphs', () => {
 
   it('returns a user', async () => {
     // get user with all relations
-    await api.insertGraphs(t.user!, [t.graph!.id]).then((user) => {
+    await Repo.User.insertGraphs(t.user!, [t.graph!.id]).then((user) => {
       expect(user).toBeInstanceOf(User)
       t.user = user
     })

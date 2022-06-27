@@ -155,7 +155,7 @@ export class UserApi {
         where: { id },
         relations: api.relations.user,
       })
-      .then((user) => api.insertGraphs(user, graphIds))
+      .then((user) => api.userRepo.insertGraphs(user, graphIds))
       .then(flatten.user)
   }
 }
