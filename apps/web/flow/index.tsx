@@ -8,16 +8,17 @@ import ReactFlow, {
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/components/context-menu'
-import { updateModuleNode } from '@/store/base'
 import { hideContextMenu } from '@/store/modal'
-import { setGraphSelectedCodes } from '@/store/graph'
+import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
+
+const nodeTypes = { moduleNode: ModuleNode }
 
 export default function ModtreeFlow() {
   /**
    * redux dispatcher
    */
   const dispatch = useAppDispatch()
-  const graph = useAppSelector((state) => state.base.graph)
+  const graph = useAppSelector((state) => state.graph)
   document.addEventListener('click', () => dispatch(hideContextMenu()))
 
   /**
@@ -46,7 +47,7 @@ export default function ModtreeFlow() {
   return (
     <ReactFlow
       nodes={nodes}
-      nodeTypes={{ moduleNode: ModuleNode }}
+      nodeTypes={nodeTypes}
       /** hooks */
       onNodesChange={onNodesChange}
       onNodeDragStop={onNodeDragStop}
