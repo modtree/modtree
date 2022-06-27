@@ -1,6 +1,10 @@
 import { NextApiResponse } from 'next'
-import { backend } from '@/utils/backend'
 import { IncomingMessage } from 'http'
+import axios from 'axios'
+
+const backend = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BACKEND,
+})
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface NextApiRequest extends IncomingMessage {

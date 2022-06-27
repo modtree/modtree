@@ -1,5 +1,5 @@
 import { HeroIcon } from 'types'
-import hero from '@heroicons/react/outline'
+import * as hero from '@heroicons/react/outline'
 import { flatten } from '../utils'
 
 const defaultSize = '16px'

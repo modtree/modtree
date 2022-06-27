@@ -3,10 +3,6 @@ import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { AnyAction, Dispatch } from 'redux'
 
-export const backend = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND,
-})
-
 /**
  * searches module condensed
  */
@@ -22,8 +18,8 @@ export async function handleSearch<T>(props: {
     return
   }
   const upper = value.toUpperCase()
-  return backend
-    .get(`/search/modules-condensed/${upper}`)
+  return axios
+    .get(`/api/search/modules-condensed/${upper}`)
     .then((res) => dispatch(set(res.data.slice(0, 10))))
     .catch(() => true)
 }
@@ -37,8 +33,8 @@ export async function getModuleInfo(
 ) {
   if (!value) return
   dispatch(showModuleModal())
-  backend
-    .get(`/module/${value}`)
+  return axios
+    .get(`/api/module/${value}`)
     .then((res) => dispatch(setModalModule(res.data)))
     .catch(() => false)
 }

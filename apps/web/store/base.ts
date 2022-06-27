@@ -1,10 +1,10 @@
-import { backend } from '@/utils'
 import { ModtreeApiResponse } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { ModuleNodeProps } from '@modtree/types'
 
 import { baseInitialState } from './initial-state'
+import axios from 'axios'
 
 export const base = createSlice({
   name: 'base',
@@ -23,8 +23,8 @@ export const base = createSlice({
       state.graph = action.payload
     },
     setModulesCondensed: (state, action: PayloadAction<string[]>) => {
-      backend
-        .post('/modules', {
+      axios
+        .post('/api/modules', {
           moduleCodes: action.payload,
         })
         .then((res) => {
