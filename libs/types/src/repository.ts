@@ -52,6 +52,7 @@ export interface IGraphRepository extends EGraph {
   ): Promise<[string[], string[], string[], string[]]>
   suggestModules(graph: IGraph, moduleCodes: string[]): Promise<IModule[]>
   updateFrontendProps(graph: IGraph, props: GraphFrontendProps): Promise<IGraph>
+  findByIds(id: string[]): Promise<IGraph[]>
 }
 
 export interface IUserRepository extends EUser {
