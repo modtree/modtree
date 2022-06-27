@@ -141,4 +141,21 @@ export class UserApi {
       })
       .then((user) => api.userRepo.setModuleStatus(user, moduleCodes, status))
   }
+
+  /**
+   * inserts a graph into a User
+   *
+   * @param {Api} api
+   */
+  static insertGraphs = (api: Api) => async (req: Request) => {
+    const id = req.params.userId
+    const { graphIds } = req.body
+    return api.userRepo
+      .findOneOrFail({
+        where: { id },
+        relations: api.relations.user,
+      })
+      .then((user) => api.insertGraphs(user, graphIds))
+      .then(flatten.user)
+  }
 }

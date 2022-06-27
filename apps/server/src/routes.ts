@@ -74,6 +74,12 @@ export const routes: Route[] = [
     fn: UserApi.setModuleStatus,
     validators: [body('status').isString().isIn(moduleStatuses)],
   },
+  {
+    method: 'patch',
+    route: '/user/:userId/graph',
+    fn: UserApi.insertGraphs,
+    validators: [body('graphIds').isArray().notEmpty()],
+  },
 
   /**
    * Degree API
