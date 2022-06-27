@@ -126,6 +126,11 @@ export class UserApi {
     return api.userLogin(authZeroId, email).then(flatten.user)
   }
 
+  /**
+   * set module status of multiple modules of a user
+   *
+   * @param {Api} api
+   */
   static setModuleStatus = (api: Api) => async (req: Request) => {
     const id = req.params.userId
     const { moduleCodes, status } = req.body
