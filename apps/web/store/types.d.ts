@@ -15,12 +15,6 @@ export type ReduxState = {
   graph: ModtreeApiResponse.Graph & {
     selectedCodes: string[]
   }
-  base: {
-    user: ModtreeApiResponse.User
-    degree: ModtreeApiResponse.Degree
-    graph: ModtreeApiResponse.Graph
-    modulesCondensed: ModuleCondensedMap
-  }
   modal: {
     showUserProfile: boolean
     showModuleModal: boolean

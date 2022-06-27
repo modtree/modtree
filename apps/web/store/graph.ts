@@ -8,24 +8,24 @@ export const graph = createSlice({
   initialState: baseInitialState.graph,
   reducers: {
     setGraphSelectedCodes: (
-      state,
+      graph,
       action: PayloadAction<Node<ModuleNodeProps>[]>
     ) => {
-      state.selectedCodes = action.payload.map((node) => node.data.moduleCode)
+      graph.selectedCodes = action.payload.map((node) => node.data.moduleCode)
     },
-    addModuleNode: (state, action: PayloadAction<Node<ModuleNodeProps>>) => {
+    addModuleNode: (graph, action: PayloadAction<Node<ModuleNodeProps>>) => {
       const node = action.payload
-      const currentCodes = state.flowNodes.map((n) => n.data.moduleCode)
+      const currentCodes = graph.flowNodes.map((n) => n.data.moduleCode)
       if (!currentCodes.includes(node.data.moduleCode)) {
-        state.flowNodes = [...state.flowNodes, node]
+        graph.flowNodes = [...graph.flowNodes, node]
       }
     },
-    updateModuleNode: (state, action: PayloadAction<Node<ModuleNodeProps>>) => {
+    updateModuleNode: (graph, action: PayloadAction<Node<ModuleNodeProps>>) => {
       const node = action.payload
-      const index = state.flowNodes.findIndex(
+      const index = graph.flowNodes.findIndex(
         (x) => x.data.moduleCode === node.data.moduleCode
       )
-      state.flowNodes[index] = node
+      graph.flowNodes[index] = node
     },
   },
 })

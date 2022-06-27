@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import searchReducer from './search'
 import modalReducer from './modal'
-import baseReducer from './base'
 import graphReducer from './graph'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
@@ -9,7 +8,6 @@ const store = configureStore({
   reducer: {
     search: searchReducer,
     modal: modalReducer,
-    base: baseReducer,
     graph: graphReducer,
   },
 })
