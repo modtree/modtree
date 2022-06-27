@@ -2,7 +2,6 @@ import { DataSource, Repository } from 'typeorm'
 import { User, Module, Degree } from '@modtree/entity'
 import {
   FindByKey,
-  IDegreeRepository,
   IModuleRepository,
   InitProps,
   IUser,
@@ -12,7 +11,6 @@ import {
 import { flatten } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 import { ModuleRepository } from '@modtree/repo-module'
-import { DegreeRepository } from '@modtree/repo-degree'
 
 export class UserRepository
   extends Repository<User>
@@ -20,13 +18,13 @@ export class UserRepository
 {
   private db: DataSource
   private moduleRepo: IModuleRepository
-  private degreeRepo: IDegreeRepository
+  private degreeRepo: Repository<Degree>
 
   constructor(db: DataSource) {
     super(User, db.manager)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new DegreeRepository(this.db)
+    this.degreeRepo = new Repository(Degree, this.db.manager)
   }
 
   deleteAll = useDeleteAll(this)
