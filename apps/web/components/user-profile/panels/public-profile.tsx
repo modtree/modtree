@@ -1,6 +1,6 @@
 import { useUser } from '@/utils/auth0'
 import { useState } from 'react'
-import { Input } from '@/components/html'
+import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 
 export function PublicProfileTabContent() {

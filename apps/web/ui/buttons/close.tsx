@@ -1,5 +1,5 @@
 import { flatten } from '@/utils/tailwind'
-import { XIcon } from '@heroicons/react/outline'
+import { CloseIcon } from '@/ui/icons'
 
 export const CloseButton = (props: { close: () => void; bg?: string }) => {
   const bg = props.bg ? ' ' + props.bg : ''
@@ -15,7 +15,7 @@ export const CloseButton = (props: { close: () => void; bg?: string }) => {
         onClick={props.close}
         id="module-modal-close-button"
       >
-        <XIcon className="text-gray-600 h-5 w-5" />
+        <CloseIcon className="text-gray-600 h-5 w-5" />
       </button>
     </div>
   )

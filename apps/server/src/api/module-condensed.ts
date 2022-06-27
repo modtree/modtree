@@ -33,7 +33,7 @@ export class ModuleCondensedApi {
   }
 
   /**
-   * gets a list of modules from the database using LIKE query
+   * gets a top 10 closest modules from the database using LIKE query
    *
    * @param {Api} api
    */
@@ -41,6 +41,7 @@ export class ModuleCondensedApi {
     (api: Api) => (req: CustomReqParams<{ searchQuery: string }>) => {
       return api.moduleCondensedRepo.find({
         where: { moduleCode: Like(`${req.params.searchQuery}%`) },
+        take: 10,
       })
     }
 }

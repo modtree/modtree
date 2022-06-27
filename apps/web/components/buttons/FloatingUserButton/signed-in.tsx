@@ -1,4 +1,4 @@
-import { UserIcon } from '@heroicons/react/solid'
+import { UserIcon } from '@/ui/icons'
 import { useUser } from '@/utils/auth0'
 import { DropdownMenu, MenuItems } from '@/ui/menu'
 import { useAppDispatch } from '@/store/redux'

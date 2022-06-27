@@ -1,4 +1,4 @@
-import { Dot } from '@/components/inline'
+import { Dot } from '@/ui/inline'
 import { addModuleNode } from '@/store/base'
 import { hideModuleModal } from '@/store/modal'
 import { useAppDispatch, useAppSelector } from '@/store/redux'

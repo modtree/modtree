@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Input } from '@/components/html'
+import { Input } from '@/ui/html'
 import { AddButton, Button } from '@/ui/buttons'
 import {
   DegreeListSection,

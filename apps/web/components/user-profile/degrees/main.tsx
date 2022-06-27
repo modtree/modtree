@@ -3,7 +3,7 @@ import { text } from 'text'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { Row } from '@/ui/settings/lists/rows'
 import { dashed } from '@/utils/array'
-import { Slash } from '@/components/inline'
+import { Slash } from '@/ui/inline'
 import { Dispatch, SetStateAction } from 'react'
 
 export function Main(props: {

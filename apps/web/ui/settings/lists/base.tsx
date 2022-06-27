@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 import { Button } from '@/ui/buttons'
-import { Slash } from '@/components/inline'
+import { Slash } from '@/ui/inline'
 
 type TitleProps = {
   title: string
