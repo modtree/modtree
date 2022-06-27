@@ -1,13 +1,5 @@
 import { HeroIcon } from 'types'
-import {
-  AcademicCapIcon,
-  CubeIcon,
-  ShareIcon,
-  BeakerIcon,
-  CogIcon,
-  UserIcon,
-  SearchIcon as _SearchIcon,
-} from '@heroicons/react/outline'
+import hero from '@heroicons/react/outline'
 import { flatten } from '../utils'
 
 const defaultSize = '16px'
@@ -24,10 +16,13 @@ function getIcon(Icon: HeroIcon) {
   return component
 }
 
-export const GraphIcon = getIcon(ShareIcon)
-export const ModuleIcon = getIcon(CubeIcon)
-export const DegreeIcon = getIcon(AcademicCapIcon)
-export const DebugIcon = getIcon(BeakerIcon)
-export const ProfileIcon = getIcon(UserIcon)
-export const AccountIcon = getIcon(CogIcon)
-export const SearchIcon = getIcon(_SearchIcon)
+export const GraphIcon = getIcon(hero.ShareIcon)
+export const ModuleIcon = getIcon(hero.CubeIcon)
+export const DegreeIcon = getIcon(hero.AcademicCapIcon)
+export const DebugIcon = getIcon(hero.BeakerIcon)
+export const ProfileIcon = getIcon(hero.UserIcon)
+export const UserIcon = getIcon(hero.UserIcon)
+export const AccountIcon = getIcon(hero.CogIcon)
+export const SearchIcon = getIcon(hero.SearchIcon)
+export const PlusIcon = getIcon(hero.PlusIcon)
+export const CloseIcon = getIcon(hero.XIcon)

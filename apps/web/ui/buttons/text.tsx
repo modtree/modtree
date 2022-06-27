@@ -1,6 +1,6 @@
 import { ButtonProps } from 'types'
 import { flatten } from '@/utils/tailwind'
-import { PlusIcon } from '@heroicons/react/outline'
+import { PlusIcon } from '@/ui/icons'
 
 /**
  * all buttons' interactions
