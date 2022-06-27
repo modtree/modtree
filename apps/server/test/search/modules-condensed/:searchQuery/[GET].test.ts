@@ -33,5 +33,8 @@ test('`find` is called once', async () => {
 test('`find` is called with correct args', async () => {
   await testRequest()
 
-  expect(find).toBeCalledWith({ where: { moduleCode: Like('CS1010%') } })
+  expect(find).toBeCalledWith({
+    where: { moduleCode: Like('CS1010%') },
+    take: 10,
+  })
 })
