@@ -123,4 +123,15 @@ export class UserApi {
     const { email } = req.body
     return api.userLogin(authZeroId, email).then(flatten.user)
   }
+
+  static setModuleStatus = (api: Api) => async (req: Request) => {
+    const id = req.params.userId
+    const { moduleCodes, status } = req.body
+    return api.userRepo
+      .findOneOrFail({
+        where: { id },
+        relations: api.relations.user,
+      })
+      .then((user) => api.userRepo.setModuleStatus(user, moduleCodes, status))
+  }
 }
