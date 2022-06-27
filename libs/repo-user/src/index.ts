@@ -225,35 +225,42 @@ export class UserRepository
   }
 
   /**
-   * Updates the status of a module for a user.
+   * Updates the status of modules for a user.
    *
    * @param {User} user
-   * @param {string} moduleCode
+   * @param {string[]} moduleCodes
    * @param {ModuleStatus} status
    * @return {Promise<User>}
    */
   async setModuleStatus(
     user: User,
-    moduleCode: string,
+    moduleCodes: string[],
     status: ModuleStatus
   ): Promise<User> {
     // 1. load relations
     const _user = await this.findOneById(user.id)
     // 2. remove moduleCode from user if exists
     _user.modulesDone = _user.modulesDone.filter(
-      (one) => one.moduleCode !== moduleCode
+      (one) => !moduleCodes.includes(one.moduleCode)
     )
     _user.modulesDoing = _user.modulesDoing.filter(
-      (one) => one.moduleCode !== moduleCode
+      (one) => !moduleCodes.includes(one.moduleCode)
     )
     // 3. add module to appropriate array (if necessary)
-    if (status === ModuleStatus.DONE) {
-      const module = await this.moduleRepo.findOneByOrFail({ moduleCode })
-      _user.modulesDone.push(module)
-    } else if (status === ModuleStatus.DOING) {
-      const module = await this.moduleRepo.findOneByOrFail({ moduleCode })
-      _user.modulesDoing.push(module)
-    }
-    return this.save(_user)
+    return Promise.all(
+      moduleCodes.map((moduleCode) =>
+        this.moduleRepo.findOneByOrFail({ moduleCode })
+      )
+    ).then((modules) => {
+      if (status === ModuleStatus.DONE) {
+        _user.modulesDone.push(...modules)
+      } else if (status === ModuleStatus.DOING) {
+        _user.modulesDoing.push(...modules)
+      } else {
+        // ModuleStatus.TAKEN
+        // do nothing
+      }
+      return this.save(_user)
+    })
   }
 }

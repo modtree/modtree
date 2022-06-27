@@ -69,7 +69,7 @@ export interface IUserRepository extends EUser {
   removeDegree(user: IUser, degreeId: string): Promise<IUser>
   setModuleStatus(
     user: IUser,
-    moduleCode: string,
+    moduleCodes: string[],
     status: ModuleStatus
   ): Promise<IUser>
 }

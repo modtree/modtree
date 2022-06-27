@@ -36,12 +36,16 @@ function expectUserModules(
   expect(modulesDoing).toIncludeSameMembers(modulesDoingCodes)
 }
 
+/**
+ * Tests setModuleStatus with 1 module.
+ * The original repo function works with many modules.
+ */
 async function setModuleStatus(
   user: User,
   moduleCode: string,
   status: ModuleStatus
 ) {
-  return Repo.User.setModuleStatus(user, moduleCode, status)
+  return Repo.User.setModuleStatus(user, [moduleCode], status)
 }
 
 it('done -> doing', async () => {
