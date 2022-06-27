@@ -1,0 +1,53 @@
+import { User } from '@modtree/entity'
+import { oneUp } from '@modtree/utils'
+import { getSource } from '@modtree/typeorm-config'
+import { setup, teardown, Repo, t, init } from '@modtree/test-env'
+import { Api } from '../src'
+
+const dbName = oneUp(__filename)
+const db = getSource(dbName)
+let api: Api
+
+beforeAll(() =>
+  setup(db)
+    .then(() => {
+      api = new Api(db)
+    })
+    .then(() =>
+      Promise.all([
+        Repo.User.initialize(init.user1),
+        Repo.Degree.initialize(init.degree1),
+      ])
+    )
+    .then(([user, degree]) => {
+      t.user = user
+      return Repo.Graph.initialize({
+        userId: user.id,
+        degreeId: degree.id,
+        modulesPlacedCodes: [],
+        modulesHiddenCodes: [],
+        pullAll: false,
+      })
+    })
+    .then((graph) => {
+      t.graph = graph
+    })
+)
+afterAll(() => teardown(db))
+
+describe('insertGraphs', () => {
+  beforeEach(expect.hasAssertions)
+
+  it('returns a user', async () => {
+    // get user with all relations
+    await api.insertGraphs(t.user!, [t.graph!.id]).then((user) => {
+      expect(user).toBeInstanceOf(User)
+      t.user = user
+    })
+  })
+
+  it('adds correct graph id', () => {
+    const graphIds = t.user!.savedGraphs.map((g) => g.id)
+    expect(graphIds).toContain(t.graph!.id)
+  })
+})

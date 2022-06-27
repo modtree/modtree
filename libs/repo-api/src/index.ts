@@ -102,4 +102,21 @@ export class Api {
       return this.initializeUser(authZeroId, email)
     })
   }
+
+  /**
+   * Insert previously saved graphs to a user.
+   *
+   * @param {User} user
+   * @param {string[]} graphIds
+   * @returns {Promise<User>}
+   */
+  async insertGraphs(user: User, graphIds: string[]): Promise<User> {
+    // 1. load savedGraphs relations
+    const _user = await this.userRepo.findOneById(user.id)
+    // 2. find graphs in DB
+    const graphs = await this.graphRepo.findByIds(graphIds)
+    // 3. append graphs
+    _user.savedGraphs.push(...graphs)
+    return this.userRepo.save(_user)
+  }
 }
