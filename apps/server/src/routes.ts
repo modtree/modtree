@@ -8,6 +8,9 @@ import {
 } from './api'
 import { body, param, query } from 'express-validator'
 import { validModuleCode } from '@modtree/utils'
+import { ModuleStatus } from '@modtree/types'
+
+const moduleStatuses = Object.values(ModuleStatus)
 
 export const routes: Route[] = [
   /**
@@ -64,6 +67,12 @@ export const routes: Route[] = [
     route: '/user/:userId',
     fn: UserApi.delete,
     validators: [],
+  },
+  {
+    method: 'patch',
+    route: '/user/:userId/module',
+    fn: UserApi.setModuleStatus,
+    validators: [body('status').isString().isIn(moduleStatuses)],
   },
 
   /**

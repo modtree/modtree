@@ -34,6 +34,8 @@ export class UserApi {
    * gets one User by primary keys
    * at least one of id, authZeroId, or email
    *
+   * UNUSED
+   *
    * @param {Api} api
    */
   static getByPrimaryKeys =
@@ -122,5 +124,16 @@ export class UserApi {
     const authZeroId = req.params.authZeroId
     const { email } = req.body
     return api.userLogin(authZeroId, email).then(flatten.user)
+  }
+
+  static setModuleStatus = (api: Api) => async (req: Request) => {
+    const id = req.params.userId
+    const { moduleCodes, status } = req.body
+    return api.userRepo
+      .findOneOrFail({
+        where: { id },
+        relations: api.relations.user,
+      })
+      .then((user) => api.userRepo.setModuleStatus(user, moduleCodes, status))
   }
 }
