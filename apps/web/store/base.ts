@@ -2,9 +2,7 @@ import { ModtreeApiResponse } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { ModuleNodeProps } from '@modtree/types'
-
 import { baseInitialState } from './initial-state'
-import axios from 'axios'
 
 export const base = createSlice({
   name: 'base',
@@ -21,20 +19,6 @@ export const base = createSlice({
     },
     setBaseGraph: (state, action: PayloadAction<ModtreeApiResponse.Graph>) => {
       state.graph = action.payload
-    },
-    setModulesCondensed: (state, action: PayloadAction<string[]>) => {
-      axios
-        .post('/api/modules', {
-          moduleCodes: action.payload,
-        })
-        .then((res) => {
-          // replace entirely for now
-          state.modulesCondensed = {}
-          res.data.forEach((module: ModtreeApiResponse.ModuleCondensed) => {
-            state.modulesCondensed[module.moduleCode] = module
-          })
-        })
-        .catch(() => console.log('Database error'))
     },
     toggleModuleNode: (state, action: PayloadAction<Node<ModuleNodeProps>>) => {
       const node = action.payload
@@ -72,7 +56,6 @@ export const {
   setBaseUser,
   setBaseDegree,
   setBaseGraph,
-  setModulesCondensed,
   toggleModuleNode,
   addModuleNode,
   updateModuleNode,
