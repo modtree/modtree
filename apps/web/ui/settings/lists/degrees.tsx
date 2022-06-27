@@ -1,4 +1,4 @@
-import { Slash } from '@/components/inline'
+import { Slash } from '@/ui/inline'
 import { dashed } from '@/utils/array'
 import { DegreeSummary } from 'types'
 import { SettingsSection } from './base'
