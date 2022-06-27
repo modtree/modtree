@@ -1,15 +1,14 @@
 import { handleAuth, handleCallback, Session } from '@auth0/nextjs-auth0'
-import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { backend } from '@/utils/backend'
 
 const afterCallback = async (
   _req: NextApiRequest,
   _res: NextApiResponse,
   session: Session
 ) => {
-  const backend = process.env.NEXT_PUBLIC_BACKEND
-  return axios
-    .post(`${backend}/user/${session.user.sub}/login`, {
+  return backend
+    .post(`/user/${session.user.sub}/login`, {
       email: session.user.email,
     })
     .then((res) => {

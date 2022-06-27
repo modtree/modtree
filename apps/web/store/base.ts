@@ -1,5 +1,5 @@
 import { backend } from '@/utils'
-import { FlowNodeCondensed, ModtreeApiResponse } from '@modtree/types'
+import { ModtreeApiResponse } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { ModuleNodeProps } from '@modtree/types'

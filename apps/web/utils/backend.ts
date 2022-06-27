@@ -1,3 +1,4 @@
+import { setModalModule, showModuleModal } from '@/store/modal'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { AnyAction, Dispatch } from 'redux'
@@ -5,10 +6,6 @@ import { AnyAction, Dispatch } from 'redux'
 export const backend = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND,
 })
-
-export async function fetcher(url: string) {
-  return axios.get(url).then((res) => res.data)
-}
 
 /**
  * searches module condensed
@@ -25,14 +22,23 @@ export async function handleSearch<T>(props: {
     return
   }
   const upper = value.toUpperCase()
-  const backend = process.env.NEXT_PUBLIC_BACKEND
-  const url = `${backend}/search/modules-condensed/${upper}`
-  fetch(url)
-    .then((res) => {
-      res.json().then((result) => {
-        const moduleList: T[] = result
-        dispatch(set(moduleList.slice(0, 10)))
-      })
-    })
+  return backend
+    .get(`/search/modules-condensed/${upper}`)
+    .then((res) => dispatch(set(res.data.slice(0, 10))))
     .catch(() => true)
+}
+
+/**
+ * get one full module info
+ */
+export async function getModuleInfo(
+  dispatch: Dispatch<AnyAction>,
+  value: string
+) {
+  if (!value) return
+  dispatch(showModuleModal())
+  backend
+    .get(`/module/${value}`)
+    .then((res) => dispatch(setModalModule(res.data)))
+    .catch(() => false)
 }

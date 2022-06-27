@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useAppDispatch } from '@/store/redux'
-import { getModuleInfo } from './lib'
 import {
   addToBuildList,
   clearSearches,
@@ -10,6 +9,7 @@ import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
 import { ModuleCondensed } from '@modtree/entity'
+import { getModuleInfo } from '@/utils/backend'
 
 const emptyModuleCondensed: ModuleCondensed = {
   title: '',
