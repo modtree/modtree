@@ -24,7 +24,7 @@ export async function handleSearch<T>(props: {
   const upper = value.toUpperCase()
   return backend
     .get(`/search/modules-condensed/${upper}`)
-    .then((res) => dispatch(set(res.data.slice(0, 10))))
+    .then((res) => dispatch(set(res.data)))
     .catch(() => true)
 }
 
