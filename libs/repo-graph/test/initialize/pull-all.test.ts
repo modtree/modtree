@@ -10,12 +10,12 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User!.initialize({
+        Repo.User.initialize({
           ...init.user1,
           modulesDone: ['MA2001'],
           modulesDoing: ['MA2219'],
         }),
-        Repo.Degree!.initialize({
+        Repo.Degree.initialize({
           moduleCodes: ['CS1101S', 'MA2001'],
           title: 'Test Degree',
         }),
@@ -29,13 +29,13 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 it('initial count', async () => {
-  await Repo.Graph!.count().then((count) => {
+  await Repo.Graph.count().then((count) => {
     expect(count).toEqual(0)
   })
 })
 
 it('returns a graph', async () => {
-  await Repo.Graph!.initialize({
+  await Repo.Graph.initialize({
     userId: t.user!.id,
     degreeId: t.degree!.id,
     modulesPlacedCodes: [],
@@ -48,7 +48,7 @@ it('returns a graph', async () => {
 })
 
 it('increments the count by 1', async () => {
-  await Repo.Graph!.count().then((count) => {
+  await Repo.Graph.count().then((count) => {
     expect(count).toEqual(1)
   })
 })

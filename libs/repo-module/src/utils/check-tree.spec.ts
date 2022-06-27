@@ -6,7 +6,7 @@ beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 it('true for mods without pre-reqs', async () => {
-  await Repo.Module!.findByCodes(['CS1010', 'MA1301', 'EL1101E']).then(
+  await Repo.Module.findByCodes(['CS1010', 'MA1301', 'EL1101E']).then(
     (modules) => {
       modules.forEach((module) => {
         expect(checkTree(module.prereqTree, [])).toEqual(true)
@@ -16,7 +16,7 @@ it('true for mods without pre-reqs', async () => {
 })
 
 it('true if pre-reqs are cleared', async () => {
-  await Repo.Module!.findOneByOrFail({
+  await Repo.Module.findOneByOrFail({
     moduleCode: 'CS2040S',
   }).then((module) => {
     expect(checkTree(module.prereqTree, ['CS1231', 'CS1010'])).toEqual(true)
@@ -24,7 +24,7 @@ it('true if pre-reqs are cleared', async () => {
 })
 
 it("false if pre-reqs aren't cleared", async () => {
-  await Repo.Module!.findOneByOrFail({
+  await Repo.Module.findOneByOrFail({
     moduleCode: 'CS2040S',
   }).then((module) => {
     expect(checkTree(module.prereqTree, [])).toEqual(false)

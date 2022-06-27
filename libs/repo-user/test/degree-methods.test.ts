@@ -10,8 +10,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User!.initialize(init.user1),
-        Repo.Degree!.initialize(init.degree1),
+        Repo.User.initialize(init.user1),
+        Repo.Degree.initialize(init.degree1),
       ])
     )
     .then(([user, degree]) => {
@@ -26,7 +26,7 @@ describe('User.insertDegrees', () => {
 
   it('returns a user', async () => {
     // get user with all relations
-    await Repo.User!.insertDegrees(t.user!, [t.degree!.id]).then((user) => {
+    await Repo.User.insertDegrees(t.user!, [t.degree!.id]).then((user) => {
       expect(user).toBeInstanceOf(User)
       t.user = user
     })
@@ -42,20 +42,20 @@ describe('User.findDegree', () => {
   beforeEach(expect.hasAssertions)
 
   it('returns a degree', async () => {
-    await Repo.User!.findDegree(t.user!, t.degree!.id).then((degree) => {
+    await Repo.User.findDegree(t.user!, t.degree!.id).then((degree) => {
       expect(degree).toBeInstanceOf(Degree)
     })
   })
 
   it('finds correct degree id', async () => {
-    await Repo.User!.findDegree(t.user!, t.degree!.id).then((degree) => {
+    await Repo.User.findDegree(t.user!, t.degree!.id).then((degree) => {
       expect(degree.id).toBe(t.degree!.id)
     })
   })
 
   it('errors if degree not found', async () => {
     await expect(() =>
-      Repo.User!.findDegree(t.user!, 'NOT_VALID')
+      Repo.User.findDegree(t.user!, 'NOT_VALID')
     ).rejects.toThrowError(Error('Degree not found in User'))
   })
 })
@@ -64,7 +64,7 @@ describe('User.removeDegree', () => {
   beforeEach(expect.hasAssertions)
 
   it('returns a user', async () => {
-    await Repo.User!.removeDegree(t.user!, t.degree!.id).then((user) => {
+    await Repo.User.removeDegree(t.user!, t.degree!.id).then((user) => {
       expect(user).toBeInstanceOf(User)
       t.user = user
     })
@@ -76,7 +76,7 @@ describe('User.removeDegree', () => {
 
   it('errors if degree not found', async () => {
     await expect(() =>
-      Repo.User!.removeDegree(t.user!, 'NOT_VALID')
+      Repo.User.removeDegree(t.user!, 'NOT_VALID')
     ).rejects.toThrowError(Error('Degree not found in User'))
   })
 })

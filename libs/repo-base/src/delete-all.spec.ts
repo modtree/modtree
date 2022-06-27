@@ -9,14 +9,14 @@ beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 test('there are modules', async () => {
-  await Repo.Module!.count().then((count) => {
+  await Repo.Module.count().then((count) => {
     expect(count).toBeGreaterThan(0)
   })
 })
 
 test('deletes all', async () => {
-  await Repo.Module!.deleteAll()
-    .then(() => Repo.Module!.count())
+  await Repo.Module.deleteAll()
+    .then(() => Repo.Module.count())
     .then((count) => {
       expect(count).toEqual(0)
     })

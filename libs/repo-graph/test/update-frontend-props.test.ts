@@ -12,12 +12,12 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User!.initialize(init.user1),
-        Repo.Degree!.initialize(init.degree1),
+        Repo.User.initialize(init.user1),
+        Repo.Degree.initialize(init.degree1),
       ])
     )
     .then(([user, degree]) =>
-      Repo.Graph!.initialize({
+      Repo.Graph.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -32,11 +32,11 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 async function findGraph(id: string) {
-  return Repo.Graph!.findOneById(id)
+  return Repo.Graph.findOneById(id)
 }
 
 async function updateFrontendProps(props: GraphFrontendProps) {
-  return Repo.Graph!.updateFrontendProps(t.graph!, props)
+  return Repo.Graph.updateFrontendProps(t.graph!, props)
 }
 
 it('returns a relationless graph', async () => {

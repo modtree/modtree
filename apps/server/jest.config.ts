@@ -13,6 +13,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/server',
-  testPathIgnorePatterns: ['test_backup'],
   maxWorkers: 1,
 }

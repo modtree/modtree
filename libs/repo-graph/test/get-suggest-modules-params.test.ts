@@ -32,13 +32,13 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User!.initialize(userProps),
-        Repo.Degree!.initialize(degreeProps),
+        Repo.User.initialize(userProps),
+        Repo.Degree.initialize(degreeProps),
       ])
     )
     .then(([user, degree]) => {
       t.user = user
-      return Repo.Graph!.initialize({
+      return Repo.Graph.initialize({
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],
@@ -53,13 +53,11 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 it('returns an array of arrays', async () => {
-  await Repo.Graph!.getSuggestModulesParams(t.graph!, ['CM1102']).then(
-    (res) => {
-      expect(res).toBeArrayOf(Array)
-      // res.forEach((e) => expect(typeof e).toBe('string'))
-      t.arrayOfArrays = res
-    }
-  )
+  await Repo.Graph.getSuggestModulesParams(t.graph!, ['CM1102']).then((res) => {
+    expect(res).toBeArrayOf(Array)
+    // res.forEach((e) => expect(typeof e).toBe('string'))
+    t.arrayOfArrays = res
+  })
 })
 
 it('the array has length of 4', () => {

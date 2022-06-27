@@ -10,7 +10,7 @@ export async function suggest(
   selected: string[],
   required: string[]
 ) {
-  return Repo.Module!.getSuggestedModules(done, doing, selected, required)
+  return Repo.Module.getSuggestedModules(done, doing, selected, required)
 }
 
 it('returns an array of modules', async () => {

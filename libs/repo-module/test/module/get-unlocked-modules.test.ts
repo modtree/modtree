@@ -9,7 +9,7 @@ async function getUnlockedModules(
   doing: string[],
   query: string
 ) {
-  return Repo.Module!.getUnlockedModules(done, doing, query)
+  return Repo.Module.getUnlockedModules(done, doing, query)
 }
 
 it('returns an array of strings', async () => {

@@ -5,7 +5,7 @@ beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 it('returns an array of strings', async () => {
-  await Repo.Module!.getSuggestedModules(
+  await Repo.Module.getSuggestedModules(
     ['CS1010', 'CG2111A', 'CS1231'], // done
     ['IT2002'], // doing
     ['CS1010', 'CS1231'], // selected

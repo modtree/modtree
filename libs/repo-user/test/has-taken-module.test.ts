@@ -8,7 +8,7 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => Repo.User!.initialize(init.user1))
+    .then(() => Repo.User.initialize(init.user1))
     .then((user) => {
       t.user = user
     })
@@ -16,7 +16,7 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 async function hasTakenModule(user: User, moduleCode: string) {
-  return Repo.User!.hasTakenModule(user, moduleCode)
+  return Repo.User.hasTakenModule(user, moduleCode)
 }
 
 it('returns true for modulesDone', async () => {

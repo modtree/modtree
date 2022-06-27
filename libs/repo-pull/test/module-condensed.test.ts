@@ -19,7 +19,7 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 test('gather data', async () => {
-  await Repo.ModuleCondensed!.deleteAll()
+  await Repo.ModuleCondensed.deleteAll()
   pullOnEmpty = await moduleCondensedRepo.pull()
   pullOnFull = await moduleCondensedRepo.pull()
   written = await moduleCondensedRepo.find()

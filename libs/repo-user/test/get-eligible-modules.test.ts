@@ -8,7 +8,7 @@ const db = getSource(dbName)
 beforeAll(() =>
   setup(db)
     .then(() =>
-      Repo.User!.initialize({
+      Repo.User.initialize({
         ...init.user1,
         modulesDone: ['CS1101S'],
       })
@@ -20,7 +20,7 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 it('adds correct modules', async () => {
-  await Repo.User!.getEligibleModules(t.user!).then((modules) => {
+  await Repo.User.getEligibleModules(t.user!).then((modules) => {
     const codes = modules.map(flatten.module)
     expect(codes).toIncludeSameMembers(['CS2109S'])
   })

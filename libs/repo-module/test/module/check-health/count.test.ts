@@ -13,8 +13,8 @@ let condensed: ModuleCondensed[]
 beforeAll(() =>
   setup(db, { restore: false }).then(() =>
     Promise.all([
-      Repo.ModuleCondensed!.findAndCount(),
-      Repo.Module!.findAndCount(),
+      Repo.ModuleCondensed.findAndCount(),
+      Repo.Module.findAndCount(),
     ]).then((res) => {
       count.condensed = res[0][1]
       count.modules = res[1][1]

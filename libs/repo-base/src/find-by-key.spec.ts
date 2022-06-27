@@ -11,7 +11,7 @@ beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 test('grab an id', async () => {
-  await Repo.Module!.find({ take: 1 }).then((module) => {
+  await Repo.Module.find({ take: 1 }).then((module) => {
     expect(typeof module[0].id).toBe('string')
     id = module[0].id
     title = module[0].title
@@ -19,7 +19,7 @@ test('grab an id', async () => {
 })
 
 test('retrieves correct title', async () => {
-  await Repo.Module!.findOneById(id).then((module) => {
+  await Repo.Module.findOneById(id).then((module) => {
     expect(module.title).toEqual(title)
   })
 })

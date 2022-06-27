@@ -164,23 +164,15 @@ export class ModuleRepository
     const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
     if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) return []
-    // 2. Get current eligible modules
-    const eligibleModules = await this.getEligibleModules(
-      modulesDone,
-      modulesDoing,
-      []
+    return Promise.all([
+      // 2. Get current eligible modules
+      this.getEligibleModules(modulesDone, modulesDoing, []),
+      // 3. Get unlocked eligible modules
+      this.getEligibleModules(modulesDone, modulesDoing, addedModuleCodes),
+    ]).then(([eligible, unlocked]) =>
+      // 4. Compare unlockedModules to eligibleModules
+      unlocked.filter((code) => !eligible.includes(code))
     )
-    // 3. Get unlocked eligible modules
-    const unlockedModules = await this.getEligibleModules(
-      modulesDone,
-      modulesDoing,
-      addedModuleCodes
-    )
-    // 4. Compare unlockedModules to eligibleModules
-    const filtered = unlockedModules.filter(
-      (moduleCode) => !eligibleModules.includes(moduleCode)
-    )
-    return filtered
   }
 
   /**
@@ -203,31 +195,45 @@ export class ModuleRepository
     requiredModules: string[]
   ): Promise<string[]> {
     const modules = unique(modulesDone.concat(modulesSelected))
-    // get relevant modules
-    const postReqs = await this.getPostReqs(modules)
-    const eligibleModules = await this.getEligibleModules(
-      modulesDone,
-      modulesDoing,
-      modulesSelected
+    /**
+     * get module codes of modules that are eligible for,
+     * that are also within the post-requisites
+     */
+    const filtered = Promise.all([
+      this.getPostReqs(modules),
+      this.getEligibleModules(modulesDone, modulesDoing, modulesSelected),
+    ]).then(([postReqs, eligible]) =>
+      eligible.filter((code) => postReqs.includes(code))
     )
-    const filtered = eligibleModules.filter((one) => postReqs.includes(one))
-    // obtain data for sorting criteria
-    const resolvedPromises = await Promise.all(
-      filtered.map((moduleCode) =>
-        this.getUnlockedModules(modulesDone, modulesDoing, moduleCode)
+
+    /**
+     * get a count of how many modules a doing a particular module unlocks
+     */
+    const unlockedModuleCounts = filtered
+      .then((filtered) =>
+        Promise.all(
+          filtered.map((code) =>
+            this.getUnlockedModules(modulesDone, modulesDoing, code)
+          )
+        )
       )
-    )
-    const unlockedModuleCounts = resolvedPromises.map((one) =>
-      one instanceof Array ? one.length : 0
-    )
-    // -- data processing
-    const data = filtered.map(
-      (moduleCode, origIdx): Data => ({
-        moduleCode,
-        inDegree: requiredModules.includes(moduleCode),
-        numUnlockedModules: unlockedModuleCounts[origIdx],
-        origIdx,
-      })
+      .then((unlocked) =>
+        unlocked.map((codes) => (Array.isArray(codes) ? codes.length : 0))
+      )
+
+    /**
+     * consolidate data used for ranking later
+     */
+    const data = Promise.all([filtered, unlockedModuleCounts]).then(
+      ([filtered, unlockedModuleCounts]) =>
+        filtered.map(
+          (moduleCode, origIdx): Data => ({
+            moduleCode,
+            inDegree: requiredModules.includes(moduleCode),
+            numUnlockedModules: unlockedModuleCounts[origIdx],
+            origIdx,
+          })
+        )
     )
 
     /**
@@ -248,9 +254,11 @@ export class ModuleRepository
       return a.moduleCode < b.moduleCode ? -1 : 1
     }
 
-    // Sort and rebuild original array
-    data.sort(cmp)
-    const final = data.map((one) => filtered[one.origIdx])
-    return final
+    const sorted = Promise.all([data, filtered]).then(([data, filtered]) => {
+      data.sort(cmp)
+      return data.map((module) => filtered[module.origIdx])
+    })
+
+    return sorted
   }
 }

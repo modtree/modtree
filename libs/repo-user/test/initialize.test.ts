@@ -10,33 +10,33 @@ beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
 it('initial count', async () => {
-  await Repo.User!.count().then((count) => {
+  await Repo.User.count().then((count) => {
     expect(count).toEqual(0)
   })
 })
 
 it('returns a user', async () => {
-  await Repo.User!.initialize(init.user1).then((user) => {
+  await Repo.User.initialize(init.user1).then((user) => {
     expect(user).toBeInstanceOf(User)
     t.user = user
   })
 })
 
 it('increments the count by 1', async () => {
-  await Repo.User!.count().then((count) => {
+  await Repo.User.count().then((count) => {
     expect(count).toEqual(1)
   })
 })
 
 it('creates new user even with same auth0 id', async () => {
-  await Repo.User!.initialize(init.user1).then((user) => {
+  await Repo.User.initialize(init.user1).then((user) => {
     expect(user.id).not.toEqual(t.user!.id)
     expect(user.authZeroId).toEqual(t.user!.authZeroId)
   })
 })
 
 it('increments the count by 1 again', async () => {
-  await Repo.User!.count().then((count) => {
+  await Repo.User.count().then((count) => {
     // same as previous count
     expect(count).toEqual(2)
   })

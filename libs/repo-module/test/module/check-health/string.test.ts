@@ -9,7 +9,7 @@ let modules: Module[]
 
 beforeAll(() =>
   setup(db, { restore: false })
-    .then(() => Repo.Module!.find())
+    .then(() => Repo.Module.find())
     .then((res) => {
       modules = res.filter((m) => typeof m.prereqTree === 'string')
     })

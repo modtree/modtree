@@ -20,21 +20,21 @@ beforeAll(() => setup(db))
 afterAll(() => teardown(db, true))
 
 it('initial count', async () => {
-  await Repo.Module!.count().then((c) => {
+  await Repo.Module.count().then((c) => {
     expect(c).toBeGreaterThan(6000)
     count = c
   })
 })
 
 it('returns a module', async () => {
-  await Repo.Module!.initialize(m).then((res) => {
+  await Repo.Module.initialize(m).then((res) => {
     expect(res).toBeInstanceOf(Module)
     t.modules = [res]
   })
 })
 
 it('increments the count by 1', async () => {
-  await Repo.Module!.count().then((c) => {
+  await Repo.Module.count().then((c) => {
     expect(c).toEqual(count + 1)
   })
 })

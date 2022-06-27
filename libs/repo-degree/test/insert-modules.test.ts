@@ -9,7 +9,7 @@ const db = getSource(dbName)
 beforeAll(() =>
   setup(db)
     .then(() =>
-      Repo.Degree!.initialize({
+      Repo.Degree.initialize({
         moduleCodes: [],
         title: 'Test Degree',
       })
@@ -22,7 +22,7 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 async function insertModules(degree: Degree, moduleCodes: string[]) {
-  return Repo.Degree!.insertModules(degree, moduleCodes)
+  return Repo.Degree.insertModules(degree, moduleCodes)
 }
 
 it('correctly saves modules', async () => {

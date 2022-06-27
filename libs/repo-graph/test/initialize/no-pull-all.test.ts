@@ -9,8 +9,8 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User!.initialize(init.user1),
-        Repo.Degree!.initialize(init.degree1),
+        Repo.User.initialize(init.user1),
+        Repo.Degree.initialize(init.degree1),
       ])
     )
     .then(([user, degree]) => {
@@ -21,7 +21,7 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 it('no placed nor hidden', async () => {
-  await Repo.Graph!.initialize({
+  await Repo.Graph.initialize({
     userId: t.user!.id,
     degreeId: t.degree!.id,
     modulesPlacedCodes: [],
