@@ -1,16 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
-import flowReducer from './flow'
 import searchReducer from './search'
 import modalReducer from './modal'
 import baseReducer from './base'
+import graphReducer from './graph'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const store = configureStore({
   reducer: {
-    flow: flowReducer,
     search: searchReducer,
     modal: modalReducer,
     base: baseReducer,
+    graph: graphReducer,
   },
 })
 

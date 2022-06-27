@@ -8,10 +8,15 @@ export const baseInitialState: ReduxState = {
     graph: EmptyResponse.Graph,
     modulesCondensed: {},
   },
-  flow: {
-    selection: [],
-    nodes: [],
-    edges: [],
+  graph: {
+    id: '',
+    user: '',
+    degree: '',
+    modulesPlaced: [],
+    modulesHidden: [],
+    flowNodes: [],
+    flowEdges: [],
+    selectedCodes: [],
   },
   modal: {
     contextMenuProps: {

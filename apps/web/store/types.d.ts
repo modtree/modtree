@@ -1,9 +1,5 @@
 import { Module, ModuleCondensed } from '@modtree/entity'
-import {
-  FlowEdgeCondensed,
-  FlowNodeCondensed,
-  ModtreeApiResponse,
-} from '@modtree/types'
+import { ModtreeApiResponse } from '@modtree/types'
 
 export type ModuleCondensedMap = {
   [key: string]: ModtreeApiResponse.ModuleCondensed
@@ -16,16 +12,14 @@ export type ContextMenuProps = {
 }
 
 export type ReduxState = {
+  graph: ModtreeApiResponse.Graph & {
+    selectedCodes: string[]
+  }
   base: {
     user: ModtreeApiResponse.User
     degree: ModtreeApiResponse.Degree
     graph: ModtreeApiResponse.Graph
     modulesCondensed: ModuleCondensedMap
-  }
-  flow: {
-    selection: string[]
-    nodes: FlowNodeCondensed[]
-    edges: FlowEdgeCondensed[]
   }
   modal: {
     showUserProfile: boolean
