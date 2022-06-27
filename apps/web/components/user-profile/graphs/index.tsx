@@ -1,5 +1,5 @@
 import { Button } from '@/ui/buttons'
-import { Input } from '@/components/html'
+import { Input } from '@/ui/html'
 import { useState } from 'react'
 import { DegreeGraphs } from 'types'
 import { GraphListSection } from '@/ui/settings/lists'

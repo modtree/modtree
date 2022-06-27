@@ -1,7 +1,7 @@
 import { Pages } from 'types'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { useState } from 'react'
-import { Input } from '@/components/html'
+import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
