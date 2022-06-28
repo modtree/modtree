@@ -30,8 +30,11 @@ export type ReduxState = {
   cache: {
     modulesCondensed: Record<string, ModtreeApiResponse.ModuleCondensed>
     modules: Record<string, ModtreeApiResponse.Module>
+    degrees: Record<string, ModtreeApiResponse.Degree>
   }
   search: {
+    buildId: string
+    buildTitle: string
     buildList: ModuleCondensed[]
     searchResults: ModuleCondensed[]
     module: Module[]

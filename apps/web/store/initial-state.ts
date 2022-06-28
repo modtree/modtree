@@ -22,10 +22,13 @@ export const baseInitialState: ReduxState = {
     modalModule: EmptyResponse.Module,
   },
   cache: {
+    degrees: {},
     modulesCondensed: {},
     modules: {},
   },
   search: {
+    buildId: '',
+    buildTitle: '',
     buildList: [],
     searchResults: [],
     module: [],

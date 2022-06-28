@@ -5,11 +5,21 @@ import { Button } from '@/ui/buttons'
 
 type RowProps = {
   deletable?: boolean
+  editable?: boolean
   onDelete?: () => void
+  onEdit?: () => void
 } & ExtendedProps['div']
 
 export function BaseRow(props: RowProps) {
-  const { className, children, deletable, onDelete, ...rest } = props
+  const {
+    className,
+    children,
+    deletable,
+    editable,
+    onDelete,
+    onEdit,
+    ...rest
+  } = props
   return (
     <div
       className={flatten(
@@ -21,11 +31,18 @@ export function BaseRow(props: RowProps) {
       {...rest}
     >
       <div className="flex-1">{children}</div>
-      {deletable && (
-        <Button onClick={onDelete} className="text-sm px-3" color="red">
-          Delete
-        </Button>
-      )}
+      <div className="flex flex-row space-x-2">
+        {editable && (
+          <Button onClick={onEdit} className="text-sm px-3" color="gray">
+            Edit
+          </Button>
+        )}
+        {deletable && (
+          <Button onClick={onDelete} className="text-sm px-3" color="red">
+            Delete
+          </Button>
+        )}
+      </div>
     </div>
   )
 }
@@ -43,7 +60,7 @@ const ModuleRow = (props: RowProps) => {
 const DegreeRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest} deletable>
+    <BaseRow {...rest} editable>
       <DegreeIcon className="mr-2" />
       {children}
     </BaseRow>

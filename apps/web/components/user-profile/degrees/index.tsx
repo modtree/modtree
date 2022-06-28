@@ -2,6 +2,7 @@ import { DegreeSummary, Pages } from 'types'
 import { useState } from 'react'
 import { Main } from './main'
 import { AddNew } from './add-new'
+import { Edit } from './edit'
 
 const degreeContent: DegreeSummary[] = [
   { title: 'computer-science', graphCount: 4 },
@@ -15,5 +16,8 @@ export function DegreesTabContent() {
   }
   if (page === 'add-new') {
     return <AddNew setPage={setPage} />
+  }
+  if (page === 'edit') {
+    return <Edit setPage={setPage} />
   }
 }

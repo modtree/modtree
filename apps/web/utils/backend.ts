@@ -2,7 +2,7 @@ import { setModalModule, showModuleModal } from '@/store/modal'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { AnyAction, Dispatch } from 'redux'
 import axios from 'axios'
-import { addModulesCondensed } from '@/store/cache'
+import { addModulesCondensedToCache } from '@/store/cache'
 import { ModtreeApiResponse } from '@modtree/types'
 import store from '@/store/redux'
 
@@ -59,6 +59,6 @@ export async function updateCachedModulesCondensed(
         moduleCodes: toFetch,
       },
     })
-    .then((res) => dispatch(addModulesCondensed(res.data)))
+    .then((res) => dispatch(addModulesCondensedToCache(res.data)))
     .catch(() => false)
 }

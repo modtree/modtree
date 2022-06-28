@@ -14,6 +14,7 @@ import { setDegree } from '@/store/degree'
 import { backend } from '../utils'
 import { setGraph } from '@/store/graph'
 import { log } from '@modtree/utils'
+import { addDegreeToCache } from '@/store/cache'
 
 export default function Modtree() {
   const { isLoading, user } = useUser()
@@ -29,9 +30,10 @@ export default function Modtree() {
       backend
         .get(`/user/${user.modtree.id}`)
         .then((res) => dispatch(setUser(res.data)))
-      backend
-        .get(`/degree/${user.modtree.savedDegrees[0]}`)
-        .then((res) => dispatch(setDegree(res.data)))
+      backend.get(`/degree/${user.modtree.savedDegrees[0]}`).then((res) => {
+        dispatch(setDegree(res.data))
+        dispatch(addDegreeToCache(res.data))
+      })
       backend
         .get(`/graph/${user.modtree.savedGraphs[0]}`)
         .then((res) => dispatch(setGraph(res.data)))

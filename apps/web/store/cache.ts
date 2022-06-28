@@ -5,7 +5,7 @@ import { WritableDraft } from 'immer/dist/internal'
 
 const getState = <T>(state: WritableDraft<Record<string, T>>) => {
   return {
-    existingCodes: new Set(Object.keys(state)),
+    existingKeys: new Set(Object.keys(state)),
     newState: state,
   }
 }
@@ -14,22 +14,34 @@ export const cache = createSlice({
   name: 'cache',
   initialState: baseInitialState.cache,
   reducers: {
-    addModulesCondensed: (
+    addDegreeToCache: (
+      cache,
+      action: PayloadAction<ModtreeApiResponse.Degree>
+    ) => {
+      const { existingKeys, newState } = getState(cache.degrees)
+      if (!existingKeys.has(action.payload.id)) {
+        newState[action.payload.id] = action.payload
+      }
+    },
+    addModulesCondensedToCache: (
       cache,
       action: PayloadAction<ModtreeApiResponse.ModuleCondensed[]>
     ) => {
-      const { existingCodes, newState } = getState(cache.modulesCondensed)
+      const { existingKeys, newState } = getState(cache.modulesCondensed)
       action.payload
-        .filter((module) => !existingCodes.has(module.moduleCode))
+        .filter((module) => !existingKeys.has(module.moduleCode))
         .forEach((module) => {
           newState[module.moduleCode] = module
         })
       cache.modulesCondensed = newState
     },
-    addModules: (cache, action: PayloadAction<ModtreeApiResponse.Module[]>) => {
-      const { existingCodes, newState } = getState(cache.modules)
+    addModulesToCache: (
+      cache,
+      action: PayloadAction<ModtreeApiResponse.Module[]>
+    ) => {
+      const { existingKeys, newState } = getState(cache.modules)
       action.payload
-        .filter((module) => !existingCodes.has(module.moduleCode))
+        .filter((module) => !existingKeys.has(module.moduleCode))
         .forEach((module) => {
           newState[module.moduleCode] = module
         })
@@ -38,5 +50,9 @@ export const cache = createSlice({
   },
 })
 
-export const { addModulesCondensed, addModules } = cache.actions
+export const {
+  addModulesCondensedToCache,
+  addModulesToCache,
+  addDegreeToCache,
+} = cache.actions
 export default cache.reducer
