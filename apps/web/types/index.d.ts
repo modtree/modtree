@@ -44,6 +44,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 export type HeroIcon = (_: ComponentProps<'svg'>) => JSX.Element
 
 export type SidebarEntryProps = {
+  pageId: Pages['UserProfile']
   title: string
   content: ReactElement
   icon: HeroIcon

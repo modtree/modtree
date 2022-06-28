@@ -1,6 +1,5 @@
-import { ReactElement } from 'react'
-import { SidebarCategoryProps } from 'types'
-import Panels from './panels'
+import { useAppSelector } from '@/store/redux'
+import { SidebarCategoryProps, SidebarEntryProps } from 'types'
 import Sidebar from './sidebar'
 
 export default function SidebarWithContents(props: {
@@ -8,18 +7,25 @@ export default function SidebarWithContents(props: {
   show: boolean
 }) {
   const { contents, show } = props
+  const page = useAppSelector((state) => state.modal.userProfilePage)
 
-  const panelContents: ReactElement[] = []
+  const panelContents: SidebarEntryProps[] = []
   contents.forEach((category) => {
     category.entries.forEach((entry) => {
-      panelContents.push(entry.content)
+      panelContents.push(entry)
     })
   })
+
+  const currentPanel = panelContents.find((content) => content.pageId === page)
 
   return show ? (
     <div className="flex flex-row space-x-4 h-full">
       <Sidebar contents={contents} />
-      <Panels contents={panelContents} />
+      <div className="flex-1 px-6 pb-12 overflow-y-auto">
+        <div>
+          <div className="mb-6">{currentPanel.content}</div>
+        </div>
+      </div>
     </div>
   ) : null
 }
