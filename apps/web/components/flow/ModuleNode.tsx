@@ -1,9 +1,7 @@
+import { ModuleCondensed } from '@modtree/entity'
 import { Handle, Position } from 'react-flow-renderer'
-import { ModtreeApiResponse, ModuleNodeProps } from '@modtree/types'
 
-export function ModuleNode(props: {
-  data: ModtreeApiResponse.ModuleCondensed
-}) {
+export function ModuleNode(props: { data: ModuleCondensed }) {
   return (
     <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md border-2 border-gray-300">
       <Handle type="target" position={Position.Left} />
