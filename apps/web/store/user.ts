@@ -10,7 +10,7 @@ export const user = createSlice({
       console.log('redux user, update mods done:', action.payload)
     },
     setUser: (user, action: PayloadAction<ModtreeApiResponse.User>) => {
-      Object.entries(action).forEach(([key, value]) => {
+      Object.entries(action.payload).forEach(([key, value]) => {
         user[key] = value
       })
     },

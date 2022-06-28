@@ -28,6 +28,8 @@ export function DebugModal() {
         <Content>{user}</Content>
         <h2>Redux Graph State</h2>
         <Content>{redux.graph}</Content>
+        <h2>Redux User State</h2>
+        <Content>{redux.user}</Content>
         <h2>Redux ModalState</h2>
         <Content>{redux.modal}</Content>
       </div>

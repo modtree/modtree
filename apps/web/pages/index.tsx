@@ -8,10 +8,27 @@ import { ContextMenus } from '@/components/context-menu'
 import { ModuleInfoModal, DebugModal } from '@/components/modals'
 import { UserProfileModal } from '@/components/user-profile'
 import { RootSearchBox } from '@/ui/search'
+import { useAppDispatch } from '@/store/redux'
+import { setUser } from '@/store/user'
+import { backend } from '../utils'
 
 export default function Modtree() {
-  const { isLoading } = useUser()
+  const { isLoading, user } = useUser()
   const [loader, setLoader] = useState(true)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (user) {
+      backend
+        .post(`/user/${user.sub}/login`, {
+          email: user.email,
+        })
+        .then((res) => {
+          console.log('pages/index useEffect', res)
+          dispatch(setUser(res.data))
+        })
+    }
+  }, [isLoading])
 
   useEffect(() => {
     /** only for debugging the loader */
