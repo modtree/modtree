@@ -272,4 +272,17 @@ export class GraphRepository
         )
       )
   }
+
+  /**
+   * @param {string[]} graphIds
+   * @returns {Promise<Graph[]>}
+   */
+  override async findByIds(graphIds: string[]): Promise<Graph[]> {
+    return this.find({
+      where: {
+        id: In(graphIds),
+      },
+      relations: this.allRelations,
+    })
+  }
 }

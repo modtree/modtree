@@ -1,8 +1,7 @@
 import { DataSource, Repository } from 'typeorm'
-import { User, Module, Degree } from '@modtree/entity'
+import { User, Module, Degree, Graph } from '@modtree/entity'
 import {
   FindByKey,
-  IDegreeRepository,
   IModuleRepository,
   InitProps,
   IUser,
@@ -12,7 +11,6 @@ import {
 import { flatten } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 import { ModuleRepository } from '@modtree/repo-module'
-import { DegreeRepository } from '@modtree/repo-degree'
 
 export class UserRepository
   extends Repository<User>
@@ -20,13 +18,15 @@ export class UserRepository
 {
   private db: DataSource
   private moduleRepo: IModuleRepository
-  private degreeRepo: IDegreeRepository
+  private degreeRepo: Repository<Degree>
+  private graphRepo: Repository<Graph>
 
   constructor(db: DataSource) {
     super(User, db.manager)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new DegreeRepository(this.db)
+    this.degreeRepo = new Repository(Degree, this.db.manager)
+    this.graphRepo = new Repository(Graph, this.db.manager)
   }
 
   deleteAll = useDeleteAll(this)
@@ -221,6 +221,23 @@ export class UserRepository
     }
     // 4. update entity and save
     _user.savedDegrees = filtered
+    return this.save(_user)
+  }
+
+  /**
+   * Insert previously saved graphs to a user.
+   *
+   * @param {User} user
+   * @param {string[]} graphIds
+   * @returns {Promise<User>}
+   */
+  async insertGraphs(user: User, graphIds: string[]): Promise<User> {
+    // 1. load savedGraphs relations
+    const _user = await this.findOneById(user.id)
+    // 2. find graphs in DB
+    const graphs = await this.graphRepo.findByIds(graphIds)
+    // 3. append graphs
+    _user.savedGraphs.push(...graphs)
     return this.save(_user)
   }
 

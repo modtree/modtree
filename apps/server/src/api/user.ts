@@ -126,6 +126,11 @@ export class UserApi {
     return api.userLogin(authZeroId, email).then(flatten.user)
   }
 
+  /**
+   * set module status of multiple modules of a user
+   *
+   * @param {Api} api
+   */
   static setModuleStatus = (api: Api) => async (req: Request) => {
     const id = req.params.userId
     const { moduleCodes, status } = req.body
@@ -135,5 +140,22 @@ export class UserApi {
         relations: api.relations.user,
       })
       .then((user) => api.userRepo.setModuleStatus(user, moduleCodes, status))
+  }
+
+  /**
+   * inserts a graph into a User
+   *
+   * @param {Api} api
+   */
+  static insertGraphs = (api: Api) => async (req: Request) => {
+    const id = req.params.userId
+    const { graphIds } = req.body
+    return api.userRepo
+      .findOneOrFail({
+        where: { id },
+        relations: api.relations.user,
+      })
+      .then((user) => api.userRepo.insertGraphs(user, graphIds))
+      .then(flatten.user)
   }
 }
