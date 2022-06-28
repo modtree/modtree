@@ -25,6 +25,10 @@ export type ReduxState = {
     contextMenuProps: ContextMenuProps
     modalModule: ModtreeApiResponse.Module
   }
+  cache: {
+    modulesCondensed: Set<ModtreeApiResponse.ModuleCondensed>
+    modules: Set<ModtreeApiResponse.Module>
+  }
   search: {
     buildList: ModuleCondensed[]
     searchResults: ModuleCondensed[]
