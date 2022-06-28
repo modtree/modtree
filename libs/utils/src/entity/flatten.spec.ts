@@ -14,6 +14,7 @@ degree.modules = [makeModule('CS2030'), makeModule('CS2040')]
 const user = new User()
 user.id = 'user_id'
 user.savedDegrees = [degree]
+user.mainDegree = degree
 user.modulesDone = [makeModule('MA1100'), makeModule('MA2001')]
 user.modulesDoing = [makeModule('MA2001'), makeModule('MA2101')]
 
@@ -72,6 +73,7 @@ describe('User', () => {
       modulesDoing: ['MA2001', 'MA2101'],
       savedDegrees: ['degree_id'],
       savedGraphs: ['graph_id'],
+      mainDegree: 'degree_id',
     })
   })
 

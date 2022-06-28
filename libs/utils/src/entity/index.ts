@@ -30,6 +30,8 @@ export const flatten = {
       modulesDone: user.modulesDone.map(flatten.module),
       savedDegrees: user.savedDegrees.map((d) => d.id),
       savedGraphs: user.savedGraphs.map((g) => g.id),
+      // in case no degree yet
+      mainDegree: user.mainDegree ? user.mainDegree.id : '',
     }
   },
 

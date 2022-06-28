@@ -24,6 +24,7 @@ const expectedRelations = {
     modulesDoing: true,
     savedDegrees: true,
     savedGraphs: true,
+    mainDegree: true,
   },
   Degree: {
     modules: true,
