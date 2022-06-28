@@ -80,6 +80,12 @@ export const routes: Route[] = [
     fn: UserApi.insertGraphs,
     validators: [body('graphIds').isArray().notEmpty()],
   },
+  {
+    method: 'patch',
+    route: '/user/:userId/main-degree',
+    fn: UserApi.setMainDegree,
+    validators: [body('degreeId').isString().notEmpty()],
+  },
 
   /**
    * Degree API
