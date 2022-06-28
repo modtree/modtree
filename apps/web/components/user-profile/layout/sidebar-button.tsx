@@ -1,6 +1,5 @@
 import { flatten } from '@/utils/tailwind'
 import { Tab } from '@headlessui/react'
-import { useState } from 'react'
 import { HeroIcon } from 'types'
 
 export default function SidebarButton(props: {
@@ -11,19 +10,17 @@ export default function SidebarButton(props: {
   const shape = 'rounded-md'
   const interact = 'hover:bg-gray-00 focus:outline-none'
   const selectedCss = (s: boolean) =>
-    s ? ' font-semibold text-gray-800 bg-gray-100' : ''
+    s ? ' font-medium text-gray-800 bg-gray-100' : ''
   const iconSize = '16px'
-  const [_selected, setSelected] = useState(false)
   return (
     <Tab
       className={({ selected }) => {
-        setSelected(selected)
         return flatten('py-1 h-8', text, shape, interact, selectedCss(selected))
       }}
     >
       <div className="flex flex-row items-center">
         <props.icon
-          className={`mx-2 ${_selected && 'text-gray-600'}`}
+          className="mx-2 text-gray-600"
           style={{ height: iconSize, width: iconSize }}
         />
         {props.children}
