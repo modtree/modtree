@@ -10,17 +10,23 @@ export const cache = createSlice({
       cache,
       action: PayloadAction<ModtreeApiResponse.ModuleCondensed[]>
     ) => {
-      const newState = new Set(cache.modulesCondensed)
-      action.payload.forEach((module) => {
-        newState.add(module)
-      })
+      const existingCodes = new Set(Object.keys(cache.modulesCondensed))
+      const newState = cache.modulesCondensed
+      action.payload
+        .filter((module) => !existingCodes.has(module.moduleCode))
+        .forEach((module) => {
+          newState[module.moduleCode] = module
+        })
       cache.modulesCondensed = newState
     },
     addModules: (cache, action: PayloadAction<ModtreeApiResponse.Module[]>) => {
-      const newState = new Set(cache.modules)
-      action.payload.forEach((module) => {
-        newState.add(module)
-      })
+      const existingCodes = new Set(Object.keys(cache.modules))
+      const newState = cache.modules
+      action.payload
+        .filter((module) => !existingCodes.has(module.moduleCode))
+        .forEach((module) => {
+          newState[module.moduleCode] = module
+        })
       cache.modules = newState
     },
   },

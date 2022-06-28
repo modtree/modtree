@@ -1,6 +1,5 @@
 import type { ReduxState } from './types'
 import { EmptyResponse } from '@modtree/utils'
-import { ModtreeApiResponse } from '@modtree/types'
 
 export const baseInitialState: ReduxState = {
   user: EmptyResponse.User,
@@ -22,8 +21,8 @@ export const baseInitialState: ReduxState = {
     modalModule: EmptyResponse.Module,
   },
   cache: {
-    modulesCondensed: new Set<ModtreeApiResponse.ModuleCondensed>(),
-    modules: new Set<ModtreeApiResponse.Module>(),
+    modulesCondensed: {},
+    modules: {},
   },
   search: {
     buildList: [],

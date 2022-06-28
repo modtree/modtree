@@ -13,6 +13,7 @@ export const user = createSlice({
       Object.entries(action.payload).forEach(([key, value]) => {
         user[key] = value
       })
+      user.modulesDoing = ['CS1010']
     },
   },
 })

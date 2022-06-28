@@ -4,6 +4,7 @@ import modalReducer from './modal'
 import graphReducer from './graph'
 import userReducer from './user'
 import degreeReducer from './degree'
+import cacheReducer from './cache'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
     graph: graphReducer,
     user: userReducer,
     degree: degreeReducer,
+    cache: cacheReducer,
   },
 })
 

@@ -26,8 +26,8 @@ export type ReduxState = {
     modalModule: ModtreeApiResponse.Module
   }
   cache: {
-    modulesCondensed: Set<ModtreeApiResponse.ModuleCondensed>
-    modules: Set<ModtreeApiResponse.Module>
+    modulesCondensed: Record<string, ModtreeApiResponse.ModuleCondensed>
+    modules: Record<string, ModtreeApiResponse.Module>
   }
   search: {
     buildList: ModuleCondensed[]

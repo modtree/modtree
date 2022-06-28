@@ -6,27 +6,38 @@ import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { useAppSelector } from '@/store/redux'
 import { ModuleCondensed } from '@modtree/entity'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { backend } from '@/utils/backend'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const user = useAppSelector((state) => state.user)
+  const [isLoading, setIsLoading] = useState(true)
+  const cachedModulesCondensed = useAppSelector(
+    (state) => state.cache.modulesCondensed
+  )
+  const [modules, setModules] = useState<Record<string, ModuleCondensed>>({})
   const hasModules = {
     done: user.modulesDone.length !== 0,
     doing: user.modulesDoing.length !== 0,
   }
-  const modules: Record<string, ModuleCondensed> = {}
   useEffect(() => {
+    const required = [...user.modulesDone, ...user.modulesDoing]
+    const existing = new Set(Object.keys(cachedModulesCondensed))
+    const toFetch = required.filter((code) => !existing.has(code))
     backend
       .get<ModuleCondensed[]>('/modules-condensed', {
         params: {
-          moduleCodes: ['CS1010', 'MA1100'],
+          moduleCodes: toFetch,
         },
       })
       .then((res) => {
+        const newState = modules
         res.data.forEach((module) => {
-          modules[module.moduleCode] = module
+          newState[module.moduleCode] = module
         })
+        console.log('isLoading', isLoading)
+        setModules(newState)
+        setIsLoading(false)
       })
   }, [])
   return (
@@ -41,13 +52,14 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             <>
               <p>{text.moduleListSection.doing.summary}</p>
               <div className="ui-rectangle flex flex-col overflow-hidden">
-                {user.modulesDoing.map((code, index) => (
-                  <Row.Module key={dashed(code, index)}>
-                    <span className="font-semibold">{code}</span>
-                    <span className="mx-1">/</span>
-                    {modules[code].title}
-                  </Row.Module>
-                ))}
+                {!isLoading &&
+                  user.modulesDoing.map((code, index) => (
+                    <Row.Module key={dashed(code, index)}>
+                      <span className="font-semibold">{code}</span>
+                      <span className="mx-1">/</span>
+                      {modules[code]?.title}
+                    </Row.Module>
+                  ))}
               </div>
             </>
           ) : (
