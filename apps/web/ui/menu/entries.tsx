@@ -1,9 +1,9 @@
 import { Menu } from '@headlessui/react'
-import { createRef, ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { MenuItem } from 'types'
-import { MenuLink } from './link'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
+import Link from 'next/link'
 
 export default function Entries(props: {
   items: MenuItem[]
@@ -34,21 +34,20 @@ export default function Entries(props: {
       <Children />
       <div className={flatten('py-2', className)}>
         {items.map((menuItem, index) => {
-          const ref = createRef<HTMLAnchorElement>()
           return (
-            <Menu.Item key={`${menuItem.text}-${index}`}>
-              <MenuLink
-                ref={ref}
+            <Menu.Item key={dashed(menuItem.text, index)}>
+              <a
+                href={menuItem.href}
                 onClick={menuItem.callback}
-                href={menuItem.href || ''}
                 className={flatten(
                   'hover:bg-modtree-400/80 hover:text-white',
                   'text-gray-700 flex w-full px-4 py-1.5',
+                  'hover:no-underline',
                   props.roundedSelection && 'rounded-md'
                 )}
               >
                 {menuItem.text}
-              </MenuLink>
+              </a>
             </Menu.Item>
           )
         })}
