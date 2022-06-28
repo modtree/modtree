@@ -20,7 +20,7 @@ export const cache = createSlice({
         newState[action.payload.id] = action.payload
       }
     },
-    addModulesCondensed: (
+    addModulesCondensedToCache: (
       cache,
       action: PayloadAction<ModtreeApiResponse.ModuleCondensed[]>
     ) => {
@@ -32,7 +32,10 @@ export const cache = createSlice({
         })
       cache.modulesCondensed = newState
     },
-    addModules: (cache, action: PayloadAction<ModtreeApiResponse.Module[]>) => {
+    addModulesToCache: (
+      cache,
+      action: PayloadAction<ModtreeApiResponse.Module[]>
+    ) => {
       const { existingKeys, newState } = getState(cache.modules)
       action.payload
         .filter((module) => !existingKeys.has(module.moduleCode))
@@ -44,5 +47,6 @@ export const cache = createSlice({
   },
 })
 
-export const { addModulesCondensed, addModules, addDegree } = cache.actions
+export const { addModulesCondensedToCache, addModulesToCache, addDegree } =
+  cache.actions
 export default cache.reducer
