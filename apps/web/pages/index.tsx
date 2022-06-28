@@ -1,4 +1,4 @@
-import { FloatingUserButton } from '@/components/buttons'
+import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
 import ModtreeFlow from '@/flow'
 import { HomeLoader } from '@/components/Loader'
@@ -8,13 +8,42 @@ import { ContextMenus } from '@/components/context-menu'
 import { ModuleInfoModal, DebugModal } from '@/components/modals'
 import { UserProfileModal } from '@/components/user-profile'
 import { RootSearchBox } from '@/ui/search'
+import { useAppDispatch } from '@/store/redux'
+import { setUser } from '@/store/user'
+import { setDegree } from '@/store/degree'
+import { backend } from '../utils'
+import { setGraph } from '@/store/graph'
+import { log } from '@modtree/utils'
 
 export default function Modtree() {
-  const { isLoading } = useUser()
+  const { isLoading, user } = useUser()
   const [loader, setLoader] = useState(true)
+  const dispatch = useAppDispatch()
 
+  /**
+   * load current user, current graph, current degree
+   */
   useEffect(() => {
-    /** only for debugging the loader */
+    if (isLoading) return
+    if (user) {
+      backend
+        .get(`/user/${user.modtree.id}`)
+        .then((res) => dispatch(setUser(res.data)))
+      backend
+        .get(`/degree/${user.modtree.savedDegrees[0]}`)
+        .then((res) => dispatch(setDegree(res.data)))
+      backend
+        .get(`/graph/${user.modtree.savedGraphs[0]}`)
+        .then((res) => dispatch(setGraph(res.data)))
+    } else {
+      log.yellow('user is not logged in')
+    }
+  }, [isLoading])
+
+  /**
+   * loading icon
+   */
+  useEffect(() => {
     const fn = setTimeout(() => {
       setLoader(false)
     }, 1000)
@@ -36,6 +65,7 @@ export default function Modtree() {
           <RootSearchBox />
           <FullScreenOverlay>
             <FloatingUserButton />
+            <FloatingActionButton />
           </FullScreenOverlay>
           <UserProfileModal />
           <DebugModal />

@@ -7,10 +7,9 @@ import ReactFlow, {
 } from 'react-flow-renderer'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { setFlowSelection } from '@/store/flow'
 import { onContextMenu } from '@/components/context-menu'
-import { updateModuleNode } from '@/store/base'
 import { hideContextMenu } from '@/store/modal'
+import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -19,16 +18,8 @@ export default function ModtreeFlow() {
    * redux dispatcher
    */
   const dispatch = useAppDispatch()
-  const graph = useAppSelector((state) => state.base.graph)
+  const graph = useAppSelector((state) => state.graph)
   document.addEventListener('click', () => dispatch(hideContextMenu()))
-
-  /**
-   * retrieve redux state for tree selection
-   * (Array of selected module nodes)
-   */
-  // const flowSelection = useSelector<FlowState, string[]>(
-  //   (state) => state.flow.selection
-  // )
 
   /**
    * builtin react flow hooks that handle node/edge movement
@@ -56,18 +47,17 @@ export default function ModtreeFlow() {
   return (
     <ReactFlow
       nodes={nodes}
-      zoomOnDoubleClick={false}
+      nodeTypes={nodeTypes}
+      /** hooks */
       onNodesChange={onNodesChange}
       onNodeDragStop={onNodeDragStop}
       onPaneContextMenu={(e) => onContextMenu(dispatch, e, 'pane')}
       onNodeContextMenu={(e) => onContextMenu(dispatch, e, 'node')}
-      nodeTypes={nodeTypes}
+      onSelectionChange={(e) => dispatch(setGraphSelectedCodes(e.nodes))}
+      /** pure configs */
       fitView={true}
-      onSelectionChange={(e) => {
-        const moduleCodes = e.nodes.map((x) => x.data.moduleCode)
-        dispatch(setFlowSelection(moduleCodes))
-      }}
       fitViewOptions={{ maxZoom: 1 }}
+      zoomOnDoubleClick={false}
       defaultZoom={1}
       maxZoom={2}
     >

@@ -1,5 +1,5 @@
 import { Dot } from '@/ui/inline'
-import { addModuleNode } from '@/store/base'
+import { addModuleNode } from '@/store/graph'
 import { hideModuleModal } from '@/store/modal'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
