@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm'
+import { DeleteResult, Repository } from 'typeorm'
 import { InitProps } from './init-props'
 import {
   IGraph,
@@ -23,7 +23,7 @@ export enum ModuleStatus {
  */
 interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
   initialize(props: Partial<InitProps>): Promise<Entity>
-  deleteAll(): Promise<void>
+  deleteAll(): Promise<DeleteResult>
   findOneById: FindByKey<Entity>
 }
 
