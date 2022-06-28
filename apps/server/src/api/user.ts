@@ -162,7 +162,7 @@ export class UserApi {
   /**
    * Sets the main degree of a user.
    *
-   * If the degree is not in savedDegrees, adds it.
+   * If the degree is not in savedDegrees, fails.
    *
    * @param {Api} api
    */
