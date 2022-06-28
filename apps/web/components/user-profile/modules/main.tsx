@@ -1,6 +1,10 @@
 import { ModuleSimple, Pages } from 'types'
 import { ModuleStatus, SetState } from '@modtree/types'
 import { ModuleListSection } from '@/ui/settings'
+import { SettingsSection } from '@/ui/settings/lists/base'
+import { text } from 'text'
+import { dashed } from '@/utils/array'
+import { Row } from '@/ui/settings/lists/rows'
 
 type ModuleContent = Record<ModuleStatus, ModuleSimple[]>
 
@@ -29,24 +33,60 @@ const moduleContent: ModuleContent = {
 }
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
+  const hasModules = {
+    done: moduleContent.done.length !== 0,
+    doing: moduleContent.doing.length !== 0,
+  }
   return (
     <>
-      <ModuleListSection
-        contents={moduleContent.doing}
-        title="Modules Doing"
-        addButtonText="Add doing"
-        onAddClick={() => props.setPage('add-doing')}
-        summary="This is a list of modules that are currently in progess this semester. They will be automatically marked as when finals week is over."
-        emptySummary="There are no modules that are currently in progress."
-      />
-      <ModuleListSection
-        contents={moduleContent.done}
-        title="Modules Done"
-        addButtonText="Add done"
-        onAddClick={() => props.setPage('add-done')}
-        summary="This is a list of completed modules."
-        emptySummary="There are no modules that are completed."
-      />
+      <div className="mb-12">
+        <SettingsSection
+          title="Modules Doing"
+          addButtonText="Add doing"
+          onAddClick={() => props.setPage('add-doing')}
+        >
+          {hasModules ? (
+            <>
+              <p>{text.moduleListSection.doing.summary}</p>
+              <div className="ui-rectangle flex flex-col overflow-hidden">
+                {moduleContent.doing.map((module, index) => (
+                  <Row.Module key={dashed(module.moduleCode, index)}>
+                    <span className="font-semibold">{module.moduleCode}</span>
+                    <span className="mx-1">/</span>
+                    {module.title}
+                  </Row.Module>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p>{text.moduleListSection.doing.emptySummary}</p>
+          )}
+        </SettingsSection>
+      </div>
+      <div className="mb-12">
+        <SettingsSection
+          title="Modules Done"
+          addButtonText="Add done"
+          onAddClick={() => props.setPage('add-done')}
+        >
+          {hasModules ? (
+            <>
+              <p>{text.moduleListSection.done.summary}</p>
+              <div className="ui-rectangle flex flex-col overflow-hidden">
+                {moduleContent.done.map((module, index) => (
+                  <Row.Module key={dashed(module.moduleCode, index)}>
+                    <span className="font-semibold">{module.moduleCode}</span>
+                    <span className="mx-1">/</span>
+                    {module.title}
+                  </Row.Module>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p>{text.moduleListSection.done.emptySummary}</p>
+          )}
+        </SettingsSection>
+      </div>
     </>
   )
 }
