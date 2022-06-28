@@ -33,7 +33,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
     <>
       <div className="mb-12">
         <SettingsSection
-          title="Modules Doing"
+          title="Modules doing"
           addButtonText="Add doing"
           onAddClick={() => props.setPage('add-doing')}
         >
@@ -57,7 +57,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
       </div>
       <div className="mb-12">
         <SettingsSection
-          title="Modules Done"
+          title="Modules done"
           addButtonText="Add done"
           onAddClick={() => props.setPage('add-done')}
         >

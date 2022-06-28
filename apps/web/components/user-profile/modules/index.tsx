@@ -1,5 +1,6 @@
 import { Pages } from 'types'
 import { Main } from './main'
+import { AddDone } from './add-done'
 import { useState } from 'react'
 
 export function ModulesTabContent() {
@@ -11,6 +12,6 @@ export function ModulesTabContent() {
     return <Main setPage={setPage} />
   }
   if (page === 'add-done') {
-    return <Main setPage={setPage} />
+    return <AddDone setPage={setPage} />
   }
 }
