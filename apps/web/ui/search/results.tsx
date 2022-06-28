@@ -53,7 +53,7 @@ export function SearchResultContainer() {
     >
       <Combobox.Options
         className={flatten(
-          'w-full absolute mt-1 max-h-60 overflow-auto rounded-md bg-white',
+          'w-full mt-1 max-h-60 overflow-auto rounded-md bg-white',
           'shadow-lg focus:outline-none'
         )}
       >

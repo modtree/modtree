@@ -46,11 +46,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         <Input className="w-full mb-4" state={state.title} grayed />
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
-          <div className="w-64 flex">
-            <div className="w-64 fixed">
-              <SettingsSearchBox />
-            </div>
-          </div>
+          <SettingsSearchBox />
           <Button>Add Module</Button>
         </div>
         <SelectedModules modules={buildList} />
