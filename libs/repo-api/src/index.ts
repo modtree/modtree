@@ -79,6 +79,8 @@ export class Api {
         ...emptyInit.Graph,
         userId: user.id,
         degreeId: degree.id,
+        modulesPlacedCodes: ['CS1010S'],
+        pullAll: true,
       })
     )
     const updatedUser = Promise.all([user, degree, graph]).then(

@@ -12,7 +12,6 @@ const afterCallback = async (
       email: session.user.email,
     })
     .then((res) => {
-      console.log(res)
       session.user.modtree = res.data
       return session
     })
