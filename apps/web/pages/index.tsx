@@ -10,6 +10,7 @@ import { UserProfileModal } from '@/components/user-profile'
 import { RootSearchBox } from '@/ui/search'
 import { useAppDispatch } from '@/store/redux'
 import { setUser } from '@/store/user'
+import { setDegree } from '@/store/degree'
 import { backend } from '../utils'
 
 export default function Modtree() {
@@ -17,21 +18,26 @@ export default function Modtree() {
   const [loader, setLoader] = useState(true)
   const dispatch = useAppDispatch()
 
+  /**
+   * load current user, current graph, current degree
+   */
   useEffect(() => {
     if (user) {
       backend
         .post(`/user/${user.sub}/login`, {
           email: user.email,
         })
-        .then((res) => {
-          console.log('pages/index useEffect', res)
-          dispatch(setUser(res.data))
-        })
+        .then((res) => dispatch(setUser(res.data)))
+      backend
+        .get(`/degree/${user.modtree.savedDegrees[0]}`)
+        .then((res) => dispatch(setDegree(res.data)))
     }
   }, [isLoading])
 
+  /**
+   * loading icon
+   */
   useEffect(() => {
-    /** only for debugging the loader */
     const fn = setTimeout(() => {
       setLoader(false)
     }, 1000)

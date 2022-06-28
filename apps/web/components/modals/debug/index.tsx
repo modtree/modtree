@@ -26,10 +26,16 @@ export function DebugModal() {
       <div className="mt-2">
         <h2>useUser().user</h2>
         <Content>{user}</Content>
+
         <h2>Redux Graph State</h2>
         <Content>{redux.graph}</Content>
+
         <h2>Redux User State</h2>
         <Content>{redux.user}</Content>
+
+        <h2>Redux Degree State</h2>
+        <Content>{redux.degree}</Content>
+
         <h2>Redux ModalState</h2>
         <Content>{redux.modal}</Content>
       </div>

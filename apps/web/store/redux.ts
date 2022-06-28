@@ -3,6 +3,7 @@ import searchReducer from './search'
 import modalReducer from './modal'
 import graphReducer from './graph'
 import userReducer from './user'
+import degreeReducer from './degree'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     modal: modalReducer,
     graph: graphReducer,
     user: userReducer,
+    degree: degreeReducer,
   },
 })
 

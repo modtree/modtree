@@ -3,6 +3,7 @@ import { EmptyResponse } from '@modtree/utils'
 
 export const baseInitialState: ReduxState = {
   user: EmptyResponse.User,
+  degree: EmptyResponse.Degree,
   graph: {
     id: '',
     user: '',
