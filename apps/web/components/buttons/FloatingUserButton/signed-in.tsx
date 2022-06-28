@@ -1,6 +1,6 @@
 import { UserIcon } from '@/ui/icons'
 import { useUser } from '@/utils/auth0'
-import { DropdownMenu, MenuItems } from '@/ui/menu'
+import { DropdownMenu, Entries } from '@/ui/menu'
 import { useAppDispatch } from '@/store/redux'
 import { hideContextMenu, showDebugModal, showUserProfile } from '@/store/modal'
 import { MenuItem } from 'types'
@@ -34,7 +34,7 @@ export default function SignedInCircle() {
 
   return (
     <DropdownMenu TriggerButton={UserCircle}>
-      <MenuItems items={items.filter((item) => dev || item.text !== 'Debug')}>
+      <Entries items={items.filter((item) => dev || item.text !== 'Debug')}>
         <>
           <div>Signed in as{dev && ' (auth0)'}</div>
           <b>{user.nickname}</b>
@@ -43,7 +43,7 @@ export default function SignedInCircle() {
           <div>Email{dev && ' (postgres)'}</div>
           <b>{user.modtree?.email}</b>
         </>
-      </MenuItems>
+      </Entries>
     </DropdownMenu>
   )
 }

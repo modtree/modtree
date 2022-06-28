@@ -9,6 +9,7 @@ export const baseInitialState: ReduxState = {
     selectedCodes: [],
   },
   modal: {
+    userProfilePage: 'public-profile',
     contextMenuProps: {
       top: 0,
       left: 0,
@@ -19,6 +20,10 @@ export const baseInitialState: ReduxState = {
     showModuleModal: false,
     showDebugModal: false,
     modalModule: EmptyResponse.Module,
+  },
+  cache: {
+    modulesCondensed: {},
+    modules: {},
   },
   search: {
     buildList: [],

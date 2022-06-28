@@ -1,5 +1,5 @@
 import { DegreeIcon, GraphIcon, ModuleIcon } from '@/ui/icons'
-import { ExtendedProps, HeroIcon } from 'types'
+import { ExtendedProps } from 'types'
 import { flatten } from '@/utils/tailwind'
 import { Button } from '@/ui/buttons'
 
@@ -8,14 +8,8 @@ type RowProps = {
   onDelete?: () => void
 } & ExtendedProps['div']
 
-export function BaseRow(
-  props: ExtendedProps['div'] & {
-    deletable?: boolean
-    icon?: HeroIcon
-    onDelete?: () => void
-  }
-) {
-  const { className, children, ...rest } = props
+export function BaseRow(props: RowProps) {
+  const { className, children, deletable, onDelete, ...rest } = props
   return (
     <div
       className={flatten(
@@ -26,10 +20,9 @@ export function BaseRow(
       )}
       {...rest}
     >
-      {props.icon && <props.icon className="mr-2" />}
       <div className="flex-1">{children}</div>
-      {props.deletable && (
-        <Button onClick={props.onDelete} className="text-sm px-3" color="red">
+      {deletable && (
+        <Button onClick={onDelete} className="text-sm px-3" color="red">
           Delete
         </Button>
       )}
@@ -37,18 +30,31 @@ export function BaseRow(
   )
 }
 
-const ModuleRow = (props: RowProps) => (
-  <BaseRow {...props} icon={ModuleIcon} deletable />
-)
+const ModuleRow = (props: RowProps) => {
+  const { children, ...rest } = props
+  return (
+    <BaseRow {...rest}>
+      <ModuleIcon className="mr-2" />
+      {children}
+    </BaseRow>
+  )
+}
 
-const DegreeRow = (props: RowProps) => (
-  <BaseRow {...props} icon={DegreeIcon} deletable />
-)
+const DegreeRow = (props: RowProps) => {
+  const { children, ...rest } = props
+  return (
+    <BaseRow {...rest} deletable>
+      <DegreeIcon className="mr-2" />
+      {children}
+    </BaseRow>
+  )
+}
 
 const GraphRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest} icon={GraphIcon}>
+    <BaseRow {...rest}>
+      <GraphIcon className="mr-2" />
       <a>{children}</a>
     </BaseRow>
   )

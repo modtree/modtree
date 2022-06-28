@@ -13,7 +13,7 @@ export const text = {
     doing: {
       summary: `
         This is a list of modules that are currently in progess this semester.
-        They will be automatically marked as when finals week is over.`,
+        They will be automatically marked as completed when finals week is over.`,
       emptySummary: 'There are no modules that are currently in progress.',
     },
   },

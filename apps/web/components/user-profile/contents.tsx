@@ -21,19 +21,36 @@ export const contents: SidebarCategoryProps[] = [
     category: '',
     entries: [
       {
+        pageId: 'public-profile',
         title: 'Public profile',
         content: <PublicProfileTabContent />,
         icon: ProfileIcon,
       },
-      { title: 'Account', content: <AccountTabContent />, icon: AccountIcon },
+      {
+        pageId: 'account',
+        title: 'Account',
+        content: <AccountTabContent />,
+        icon: AccountIcon,
+      },
     ],
   },
   {
     category: 'Academics',
     entries: [
-      { title: 'Graphs', content: <GraphsTabContent />, icon: GraphIcon },
-      { title: 'Modules', content: <ModulesTabContent />, icon: ModuleIcon },
       {
+        pageId: 'graphs',
+        title: 'Graphs',
+        content: <GraphsTabContent />,
+        icon: GraphIcon,
+      },
+      {
+        pageId: 'modules',
+        title: 'Modules',
+        content: <ModulesTabContent />,
+        icon: ModuleIcon,
+      },
+      {
+        pageId: 'degrees',
         title: 'Degrees',
         content: <DegreesTabContent />,
         icon: DegreeIcon,
@@ -43,7 +60,12 @@ export const contents: SidebarCategoryProps[] = [
   {
     category: 'Developer',
     entries: [
-      { title: 'Debug', content: <DebugTabContent />, icon: DebugIcon },
+      {
+        pageId: 'debug',
+        title: 'Debug',
+        content: <DebugTabContent />,
+        icon: DebugIcon,
+      },
     ],
   },
 ]

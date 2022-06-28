@@ -1,33 +1,32 @@
+import { setUserProfilePage } from '@/store/modal'
+import { useAppDispatch } from '@/store/redux'
 import { flatten } from '@/utils/tailwind'
-import { Tab } from '@headlessui/react'
-import { useState } from 'react'
-import { HeroIcon } from 'types'
+import { HeroIcon, Pages } from 'types'
 
 export default function SidebarButton(props: {
   children: string
   icon: HeroIcon
+  pageId: Pages['UserProfile']
+  selected: boolean
 }) {
-  const text = 'text-left text-base text-gray-600'
-  const shape = 'rounded-md'
-  const interact = 'hover:bg-gray-00 focus:outline-none'
-  const selectedCss = (s: boolean) =>
-    s ? ' font-semibold text-gray-800 bg-gray-100' : ''
-  const iconSize = '16px'
-  const [_selected, setSelected] = useState(false)
+  const dispatch = useAppDispatch()
   return (
-    <Tab
-      className={({ selected }) => {
-        setSelected(selected)
-        return flatten('py-1 h-8', text, shape, interact, selectedCss(selected))
-      }}
+    <div
+      className={flatten(
+        'h-8',
+        'text-left text-gray-600',
+        'rounded-md',
+        'cursor-pointer',
+        'hover:bg-gray-100 focus:outline-none',
+        'flex flex-row items-center',
+        'active:bg-gray-200',
+        'select-none',
+        props.selected && 'bg-gray-100'
+      )}
+      onClick={() => dispatch(setUserProfilePage(props.pageId))}
     >
-      <div className="flex flex-row items-center">
-        <props.icon
-          className={`mx-2 ${_selected && 'text-gray-600'}`}
-          style={{ height: iconSize, width: iconSize }}
-        />
-        {props.children}
-      </div>
-    </Tab>
+      <props.icon className="mx-2 text-gray-600" />
+      {props.children}
+    </div>
   )
 }

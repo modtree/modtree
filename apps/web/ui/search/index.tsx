@@ -55,7 +55,6 @@ export function SettingsSearchBox() {
 
   const onSelect = (query: ModuleCondensed) => {
     selectState[1](query)
-    console.log(query)
     dispatch(addToBuildList(query))
   }
 

@@ -37,13 +37,16 @@ export type MenuItem = {
   callback?: () => void
 }
 
+export type ButtonColor = 'red' | 'blue' | 'green' | 'gray'
+
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  color?: 'red' | 'blue' | 'green' | 'gray'
+  color?: ButtonColor
 }
 
 export type HeroIcon = (_: ComponentProps<'svg'>) => JSX.Element
 
 export type SidebarEntryProps = {
+  pageId: Pages['UserProfile']
   title: string
   content: ReactElement
   icon: HeroIcon
@@ -87,4 +90,11 @@ export type DegreeSummary = {
 export type Pages = {
   Degrees: 'main' | 'add-new'
   Modules: 'main' | 'add-doing' | 'add-done'
+  UserProfile:
+    | 'public-profile'
+    | 'account'
+    | 'graphs'
+    | 'modules'
+    | 'degrees'
+    | 'debug'
 }

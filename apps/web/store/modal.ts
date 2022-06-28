@@ -1,3 +1,4 @@
+import { Pages } from '@/types'
 import { ModtreeApiResponse } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
@@ -12,6 +13,12 @@ export const modal = createSlice({
     },
     showUserProfile: (state) => {
       state.showUserProfile = true
+    },
+    setUserProfilePage: (
+      state,
+      action: PayloadAction<Pages['UserProfile']>
+    ) => {
+      state.userProfilePage = action.payload
     },
     hideModuleModal: (state) => {
       state.showModuleModal = false
@@ -31,7 +38,6 @@ export const modal = createSlice({
     showContextMenu: (state, action: PayloadAction<ContextMenuProps>) => {
       state.showContextMenu = true
       state.contextMenuProps = action.payload
-      console.log(action.payload)
     },
     setModalModule: (
       state,
@@ -52,5 +58,6 @@ export const {
   showDebugModal,
   hideContextMenu,
   showContextMenu,
+  setUserProfilePage,
 } = modal.actions
 export default modal.reducer

@@ -1,6 +1,7 @@
 import { ReactElement } from 'react'
 import { Button } from '@/ui/buttons'
 import { Slash } from '@/ui/inline'
+import { ButtonColor } from '@/types'
 
 type TitleProps = {
   title: string
@@ -9,6 +10,7 @@ type TitleProps = {
 }
 
 type SettingsSectionProps = {
+  addButtonColor?: ButtonColor
   addButtonText?: string
   onAddClick?: () => void
   children: ReactElement | ReactElement[]
@@ -38,7 +40,10 @@ export function SettingsSection(props: SettingsSectionProps) {
         <div className="flex flex-row items-center">
           <Title {...props} />
           {props.addButtonText && (
-            <Button color="green" onClick={props.onAddClick}>
+            <Button
+              color={props.addButtonColor || 'green'}
+              onClick={props.onAddClick}
+            >
               {props.addButtonText}
             </Button>
           )}
