@@ -1,6 +1,6 @@
-import { Repository } from 'typeorm'
+import { DeleteResult, Repository } from 'typeorm'
 
-type DeleteAll = () => Promise<void>
+type DeleteAll = () => Promise<DeleteResult>
 
 /**
  * takes in a repository, returns a function that deletes all entities in that repository
@@ -9,8 +9,5 @@ type DeleteAll = () => Promise<void>
  * @returns {DeleteAll}
  */
 export function useDeleteAll<T>(repository: Repository<T>): DeleteAll {
-  const deleteAll = async () => {
-    await repository.createQueryBuilder().delete().execute()
-  }
-  return deleteAll
+  return () => repository.createQueryBuilder().delete().execute()
 }
