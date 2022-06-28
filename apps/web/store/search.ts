@@ -6,6 +6,9 @@ export const search = createSlice({
   name: 'search',
   initialState: baseInitialState.search,
   reducers: {
+    setBuildTitle: (state, action: PayloadAction<string>) => {
+      state.buildTitle = action.payload
+    },
     setSearchedModuleCondensed: (
       state,
       action: PayloadAction<ModuleCondensed[]>
@@ -52,6 +55,7 @@ export const {
   clearBuildList,
   addToBuildList,
   removeFromBuildList,
+  setBuildTitle,
   setBuildList,
 } = search.actions
 export default search.reducer

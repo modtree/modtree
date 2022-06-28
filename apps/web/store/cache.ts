@@ -5,7 +5,7 @@ import { WritableDraft } from 'immer/dist/internal'
 
 const getState = <T>(state: WritableDraft<Record<string, T>>) => {
   return {
-    existingCodes: new Set(Object.keys(state)),
+    existingKeys: new Set(Object.keys(state)),
     newState: state,
   }
 }
@@ -14,22 +14,28 @@ export const cache = createSlice({
   name: 'cache',
   initialState: baseInitialState.cache,
   reducers: {
+    addDegree: (cache, action: PayloadAction<ModtreeApiResponse.Degree>) => {
+      const { existingKeys, newState } = getState(cache.degrees)
+      if (!existingKeys.has(action.payload.id)) {
+        newState[action.payload.id] = action.payload
+      }
+    },
     addModulesCondensed: (
       cache,
       action: PayloadAction<ModtreeApiResponse.ModuleCondensed[]>
     ) => {
-      const { existingCodes, newState } = getState(cache.modulesCondensed)
+      const { existingKeys, newState } = getState(cache.modulesCondensed)
       action.payload
-        .filter((module) => !existingCodes.has(module.moduleCode))
+        .filter((module) => !existingKeys.has(module.moduleCode))
         .forEach((module) => {
           newState[module.moduleCode] = module
         })
       cache.modulesCondensed = newState
     },
     addModules: (cache, action: PayloadAction<ModtreeApiResponse.Module[]>) => {
-      const { existingCodes, newState } = getState(cache.modules)
+      const { existingKeys, newState } = getState(cache.modules)
       action.payload
-        .filter((module) => !existingCodes.has(module.moduleCode))
+        .filter((module) => !existingKeys.has(module.moduleCode))
         .forEach((module) => {
           newState[module.moduleCode] = module
         })
@@ -38,5 +44,5 @@ export const cache = createSlice({
   },
 })
 
-export const { addModulesCondensed, addModules } = cache.actions
+export const { addModulesCondensed, addModules, addDegree } = cache.actions
 export default cache.reducer
