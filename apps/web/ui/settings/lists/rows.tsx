@@ -25,7 +25,6 @@ export function BaseRow(props: RowProps) {
       className={flatten(
         'border-b border-b-gray-300 last:border-none',
         'flex items-center px-4 h-14',
-        'bg-white',
         className
       )}
       {...rest}
@@ -50,7 +49,7 @@ export function BaseRow(props: RowProps) {
 const ModuleRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest}>
+    <BaseRow {...rest} className="bg-white">
       <ModuleIcon className="mr-2" />
       {children}
     </BaseRow>
@@ -60,7 +59,7 @@ const ModuleRow = (props: RowProps) => {
 const DegreeRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest} editable>
+    <BaseRow {...rest} editable className="bg-white">
       <DegreeIcon className="mr-2" />
       {children}
     </BaseRow>
@@ -70,7 +69,7 @@ const DegreeRow = (props: RowProps) => {
 const GraphRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest}>
+    <BaseRow {...rest} className="bg-white">
       <GraphIcon className="mr-2" />
       <a>{children}</a>
     </BaseRow>
@@ -80,7 +79,7 @@ const GraphRow = (props: RowProps) => {
 const HeaderRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest} className="font-semibold bg-gray-100">
+    <BaseRow {...rest} className="font-semibold">
       {children}
     </BaseRow>
   )
