@@ -97,6 +97,12 @@ export const routes: Route[] = [
     validators: [],
   },
   {
+    method: 'get',
+    route: '/degree/:degreeId/get-full',
+    fn: DegreeApi.getFull,
+    validators: [],
+  },
+  {
     method: 'post',
     route: '/degree',
     fn: DegreeApi.create,

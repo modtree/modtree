@@ -1,13 +1,6 @@
 import { Api } from '@modtree/repo-api'
-import { CustomReqQuery } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
-
-type ListRequest = {
-  id?: string
-  authZeroId?: string
-  email?: string
-}
 
 export class DegreeApi {
   /**
@@ -26,8 +19,20 @@ export class DegreeApi {
    *
    * @param {Api} api
    */
-  static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
+  static get = (api: Api) => async (req: Request) => {
     return api.degreeRepo.findOneById(req.params.degreeId).then(flatten.degree)
+  }
+
+  /**
+   * gets one full Degree
+   *
+   * @param {Api} api
+   */
+  static getFull = (api: Api) => async (req: Request) => {
+    return api.degreeRepo.findOneOrFail({
+      where: { id: req.params.degreeId },
+      relations: api.relations.degree,
+    })
   }
 
   /**
