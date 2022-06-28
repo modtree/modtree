@@ -24,14 +24,14 @@ export function GraphListSection(props: {
                 Graphs
               </Row.Header>
               {contents.map(({ degree, graphs }, index) => (
-                <>
-                  <Row.Header key={dashed(degree, index)}>{degree}</Row.Header>
+                <div key={dashed(degree, index)}>
+                  <Row.Header>{degree}</Row.Header>
                   {graphs.map((graph, index) => (
                     <Row.Graph key={dashed(degree, graph, index)}>
                       {degree}/{graph}
                     </Row.Graph>
                   ))}
-                </>
+                </div>
               ))}
             </div>
           </>
