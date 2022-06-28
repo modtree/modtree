@@ -11,14 +11,14 @@ const db = getSource(dbName)
 let app: Express
 let api: Api
 let findOneOrFail: jest.SpyInstance
-let insertDegrees: jest.SpyInstance
+let setMainDegree: jest.SpyInstance
 
 beforeAll(() =>
   setup(db).then(() => {
     api = new Api(db)
     app = getApp(api)
     findOneOrFail = jest.spyOn(api.userRepo, 'findOneOrFail')
-    insertDegrees = jest.spyOn(api.userRepo, 'insertDegrees')
+    setMainDegree = jest.spyOn(api.userRepo, 'setMainDegree')
   })
 )
 beforeEach(() => jest.clearAllMocks())
@@ -26,8 +26,8 @@ afterAll(() => teardown(db))
 
 async function testRequest() {
   await request(app)
-    .patch('/user/924a4c06-4ccb-4208-8791-ecae4099a763/degree')
-    .send({ degreeIds: ['a', 'b'] })
+    .patch('/user/924a4c06-4ccb-4208-8791-ecae4099a763/main-degree')
+    .send({ degreeId: 'id' })
 }
 
 test('`findOneOrFail` is called once', async () => {
@@ -36,13 +36,13 @@ test('`findOneOrFail` is called once', async () => {
   expect(findOneOrFail).toBeCalledTimes(1)
 })
 
-test('`insertDegrees` is called zero times', async () => {
+test('`setMainDegree` is called zero times', async () => {
   /**
    * called zero times because there is no valid user found to operate on
    */
   await testRequest()
 
-  expect(insertDegrees).toBeCalledTimes(0)
+  expect(setMainDegree).toBeCalledTimes(0)
 })
 
 test('`findOneOrFail` is called with correct args', async () => {

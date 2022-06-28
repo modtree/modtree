@@ -30,6 +30,7 @@ export type IUser = IBase & {
   modulesDoing: IModule[]
   savedDegrees: IDegree[]
   savedGraphs: IGraph[]
+  mainDegree: IDegree
 }
 
 export type IDegree = IBase & {

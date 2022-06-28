@@ -168,6 +168,28 @@ export class UserRepository
   }
 
   /**
+   * Sets the main degree of a user.
+   *
+   * If the degree is not in savedDegrees, throws error.
+   *
+   * @param {User} user
+   * @param {string} degreeId
+   * @returns {Promise<User>}
+   */
+  async setMainDegree(user: User, degreeId: string): Promise<User> {
+    return this.degreeRepo.findOneByOrFail({ id: degreeId }).then((degree) => {
+      // if the degree is not in saved
+      const savedDegreeIds = user.savedDegrees.map((degree) => degree.id)
+      if (!savedDegreeIds.includes(degreeId)) {
+        throw new Error('Degree not in savedDegrees')
+      }
+      // set main degree
+      user.mainDegree = degree
+      return this.save(user)
+    })
+  }
+
+  /**
    * Insert previously saved degrees to a user.
    *
    * @param {User} user

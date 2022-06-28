@@ -106,6 +106,7 @@ export const EmptyResponse: EmptyResponseProps = {
     modulesDoing: [],
     savedGraphs: [],
     savedDegrees: [],
+    mainDegree: '',
     matriculationYear: 0,
     graduationYear: 0,
     graduationSemester: 0,

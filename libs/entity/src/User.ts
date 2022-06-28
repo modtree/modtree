@@ -5,6 +5,7 @@ import {
   ManyToMany,
   JoinTable,
   PrimaryColumn,
+  ManyToOne,
 } from 'typeorm'
 import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
 
@@ -50,4 +51,8 @@ export class User implements IUser {
   @ManyToMany('Graph', 'user')
   @JoinTable()
   savedGraphs: IGraph[]
+
+  @ManyToOne('Degree', 'user')
+  @JoinTable()
+  mainDegree: IDegree
 }
