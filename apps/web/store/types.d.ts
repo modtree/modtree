@@ -3,7 +3,7 @@ import { Module, ModuleCondensed } from '@modtree/entity'
 import { ModtreeApiResponse } from '@modtree/types'
 
 export type ModuleCondensedMap = {
-  [key: string]: ModtreeApiResponse.ModuleCondensed
+  [key: string]: ModuleCondensed
 }
 
 export type ContextMenuProps = {
@@ -28,7 +28,7 @@ export type ReduxState = {
     modalModule: ModtreeApiResponse.Module
   }
   cache: {
-    modulesCondensed: Record<string, ModtreeApiResponse.ModuleCondensed>
+    modulesCondensed: Record<string, ModuleCondensed>
     modules: Record<string, ModtreeApiResponse.Module>
     degrees: Record<string, ModtreeApiResponse.Degree>
   }

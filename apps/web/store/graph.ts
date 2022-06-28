@@ -1,4 +1,5 @@
-import { ModtreeApiResponse, ModuleNodeProps } from '@modtree/types'
+import { ModuleCondensed } from '@modtree/entity'
+import { ModtreeApiResponse } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { baseInitialState } from './initial-state'
@@ -14,18 +15,18 @@ export const graph = createSlice({
     },
     setGraphSelectedCodes: (
       graph,
-      action: PayloadAction<Node<ModuleNodeProps>[]>
+      action: PayloadAction<Node<ModuleCondensed>[]>
     ) => {
       graph.selectedCodes = action.payload.map((node) => node.data.moduleCode)
     },
-    addModuleNode: (graph, action: PayloadAction<Node<ModuleNodeProps>>) => {
+    addModuleNode: (graph, action: PayloadAction<Node<ModuleCondensed>>) => {
       const node = action.payload
       const currentCodes = graph.flowNodes.map((n) => n.data.moduleCode)
       if (!currentCodes.includes(node.data.moduleCode)) {
         graph.flowNodes = [...graph.flowNodes, node]
       }
     },
-    updateModuleNode: (graph, action: PayloadAction<Node<ModuleNodeProps>>) => {
+    updateModuleNode: (graph, action: PayloadAction<Node<ModuleCondensed>>) => {
       const node = action.payload
       const index = graph.flowNodes.findIndex(
         (x) => x.data.moduleCode === node.data.moduleCode

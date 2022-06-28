@@ -1,5 +1,5 @@
 import type { Node, Edge } from 'react-flow-renderer'
-import { ModuleNodeProps } from './flow'
+import { ModtreeApiResponse } from '.'
 import type { SemesterData, NUSModuleAttributes, PrereqTree } from './nusmods'
 
 export type EntityName =
@@ -14,7 +14,7 @@ export type IBase = {
 }
 
 export type GraphFrontendProps = {
-  flowNodes: Node<ModuleNodeProps>[]
+  flowNodes: Node<ModtreeApiResponse.ModuleCondensed>[]
   flowEdges: Edge[]
 }
 
