@@ -12,6 +12,8 @@ import { useAppDispatch } from '@/store/redux'
 import { setUser } from '@/store/user'
 import { setDegree } from '@/store/degree'
 import { backend } from '../utils'
+import { setGraph } from '@/store/graph'
+import { log } from '@modtree/utils'
 
 export default function Modtree() {
   const { isLoading, user } = useUser()
@@ -22,15 +24,19 @@ export default function Modtree() {
    * load current user, current graph, current degree
    */
   useEffect(() => {
+    if (isLoading) return
     if (user) {
       backend
-        .post(`/user/${user.sub}/login`, {
-          email: user.email,
-        })
+        .get(`/user/${user.modtree.id}`)
         .then((res) => dispatch(setUser(res.data)))
       backend
         .get(`/degree/${user.modtree.savedDegrees[0]}`)
         .then((res) => dispatch(setDegree(res.data)))
+      backend
+        .get(`/graph/${user.modtree.savedGraphs[0]}`)
+        .then((res) => dispatch(setGraph(res.data)))
+    } else {
+      log.yellow('user is not logged in')
     }
   }, [isLoading])
 

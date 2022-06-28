@@ -1,4 +1,4 @@
-import { ModuleNodeProps } from '@modtree/types'
+import { ModtreeApiResponse, ModuleNodeProps } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { baseInitialState } from './initial-state'
@@ -7,6 +7,11 @@ export const graph = createSlice({
   name: 'graph',
   initialState: baseInitialState.graph,
   reducers: {
+    setGraph: (graph, action: PayloadAction<ModtreeApiResponse.Graph>) => {
+      Object.entries(action.payload).forEach(([key, value]) => {
+        graph[key] = value
+      })
+    },
     setGraphSelectedCodes: (
       graph,
       action: PayloadAction<Node<ModuleNodeProps>[]>
@@ -30,6 +35,10 @@ export const graph = createSlice({
   },
 })
 
-export const { setGraphSelectedCodes, addModuleNode, updateModuleNode } =
-  graph.actions
+export const {
+  setGraphSelectedCodes,
+  addModuleNode,
+  updateModuleNode,
+  setGraph,
+} = graph.actions
 export default graph.reducer
