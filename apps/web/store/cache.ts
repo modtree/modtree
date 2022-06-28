@@ -14,7 +14,10 @@ export const cache = createSlice({
   name: 'cache',
   initialState: baseInitialState.cache,
   reducers: {
-    addDegree: (cache, action: PayloadAction<ModtreeApiResponse.Degree>) => {
+    addDegreeToCache: (
+      cache,
+      action: PayloadAction<ModtreeApiResponse.Degree>
+    ) => {
       const { existingKeys, newState } = getState(cache.degrees)
       if (!existingKeys.has(action.payload.id)) {
         newState[action.payload.id] = action.payload
@@ -47,6 +50,9 @@ export const cache = createSlice({
   },
 })
 
-export const { addModulesCondensedToCache, addModulesToCache, addDegree } =
-  cache.actions
+export const {
+  addModulesCondensedToCache,
+  addModulesToCache,
+  addDegreeToCache,
+} = cache.actions
 export default cache.reducer

@@ -5,7 +5,7 @@ import { Row } from '@/ui/settings/lists/rows'
 import { dashed } from '@/utils/array'
 import { Slash } from '@/ui/inline'
 import { Dispatch, SetStateAction } from 'react'
-import { useAppDispatch } from '@/store/redux'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, setBuildTitle } from '@/store/search'
 
 export function Main(props: {
@@ -14,6 +14,8 @@ export function Main(props: {
 }) {
   const hasDegree = props.content.length !== 0
   const dispatch = useAppDispatch()
+  const degreeIds = useAppSelector((state) => state.user.savedDegrees)
+  const degreeCache = useAppSelector((state) => state.cache.degrees)
   return (
     <div className="mb-12">
       <SettingsSection
@@ -25,20 +27,22 @@ export function Main(props: {
           <>
             <p>{text.degreeListSection.summary}</p>
             <div className="ui-rectangle flex flex-col overflow-hidden">
-              {props.content.map((degree, index) => (
-                <Row.Degree
-                  key={dashed(degree.title, index)}
-                  onEdit={() => {
-                    dispatch(clearBuildList())
-                    dispatch(setBuildTitle(degree.title))
-                    props.setPage('edit')
-                  }}
-                >
-                  <b>{degree.title}</b>
-                  <Slash />
-                  {degree.graphCount} graphs
-                </Row.Degree>
-              ))}
+              {degreeIds.map((degreeId, index) => {
+                const degree = degreeCache[degreeId]
+                return (
+                  <Row.Degree
+                    key={dashed(degree.title, index)}
+                    onEdit={() => {
+                      dispatch(clearBuildList())
+                      dispatch(setBuildTitle(degree.title))
+                      props.setPage('edit')
+                    }}
+                  >
+                    <b>{degree.title}</b>
+                    <Slash />0 graphs
+                  </Row.Degree>
+                )
+              })}
             </div>
           </>
         ) : (
