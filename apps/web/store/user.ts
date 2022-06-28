@@ -7,9 +7,7 @@ export const user = createSlice({
   initialState: baseInitialState.user,
   reducers: {
     updateModulesDone: (user, action: PayloadAction<string[]>) => {
-      console.log('redux user, update mods done:', action.payload)
-      const set = new Set(user.modulesDone)
-      action.payload.forEach((code) => set.add(code))
+      const set = new Set(action.payload)
       user.modulesDone = Array.from(set)
     },
     setUser: (user, action: PayloadAction<ModtreeApiResponse.User>) => {

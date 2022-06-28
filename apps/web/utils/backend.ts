@@ -4,6 +4,7 @@ import { AnyAction, Dispatch } from 'redux'
 import axios from 'axios'
 import { addModulesCondensed } from '@/store/cache'
 import { ModtreeApiResponse } from '@modtree/types'
+import store from '@/store/redux'
 
 export const backend = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND,
@@ -49,10 +50,13 @@ export async function updateCachedModulesCondensed(
   dispatch: Dispatch<AnyAction>,
   moduleCodes: string[]
 ) {
+  const currentCache = store.getState().cache.modulesCondensed
+  const currentCodes = new Set(Object.keys(currentCache))
+  const toFetch = moduleCodes.filter((code) => !currentCodes.has(code))
   return backend
     .get<ModtreeApiResponse.ModuleCondensed[]>('/modules-condensed', {
       params: {
-        moduleCodes,
+        moduleCodes: toFetch,
       },
     })
     .then((res) => dispatch(addModulesCondensed(res.data)))

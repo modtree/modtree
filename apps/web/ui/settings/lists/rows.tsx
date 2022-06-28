@@ -33,7 +33,7 @@ export function BaseRow(props: RowProps) {
 const ModuleRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest} deletable>
+    <BaseRow {...rest}>
       <ModuleIcon className="mr-2" />
       {children}
     </BaseRow>

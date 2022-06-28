@@ -20,10 +20,8 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
     doing: user.modulesDoing.length !== 0,
   }
   useEffect(() => {
-    const required = [...user.modulesDone, ...user.modulesDoing]
-    const existing = new Set(Object.keys(cachedModulesCondensed))
-    const toFetch = required.filter((code) => !existing.has(code))
-    updateCachedModulesCondensed(dispatch, toFetch)
+    const codes = [...user.modulesDone, ...user.modulesDoing]
+    updateCachedModulesCondensed(dispatch, codes)
   }, [user.modulesDone, user.modulesDoing])
   return (
     <>
@@ -57,7 +55,8 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
       <div className="mb-12">
         <SettingsSection
           title="Modules done"
-          addButtonText="Add done"
+          addButtonColor={hasModules.done ? 'gray' : 'green'}
+          addButtonText={hasModules.done ? 'Modify' : 'Add done'}
           onAddClick={() => {
             dispatch(
               setBuildList(

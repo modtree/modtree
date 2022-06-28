@@ -37,8 +37,10 @@ export type MenuItem = {
   callback?: () => void
 }
 
+export type ButtonColor = 'red' | 'blue' | 'green' | 'gray'
+
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  color?: 'red' | 'blue' | 'green' | 'gray'
+  color?: ButtonColor
 }
 
 export type HeroIcon = (_: ComponentProps<'svg'>) => JSX.Element
