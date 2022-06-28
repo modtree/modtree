@@ -12,6 +12,7 @@ export type ContextMenuProps = {
 }
 
 export type ReduxState = {
+  user: ModtreeApiResponse.User
   graph: ModtreeApiResponse.Graph & {
     selectedCodes: string[]
   }

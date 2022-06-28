@@ -2,12 +2,7 @@ import type { ReduxState } from './types'
 import { EmptyResponse } from '@modtree/utils'
 
 export const baseInitialState: ReduxState = {
-  base: {
-    user: EmptyResponse.User,
-    degree: EmptyResponse.Degree,
-    graph: EmptyResponse.Graph,
-    modulesCondensed: {},
-  },
+  user: EmptyResponse.User,
   graph: {
     id: '',
     user: '',
