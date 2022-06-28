@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource, In, Repository } from 'typeorm'
 import { User, Module, Degree, Graph } from '@modtree/entity'
 import {
   FindByKey,
@@ -80,13 +80,14 @@ export class UserRepository
    */
   async getEligibleModules(user: User): Promise<Module[]> {
     // 1. get post-reqs
-    const postReqs = await this.getPostReqs(user)
-    if (!postReqs) return []
+    const postReqs = this.getPostReqs(user)
     // 2. filter post-reqs
-    const results = await Promise.all(
-      postReqs.map((one) => this.canTakeModule(user, one.moduleCode))
+    const results = postReqs.then((postReqs) =>
+      Promise.all(postReqs.map((m) => this.canTakeModule(user, m.moduleCode)))
     )
-    const filtered = postReqs.filter((_, idx) => results[idx])
+    const filtered = Promise.all([postReqs, results]).then(
+      ([postReqs, results]) => postReqs.filter((_, index) => results[index])
+    )
     return filtered
   }
 
@@ -130,9 +131,8 @@ export class UserRepository
    */
   async hasTakenModule(user: User, moduleCode: string): Promise<boolean> {
     // load module relations
-    const _user = await this.findOneById(user.id)
-    const modulesDoneCodes = _user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = _user.modulesDoing.map(flatten.module)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     return (
       modulesDoneCodes.includes(moduleCode) ||
       modulesDoingCodes.includes(moduleCode)
@@ -155,14 +155,11 @@ export class UserRepository
     moduleCodes: string[]
   ): Promise<string[]> {
     // load module relations
-    const _user = await this.findOneById(user.id)
-    const modulesDoneCodes = _user.modulesDone.map(flatten.module)
-    const modulesDoingCodes = _user.modulesDoing.map(flatten.module)
+    const modulesDoneCodes = user.modulesDone.map(flatten.module)
+    const modulesDoingCodes = user.modulesDoing.map(flatten.module)
     const modulesTakenCodes = modulesDoneCodes.concat(modulesDoingCodes)
     // result
-    const result = await Promise.all(
-      moduleCodes.map((one) => !modulesTakenCodes.includes(one))
-    )
+    const result = moduleCodes.map((code) => !modulesTakenCodes.includes(code))
     const filtered = moduleCodes.filter((_, idx) => result[idx])
     return filtered
   }
@@ -197,13 +194,12 @@ export class UserRepository
    * @returns {Promise<User>}
    */
   async insertDegrees(user: User, degreeIds: string[]): Promise<User> {
-    // 1. load savedDegrees relations
-    const _user = await this.findOneById(user.id)
-    // 2. find degrees in DB
-    const degrees = await this.degreeRepo.findByIds(degreeIds)
-    // 3. append degrees
-    _user.savedDegrees.push(...degrees)
-    return this.save(_user)
+    // 1. find degrees in DB
+    return this.degreeRepo.findBy({ id: In(degreeIds) }).then((degrees) => {
+      // 2. append degrees
+      user.savedDegrees.push(...degrees)
+      return this.save(user)
+    })
   }
 
   /**
@@ -214,10 +210,8 @@ export class UserRepository
    * @returns {Promise<Degree>}
    */
   async findDegree(user: User, degreeId: string): Promise<Degree> {
-    // 1. load savedDegrees relations
-    const _user = await this.findOneById(user.id)
-    // 2. find degree among user's savedDegrees
-    const filtered = _user.savedDegrees.filter(
+    // find degree among user's savedDegrees
+    const filtered = user.savedDegrees.filter(
       (degree) => degree.id === degreeId
     )
     if (filtered.length === 0) throw new Error('Degree not found in User')
@@ -232,19 +226,17 @@ export class UserRepository
    * @returns {Promise<User>}
    */
   async removeDegree(user: User, degreeId: string): Promise<User> {
-    // 1. load savedDegrees relations
-    const _user = await this.findOneById(user.id)
-    // 2. find degree among user's savedDegrees
-    const filtered = _user.savedDegrees.filter(
+    // 1. find degree among user's savedDegrees
+    const filtered = user.savedDegrees.filter(
       (degree) => degree.id !== degreeId
     )
-    // 3. find degree among user's savedDegrees
-    if (filtered.length === _user.savedDegrees.length) {
+    // 2. find degree among user's savedDegrees
+    if (filtered.length === user.savedDegrees.length) {
       throw new Error('Degree not found in User')
     }
-    // 4. update entity and save
-    _user.savedDegrees = filtered
-    return this.save(_user)
+    // 3. update entity and save
+    user.savedDegrees = filtered
+    return this.save(user)
   }
 
   /**
@@ -255,13 +247,12 @@ export class UserRepository
    * @returns {Promise<User>}
    */
   async insertGraphs(user: User, graphIds: string[]): Promise<User> {
-    // 1. load savedGraphs relations
-    const _user = await this.findOneById(user.id)
-    // 2. find graphs in DB
-    const graphs = await this.graphRepo.findByIds(graphIds)
-    // 3. append graphs
-    _user.savedGraphs.push(...graphs)
-    return this.save(_user)
+    // 1. find graphs in DB
+    return this.graphRepo.findBy({ id: In(graphIds) }).then((graphs) => {
+      // 2. append graphs
+      user.savedGraphs.push(...graphs)
+      return this.save(user)
+    })
   }
 
   /**
@@ -277,30 +268,28 @@ export class UserRepository
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<User> {
-    // 1. load relations
-    const _user = await this.findOneById(user.id)
-    // 2. remove moduleCode from user if exists
-    _user.modulesDone = _user.modulesDone.filter(
-      (one) => !moduleCodes.includes(one.moduleCode)
+    // 1. remove moduleCode from user if exists
+    user.modulesDone = user.modulesDone.filter(
+      (m) => !moduleCodes.includes(m.moduleCode)
     )
-    _user.modulesDoing = _user.modulesDoing.filter(
-      (one) => !moduleCodes.includes(one.moduleCode)
+    user.modulesDoing = user.modulesDoing.filter(
+      (m) => !moduleCodes.includes(m.moduleCode)
     )
-    // 3. add module to appropriate array (if necessary)
+    // 2. add module to appropriate array (if necessary)
     return Promise.all(
       moduleCodes.map((moduleCode) =>
         this.moduleRepo.findOneByOrFail({ moduleCode })
       )
     ).then((modules) => {
       if (status === ModuleStatus.DONE) {
-        _user.modulesDone.push(...modules)
+        user.modulesDone.push(...modules)
       } else if (status === ModuleStatus.DOING) {
-        _user.modulesDoing.push(...modules)
+        user.modulesDoing.push(...modules)
       } else {
         // ModuleStatus.TAKEN
         // do nothing
       }
-      return this.save(_user)
+      return this.save(user)
     })
   }
 }
