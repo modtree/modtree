@@ -109,21 +109,18 @@ export class Api {
    * modules-only state first.
    */
   async frontendSetup() {
-    const user1 = this.userRepo.initialize({
-      authZeroId: 'auth0|012345678901234567890001',
-      email: 'chandler@bing.com',
-      username: 'chandler',
-    })
-    const user2 = this.userRepo.initialize({
-      authZeroId: 'auth0|012345678901234567890002',
-      email: 'joey@tribbiani.com',
-      username: 'joey',
-    })
-    const user3 = this.userRepo.initialize({
-      authZeroId: 'auth0|012345678901234567890003',
-      email: 'ross@geller.com',
-      username: 'ross',
-    })
+    const user1 = this.initializeUser(
+      'auth0|012345678901234567890001',
+      'chandler@bing.com'
+    )
+    const user2 = this.initializeUser(
+      'auth0|012345678901234567890002',
+      'joey@tribbiani.com'
+    )
+    const user3 = this.initializeUser(
+      'auth0|012345678901234567890003',
+      'ross@geller.com'
+    )
     return Promise.all([user1, user2, user3])
   }
 }

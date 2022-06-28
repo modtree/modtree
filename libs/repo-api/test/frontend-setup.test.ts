@@ -19,6 +19,18 @@ test('runs with no errors', async () => {
 
 test('has 3 users', async () => {
   await Repo.User.count().then((count) => {
-    expect(count).toBe(3)
+    expect(count).toEqual(3)
+  })
+})
+
+test('has 3 degrees', async () => {
+  await Repo.Degree.count().then((count) => {
+    expect(count).toEqual(3)
+  })
+})
+
+test('has 3 graphs', async () => {
+  await Repo.Graph.count().then((count) => {
+    expect(count).toEqual(3)
   })
 })
