@@ -176,18 +176,15 @@ export class UserRepository
    * @returns {Promise<User>}
    */
   async setMainDegree(user: User, degreeId: string): Promise<User> {
-    return Promise.all([
-      this.findOneById(user.id),
-      this.degreeRepo.findOneByOrFail({ id: degreeId }),
-    ]).then(([_user, degree]) => {
+    return this.degreeRepo.findOneByOrFail({ id: degreeId }).then((degree) => {
       // if the degree is not in saved
-      const savedDegreeIds = _user.savedDegrees.map((one) => one.id)
+      const savedDegreeIds = user.savedDegrees.map((degree) => degree.id)
       if (!savedDegreeIds.includes(degreeId)) {
         throw new Error('Degree not in savedDegrees')
       }
       // set main degree
-      _user.mainDegree = degree
-      return this.save(_user)
+      user.mainDegree = degree
+      return this.save(user)
     })
   }
 
