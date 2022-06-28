@@ -1,5 +1,5 @@
 import DropdownMenu from './dropdown-menu'
 import BaseContextMenu from './context-menu'
-import MenuItems from './entries'
+import Entries from './entries'
 
-export { DropdownMenu, BaseContextMenu, MenuItems }
+export { DropdownMenu, BaseContextMenu, Entries }

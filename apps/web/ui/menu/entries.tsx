@@ -5,7 +5,7 @@ import { MenuLink } from './link'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
 
-export default function MenuItems(props: {
+export default function Entries(props: {
   items: MenuItem[]
   children?: ReactElement | ReactElement[]
   className?: string
@@ -34,10 +34,11 @@ export default function MenuItems(props: {
       <Children />
       <div className={flatten('py-2', className)}>
         {items.map((menuItem, index) => {
+          const ref = createRef<HTMLAnchorElement>()
           return (
             <Menu.Item key={`${menuItem.text}-${index}`}>
               <MenuLink
-                ref={createRef<HTMLAnchorElement>()}
+                ref={ref}
                 onClick={menuItem.callback}
                 href={menuItem.href || ''}
                 className={flatten(
