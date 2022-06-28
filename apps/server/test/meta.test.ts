@@ -62,4 +62,8 @@ test('no extra tests exists', () => {
   fileRoutes.forEach(({ route, method }) => {
     expect(apiRoutes).toContainEqual({ route, method })
   })
+  const rootDir = join(__dirname, '../../..')
+  const sortedRoutes = apiRoutes.sort((a, b) => (a.route < b.route ? -1 : 1))
+  const json = JSON.stringify(sortedRoutes, null, 2)
+  fs.writeFileSync(join(rootDir, 'routes.json'), json)
 })
