@@ -59,8 +59,23 @@ export class Api {
   async initializeUser(authZeroId: string, email: string): Promise<User> {
     return Promise.all([
       /** initialize a user and an empty degree */
-      this.userRepo.initialize({ ...emptyInit.User, authZeroId, email }),
-      this.degreeRepo.initialize({ ...emptyInit.Degree, title: 'Untitled' }),
+      this.userRepo.initialize({ authZeroId, email }),
+      this.degreeRepo.initialize({
+        ...emptyInit.Degree,
+        title: 'Computer Science',
+        moduleCodes: [
+          'CS1231S',
+          'CS2030S',
+          'CS2040S',
+          'CS2100',
+          'CS2101',
+          'CS2103T',
+          'CS2106',
+          'CS2109S',
+          'CS3230',
+          'CS2309',
+        ],
+      }),
     ])
       .then(([user, degree]) => {
         return Promise.all([
@@ -121,6 +136,36 @@ export class Api {
       'auth0|012345678901234567890003',
       'ross@geller.com'
     )
-    return Promise.all([user1, user2, user3])
+    const degree1 = user1.then((user) => {
+      const degree = user.savedDegrees[0]
+      degree.title = 'Data Analytics'
+      degree.modules = []
+      return this.degreeRepo.insertModules(degree, [
+        'DSA1101',
+        'CS2040',
+        'DSA2101',
+        'DSA2102',
+        'MA2001',
+        'MA2002',
+        'MA2311',
+        'ST2131',
+        'ST2132',
+        'CS3244',
+        'DSA3101',
+        'DSA3102',
+        'ST3131',
+      ])
+    })
+    const degree2 = user2.then((user) => {
+      const degree = user.savedDegrees[0]
+      degree.title = 'Improvisation'
+      return this.degreeRepo.save(degree)
+    })
+    const degree3 = user3.then((user) => {
+      const degree = user.savedDegrees[0]
+      degree.title = 'Paleontology'
+      return this.degreeRepo.save(degree)
+    })
+    return Promise.all([user1, user2, user3, degree1, degree2, degree3])
   }
 }
