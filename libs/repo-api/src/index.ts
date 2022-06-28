@@ -102,4 +102,28 @@ export class Api {
       return this.initializeUser(authZeroId, email)
     })
   }
+
+  /**
+   * sets up database state for frontend testing
+   * do run the postgres.sh script at root to restore the database to a
+   * modules-only state first.
+   */
+  async frontendSetup() {
+    const user1 = this.userRepo.initialize({
+      authZeroId: 'auth0|012345678901234567890001',
+      email: 'chandler@bing.com',
+      username: 'chandler',
+    })
+    const user2 = this.userRepo.initialize({
+      authZeroId: 'auth0|012345678901234567890002',
+      email: 'joey@tribbiani.com',
+      username: 'joey',
+    })
+    const user3 = this.userRepo.initialize({
+      authZeroId: 'auth0|012345678901234567890003',
+      email: 'ross@geller.com',
+      username: 'ross',
+    })
+    return Promise.all([user1, user2, user3])
+  }
 }

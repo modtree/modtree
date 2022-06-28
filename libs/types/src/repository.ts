@@ -22,7 +22,7 @@ export enum ModuleStatus {
  * it is a interface that will be extended to form the final Repositories of modtree
  */
 interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
-  initialize(props: InitProps): Promise<Entity>
+  initialize(props: Partial<InitProps>): Promise<Entity>
   deleteAll(): Promise<void>
   findOneById: FindByKey<Entity>
 }
