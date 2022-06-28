@@ -1,7 +1,7 @@
 import { DegreeIcon, GraphIcon, ModuleIcon } from '@/ui/icons'
 import { ExtendedProps } from 'types'
 import { flatten } from '@/utils/tailwind'
-import { Button } from '@/ui/buttons'
+import { Button, DeleteButton } from '@/ui/buttons'
 
 type RowProps = {
   deletable?: boolean
@@ -37,9 +37,10 @@ export function BaseRow(props: RowProps) {
           </Button>
         )}
         {deletable && (
-          <Button onClick={onDelete} className="text-sm px-3" color="red">
-            Delete
-          </Button>
+          <DeleteButton onClick={onDelete} />
+          // <Button onClick={onDelete} className="text-sm px-3" color="red">
+          // Delete
+          // </Button>
         )}
       </div>
     </div>
