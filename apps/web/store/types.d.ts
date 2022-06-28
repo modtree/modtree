@@ -33,8 +33,9 @@ export type ReduxState = {
     degrees: Record<string, ModtreeApiResponse.Degree>
   }
   search: {
-    buildList: ModuleCondensed[]
+    buildId: string
     buildTitle: string
+    buildList: ModuleCondensed[]
     searchResults: ModuleCondensed[]
     module: Module[]
     hasResults: boolean

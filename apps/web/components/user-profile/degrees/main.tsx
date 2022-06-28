@@ -6,7 +6,7 @@ import { dashed } from '@/utils/array'
 import { Slash } from '@/ui/inline'
 import { Dispatch, SetStateAction } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { clearBuildList, setBuildTitle } from '@/store/search'
+import { clearBuildList, setBuildId, setBuildTitle } from '@/store/search'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Degrees']>>
@@ -35,11 +35,11 @@ export function Main(props: {
                     onEdit={() => {
                       dispatch(clearBuildList())
                       dispatch(setBuildTitle(degree.title))
+                      dispatch(setBuildId(degree.id))
                       props.setPage('edit')
                     }}
                   >
                     <b>{degree.title}</b>
-                    <Slash />0 graphs
                   </Row.Degree>
                 )
               })}

@@ -27,6 +27,7 @@ export const baseInitialState: ReduxState = {
     modules: {},
   },
   search: {
+    buildId: '',
     buildTitle: '',
     buildList: [],
     searchResults: [],

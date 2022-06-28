@@ -3,25 +3,27 @@ import { SettingsSection } from '@/ui/settings/lists/base'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
-import { SetState } from '@modtree/types'
+import { ModtreeApiResponse, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
-import { ModuleCondensed } from '@modtree/entity'
 import { useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
 import { backend } from '@/utils/backend'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
-  const { buildList, buildTitle } = useAppSelector((state) => state.search)
+  const { buildList, buildTitle, buildId } = useAppSelector(
+    (state) => state.search
+  )
   const state = {
     title: useState<string>(buildTitle),
-    moduleCode: useState<string>(''),
-    modules: useState<ModuleCondensed[]>([
-      { title: 'yes', moduleCode: 'MA1000', moduleLevel: 1000, id: '' },
-    ]),
   }
-  // useEffect(() => {
-  //   backend.get(`/degree/${}`)
-  // }, [])
+  useEffect(() => {
+    const degree = backend
+      .get<ModtreeApiResponse.Degree>(`/degree/${buildId}`)
+      .then((res) => res.data)
+    degree.then((degree) => {
+      console.log('fetched degree', degree)
+    })
+  }, [])
   return (
     <div className="flex flex-col">
       <SettingsSection
