@@ -4,23 +4,23 @@ import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { updateModulesDone } from '@/store/user'
+import { updateModulesDoing } from '@/store/user'
 import { SelectedModules } from './selected-modules'
 import { updateCachedModulesCondensed } from '@/utils/backend'
 
-export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
+export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
     const codes = buildList.map((m) => m.moduleCode)
-    dispatch(updateModulesDone(codes))
+    dispatch(updateModulesDoing(codes))
     updateCachedModulesCondensed(dispatch, codes)
     props.setPage('main')
   }
   return (
     <div className="flex flex-col">
       <SettingsSection
-        baseTitle="Modules done"
+        baseTitle="Modules doing"
         onBack={() => props.setPage('main')}
         title="Update"
         className="mb-8"

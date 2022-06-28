@@ -7,8 +7,10 @@ export const user = createSlice({
   initialState: baseInitialState.user,
   reducers: {
     updateModulesDone: (user, action: PayloadAction<string[]>) => {
-      const set = new Set(action.payload)
-      user.modulesDone = Array.from(set)
+      user.modulesDone = action.payload
+    },
+    updateModulesDoing: (user, action: PayloadAction<string[]>) => {
+      user.modulesDoing = action.payload
     },
     setUser: (user, action: PayloadAction<ModtreeApiResponse.User>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
@@ -18,5 +20,5 @@ export const user = createSlice({
   },
 })
 
-export const { updateModulesDone, setUser } = user.actions
+export const { updateModulesDone, updateModulesDoing, setUser } = user.actions
 export default user.reducer

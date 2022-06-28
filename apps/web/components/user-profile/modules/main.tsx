@@ -7,7 +7,7 @@ import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { useEffect } from 'react'
 import { updateCachedModulesCondensed } from '@/utils/backend'
-import { clearBuildList, setBuildList } from '@/store/search'
+import { setBuildList } from '@/store/search'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const user = useAppSelector((state) => state.user)
@@ -28,9 +28,14 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
       <div className="mb-12">
         <SettingsSection
           title="Modules doing"
-          addButtonText="Add doing"
+          addButtonColor={hasModules.doing ? 'gray' : 'green'}
+          addButtonText={hasModules.doing ? 'Modify' : 'Add doing'}
           onAddClick={() => {
-            dispatch(clearBuildList())
+            dispatch(
+              setBuildList(
+                user.modulesDoing.map((code) => cachedModulesCondensed[code])
+              )
+            )
             props.setPage('add-doing')
           }}
         >
