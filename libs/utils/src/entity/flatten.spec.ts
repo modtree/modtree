@@ -25,6 +25,7 @@ graph.degree = degree
 graph.modulesHidden = [makeModule('CM1102'), makeModule('PC1432')]
 graph.modulesPlaced = [makeModule('CS1231'), makeModule('MA2219')]
 user.savedGraphs = [graph]
+user.mainGraph = graph
 
 describe('Module', () => {
   test('flattens one', () => {
@@ -74,6 +75,7 @@ describe('User', () => {
       savedDegrees: ['degree_id'],
       savedGraphs: ['graph_id'],
       mainDegree: 'degree_id',
+      mainGraph: 'graph_id',
     })
   })
 

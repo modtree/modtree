@@ -32,6 +32,8 @@ export const flatten = {
       savedGraphs: user.savedGraphs.map((g) => g.id),
       // in case no degree yet
       mainDegree: user.mainDegree ? user.mainDegree.id : '',
+      // in case no graph yet
+      mainGraph: user.mainGraph ? user.mainGraph.id : '',
     }
   },
 

@@ -31,6 +31,7 @@ export type IUser = IBase & {
   savedDegrees: IDegree[]
   savedGraphs: IGraph[]
   mainDegree: IDegree
+  mainGraph: IGraph
 }
 
 export type IDegree = IBase & {

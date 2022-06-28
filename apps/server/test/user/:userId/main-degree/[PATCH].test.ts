@@ -56,6 +56,7 @@ test('`findOneOrFail` is called with correct args', async () => {
       savedDegrees: true,
       savedGraphs: true,
       mainDegree: true,
+      mainGraph: true,
     },
   })
 })

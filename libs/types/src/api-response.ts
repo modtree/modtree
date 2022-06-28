@@ -18,6 +18,7 @@ export type User = Modify<
     savedDegrees: string[]
     savedGraphs: string[]
     mainDegree: string
+    mainGraph: string
   }
 >
 
