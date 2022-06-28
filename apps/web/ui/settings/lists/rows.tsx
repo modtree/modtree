@@ -8,13 +8,8 @@ type RowProps = {
   onDelete?: () => void
 } & ExtendedProps['div']
 
-export function BaseRow(
-  props: ExtendedProps['div'] & {
-    deletable?: boolean
-    onDelete?: () => void
-  }
-) {
-  const { className, children, ...rest } = props
+export function BaseRow(props: RowProps) {
+  const { className, children, deletable, ...rest } = props
   return (
     <div
       className={flatten(
@@ -26,7 +21,7 @@ export function BaseRow(
       {...rest}
     >
       <div className="flex-1">{children}</div>
-      {props.deletable && (
+      {deletable && (
         <Button onClick={props.onDelete} className="text-sm px-3" color="red">
           Delete
         </Button>
@@ -35,17 +30,25 @@ export function BaseRow(
   )
 }
 
-const ModuleRow = (props: RowProps) => (
-  <BaseRow {...props} deletable>
-    <ModuleIcon className="mr-2" />
-  </BaseRow>
-)
+const ModuleRow = (props: RowProps) => {
+  const { children, ...rest } = props
+  return (
+    <BaseRow {...rest} deletable>
+      <ModuleIcon className="mr-2" />
+      {children}
+    </BaseRow>
+  )
+}
 
-const DegreeRow = (props: RowProps) => (
-  <BaseRow {...props} deletable>
-    <DegreeIcon className="mr-2" />
-  </BaseRow>
-)
+const DegreeRow = (props: RowProps) => {
+  const { children, ...rest } = props
+  return (
+    <BaseRow {...rest} deletable>
+      <DegreeIcon className="mr-2" />
+      {children}
+    </BaseRow>
+  )
+}
 
 const GraphRow = (props: RowProps) => {
   const { children, ...rest } = props
