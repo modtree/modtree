@@ -3,7 +3,6 @@ import { ReactElement } from 'react'
 import { MenuItem } from 'types'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
-import Link from 'next/link'
 
 export default function Entries(props: {
   items: MenuItem[]

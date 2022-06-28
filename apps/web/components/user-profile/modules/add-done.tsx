@@ -1,7 +1,5 @@
 import { Pages } from 'types'
 import { SettingsSection } from '@/ui/settings/lists/base'
-import { useState } from 'react'
-import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
@@ -35,7 +33,6 @@ function SelectedModules(props: { modules: ModuleCondensed[] }) {
 }
 
 export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
-  const dispatch = useAppDispatch()
   const buildList = useAppSelector((state) => state.search.buildList)
   return (
     <div className="flex flex-col">

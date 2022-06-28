@@ -38,7 +38,6 @@ export const modal = createSlice({
     showContextMenu: (state, action: PayloadAction<ContextMenuProps>) => {
       state.showContextMenu = true
       state.contextMenuProps = action.payload
-      console.log(action.payload)
     },
     setModalModule: (
       state,
