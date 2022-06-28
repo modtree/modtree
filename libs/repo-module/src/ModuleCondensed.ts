@@ -47,8 +47,7 @@ export class ModuleCondensedRepository
    * @returns {Promise<string[]>}
    */
   async getCodes(): Promise<string[]> {
-    const modules = await this.find()
-    return modules.map(flatten.module)
+    return this.find().then((modules) => modules.map(flatten.module))
   }
 
   /**
