@@ -12,8 +12,3 @@ export type FlowEdgeCondensed = {
   source: string
   target: string
 }
-
-export type ModuleNodeProps = {
-  moduleCode: string
-  title: string
-}

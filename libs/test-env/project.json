@@ -3,13 +3,6 @@
   "sourceRoot": "libs/test-env/src",
   "projectType": "library",
   "targets": {
-    "setup": {
-      "executor": "nx:run-commands",
-      "dependsOn": ["build"],
-      "options": {
-        "command": "node dist/libs/test-env/src/hello.js"
-      }
-    },
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],

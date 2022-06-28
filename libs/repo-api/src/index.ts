@@ -57,31 +57,43 @@ export class Api {
    * @returns {Promise<User>}
    */
   async initializeUser(authZeroId: string, email: string): Promise<User> {
-    return Promise.all([
-      /** initialize a user and an empty degree */
-      this.userRepo.initialize({ ...emptyInit.User, authZeroId, email }),
-      this.degreeRepo.initialize({ ...emptyInit.Degree, title: 'Untitled' }),
-    ])
-      .then(([user, degree]) => {
-        return Promise.all([
-          user,
-          degree,
-          /** initialize an empty graph */
-          this.graphRepo.initialize({
-            ...emptyInit.Graph,
-            userId: user.id,
-            degreeId: degree.id,
-          }),
-        ])
+    const user = this.userRepo.initialize({ authZeroId, email })
+    const degree = this.degreeRepo.initialize({
+      ...emptyInit.Degree,
+      title: 'Computer Science',
+      moduleCodes: [
+        'CS1231S',
+        'CS2030S',
+        'CS2040S',
+        'CS2100',
+        'CS2101',
+        'CS2103T',
+        'CS2106',
+        'CS2109S',
+        'CS3230',
+        'CS2309',
+      ],
+    })
+    const graph = Promise.all([user, degree]).then(([user, degree]) =>
+      this.graphRepo.initialize({
+        ...emptyInit.Graph,
+        userId: user.id,
+        degreeId: degree.id,
+        modulesPlacedCodes: ['CS1010S'],
+        pullAll: true,
       })
-      .then(([user, degree, graph]) => {
+    )
+    const updatedUser = Promise.all([user, degree, graph]).then(
+      ([user, degree, graph]) => {
         /** add the degree to the user */
         user.savedDegrees.push(degree)
         /** add the graph to the user */
         user.savedGraphs.push(graph)
         /** save and return the user */
         return this.userRepo.save(user)
-      })
+      }
+    )
+    return updatedUser
   }
 
   /**
@@ -101,5 +113,56 @@ export class Api {
     return this.userRepo.findOneByAuthZeroId(authZeroId).catch(() => {
       return this.initializeUser(authZeroId, email)
     })
+  }
+
+  /**
+   * sets up database state for frontend testing
+   * do run the postgres.sh script at root to restore the database to a
+   * modules-only state first.
+   */
+  async frontendSetup() {
+    const user1 = this.initializeUser(
+      'auth0|012345678901234567890001',
+      'chandler@bing.com'
+    )
+    const user2 = this.initializeUser(
+      'auth0|012345678901234567890002',
+      'joey@tribbiani.com'
+    )
+    const user3 = this.initializeUser(
+      'auth0|012345678901234567890003',
+      'ross@geller.com'
+    )
+    const degree1 = user1.then((user) => {
+      const degree = user.savedDegrees[0]
+      degree.title = 'Data Analytics'
+      degree.modules = []
+      return this.degreeRepo.insertModules(degree, [
+        'DSA1101',
+        'CS2040',
+        'DSA2101',
+        'DSA2102',
+        'MA2001',
+        'MA2002',
+        'MA2311',
+        'ST2131',
+        'ST2132',
+        'CS3244',
+        'DSA3101',
+        'DSA3102',
+        'ST3131',
+      ])
+    })
+    const degree2 = user2.then((user) => {
+      const degree = user.savedDegrees[0]
+      degree.title = 'Improvisation'
+      return this.degreeRepo.save(degree)
+    })
+    const degree3 = user3.then((user) => {
+      const degree = user.savedDegrees[0]
+      degree.title = 'Paleontology'
+      return this.degreeRepo.save(degree)
+    })
+    return Promise.all([user1, user2, user3, degree1, degree2, degree3])
   }
 }

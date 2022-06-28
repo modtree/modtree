@@ -19,6 +19,8 @@ export function ModuleDetails() {
         },
         type: 'moduleNode',
         data: {
+          id: '',
+          moduleLevel: 0,
           moduleCode: module.moduleCode,
           title: module.title,
         },

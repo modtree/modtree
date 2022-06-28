@@ -1,4 +1,4 @@
-import { Graph } from '@modtree/entity'
+import { Graph, ModuleCondensed } from '@modtree/entity'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { GraphFrontendProps } from '@modtree/types'
@@ -7,6 +7,7 @@ import { oneUp } from '@modtree/utils'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ graph: Graph; moduleCodes: string[] }> = {}
+let CS1010S: ModuleCondensed
 
 beforeAll(() =>
   setup(db)
@@ -14,6 +15,11 @@ beforeAll(() =>
       Promise.all([
         Repo.User.initialize(init.user1),
         Repo.Degree.initialize(init.degree1),
+        Repo.ModuleCondensed.findOneByOrFail({ moduleCode: 'CS1010S' }).then(
+          (module) => {
+            CS1010S = module
+          }
+        ),
       ])
     )
     .then(([user, degree]) =>
@@ -48,10 +54,7 @@ it('returns a relationless graph', async () => {
           x: 420,
           y: 68,
         },
-        data: {
-          moduleCode: 'CS1010S',
-          title: 'Programming',
-        },
+        data: CS1010S,
       },
     ],
     flowEdges: [],
@@ -91,10 +94,7 @@ it('updates a flow node', async () => {
           x: 300,
           y: -27,
         },
-        data: {
-          moduleCode: 'CS1010S',
-          title: 'Programming',
-        },
+        data: CS1010S,
       },
     ],
     flowEdges: [],

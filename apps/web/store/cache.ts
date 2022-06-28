@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 import { ModtreeApiResponse } from '@modtree/types'
 import { WritableDraft } from 'immer/dist/internal'
+import { ModuleCondensed } from '@modtree/entity'
 
 const getState = <T>(state: WritableDraft<Record<string, T>>) => {
   return {
@@ -25,7 +26,7 @@ export const cache = createSlice({
     },
     addModulesCondensedToCache: (
       cache,
-      action: PayloadAction<ModtreeApiResponse.ModuleCondensed[]>
+      action: PayloadAction<ModuleCondensed[]>
     ) => {
       const { existingKeys, newState } = getState(cache.modulesCondensed)
       action.payload

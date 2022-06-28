@@ -8,7 +8,7 @@ import {
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
-import { flatten } from '@modtree/utils'
+import { emptyInit, flatten } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
 import { ModuleRepository } from '@modtree/repo-module'
 
@@ -41,12 +41,13 @@ export class UserRepository
    * @param {InitProps['User']} props
    * @returns {Promise<User>}
    */
-  async initialize(props: InitProps['User']): Promise<User> {
+  async initialize(props: Partial<InitProps['User']>): Promise<User> {
     return Promise.all([
-      this.moduleRepo.findByCodes(props.modulesDone),
-      this.moduleRepo.findByCodes(props.modulesDoing),
+      this.moduleRepo.findByCodes(props.modulesDone || []),
+      this.moduleRepo.findByCodes(props.modulesDoing || []),
     ]).then(([modulesDone, modulesDoing]) => {
       const user = this.create({
+        ...emptyInit.User,
         ...props,
         modulesDone,
         modulesDoing,

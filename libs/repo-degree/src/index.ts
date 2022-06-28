@@ -54,15 +54,14 @@ export class DegreeRepository
    * @returns {Promise<Degree>}
    */
   async insertModules(degree: Degree, moduleCodes: string[]): Promise<Degree> {
-    return Promise.all([
-      this.moduleRepo.findBy({
+    return this.moduleRepo
+      .findBy({
         moduleCode: In(moduleCodes),
-      }),
-      this.findOneById(degree.id),
-    ]).then(([modules, degree]) => {
-      degree.modules.push(...modules)
-      return this.save(degree)
-    })
+      })
+      .then((modules) => {
+        degree.modules.push(...modules)
+        return this.save(degree)
+      })
   }
 
   /**
