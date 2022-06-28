@@ -1,6 +1,5 @@
 import { ModuleSimple, Pages } from 'types'
 import { ModuleStatus, SetState } from '@modtree/types'
-import { ModuleListSection } from '@/ui/settings'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { text } from 'text'
 import { dashed } from '@/utils/array'
