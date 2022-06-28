@@ -9,7 +9,7 @@ type RowProps = {
 } & ExtendedProps['div']
 
 export function BaseRow(props: RowProps) {
-  const { className, children, deletable, ...rest } = props
+  const { className, children, deletable, onDelete, ...rest } = props
   return (
     <div
       className={flatten(
@@ -22,7 +22,7 @@ export function BaseRow(props: RowProps) {
     >
       <div className="flex-1">{children}</div>
       {deletable && (
-        <Button onClick={props.onDelete} className="text-sm px-3" color="red">
+        <Button onClick={onDelete} className="text-sm px-3" color="red">
           Delete
         </Button>
       )}
