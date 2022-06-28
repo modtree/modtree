@@ -65,6 +65,7 @@ export interface IUserRepository extends EUser {
   getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
   hasTakenModule(user: IUser, moduleCode: string): Promise<boolean>
   filterTakenModules(user: IUser, moduleCodes: string[]): Promise<string[]>
+  setMainDegree(user: IUser, degreeId: string): Promise<IUser>
   insertDegrees(user: IUser, degreeIds: string[]): Promise<IUser>
   findDegree(user: IUser, degreeId: string): Promise<IDegree>
   removeDegree(user: IUser, degreeId: string): Promise<IUser>
