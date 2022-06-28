@@ -160,15 +160,11 @@ export class GraphRepository
    */
   async toggleModule(graph: Graph, moduleCode: string): Promise<Graph> {
     /**
-     * retrieve a Graph from database given its id
-     */
-    const _graph = await this.findOneById(graph.id)
-    /**
      * find the index of the given moduleCode to toggle
      */
     const index: Record<ModuleState, number> = {
-      placed: _graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
-      hidden: _graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
+      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
+      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
       new: -1,
     }
     /**
@@ -191,16 +187,16 @@ export class GraphRepository
       dest.push(quickpop(src, index[state]))
     }
     if (state === 'placed') {
-      toggle(_graph.modulesPlaced, _graph.modulesHidden)
-      return this.save(_graph)
+      toggle(graph.modulesPlaced, graph.modulesHidden)
+      return this.save(graph)
     }
     if (state === 'hidden') {
-      toggle(_graph.modulesHidden, _graph.modulesPlaced)
-      return this.save(_graph)
+      toggle(graph.modulesHidden, graph.modulesPlaced)
+      return this.save(graph)
     }
     return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
-      _graph.modulesPlaced.push(module)
-      return this.save(_graph)
+      graph.modulesPlaced.push(module)
+      return this.save(graph)
     })
   }
 
@@ -215,13 +211,11 @@ export class GraphRepository
     graph: Graph,
     props: GraphFrontendProps
   ): Promise<Graph> {
-    return this.findOneByOrFail({ id: graph.id }).then((graph) =>
-      this.save({
-        ...graph,
-        flowEdges: props.flowEdges,
-        flowNodes: props.flowNodes,
-      })
-    )
+    return this.save({
+      ...graph,
+      flowEdges: props.flowEdges,
+      flowNodes: props.flowNodes,
+    })
   }
 
   /**
@@ -235,19 +229,15 @@ export class GraphRepository
     graph: Graph,
     modulesSelected: string[]
   ): Promise<[string[], string[], string[], string[]]> {
-    return this.findOneById(graph.id)
-      .then((graph) =>
-        Promise.all([
-          this.userRepo.findOneById(graph.user.id),
-          this.degreeRepo.findOneById(graph.degree.id),
-        ])
-      )
-      .then(([user, degree]) => {
-        const modulesDone = user.modulesDone.map(flatten.module)
-        const modulesDoing = user.modulesDoing.map(flatten.module)
-        const requiredModules = degree.modules.map(flatten.module)
-        return [modulesDone, modulesDoing, modulesSelected, requiredModules]
-      })
+    return Promise.all([
+      this.userRepo.findOneById(graph.user.id),
+      this.degreeRepo.findOneById(graph.degree.id),
+    ]).then(([user, degree]) => {
+      const modulesDone = user.modulesDone.map(flatten.module)
+      const modulesDoing = user.modulesDoing.map(flatten.module)
+      const requiredModules = degree.modules.map(flatten.module)
+      return [modulesDone, modulesDoing, modulesSelected, requiredModules]
+    })
   }
 
   /**
