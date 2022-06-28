@@ -5,7 +5,7 @@ import { dashed } from '@/utils/array'
 
 export default function Sidebar(props: { contents: SidebarCategoryProps[] }) {
   return (
-    <Tab.List className="w-48 flex flex-col">
+    <div className="w-48 flex flex-col">
       {props.contents.map(({ category, entries }, index) => (
         <div key={dashed(category, index)}>
           {category !== '' && (
@@ -22,6 +22,6 @@ export default function Sidebar(props: { contents: SidebarCategoryProps[] }) {
           </div>
         </div>
       ))}
-    </Tab.List>
+    </div>
   )
 }

@@ -1,3 +1,4 @@
+import { Pages } from '@/types'
 import { Module, ModuleCondensed } from '@modtree/entity'
 import { ModtreeApiResponse } from '@modtree/types'
 
@@ -18,6 +19,7 @@ export type ReduxState = {
     selectedCodes: string[]
   }
   modal: {
+    userProfilePage: Pages['UserProfile']
     showUserProfile: boolean
     showModuleModal: boolean
     showDebugModal: boolean

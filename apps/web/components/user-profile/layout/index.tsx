@@ -1,4 +1,3 @@
-import { Tab } from '@headlessui/react'
 import { ReactElement } from 'react'
 import { SidebarCategoryProps } from 'types'
 import Panels from './panels'
@@ -18,11 +17,9 @@ export default function SidebarWithContents(props: {
   })
 
   return show ? (
-    <Tab.Group>
-      <div className="flex flex-row space-x-4 h-full">
-        <Sidebar contents={contents} />
-        <Panels contents={panelContents} />
-      </div>
-    </Tab.Group>
+    <div className="flex flex-row space-x-4 h-full">
+      <Sidebar contents={contents} />
+      <Panels contents={panelContents} />
+    </div>
   ) : null
 }
