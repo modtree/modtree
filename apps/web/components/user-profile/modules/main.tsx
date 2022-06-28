@@ -7,6 +7,7 @@ import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { useEffect } from 'react'
 import { updateCachedModulesCondensed } from '@/utils/backend'
+import { clearBuildList, setBuildList } from '@/store/search'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const user = useAppSelector((state) => state.user)
@@ -23,14 +24,17 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
     const existing = new Set(Object.keys(cachedModulesCondensed))
     const toFetch = required.filter((code) => !existing.has(code))
     updateCachedModulesCondensed(dispatch, toFetch)
-  }, [])
+  }, [user.modulesDone, user.modulesDoing])
   return (
     <>
       <div className="mb-12">
         <SettingsSection
           title="Modules doing"
           addButtonText="Add doing"
-          onAddClick={() => props.setPage('add-doing')}
+          onAddClick={() => {
+            dispatch(clearBuildList())
+            props.setPage('add-doing')
+          }}
         >
           {hasModules.doing ? (
             <>
@@ -54,7 +58,14 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
         <SettingsSection
           title="Modules done"
           addButtonText="Add done"
-          onAddClick={() => props.setPage('add-done')}
+          onAddClick={() => {
+            dispatch(
+              setBuildList(
+                user.modulesDone.map((code) => cachedModulesCondensed[code])
+              )
+            )
+            props.setPage('add-done')
+          }}
         >
           {hasModules.done ? (
             <>

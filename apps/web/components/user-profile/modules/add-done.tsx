@@ -8,6 +8,7 @@ import { SettingsSearchBox } from '@/ui/search'
 import { ModuleCondensed } from '@modtree/entity'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { removeFromBuildList } from '@/store/search'
+import { updateModulesDone } from '@/store/user'
 
 function SelectedModules(props: { modules: ModuleCondensed[] }) {
   const dispatch = useAppDispatch()
@@ -33,7 +34,13 @@ function SelectedModules(props: { modules: ModuleCondensed[] }) {
 }
 
 export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
+  const dispatch = useAppDispatch()
   const buildList = useAppSelector((state) => state.search.buildList)
+  function confirm() {
+    console.log('confirm', buildList)
+    dispatch(updateModulesDone(buildList.map((m) => m.moduleCode)))
+    props.setPage('main')
+  }
   return (
     <div className="flex flex-col">
       <SettingsSection
@@ -54,7 +61,9 @@ export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
         <SelectedModules modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green">Save degree</Button>
+        <Button color="green" onClick={() => confirm()}>
+          Add to modules done
+        </Button>
       </div>
     </div>
   )
