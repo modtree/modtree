@@ -36,6 +36,9 @@ export function DebugModal() {
         <h2>Redux Degree State</h2>
         <Content>{redux.degree}</Content>
 
+        <h2>Redux Module Condensed Cache</h2>
+        <Content>{redux.cache.modulesCondensed}</Content>
+
         <h2>Redux ModalState</h2>
         <Content>{redux.modal}</Content>
       </div>

@@ -2,6 +2,8 @@ import { setModalModule, showModuleModal } from '@/store/modal'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { AnyAction, Dispatch } from 'redux'
 import axios from 'axios'
+import { addModulesCondensed } from '@/store/cache'
+import { ModtreeApiResponse } from '@modtree/types'
 
 export const backend = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND,
@@ -40,5 +42,19 @@ export async function getModuleInfo(
   return backend
     .get(`/module/${value}`)
     .then((res) => dispatch(setModalModule(res.data)))
+    .catch(() => false)
+}
+
+export async function updateCachedModulesCondensed(
+  dispatch: Dispatch<AnyAction>,
+  moduleCodes: string[]
+) {
+  return backend
+    .get<ModtreeApiResponse.ModuleCondensed[]>('/modules-condensed', {
+      params: {
+        moduleCodes,
+      },
+    })
+    .then((res) => dispatch(addModulesCondensed(res.data)))
     .catch(() => false)
 }

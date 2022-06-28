@@ -4,18 +4,16 @@ import { SettingsSection } from '@/ui/settings/lists/base'
 import { text } from 'text'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
-import { useAppSelector } from '@/store/redux'
-import { ModuleCondensed } from '@modtree/entity'
-import { useEffect, useState } from 'react'
-import { backend } from '@/utils/backend'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useEffect } from 'react'
+import { updateCachedModulesCondensed } from '@/utils/backend'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const user = useAppSelector((state) => state.user)
-  const [isLoading, setIsLoading] = useState(true)
+  const dispatch = useAppDispatch()
   const cachedModulesCondensed = useAppSelector(
     (state) => state.cache.modulesCondensed
   )
-  const [modules, setModules] = useState<Record<string, ModuleCondensed>>({})
   const hasModules = {
     done: user.modulesDone.length !== 0,
     doing: user.modulesDoing.length !== 0,
@@ -24,21 +22,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
     const required = [...user.modulesDone, ...user.modulesDoing]
     const existing = new Set(Object.keys(cachedModulesCondensed))
     const toFetch = required.filter((code) => !existing.has(code))
-    backend
-      .get<ModuleCondensed[]>('/modules-condensed', {
-        params: {
-          moduleCodes: toFetch,
-        },
-      })
-      .then((res) => {
-        const newState = modules
-        res.data.forEach((module) => {
-          newState[module.moduleCode] = module
-        })
-        console.log('isLoading', isLoading)
-        setModules(newState)
-        setIsLoading(false)
-      })
+    updateCachedModulesCondensed(dispatch, toFetch)
   }, [])
   return (
     <>
@@ -52,14 +36,13 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             <>
               <p>{text.moduleListSection.doing.summary}</p>
               <div className="ui-rectangle flex flex-col overflow-hidden">
-                {!isLoading &&
-                  user.modulesDoing.map((code, index) => (
-                    <Row.Module key={dashed(code, index)}>
-                      <span className="font-semibold">{code}</span>
-                      <span className="mx-1">/</span>
-                      {modules[code]?.title}
-                    </Row.Module>
-                  ))}
+                {user.modulesDoing.map((code, index) => (
+                  <Row.Module key={dashed(code, index)}>
+                    <span className="font-semibold">{code}</span>
+                    <span className="mx-1">/</span>
+                    {cachedModulesCondensed[code]?.title}
+                  </Row.Module>
+                ))}
               </div>
             </>
           ) : (
@@ -81,7 +64,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                   <Row.Module key={dashed(code, index)}>
                     <span className="font-semibold">{code}</span>
                     <span className="mx-1">/</span>
-                    {modules[code].title}
+                    {cachedModulesCondensed[code].title}
                   </Row.Module>
                 ))}
               </div>
