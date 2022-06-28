@@ -74,6 +74,7 @@ export interface IUserRepository extends EUser {
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<IUser>
+  setMainGraph(user: IUser, graphId: string): Promise<IUser>
   insertGraphs(user: IUser, graphIds: string[]): Promise<IUser>
 }
 

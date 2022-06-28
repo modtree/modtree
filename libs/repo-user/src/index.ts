@@ -9,7 +9,11 @@ import {
   ModuleStatus,
 } from '@modtree/types'
 import { emptyInit, flatten } from '@modtree/utils'
-import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
+import {
+  getRelationNames,
+  useDeleteAll,
+  useFindOneByKey,
+} from '@modtree/repo-base'
 import { ModuleRepository } from '@modtree/repo-module'
 
 export class UserRepository
@@ -21,12 +25,15 @@ export class UserRepository
   private degreeRepo: Repository<Degree>
   private graphRepo: Repository<Graph>
 
+  private graphRelations
+
   constructor(db: DataSource) {
     super(User, db.manager)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
     this.degreeRepo = new Repository(Degree, this.db.manager)
     this.graphRepo = new Repository(Graph, this.db.manager)
+    this.graphRelations = getRelationNames(this.graphRepo)
   }
 
   deleteAll = useDeleteAll(this)
@@ -237,6 +244,37 @@ export class UserRepository
     // 3. update entity and save
     user.savedDegrees = filtered
     return this.save(user)
+  }
+
+  /**
+   * Sets the main graph of a user.
+   *
+   * @param {User} user
+   * @param {string} graphId
+   * @returns {Promise<User>}
+   */
+  async setMainGraph(user: User, graphId: string): Promise<User> {
+    return this.graphRepo
+      .findOneOrFail({
+        where: { id: graphId },
+        relations: this.graphRelations,
+      })
+      .then((graph) => {
+        console.log(graph)
+        // if the graph is not in saved
+        const savedGraphIds = user.savedGraphs.map((graph) => graph.id)
+        if (!savedGraphIds.includes(graphId)) {
+          throw new Error('Graph not in savedGraphs')
+        }
+        // if the graph's degree is not in saved
+        const savedDegreeIds = user.savedDegrees.map((degree) => degree.id)
+        if (!savedDegreeIds.includes(graph.degree.id)) {
+          throw new Error("Graph's degree not in savedDegrees")
+        }
+        // set main graph
+        user.mainGraph = graph
+        return this.save(user)
+      })
   }
 
   /**

@@ -177,4 +177,24 @@ export class UserApi {
       .then((user) => api.userRepo.setMainDegree(user, degreeId))
       .then(flatten.user)
   }
+
+  /**
+   * Sets the main graph of a user.
+   *
+   * If the graph is not in savedGraphs, fails.
+   * If the graph's degree is not in savedDegrees, fails.
+   *
+   * @param {Api} api
+   */
+  static setMainGraph = (api: Api) => async (req: Request) => {
+    const id = req.params.userId
+    const { graphId } = req.body
+    return api.userRepo
+      .findOneOrFail({
+        where: { id },
+        relations: api.relations.user,
+      })
+      .then((user) => api.userRepo.setMainGraph(user, graphId))
+      .then(flatten.user)
+  }
 }
