@@ -32,11 +32,6 @@ afterAll(() => teardown(db))
 describe('Saved degree', () => {
   beforeEach(expect.hasAssertions)
 
-  it('initial count', () => {
-    const count = t.user!.savedDegrees.length
-    expect(count).toEqual(1)
-  })
-
   it('returns a user', async () => {
     // get user with all relations
     await Repo.User.setMainDegree(t.user!, saved.id).then((user) => {
@@ -49,41 +44,14 @@ describe('Saved degree', () => {
     const degreeId = t.user!.mainDegree.id
     expect(degreeId).toEqual(saved.id)
   })
-
-  it('final count', () => {
-    const count = t.user!.savedDegrees.length
-    expect(count).toEqual(1)
-  })
 })
 
 describe('Unsaved degree', () => {
   beforeEach(expect.hasAssertions)
 
-  it('initial count', () => {
-    const count = t.user!.savedDegrees.length
-    expect(count).toEqual(1)
-  })
-
-  it('returns a user', async () => {
-    // get user with all relations
-    await Repo.User.setMainDegree(t.user!, unsaved.id).then((user) => {
-      expect(user).toBeInstanceOf(User)
-      t.user = user
-    })
-  })
-
-  it('sets correct main degree', () => {
-    const degreeId = t.user!.mainDegree.id
-    expect(degreeId).toEqual(unsaved.id)
-  })
-
-  it('final count', () => {
-    const count = t.user!.savedDegrees.length
-    expect(count).toEqual(2)
-  })
-
-  it('adds degree to savedDegrees', () => {
-    const degreeIds = t.user!.savedDegrees.map((d) => d.id)
-    expect(degreeIds).toContain(unsaved.id)
+  it('throws an error', async () => {
+    await expect(() =>
+      Repo.User.setMainDegree(t.user!, unsaved.id)
+    ).rejects.toThrow(Error('Degree not in savedDegrees'))
   })
 })

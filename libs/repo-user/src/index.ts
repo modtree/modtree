@@ -169,7 +169,7 @@ export class UserRepository
   /**
    * Sets the main degree of a user.
    *
-   * If the degree is not in savedDegrees, adds it.
+   * If the degree is not in savedDegrees, throws error.
    *
    * @param {User} user
    * @param {string} degreeId
@@ -180,10 +180,10 @@ export class UserRepository
       this.findOneById(user.id),
       this.degreeRepo.findOneByOrFail({ id: degreeId }),
     ]).then(([_user, degree]) => {
-      // if the degree is not in saved, add to saved
+      // if the degree is not in saved
       const savedDegreeIds = _user.savedDegrees.map((one) => one.id)
       if (!savedDegreeIds.includes(degreeId)) {
-        _user.savedDegrees.push(degree)
+        throw new Error('Degree not in savedDegrees')
       }
       // set main degree
       _user.mainDegree = degree
