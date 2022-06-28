@@ -23,7 +23,7 @@ function checkhealth(db: DataSource) {
 console.log('Initializing connection to database...')
 db.initialize()
   .then(async () => {
-    console.log('Connection to database established.')
+    console.log(`Connection to database [${db.options.database}] established.`)
     checkhealth(db)
     const api = new Api(db)
     const app = getApp(api)
