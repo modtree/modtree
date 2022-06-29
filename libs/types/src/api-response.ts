@@ -38,10 +38,10 @@ export type Degree = Modify<
 export type Graph = Modify<
   IGraph,
   {
-    user: string
-    degree: string
-    modulesPlaced: string[]
-    modulesHidden: string[]
+    user: IUser
+    degree: IDegree
+    modulesPlaced: IModule[]
+    modulesHidden: IModule[]
   }
 >
 

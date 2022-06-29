@@ -41,9 +41,8 @@ export const flatten = {
    * flattens a graph to response shape
    *
    * @param {Graph} graph
-   * @returns {ModtreeApiResponse.Graph}
    */
-  graph(graph: Graph): ModtreeApiResponse.Graph {
+  graph(graph: Graph) {
     return {
       ...graph,
       id: graph.id,
