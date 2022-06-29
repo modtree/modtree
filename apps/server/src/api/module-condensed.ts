@@ -4,7 +4,7 @@ import { Request } from 'express'
 import { Like } from 'typeorm'
 
 type ModuleCodes = {
-  moduleCodes: string[]
+  moduleCodes: string[] | string
 }
 
 export class ModuleCondensedApi {
@@ -14,8 +14,11 @@ export class ModuleCondensedApi {
    * @param {Api} api
    */
   static list = (api: Api) => (req: CustomReqQuery<ModuleCodes>) => {
-    if (Array.isArray(req.query.moduleCodes)) {
-      return api.moduleCondensedRepo.findByCodes(req.query.moduleCodes)
+    const moduleCodes = req.query.moduleCodes
+    if (Array.isArray(moduleCodes)) {
+      return api.moduleCondensedRepo.findByCodes(moduleCodes)
+    } else if (moduleCodes.length > 0) {
+      return api.moduleCondensedRepo.findByCodes([moduleCodes])
     } else {
       return []
     }

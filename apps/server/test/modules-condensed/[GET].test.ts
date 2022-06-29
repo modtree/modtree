@@ -52,7 +52,7 @@ describe('with query params', () => {
     expect(findByCodes).toBeCalledTimes(1)
   })
 
-  test('`find` is called with correct args', async () => {
+  test('`findByCodes` is called with correct args', async () => {
     await withQueryRequest()
 
     expect(findByCodes).toBeCalledWith(['MA1100', 'MA2001'])
