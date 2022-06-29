@@ -6,9 +6,6 @@ on:
     branches:
       - main
 
-env:
-  PREFIX: TEST_POSTGRES_USERNAME=runner TEST_POSTGRES_PASSWORD=runner
-
 jobs:
   pre_job:
     # skip duplicate checks
@@ -16,7 +13,14 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
+      build_command: ${{ steps.json.outputs.build_command }}
+      build_args: ${{ steps.json.outputs.build_args }}
+      test_projects: ${{ steps.json.outputs.test_projects }}
+      test_command: ${{ steps.json.outputs.test_command }}
+      test_args: ${{ steps.json.outputs.test_args }}
+      install_command: ${{ steps.json.outputs.install_command }}
     steps:
+      - uses: actions/checkout@v3
       - id: skip_check
         uses: fkirc/skip-duplicate-actions@master
         with:
@@ -24,59 +28,65 @@ jobs:
           concurrent_skipping: same_content_newer
           paths_ignore: '["**/README.md", "**/docs/**"]'
 
+      - id: json
+        run: ./.github/scripts/read_json.sh
+        env:
+          EVENT: github.event_name
+          REF: github.event.ref
+
+      - name: Debug outputs
+        run: echo "${{ toJSON(steps.json.outputs) }}"
+
   ci: # don't change this name, else will also need to change branch rules
-    if: always()
+    needs: [pre_job]
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        project:
-          - repo-api
-          - repo-base
-          - repo-degree
-          - repo-graph
-          - repo-module
-          - repo-user
-          - utils
-          - docs
-          - server
+        project: ${{ fromJSON(needs.pre_job.outputs.test_projects) }}
     steps:
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
         continue-on-error: true
-      - run: yarn install --frozen-lockfile --silent
+      - run: ${{ needs.pre_job.outputs.install_command }}
         continue-on-error: true
 
       - name: Start PostgreSQL
         run: ./.github/scripts/postgres.sh
 
       - name: 📦 Run tests for ${{ matrix.project }}
-        run: ${{ env.PREFIX }} yarn nx test ${{ matrix.project }} --coverage --runInBand
+        run: |
+          ${{ needs.pre_job.outputs.test_command }} \
+          ${{ matrix.project }} ${{ needs.pre_job.outputs.test_args }}
+        env:
+          TEST_POSTGRES_USERNAME: runner
+          TEST_POSTGRES_PASSWORD: runner
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
 
   build: # don't change this name, else will also need to change branch rules
-    if: always()
+    needs: [pre_job]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-          cache: 'yarn'
-      - run: yarn --frozen-lockfile
+      - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
+      - run: ${{ needs.pre_job.outputs.install_command }}
+        continue-on-error: true
 
       - name: 📦 Build entire workspace
-        run: yarn build
+        run: |
+          ${{ needs.pre_job.outputs.build_command }} \
+          ${{ needs.pre_job.outputs.build_args }}
 
   results:
-    needs: [ci, build]
-    if: ${{ always() }}
+    needs: [ci, build, pre_job]
+    if: |
+      always() &&
+      needs.build.result != 'cancelled' &&
+      needs.ci.result != 'cancelled' &&
+      needs.pre_job.outputs.should_skip != 'true'
     runs-on: ubuntu-20.04
-    outputs:
-      tests: ${{ steps.main.outputs.tests }}
-      build: ${{ steps.main.outputs.build }}
-      sha: ${{ steps.sha.outputs.sha }}
     steps:
       - name: Log inputs
         run: echo '${{ toJSON(needs) }}'
@@ -86,30 +96,39 @@ jobs:
         run: echo "::set-output name=sha::${GITHUB_SHA::7}"
 
       - name: Get status emojis
-        id: main
+        id: results
         run: |
-          function emojize() {
+          emojize() {
             [ "$2" = "success" ] && emoji="✅" || emoji="❌"
             echo "::set-output name=${1}::${emoji}"
           }
           emojize tests ${{ needs.ci.result }}
           emojize build ${{ needs.build.result }}
 
-  telegram:
-    needs: [pre_job, results]
-    if: ${{ always() && needs.pre_job.outputs.should_skip != 'true' }}
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Log inputs
-        run: echo '${{ toJSON(needs) }}'
-      - name: Send message
-        uses: appleboy/telegram-action@master
+      - uses: appleboy/telegram-action@master
+        if: |
+          needs.pre_job.outputs.should_skip != 'true' &&
+          github.event_name == 'pull_request'
         with:
           disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_GROUP }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
-            `${{ needs.results.outputs.sha }}` #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}
-            ${{ needs.results.outputs.build }} yarn build
-            ${{ needs.results.outputs.tests }} yarn test
+            `${{ steps.results.outputs.sha }}` #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}
+            ${{ steps.results.outputs.build }} yarn build
+            ${{ steps.results.outputs.tests }} yarn test
+
+      - uses: appleboy/telegram-action@master
+        if: |
+          needs.pre_job.outputs.should_skip != 'true' &&
+          github.event_name == 'push' && endsWith(github.event.ref, '/main')
+        with:
+          disable_web_page_preview: true
+          to: ${{ secrets.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            `${{ steps.results.outputs.sha }}` (push to main, cacheless ci)
+            ${{ steps.results.outputs.build }} yarn build
+            ${{ steps.results.outputs.tests }} yarn test
