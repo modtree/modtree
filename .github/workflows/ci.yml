@@ -84,6 +84,10 @@ jobs:
 
   results:
     needs: [ci, build, pre_job]
+    if: |
+      needs.build.result != 'cancelled' &&
+      needs.ci.result != 'cancelled' &&
+      needs.pre_job.outputs.should_skip != 'true'
     runs-on: ubuntu-20.04
     steps:
       - name: Log inputs
