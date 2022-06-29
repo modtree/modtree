@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 import { Button } from '@/ui/buttons'
 import { Slash } from '@/ui/inline'
-import { ButtonColor } from '@/types'
+import { ButtonColor } from 'types'
 
 type TitleProps = {
   title: string

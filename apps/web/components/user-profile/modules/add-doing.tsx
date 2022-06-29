@@ -1,13 +1,13 @@
 import { Pages } from 'types'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { Button } from '@/ui/buttons'
-import { SetState } from '@modtree/types'
+import { ModuleStatus, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDoing } from '@/store/user'
 import { SelectedModules } from './selected-modules'
-import { backend } from '@/utils/backend'
 import { useUser } from '@/utils/auth0'
+import { api } from 'api'
 
 export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
@@ -15,10 +15,7 @@ export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
     const codes = buildList.map((m) => m.moduleCode)
-    backend.patch(`/user/${user.modtree.id}/module`, {
-      status: 'doing',
-      moduleCodes: codes,
-    })
+    api.user.setModuleStatus(user.modtree.id, codes, ModuleStatus.DOING)
     dispatch(updateModulesDoing(codes))
     props.setPage('main')
   }

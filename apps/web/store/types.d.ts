@@ -1,6 +1,5 @@
-import { Pages } from '@/types'
 import { Module, ModuleCondensed } from '@modtree/entity'
-import { Modtree } from 'types'
+import { Modtree, Pages } from 'types'
 
 export type ModuleCondensedMap = {
   [key: string]: ModuleCondensed

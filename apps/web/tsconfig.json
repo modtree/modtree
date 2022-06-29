@@ -24,8 +24,7 @@
       "@/ui/*": ["ui/*"],
       "@/styles/*": ["styles/*"],
       "@/utils/*": ["utils/*"],
-      "@/flow/*": ["flow/*"],
-      "@/*": ["*"]
+      "@/flow/*": ["flow/*"]
     },
     "allowJs": true,
     "strict": false,

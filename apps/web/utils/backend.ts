@@ -10,8 +10,6 @@ export const backend = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND,
 })
 
-export const server = backend
-
 /**
  * searches module condensed
  */
