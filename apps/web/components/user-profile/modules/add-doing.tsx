@@ -19,7 +19,7 @@ export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
       status: 'doing',
       moduleCodes: codes,
     })
-    dispatch(updateModulesDoing(codes))
+    dispatch(updateModulesDoing(buildList))
     props.setPage('main')
   }
   return (

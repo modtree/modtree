@@ -1,4 +1,12 @@
-import { ModtreeApiResponse, InitProps } from '@modtree/types'
+import {
+  ModtreeApiResponse,
+  InitProps,
+  Modify,
+  IGraph,
+  IUser,
+  IModule,
+  IDegree,
+} from '@modtree/types'
 
 /** empty init props */
 export const emptyInit: InitProps = {
@@ -84,11 +92,36 @@ export const emptyInit: InitProps = {
   },
 }
 
-type EmptyResponseProps = {
-  User: ModtreeApiResponse.User
+/**
+ * In the modified types, arrays take the actual entity type to
+ * follow the redux types in the frontend.
+ *
+ * We don't want things like `Module[] | string[]` because TypeScript
+ * will only allow you to do things that apply to both possible types.
+ */
+export type EmptyResponseProps = {
+  User: Modify<
+    IUser,
+    {
+      modulesDone: IModule[]
+      modulesDoing: IModule[]
+      savedDegrees: IDegree[]
+      savedGraphs: IGraph[]
+      mainDegree: string
+      mainGraph: string
+    }
+  >
   Degree: ModtreeApiResponse.Degree
   Module: ModtreeApiResponse.Module
-  Graph: ModtreeApiResponse.Graph
+  Graph: Modify<
+    IGraph,
+    {
+      user: string
+      degree: string
+      modulesPlaced: IModule[]
+      modulesHidden: IModule[]
+    }
+  >
   ModuleCondensed: ModtreeApiResponse.ModuleCondensed
 }
 
