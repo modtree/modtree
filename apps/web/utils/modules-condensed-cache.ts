@@ -8,8 +8,11 @@ class ModuleCondensedCache {
     this.data = {}
     this.codes = new Set<string>()
   }
+  getData(): Record<string, ModuleCondensed> {
+    return this.data
+  }
   async preload(codes: string[]): Promise<ModuleCondensed[]> {
-    const moduleCodes = codes.filter((code) => this.codes.has(code))
+    const moduleCodes = codes.filter((code) => !this.codes.has(code))
     return backend
       .get('/modules-condensed', {
         params: { moduleCodes },
