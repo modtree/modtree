@@ -6,7 +6,6 @@ import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDone } from '@/store/user'
 import { SelectedModules } from './selected-modules'
-import { updateCachedModulesCondensed } from '@/utils/backend'
 
 export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
@@ -14,7 +13,6 @@ export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
   function confirm() {
     const codes = buildList.map((m) => m.moduleCode)
     dispatch(updateModulesDone(codes))
-    updateCachedModulesCondensed(dispatch, codes)
     props.setPage('main')
   }
   return (

@@ -6,15 +6,20 @@ import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDoing } from '@/store/user'
 import { SelectedModules } from './selected-modules'
-import { updateCachedModulesCondensed } from '@/utils/backend'
+import { backend } from '@/utils/backend'
+import { useUser } from '@/utils/auth0'
 
 export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
+  const { user } = useUser()
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
     const codes = buildList.map((m) => m.moduleCode)
+    backend.patch(`/user/${user.modtree.id}/module`, {
+      status: 'doing',
+      moduleCodes: codes,
+    })
     dispatch(updateModulesDoing(codes))
-    updateCachedModulesCondensed(dispatch, codes)
     props.setPage('main')
   }
   return (

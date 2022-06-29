@@ -5,9 +5,8 @@ import { text } from 'text'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { useEffect } from 'react'
-import { updateCachedModulesCondensed } from '@/utils/backend'
 import { setBuildList } from '@/store/search'
+import { backend } from '@/utils/backend'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const user = useAppSelector((state) => state.user)
@@ -19,10 +18,6 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
     done: user.modulesDone.length !== 0,
     doing: user.modulesDoing.length !== 0,
   }
-  useEffect(() => {
-    const codes = [...user.modulesDone, ...user.modulesDoing]
-    updateCachedModulesCondensed(dispatch, codes)
-  }, [user.modulesDone, user.modulesDoing])
   return (
     <>
       <div className="mb-12">
@@ -31,11 +26,13 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.doing ? 'gray' : 'green'}
           addButtonText={hasModules.doing ? 'Modify' : 'Add doing'}
           onAddClick={() => {
-            dispatch(
-              setBuildList(
-                user.modulesDoing.map((code) => cachedModulesCondensed[code])
-              )
-            )
+            backend
+              .get('/modules-condensed', {
+                params: { moduleCodes: user.modulesDoing },
+              })
+              .then((res) => {
+                dispatch(setBuildList(res.data))
+              })
             props.setPage('add-doing')
           }}
         >
@@ -63,11 +60,13 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.done ? 'gray' : 'green'}
           addButtonText={hasModules.done ? 'Modify' : 'Add done'}
           onAddClick={() => {
-            dispatch(
-              setBuildList(
-                user.modulesDone.map((code) => cachedModulesCondensed[code])
-              )
-            )
+            backend
+              .get('/modules-condensed', {
+                params: { moduleCodes: [], all: false },
+              })
+              .then((res) => {
+                dispatch(setBuildList(res.data))
+              })
             props.setPage('add-done')
           }}
         >
