@@ -1,6 +1,11 @@
 import { Api } from '@modtree/repo-api'
+import { CustomReqQuery } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
+
+type DegreeIds = {
+  degreeIds: string[] | string
+}
 
 export class DegreeApi {
   /**
@@ -40,10 +45,15 @@ export class DegreeApi {
    *
    * @param {Api} api
    */
-  static list = (api: Api) => async () => {
-    return api.degreeRepo
-      .find({ relations: { modules: true } })
-      .then((results) => results.map((degree) => flatten.degree(degree)))
+  static list = (api: Api) => async (req: CustomReqQuery<DegreeIds>) => {
+    const degreeIds = req.query.degreeIds
+    if (Array.isArray(degreeIds)) {
+      return api.degreeRepo.findByIds(degreeIds)
+    } else if (degreeIds.length > 0) {
+      return api.degreeRepo.findByIds([degreeIds])
+    } else {
+      return []
+    }
   }
 
   /**
