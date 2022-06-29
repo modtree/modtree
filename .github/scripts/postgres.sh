@@ -18,4 +18,4 @@ createdb mt_test
 
 # fill the database with modules
 PGPASSWORD=runner psql -U runner \
-  mt_test < ./libs/sql/snapshots/postgres-modules-only.sql
+  mt_test < ./libs/sql/snapshots/mod3.sql

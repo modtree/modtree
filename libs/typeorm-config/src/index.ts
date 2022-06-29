@@ -1,6 +1,13 @@
 import 'dotenv/config'
 import { DataSource } from 'typeorm'
-import { ModuleCondensed, Module, User, Degree, Graph } from '@modtree/entity'
+import {
+  ModuleCondensed,
+  Module,
+  User,
+  Degree,
+  Graph,
+  ModuleFull,
+} from '@modtree/entity'
 import { DataSourceOptions } from '@modtree/types'
 import { getPrefix } from './utils'
 import fs from 'fs'
@@ -57,13 +64,13 @@ function getConfig(): DataSourceOptions {
     type: 'postgres',
     rootDir,
     port: 5432,
-    entities: [ModuleCondensed, Module, User, Degree, Graph],
+    entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
     migrations: [],
     username: '',
     password: '',
     host: '',
     database: 'mt_test',
-    restoreSource: 'postgres-modules-only.sql',
+    restoreSource: 'mod3.sql',
     synchronize: true,
     migrationsRun: false,
   }

@@ -48,14 +48,6 @@ export class ModuleRepository
   }
 
   /**
-   * @param {string} faculty
-   * @returns {Promise<Module[]>}
-   */
-  findByFaculty(faculty: string): Promise<Module[]> {
-    return this.findBy({ faculty })
-  }
-
-  /**
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */

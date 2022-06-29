@@ -8,12 +8,7 @@ const db = getSource(dbName)
 let count: number
 const m = new Module()
 m.id = '58201858-5ce5-4ceb-8568-eecf55841b9f'
-m.acadYear = ''
 m.title = ''
-m.description = ''
-m.moduleCredit = ''
-m.department = 'Tristate-Area'
-m.faculty = ''
 m.moduleCode = 'TST1000MD'
 
 beforeAll(() => setup(db))
@@ -42,5 +37,4 @@ it('increments the count by 1', async () => {
 it('saves correct information', async () => {
   const module = t.modules![0]
   expect(module.moduleCode).toBe('TST1000MD')
-  expect(module.department).toBe('Tristate-Area')
 })

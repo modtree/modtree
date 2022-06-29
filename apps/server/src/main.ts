@@ -1,10 +1,12 @@
 import { db } from '@modtree/typeorm-config'
 import { getApp } from './app'
-import { DataSource } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import { Api } from '@modtree/repo-api'
+import { ModuleFull } from '@modtree/entity'
 
 function checkhealth(db: DataSource) {
   const api = new Api(db)
+  const modFullRepo = new Repository(ModuleFull, db.manager)
   const repos = [
     api.moduleRepo,
     api.moduleCondensedRepo,
@@ -18,6 +20,7 @@ function checkhealth(db: DataSource) {
       console.log(names[i], result)
     })
   })
+  modFullRepo.count().then(console.log)
 }
 
 console.log('Initializing connection to database...')

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import { Base } from './Base'
 
-@Entity({ name: 'moduleCondensed' })
+@Entity({ name: 'module_condensed' })
 /** ModuleCondensed entity */
 export class ModuleCondensed extends Base {
   @PrimaryGeneratedColumn('uuid')
