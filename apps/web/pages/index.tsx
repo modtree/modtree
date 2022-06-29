@@ -8,43 +8,17 @@ import { ContextMenus } from '@/components/context-menu'
 import { ModuleInfoModal, DebugModal } from '@/components/modals'
 import { UserProfileModal } from '@/components/user-profile'
 import { RootSearchBox } from '@/ui/search'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { setUser } from '@/store/user'
-import { setDegree } from '@/store/degree'
-import { backend } from '../utils'
-import { setGraph } from '@/store/graph'
-import { log } from '@modtree/utils'
-import { addDegreeToCache } from '@/store/cache'
+import { rehydrate } from '@/utils/rehydrate'
 
 export default function Modtree() {
   const { isLoading, user } = useUser()
-  const dispatch = useAppDispatch()
-  const redux = useAppSelector((e) => e)
 
   /**
    * load current user, current graph, current degree
    */
   useEffect(() => {
-    if (isLoading) return
-    if (user) {
-      if (redux.user.id === '') {
-        backend
-          .get(`/user/${user.modtree.id}`)
-          .then((res) => dispatch(setUser(res.data)))
-      }
-      if (redux.degree.id === '') {
-        backend.get(`/degree/${user.modtree.savedDegrees[0]}`).then((res) => {
-          dispatch(setDegree(res.data))
-          dispatch(addDegreeToCache(res.data))
-        })
-      }
-      if (redux.graph.id === '') {
-        backend
-          .get(`/graph/${user.modtree.savedGraphs[0]}`)
-          .then((res) => dispatch(setGraph(res.data)))
-      }
-    } else {
-      log.yellow('user is not logged in')
+    if (!isLoading && user) {
+      rehydrate(user)
     }
   }, [isLoading])
 
