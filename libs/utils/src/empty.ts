@@ -92,6 +92,13 @@ export const emptyInit: InitProps = {
   },
 }
 
+/**
+ * In the modified types, arrays take the actual entity type to
+ * follow the redux types in the frontend.
+ *
+ * We don't want things like `Module[] | string[]` because TypeScript
+ * will only allow you to do things that apply to both possible types.
+ */
 export type EmptyResponseProps = {
   User: Modify<
     IUser,
@@ -111,8 +118,8 @@ export type EmptyResponseProps = {
     {
       user: string
       degree: string
-      modulesPlaced: string[]
-      modulesHidden: string[]
+      modulesPlaced: IModule[]
+      modulesHidden: IModule[]
     }
   >
   ModuleCondensed: ModtreeApiResponse.ModuleCondensed
