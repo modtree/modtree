@@ -1,6 +1,7 @@
 import { Pages } from '@/types'
 import { Module, ModuleCondensed } from '@modtree/entity'
 import { ModtreeApiResponse } from '@modtree/types'
+import { EmptyResponseProps } from '@modtree/utils'
 
 export type ModuleCondensedMap = {
   [key: string]: ModuleCondensed
@@ -12,12 +13,22 @@ export type ContextMenuProps = {
   menu: 'pane' | 'node'
 }
 
+// temporarily add EmptyResponseProps because
+// ModtreeApiResponse and EmptyResponseProps are different.
+//
+// they are different because ModtreeApiResponse expects full entity
+// but EmptyResponseProps expects flattened entity
+
 export type ReduxState = {
-  user: ModtreeApiResponse.User
+  user: ModtreeApiResponse.User | EmptyResponseProps['User']
   degree: ModtreeApiResponse.Degree
-  graph: ModtreeApiResponse.Graph & {
-    selectedCodes: string[]
-  }
+  graph:
+    | (ModtreeApiResponse.Graph & {
+        selectedCodes: string[]
+      })
+    | (EmptyResponseProps['Graph'] & {
+        selectedCodes: string[]
+      })
   modal: {
     userProfilePage: Pages['UserProfile']
     showUserProfile: boolean

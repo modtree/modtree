@@ -6,20 +6,18 @@ import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
-import { useEffect } from 'react'
-import { moduleCondensedCache } from '@/utils/modules-condensed-cache'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user)
-  const cache = useAppSelector((state) => state.cache.modulesCondensed)
+  //const cache = useAppSelector((state) => state.cache.modulesCondensed)
 
   /**
    * update the cache with required modules
    */
-  //   useEffect(() => {
-  //     moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
-  //   }, [user.modulesDone, user.modulesDoing])
+  // useEffect(() => {
+  //   moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
+  // }, [user.modulesDone, user.modulesDoing])
 
   const hasModules = {
     done: user.modulesDone.length !== 0,

@@ -4,6 +4,8 @@ import {
   Modify,
   IGraph,
   IUser,
+  IModule,
+  IDegree,
 } from '@modtree/types'
 
 /** empty init props */
@@ -90,14 +92,14 @@ export const emptyInit: InitProps = {
   },
 }
 
-type EmptyResponseProps = {
+export type EmptyResponseProps = {
   User: Modify<
     IUser,
     {
-      modulesDone: string[]
-      modulesDoing: string[]
-      savedDegrees: string[]
-      savedGraphs: string[]
+      modulesDone: IModule[]
+      modulesDoing: IModule[]
+      savedDegrees: IDegree[]
+      savedGraphs: IGraph[]
       mainDegree: string
       mainGraph: string
     }
