@@ -21,9 +21,8 @@ export const flatten = {
    * flattens a user to response shape
    *
    * @param {User} user
-   * @returns {ModtreeApiResponse.User}
    */
-  user(user: User): ModtreeApiResponse.User {
+  user(user: User) {
     return {
       ...user,
       modulesDoing: user.modulesDoing.map(flatten.module),

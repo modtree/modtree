@@ -13,12 +13,12 @@ import { Modify } from './utils'
 export type User = Modify<
   IUser,
   {
-    modulesDone: string[]
-    modulesDoing: string[]
-    savedDegrees: string[]
-    savedGraphs: string[]
-    mainDegree: string
-    mainGraph: string
+    modulesDone: IModule[]
+    modulesDoing: IModule[]
+    savedDegrees: IDegree[]
+    savedGraphs: IGraph[]
+    mainDegree: IDegree
+    mainGraph: IGraph
   }
 >
 

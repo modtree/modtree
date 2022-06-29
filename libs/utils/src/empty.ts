@@ -93,7 +93,17 @@ export const emptyInit: InitProps = {
 }
 
 type EmptyResponseProps = {
-  User: ModtreeApiResponse.User
+  User: Modify<
+    IUser,
+    {
+      modulesDone: string[]
+      modulesDoing: string[]
+      savedDegrees: string[]
+      savedGraphs: string[]
+      mainDegree: string
+      mainGraph: string
+    }
+  >
   Degree: ModtreeApiResponse.Degree
   Module: ModtreeApiResponse.Module
   Graph: Modify<
