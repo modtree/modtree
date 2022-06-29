@@ -27,15 +27,9 @@ afterAll(() => teardown(db))
 const testRequest = () => request(app).get('/modules-condensed')
 
 describe('without params', () => {
-  test('`find` is called once', async () => {
+  test('`find` is not called', async () => {
     await testRequest()
-    expect(find).toBeCalledTimes(1)
-  })
-
-  test('`find` is called with correct args', async () => {
-    await testRequest()
-
-    expect(find).toBeCalledWith()
+    expect(find).toBeCalledTimes(0)
   })
 })
 
