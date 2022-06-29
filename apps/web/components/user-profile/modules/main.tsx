@@ -7,20 +7,15 @@ import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
 import { backend } from '@/utils/backend'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { moduleCondensedCache } from '@/utils/modules-condensed-cache'
-import { ModuleCondensed } from '@modtree/entity'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const user = useAppSelector((state) => state.user)
-  const [cache, setCache] = useState<Record<string, ModuleCondensed>>({})
+  const cache = useAppSelector((state) => state.cache.modulesCondensed)
 
   useEffect(() => {
-    moduleCondensedCache
-      .preload([...user.modulesDone, ...user.modulesDoing])
-      .then(() => {
-        setCache(moduleCondensedCache.getData())
-      })
+    moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
   }, [user.modulesDone, user.modulesDoing])
 
   const dispatch = useAppDispatch()

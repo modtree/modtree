@@ -5,17 +5,15 @@ import { addModulesCondensedToCache } from '@/store/cache'
 
 class ModuleCondensedCache {
   private codes: Set<string>
-  private reduxState: Record<string, ModuleCondensed>
   private dispatch: AppDispatch
   constructor() {
     this.codes = new Set<string>()
-    this.reduxState = store.getState().cache.modulesCondensed
     this.dispatch = store.dispatch
   }
-  getData(): Record<string, ModuleCondensed> {
-    return this.reduxState
-  }
-  async preload(codes: string[]): Promise<ModuleCondensed[]> {
+  /**
+   * updates the cache
+   */
+  async load(codes: string[]) {
     const moduleCodes = codes.filter((code) => !this.codes.has(code))
     return backend
       .get('/modules-condensed', {
@@ -26,24 +24,8 @@ class ModuleCondensedCache {
         this.dispatch(addModulesCondensedToCache(modules))
         modules.forEach((module) => {
           this.codes.add(module.moduleCode)
-          // this.data[module.moduleCode] = module
         })
-        return modules
       })
-  }
-  async getOne(code: string): Promise<ModuleCondensed> {
-    if (this.codes.has(code)) {
-      return this.reduxState[code]
-      // return this.data[code]
-    } else {
-      return this.preload([code]).then((res) => res[0])
-    }
-  }
-  async getList(codes: string[]): Promise<ModuleCondensed[]> {
-    const toLoad = codes.filter((code) => !this.codes.has(code))
-    return this.preload(toLoad).then(() =>
-      codes.map((code) => this.reduxState[code])
-    )
   }
 }
 
