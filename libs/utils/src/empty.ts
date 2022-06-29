@@ -3,9 +3,7 @@ import {
   InitProps,
   Modify,
   IGraph,
-  IDegree,
   IUser,
-  IModule,
 } from '@modtree/types'
 
 /** empty init props */
