@@ -43,21 +43,18 @@ drop table if exists "user_modules_done_module";
 drop table if exists "user_saved_degrees_degree";
 drop table if exists "user_saved_graphs_graph";
 drop table if exists "degree_modules_module";
-drop table if exists "graph";
-drop table if exists "user";
-drop table if exists "degree";
-drop table if exists "module";
-drop table if exists "moduleCondensed";
-drop table if exists "typeorm_metadata";
+drop table if exists "graph" CASCADE;
+drop table if exists "user" CASCADE;
+drop table if exists "degree" CASCADE;
 EOF
 }
 
 main() {
   local_drop_all_tables
-  local_restore
+  # local_restore
 }
 
-# main
+main
 
 # postgres cli: Delete an entry/row
 # delete from "user" where id = '2bcff5a5-b03f-43f1-9a03-609dd252d111';
