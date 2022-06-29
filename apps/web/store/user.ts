@@ -1,4 +1,3 @@
-import { Module } from '@modtree/entity'
 import { ModtreeApiResponse } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
@@ -7,10 +6,10 @@ export const user = createSlice({
   name: 'user',
   initialState: baseInitialState.user,
   reducers: {
-    updateModulesDone: (user, action: PayloadAction<Module[]>) => {
+    updateModulesDone: (user, action: PayloadAction<string[]>) => {
       user.modulesDone = action.payload
     },
-    updateModulesDoing: (user, action: PayloadAction<Module[]>) => {
+    updateModulesDoing: (user, action: PayloadAction<string[]>) => {
       user.modulesDoing = action.payload
     },
     setUser: (user, action: PayloadAction<ModtreeApiResponse.User>) => {

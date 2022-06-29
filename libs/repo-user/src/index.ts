@@ -260,6 +260,7 @@ export class UserRepository
         relations: this.graphRelations,
       })
       .then((graph) => {
+        console.log(graph)
         // if the graph is not in saved
         const savedGraphIds = user.savedGraphs.map((graph) => graph.id)
         if (!savedGraphIds.includes(graphId)) {

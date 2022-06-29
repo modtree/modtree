@@ -21,8 +21,9 @@ export const flatten = {
    * flattens a user to response shape
    *
    * @param {User} user
+   * @returns {ModtreeApiResponse.User}
    */
-  user(user: User) {
+  user(user: User): ModtreeApiResponse.User {
     return {
       ...user,
       modulesDoing: user.modulesDoing.map(flatten.module),
@@ -40,8 +41,9 @@ export const flatten = {
    * flattens a graph to response shape
    *
    * @param {Graph} graph
+   * @returns {ModtreeApiResponse.Graph}
    */
-  graph(graph: Graph) {
+  graph(graph: Graph): ModtreeApiResponse.Graph {
     return {
       ...graph,
       id: graph.id,
@@ -56,8 +58,9 @@ export const flatten = {
    * flattens a degree to response shape
    *
    * @param {Degree} degree
+   * @returns {ModtreeApiResponse.Degree}
    */
-  degree(degree: Degree) {
+  degree(degree: Degree): ModtreeApiResponse.Degree {
     return { ...degree, modules: degree.modules.map(flatten.module) }
   },
 }

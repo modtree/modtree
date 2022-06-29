@@ -1,6 +1,6 @@
 import { Api } from '@modtree/repo-api'
 import { CustomReqBody, CustomReqQuery } from '@modtree/types'
-import { copy, emptyInit } from '@modtree/utils'
+import { copy, emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
 
 type ListRequest = {
@@ -18,7 +18,7 @@ export class UserApi {
   static create = (api: Api) => async (req: Request) => {
     const props = emptyInit.User
     copy(req.body, props)
-    return api.userRepo.initialize(props)
+    return api.userRepo.initialize(props).then(flatten.user)
   }
 
   /**
@@ -27,7 +27,7 @@ export class UserApi {
    * @param {Api} api
    */
   static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
-    return api.userRepo.findOneById(req.params.userId)
+    return api.userRepo.findOneById(req.params.userId).then(flatten.user)
   }
 
   /**
@@ -41,10 +41,12 @@ export class UserApi {
   static getByPrimaryKeys =
     (api: Api) => async (req: CustomReqBody<ListRequest>) => {
       const { id, authZeroId, email } = req.body
-      return api.userRepo.findOneOrFail({
-        where: { id, authZeroId, email },
-        relations: api.relations.user,
-      })
+      return api.userRepo
+        .findOneOrFail({
+          where: { id, authZeroId, email },
+          relations: api.relations.user,
+        })
+        .then(flatten.user)
     }
 
   /**
@@ -54,15 +56,17 @@ export class UserApi {
    */
   static list = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
     const { id, authZeroId, email } = req.query
-    return api.userRepo.find({
-      where: { id, authZeroId, email },
-      relations: {
-        modulesDone: true,
-        modulesDoing: true,
-        savedDegrees: true,
-        savedGraphs: true,
-      },
-    })
+    return api.userRepo
+      .find({
+        where: { id, authZeroId, email },
+        relations: {
+          modulesDone: true,
+          modulesDoing: true,
+          savedDegrees: true,
+          savedGraphs: true,
+        },
+      })
+      .then((users) => users.map((u) => flatten.user(u)))
   }
 
   /**
@@ -108,6 +112,7 @@ export class UserApi {
         relations: api.relations.user,
       })
       .then((user) => api.userRepo.insertDegrees(user, degreeIds))
+      .then(flatten.user)
   }
 
   /**
@@ -118,7 +123,7 @@ export class UserApi {
   static login = (api: Api) => async (req: Request) => {
     const authZeroId = req.params.authZeroId
     const { email } = req.body
-    return api.userLogin(authZeroId, email)
+    return api.userLogin(authZeroId, email).then(flatten.user)
   }
 
   /**
@@ -151,6 +156,7 @@ export class UserApi {
         relations: api.relations.user,
       })
       .then((user) => api.userRepo.insertGraphs(user, graphIds))
+      .then(flatten.user)
   }
 
   /**
@@ -169,6 +175,7 @@ export class UserApi {
         relations: api.relations.user,
       })
       .then((user) => api.userRepo.setMainDegree(user, degreeId))
+      .then(flatten.user)
   }
 
   /**
@@ -188,5 +195,6 @@ export class UserApi {
         relations: api.relations.user,
       })
       .then((user) => api.userRepo.setMainGraph(user, graphId))
+      .then(flatten.user)
   }
 }

@@ -1,6 +1,6 @@
 import { Api } from '@modtree/repo-api'
 import { CustomReqQuery } from '@modtree/types'
-import { copy, emptyInit } from '@modtree/utils'
+import { copy, emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
 
 type ListRequest = {
@@ -22,7 +22,7 @@ export class GraphApi {
   static create = (api: Api) => async (req: Request) => {
     const props = emptyInit.Graph
     copy(req.body, props)
-    return api.graphRepo.initialize(props)
+    return api.graphRepo.initialize(props).then(flatten.graph)
   }
 
   /**
@@ -31,7 +31,7 @@ export class GraphApi {
    * @param {Api} api
    */
   static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
-    return api.graphRepo.findOneById(req.params.graphId)
+    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
   }
 
   /**
@@ -71,6 +71,7 @@ export class GraphApi {
     return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.toggleModule(graph, moduleCode))
+      .then(flatten.graph)
   }
 
   /**
@@ -81,11 +82,14 @@ export class GraphApi {
   static updateFrontendProps = (api: Api) => async (req: Request) => {
     const { flowNodes, flowEdges } = req.body
     const { graphId } = req.params
-    return api.graphRepo.findOneById(graphId).then((graph) =>
-      api.graphRepo.updateFrontendProps(graph, {
-        flowEdges,
-        flowNodes,
-      })
-    )
+    return api.graphRepo
+      .findOneById(graphId)
+      .then((graph) =>
+        api.graphRepo.updateFrontendProps(graph, {
+          flowEdges,
+          flowNodes,
+        })
+      )
+      .then(flatten.graph)
   }
 }

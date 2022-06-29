@@ -11,7 +11,8 @@ export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
-    dispatch(updateModulesDone(buildList))
+    const codes = buildList.map((m) => m.moduleCode)
+    dispatch(updateModulesDone(codes))
     props.setPage('main')
   }
   return (

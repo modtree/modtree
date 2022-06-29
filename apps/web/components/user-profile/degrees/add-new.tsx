@@ -7,11 +7,11 @@ import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
-import { Module, ModuleCondensed } from '@modtree/entity'
+import { ModuleCondensed } from '@modtree/entity'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { removeFromBuildList } from '@/store/search'
 
-function SelectedModules(props: { modules: Module[] }) {
+function SelectedModules(props: { modules: ModuleCondensed[] }) {
   const dispatch = useAppDispatch()
   return (
     <>

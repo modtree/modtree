@@ -13,8 +13,8 @@ export function Main(props: {
 }) {
   const hasDegree = props.content.length !== 0
   const dispatch = useAppDispatch()
-  const degrees = useAppSelector((state) => state.user.savedDegrees)
-  //const degreeCache = useAppSelector((state) => state.cache.degrees)
+  const degreeIds = useAppSelector((state) => state.user.savedDegrees)
+  const degreeCache = useAppSelector((state) => state.cache.degrees)
   return (
     <div className="mb-12">
       <SettingsSection
@@ -26,7 +26,8 @@ export function Main(props: {
           <>
             <p>{text.degreeListSection.summary}</p>
             <div className="ui-rectangle flex flex-col overflow-hidden">
-              {degrees.map((degree, index) => {
+              {degreeIds.map((degreeId, index) => {
+                const degree = degreeCache[degreeId]
                 return (
                   <Row.Degree
                     key={dashed(degree.title, index)}

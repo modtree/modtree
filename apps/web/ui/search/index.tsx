@@ -3,25 +3,29 @@ import { useAppDispatch } from '@/store/redux'
 import {
   addToBuildList,
   clearSearches,
-  setSearchedModule,
+  setSearchedModuleCondensed,
 } from '@/store/search'
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
-import { Module } from '@modtree/entity'
+import { ModuleCondensed } from '@modtree/entity'
 import { getModuleInfo } from '@/utils/backend'
-import { EmptyResponse } from '@modtree/utils'
 
-const emptyModule: Module = EmptyResponse.Module
+const emptyModuleCondensed: ModuleCondensed = {
+  title: '',
+  id: '',
+  moduleCode: '',
+  moduleLevel: 0,
+}
 
 export function RootSearchBox() {
   const dispatch = useAppDispatch()
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState(emptyModule)
+  const selectState = useState(emptyModuleCondensed)
 
-  const onSelect = (query: Module) => {
+  const onSelect = (query: ModuleCondensed) => {
     selectState[1](query)
     getModuleInfo(dispatch, query.moduleCode)
   }
@@ -30,7 +34,7 @@ export function RootSearchBox() {
     <div className="fixed top-3 left-3 w-72 z-10">
       <SearchContainer
         resultsComponent={SearchResultContainer}
-        set={setSearchedModule}
+        set={setSearchedModuleCondensed}
         clear={clearSearches}
         selectState={selectState}
         onSelect={onSelect}
@@ -47,9 +51,9 @@ export function SettingsSearchBox() {
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState(emptyModule)
+  const selectState = useState(emptyModuleCondensed)
 
-  const onSelect = (query: Module) => {
+  const onSelect = (query: ModuleCondensed) => {
     selectState[1](query)
     dispatch(addToBuildList(query))
   }
@@ -65,7 +69,7 @@ export function SettingsSearchBox() {
     >
       <SearchContainer
         resultsComponent={SearchResultContainer}
-        set={setSearchedModule}
+        set={setSearchedModuleCondensed}
         clear={clearSearches}
         selectState={selectState}
         onSelect={onSelect}
