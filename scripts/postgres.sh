@@ -50,8 +50,8 @@ EOF
 }
 
 main() {
-  local_drop_all_tables
-  # local_restore
+  # local_drop_all_tables
+  local_restore
 }
 
 main
