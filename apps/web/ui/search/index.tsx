@@ -8,27 +8,20 @@ import {
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
-import { ModuleCondensed } from '@modtree/entity'
 import { api } from 'api'
-
-const emptyModuleCondensed: ModuleCondensed = {
-  title: '',
-  id: '',
-  moduleCode: '',
-  moduleLevel: 0,
-}
 
 export function RootSearchBox() {
   const dispatch = useAppDispatch()
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState(emptyModuleCondensed)
+  const selectState = useState('')
 
-  const onSelect = (query: ModuleCondensed) => {
-    if (!query.moduleCode) return
+  const onSelect = (query: string) => {
+    if (!query) return
     selectState[1](query)
-    api.module.openModuleModal(query.moduleCode)
+    console.log('query', query)
+    api.module.openModuleModal(query)
   }
 
   return (
@@ -52,11 +45,13 @@ export function SettingsSearchBox() {
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState(emptyModuleCondensed)
+  const selectState = useState('')
 
-  const onSelect = (query: ModuleCondensed) => {
+  const onSelect = (query: string) => {
     selectState[1](query)
-    dispatch(addToBuildList(query))
+    api.moduleCondensed
+      .getByCodes([query])
+      .then((res) => dispatch(addToBuildList(res[0])))
   }
 
   return (

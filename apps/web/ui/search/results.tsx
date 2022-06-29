@@ -28,7 +28,7 @@ function SearchResultList(props: { modules: ModuleCondensed[] }) {
       {props.modules.map((module, index) => (
         <Combobox.Option
           key={dashed(module.moduleCode, index)}
-          value={module}
+          value={module.moduleCode}
           className={({ active }) =>
             flatten(
               'cursor-pointer select-none py-2 px-4',
@@ -43,7 +43,9 @@ function SearchResultList(props: { modules: ModuleCondensed[] }) {
   )
 }
 
-export function SearchResultContainer<T>(props: { selectState: UseState<T> }) {
+export function SearchResultContainer(props: {
+  selectState: UseState<string>
+}) {
   const { searchResults } = useAppSelector((state) => state.search)
   const [selected, setSelected] = props.selectState
   return (
