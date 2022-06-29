@@ -2,4 +2,4 @@
 
 dropdb modtree
 createdb modtree
-psql modtree < ../libs/sql/snapshots/postgres-modules-only.sql
+psql modtree < ../libs/sql/snapshots/mod3.sql
