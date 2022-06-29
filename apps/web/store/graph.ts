@@ -1,5 +1,5 @@
 import { ModuleCondensed } from '@modtree/entity'
-import { ModtreeApiResponse } from '@modtree/types'
+import { Modtree } from 'types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { baseInitialState } from './initial-state'
@@ -8,7 +8,7 @@ export const graph = createSlice({
   name: 'graph',
   initialState: baseInitialState.graph,
   reducers: {
-    setGraph: (graph, action: PayloadAction<ModtreeApiResponse.Graph>) => {
+    setGraph: (graph, action: PayloadAction<Modtree.Graph>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
         graph[key] = value
       })

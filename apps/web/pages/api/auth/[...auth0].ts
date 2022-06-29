@@ -1,18 +1,16 @@
 import { handleAuth, handleCallback, Session } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { backend } from '@/utils/backend'
+import { api } from 'api'
 
 const afterCallback = async (
   _req: NextApiRequest,
   _res: NextApiResponse,
   session: Session
 ) => {
-  return backend
-    .post(`/user/${session.user.sub}/login`, {
-      email: session.user.email,
-    })
-    .then((res) => {
-      session.user.modtree = res.data
+  return api.user
+    .login(session.user.sub, session.user.email)
+    .then((user) => {
+      session.user.modtree = user
       return session
     })
     .catch((err) => {

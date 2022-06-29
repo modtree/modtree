@@ -1,7 +1,12 @@
-import { UserProfile } from '@auth0/nextjs-auth0'
-import { ModuleCondensed } from '@modtree/entity'
-import { ModtreeApiResponse, UseState, Modify } from '@modtree/types'
-import { ButtonHTMLAttributes, ReactElement, ComponentProps } from 'react'
+import type { UserProfile } from '@auth0/nextjs-auth0'
+import type { ModuleCondensed } from '@modtree/entity'
+import type { ButtonHTMLAttributes, ReactElement, ComponentProps } from 'react'
+import type {
+  ModtreeApiResponse as Modtree,
+  UseState,
+  Modify,
+} from '@modtree/types'
+export type { ModtreeApiResponse as Modtree } from '@modtree/types'
 
 /**
  * for frontend-specific types.
@@ -15,7 +20,7 @@ export type UserContext = {
 }
 
 export type ModtreeUserProfile = UserProfile & {
-  modtree?: ModtreeApiResponse.User
+  modtree?: Modtree.User
 }
 
 export type ModtreeUserContext = {

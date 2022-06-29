@@ -1,6 +1,6 @@
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
-import ModtreeFlow from '@/flow'
+import ModtreeFlow from 'flow'
 import { HomeLoader } from '@/components/Loader'
 import { useUser } from '@/utils/auth0'
 import { useEffect } from 'react'
@@ -8,36 +8,17 @@ import { ContextMenus } from '@/components/context-menu'
 import { ModuleInfoModal, DebugModal } from '@/components/modals'
 import { UserProfileModal } from '@/components/user-profile'
 import { RootSearchBox } from '@/ui/search'
-import { useAppDispatch } from '@/store/redux'
-import { setUser } from '@/store/user'
-import { setDegree } from '@/store/degree'
-import { backend } from '../utils'
-import { setGraph } from '@/store/graph'
-import { log } from '@modtree/utils'
-import { addDegreeToCache } from '@/store/cache'
+import { rehydrate } from '@/utils/rehydrate'
 
 export default function Modtree() {
   const { isLoading, user } = useUser()
-  const dispatch = useAppDispatch()
 
   /**
    * load current user, current graph, current degree
    */
   useEffect(() => {
-    if (isLoading) return
-    if (user) {
-      backend
-        .get(`/user/${user.modtree.id}`)
-        .then((res) => dispatch(setUser(res.data)))
-      backend.get(`/degree/${user.modtree.savedDegrees[0]}`).then((res) => {
-        dispatch(setDegree(res.data))
-        dispatch(addDegreeToCache(res.data))
-      })
-      backend
-        .get(`/graph/${user.modtree.savedGraphs[0]}`)
-        .then((res) => dispatch(setGraph(res.data)))
-    } else {
-      log.yellow('user is not logged in')
+    if (!isLoading && user) {
+      rehydrate(user)
     }
   }, [isLoading])
 

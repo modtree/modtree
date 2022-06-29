@@ -7,7 +7,7 @@ import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
 import { useEffect } from 'react'
-import { moduleCondensedCache } from '@/utils/modules-condensed-cache'
+import { api } from 'api'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
@@ -18,7 +18,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
    * update the cache with required modules
    */
   useEffect(() => {
-    moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
+    api.moduleCondensed.loadCodes([...user.modulesDone, ...user.modulesDoing])
   }, [user.modulesDone, user.modulesDoing])
 
   const hasModules = {
