@@ -1,3 +1,4 @@
+import { addDegreeToCache } from '@/store/cache'
 import { setDegree } from '@/store/degree'
 import { setGraph } from '@/store/graph'
 import store from '@/store/redux'
@@ -13,9 +14,10 @@ export function rehydrate(user: ModtreeUserContext['user']) {
     api.user.getById(user.modtree.id).then((user) => dispatch(setUser(user)))
   }
   if (redux.degree.id === '') {
-    api.degree
-      .getById(user.modtree.savedDegrees[0])
-      .then((degree) => dispatch(setDegree(degree)))
+    api.degree.getById(user.modtree.savedDegrees[0]).then((degree) => {
+      dispatch(setDegree(degree))
+      dispatch(addDegreeToCache(degree))
+    })
   }
   if (redux.graph.id === '') {
     api.graph

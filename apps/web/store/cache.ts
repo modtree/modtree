@@ -1,44 +1,27 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 import { Modtree } from 'types'
-import { WritableDraft } from 'immer/dist/internal'
 import { ModuleCondensed } from '@modtree/entity'
-
-const getState = <T>(state: WritableDraft<Record<string, T>>) => {
-  return {
-    existingKeys: new Set(Object.keys(state)),
-    newState: state,
-  }
-}
 
 export const cache = createSlice({
   name: 'cache',
   initialState: baseInitialState.cache,
   reducers: {
     addDegreeToCache: (cache, action: PayloadAction<Modtree.Degree>) => {
-      const { existingKeys, newState } = getState(cache.degrees)
-      if (!existingKeys.has(action.payload.id)) {
-        newState[action.payload.id] = action.payload
-      }
+      cache.degrees[action.payload.id] = action.payload
     },
     addModulesCondensedToCache: (
       cache,
       action: PayloadAction<ModuleCondensed[]>
     ) => {
-      const newState = cache.modulesCondensed
       action.payload.forEach((module) => {
-        newState[module.moduleCode] = module
+        cache.modulesCondensed[module.moduleCode] = module
       })
-      cache.modulesCondensed = newState
     },
     addModulesToCache: (cache, action: PayloadAction<Modtree.Module[]>) => {
-      const { existingKeys, newState } = getState(cache.modules)
-      action.payload
-        .filter((module) => !existingKeys.has(module.moduleCode))
-        .forEach((module) => {
-          newState[module.moduleCode] = module
-        })
-      cache.modules = newState
+      action.payload.forEach((module) => {
+        cache.modules[module.moduleCode] = module
+      })
     },
   },
 })
