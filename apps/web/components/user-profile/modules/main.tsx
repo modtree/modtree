@@ -5,24 +5,26 @@ import { text } from 'text'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { useEffect } from 'react'
-import { updateCachedModulesCondensed } from '@/utils/backend'
 import { setBuildList } from '@/store/search'
+import { useEffect } from 'react'
+import { moduleCondensedCache } from '@/utils/modules-condensed-cache'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
-  const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
-  const cachedModulesCondensed = useAppSelector(
-    (state) => state.cache.modulesCondensed
-  )
+  const user = useAppSelector((state) => state.user)
+  const cache = useAppSelector((state) => state.cache.modulesCondensed)
+
+  /**
+   * update the cache with required modules
+   */
+  useEffect(() => {
+    moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
+  }, [user.modulesDone, user.modulesDoing])
+
   const hasModules = {
     done: user.modulesDone.length !== 0,
     doing: user.modulesDoing.length !== 0,
   }
-  useEffect(() => {
-    const codes = [...user.modulesDone, ...user.modulesDoing]
-    updateCachedModulesCondensed(dispatch, codes)
-  }, [user.modulesDone, user.modulesDoing])
   return (
     <>
       <div className="mb-12">
@@ -31,11 +33,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.doing ? 'gray' : 'green'}
           addButtonText={hasModules.doing ? 'Modify' : 'Add doing'}
           onAddClick={() => {
-            dispatch(
-              setBuildList(
-                user.modulesDoing.map((code) => cachedModulesCondensed[code])
-              )
-            )
+            dispatch(setBuildList(user.modulesDoing.map((code) => cache[code])))
             props.setPage('add-doing')
           }}
         >
@@ -47,7 +45,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                   <Row.Module key={dashed(code, index)}>
                     <span className="font-semibold">{code}</span>
                     <span className="mx-1">/</span>
-                    {cachedModulesCondensed[code]?.title}
+                    {cache[code]?.title}
                   </Row.Module>
                 ))}
               </div>
@@ -63,11 +61,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.done ? 'gray' : 'green'}
           addButtonText={hasModules.done ? 'Modify' : 'Add done'}
           onAddClick={() => {
-            dispatch(
-              setBuildList(
-                user.modulesDone.map((code) => cachedModulesCondensed[code])
-              )
-            )
+            dispatch(setBuildList(user.modulesDone.map((code) => cache[code])))
             props.setPage('add-done')
           }}
         >
@@ -79,7 +73,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                   <Row.Module key={dashed(code, index)}>
                     <span className="font-semibold">{code}</span>
                     <span className="mx-1">/</span>
-                    {cachedModulesCondensed[code].title}
+                    {cache[code]?.title}
                   </Row.Module>
                 ))}
               </div>

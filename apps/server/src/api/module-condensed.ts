@@ -14,10 +14,10 @@ export class ModuleCondensedApi {
    * @param {Api} api
    */
   static list = (api: Api) => (req: CustomReqQuery<ModuleCodes>) => {
-    if (req.query.moduleCodes) {
+    if (Array.isArray(req.query.moduleCodes)) {
       return api.moduleCondensedRepo.findByCodes(req.query.moduleCodes)
     } else {
-      return api.moduleCondensedRepo.find()
+      return []
     }
   }
 
