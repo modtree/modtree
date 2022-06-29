@@ -79,9 +79,6 @@ jobs:
           ${{ needs.pre_job.outputs.build_command }} \
           ${{ needs.pre_job.outputs.build_args }}
 
-      - name: fail
-        run: exit 1
-
   results:
     needs: [ci, build, pre_job]
     if: |
