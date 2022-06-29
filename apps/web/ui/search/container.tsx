@@ -1,25 +1,26 @@
 import { Combobox } from '@headlessui/react'
-import { SetState, UseState } from '@modtree/types'
+import { UseState } from '@modtree/types'
 import { AnyAction, Dispatch } from 'redux'
 import { SearchInput } from './input'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { FC } from 'react'
+import { Modtree } from 'types'
 
-export function SearchContainer<T>(props: {
-  selectState: UseState<T>
+export function SearchContainer(props: {
+  selectState: UseState<Modtree.ModuleCondensed>
   dispatch: Dispatch
-  onSelect: (_: T) => void
+  onSelect: (_: string) => void
   clear: () => AnyAction
-  set: ActionCreatorWithOptionalPayload<T[], string>
-  resultsComponent: FC<{ setSelected: SetState<T> }>
+  set: ActionCreatorWithOptionalPayload<Modtree.ModuleCondensed[], string>
+  resultsComponent: FC<{ selectState: UseState<Modtree.ModuleCondensed> }>
   inputClass?: string
   inputContainerClass?: string
   hideResults?: boolean
   searchIcon?: boolean
 }) {
-  const [selected, setSelected] = props.selectState
+  const [selected] = props.selectState
   return (
-    <Combobox value={selected} onChange={props.onSelect}>
+    <Combobox value={selected.moduleCode} onChange={props.onSelect}>
       <SearchInput
         dispatch={props.dispatch}
         clear={props.clear}
@@ -30,7 +31,7 @@ export function SearchContainer<T>(props: {
       />
       <div className="relative w-full">
         {!props.hideResults && (
-          <props.resultsComponent setSelected={setSelected} />
+          <props.resultsComponent selectState={props.selectState} />
         )}
       </div>
     </Combobox>

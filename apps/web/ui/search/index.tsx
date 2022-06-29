@@ -26,6 +26,7 @@ export function RootSearchBox() {
   const selectState = useState(emptyModuleCondensed)
 
   const onSelect = (query: ModuleCondensed) => {
+    if (!query.moduleCode) return
     selectState[1](query)
     api.module.openModuleModal(query.moduleCode)
   }

@@ -3,6 +3,15 @@ import { BaseApi } from './base-api'
 import type { Modtree } from 'types'
 import { setModalModule, showModuleModal } from '@/store/modal'
 
+/**
+ * NOTE TO DEVS
+ *
+ * it seems like modules are really heavy, seeing as redux sends warnings about
+ * how slow operations with it are.
+ *
+ * For that reason, caching is to be avoided with modules in particular.
+ */
+
 export class ModuleApi extends BaseApi {
   /**
    * updates the cache with any new modules found
@@ -57,15 +66,24 @@ export class ModuleApi extends BaseApi {
   }
 
   /**
+   * gets one module, memoized by redux cache
+   *
+   * @param {string} moduleCode
+   * @returns {Promise<Modtree.Module>}
+   */
+  async directGetByCode(moduleCode: string): Promise<Modtree.Module> {
+    return this.server.get(`/module/${moduleCode}`).then((res) => res.data)
+  }
+
+  /**
    * opens the module modal with information about specified code
    *
    * @param {string} moduleCode
    */
   async openModuleModal(moduleCode: string) {
-    if (!moduleCode) return
     this.dispatch(showModuleModal())
-    return this.getByCode(moduleCode).then(() =>
-      this.dispatch(setModalModule(this.redux().cache.modules[moduleCode]))
+    return this.directGetByCode(moduleCode).then((module) =>
+      this.dispatch(setModalModule(module))
     )
   }
 }
