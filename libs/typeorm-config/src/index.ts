@@ -70,7 +70,7 @@ function getConfig(): DataSourceOptions {
     password: '',
     host: '',
     database: 'mt_test',
-    restoreSource: 'postgres-modules-only.sql',
+    restoreSource: 'mod3.sql',
     synchronize: true,
     migrationsRun: false,
   }
