@@ -17,9 +17,9 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   /**
    * update the cache with required modules
    */
-  useEffect(() => {
-    moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
-  }, [user.modulesDone, user.modulesDoing])
+  //   useEffect(() => {
+  //     moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
+  //   }, [user.modulesDone, user.modulesDoing])
 
   const hasModules = {
     done: user.modulesDone.length !== 0,
@@ -33,7 +33,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.doing ? 'gray' : 'green'}
           addButtonText={hasModules.doing ? 'Modify' : 'Add doing'}
           onAddClick={() => {
-            dispatch(setBuildList(user.modulesDoing.map((code) => cache[code])))
+            dispatch(setBuildList(user.modulesDoing))
             props.setPage('add-doing')
           }}
         >
@@ -41,11 +41,11 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             <>
               <p>{text.moduleListSection.doing.summary}</p>
               <div className="ui-rectangle flex flex-col overflow-hidden">
-                {user.modulesDoing.map((code, index) => (
-                  <Row.Module key={dashed(code, index)}>
-                    <span className="font-semibold">{code}</span>
+                {user.modulesDoing.map((module, index) => (
+                  <Row.Module key={dashed(module.moduleCode, index)}>
+                    <span className="font-semibold">{module.moduleCode}</span>
                     <span className="mx-1">/</span>
-                    {cache[code]?.title}
+                    {module.title}
                   </Row.Module>
                 ))}
               </div>
@@ -61,7 +61,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.done ? 'gray' : 'green'}
           addButtonText={hasModules.done ? 'Modify' : 'Add done'}
           onAddClick={() => {
-            dispatch(setBuildList(user.modulesDone.map((code) => cache[code])))
+            dispatch(setBuildList(user.modulesDone))
             props.setPage('add-done')
           }}
         >
@@ -69,11 +69,11 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             <>
               <p>{text.moduleListSection.done.summary}</p>
               <div className="ui-rectangle flex flex-col overflow-hidden">
-                {user.modulesDone.map((code, index) => (
-                  <Row.Module key={dashed(code, index)}>
-                    <span className="font-semibold">{code}</span>
+                {user.modulesDone.map((module, index) => (
+                  <Row.Module key={dashed(module.moduleCode, index)}>
+                    <span className="font-semibold">{module.moduleCode}</span>
                     <span className="mx-1">/</span>
-                    {cache[code]?.title}
+                    {module.title}
                   </Row.Module>
                 ))}
               </div>
