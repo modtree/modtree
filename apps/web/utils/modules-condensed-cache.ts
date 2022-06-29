@@ -1,30 +1,27 @@
 import { ModuleCondensed } from '@modtree/entity'
 import { backend } from './backend'
-import store, { AppDispatch } from '@/store/redux'
+import store from '@/store/redux'
 import { addModulesCondensedToCache } from '@/store/cache'
 
 class ModuleCondensedCache {
-  private codes: Set<string>
-  private dispatch: AppDispatch
+  private data: Record<string, ModuleCondensed>
   constructor() {
-    this.codes = new Set<string>()
-    this.dispatch = store.dispatch
+    this.data = store.getState().cache.modulesCondensed
   }
   /**
-   * updates the cache
+   * updates the cache with a list of module codes
+   * duplicates will be removed and not queried for
    */
   async load(codes: string[]) {
-    const moduleCodes = codes.filter((code) => !this.codes.has(code))
+    const existingCodes = new Set(Object.keys(this.data))
+    const moduleCodes = codes.filter((code) => !existingCodes.has(code))
     return backend
       .get('/modules-condensed', {
         params: { moduleCodes },
       })
       .then((res) => {
         const modules: ModuleCondensed[] = res.data
-        this.dispatch(addModulesCondensedToCache(modules))
-        modules.forEach((module) => {
-          this.codes.add(module.moduleCode)
-        })
+        store.dispatch(addModulesCondensedToCache(modules))
       })
   }
 }
