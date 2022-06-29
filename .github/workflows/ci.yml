@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
-      test_projects: ${{ steps.json.outputs.test_projects }}
       build_command: ${{ steps.json.outputs.build_command }}
+      test_projects: ${{ steps.json.outputs.test_projects }}
       test_command: ${{ steps.json.outputs.test_command }}
       test_args: ${{ steps.json.outputs.test_args }}
       build_args: ${{ steps.json.outputs.build_args }}
