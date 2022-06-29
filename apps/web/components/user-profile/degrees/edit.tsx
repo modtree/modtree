@@ -3,12 +3,12 @@ import { SettingsSection } from '@/ui/settings/lists/base'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
-import { ModtreeApiResponse, SetState } from '@modtree/types'
+import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
-import { backend } from '@/utils/backend'
 import { setBuildList } from '@/store/search'
+import { api } from '@/utils/api'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   const { buildList, buildTitle, buildId } = useAppSelector(
@@ -19,19 +19,12 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   }
   const dispatch = useAppDispatch()
   useEffect(() => {
-    const degree = backend
-      .get<ModtreeApiResponse.Degree>(`/degree/${buildId}`)
-      .then((res) => res.data)
-    degree
-      .then((degree) => {
-        console.log('fetched degree', degree)
-        return degree.modules
-      })
-      .then((moduleCodes) =>
-        backend.get(`/modules-condensed`, { params: { moduleCodes } })
-      )
-      .then((res) => {
-        dispatch(setBuildList(res.data))
+    api.degree
+      .getById(buildId)
+      .then((degree) => degree.modules)
+      .then((moduleCodes) => api.moduleCondensed.getByCodes(moduleCodes))
+      .then((modules) => {
+        dispatch(setBuildList(modules))
       })
   }, [])
   return (
