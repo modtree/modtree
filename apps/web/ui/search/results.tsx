@@ -4,7 +4,7 @@ import { useAppSelector } from '@/store/redux'
 import { ModuleCondensed } from '@modtree/entity'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
-import { SetState, UseState } from '@modtree/types'
+import { UseState } from '@modtree/types'
 
 function SearchResult(props: { module: ModuleCondensed }) {
   return (

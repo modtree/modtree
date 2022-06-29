@@ -2,9 +2,6 @@ import { setModalModule, showModuleModal } from '@/store/modal'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { AnyAction, Dispatch } from 'redux'
 import axios from 'axios'
-import { addModulesCondensedToCache } from '@/store/cache'
-import store from '@/store/redux'
-import { ModuleCondensed } from '@modtree/entity'
 
 export const backend = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND,
