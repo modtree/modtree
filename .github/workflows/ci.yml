@@ -85,6 +85,7 @@ jobs:
   results:
     needs: [ci, build, pre_job]
     if: |
+      always() &&
       needs.build.result != 'cancelled' &&
       needs.ci.result != 'cancelled' &&
       needs.pre_job.outputs.should_skip != 'true'
