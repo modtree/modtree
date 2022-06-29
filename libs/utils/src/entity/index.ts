@@ -58,9 +58,8 @@ export const flatten = {
    * flattens a degree to response shape
    *
    * @param {Degree} degree
-   * @returns {ModtreeApiResponse.Degree}
    */
-  degree(degree: Degree): ModtreeApiResponse.Degree {
+  degree(degree: Degree) {
     return { ...degree, modules: degree.modules.map(flatten.module) }
   },
 }
