@@ -31,16 +31,16 @@ export const search = createSlice({
     clearBuildList: (state) => {
       state.buildList = []
     },
-    setBuildList: (state, action: PayloadAction<ModuleCondensed[]>) => {
+    setBuildList: (state, action: PayloadAction<Module[]>) => {
       state.buildList = action.payload
     },
-    addToBuildList: (state, action: PayloadAction<ModuleCondensed>) => {
+    addToBuildList: (state, action: PayloadAction<Module>) => {
       const codes = new Set(state.buildList.map((m) => m.moduleCode))
       if (!codes.has(action.payload.moduleCode)) {
         state.buildList = [...state.buildList, action.payload]
       }
     },
-    removeFromBuildList: (state, action: PayloadAction<ModuleCondensed>) => {
+    removeFromBuildList: (state, action: PayloadAction<Module>) => {
       const codes = new Set(state.buildList.map((m) => m.moduleCode))
       if (codes.has(action.payload.moduleCode)) {
         state.buildList = state.buildList.filter(

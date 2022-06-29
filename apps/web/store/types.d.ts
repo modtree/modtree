@@ -35,7 +35,7 @@ export type ReduxState = {
   search: {
     buildId: string
     buildTitle: string
-    buildList: ModuleCondensed[]
+    buildList: Module[]
     searchResults: ModuleCondensed[]
     module: Module[]
     hasResults: boolean

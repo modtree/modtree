@@ -28,7 +28,7 @@ export type User = Modify<
 export type Degree = Modify<
   IDegree,
   {
-    modules: string[]
+    modules: IModule[]
   }
 >
 

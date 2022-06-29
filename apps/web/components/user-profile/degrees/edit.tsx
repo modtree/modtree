@@ -22,17 +22,10 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
     const degree = backend
       .get<ModtreeApiResponse.Degree>(`/degree/${buildId}`)
       .then((res) => res.data)
-    degree
-      .then((degree) => {
-        console.log('fetched degree', degree)
-        return degree.modules
-      })
-      .then((moduleCodes) =>
-        backend.get(`/modules-condensed`, { params: { moduleCodes } })
-      )
-      .then((res) => {
-        dispatch(setBuildList(res.data))
-      })
+    degree.then((degree) => {
+      console.log('fetched degree', degree)
+      dispatch(setBuildList(degree.modules))
+    })
   }, [])
   return (
     <div className="flex flex-col">
