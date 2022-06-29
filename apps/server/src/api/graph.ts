@@ -9,6 +9,10 @@ type ListRequest = {
   email?: string
 }
 
+type GraphIds = {
+  graphIds: string[] | string
+}
+
 export class GraphApi {
   /**
    * creates a Graph
@@ -35,10 +39,15 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static list = (api: Api) => async () => {
-    return api.graphRepo
-      .find({ relations: api.relations.graph })
-      .then((results) => results.map(flatten.graph))
+  static list = (api: Api) => async (req: CustomReqQuery<GraphIds>) => {
+    const graphIds = req.query.graphIds
+    if (Array.isArray(graphIds)) {
+      return api.graphRepo.findByIds(graphIds)
+    } else if (graphIds.length > 0) {
+      return api.graphRepo.findByIds([graphIds])
+    } else {
+      return []
+    }
   }
 
   /**
