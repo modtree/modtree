@@ -14,10 +14,10 @@ jobs:
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
       build_command: ${{ steps.json.outputs.build_command }}
+      build_args: ${{ steps.json.outputs.build_args }}
       test_projects: ${{ steps.json.outputs.test_projects }}
       test_command: ${{ steps.json.outputs.test_command }}
       test_args: ${{ steps.json.outputs.test_args }}
-      build_args: ${{ steps.json.outputs.build_args }}
       install_command: ${{ steps.json.outputs.install_command }}
     steps:
       - uses: actions/checkout@v3
