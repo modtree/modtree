@@ -66,7 +66,7 @@ export class ModuleApi extends BaseApi {
   }
 
   /**
-   * gets one module, memoized by redux cache
+   * gets one module
    *
    * @param {string} moduleCode
    * @returns {Promise<Modtree.Module>}
