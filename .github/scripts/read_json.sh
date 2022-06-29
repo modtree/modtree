@@ -4,6 +4,10 @@
   && is_push_to_main=true \
   || is_push_to_main=false
 
+echo "event:           $EVENT"
+echo "ref:             $REF"
+echo "is push to main: $is_push_to_main"
+
 set_output() {
   local JSON=`jq -rc "$1" .github/scripts/ci.json`
   echo "::set-output name=$2::$JSON"
@@ -21,7 +25,6 @@ set_output '.test.prefix | join(" ")' 'test_prefix'
 set_output '.test.projects' 'test_projects'
 
 # action-dependent environment
-echo "is push to main? $is_push_to_main"
 if [ "$is_push_to_main" = true ]; then
   set_output '.build.args.no_cache | join(" ")' 'build_args'
   set_output '.test.args.no_cache | join(" ")' 'test_args'

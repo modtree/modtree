@@ -31,8 +31,8 @@ jobs:
       - id: json
         run: ./.github/scripts/read_json.sh
         env:
-          EVENT: github.event_name
-          REF: github.event.ref
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.event.ref }}
 
       - name: Debug outputs
         run: echo "${{ toJSON(steps.json.outputs) }}"
