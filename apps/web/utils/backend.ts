@@ -3,7 +3,6 @@ import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { AnyAction, Dispatch } from 'redux'
 import axios from 'axios'
 import { addModulesCondensedToCache } from '@/store/cache'
-import { ModtreeApiResponse } from '@modtree/types'
 import store from '@/store/redux'
 import { ModuleCondensed } from '@modtree/entity'
 

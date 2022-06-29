@@ -7,13 +7,29 @@ import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
 import { backend } from '@/utils/backend'
+import { ModuleCondensed } from '@modtree/entity'
+import { useEffect, useState } from 'react'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const user = useAppSelector((state) => state.user)
+  const [cache, setCache] = useState<Record<string, ModuleCondensed>>({})
+
+  useEffect(() => {
+    backend
+      .get('/modules-condensed', {
+        params: { moduleCodes: [...user.modulesDone, ...user.modulesDoing] },
+      })
+      .then((res) => {
+        const newCache: Record<string, ModuleCondensed> = {}
+        const modules: ModuleCondensed[] = res.data
+        modules.forEach((module) => {
+          newCache[module.moduleCode] = module
+        })
+        setCache(newCache)
+      })
+  }, [user.modulesDone, user.modulesDoing])
+
   const dispatch = useAppDispatch()
-  const cachedModulesCondensed = useAppSelector(
-    (state) => state.cache.modulesCondensed
-  )
   const hasModules = {
     done: user.modulesDone.length !== 0,
     doing: user.modulesDoing.length !== 0,
@@ -44,7 +60,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                   <Row.Module key={dashed(code, index)}>
                     <span className="font-semibold">{code}</span>
                     <span className="mx-1">/</span>
-                    {cachedModulesCondensed[code]?.title}
+                    {cache[code]?.title}
                   </Row.Module>
                 ))}
               </div>
@@ -62,7 +78,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           onAddClick={() => {
             backend
               .get('/modules-condensed', {
-                params: { moduleCodes: [], all: false },
+                params: { moduleCodes: user.modulesDone },
               })
               .then((res) => {
                 dispatch(setBuildList(res.data))
@@ -78,7 +94,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                   <Row.Module key={dashed(code, index)}>
                     <span className="font-semibold">{code}</span>
                     <span className="mx-1">/</span>
-                    {cachedModulesCondensed[code].title}
+                    {cache[code].title}
                   </Row.Module>
                 ))}
               </div>
