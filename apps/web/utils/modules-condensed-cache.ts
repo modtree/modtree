@@ -1,15 +1,19 @@
 import { ModuleCondensed } from '@modtree/entity'
 import { backend } from './backend'
+import store, { AppDispatch } from '@/store/redux'
+import { addModulesCondensedToCache } from '@/store/cache'
 
 class ModuleCondensedCache {
-  private data: Record<string, ModuleCondensed>
   private codes: Set<string>
+  private reduxState: Record<string, ModuleCondensed>
+  private dispatch: AppDispatch
   constructor() {
-    this.data = {}
     this.codes = new Set<string>()
+    this.reduxState = store.getState().cache.modulesCondensed
+    this.dispatch = store.dispatch
   }
   getData(): Record<string, ModuleCondensed> {
-    return this.data
+    return this.reduxState
   }
   async preload(codes: string[]): Promise<ModuleCondensed[]> {
     const moduleCodes = codes.filter((code) => !this.codes.has(code))
@@ -19,23 +23,27 @@ class ModuleCondensedCache {
       })
       .then((res) => {
         const modules: ModuleCondensed[] = res.data
+        this.dispatch(addModulesCondensedToCache(modules))
         modules.forEach((module) => {
           this.codes.add(module.moduleCode)
-          this.data[module.moduleCode] = module
+          // this.data[module.moduleCode] = module
         })
         return modules
       })
   }
   async getOne(code: string): Promise<ModuleCondensed> {
     if (this.codes.has(code)) {
-      return this.data[code]
+      return this.reduxState[code]
+      // return this.data[code]
     } else {
       return this.preload([code]).then((res) => res[0])
     }
   }
   async getList(codes: string[]): Promise<ModuleCondensed[]> {
     const toLoad = codes.filter((code) => !this.codes.has(code))
-    return this.preload(toLoad).then(() => codes.map((code) => this.data[code]))
+    return this.preload(toLoad).then(() =>
+      codes.map((code) => this.reduxState[code])
+    )
   }
 }
 

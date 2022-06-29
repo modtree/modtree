@@ -28,12 +28,10 @@ export const cache = createSlice({
       cache,
       action: PayloadAction<ModuleCondensed[]>
     ) => {
-      const { existingKeys, newState } = getState(cache.modulesCondensed)
-      action.payload
-        .filter((module) => !existingKeys.has(module.moduleCode))
-        .forEach((module) => {
-          newState[module.moduleCode] = module
-        })
+      const newState = cache.modulesCondensed
+      action.payload.forEach((module) => {
+        newState[module.moduleCode] = module
+      })
       cache.modulesCondensed = newState
     },
     addModulesToCache: (
