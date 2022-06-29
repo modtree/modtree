@@ -6,16 +6,14 @@ import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDoing } from '@/store/user'
 import { SelectedModules } from './selected-modules'
-import { useUser } from '@/utils/auth0'
 import { api } from 'api'
 
 export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
-  const { user } = useUser()
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
     const codes = buildList.map((m) => m.moduleCode)
-    api.user.setModuleStatus(user.modtree.id, codes, ModuleStatus.DOING)
+    api.user.setModuleStatus(codes, ModuleStatus.DOING)
     dispatch(updateModulesDoing(codes))
     props.setPage('main')
   }
