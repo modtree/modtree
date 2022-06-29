@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
-import { ModtreeApiResponse } from '@modtree/types'
+import { Modtree } from 'types'
 import { WritableDraft } from 'immer/dist/internal'
 import { ModuleCondensed } from '@modtree/entity'
 
@@ -15,10 +15,7 @@ export const cache = createSlice({
   name: 'cache',
   initialState: baseInitialState.cache,
   reducers: {
-    addDegreeToCache: (
-      cache,
-      action: PayloadAction<ModtreeApiResponse.Degree>
-    ) => {
+    addDegreeToCache: (cache, action: PayloadAction<Modtree.Degree>) => {
       const { existingKeys, newState } = getState(cache.degrees)
       if (!existingKeys.has(action.payload.id)) {
         newState[action.payload.id] = action.payload
@@ -34,10 +31,7 @@ export const cache = createSlice({
       })
       cache.modulesCondensed = newState
     },
-    addModulesToCache: (
-      cache,
-      action: PayloadAction<ModtreeApiResponse.Module[]>
-    ) => {
+    addModulesToCache: (cache, action: PayloadAction<Modtree.Module[]>) => {
       const { existingKeys, newState } = getState(cache.modules)
       action.payload
         .filter((module) => !existingKeys.has(module.moduleCode))

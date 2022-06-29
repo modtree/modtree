@@ -7,7 +7,7 @@ import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
 import { useEffect } from 'react'
-import { api } from '@/utils/api'
+import { api } from 'api'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()

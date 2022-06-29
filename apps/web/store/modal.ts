@@ -1,5 +1,4 @@
-import { Pages } from '@/types'
-import { ModtreeApiResponse } from '@modtree/types'
+import { Modtree, Pages } from 'types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 import { ContextMenuProps } from './types'
@@ -39,10 +38,7 @@ export const modal = createSlice({
       state.showContextMenu = true
       state.contextMenuProps = action.payload
     },
-    setModalModule: (
-      state,
-      action: PayloadAction<ModtreeApiResponse.Module>
-    ) => {
+    setModalModule: (state, action: PayloadAction<Modtree.Module>) => {
       state.modalModule = action.payload
     },
   },

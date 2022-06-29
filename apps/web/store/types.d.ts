@@ -1,6 +1,6 @@
 import { Pages } from '@/types'
 import { Module, ModuleCondensed } from '@modtree/entity'
-import { ModtreeApiResponse } from '@modtree/types'
+import { Modtree } from 'types'
 
 export type ModuleCondensedMap = {
   [key: string]: ModuleCondensed
@@ -13,9 +13,9 @@ export type ContextMenuProps = {
 }
 
 export type ReduxState = {
-  user: ModtreeApiResponse.User
-  degree: ModtreeApiResponse.Degree
-  graph: ModtreeApiResponse.Graph & {
+  user: Modtree.User
+  degree: Modtree.Degree
+  graph: Modtree.Graph & {
     selectedCodes: string[]
   }
   modal: {
@@ -25,12 +25,12 @@ export type ReduxState = {
     showDebugModal: boolean
     showContextMenu: boolean
     contextMenuProps: ContextMenuProps
-    modalModule: ModtreeApiResponse.Module
+    modalModule: Modtree.Module
   }
   cache: {
     modulesCondensed: Record<string, ModuleCondensed>
-    modules: Record<string, ModtreeApiResponse.Module>
-    degrees: Record<string, ModtreeApiResponse.Degree>
+    modules: Record<string, Modtree.Module>
+    degrees: Record<string, Modtree.Degree>
   }
   search: {
     buildId: string

@@ -8,7 +8,7 @@ import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
 import { setBuildList } from '@/store/search'
-import { api } from '@/utils/api'
+import { api } from 'api'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   const { buildList, buildTitle, buildId } = useAppSelector(

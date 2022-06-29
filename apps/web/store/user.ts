@@ -1,4 +1,4 @@
-import { ModtreeApiResponse } from '@modtree/types'
+import { Modtree } from 'types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 
@@ -12,7 +12,7 @@ export const user = createSlice({
     updateModulesDoing: (user, action: PayloadAction<string[]>) => {
       user.modulesDoing = action.payload
     },
-    setUser: (user, action: PayloadAction<ModtreeApiResponse.User>) => {
+    setUser: (user, action: PayloadAction<Modtree.User>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
         user[key] = value
       })

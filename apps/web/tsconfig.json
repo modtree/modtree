@@ -5,6 +5,7 @@
     "pages",
     "store",
     "components",
+    "api",
     "flow",
     "utils",
     "ui"
