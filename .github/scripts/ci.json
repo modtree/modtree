@@ -1,0 +1,30 @@
+{
+  "install": {
+    "command": "yarn --frozen-lockfile --silent"
+  },
+  "build": {
+    "command": "yarn build",
+    "args": {
+      "ci": [],
+      "no_cache": ["--skip-nx-cache"]
+    }
+  },
+  "test": {
+    "projects": [
+      "repo-api",
+      "repo-base",
+      "repo-degree",
+      "repo-graph",
+      "repo-module",
+      "repo-user",
+      "utils",
+      "docs",
+      "server"
+    ],
+    "command": "yarn nx test",
+    "args": {
+      "ci": ["--coverage", "--runInBand"],
+      "no_cache": ["--coverage", "--runInBand", "--skip-nx-cache"]
+    }
+  }
+}
