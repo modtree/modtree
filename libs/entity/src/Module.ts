@@ -9,31 +9,10 @@ export class Module extends Base {
   override id: string
 
   @Column('text')
-  acadYear: string
-
-  @Column('text')
   moduleCode: string
 
   @Column('text')
   title: string
-
-  @Column('varchar', { nullable: true })
-  description: string
-
-  @Column('text')
-  moduleCredit: string
-
-  @Column('text')
-  department: string
-
-  @Column('text')
-  faculty: string
-
-  @Column('json', { nullable: true })
-  aliases: string[]
-
-  @Column('json', { nullable: true })
-  attributes: NUSMods.NUSModuleAttributes
 
   @Column('text', { nullable: true })
   prerequisite: string
@@ -48,11 +27,5 @@ export class Module extends Base {
   fulfillRequirements: string[]
 
   @Column('json', { nullable: true })
-  semesterData: NUSMods.SemesterData[]
-
-  @Column('json', { nullable: true })
   prereqTree: NUSMods.PrereqTree
-
-  @Column('json', { nullable: true })
-  workload: string | number[]
 }
