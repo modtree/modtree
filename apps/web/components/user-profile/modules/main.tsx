@@ -6,7 +6,6 @@ import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
-import { backend } from '@/utils/backend'
 import { useEffect } from 'react'
 import { moduleCondensedCache } from '@/utils/modules-condensed-cache'
 
