@@ -11,14 +11,17 @@ import { useEffect } from 'react'
 import { moduleCondensedCache } from '@/utils/modules-condensed-cache'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
+  const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user)
   const cache = useAppSelector((state) => state.cache.modulesCondensed)
 
+  /**
+   * update the cache with required modules
+   */
   useEffect(() => {
     moduleCondensedCache.load([...user.modulesDone, ...user.modulesDoing])
   }, [user.modulesDone, user.modulesDoing])
 
-  const dispatch = useAppDispatch()
   const hasModules = {
     done: user.modulesDone.length !== 0,
     doing: user.modulesDoing.length !== 0,
@@ -31,13 +34,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.doing ? 'gray' : 'green'}
           addButtonText={hasModules.doing ? 'Modify' : 'Add doing'}
           onAddClick={() => {
-            backend
-              .get('/modules-condensed', {
-                params: { moduleCodes: user.modulesDoing },
-              })
-              .then((res) => {
-                dispatch(setBuildList(res.data))
-              })
+            dispatch(setBuildList(user.modulesDoing.map((code) => cache[code])))
             props.setPage('add-doing')
           }}
         >
@@ -65,13 +62,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.done ? 'gray' : 'green'}
           addButtonText={hasModules.done ? 'Modify' : 'Add done'}
           onAddClick={() => {
-            backend
-              .get('/modules-condensed', {
-                params: { moduleCodes: user.modulesDone },
-              })
-              .then((res) => {
-                dispatch(setBuildList(res.data))
-              })
+            dispatch(setBuildList(user.modulesDone.map((code) => cache[code])))
             props.setPage('add-done')
           }}
         >
