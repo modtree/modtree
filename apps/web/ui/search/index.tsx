@@ -9,7 +9,7 @@ import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
 import { ModuleCondensed } from '@modtree/entity'
-import { getModuleInfo } from '@/utils/backend'
+import { api } from 'api'
 
 const emptyModuleCondensed: ModuleCondensed = {
   title: '',
@@ -27,7 +27,7 @@ export function RootSearchBox() {
 
   const onSelect = (query: ModuleCondensed) => {
     selectState[1](query)
-    getModuleInfo(dispatch, query.moduleCode)
+    api.module.openModuleModal(query.moduleCode)
   }
 
   return (

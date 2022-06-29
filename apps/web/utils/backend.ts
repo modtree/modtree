@@ -45,20 +45,3 @@ export async function getModuleInfo(
     .then((res) => dispatch(setModalModule(res.data)))
     .catch(() => false)
 }
-
-export async function updateCachedModulesCondensed(
-  dispatch: Dispatch<AnyAction>,
-  moduleCodes: string[]
-) {
-  const currentCache = store.getState().cache.modulesCondensed
-  const currentCodes = new Set(Object.keys(currentCache))
-  const toFetch = moduleCodes.filter((code) => !currentCodes.has(code))
-  return backend
-    .get<ModuleCondensed[]>('/modules-condensed', {
-      params: {
-        moduleCodes: toFetch,
-      },
-    })
-    .then((res) => dispatch(addModulesCondensedToCache(res.data)))
-    .catch(() => false)
-}
