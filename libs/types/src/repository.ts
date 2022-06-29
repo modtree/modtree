@@ -86,7 +86,6 @@ export interface IDegreeRepository extends EDegree {
 
 export interface IModuleRepository extends EModule {
   getCodes(): Promise<string[]>
-  findByFaculty(faculty: string): Promise<IModule[]>
   findByCodes(moduleCodes: string[]): Promise<IModule[]>
   canTakeModule(
     modulesDone: string[],

@@ -47,22 +47,13 @@ export type IGraph = IBase & {
 } & GraphFrontendProps
 
 export type IModule = IBase & {
-  acadYear: string
-  moduleCode: string
   title: string
-  description: string
-  moduleCredit: string
-  department: string
-  faculty: string
-  aliases: string[]
-  attributes: NUSModuleAttributes
+  moduleCode: string
   prerequisite: string
   corequisite: string
   preclusion: string
   fulfillRequirements: string[]
-  semesterData: SemesterData[]
   prereqTree: PrereqTree
-  workload: string | number[]
 }
 
 export type IModuleCondensed = IBase & {
