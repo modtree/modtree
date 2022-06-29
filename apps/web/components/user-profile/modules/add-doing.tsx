@@ -7,13 +7,15 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDoing } from '@/store/user'
 import { SelectedModules } from './selected-modules'
 import { api } from 'api'
+import { useUser } from '@/utils/auth0'
 
 export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const buildList = useAppSelector((state) => state.search.buildList)
+  const { user } = useUser()
   function confirm() {
     const codes = buildList.map((m) => m.moduleCode)
-    api.user.setModuleStatus(codes, ModuleStatus.DOING)
+    api.user.setModuleStatus(user.modtree.id, codes, ModuleStatus.DOING)
     dispatch(updateModulesDoing(codes))
     props.setPage('main')
   }
