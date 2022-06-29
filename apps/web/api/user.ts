@@ -1,6 +1,7 @@
 import { BaseApi } from './base-api'
 import type { Modtree } from 'types'
 import { ModuleStatus } from '@modtree/types'
+import { setUser } from '@/store/user'
 
 export class UserApi extends BaseApi {
   /**
@@ -11,6 +12,25 @@ export class UserApi extends BaseApi {
    */
   async getById(userId: string): Promise<Modtree.User> {
     return this.server.get(`/user/${userId}`).then((res) => res.data)
+  }
+
+  /**
+   * login to modtree database
+   *
+   * @param {string} authZeroId
+   * @param {string} email
+   * @returns {Promise<Modtree.User>}
+   */
+  async login(authZeroId: string, email: string): Promise<Modtree.User> {
+    return this.server
+      .post(`/user/${authZeroId}/login`, {
+        email,
+      })
+      .then((res) => {
+        const user: Modtree.User = res.data
+        this.dispatch(setUser(user))
+        return user
+      })
   }
 
   /**
