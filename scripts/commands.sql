@@ -5,6 +5,7 @@ drop table if exists "user_modules_done_module";
 drop table if exists "user_saved_degrees_degree";
 drop table if exists "user_saved_graphs_graph";
 drop table if exists "degree_modules_module";
+drop table if exists "typeorm_metadata" CASCADE;
 drop table if exists "graph" CASCADE;
 drop table if exists "user" CASCADE;
 drop table if exists "module" CASCADE;
