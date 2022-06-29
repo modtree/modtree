@@ -28,9 +28,11 @@ export function SearchContainer<T>(props: {
         inputContainerClass={props.inputContainerClass}
         searchIcon={props.searchIcon}
       />
-      {!props.hideResults && (
-        <props.resultsComponent setSelected={setSelected} />
-      )}
+      <div className="relative w-full">
+        {!props.hideResults && (
+          <props.resultsComponent setSelected={setSelected} />
+        )}
+      </div>
     </Combobox>
   )
 }

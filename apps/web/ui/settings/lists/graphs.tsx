@@ -4,6 +4,7 @@ import { DegreeGraphs } from 'types'
 import { SettingsSection } from './base'
 import { EmptyBox } from '@/ui/settings/empty-box'
 import { Row } from './rows'
+import { Fragment } from 'react'
 
 export function GraphListSection(props: {
   contents: DegreeGraphs[]
@@ -24,14 +25,14 @@ export function GraphListSection(props: {
                 Graphs
               </Row.Header>
               {contents.map(({ degree, graphs }, index) => (
-                <div key={dashed(degree, index)}>
+                <Fragment key={dashed(degree, index)}>
                   <Row.Header>{degree}</Row.Header>
                   {graphs.map((graph, index) => (
                     <Row.Graph key={dashed(degree, graph, index)}>
                       {degree}/{graph}
                     </Row.Graph>
                   ))}
-                </div>
+                </Fragment>
               ))}
             </div>
           </>

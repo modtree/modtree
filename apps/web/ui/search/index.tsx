@@ -63,9 +63,8 @@ export function SettingsSearchBox() {
       className={flatten(
         // 'border border-red-500',
         'ui-rectangle',
-        'overflow-hidden',
         'shadow-none',
-        'h-8'
+        'h-8 w-64'
       )}
     >
       <SearchContainer
@@ -75,8 +74,8 @@ export function SettingsSearchBox() {
         selectState={selectState}
         onSelect={onSelect}
         dispatch={dispatch}
-        inputContainerClass="h-8 shadow-none"
-        inputClass="h-8 shadow-none"
+        inputContainerClass="h-full shadow-none"
+        inputClass="h-full shadow-none"
       />
     </div>
   )

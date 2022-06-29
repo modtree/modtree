@@ -16,9 +16,9 @@
     "build:vercel:docs": "nx build docs --skip-nx-cache",
     "build:vercel:web": "nx build web --skip-nx-cache",
     "e2e": "nx e2e web-e2e --watch",
-    "i": "bash ./scripts.sh inverse",
+    "i": "bash ./scripts/yarn.sh inverse",
     "format": "prettier --write .",
-    "prepare": "bash ./scripts.sh setup",
+    "prepare": "bash ./scripts/yarn.sh setup",
     "heroku-postbuild": "nx build server",
     "version": "auto-changelog -p && git add --all"
   },
