@@ -10,8 +10,11 @@ expect('this').not.toBe('commented')
 //
 // const dbName = oneUp(__filename)
 // const db = getSource(dbName)
+// const rootDir = join(__dirname, '../../..')
+// const outDir = join(rootDir, 'references')
 // let moduleRepo: IModuleRepository
 // let moduleCondensedRepo: IModuleCondensedRepository
+// const prettify = (s: any) => JSON.stringify(s, null, 2)
 //
 // beforeAll(() =>
 //   setup(db).then(() => {
@@ -28,7 +31,11 @@ expect('this').not.toBe('commented')
 //       modules = res
 //       expect(res).toBeArrayOf(Module)
 //     })
-//     fs.writeFileSync(join(__dirname, 'modules.json'), JSON.stringify(modules))
+//     const minified = modules.map((m) => ({
+//       ...m,
+//       id: undefined,
+//     }))
+//     fs.writeFileSync(join(outDir, 'modules.json'), prettify(minified))
 //   })
 // })
 //
@@ -39,13 +46,17 @@ expect('this').not.toBe('commented')
 //       modules = res
 //       expect(res).toBeArrayOf(ModuleCondensed)
 //     })
+//     /**
+//      * write data
+//      */
+//     const minified = modules.map(({ moduleCode, title }) => ({
+//       moduleCode,
+//       title,
+//     }))
+//     fs.writeFileSync(join(outDir, 'modules-condensed.json'), prettify(minified))
 //     fs.writeFileSync(
-//       join(__dirname, 'modules-condensed.json'),
-//       JSON.stringify(modules)
-//     )
-//     fs.writeFileSync(
-//       join(__dirname, 'module-codes.json'),
-//       JSON.stringify(modules.map((m) => m.moduleCode))
+//       join(outDir, 'module-codes.json'),
+//       prettify(modules.map((m) => m.moduleCode))
 //     )
 //   })
 // })
