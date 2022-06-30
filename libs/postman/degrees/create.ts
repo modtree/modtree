@@ -22,12 +22,12 @@ const degrees = [
 ]
 
 function help() {
-  console.log('Please supply a degree name as an argument:')
-  console.log(degrees.map((d) => d.title))
+  console.debug('Please supply a degree name as an argument:')
+  console.debug(degrees.map((d) => d.title))
   process.exit()
 }
 
 const args = new ParseArgs(__filename, help)
 const degree = degrees.find((u) => u.title === args.last)
 if (!degree) help()
-postman.post('degree/', degree).then(console.log)
+postman.post('degree/', degree).then(console.debug)

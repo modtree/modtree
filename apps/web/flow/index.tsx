@@ -29,8 +29,6 @@ export default function ModtreeFlow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(graph.flowNodes)
 
   useEffect(() => {
-    // console.log('redux graph flow nodes changed')
-    // console.log('graph.flowNodes', graph.flowNodes)
     setNodes(graph.flowNodes)
   }, [graph.flowNodes.length])
 
@@ -38,9 +36,6 @@ export default function ModtreeFlow() {
    * called when user drops a module node. (after having dragged it)
    */
   const onNodeDragStop = (_: MouseEvent, node: Node, nodes: Node[]) => {
-    // console.log('released a node')
-    console.log('dragged node:', node.id)
-    console.log('current nodes state:', nodes)
     dispatch(updateModuleNode(node))
   }
 

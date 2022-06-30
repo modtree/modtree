@@ -61,12 +61,12 @@ const users = [
 ]
 
 function help() {
-  console.log('Please supply a username as an argument:')
-  console.log(users.map((u) => u.username))
+  console.debug('Please supply a username as an argument:')
+  console.debug(users.map((u) => u.username))
   process.exit()
 }
 
 const args = new ParseArgs(__filename, help)
 const user = users.find((u) => u.username === args.last)
 if (!user) help()
-postman.post('user/', user).then(console.log)
+postman.post('user/', user).then(console.debug)

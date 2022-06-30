@@ -28,7 +28,7 @@ function boxColorLog(color: Color): TextPrinter {
    * @param {string} text
    */
   function helper(text: string) {
-    console.log(
+    console.debug(
       boxen(text, {
         borderColor: color,
         padding: {

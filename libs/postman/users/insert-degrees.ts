@@ -9,4 +9,4 @@ postman
   .patch(`user/${user.id}/degree`, {
     degreeIds: user.savedDegrees,
   })
-  .then(console.log)
+  .then(console.debug)

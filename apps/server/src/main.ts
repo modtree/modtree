@@ -10,29 +10,30 @@ function checkhealth(db: DataSource) {
   const repos = [
     api.moduleRepo,
     api.moduleCondensedRepo,
+    modFullRepo,
     api.userRepo,
     api.degreeRepo,
     api.graphRepo,
   ]
   Promise.all(repos.map((r) => r.count())).then((results) => {
-    const names = ['Modules', 'Condensed', 'Users', 'Degrees', 'Graphs']
+    const names = ['Modules', 'Condensed', 'Full', 'Users', 'Degrees', 'Graphs']
     results.forEach((result, i) => {
-      console.log(names[i], result)
+      console.debug(names[i], result)
     })
   })
-  modFullRepo.count().then(console.log)
 }
 
-console.log('Initializing connection to database...')
+console.debug('Initializing connection to database...')
 db.initialize()
   .then(async () => {
-    console.log(`Connection to database [${db.options.database}] established.`)
+    console.debug(
+      `Connection to database [${db.options.database}] established.`
+    )
     checkhealth(db)
     const api = new Api(db)
     const app = getApp(api)
     app.listen(process.env.PORT || 8080)
   })
   .catch((err) => {
-    console.log(err)
-    console.log('Failed to initialize connection to database.')
+    console.debug(err, 'Failed to initialize connection to database.')
   })

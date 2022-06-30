@@ -19,7 +19,6 @@ export function RootSearchBox() {
   const onSelect = (query: string) => {
     if (!query) return
     selectState[1](query)
-    console.log('query', query)
     api.module.openModuleModal(query)
   }
 

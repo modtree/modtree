@@ -5,5 +5,5 @@ postman.get('degrees/').then((res) => {
     id: u.id,
     title: u.title,
   }))
-  console.log(pretty)
+  console.debug(pretty)
 })

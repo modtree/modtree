@@ -9,10 +9,10 @@ axios
     email,
   })
   .then((res) => {
-    console.log('then')
-    console.log(res)
+    console.debug('then')
+    console.debug(res)
   })
   .catch((err) => {
-    console.log('catch')
-    console.log(err)
+    console.debug('catch')
+    console.debug(err)
   })

@@ -44,18 +44,6 @@ export class GraphRepository
   override findOneById: FindByKey<IGraph> = useFindOneByKey(this, 'id')
 
   /**
-   * retrieves the degree and user with relations, without blocking each
-   * other.
-   */
-  private async getUserAndDegree(
-    props: InitProps['Graph']
-  ): Promise<[User, Degree]> {
-    const getUser = this.userRepo.findOneById(props.userId)
-    const getDegree = this.degreeRepo.findOneById(props.degreeId)
-    return Promise.all([getUser, getDegree])
-  }
-
-  /**
    * gets lists of modules placed and modules hidden
    *
    * @returns {Promise<[Module[], Module[]]>}
@@ -66,26 +54,22 @@ export class GraphRepository
     props: InitProps['Graph']
   ): Promise<[Module[], Module[]]> {
     // if passed in, then find the modules
-    const queryList = [props.modulesHiddenCodes, props.modulesPlacedCodes]
-    return Promise.all(
-      queryList.map((list) =>
-        this.moduleRepo.findBy({
-          moduleCode: In(list),
-        })
-      )
-    ).then(([modulesHidden, modulesPlaced]) => {
+    const hidden = this.moduleRepo.findByCodes(props.modulesHiddenCodes)
+    const placed = this.moduleRepo.findByCodes(props.modulesPlacedCodes)
+    const loadedHidden = hidden.then((hidden) => {
       if (props.pullAll) {
         /* if don't pass in anything, then by default add ALL of
          * - user.modulesDoing
          * - user.modulesDone
          * - degree.modules
          */
-        modulesHidden.push(...degree.modules)
-        modulesHidden.push(...user.modulesDone)
-        modulesHidden.push(...user.modulesDoing)
+        hidden.push(...degree.modules)
+        hidden.push(...user.modulesDone)
+        hidden.push(...user.modulesDoing)
       }
-      return [modulesHidden, modulesPlaced]
+      return hidden
     })
+    return Promise.all([loadedHidden, placed])
   }
 
   /**
@@ -95,18 +79,30 @@ export class GraphRepository
    * @returns {Promise<Graph>}
    */
   async initialize(props: InitProps['Graph']): Promise<Graph> {
-    return this.getUserAndDegree(props).then(([user, degree]) =>
-      this.getModulesFromUserAndDegree(user, degree, props).then(
-        ([modulesHidden, modulesPlaced]) =>
-          this.save(
-            this.create({
-              user,
-              degree,
-              modulesPlaced,
-              modulesHidden,
-            })
-          )
-      )
+    /**
+     * fetch user and degree
+     */
+    const user = this.userRepo.findOneById(props.userId)
+    const degree = this.degreeRepo.findOneById(props.degreeId)
+    /**
+     * get all relavant modules, sorted into placed and hidden
+     */
+    const modules = Promise.all([user, degree]).then(([user, degree]) =>
+      this.getModulesFromUserAndDegree(user, degree, props)
+    )
+    /**
+     * save the newly created graph
+     */
+    return Promise.all([user, degree, modules]).then(
+      ([user, degree, [modulesHidden, modulesPlaced]]) =>
+        this.save(
+          this.create({
+            user,
+            degree,
+            modulesPlaced,
+            modulesHidden,
+          })
+        )
     )
   }
 

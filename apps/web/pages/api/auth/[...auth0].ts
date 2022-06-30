@@ -14,8 +14,7 @@ const afterCallback = async (
       return session
     })
     .catch((err) => {
-      console.log(err)
-      console.log('User not found. Own time own target carry on.')
+      console.debug(err, 'User not found. Own time own target carry on.')
       return session
     })
 }

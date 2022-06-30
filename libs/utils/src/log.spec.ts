@@ -1,6 +1,6 @@
 import { log, box } from '.'
 
-const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+const consoleSpy = jest.spyOn(console, 'debug').mockImplementation(() => {})
 
 beforeEach(() => jest.clearAllMocks())
 

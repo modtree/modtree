@@ -1,4 +1,8 @@
 import { SupportedDatabases } from '@modtree/types'
+import { join } from 'path'
+import fs from 'fs'
+
+const rootDir = join(__dirname, '../../..')
 
 /**
  * gets project database type from .env
@@ -32,4 +36,8 @@ export function getPrefix(): string {
   if (nodeEnv === 'test') return `TEST_${dbType}_`
   // defaults to DATABASE_TYPE_
   return `${dbType}_`
+}
+
+export function rawJson(filename: string) {
+  return JSON.parse(fs.readFileSync(join(rootDir, filename)).toString())
 }

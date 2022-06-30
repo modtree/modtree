@@ -1,35 +1,21 @@
 import { Degree } from '@modtree/entity'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
+import { setup, teardown, Repo, t, api } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
+import { EntityNotFoundError } from 'typeorm'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() => {
-      return Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
-      ])
-    })
-    .then(([user, degree]) => {
-      t.user = user
-      t.degree = degree
-      return Repo.User.insertDegrees(t.user, [t.degree.id])
-    })
     .then(() =>
-      Repo.Graph.initialize({
-        userId: t.user!.id,
-        degreeId: t.degree!.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: false,
-      })
+      api.initializeUser('auth0|6294dbffdc4dea0068d77f61', 'yes@yes.com')
     )
-    .then((graph) => {
-      t.graph = graph
+    .then((user) => {
+      t.user = user
+      t.degree = user.savedDegrees[0]
+      t.graph = user.savedGraphs[0]
     })
 )
 afterAll(() => teardown(db))
@@ -47,7 +33,9 @@ it('successfully deletes user', async () => {
 })
 
 it('user does not exist', async () => {
-  await expect(() => Repo.User.findOneById(t.user!.id)).rejects.toThrow(Error)
+  await expect(() => Repo.User.findOneById(t.user!.id)).rejects.toThrow(
+    EntityNotFoundError
+  )
 })
 
 it('degree exists', async () => {
@@ -57,5 +45,7 @@ it('degree exists', async () => {
 })
 
 it('graph does not exist', async () => {
-  await expect(() => Repo.Graph.findOneById(t.graph!.id)).rejects.toThrow(Error)
+  await expect(() => Repo.Graph.findOneById(t.graph!.id)).rejects.toThrow(
+    EntityNotFoundError
+  )
 })
