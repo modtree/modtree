@@ -2,13 +2,11 @@
 
 if [[ $1 == 'server' ]]; then
   docker run \
-    --network=modtree-network \
     modtree-server
 fi
 
 if [[ $1 == 'db' ]]; then
   docker run \
     --publish 5433:5432 \
-    --network=modtree-network \
     modtree-db
 fi
