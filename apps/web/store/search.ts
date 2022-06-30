@@ -1,5 +1,5 @@
+import { IModule } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Module, ModuleCondensed } from '@modtree/entity'
 import { baseInitialState } from './initial-state'
 
 export const search = createSlice({
@@ -12,14 +12,7 @@ export const search = createSlice({
     setBuildId: (state, action: PayloadAction<string>) => {
       state.buildId = action.payload
     },
-    setSearchedModuleCondensed: (
-      state,
-      action: PayloadAction<ModuleCondensed[]>
-    ) => {
-      state.searchResults = action.payload
-      state.hasResults = action.payload.length > 0
-    },
-    setSearchedModule: (state, action: PayloadAction<Module[]>) => {
+    setSearchedModule: (state, action: PayloadAction<IModule[]>) => {
       state.module = action.payload
       state.hasResults = action.payload.length > 0
     },
@@ -31,16 +24,16 @@ export const search = createSlice({
     clearBuildList: (state) => {
       state.buildList = []
     },
-    setBuildList: (state, action: PayloadAction<ModuleCondensed[]>) => {
+    setBuildList: (state, action: PayloadAction<IModule[]>) => {
       state.buildList = action.payload
     },
-    addToBuildList: (state, action: PayloadAction<ModuleCondensed>) => {
+    addToBuildList: (state, action: PayloadAction<IModule>) => {
       const codes = new Set(state.buildList.map((m) => m.moduleCode))
       if (!codes.has(action.payload.moduleCode)) {
         state.buildList = [...state.buildList, action.payload]
       }
     },
-    removeFromBuildList: (state, action: PayloadAction<ModuleCondensed>) => {
+    removeFromBuildList: (state, action: PayloadAction<IModule>) => {
       const codes = new Set(state.buildList.map((m) => m.moduleCode))
       if (codes.has(action.payload.moduleCode)) {
         state.buildList = state.buildList.filter(
@@ -53,7 +46,6 @@ export const search = createSlice({
 
 export const {
   setSearchedModule,
-  setSearchedModuleCondensed,
   clearSearches,
   clearBuildList,
   addToBuildList,

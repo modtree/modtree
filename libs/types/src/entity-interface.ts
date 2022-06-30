@@ -1,5 +1,4 @@
 import type { Node, Edge } from 'react-flow-renderer'
-import { ModtreeApiResponse } from '.'
 import type { SemesterData, NUSModuleAttributes, PrereqTree } from './nusmods'
 
 export type EntityName =
@@ -8,13 +7,22 @@ export type EntityName =
   | 'graph'
   | 'module'
   | 'moduleCondensed'
+  | 'moduleFull'
+
+export type EntityClassName =
+  | 'User'
+  | 'Degree'
+  | 'Graph'
+  | 'Module'
+  | 'ModuleCondensed'
+  | 'ModuleFull'
 
 export type IBase = {
   id: string
 }
 
 export type GraphFrontendProps = {
-  flowNodes: Node<ModtreeApiResponse.ModuleCondensed>[]
+  flowNodes: Node<IModule>[]
   flowEdges: Edge[]
 }
 
@@ -30,8 +38,8 @@ export type IUser = IBase & {
   modulesDoing: IModule[]
   savedDegrees: IDegree[]
   savedGraphs: IGraph[]
-  mainDegree: IDegree
-  mainGraph: IGraph
+  mainDegree?: IDegree
+  mainGraph?: IGraph
 }
 
 export type IDegree = IBase & {
@@ -54,6 +62,25 @@ export type IModule = IBase & {
   preclusion: string
   fulfillRequirements: string[]
   prereqTree: PrereqTree
+}
+
+export type IModuleFull = IBase & {
+  acadYear: string
+  moduleCode: string
+  title: string
+  description: string
+  moduleCredit: string
+  department: string
+  faculty: string
+  aliases: string[]
+  attributes: NUSModuleAttributes
+  prerequisite: string
+  corequisite: string
+  preclusion: string
+  fulfillRequirements: string[]
+  semesterData: SemesterData[]
+  prereqTree: PrereqTree
+  workload: string | number[]
 }
 
 export type IModuleCondensed = IBase & {

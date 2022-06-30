@@ -1,4 +1,4 @@
-import { Module as NM, ModuleCondensed as NMC } from './nusmods'
+import { PrereqTree } from './nusmods'
 
 export type InitProps = {
   /**
@@ -38,7 +38,16 @@ export type InitProps = {
   /**
    * props to initialize a Module
    */
-  Module: NM
+  Module: {
+    moduleCode: string
+    title: string
+    description: string
+    prerequisite: string
+    corequisite: string
+    preclusion: string
+    prereqTree: PrereqTree
+    fulfillRequirements: string[]
+  }
 
   /**
    * props to initialize a ModuleCondensed

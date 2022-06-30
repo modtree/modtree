@@ -2,7 +2,7 @@ import { Graph, ModuleCondensed } from '@modtree/entity'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { GraphFrontendProps } from '@modtree/types'
-import { oneUp } from '@modtree/utils'
+import { empty, oneUp } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -54,7 +54,10 @@ it('returns a relationless graph', async () => {
           x: 420,
           y: 68,
         },
-        data: CS1010S,
+        data: {
+          ...empty.Module,
+          moduleCode: 'CS1010S',
+        },
       },
     ],
     flowEdges: [],
@@ -94,7 +97,10 @@ it('updates a flow node', async () => {
           x: 300,
           y: -27,
         },
-        data: CS1010S,
+        data: {
+          ...empty.Module,
+          moduleCode: 'CS1010S',
+        },
       },
     ],
     flowEdges: [],

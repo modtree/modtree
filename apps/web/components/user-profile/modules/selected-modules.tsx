@@ -2,9 +2,9 @@ import { useAppDispatch } from '@/store/redux'
 import { removeFromBuildList } from '@/store/search'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
-import { ModuleCondensed } from '@modtree/entity'
+import { IModule } from '@modtree/types'
 
-export function SelectedModules(props: { modules: ModuleCondensed[] }) {
+export function SelectedModules(props: { modules: IModule[] }) {
   const dispatch = useAppDispatch()
   return (
     <>

@@ -1,12 +1,6 @@
 import type { UserProfile } from '@auth0/nextjs-auth0'
-import type { ModuleCondensed } from '@modtree/entity'
 import type { ButtonHTMLAttributes, ReactElement, ComponentProps } from 'react'
-import type {
-  ModtreeApiResponse as Modtree,
-  UseState,
-  Modify,
-} from '@modtree/types'
-export type { ModtreeApiResponse as Modtree } from '@modtree/types'
+import type { UseState, Modify, IModuleCondensed, IUser } from '@modtree/types'
 
 /**
  * for frontend-specific types.
@@ -20,7 +14,7 @@ export type UserContext = {
 }
 
 export type ModtreeUserProfile = UserProfile & {
-  modtree?: Modtree.User
+  modtree?: IUser
 }
 
 export type ModtreeUserContext = {
@@ -81,7 +75,7 @@ export type ExtendedProps = Modify<HTML, ExtendedPropsPure>
 /**
  * settings panel data types
  */
-export type ModuleSimple = Pick<ModuleCondensed, 'title' | 'moduleCode'>
+export type ModuleSimple = Pick<IModuleCondensed, 'title' | 'moduleCode'>
 export type DegreeGraphs = {
   degree: string
   graphs: string[]

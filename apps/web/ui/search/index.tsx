@@ -3,7 +3,7 @@ import { useAppDispatch } from '@/store/redux'
 import {
   addToBuildList,
   clearSearches,
-  setSearchedModuleCondensed,
+  setSearchedModule,
 } from '@/store/search'
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
@@ -11,7 +11,6 @@ import { flatten } from '@/utils/tailwind'
 import { api } from 'api'
 
 export function RootSearchBox() {
-  const dispatch = useAppDispatch()
   /**
    * only changes upon clicking on the search result
    */
@@ -28,11 +27,10 @@ export function RootSearchBox() {
     <div className="fixed top-3 left-3 w-72 z-10">
       <SearchContainer
         resultsComponent={SearchResultContainer}
-        set={setSearchedModuleCondensed}
+        set={setSearchedModule}
         clear={clearSearches}
         selectState={selectState}
         onSelect={onSelect}
-        dispatch={dispatch}
         inputContainerClass="h-10"
         searchIcon
       />
@@ -49,7 +47,7 @@ export function SettingsSearchBox() {
 
   const onSelect = (query: string) => {
     selectState[1](query)
-    api.moduleCondensed
+    api.module
       .getByCodes([query])
       .then((res) => dispatch(addToBuildList(res[0])))
   }
@@ -65,11 +63,10 @@ export function SettingsSearchBox() {
     >
       <SearchContainer
         resultsComponent={SearchResultContainer}
-        set={setSearchedModuleCondensed}
+        set={setSearchedModule}
         clear={clearSearches}
         selectState={selectState}
         onSelect={onSelect}
-        dispatch={dispatch}
         inputContainerClass="h-full shadow-none"
         inputClass="h-full shadow-none"
       />

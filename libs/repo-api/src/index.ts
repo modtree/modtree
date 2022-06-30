@@ -6,11 +6,13 @@ import {
   IModuleRepository,
   IModuleCondensedRepository,
   EntityName,
+  IModuleFullRepository,
 } from '@modtree/types'
 import { emptyInit } from '@modtree/utils'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
+import { ModuleFullRepository } from '@modtree/repo-module-full'
 import { User } from '@modtree/entity'
 import {
   ModuleCondensedRepository,
@@ -26,6 +28,7 @@ export class Api {
   userRepo: IUserRepository
   graphRepo: IGraphRepository
   moduleRepo: IModuleRepository
+  moduleFullRepo: IModuleFullRepository
   moduleCondensedRepo: IModuleCondensedRepository
   relations: Record<EntityName, Relations>
 
@@ -35,13 +38,15 @@ export class Api {
     this.userRepo = new UserRepository(db)
     this.graphRepo = new GraphRepository(db)
     this.moduleRepo = new ModuleRepository(db)
+    this.moduleFullRepo = new ModuleFullRepository(db)
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
     this.relations = {
       user: getRelationNames(this.userRepo),
       degree: getRelationNames(this.degreeRepo),
       graph: getRelationNames(this.graphRepo),
-      module: getRelationNames(this.moduleRepo),
-      moduleCondensed: getRelationNames(this.moduleCondensedRepo),
+      module: {},
+      moduleCondensed: {},
+      moduleFull: {},
     }
   }
 

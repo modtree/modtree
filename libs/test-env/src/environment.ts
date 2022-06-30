@@ -10,6 +10,7 @@ import {
   ModuleCondensedRepository,
 } from '@modtree/repo-module'
 import { DegreeRepository } from '@modtree/repo-degree'
+import { ModuleFullRepository } from '@modtree/repo-module-full'
 import { GraphRepository } from '@modtree/repo-graph'
 import { UserRepository } from '@modtree/repo-user'
 
@@ -47,6 +48,7 @@ export async function setup(
        * overwrite default db with the setup function's db parameter
        */
       Repo = {
+        ModuleFull: new ModuleFullRepository(db),
         User: new UserRepository(db),
         Degree: new DegreeRepository(db),
         Graph: new GraphRepository(db),

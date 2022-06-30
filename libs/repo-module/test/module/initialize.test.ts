@@ -10,6 +10,7 @@ const m = new Module()
 m.id = '58201858-5ce5-4ceb-8568-eecf55841b9f'
 m.title = ''
 m.moduleCode = 'TST1000MD'
+m.prereqTree = ''
 
 beforeAll(() => setup(db))
 afterAll(() => teardown(db, true))

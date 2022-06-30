@@ -1,6 +1,6 @@
 import { addModulesCondensedToCache } from '@/store/cache'
+import { IModuleCondensed } from '@modtree/types'
 import { BaseApi } from './base-api'
-import type { Modtree } from 'types'
 
 export class ModuleCondensedApi extends BaseApi {
   /**
@@ -23,7 +23,7 @@ export class ModuleCondensedApi extends BaseApi {
         params: { moduleCodes: codesToFetch },
       })
       .then((res) => {
-        const modules: Modtree.ModuleCondensed[] = res.data
+        const modules: IModuleCondensed[] = res.data
         /** update the redux store */
         this.dispatch(addModulesCondensedToCache(modules))
       })
@@ -33,9 +33,9 @@ export class ModuleCondensedApi extends BaseApi {
    * gets an array of condensed modules, memoized by redux cache
    *
    * @param {string[]} moduleCodes
-   * @returns {Promise<Modtree.ModuleCondensed[]>}
+   * @returns {Promise<ModuleCondensed[]>}
    */
-  async getByCodes(moduleCodes: string[]): Promise<Modtree.ModuleCondensed[]> {
+  async getByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]> {
     /** update redux cache */
     return this.loadCodes(moduleCodes).then(() =>
       /**  then read from the updated copy */

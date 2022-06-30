@@ -13,6 +13,7 @@
       "@modtree/repo-degree": ["../../libs/repo-degree/src/index.ts"],
       "@modtree/repo-graph": ["../../libs/repo-graph/src/index.ts"],
       "@modtree/repo-module": ["../../libs/repo-module/src/index.ts"],
+      "@modtree/repo-module-full": ["../../libs/repo-module-full/src/index.ts"],
       "@modtree/repo-user": ["../../libs/repo-user/src/index.ts"],
       "@modtree/sql": ["../../libs/sql/src/index.ts"],
       "@modtree/test-env": ["../../libs/test-env/src/index.ts"],

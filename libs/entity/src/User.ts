@@ -54,9 +54,9 @@ export class User implements IUser {
 
   @ManyToOne('Degree', 'user')
   @JoinTable()
-  mainDegree: IDegree
+  mainDegree?: IDegree
 
   @ManyToOne('Graph', 'user')
   @JoinTable()
-  mainGraph: IGraph
+  mainGraph?: IGraph
 }

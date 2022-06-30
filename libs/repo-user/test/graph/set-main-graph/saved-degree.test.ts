@@ -1,4 +1,4 @@
-import { Degree, User, Graph } from '@modtree/entity'
+import { User, Graph } from '@modtree/entity'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
@@ -63,7 +63,7 @@ describe('Saved graph with saved degree', () => {
   })
 
   it('sets correct main graph', () => {
-    const graphId = t.user!.mainGraph.id
+    const graphId = t.user!.mainGraph!.id
     expect(graphId).toEqual(saved.id)
   })
 })

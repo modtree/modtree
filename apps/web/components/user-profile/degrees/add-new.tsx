@@ -5,13 +5,12 @@ import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
-import { SetState } from '@modtree/types'
+import { IModule, IModuleCondensed, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
-import { ModuleCondensed } from '@modtree/entity'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { removeFromBuildList } from '@/store/search'
 
-function SelectedModules(props: { modules: ModuleCondensed[] }) {
+function SelectedModules(props: { modules: IModule[] }) {
   const dispatch = useAppDispatch()
   return (
     <>
@@ -38,7 +37,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   const state = {
     title: useState<string>(''),
     moduleCode: useState<string>(''),
-    modules: useState<ModuleCondensed[]>([
+    modules: useState<IModuleCondensed[]>([
       { title: 'yes', moduleCode: 'MA1000', moduleLevel: 1000, id: '' },
     ]),
   }
