@@ -10,7 +10,7 @@ export class UserApi extends BaseApi {
    * @returns {Promise<User>}
    */
   async getById(userId: string): Promise<IUser> {
-    return this.server.get(`/user/${userId}`).then((res) => res.data)
+    return this.server.get(`/user/${userId}/get-full`).then((res) => res.data)
   }
 
   /**
