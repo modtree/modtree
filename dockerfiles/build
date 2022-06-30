@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+if [[ $1 == 'server' ]]; then
+  docker build -f server.Dockerfile -t modtree-server ../
+fi
