@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/server.Dockerfile
+    network_mode: 'host'
+  database:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/db.Dockerfile
+    network_mode: 'host'
