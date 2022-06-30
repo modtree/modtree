@@ -68,6 +68,10 @@
     "method": "get"
   },
   {
+    "route": "/search/modules/:searchQuery",
+    "method": "get"
+  },
+  {
     "route": "/user",
     "method": "post"
   },
