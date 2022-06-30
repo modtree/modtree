@@ -6,5 +6,5 @@ postman.get('graphs/').then((res) => {
     user: g.user,
     degree: g.degree,
   }))
-  console.log(pretty)
+  console.debug(pretty)
 })

@@ -6,11 +6,11 @@ axios
     params: { yes: 'a@b.com' },
   })
   .then((res) => {
-    console.log(res.data)
+    console.debug(res.data)
   })
   .catch((err) => {
-    console.log(err.response.data)
-    console.log(Object.keys(err.response))
+    console.debug(err.response.data)
+    console.debug(Object.keys(err.response))
   })
 
 // postman.get('user').then((res) => {
@@ -20,5 +20,5 @@ axios
 //     graphs: u.savedGraphs,
 //     degrees: u.savedDegrees,
 //   }))
-//   console.log(pretty)
+//   console.debug(pretty)
 // })

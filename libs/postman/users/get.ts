@@ -9,9 +9,9 @@ axios
     },
   })
   .then((res) => {
-    console.log(res.data)
+    console.debug(res.data)
   })
   .catch((err) => {
-    console.log(err.response.data)
-    console.log(Object.keys(err.response))
+    console.debug(err.response.data)
+    console.debug(Object.keys(err.response))
   })
