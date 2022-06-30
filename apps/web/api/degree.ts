@@ -6,6 +6,8 @@ export class DegreeApi extends BaseApi {
    * get a degree by its id directly from database
    */
   async getById(degreeId: string): Promise<IDegree> {
-    return this.server.get(`/degree/${degreeId}`).then((res) => res.data)
+    return this.server
+      .get(`/degree/${degreeId}/get-full`)
+      .then((res) => res.data)
   }
 }
