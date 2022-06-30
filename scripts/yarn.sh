@@ -18,20 +18,22 @@ WEB=./apps/web
 # weiseng's config
 
 weiseng_env() {
-	cp $SRC/.env.local $WEB/.env.local
-	cp $SRC/.env $SERVER/.env
+  cp $SRC/.env* $WEB
+  cp $SRC/admin.config.json .
 }
 
 weiseng_inv() {
-	cp $WEB/.env.local $SRC/.env.local
-	cp $SERVER/.env $SRC/.env
+  mkdir -p $SRC/web
+  mkdir -p $SRC/database
+  cp admin.config.json $SRC
+  cp $WEB/.env.local $WEB/.env.example $SRC/web
 }
 
 # khang's config
 
 khang_env() {
- 	cp $SRC/web/.env* $WEB
- 	cp $SRC/admin.config.json .
+  cp $SRC/web/.env* $WEB
+  cp $SRC/admin.config.json .
 }
 
 khang_inv() {

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+if [[ $1 == 'server' ]]; then
+  docker run \
+    modtree-server
+fi
+
+if [[ $1 == 'db' ]]; then
+  docker run \
+    --publish 5433:5432 \
+    modtree-db
+fi
