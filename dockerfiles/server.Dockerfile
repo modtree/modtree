@@ -2,6 +2,9 @@ FROM node:16-alpine
 
 WORKDIR /app
 
+# Copy project files into the docker image
+COPY . .
+
 # install python
 ENV PYTHONUNBUFFERED=1
 RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
@@ -10,12 +13,7 @@ RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
 RUN apk add bash g++ make && rm -rf /var/cache/apk/*
 
 # Install node dependencies - done in a separate step so Docker can cache it.
-COPY package.json yarn.lock /app/
 RUN yarn install --frozen-lockfile
 
-# Copy project files into the docker image
-COPY . .
-
-RUN yarn install
-
-CMD yarn list
+# the command that's ran upon `docker run`
+CMD yarn serve
