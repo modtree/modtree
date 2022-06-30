@@ -2,6 +2,7 @@ import { addModulesToCache } from '@/store/cache'
 import { BaseApi } from './base-api'
 import { setModalModule, showModuleModal } from '@/store/modal'
 import { IModule, IModuleFull } from '@modtree/types'
+import { clearSearches, setSearchedModule } from '@/store/search'
 
 /**
  * NOTE TO DEVS
@@ -85,5 +86,22 @@ export class ModuleApi extends BaseApi {
     return this.directGetByCode(moduleCode).then((module) =>
       this.dispatch(setModalModule(module))
     )
+  }
+
+  /**
+   * searches database for a module with an incomplete string
+   *
+   * @param {string} query
+   */
+  async search(query: string) {
+    if (query.length === 0) {
+      this.dispatch(clearSearches())
+      return
+    }
+    const upper = query.toUpperCase()
+    return this.server
+      .get(`/search/modules/${upper}`)
+      .then((res) => this.dispatch(setSearchedModule(res.data)))
+      .catch(() => true)
   }
 }

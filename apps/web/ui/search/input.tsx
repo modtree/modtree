@@ -1,9 +1,9 @@
 import { flatten } from '@/utils/tailwind'
 import { Combobox } from '@headlessui/react'
-import { handleSearch } from '@/utils/backend'
 import { AnyAction } from 'redux'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { SearchIcon } from '@/ui/icons'
+import { api } from 'api'
 
 export function SearchInput<T>(props: {
   hideResults?: boolean
@@ -29,7 +29,7 @@ export function SearchInput<T>(props: {
             inputClass
           )}
           placeholder="Search for a module"
-          onChange={(event) => handleSearch(event.target.value)}
+          onChange={(event) => api.module.search(event.target.value)}
         />
         {props.searchIcon && (
           <Combobox.Button className="flex items-center px-3">

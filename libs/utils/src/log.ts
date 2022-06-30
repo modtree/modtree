@@ -82,3 +82,9 @@ export const box = {
   cyan: boxColorLog('cyan'),
   gray: boxColorLog('gray'),
 }
+
+export class Console {
+  static log(...args: any) {
+    console.log(...args)
+  }
+}
