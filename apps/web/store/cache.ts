@@ -1,24 +1,23 @@
+import { IDegree, IModule, IModuleCondensed } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
-import { Modtree } from 'types'
-import { ModuleCondensed } from '@modtree/entity'
 
 export const cache = createSlice({
   name: 'cache',
   initialState: baseInitialState.cache,
   reducers: {
-    addDegreeToCache: (cache, action: PayloadAction<Modtree.Degree>) => {
+    addDegreeToCache: (cache, action: PayloadAction<IDegree>) => {
       cache.degrees[action.payload.id] = action.payload
     },
     addModulesCondensedToCache: (
       cache,
-      action: PayloadAction<ModuleCondensed[]>
+      action: PayloadAction<IModuleCondensed[]>
     ) => {
       action.payload.forEach((module) => {
         cache.modulesCondensed[module.moduleCode] = module
       })
     },
-    addModulesToCache: (cache, action: PayloadAction<Modtree.Module[]>) => {
+    addModulesToCache: (cache, action: PayloadAction<IModule[]>) => {
       action.payload.forEach((module) => {
         cache.modules[module.moduleCode] = module
       })

@@ -1,11 +1,11 @@
 import type { ReduxState } from './types'
-import { EmptyResponse } from '@modtree/utils'
+import { empty } from '@modtree/utils'
 
 export const baseInitialState: ReduxState = {
-  user: EmptyResponse.User,
-  degree: EmptyResponse.Degree,
+  user: empty.User,
+  degree: empty.Degree,
   graph: {
-    ...EmptyResponse.Graph,
+    ...empty.Graph,
     selectedCodes: [],
   },
   modal: {
@@ -19,7 +19,7 @@ export const baseInitialState: ReduxState = {
     showContextMenu: false,
     showModuleModal: false,
     showDebugModal: false,
-    modalModule: EmptyResponse.Module,
+    modalModule: empty.ModuleFull,
   },
   cache: {
     degrees: {},

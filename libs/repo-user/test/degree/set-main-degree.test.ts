@@ -41,7 +41,7 @@ describe('Saved degree', () => {
   })
 
   it('sets correct main degree', () => {
-    const degreeId = t.user!.mainDegree.id
+    const degreeId = t.user!.mainDegree!.id
     expect(degreeId).toEqual(saved.id)
   })
 })

@@ -5,6 +5,7 @@ import {
   IUser,
   IDegree,
   IModule,
+  IModuleFull,
   IModuleCondensed,
   GraphFrontendProps,
 } from './entity-interface'
@@ -116,8 +117,13 @@ export interface IModuleCondensedRepository extends EModuleCondensed {
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
 }
 
+export interface IModuleFullRepository extends Repository<IModuleFull> {
+  findOneByCode: FindByKey<IModuleFull>
+}
+
 export type Repositories = {
   Module: IModuleRepository
+  ModuleFull: IModuleFullRepository
   ModuleCondensed: IModuleCondensedRepository
   User: IUserRepository
   Degree: IDegreeRepository

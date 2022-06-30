@@ -9,6 +9,7 @@
     "repo-degree": "libs/repo-degree",
     "repo-graph": "libs/repo-graph",
     "repo-module": "libs/repo-module",
+    "repo-module-full": "libs/repo-module-full",
     "repo-pull": "libs/repo-pull",
     "repo-user": "libs/repo-user",
     "server": "apps/server",

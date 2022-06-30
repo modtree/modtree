@@ -1,3 +1,4 @@
+import { IModuleFull } from '.'
 import {
   IUser,
   IDegree,
@@ -49,4 +50,5 @@ export type Graph = Modify<
  * already-flat entities
  */
 export type Module = IModule
+export type ModuleFull = IModuleFull
 export type ModuleCondensed = IModuleCondensed

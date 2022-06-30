@@ -48,6 +48,10 @@
     "method": "get"
   },
   {
+    "route": "/module-full/:moduleCode",
+    "method": "get"
+  },
+  {
     "route": "/module/:moduleCode",
     "method": "get"
   },
@@ -61,6 +65,10 @@
   },
   {
     "route": "/search/modules-condensed/:searchQuery",
+    "method": "get"
+  },
+  {
+    "route": "/search/modules/:searchQuery",
     "method": "get"
   },
   {

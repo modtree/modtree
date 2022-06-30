@@ -1,7 +1,6 @@
-import { setModalModule, showModuleModal } from '@/store/modal'
-import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
-import { AnyAction, Dispatch } from 'redux'
 import axios from 'axios'
+import store from '@/store/redux'
+import { clearSearches, setSearchedModule } from '@/store/search'
 
 export const backend = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND,
@@ -10,35 +9,15 @@ export const backend = axios.create({
 /**
  * searches module condensed
  */
-export async function handleSearch<T>(props: {
-  dispatch: Dispatch
-  clear: () => AnyAction
-  set: ActionCreatorWithOptionalPayload<T[], string>
-  value: string
-}) {
-  const { dispatch, value, clear, set } = props
+export async function handleSearch(value: string) {
   if (value.length === 0) {
-    dispatch(clear())
+    store.dispatch(clearSearches())
     return
   }
   const upper = value.toUpperCase()
+  console.log(upper)
   return backend
-    .get(`/search/modules-condensed/${upper}`)
-    .then((res) => dispatch(set(res.data)))
+    .get(`/search/modules/${upper}`)
+    .then((res) => store.dispatch(setSearchedModule(res.data)))
     .catch(() => true)
-}
-
-/**
- * get one full module info
- */
-export async function getModuleInfo(
-  dispatch: Dispatch<AnyAction>,
-  value: string
-) {
-  if (!value) return
-  dispatch(showModuleModal())
-  return backend
-    .get(`/module/${value}`)
-    .then((res) => dispatch(setModalModule(res.data)))
-    .catch(() => false)
 }

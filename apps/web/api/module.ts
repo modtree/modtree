@@ -1,7 +1,7 @@
 import { addModulesToCache } from '@/store/cache'
 import { BaseApi } from './base-api'
-import type { Modtree } from 'types'
 import { setModalModule, showModuleModal } from '@/store/modal'
+import { IModule, IModuleFull } from '@modtree/types'
 
 /**
  * NOTE TO DEVS
@@ -31,7 +31,7 @@ export class ModuleApi extends BaseApi {
         params: { moduleCodes: codesToFetch },
       })
       .then((res) => {
-        const modules: Modtree.Module[] = res.data
+        const modules: IModule[] = res.data
         /** update the redux store */
         this.dispatch(addModulesToCache(modules))
       })
@@ -41,9 +41,9 @@ export class ModuleApi extends BaseApi {
    * gets an array of modules, memoized by redux cache
    *
    * @param {string[]} moduleCodes
-   * @returns {Promise<Modtree.Module[]>}
+   * @returns {Promise<Module[]>}
    */
-  async getByCodes(moduleCodes: string[]): Promise<Modtree.Module[]> {
+  async getByCodes(moduleCodes: string[]): Promise<IModule[]> {
     /** update redux cache */
     return this.loadCodes(moduleCodes).then(() =>
       /**  then read from the updated copy */
@@ -55,9 +55,9 @@ export class ModuleApi extends BaseApi {
    * gets one module, memoized by redux cache
    *
    * @param {string} moduleCode
-   * @returns {Promise<Modtree.Module>}
+   * @returns {Promise<Module>}
    */
-  async getByCode(moduleCode: string): Promise<Modtree.Module> {
+  async getByCode(moduleCode: string): Promise<IModule> {
     /** update redux cache */
     return this.loadCodes([moduleCode]).then(
       /**  then read from the updated copy */
@@ -69,10 +69,10 @@ export class ModuleApi extends BaseApi {
    * gets one module
    *
    * @param {string} moduleCode
-   * @returns {Promise<Modtree.Module>}
+   * @returns {Promise<Module>}
    */
-  async directGetByCode(moduleCode: string): Promise<Modtree.Module> {
-    return this.server.get(`/module/${moduleCode}`).then((res) => res.data)
+  async directGetByCode(moduleCode: string): Promise<IModuleFull> {
+    return this.server.get(`/module-full/${moduleCode}`).then((res) => res.data)
   }
 
   /**

@@ -5,6 +5,7 @@ import {
   GraphApi,
   ModuleApi,
   ModuleCondensedApi,
+  ModuleFullApi,
 } from './api'
 import { body, param, query } from 'express-validator'
 import { validModuleCode } from '@modtree/utils'
@@ -189,6 +190,12 @@ export const routes: Route[] = [
     fn: ModuleApi.get,
     validators: [],
   },
+  {
+    method: 'get',
+    route: '/search/modules/:searchQuery',
+    fn: ModuleApi.search,
+    validators: [param('searchQuery').notEmpty()],
+  },
 
   /**
    * Module Condensed API
@@ -210,5 +217,15 @@ export const routes: Route[] = [
     route: '/search/modules-condensed/:searchQuery',
     fn: ModuleCondensedApi.search,
     validators: [],
+  },
+
+  /**
+   * Module Full API
+   */
+  {
+    method: 'get',
+    route: '/module-full/:moduleCode',
+    fn: ModuleFullApi.get,
+    validators: [param('moduleCode').custom(validModuleCode)],
   },
 ]

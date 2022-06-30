@@ -1,17 +1,15 @@
 import { Combobox } from '@headlessui/react'
-import { UseState } from '@modtree/types'
-import { AnyAction, Dispatch } from 'redux'
+import { IModule, UseState } from '@modtree/types'
+import { AnyAction } from 'redux'
 import { SearchInput } from './input'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { FC } from 'react'
-import { Modtree } from 'types'
 
 export function SearchContainer(props: {
   selectState: UseState<string>
-  dispatch: Dispatch
   onSelect: (_: string) => void
   clear: () => AnyAction
-  set: ActionCreatorWithOptionalPayload<Modtree.ModuleCondensed[], string>
+  set: ActionCreatorWithOptionalPayload<IModule[], string>
   resultsComponent: FC<{ selectState: UseState<string> }>
   inputClass?: string
   inputContainerClass?: string
@@ -22,7 +20,6 @@ export function SearchContainer(props: {
   return (
     <Combobox value={selected} onChange={props.onSelect}>
       <SearchInput
-        dispatch={props.dispatch}
         clear={props.clear}
         set={props.set}
         inputClass={props.inputClass}

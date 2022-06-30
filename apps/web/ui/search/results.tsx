@@ -1,12 +1,11 @@
 import { Fragment } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { useAppSelector } from '@/store/redux'
-import { ModuleCondensed } from '@modtree/entity'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
-import { UseState } from '@modtree/types'
+import { IModule, UseState } from '@modtree/types'
 
-function SearchResult(props: { module: ModuleCondensed }) {
+function SearchResult(props: { module: IModule }) {
   return (
     <span className="block truncate">
       <div className="w-28 font-semibold">{props.module.moduleCode}</div>
@@ -17,7 +16,7 @@ function SearchResult(props: { module: ModuleCondensed }) {
   )
 }
 
-function SearchResultList(props: { modules: ModuleCondensed[] }) {
+function SearchResultList(props: { modules: IModule[] }) {
   if (props.modules.length === 0) {
     return (
       <div className="select-none py-2 px-4 text-gray-700">Nothing found.</div>
@@ -46,7 +45,7 @@ function SearchResultList(props: { modules: ModuleCondensed[] }) {
 export function SearchResultContainer(props: {
   selectState: UseState<string>
 }) {
-  const { searchResults } = useAppSelector((state) => state.search)
+  const searchResults = useAppSelector((state) => state.search.module)
   const [selected, setSelected] = props.selectState
   return (
     <Transition
