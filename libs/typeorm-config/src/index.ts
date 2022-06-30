@@ -117,4 +117,16 @@ export const db = new DataSource({
   ...config,
 })
 
-export * from './data-source'
+/**
+ * custom source creator
+ *
+ * @param {string} database to use
+ * @returns {DataSource}
+ */
+export function getSource(database: string): DataSource {
+  const dataSourceOptions = {
+    ...config,
+    database,
+  }
+  return new DataSource(dataSourceOptions)
+}

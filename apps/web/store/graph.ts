@@ -8,6 +8,7 @@ export const graph = createSlice({
   initialState: baseInitialState.graph,
   reducers: {
     setGraph: (graph, action: PayloadAction<IGraph>) => {
+      console.log('graph redux', action.payload)
       Object.entries(action.payload).forEach(([key, value]) => {
         graph[key] = value
       })

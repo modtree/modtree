@@ -13,6 +13,7 @@ import { DegreeRepository } from '@modtree/repo-degree'
 import { ModuleFullRepository } from '@modtree/repo-module-full'
 import { GraphRepository } from '@modtree/repo-graph'
 import { UserRepository } from '@modtree/repo-user'
+import { Api } from '@modtree/repo-api'
 
 /**
  * imports custom matcher types
@@ -28,6 +29,7 @@ type SetupOptions = {
  * initialize with default db
  */
 let Repo: Repositories
+let api: Api
 
 /**
  * pre-test setup
@@ -47,6 +49,7 @@ export async function setup(
       /**
        * overwrite default db with the setup function's db parameter
        */
+      api = new Api(db)
       Repo = {
         ModuleFull: new ModuleFullRepository(db),
         User: new UserRepository(db),
@@ -120,7 +123,7 @@ type TestProps = {
 }
 
 export const t: Partial<TestProps> = {}
-export { Repo }
+export { Repo, api }
 
 export const server = axios.create({
   baseURL: 'http://localhost:8080/',
