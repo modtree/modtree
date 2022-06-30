@@ -11,25 +11,57 @@ import {
 import { DataSourceOptions } from '@modtree/types'
 import { getPrefix } from './utils'
 import fs from 'fs'
+import { rawJson } from './utils'
 import { join } from 'path'
 
-const rootDir = join(__dirname, '../../..')
-
-function rawJson(filename: string) {
-  return JSON.parse(fs.readFileSync(join(rootDir, filename)).toString())
-}
-
+/**
+ * reads two json files at workspace root:
+ *   1. modtree.config.json
+ *   2. admin.config.json (not git-indexed)
+ *
+ * NODE_ENV decides which key of that JSON is read.
+ */
 function readJson(target: DataSourceOptions) {
+  /**
+   * do nothing if there's no NODE_ENV
+   */
   const nodeEnv = process.env['NODE_ENV']
   if (!nodeEnv) return
+  /**
+   * read from modtree.config.json first
+   */
   const modtreeConfigJson = rawJson('modtree.config.json')
   Object.assign(target, modtreeConfigJson[nodeEnv])
+  /**
+   * if admin.config.json exists, then use it to override
+   */
   if (fs.existsSync('admin.config.json')) {
     const adminConfigJson = rawJson('admin.config.json')
     Object.assign(target, adminConfigJson[nodeEnv])
   }
 }
 
+/**
+ * reads the .env file, wherever it is
+ * (known to work when placed at /apps/server/.env)
+ *
+ * reads environment variables to json.
+ *
+ * example:
+ * ``` .env
+ * TEST_POSTGRES_USERNAME=my_cool_username
+ * ```
+ * will become
+ * ``` config output
+ * {
+ *   "test": {
+ *     "postgres": {
+ *       "username": "my_cool_username"
+ *     }
+ *   }
+ * }
+ * ```
+ */
 function readEnv(target: DataSourceOptions) {
   const prefix = (e: string): string | undefined => process.env[getPrefix() + e]
   const env: Partial<DataSourceOptions> = {
@@ -62,7 +94,7 @@ function readEnv(target: DataSourceOptions) {
 function getConfig(): DataSourceOptions {
   const base: DataSourceOptions = {
     type: 'postgres',
-    rootDir,
+    rootDir: join(__dirname, '../../..'),
     port: 5432,
     entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
     migrations: [],
