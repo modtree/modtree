@@ -14,7 +14,7 @@ COPY package.json yarn.lock /app/
 RUN yarn install --frozen-lockfile
 
 # Copy project files into the docker image
-COPY . /app/
+COPY . .
 
 RUN yarn install
 
