@@ -10,7 +10,8 @@
     }
   },
   "test": {
-    "projects": [
+    "projects": ["sql"],
+    "dont-run": [
       "repo-api",
       "repo-base",
       "repo-degree",
@@ -19,8 +20,7 @@
       "repo-user",
       "utils",
       "docs",
-      "server",
-      "sql"
+      "server"
     ],
     "command": "yarn nx test",
     "args": {
