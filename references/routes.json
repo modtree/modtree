@@ -40,6 +40,10 @@
     "method": "patch"
   },
   {
+    "route": "/graph/:graphId/suggest",
+    "method": "get"
+  },
+  {
     "route": "/graph/:graphId/toggle/:moduleCode",
     "method": "patch"
   },

@@ -180,6 +180,12 @@ export const routes: Route[] = [
     fn: GraphApi.updateFrontendProps,
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },
+  {
+    method: 'get',
+    route: '/graph/:graphId/suggest',
+    fn: GraphApi.suggestModules,
+    validators: [body('selectedCodes').isArray()],
+  },
 
   /**
    * Module API

@@ -92,4 +92,18 @@ export class GraphApi {
       )
       .then(flatten.graph)
   }
+
+  /**
+   * finds a graph by its id and toggles one module code
+   *
+   * @param {Api} api
+   */
+  static suggestModules = (api: Api) => async (req: Request) => {
+    const { graphId } = req.params
+    const { selectedCodes } = req.body
+    return api.graphRepo
+      .findOneById(graphId)
+      .then((graph) => api.graphRepo.suggestModules(graph, selectedCodes))
+      .then((modules) => modules.map((m) => flatten.module(m)))
+  }
 }
