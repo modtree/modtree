@@ -1,9 +1,5 @@
 import { sql } from '../src'
 
-test('create and drop', () => {
-  expect(1).toBe(1)
-})
-
 test('database initially doesnt exist', async () => {
   await sql.hasDatabase('sql_unit_test').then((res) => {
     expect(res).toBe(false)
