@@ -1,4 +1,4 @@
-import { db } from '@modtree/typeorm-config'
+import { defaultConfig, readEnv, readJson } from '@modtree/typeorm-config'
 import { getApp } from './app'
 import { DataSource, Repository } from 'typeorm'
 import { Api } from '@modtree/repo-api'
@@ -23,9 +23,17 @@ function checkhealth(db: DataSource) {
   })
 }
 
+function getConfig() {
+  const config = defaultConfig
+  readJson(config)
+  readEnv(config)
+  return new DataSource(config)
+}
+
 console.debug('Initializing connection to database...')
-db.initialize()
-  .then(async () => {
+getConfig()
+  .initialize()
+  .then(async (db) => {
     console.debug(
       `Connection to database [${db.options.database}] established.`
     )

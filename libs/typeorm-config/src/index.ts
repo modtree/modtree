@@ -62,7 +62,7 @@ export function readJson(target: DataSourceOptions) {
  * }
  * ```
  */
-function readEnv(target: DataSourceOptions) {
+export function readEnv(target: DataSourceOptions) {
   const prefix = (e: string): string | undefined => process.env[getPrefix() + e]
   const env: Partial<DataSourceOptions> = {
     username: prefix('USERNAME'),
@@ -86,7 +86,7 @@ function readEnv(target: DataSourceOptions) {
   }
 }
 
-const defaultConfig: DataSourceOptions = {
+export const defaultConfig: DataSourceOptions = {
   type: 'postgres',
   rootDir: join(__dirname, '../../..'),
   entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
