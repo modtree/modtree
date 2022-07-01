@@ -2,14 +2,14 @@ version: '3.9'
 
 services:
   db_web:
-    image: 'mod3-sql'
+    image: 'brew4k/postgres'
     ports:
       - '4000:5432'
     environment:
       POSTGRES_USER: web
       POSTGRES_PASSWORD: web
   db_test:
-    image: 'mod3-sql'
+    image: 'brew4k/postgres'
     ports:
       - '4001:5432'
     environment:

@@ -29,7 +29,6 @@ const getSqlCommand = (
   const host = config.host ? `--host=${config.host}` : ''
   const port = config.port ? `--port=${config.port}` : ''
   const final = [password, cmd, username, port, host, ...args].join(' ')
-  console.log(final, args)
   return final
 }
 
@@ -38,7 +37,6 @@ class Sql {
   clientGenerator: (database: string) => Client
   private dropCmd = 'dropdb'
   private createCmd = 'createdb'
-  private coreCmd = 'psql'
   private dumpCmd = 'pg_dump'
 
   /** instantiate a new Sql class */
@@ -116,11 +114,7 @@ class Sql {
   async restoreFromFile(database: string, filename: string) {
     await this.clearDatabase(database)
     const sourceFile = join(__dirname, '..', 'snapshots', filename)
-    const command = getSqlCommand(config, 'pg_restore', [
-      '-d',
-      database,
-      sourceFile,
-    ])
+    const command = getSqlCommand(config, 'psql', [database, '<', sourceFile])
     await exec(command)
   }
 
