@@ -4,5 +4,6 @@
   "tests": "Tests",
   "yarn-scripts": "Yarn scripts",
   "contributing": "Contributing",
-  "tech-stack": "Tech Stack"
+  "tech-stack": "Tech Stack",
+  "deployment": "Deployment"
 }

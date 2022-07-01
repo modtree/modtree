@@ -4,74 +4,75 @@ on:
   push:
     branches:
       - main
-      - dep/front
-      - dep/back
-      - dep/docs
-      - dep/app
-
-env:
-  USERNAME: auto-deploy[bot]
+      - dep/**
 
 jobs:
-  deploy:
-    runs-on: ubuntu-20.04
+  docs:
+    if: |
+      github.ref_name == 'dep/docs' ||
+      github.ref_name == 'dep/all' ||
+      github.ref_name == 'main'
+    runs-on: ubuntu-latest
     steps:
-      - name: 🍺 Check out repository code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: amondnet/vercel-action@v20 #deploy
         with:
-          fetch-depth: 0
-          repository: modtree/modtree
-          path: other_repo
-          token: ${{secrets.PUSH_TOKEN}}
+          vercel-token: ${{ secrets.TURBO_TOKEN }} # Required
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} #Required
+          vercel-project-id: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
+          vercel-args: '--prod' #Optional
+        continue-on-error: true
+        id: deploy
+      - uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            docs deploy: ${{ steps.deploy.outcome }}
 
-      - name: Setup git user
-        run: |
-          git config --global user.name $USERNAME
-          git config --global user.email "$USERNAME@modtree.nus"
-        env:
-          USERNAME: ${{ env.USERNAME }}
+  frontend:
+    if: |
+      github.ref_name == 'dep/front' ||
+      github.ref_name == 'dep/app' ||
+      github.ref_name == 'dep/all' ||
+      github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: amondnet/vercel-action@v20 #deploy
+        with:
+          vercel-token: ${{ secrets.TURBO_TOKEN }} # Required
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} #Required
+          vercel-project-id: ${{ secrets.VERCEL_WEB_PROJECT_ID }} #Required
+          vercel-args: '--prod' #Optional
+        continue-on-error: true
+        id: deploy
+      - uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            frontend deploy: ${{ steps.deploy.outcome }}
 
-      - name: 🚀 Send it.
-        run: |
-          cd other_repo
-          echo "── BRANCH ──────────────"
-          echo ${{ github.ref_name }}
-          echo "────────────────────────"
-          REMOTE=https://$USERNAME:$REPO_KEY@github.com/nguyenvukhang/modtree-deploy.git
-
-          function SEND() {
-            rm -rf .git
-            git init
-            git add --all
-            git commit -m "one take wonder"
-            git checkout -b "$1"
-            git push --force $REMOTE
-          }
-
-          if [[ ${{ github.ref_name }} == "dep/front" ]]; then
-            echo "[ deploying frontend... ]"
-            SEND "frontend-deployment"
-
-          elif [[ ${{ github.ref_name }} == "dep/back" ]]; then
-            echo "[ deploying backend... ]"
-            SEND "backend-deployment"
-
-          elif [[ ${{ github.ref_name }} == "dep/docs" ]]; then
-            echo "[ deploying docs... ]"
-            SEND "docs-deployment"
-
-          elif [[ ${{ github.ref_name }} == "dep/app" ]]; then
-            echo "[ deploying front + back... ]"
-            SEND "frontend-deployment"
-            SEND "backend-deployment"
-
-          elif [[ ${{ github.ref_name }} == "main" ]]; then
-            echo "[ deploying everything... ]"
-            SEND "frontend-deployment"
-            SEND "backend-deployment"
-            SEND "docs-deployment"
-
-          fi
-        env:
-          USERNAME: ${{ env.USERNAME }}
-          REPO_KEY: ${{ secrets.PUSH_TOKEN }}
+  backend:
+    if: |
+      github.ref_name == 'dep/back' ||
+      github.ref_name == 'dep/app' ||
+      github.ref_name == 'dep/all' ||
+      github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'modtree-server' #Must be unique in Heroku
+          heroku_email: 'brew4k@gmail.com'
+        continue-on-error: true
+        id: deploy
+      - uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_GROUP }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            backend deploy: ${{ steps.deploy.outcome }}
