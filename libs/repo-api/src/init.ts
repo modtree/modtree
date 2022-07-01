@@ -1,4 +1,6 @@
-import { InitProps } from '@modtree/types'
+import { FlowNode, InitProps } from '@modtree/types'
+import { empty } from '@modtree/utils'
+import { Edge } from 'react-flow-renderer'
 
 type Init = {
   degree1: InitProps['Degree']
@@ -7,6 +9,8 @@ type Init = {
   user2: InitProps['User']
   graph1: InitProps['Graph']
   graph2: InitProps['Graph']
+  nodes: FlowNode[]
+  edges: Edge[]
 }
 
 /**
@@ -100,16 +104,47 @@ export const auto: Init = {
   graph1: {
     userId: '',
     degreeId: '',
-    modulesPlacedCodes: ['MA2001', 'MA1100'],
-    modulesHiddenCodes: ['GEA1000', 'CS1010S'],
+    modulesPlacedCodes: ['CS1101S', 'CS2030S'],
+    modulesHiddenCodes: ['GEA1000', 'MA2001'],
     pullAll: false,
   },
 
   graph2: {
     userId: '',
     degreeId: '',
-    modulesPlacedCodes: ['MA1521', 'CS2100'],
+    modulesPlacedCodes: ['CS1101S', 'CS2030S'],
     modulesHiddenCodes: ['ST1131', 'IS1103'],
     pullAll: false,
   },
+
+  nodes: [
+    {
+      id: 'CS1101S',
+      position: {
+        x: 0,
+        y: 0,
+      },
+      data: {
+        ...empty.Module,
+      },
+    },
+    {
+      id: 'CS2030S',
+      position: {
+        x: 100,
+        y: 0,
+      },
+      data: {
+        ...empty.Module,
+      },
+    },
+  ],
+
+  edges: [
+    {
+      id: 'CS1101S-CS2030S',
+      source: 'CS1101S',
+      target: 'CS2030S',
+    },
+  ],
 }
