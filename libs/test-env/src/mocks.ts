@@ -7,7 +7,11 @@ function getMockDb(): any {
     type: 'postgres',
   })
   db.getMetadata = <T>(e: EntityTarget<T>) => {
-    console.log('got here', e, e === Module)
+    if (e === Module) {
+      return {
+        relations: [],
+      }
+    }
     return {
       relations: [],
     }
