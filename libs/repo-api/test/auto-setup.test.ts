@@ -3,6 +3,7 @@ import { setup, Repo } from '@modtree/test-env'
 import { Api } from '../src'
 import '@modtree/test-env/jest'
 import { User, Degree, Graph } from '@modtree/entity'
+import { routes } from '../src/init'
 
 const dbName = 'modtree'
 const db = getSource(dbName)
@@ -96,5 +97,11 @@ describe('properties checks', () => {
         if (Array.isArray(value)) expect(value.length).toBeGreaterThan(0)
       })
     })
+  })
+})
+
+describe('samples', () => {
+  test.each(routes)('%p %p', (method, route, routeInfo) => {
+    expect(1).toEqual(1)
   })
 })

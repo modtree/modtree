@@ -148,3 +148,37 @@ export const auto: Init = {
     },
   ],
 }
+
+type RouteInfo = {
+  pathParams?: Record<string, string>
+  queryParams?: Record<string, string>
+  bodyParams?: Record<string, string>
+}
+
+type JestEach = ['post' | 'get' | 'patch' | 'delete', string, RouteInfo]
+
+// TODO consider referring to references/routes.json to
+// make sure this is updated
+//
+// however filling in the route properties will probably be manual
+export const routes: JestEach[] = [
+  [
+    'get',
+    '/module-condensed/:moduleCode',
+    {
+      pathParams: {
+        moduleCode: 'CS1010S',
+      },
+    },
+  ],
+  ['get', '/modules-condensed', {}],
+  [
+    'get',
+    '/search/modules-condensed/:searchQuery',
+    {
+      pathParams: {
+        searchQuery: 'CS1010',
+      },
+    },
+  ],
+]
