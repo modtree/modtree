@@ -94,3 +94,19 @@ it('updates correct position', async () => {
     expect(positions).toContainEqual({ x: 100, y: 200 })
   })
 })
+
+it('throws error if node ID does not exist', async () => {
+  expect(() =>
+    updateFlowNode({
+      id: 'not found',
+      position: {
+        x: 100,
+        y: 200,
+      },
+      data: {
+        ...empty.Module,
+        moduleCode: 'not found',
+      },
+    })
+  ).rejects.toThrowError(Error('Invalid flow node ID'))
+})
