@@ -39,6 +39,7 @@ jobs:
 
   ci: # don't change this name, else will also need to change branch rules
     needs: [pre_job]
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -66,8 +67,11 @@ jobs:
 
   build: # don't change this name, else will also need to change branch rules
     needs: [pre_job]
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-20.04
     steps:
+      - name: log pre-job
+        run: echo "${{ toJSON(needs) }}"
       - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1.6.0
         continue-on-error: true
@@ -85,7 +89,8 @@ jobs:
       always() &&
       needs.build.result != 'cancelled' &&
       needs.ci.result != 'cancelled' &&
-      needs.pre_job.outputs.should_skip != 'true'
+      needs.pre_job.outputs.should_skip != 'true' &&
+      github.event.pull_request.draft == false
     runs-on: ubuntu-20.04
     steps:
       - name: Log inputs
@@ -110,7 +115,6 @@ jobs:
           needs.pre_job.outputs.should_skip != 'true' &&
           github.event_name == 'pull_request'
         with:
-          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_GROUP }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
@@ -124,7 +128,6 @@ jobs:
           needs.pre_job.outputs.should_skip != 'true' &&
           github.event_name == 'push' && endsWith(github.event.ref, '/main')
         with:
-          disable_web_page_preview: true
           to: ${{ secrets.TELEGRAM_GROUP }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown

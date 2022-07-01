@@ -1,0 +1,31 @@
+# Deploying Modtree
+
+All deployments are triggered by GitHub Actions at
+`.github/workflows/deploy`.
+
+## Documentation (Vercel)
+
+This deployment is unique in that it doesn't depend on any outside
+project at all. Hence the root is shifted to the docs project root.
+
+Deployment root directory: `apps/docs`
+
+Install command: `yarn bundle`
+
+Build command: `next build --no-lint`
+
+## Frontend (Vercel)
+
+Deployment root directory: same as workspace root.
+
+Install command: `yarn build:vercel:web`
+
+Output directory: `dist/apps/web/.next`
+
+## Backend (Heroku)
+
+Deployment root directory: same as workspace root.
+
+Build command: `yarn heroku-postbuild`
+
+Start command found at: `Procfile`
