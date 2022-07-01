@@ -94,6 +94,16 @@ class Sql {
   }
 
   /**
+   * checks if database exists
+   *
+   * @param {string} database
+   */
+  async hasDatabase(database: string): Promise<Boolean> {
+    const command = getSqlCommand(config, 'psql', ['-lqt', database])
+    return exec(command).then((res) => res.stdout.includes(database))
+  }
+
+  /**
    * a very aggressive function that drops the database
    * and then recreates it for a completely fresh start
    * so ensure .env.test has the corrent database name.

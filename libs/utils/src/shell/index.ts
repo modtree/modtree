@@ -12,7 +12,8 @@ export function exec(cmd: string): Promise<ShellResponse> {
     execDefault(cmd, (_, stdout, stderr) => {
       resolve({
         command: cmd,
-        output: stdout || stderr,
+        stdout,
+        stderr,
         error: new Error(`stderr: ${stderr}`),
       })
       reject(new Error('rejected, but calmn down and carry on shelling'))
