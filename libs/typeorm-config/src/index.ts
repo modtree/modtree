@@ -21,7 +21,7 @@ import { join } from 'path'
  *
  * NODE_ENV decides which key of that JSON is read.
  */
-function readJson(target: DataSourceOptions) {
+export function readJson(target: DataSourceOptions) {
   /**
    * do nothing if there's no NODE_ENV
    */
@@ -86,25 +86,27 @@ function readEnv(target: DataSourceOptions) {
   }
 }
 
+const defaultConfig: DataSourceOptions = {
+  type: 'postgres',
+  rootDir: join(__dirname, '../../..'),
+  entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
+  migrations: [],
+  username: '',
+  password: '',
+  host: 'localhost',
+  database: 'mt_test',
+  restoreSource: 'mod3.sql',
+  synchronize: true,
+  migrationsRun: false,
+}
+
 /**
  * generate a config based on the database type
  *
  * @returns {DataSourceOptions}
  */
-function getConfig(): DataSourceOptions {
-  const base: DataSourceOptions = {
-    type: 'postgres',
-    rootDir: join(__dirname, '../../..'),
-    entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
-    migrations: [],
-    username: '',
-    password: '',
-    host: 'localhost',
-    database: 'mt_test',
-    restoreSource: 'mod3.sql',
-    synchronize: true,
-    migrationsRun: false,
-  }
+export function getConfig(): DataSourceOptions {
+  const base = defaultConfig
   readJson(base)
   readEnv(base)
   return base
