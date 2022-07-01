@@ -19,6 +19,7 @@ import {
   ModuleRepository,
 } from '@modtree/repo-module'
 import { getRelationNames } from '@modtree/repo-base'
+import { auto } from './init'
 
 type Relations = Record<string, boolean>
 
@@ -169,5 +170,35 @@ export class Api {
       return this.degreeRepo.save(degree)
     })
     return Promise.all([user1, user2, user3, degree1, degree2, degree3])
+  }
+
+  async autoSetup() {
+    // setup user and degree
+    const data = Promise.all([
+      this.userRepo.initialize(auto.user1),
+      this.userRepo.initialize(auto.user2),
+      this.degreeRepo.initialize(auto.degree1),
+      this.degreeRepo.initialize(auto.degree2),
+    ])
+
+    // add graphs
+    const all = data.then(([u1, u2, d1, d2]) => {
+      const g1 = {
+        ...auto.graph1,
+        userId: u1.id,
+        degreeId: d1.id,
+      }
+      const g2 = {
+        ...auto.graph2,
+        userId: u2.id,
+        degreeId: d2.id,
+      }
+      return Promise.all([
+        this.graphRepo.initialize(g1),
+        this.graphRepo.initialize(g2),
+      ])
+    })
+
+    return all
   }
 }
