@@ -86,7 +86,7 @@ export class BaseSql implements BaseSqlInterface {
    *
    * @param {string} database
    */
-  async dropDatabase(database: string) {
+  async dropDatabase(database: string): Promise<any> {
     throw new Error(`${this.type}: not implemented yet for ${database}`)
   }
 

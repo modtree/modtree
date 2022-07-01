@@ -11,7 +11,7 @@ export interface BaseSqlInterface {
    * @param {string} database
    * @param {string} table
    */
-  dropTable(database: string, table: string): Promise<void>
+  dropTable(database: string, table: string): Promise<any>
 
   /**
    * removes a list of tables from a database
@@ -19,14 +19,14 @@ export interface BaseSqlInterface {
    * @param {string} database
    * @param {string[]} tables
    */
-  dropTables(database: string, tables: string[]): Promise<void>
+  dropTables(database: string, tables: string[]): Promise<any>
 
   /**
    * drops the database
    *
    * @param {string} database
    */
-  dropDatabase(database: string): Promise<void>
+  dropDatabase(database: string): Promise<any>
 
   /**
    * a very aggressive function that drops the database
@@ -35,7 +35,7 @@ export interface BaseSqlInterface {
    *
    * @param {string} database
    */
-  clearDatabase(database: string): Promise<void>
+  clearDatabase(database: string): Promise<any>
 
   /**
    * restores SQL database from a file
@@ -43,7 +43,7 @@ export interface BaseSqlInterface {
    * @param {string} database
    * @param {string} filename
    */
-  restoreFromFile(database: string, filename: string): Promise<void>
+  restoreFromFile(database: string, filename: string): Promise<any>
 
   /**
    * interactive prompt to guide the user to restore an SQL database
@@ -55,7 +55,7 @@ export interface BaseSqlInterface {
   /**
    * dumps a database snapshot to a .sql file
    *
-   * @param {database}
+   * @param {string} database
    */
-  dump(database: string): Promise<void>
+  dump(database: string): Promise<any>
 }

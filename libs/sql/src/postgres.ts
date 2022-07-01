@@ -3,6 +3,7 @@ import { Client } from 'pg'
 import { config } from '@modtree/typeorm-config'
 import { exec } from '@modtree/utils'
 import { BaseSql, promptRestore } from './base'
+import { ShellResponse } from '@modtree/types'
 
 /* eslint no-useless-escape: 0 */
 // some piped shell commands below require seemingly useless escapes
@@ -66,8 +67,8 @@ export class Postgresql extends BaseSql {
    *
    * @param {string} database
    */
-  override async dropDatabase(database: string) {
-    await exec(`${this.dropCmd} ${database}`)
+  override async dropDatabase(database: string): Promise<ShellResponse> {
+    return exec(`${this.dropCmd} ${database}`)
   }
 
   /**
