@@ -22,9 +22,9 @@ const connectionConfig = (database: string) => ({
 export class Postgresql extends BaseSql {
   clientGenerator: (database: string) => Client
 
-  dropCmd = 'dropdb'
+  dropCmd = 'PGPASSWORD=test dropdb -p 4001 -U test -h localhost'
 
-  createCmd = 'createdb'
+  createCmd = 'PGPASSWORD=test createdb -p 4001 -U test -h localhost'
 
   /** instantiate a new Sql class */
   constructor() {
