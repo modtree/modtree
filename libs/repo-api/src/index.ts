@@ -181,12 +181,12 @@ export class Api {
     let d2: Degree = await this.degreeRepo.initialize(auto.degree2)
 
     // setup graphs
-    const g1: Graph = await this.graphRepo.initialize({
+    let g1: Graph = await this.graphRepo.initialize({
       ...auto.graph1,
       userId: u1.id,
       degreeId: d1.id,
     })
-    const g2: Graph = await this.graphRepo.initialize({
+    let g2: Graph = await this.graphRepo.initialize({
       ...auto.graph2,
       userId: u2.id,
       degreeId: d2.id,
@@ -223,6 +223,16 @@ export class Api {
     })
     nodes[1].data = await this.moduleRepo.findOneByOrFail({
       moduleCode: 'MA2001',
+    })
+
+    // add in flow nodes and edges
+    g1 = await this.graphRepo.updateFrontendProps(g1, {
+      flowNodes: nodes,
+      flowEdges: auto.edges,
+    })
+    g2 = await this.graphRepo.updateFrontendProps(g2, {
+      flowNodes: nodes,
+      flowEdges: auto.edges,
     })
 
     return {
