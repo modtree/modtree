@@ -94,7 +94,21 @@ export class GraphApi {
   }
 
   /**
-   * finds a graph by its id and toggles one module code
+   * finds a graph by its id and updates one flow node
+   *
+   * @param {Api} api
+   */
+  static updateFlowNode = (api: Api) => async (req: Request) => {
+    const { graphId } = req.params
+    const { node } = req.body
+    return api.graphRepo
+      .findOneById(graphId)
+      .then((graph) => api.graphRepo.updateFlowNode(graph, node))
+      .then(flatten.graph)
+  }
+
+  /**
+   * finds a graph by its id and suggests modules
    *
    * @param {Api} api
    */

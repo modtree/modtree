@@ -181,6 +181,12 @@ export const routes: Route[] = [
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
   },
   {
+    method: 'patch',
+    route: '/graph/:graphId/node',
+    fn: GraphApi.updateFlowNode,
+    validators: [body('node').notEmpty()],
+  },
+  {
     method: 'get',
     route: '/graph/:graphId/suggest',
     fn: GraphApi.suggestModules,

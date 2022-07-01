@@ -40,6 +40,10 @@
     "method": "patch"
   },
   {
+    "route": "/graph/:graphId/node",
+    "method": "patch"
+  },
+  {
     "route": "/graph/:graphId/suggest",
     "method": "get"
   },
