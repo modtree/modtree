@@ -7,8 +7,9 @@ import {
   IModuleCondensedRepository,
   EntityName,
   IModuleFullRepository,
+  FlowNode,
 } from '@modtree/types'
-import { emptyInit } from '@modtree/utils'
+import { empty, emptyInit } from '@modtree/utils'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
@@ -212,6 +213,17 @@ export class Api {
     u1 = await this.userRepo.setMainGraph(u1, g1.id)
     u2 = await this.userRepo.setMainDegree(u2, d2.id)
     u2 = await this.userRepo.setMainGraph(u2, g2.id)
+
+    // fix fake nodes data
+    // nodes[0] is CS1010S
+    // nodes[1] is MA2001
+    const nodes = auto.nodes
+    nodes[0].data = await this.moduleRepo.findOneByOrFail({
+      moduleCode: 'CS1010S',
+    })
+    nodes[1].data = await this.moduleRepo.findOneByOrFail({
+      moduleCode: 'MA2001',
+    })
 
     return {
       u1,
