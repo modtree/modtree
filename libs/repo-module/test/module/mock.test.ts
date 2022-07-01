@@ -19,9 +19,7 @@ moduleRepo.find = async () => [
 test('base', async () => {
   expect(1).toBe(1)
   await moduleRepo.getCodes().then((res) => {
-    console.log(res)
     expect(res).toHaveLength(2)
     expect(res).toIncludeSameMembers(['yes', 'no'])
-    console.log(res.length)
   })
 })
