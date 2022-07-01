@@ -4,6 +4,7 @@ import { Api } from '../src'
 import '@modtree/test-env/jest'
 import { User, Degree, Graph } from '@modtree/entity'
 import { routes } from '../src/init'
+import { postman } from '../src/postman'
 
 const dbName = 'modtree'
 const db = getSource(dbName)
@@ -16,6 +17,8 @@ let d1: Degree
 let d2: Degree
 let g1: Graph
 let g2: Graph
+
+jest.setTimeout(60000)
 
 beforeAll(() =>
   setup(db).then(() => {
@@ -101,7 +104,14 @@ describe('properties checks', () => {
 })
 
 describe('samples', () => {
-  test.each(routes)('%p %p', (method, route, routeInfo) => {
+  test.each(routes)('%p %p', async (method, route, routeInfo) => {
+    // unpack data
+    const url = routeInfo.url
+    const params = routeInfo.params
+
+    // make request
+    const res = await postman.get(url, { params })
+    console.log(res.data)
     expect(1).toEqual(1)
   })
 })
