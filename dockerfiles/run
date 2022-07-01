@@ -8,5 +8,6 @@ fi
 if [[ $1 == 'db' ]]; then
   docker run \
     --publish 5433:5432 \
+    --detach \
     modtree-db
 fi
