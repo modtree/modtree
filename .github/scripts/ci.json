@@ -19,7 +19,8 @@
       "repo-user",
       "utils",
       "docs",
-      "server"
+      "server",
+      "sql"
     ],
     "command": "yarn nx test",
     "args": {
