@@ -130,6 +130,12 @@ export const routes: Route[] = [
     fn: DegreeApi.delete,
     validators: [],
   },
+  {
+    method: 'patch',
+    route: '/degree/:degreeId',
+    fn: DegreeApi.insertModules,
+    validators: [body('moduleCodes').isArray().notEmpty()],
+  },
 
   /**
    * Graph API

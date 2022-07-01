@@ -12,6 +12,10 @@
     "method": "delete"
   },
   {
+    "route": "/degree/:degreeId",
+    "method": "patch"
+  },
+  {
     "route": "/degree/:degreeId/get-full",
     "method": "get"
   },
