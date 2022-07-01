@@ -5,9 +5,9 @@
   "author": "modtree",
   "description": "modtree documentation with Next.js",
   "scripts": {
-    "load:lock": "cp ../../yarn.lock .",
-    "drop:lock": "rm yarn.lock",
-    "bundle": "yarn load:lock && yarn && yarn drop:lock",
+    "load:lock": "cp ../../pnpm-lock.yaml .",
+    "drop:lock": "rm pnpm-lock.yaml",
+    "bundle": "pnpm load:lock && pnpm i && pnpm drop:lock",
     "build": "next build",
     "serve": "next dev --port=3001",
     "start": "next start --port=3001"

@@ -9,16 +9,16 @@
     "build": "nx run-many --all --target=build --parallel=4 --exclude=docs",
     "lint": "nx run-many --all --target=lint --parallel=4",
     "test": "nx run-many --all --target=test --parallel=1",
-    "build:f": "yarn build --skip-nx-cache",
-    "lint:f": "yarn lint --skip-nx-cache",
-    "test:f": "yarn test --skip-nx-cache",
+    "build:f": "pnpm build --skip-nx-cache",
+    "lint:f": "pnpm lint --skip-nx-cache",
+    "test:f": "pnpm test --skip-nx-cache",
     "build:docs": "nx build docs",
     "build:vercel:docs": "nx build docs --skip-nx-cache",
     "build:vercel:web": "nx build web --skip-nx-cache",
     "e2e": "nx e2e web-e2e --watch",
     "format": "prettier --write .",
-    "prepare": "bash ./scripts/yarn.sh setup",
-    "i": "bash ./scripts/yarn.sh inverse",
+    "prepare": "bash ./scripts/pnpm.sh setup",
+    "i": "bash ./scripts/pnpm.sh inverse",
     "heroku-postbuild": "nx build server",
     "version": "auto-changelog -p && git add --all"
   },
@@ -37,7 +37,7 @@
     "d3": "^7.4.4",
     "dagre": "^0.8.5",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1",
+    "express": "4.17.2",
     "express-validator": "^6.14.1",
     "inquirer": "^8.2.4",
     "next": "12.1.5",
@@ -57,6 +57,7 @@
     "typeorm": "^0.3.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.6",
     "@nrwl/cli": "14.2.2",
     "@nrwl/cypress": "^14.3.5",
     "@nrwl/eslint-plugin-nx": "14.2.4",
@@ -89,7 +90,7 @@
     "@typescript-eslint/parser": "~5.24.0",
     "auto-changelog": "^2.4.0",
     "autoprefixer": "10.2.6",
-    "cypress": "^10.1.0",
+    "cypress": "9.7.0",
     "eslint": "8.15.0",
     "eslint-config-next": "12.1.5",
     "eslint-config-prettier": "8.1.0",
@@ -115,7 +116,7 @@
   "engines": {
     "npm": "8.x",
     "node": "16.x",
-    "yarn": "1.x"
+    "pnpm": ">=6"
   },
   "resolutions": {
     "@types/react": "17.0.37"

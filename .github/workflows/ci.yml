@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+env:
+  PNPM_VERSION: 7.4.1
+
 jobs:
   pre_job:
     # skip duplicate checks
@@ -45,11 +48,25 @@ jobs:
       matrix:
         project: ${{ fromJSON(needs.pre_job.outputs.test_projects) }}
     steps:
+      # start of PNPM install chunk
       - uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1.6.0
-        continue-on-error: true
-      - run: ${{ needs.pre_job.outputs.install_command }}
-        continue-on-error: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: pnpm/action-setup@v2.0.1
+        id: pnpm-install
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - id: pnpm-cache
+        run: echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+      - run: pnpm install --frozen-lockfile
+      # end of PNPM install chunk
 
       - name: Start PostgreSQL
         run: ./.github/scripts/postgres.sh
@@ -72,11 +89,25 @@ jobs:
     steps:
       - name: log pre-job
         run: echo "${{ toJSON(needs) }}"
+      # start of PNPM install chunk
       - uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1.6.0
-        continue-on-error: true
-      - run: ${{ needs.pre_job.outputs.install_command }}
-        continue-on-error: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: pnpm/action-setup@v2.0.1
+        id: pnpm-install
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+      - id: pnpm-cache
+        run: echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+      - run: pnpm install --frozen-lockfile
+      # end of PNPM install chunk
 
       - name: 📦 Build entire workspace
         run: |
@@ -120,8 +151,8 @@ jobs:
           format: markdown
           message: |
             `${{ steps.results.outputs.sha }}` #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}
-            ${{ steps.results.outputs.build }} yarn build
-            ${{ steps.results.outputs.tests }} yarn test
+            ${{ steps.results.outputs.build }} build
+            ${{ steps.results.outputs.tests }} test
 
       - uses: appleboy/telegram-action@master
         if: |
@@ -133,5 +164,5 @@ jobs:
           format: markdown
           message: |
             `${{ steps.results.outputs.sha }}` (push to main, cacheless ci)
-            ${{ steps.results.outputs.build }} yarn build
-            ${{ steps.results.outputs.tests }} yarn test
+            ${{ steps.results.outputs.build }} build
+            ${{ steps.results.outputs.tests }} test

@@ -32,9 +32,9 @@ tool in order to:
 
 ## Setup
 
-After cloning, run `yarn setup` from the root of the workspace.
+After cloning, run `pnpm setup` from the root of the workspace.
 
 ```
 git clone git@github.com:modtree/modtree.git
-cd modtree && yarn setup
+cd modtree && pnpm setup
 ```

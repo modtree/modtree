@@ -2,7 +2,7 @@ import { ParseArgs, postman } from '../postman'
 
 function help() {
   console.debug('\nUSAGE:\n')
-  console.debug('yarn graph:create <user id> <degree id>\n')
+  console.debug('pnpm graph:create <user id> <degree id>\n')
   Promise.all([postman.get('users/'), postman.get('degrees/')]).then(
     ([users, degrees]) => {
       const userSummary = users.map((u: any) => ({ id: u.id, u: u.username }))

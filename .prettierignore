@@ -4,3 +4,4 @@
 /coverage
 *.mdx
 /references
+pnpm-lock.yaml

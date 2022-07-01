@@ -66,7 +66,7 @@ inv_end() {
 }
 
 setup() {
-  yarn husky install
+  pnpm husky install
   env_start
   eval ${USER}_env
   env_end

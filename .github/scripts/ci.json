@@ -1,9 +1,9 @@
 {
   "install": {
-    "command": "yarn --frozen-lockfile --silent"
+    "command": "pnpm --frozen-lockfile"
   },
   "build": {
-    "command": "yarn build",
+    "command": "pnpm build",
     "args": {
       "ci": [],
       "no_cache": ["--skip-nx-cache"]
@@ -21,7 +21,7 @@
       "docs",
       "server"
     ],
-    "command": "yarn nx test",
+    "command": "pnpm nx test",
     "args": {
       "ci": ["--coverage", "--runInBand"],
       "no_cache": ["--coverage", "--runInBand", "--skip-nx-cache"]

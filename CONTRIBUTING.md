@@ -94,7 +94,7 @@ Each pull request must pass the automated builds on [GitHub Actions].
 You can run the linter locally by:
 
 ```
-yarn lint
+pnpm lint
 ```
 
 ### Style
