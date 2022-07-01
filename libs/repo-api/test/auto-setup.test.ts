@@ -73,4 +73,28 @@ describe('properties checks', () => {
     expect(Object.keys(g1)).toIncludeSameMembers(graphKeys)
     expect(Object.keys(g2)).toIncludeSameMembers(graphKeys)
   })
+
+  test('user array properties have at least one child', () => {
+    ;[u1, u2].forEach((one) => {
+      Object.entries(one).forEach(([_, value]) => {
+        if (Array.isArray(value)) expect(value.length).toBeGreaterThan(0)
+      })
+    })
+  })
+
+  test('degree array properties have at least one child', () => {
+    ;[d1, d2].forEach((one) => {
+      Object.entries(one).forEach(([_, value]) => {
+        if (Array.isArray(value)) expect(value.length).toBeGreaterThan(0)
+      })
+    })
+  })
+
+  test('graph array properties have at least one child', () => {
+    ;[g1, g2].forEach((one) => {
+      Object.entries(one).forEach(([_, value]) => {
+        if (Array.isArray(value)) expect(value.length).toBeGreaterThan(0)
+      })
+    })
+  })
 })
