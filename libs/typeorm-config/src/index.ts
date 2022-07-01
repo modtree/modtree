@@ -68,11 +68,13 @@ export function readEnv(target: DataSourceOptions) {
     username: prefix('USERNAME'),
     password: prefix('PASSWORD'),
     host: prefix('HOST'),
+    port: parseInt(prefix('PORT') || '5432'),
     database: prefix('ACTIVE_DATABASE'),
   }
   if (env.username) target.username = env.username
   if (env.password) target.password = env.password
   if (env.host) target.host = env.host
+  if (env.port) target.port = env.port
   if (env.database) target.database = env.database
   /**
    * for postgres deployments
