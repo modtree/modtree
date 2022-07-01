@@ -1,4 +1,4 @@
-import { basename, join } from 'path'
+import { join } from 'path'
 import { Client } from 'pg'
 import { config } from '@modtree/typeorm-config'
 import { exec } from '@modtree/utils'
