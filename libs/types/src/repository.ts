@@ -8,8 +8,8 @@ import {
   IModuleFull,
   IModuleCondensed,
   GraphFrontendProps,
+  FlowNode,
 } from './entity-interface'
-import { Node } from 'react-flow-renderer'
 
 export type FindByKey<T> = (query: string) => Promise<T>
 
@@ -54,7 +54,7 @@ export interface IGraphRepository extends EGraph {
   ): Promise<[string[], string[], string[], string[]]>
   suggestModules(graph: IGraph, moduleCodes: string[]): Promise<IModule[]>
   updateFrontendProps(graph: IGraph, props: GraphFrontendProps): Promise<IGraph>
-  updateFlowNode(graph: IGraph, node: Node<IModule>): Promise<IGraph>
+  updateFlowNode(graph: IGraph, node: FlowNode): Promise<IGraph>
   findByIds(id: string[]): Promise<IGraph[]>
 }
 

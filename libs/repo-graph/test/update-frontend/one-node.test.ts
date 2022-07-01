@@ -1,6 +1,7 @@
 import { Graph, Module } from '@modtree/entity'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
+import { FlowNode } from '@modtree/types'
 import { empty, oneUp } from '@modtree/utils'
 import { Node } from 'react-flow-renderer'
 
@@ -53,7 +54,7 @@ async function findGraph(id: string) {
   return Repo.Graph.findOneById(id)
 }
 
-async function updateFlowNode(node: Node<Module>) {
+async function updateFlowNode(node: FlowNode) {
   return Repo.Graph.updateFlowNode(t.graph!, node)
 }
 

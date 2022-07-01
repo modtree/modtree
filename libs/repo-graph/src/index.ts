@@ -9,6 +9,7 @@ import {
   FindByKey,
   IGraph,
   GraphFrontendProps,
+  FlowNode,
 } from '@modtree/types'
 import { quickpop, flatten } from '@modtree/utils'
 import {
@@ -220,10 +221,10 @@ export class GraphRepository
    * Expects a full flow node, to replace the current one.
    *
    * @param {Graph} graph
-   * @param {Node<Module>} updatedNode
+   * @param {FlowNode} updatedNode
    * @returns {Promise<Graph>}
    */
-  async updateFlowNode(graph: Graph, node: Node<Module>): Promise<Graph> {
+  async updateFlowNode(graph: Graph, node: FlowNode): Promise<Graph> {
     const nodeId = node.id
     const index = graph.flowNodes.findIndex((n) => n.id == nodeId)
     if (index == -1) {

@@ -21,8 +21,10 @@ export type IBase = {
   id: string
 }
 
+export type FlowNode = Node<IModule>
+
 export type GraphFrontendProps = {
-  flowNodes: Node<IModule>[]
+  flowNodes: FlowNode[]
   flowEdges: Edge[]
 }
 
