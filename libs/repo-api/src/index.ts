@@ -174,10 +174,10 @@ export class Api {
 
   async autoSetup() {
     // setup user and degree
-    const u1: User = await this.userRepo.initialize(auto.user1)
-    const u2: User = await this.userRepo.initialize(auto.user2)
-    const d1: Degree = await this.degreeRepo.initialize(auto.degree1)
-    const d2: Degree = await this.degreeRepo.initialize(auto.degree2)
+    let u1: User = await this.userRepo.initialize(auto.user1)
+    let u2: User = await this.userRepo.initialize(auto.user2)
+    let d1: Degree = await this.degreeRepo.initialize(auto.degree1)
+    let d2: Degree = await this.degreeRepo.initialize(auto.degree2)
 
     // setup graphs
     const g1: Graph = await this.graphRepo.initialize({
@@ -190,6 +190,28 @@ export class Api {
       userId: u2.id,
       degreeId: d2.id,
     })
+
+    // insert degrees and graphs
+    // user1: {
+    //    savedDegrees: [d1],
+    //    savedGraphs: [g1],
+    // }
+    u1 = await this.userRepo.insertDegrees(u1, [d1.id])
+    u1 = await this.userRepo.insertGraphs(u1, [g1.id])
+    u2 = await this.userRepo.insertDegrees(u2, [d2.id])
+    u2 = await this.userRepo.insertGraphs(u2, [g2.id])
+
+    // set main degrees and graphs
+    // user1: {
+    //    mainDegree: d1,
+    //    savedDegrees: [d1],
+    //    mainGraph: g1,
+    //    savedGraphs: [g1],
+    // }
+    u1 = await this.userRepo.setMainDegree(u1, d1.id)
+    u1 = await this.userRepo.setMainGraph(u1, g1.id)
+    u2 = await this.userRepo.setMainDegree(u2, d2.id)
+    u2 = await this.userRepo.setMainGraph(u2, g2.id)
 
     return
   }
