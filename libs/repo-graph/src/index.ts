@@ -19,6 +19,7 @@ import {
 import { ModuleRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
+import { Node } from 'react-flow-renderer'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
@@ -200,7 +201,7 @@ export class GraphRepository
    * Updates the frontend part of the Graph
    * note that this method will NOT retrieve any relations.
    * @param {Graph} graph
-   * @param {GraphFrontendProps} graph
+   * @param {GraphFrontendProps} props
    * @returns {Promise<Graph>}
    */
   async updateFrontendProps(
@@ -212,6 +213,24 @@ export class GraphRepository
       flowEdges: props.flowEdges,
       flowNodes: props.flowNodes,
     })
+  }
+
+  /**
+   * Updates a single flow node.
+   * Expects a full flow node, to replace the current one.
+   *
+   * @param {Graph} graph
+   * @param {Node<Module>} updatedNode
+   * @returns {Promise<Graph>}
+   */
+  async updateFlowNode(graph: Graph, node: Node<Module>): Promise<Graph> {
+    const nodeId = node.id
+    const index = graph.flowNodes.findIndex((n) => n.id == nodeId)
+    if (index == -1) {
+      throw new Error('Invalid flow node ID')
+    }
+    graph.flowNodes[index] = node
+    return this.save(graph)
   }
 
   /**
