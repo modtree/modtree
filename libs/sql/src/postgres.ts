@@ -4,6 +4,7 @@ import { config } from '@modtree/typeorm-config'
 import { exec } from '@modtree/utils'
 import { BaseSql, promptRestore } from './base'
 import { ShellResponse } from '@modtree/types'
+import { DataSourceOptions } from '@modtree/types'
 
 /* eslint no-useless-escape: 0 */
 // some piped shell commands below require seemingly useless escapes
@@ -19,13 +20,21 @@ const connectionConfig = (database: string) => ({
   database,
 })
 
+const getSqlCommand = (config: DataSourceOptions, cmd: string, end: string) => {
+  const username = config.username ? `--username=${config.username}` : ''
+  const password = config.password ? `PGPASSWORD=${config.password}` : ''
+  const host = config.host ? `--host=${config.host}` : ''
+  const port = config.port ? `--port=${config.port}` : ''
+  return [password, cmd, username, port, host, end].join(' ')
+}
+
 /** Sql interface for POSTGRESQL */
 export class Postgresql extends BaseSql {
   clientGenerator: (database: string) => Client
 
-  dropCmd = 'PGPASSWORD=test dropdb -p 4001 -U test -h localhost'
+  dropCmd = 'dropdb'
 
-  createCmd = 'PGPASSWORD=test createdb -p 4001 -U test -h localhost'
+  createCmd = 'createdb'
 
   /** instantiate a new Sql class */
   constructor() {
@@ -68,7 +77,18 @@ export class Postgresql extends BaseSql {
    * @param {string} database
    */
   override async dropDatabase(database: string): Promise<ShellResponse> {
-    return exec(`${this.dropCmd} ${database}`)
+    const command = getSqlCommand(config, this.dropCmd, database)
+    return exec(command)
+  }
+
+  /**
+   * creates a database
+   *
+   * @param {string} database
+   */
+  async createDatabase(database: string): Promise<ShellResponse> {
+    const command = getSqlCommand(config, this.createCmd, database)
+    return exec(command)
   }
 
   /**
