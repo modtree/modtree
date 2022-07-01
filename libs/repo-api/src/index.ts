@@ -213,6 +213,13 @@ export class Api {
     u2 = await this.userRepo.setMainDegree(u2, d2.id)
     u2 = await this.userRepo.setMainGraph(u2, g2.id)
 
-    return
+    return {
+      u1,
+      u2,
+      d1,
+      d2,
+      g1,
+      g2,
+    }
   }
 }
