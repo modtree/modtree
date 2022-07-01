@@ -13,7 +13,7 @@ import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
 import { ModuleFullRepository } from '@modtree/repo-module-full'
-import { User } from '@modtree/entity'
+import { User, Degree, Graph } from '@modtree/entity'
 import {
   ModuleCondensedRepository,
   ModuleRepository,
@@ -174,31 +174,23 @@ export class Api {
 
   async autoSetup() {
     // setup user and degree
-    const data = Promise.all([
-      this.userRepo.initialize(auto.user1),
-      this.userRepo.initialize(auto.user2),
-      this.degreeRepo.initialize(auto.degree1),
-      this.degreeRepo.initialize(auto.degree2),
-    ])
+    const u1: User = await this.userRepo.initialize(auto.user1)
+    const u2: User = await this.userRepo.initialize(auto.user2)
+    const d1: Degree = await this.degreeRepo.initialize(auto.degree1)
+    const d2: Degree = await this.degreeRepo.initialize(auto.degree2)
 
-    // add graphs
-    const all = data.then(([u1, u2, d1, d2]) => {
-      const g1 = {
-        ...auto.graph1,
-        userId: u1.id,
-        degreeId: d1.id,
-      }
-      const g2 = {
-        ...auto.graph2,
-        userId: u2.id,
-        degreeId: d2.id,
-      }
-      return Promise.all([
-        this.graphRepo.initialize(g1),
-        this.graphRepo.initialize(g2),
-      ])
+    // setup graphs
+    const g1: Graph = await this.graphRepo.initialize({
+      ...auto.graph1,
+      userId: u1.id,
+      degreeId: d1.id,
+    })
+    const g2: Graph = await this.graphRepo.initialize({
+      ...auto.graph2,
+      userId: u2.id,
+      degreeId: d2.id,
     })
 
-    return all
+    return
   }
 }
