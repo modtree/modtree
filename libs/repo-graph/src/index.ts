@@ -221,13 +221,13 @@ export class GraphRepository
    * Expects a full flow node, to replace the current one.
    *
    * @param {Graph} graph
-   * @param {FlowNode} updatedNode
+   * @param {FlowNode} node
    * @returns {Promise<Graph>}
    */
   async updateFlowNode(graph: Graph, node: FlowNode): Promise<Graph> {
     const nodeId = node.id
     const index = graph.flowNodes.findIndex((n) => n.id == nodeId)
-    if (index == -1) {
+    if (index === -1) {
       throw new Error('Invalid flow node ID')
     }
     graph.flowNodes[index] = node

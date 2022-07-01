@@ -1,9 +1,8 @@
-import { Graph, Module } from '@modtree/entity'
+import { Graph } from '@modtree/entity'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { FlowNode } from '@modtree/types'
 import { empty, oneUp } from '@modtree/utils'
-import { Node } from 'react-flow-renderer'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
