@@ -5,6 +5,8 @@ import '@modtree/test-env/jest'
 import { User, Degree, Graph } from '@modtree/entity'
 import { routes } from '../src/init'
 import { postman } from '../src/postman'
+import fs from 'fs'
+import { join } from 'path'
 
 const dbName = 'modtree'
 const db = getSource(dbName)
@@ -104,6 +106,8 @@ describe('properties checks', () => {
 })
 
 describe('samples', () => {
+  const all: any[] = []
+
   test.each(routes)('%p %p', async (method, route, routeInfo) => {
     // unpack data
     const url = routeInfo.url
@@ -111,7 +115,22 @@ describe('samples', () => {
 
     // make request
     const res = await postman.get(url, { params })
-    console.log(res.data)
+
+    const data = {
+      method: res.config.method,
+      url: res.config.url,
+      res: res.data,
+    }
+    all.push(data)
+
+    expect(1).toEqual(1)
+  })
+
+  test('write to file', () => {
+    const rootDir = join(__dirname, '../../..')
+    const json = JSON.stringify(all, null, 2)
+    fs.writeFileSync(join(rootDir, 'references/api.json'), json)
+
     expect(1).toEqual(1)
   })
 })
