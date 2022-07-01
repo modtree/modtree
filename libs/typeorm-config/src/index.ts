@@ -99,7 +99,7 @@ function getConfig(): DataSourceOptions {
     migrations: [],
     username: '',
     password: '',
-    host: '',
+    host: 'localhost',
     database: 'mt_test',
     restoreSource: 'mod3.sql',
     synchronize: true,
