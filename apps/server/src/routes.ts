@@ -184,7 +184,7 @@ export const routes: Route[] = [
     method: 'patch',
     route: '/graph/:graphId/node',
     fn: GraphApi.updateFlowNode,
-    validators: [body('node').notEmpty()],
+    validators: [body('flowNode').notEmpty()],
   },
   {
     method: 'get',

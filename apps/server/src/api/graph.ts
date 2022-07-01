@@ -100,10 +100,10 @@ export class GraphApi {
    */
   static updateFlowNode = (api: Api) => async (req: Request) => {
     const { graphId } = req.params
-    const { node } = req.body
+    const { flowNode } = req.body
     return api.graphRepo
       .findOneById(graphId)
-      .then((graph) => api.graphRepo.updateFlowNode(graph, node))
+      .then((graph) => api.graphRepo.updateFlowNode(graph, flowNode))
       .then(flatten.graph)
   }
 
