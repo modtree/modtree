@@ -29,5 +29,8 @@ test('database gone after dropping', async () => {
   await sql
     .dropDatabase('sql_unit_test')
     .then(() => exec(`${psql} -lqt`))
-    .then((res) => expect(has(res.output)).toBe(false))
+    .then((res) => {
+      console.log(res)
+      expect(has(res.output)).toBe(false)
+    })
 })
