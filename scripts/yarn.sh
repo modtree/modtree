@@ -32,15 +32,12 @@ weiseng_inv() {
 # khang's config
 
 khang_env() {
-  cp $SRC/web/.env* $WEB
-  cp $SRC/admin.config.json .
+  ln -sf $SRC/web/.env.local $WEB/.env.local
+  ln -sf $SRC/admin.config.json ./admin.config.json
 }
 
 khang_inv() {
-  mkdir -p $SRC/web
-  mkdir -p $SRC/database
-  cp admin.config.json $SRC
-  cp $WEB/.env.local $WEB/.env.example $SRC/web
+  echo "nothing happened."
 }
 
 # fancy

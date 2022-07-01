@@ -8,7 +8,7 @@ export type DataSourceOptions = {
   type: SupportedDatabases
   rootDir: string
   restoreSource: string
-  port: number
+  port?: number
   database: string
   username?: string
   password?: string

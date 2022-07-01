@@ -1,9 +1,5 @@
-import { exec as execDefault, ExecException } from 'child_process'
-
-type Response = {
-  output: string
-  error: ExecException
-}
+import { exec as execDefault } from 'child_process'
+import { ShellResponse } from '@modtree/types'
 
 /**
  * Executes a shell command and return it as a Promise.
@@ -11,12 +7,14 @@ type Response = {
  * @param {string} cmd
  * @returns {Promise<Response>}
  */
-export function exec(cmd: string): Promise<Response> {
+export function exec(cmd: string): Promise<ShellResponse> {
   return new Promise((resolve, reject) => {
     execDefault(cmd, (_, stdout, stderr) => {
       resolve({
-        output: stdout || stderr,
-        error: new Error(`Shell error on cmd: ${cmd}`),
+        command: cmd,
+        stdout,
+        stderr,
+        error: new Error(`stderr: ${stderr}`),
       })
       reject(new Error('rejected, but calmn down and carry on shelling'))
     })

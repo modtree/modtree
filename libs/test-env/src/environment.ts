@@ -88,7 +88,7 @@ export async function teardown(db: DataSource, dropDatabase: boolean = false) {
     await db.destroy()
   }
   if (dropDatabase) {
-    return sql.dropDatabase(db.options.database.toString())
+    await sql.dropDatabase(db.options.database.toString())
   }
 }
 

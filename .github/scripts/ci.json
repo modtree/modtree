@@ -19,8 +19,10 @@
       "repo-user",
       "utils",
       "docs",
-      "server"
+      "server",
+      "sql"
     ],
+    "dont-run": [],
     "command": "yarn nx test",
     "args": {
       "ci": ["--coverage", "--runInBand"],

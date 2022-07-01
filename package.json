@@ -3,6 +3,10 @@
   "version": "0.4.0",
   "license": "MIT",
   "private": true,
+  "workspaces": [
+    "libs/*",
+    "apps/*"
+  ],
   "scripts": {
     "start": "node dist/apps/server/main.js",
     "serve": "nx run-many --target=serve --projects=web,server",

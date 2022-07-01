@@ -95,12 +95,11 @@ function getConfig(): DataSourceOptions {
   const base: DataSourceOptions = {
     type: 'postgres',
     rootDir: join(__dirname, '../../..'),
-    port: 5432,
     entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
     migrations: [],
     username: '',
     password: '',
-    host: '',
+    host: 'localhost',
     database: 'mt_test',
     restoreSource: 'mod3.sql',
     synchronize: true,

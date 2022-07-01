@@ -30,7 +30,7 @@ g.setEdge('lwilson', 'kbacon')
 test('yes', () => {
   dagre.layout(g)
   g.nodes().forEach((v) => {
-    console.log(g.node(v))
+    // console.log(g.node(v))
   })
   expect(1).toBe(1)
 })
