@@ -12,6 +12,10 @@
     "method": "delete"
   },
   {
+    "route": "/degree/:degreeId",
+    "method": "patch"
+  },
+  {
     "route": "/degree/:degreeId/get-full",
     "method": "get"
   },
@@ -34,6 +38,14 @@
   {
     "route": "/graph/:graphId/flow",
     "method": "patch"
+  },
+  {
+    "route": "/graph/:graphId/node",
+    "method": "patch"
+  },
+  {
+    "route": "/graph/:graphId/suggest",
+    "method": "get"
   },
   {
     "route": "/graph/:graphId/toggle/:moduleCode",

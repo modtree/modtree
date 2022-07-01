@@ -67,4 +67,17 @@ export class DegreeApi {
       .then((degree) => api.degreeRepo.remove(degree))
       .then(flatten.degree)
   }
+
+  /**
+   * inserts modules into a Degree
+   *
+   * @param {Api} api
+   */
+  static insertModules = (api: Api) => async (req: Request) => {
+    const id = req.params.degreeId
+    const { moduleCodes } = req.body
+    return api.degreeRepo
+      .findOneById(id)
+      .then((degree) => api.degreeRepo.insertModules(degree, moduleCodes))
+  }
 }

@@ -130,6 +130,12 @@ export const routes: Route[] = [
     fn: DegreeApi.delete,
     validators: [],
   },
+  {
+    method: 'patch',
+    route: '/degree/:degreeId',
+    fn: DegreeApi.insertModules,
+    validators: [body('moduleCodes').isArray().notEmpty()],
+  },
 
   /**
    * Graph API
@@ -173,6 +179,18 @@ export const routes: Route[] = [
     route: '/graph/:graphId/flow',
     fn: GraphApi.updateFrontendProps,
     validators: [body('flowNodes').isArray(), body('flowEdges').isArray()],
+  },
+  {
+    method: 'patch',
+    route: '/graph/:graphId/node',
+    fn: GraphApi.updateFlowNode,
+    validators: [body('flowNode').notEmpty()],
+  },
+  {
+    method: 'get',
+    route: '/graph/:graphId/suggest',
+    fn: GraphApi.suggestModules,
+    validators: [body('selectedCodes').isArray()],
   },
 
   /**
