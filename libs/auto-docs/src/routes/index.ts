@@ -1,5 +1,5 @@
 import { RouteMethod } from '@modtree/types'
-import { ModuleCondensedRoutes, ModuleRoutes } from './module'
+import { ModuleCondensedRoutes, ModuleFullRoutes, ModuleRoutes } from './module'
 
 type RouteInfo = {
   url: string
@@ -12,4 +12,8 @@ export type JestEach = [RouteMethod, string, RouteInfo]
 // make sure this is updated
 //
 // however filling in the route properties will probably be manual
-export const routes: JestEach[] = [...ModuleCondensedRoutes, ...ModuleRoutes]
+export const routes: JestEach[] = [
+  ...ModuleCondensedRoutes,
+  ...ModuleRoutes,
+  ...ModuleFullRoutes,
+]

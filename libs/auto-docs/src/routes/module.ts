@@ -50,3 +50,13 @@ export const ModuleRoutes: JestEach[] = [
     },
   ],
 ]
+
+export const ModuleFullRoutes: JestEach[] = [
+  [
+    'get',
+    '/module-full/:moduleCode',
+    {
+      url: '/module-full/EL3201',
+    },
+  ],
+]
