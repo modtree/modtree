@@ -7,11 +7,7 @@ type RouteInfo = {
 
 type JestEach = [RouteMethod, string, RouteInfo]
 
-// TODO consider referring to references/routes.json to
-// make sure this is updated
-//
-// however filling in the route properties will probably be manual
-export const routes: JestEach[] = [
+const ModuleCondensedRoutes: JestEach[] = [
   [
     'get',
     '/module-condensed/:moduleCode',
@@ -37,3 +33,9 @@ export const routes: JestEach[] = [
     },
   ],
 ]
+
+// TODO consider referring to references/routes.json to
+// make sure this is updated
+//
+// however filling in the route properties will probably be manual
+export const routes: JestEach[] = [...ModuleCondensedRoutes]
