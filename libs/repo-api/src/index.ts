@@ -7,9 +7,8 @@ import {
   IModuleCondensedRepository,
   EntityName,
   IModuleFullRepository,
-  FlowNode,
 } from '@modtree/types'
-import { empty, emptyInit } from '@modtree/utils'
+import { emptyInit } from '@modtree/utils'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
@@ -20,7 +19,6 @@ import {
   ModuleRepository,
 } from '@modtree/repo-module'
 import { getRelationNames } from '@modtree/repo-base'
-import { auto } from './init'
 
 type Relations = Record<string, boolean>
 
@@ -178,21 +176,21 @@ export class Api {
    * do run /scripts/migrate.sh to restore the database to a
    * modules-only state first.
    */
-  async autoSetup() {
+  async autoSetup(data: any) {
     // setup user and degree
-    let u1: User = await this.userRepo.initialize(auto.user1)
-    let u2: User = await this.userRepo.initialize(auto.user2)
-    let d1: Degree = await this.degreeRepo.initialize(auto.degree1)
-    let d2: Degree = await this.degreeRepo.initialize(auto.degree2)
+    let u1: User = await this.userRepo.initialize(data.user1)
+    let u2: User = await this.userRepo.initialize(data.user2)
+    let d1: Degree = await this.degreeRepo.initialize(data.degree1)
+    let d2: Degree = await this.degreeRepo.initialize(data.degree2)
 
     // setup graphs
     let g1: Graph = await this.graphRepo.initialize({
-      ...auto.graph1,
+      ...data.graph1,
       userId: u1.id,
       degreeId: d1.id,
     })
     let g2: Graph = await this.graphRepo.initialize({
-      ...auto.graph2,
+      ...data.graph2,
       userId: u2.id,
       degreeId: d2.id,
     })
@@ -222,7 +220,7 @@ export class Api {
     // fix fake nodes data
     // nodes[0] is CS1010S
     // nodes[1] is MA2001
-    const nodes = auto.nodes
+    const nodes = data.nodes
     nodes[0].data = await this.moduleRepo.findOneByOrFail({
       moduleCode: 'CS1010S',
     })
@@ -233,11 +231,11 @@ export class Api {
     // add in flow nodes and edges
     g1 = await this.graphRepo.updateFrontendProps(g1, {
       flowNodes: nodes,
-      flowEdges: auto.edges,
+      flowEdges: data.edges,
     })
     g2 = await this.graphRepo.updateFrontendProps(g2, {
       flowNodes: nodes,
-      flowEdges: auto.edges,
+      flowEdges: data.edges,
     })
 
     return {

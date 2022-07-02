@@ -1,12 +1,13 @@
 import { getSource } from '@modtree/typeorm-config'
 import { setup, Repo } from '@modtree/test-env'
-import { Api } from '../src'
+import { Api } from '@modtree/repo-api'
 import '@modtree/test-env/jest'
 import { User, Degree, Graph } from '@modtree/entity'
 import { routes } from '../src/routes'
 import { postman } from '../src/postman'
 import fs from 'fs'
 import { join } from 'path'
+import { auto } from '../src/init'
 
 const dbName = 'modtree'
 const db = getSource(dbName)
@@ -30,7 +31,7 @@ beforeAll(() =>
 
 describe('bare minimum', () => {
   test('runs with no errors', async () => {
-    const res = await api.autoSetup()
+    const res = await api.autoSetup(auto)
     u1 = res.u1
     u2 = res.u2
     d1 = res.d1
