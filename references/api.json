@@ -1,5 +1,261 @@
 [
   {
+    "method": "get",
+    "url": "http://localhost:8080/module-condensed/CS1010S",
+    "res": {
+      "id": "afde7812-8f03-497e-8e23-15302d35df54",
+      "moduleCode": "CS1010S",
+      "moduleLevel": 1010,
+      "title": "Programming Methodology"
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/modules-condensed",
+    "res": [
+      {
+        "id": "afde7812-8f03-497e-8e23-15302d35df54",
+        "moduleCode": "CS1010S",
+        "moduleLevel": 1010,
+        "title": "Programming Methodology"
+      },
+      {
+        "id": "6533bf85-ede4-4f86-a93b-c7cb3225f977",
+        "moduleCode": "MA2001",
+        "moduleLevel": 2001,
+        "title": "Linear Algebra I"
+      }
+    ]
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/search/modules-condensed/CS1010",
+    "res": [
+      {
+        "id": "a760b1fe-0503-46b9-8ff6-ef619bbe6bf4",
+        "moduleCode": "CS1010",
+        "moduleLevel": 1010,
+        "title": "Programming Methodology"
+      },
+      {
+        "id": "71b963fa-6b8d-4889-9823-48d2f19c8b79",
+        "moduleCode": "CS1010E",
+        "moduleLevel": 1010,
+        "title": "Programming Methodology"
+      },
+      {
+        "id": "e0fb37f9-387d-47cf-8ae1-5a24a5516503",
+        "moduleCode": "CS1010J",
+        "moduleLevel": 1010,
+        "title": "Programming Methodology"
+      }
+    ]
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/module/CS1010S",
+    "res": {
+      "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+      "moduleCode": "CS1010S",
+      "title": "Programming Methodology",
+      "prerequisite": "",
+      "corequisite": "",
+      "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+      "fulfillRequirements": [
+        "FIN4124",
+        "FIN4719",
+        "IT3010",
+        "ZB4171",
+        "MA3269",
+        "DSA3102",
+        "ST3247",
+        "QF2103"
+      ],
+      "prereqTree": ""
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/modules",
+    "res": [
+      {
+        "id": "3316ace0-a791-494a-b1a7-3537e090e61c",
+        "moduleCode": "ACC2707",
+        "title": "Corporate Accounting & Reporting I",
+        "prerequisite": "ACC1701/ACC1701X or EC2204.\n(or AC1002 or ACC1002X)",
+        "corequisite": "",
+        "preclusion": "ACC3601",
+        "fulfillRequirements": [
+          "ACC2708",
+          "ACC3704",
+          "ACC3713",
+          "ACC3701"
+        ],
+        "prereqTree": {
+          "or": [
+            "ACC1701",
+            "ACC1701X",
+            "EC2204",
+            "AC1002",
+            "ACC1002X"
+          ]
+        }
+      },
+      {
+        "id": "132f9c65-04df-4425-9d8b-82b39508ed2c",
+        "moduleCode": "AC5002",
+        "title": "Conservation Approaches and Philosophies",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "",
+        "fulfillRequirements": "",
+        "prereqTree": ""
+      },
+      {
+        "id": "34ba17a0-7106-4ddc-ac47-08821fdcfac4",
+        "moduleCode": "AC5010",
+        "title": "Historic Buildings Survey and Recording",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "",
+        "fulfillRequirements": "",
+        "prereqTree": ""
+      }
+    ]
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/search/modules/CS1010",
+    "res": [
+      {
+        "id": "25d0d7b2-d2d7-437c-9248-afb4e6bf624c",
+        "moduleCode": "CS1010X",
+        "title": "Programming Methodology",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "CS1010 or its equivalent, CS1010FC",
+        "fulfillRequirements": [
+          "FIN4124",
+          "FIN4719",
+          "DSA3102"
+        ],
+        "prereqTree": ""
+      },
+      {
+        "id": "246b7be8-eda1-448d-8802-77b99917c2c6",
+        "moduleCode": "CS1010E",
+        "title": "Programming Methodology",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "CS1010, CS1010J, CS1010S, CS1010X, CS1010XCP, CS1101S",
+        "fulfillRequirements": [
+          "FIN4124",
+          "FIN4719",
+          "CS1020E",
+          "EE4702",
+          "EE2024",
+          "EE2028",
+          "ESP3201",
+          "IE4213",
+          "MA3269",
+          "DSA3102",
+          "ST3247",
+          "QF2103"
+        ],
+        "prereqTree": ""
+      },
+      {
+        "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+        "moduleCode": "CS1010S",
+        "title": "Programming Methodology",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+        "fulfillRequirements": [
+          "FIN4124",
+          "FIN4719",
+          "IT3010",
+          "ZB4171",
+          "MA3269",
+          "DSA3102",
+          "ST3247",
+          "QF2103"
+        ],
+        "prereqTree": ""
+      }
+    ]
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/module-full/EL3201",
+    "res": {
+      "id": "dfa05079-0a99-47a0-95a3-1a8c25d61270",
+      "acadYear": "2021/2022",
+      "moduleCode": "EL3201",
+      "title": "Syntax",
+      "description": "Building on the knowledge of English morphology and syntax developed at levels 1000 and 2000, this module aims to give students a deeper understanding of the morphological and syntactic structure of English, in relation to crosslinguistic patterns. With an emphasis on evidence and argumentation, the module will help students understand the interconnectedness of the analyses of apparently unrelated phenomena, and develop a sense of the organic unity of language structure. This module will provide a crucial foundation for the further study of morphology and syntax, and their applications.",
+      "moduleCredit": "4",
+      "department": "English,Ling.andTheatre Studies",
+      "faculty": "Arts and Social Science",
+      "aliases": "",
+      "attributes": {
+        "mpes1": true
+      },
+      "prerequisite": "EL2101 or EL2201",
+      "corequisite": "",
+      "preclusion": "",
+      "fulfillRequirements": "",
+      "semesterData": [
+        {
+          "semester": 1,
+          "timetable": [
+            {
+              "classNo": "1",
+              "startTime": "1200",
+              "endTime": "1500",
+              "weeks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+              ],
+              "venue": "E-Learn_C",
+              "day": "Monday",
+              "lessonType": "Seminar-Style Module Class",
+              "size": 50,
+              "covidZone": "Unknown"
+            }
+          ],
+          "covidZones": [
+            "Unknown"
+          ]
+        }
+      ],
+      "prereqTree": {
+        "or": [
+          "EL2101",
+          "EL2201"
+        ]
+      },
+      "workload": [
+        0,
+        3,
+        0,
+        3,
+        4
+      ]
+    }
+  },
+  {
     "method": "post",
     "url": "http://localhost:8080/degree",
     "res": {
@@ -12,14 +268,14 @@
         "PC2031",
         "PC2174A"
       ],
-      "id": "fb5197e2-d110-4bce-ac43-cf6ba6baa5c9"
+      "id": "9669751c-2963-4b6a-8165-dc4ab359cf9d"
     }
   },
   {
     "method": "get",
-    "url": "http://localhost:8080/degree/680e1bc3-27ec-4a31-b54d-98a41e7bcb05",
+    "url": "http://localhost:8080/degree/61de1462-7107-4ad0-8c47-3c13f49f3dac",
     "res": {
-      "id": "680e1bc3-27ec-4a31-b54d-98a41e7bcb05",
+      "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
       "title": "Mathematics",
       "modules": [
         "MA1100",
@@ -36,7 +292,7 @@
   },
   {
     "method": "delete",
-    "url": "http://localhost:8080/degree/fb5197e2-d110-4bce-ac43-cf6ba6baa5c9",
+    "url": "http://localhost:8080/degree/9669751c-2963-4b6a-8165-dc4ab359cf9d",
     "res": {
       "title": "Physics",
       "modules": [
@@ -51,9 +307,9 @@
   },
   {
     "method": "patch",
-    "url": "http://localhost:8080/degree/680e1bc3-27ec-4a31-b54d-98a41e7bcb05",
+    "url": "http://localhost:8080/degree/61de1462-7107-4ad0-8c47-3c13f49f3dac",
     "res": {
-      "id": "680e1bc3-27ec-4a31-b54d-98a41e7bcb05",
+      "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
       "title": "Mathematics",
       "modules": [
         {
@@ -387,9 +643,9 @@
   },
   {
     "method": "get",
-    "url": "http://localhost:8080/degree/680e1bc3-27ec-4a31-b54d-98a41e7bcb05/get-full",
+    "url": "http://localhost:8080/degree/61de1462-7107-4ad0-8c47-3c13f49f3dac/get-full",
     "res": {
-      "id": "680e1bc3-27ec-4a31-b54d-98a41e7bcb05",
+      "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
       "title": "Mathematics",
       "modules": [
         {
@@ -726,26 +982,179 @@
     "url": "http://localhost:8080/degrees",
     "res": [
       {
-        "id": "680e1bc3-27ec-4a31-b54d-98a41e7bcb05",
-        "title": "Mathematics",
+        "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+        "title": "Computer Science",
         "modules": [
           {
-            "id": "d6a00971-ca03-47e2-a469-330ae801294a",
-            "moduleCode": "MA1100",
-            "title": "Basic Discrete Mathematics",
-            "prerequisite": "GCE ‘A’ Level or H2 Mathematics or equivalent or H2 Further Mathematics or  MA1301 or MA1301X",
+            "id": "89a13cc2-5daf-47c1-a35f-7352929615e8",
+            "moduleCode": "CS2106",
+            "title": "Introduction to Operating Systems",
+            "prerequisite": "CS2100 or EE2007 or EE2024 or EE2028",
             "corequisite": "",
-            "preclusion": "MA1100T, CS1231, CS1231S, YSC2209",
+            "preclusion": "CG2271 or EE4214. CEG students are not allowed to take this module.",
             "fulfillRequirements": [
-              "CS2102",
-              "CS3230",
-              "CS3234",
-              "CS3243",
-              "CS4236",
-              "CS5232",
-              "CS2102R",
-              "CS3236",
-              "CS2040S",
+              "CS3211",
+              "CS3220",
+              "CS3221",
+              "CS3235",
+              "CS4344",
+              "CS4223",
+              "CS5248",
+              "CS5272",
+              "CS6211",
+              "CS6280",
+              "CS5250",
+              "CS6219",
+              "EE5903"
+            ],
+            "prereqTree": {
+              "or": [
+                "CS2100",
+                "EE2007",
+                "EE2024",
+                "EE2028"
+              ]
+            }
+          },
+          {
+            "id": "1b95073c-9aa5-4269-a385-481ed62f15b8",
+            "moduleCode": "CS2103T",
+            "title": "Software Engineering",
+            "prerequisite": "For SoC students only. (CS1020 or its equivalent) or CS2020 or ((CS2030 or its equivalent) and (CS2040 or its equivalent))",
+            "corequisite": "Students have to read CS2101 Effective Communication for Computing Professionals at the same time as this module",
+            "preclusion": "CS2103, CS2113, CS2113T, IS2101 or its equivalent.",
+            "fulfillRequirements": [
+              "CP3880",
+              "CS3283",
+              "CS3203",
+              "IS4234",
+              "BT3102",
+              "IS4302"
+            ],
+            "prereqTree": {
+              "or": [
+                "CS1020",
+                "CS2020",
+                {
+                  "and": [
+                    "CS2030",
+                    "CS2040"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "22179d57-3a81-443e-ae0e-ab998829b839",
+            "moduleCode": "CS2109S",
+            "title": "Introduction to AI and Machine Learning",
+            "prerequisite": "[CS1231/S Discrete Structures or MA1100 Basic Discrete Mathematics or MA1100T Basic Discrete Mathematics (T)]\nCS1101S Programming Methodology (or equivalent)\nMA1521 Calculus for Computing (or equivalent)",
+            "corequisite": "",
+            "preclusion": "EE2211 (Intro to Machine Learning)\nDMX1401AI or its equivalents (Design Your Own Module)\nIT3011 (Introduction to Machine Learning and Applications)\nCS3243 (Introduction to Artificial Intelligence)\nCS3244 (Machine Learning)",
+            "fulfillRequirements": "",
+            "prereqTree": {
+              "or": [
+                "CS1231",
+                "CS1231S",
+                "MA1100",
+                "MA1100T",
+                "CS1101S",
+                "MA1521"
+              ]
+            }
+          },
+          {
+            "id": "1d72fe44-e564-4c61-9d56-e192952130ba",
+            "moduleCode": "CS3230",
+            "title": "Design and Analysis of Algorithms",
+            "prerequisite": "((CS2010 or its equivalent) or CS2020 or (CS2040 or its equivalent)) and (MA1100 or (CS1231 or its equivalent))",
+            "corequisite": "",
+            "preclusion": "EEE and CPE students can only take this module as a technical elective to satisfy the program requirements or UEM but not CFM/ULR-Breadth.",
+            "fulfillRequirements": [
+              "CS4231",
+              "CS4235",
+              "CS5234",
+              "CS5237",
+              "CS5238",
+              "CS6244",
+              "CS6210",
+              "CS6281",
+              "CS5330",
+              "CS4234",
+              "CS6215",
+              "CS4257",
+              "CS4268",
+              "CS6235",
+              "CS5562"
+            ],
+            "prereqTree": {
+              "and": [
+                {
+                  "or": [
+                    "CS2010",
+                    "CS2020",
+                    "CS2040"
+                  ]
+                },
+                {
+                  "or": [
+                    "MA1100",
+                    "CS1231"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "3869ccc1-0c03-4aaa-a6c6-1095f8fcdeb0",
+            "moduleCode": "CS2100",
+            "title": "Computer Organisation",
+            "prerequisite": "CS1010 or its equivalent",
+            "corequisite": "",
+            "preclusion": "CS1104 or Students from Department of ECE",
+            "fulfillRequirements": [
+              "CS2106",
+              "CS6280",
+              "CS6284",
+              "CS3210",
+              "CS3237",
+              "EE5902"
+            ],
+            "prereqTree": "CS1010"
+          },
+          {
+            "id": "f3e37399-8fd5-4b14-aaaa-2c00b36cb452",
+            "moduleCode": "CS2040S",
+            "title": "Data Structures and Algorithms",
+            "prerequisite": "(MA1100 or (CS1231 or its equivalent)) and (CS1010 or its equivalent)",
+            "corequisite": "",
+            "preclusion": "CS1020, CS1020E, CS2020, CS2010, CS2040, CS2040C",
+            "fulfillRequirements": [
+              "CS2113",
+              "CS2113T",
+              "CS5469",
+              "CS4269"
+            ],
+            "prereqTree": {
+              "and": [
+                {
+                  "or": [
+                    "MA1100",
+                    "CS1231"
+                  ]
+                },
+                "CS1010"
+              ]
+            }
+          },
+          {
+            "id": "93253d8f-48c4-4b7d-a65c-0463fcd196e6",
+            "moduleCode": "CS1231S",
+            "title": "Discrete Structures",
+            "prerequisite": "A-level Mathematics or H2 Mathematics or MA1301 or MA1301FC or MA1301X",
+            "corequisite": "",
+            "preclusion": "MA1100 and CS1231 or its equivalent",
+            "fulfillRequirements": [
               "CS5469",
               "CS4269",
               "MA2202",
@@ -759,303 +1168,2319 @@
             "prereqTree": {
               "or": [
                 "MA1301",
-                "MA1301X"
-              ]
-            }
-          },
-          {
-            "id": "f45db0f1-ee7e-4cd0-b394-6ad9f5a5f8b6",
-            "moduleCode": "MA2216",
-            "title": "Probability",
-            "prerequisite": "MA1102R or MA2002 or MA1312 or MA1507 or MA1505 or MA1505C or MA1511 or MA1521",
-            "corequisite": "",
-            "preclusion": "ST2131 (Cross-listing), ST2334, CE2407, YSC2243",
-            "fulfillRequirements": [
-              "EC3303",
-              "DSC3223",
-              "CS3244",
-              "CS4222",
-              "CS4243",
-              "CS4248",
-              "CS5228",
-              "CS5233",
-              "CS5239",
-              "CS5240",
-              "CS5246",
-              "CS5340",
-              "CS4246",
-              "CS3236",
-              "CS4226",
-              "CS5332",
-              "CS4257",
-              "CS5338",
-              "CS5422",
-              "CS5446",
-              "CS4268",
-              "IT3011",
-              "MA3227",
-              "MA3259",
-              "MA4260",
-              "MA4264",
-              "MA3238",
-              "MA3269",
-              "MA4270",
-              "MA5249",
-              "ST2132",
-              "ST2137",
-              "ST3131",
-              "ST3234",
-              "ST3235",
-              "ST3239",
-              "ST3243",
-              "ST3247",
-              "ST4237",
-              "ST3236",
-              "ST3244",
-              "DSA2101"
-            ],
-            "prereqTree": {
-              "or": [
-                "MA1102R",
-                "MA2002",
-                "MA1312",
-                "MA1507",
-                "MA1505",
-                "MA1505C",
-                "MA1511",
-                "MA1521"
-              ]
-            }
-          },
-          {
-            "id": "71d9b9e5-6e5c-4a11-a518-bd5cb16b4a6d",
-            "moduleCode": "MA2002",
-            "title": "Calculus",
-            "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
-            "corequisite": "",
-            "preclusion": "EE1401, EE1461, EG1401, EG1402, CE1402, MA1312, MA1505, MA1505C, MA1507, MA1521, CEC students, COM students who matriculated on and after 2002 (including poly 2002 intake), FOE students, YSC1216, MA1102R",
-            "fulfillRequirements": [
-              "CS4248",
-              "BT2101",
-              "BT4240",
-              "IS4242",
-              "MA2108",
-              "MA2108S",
-              "MA2213",
-              "MA2219",
-              "MA2311",
-              "MA2216",
-              "MA2104",
-              "ST2334",
-              "ST2131"
-            ],
-            "prereqTree": {
-              "or": [
-                "MA1301",
                 "MA1301FC",
                 "MA1301X"
               ]
             }
           },
           {
-            "id": "c1fc555f-eb9a-47e9-b3a0-954e9c9c8679",
-            "moduleCode": "MA2202",
-            "title": "Algebra I",
-            "prerequisite": "MA1100 or MA1100S or CS1231 or CS1231S",
-            "corequisite": "",
-            "preclusion": "MA2202S, MA3250, MQ3201,CVE students, YSC3237",
-            "fulfillRequirements": [
-              "MA3201",
-              "MA3256",
-              "MA3265",
-              "MA4263"
-            ],
-            "prereqTree": {
-              "or": [
-                "MA1100",
-                "MA1100S",
-                "CS1231",
-                "CS1231S"
-              ]
-            }
-          },
-          {
-            "id": "18723ae8-0ef1-42eb-9de4-177da4f3c16a",
-            "moduleCode": "MA2101",
-            "title": "Linear Algebra II",
-            "prerequisite": "MA1101R or MA2001 or MA1506 or MA1508 or MA1508E or MA1513",
-            "corequisite": "",
-            "preclusion": "MA2101S, MA2101H, MA2201, MA2203, MQ2201, MQ2101, MQ2203",
-            "fulfillRequirements": [
-              "MA3201",
-              "MA3218",
-              "MA4229",
-              "MA4230",
-              "MA5265",
-              "MA5266",
-              "MA3291",
-              "MA4271"
-            ],
-            "prereqTree": {
-              "or": [
-                "MA1101R",
-                "MA2001",
-                "MA1506",
-                "MA1508",
-                "MA1508E",
-                "MA1513"
-              ]
-            }
-          },
-          {
-            "id": "b6aab48b-40f6-4ce0-924f-f5e36c23bf93",
-            "moduleCode": "MA2104",
-            "title": "Multivariable Calculus",
-            "prerequisite": "MA1102R or MA2002 or MA1505 or MA1511 or MA1521",
-            "corequisite": "",
-            "preclusion": "MA1104, MA2311, MA1507, MPE students, YSC2252",
-            "fulfillRequirements": [
-              "MA3111",
-              "MA3220",
-              "MA3227",
-              "MA3229",
-              "MA3236",
-              "MA3264",
-              "QF3101",
-              "MA4269",
-              "MA4271",
-              "DSA3102",
-              "MA4269A",
-              "MA3211",
-              "MA3211S"
-            ],
-            "prereqTree": {
-              "or": [
-                "MA1102R",
-                "MA2002",
-                "MA1505",
-                "MA1511",
-                "MA1521"
-              ]
-            }
-          },
-          {
-            "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
-            "moduleCode": "MA2001",
-            "title": "Linear Algebra I",
-            "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
-            "corequisite": "",
-            "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
-            "fulfillRequirements": [
-              "BT4240",
-              "MA2101",
-              "MA2101S",
-              "MA2213",
-              "MA2214",
-              "MA2219",
-              "MA2288",
-              "MA3220",
-              "MA3252",
-              "MA3238",
-              "MA2289",
-              "DSA3102",
-              "DSA2101"
-            ],
-            "prereqTree": {
-              "or": [
-                "MA1301",
-                "MA1301FC",
-                "MA1301X"
-              ]
-            }
-          },
-          {
-            "id": "28f5fd0f-b90a-4f84-bc1c-b42957f30079",
-            "moduleCode": "MA2213",
-            "title": "Numerical Analysis I",
-            "prerequisite": "(MA1102R or MA2002 or MA1312 or MA1507 or MA1505 or MA1521 or MA1511 or EG1402 or EE1401 or EE1461) and (MA1101R or MA2001 or MA1311 or MA1508 or MA1506 or MA1508E or MA1513)",
-            "corequisite": "",
-            "preclusion": "CE2407, ME3291, CN3421, CN3411, CHE students (for breadth requirements), EVE students (for breadth requirements), DSA2102",
-            "fulfillRequirements": [
-              "MA3227",
-              "MA4230",
-              "MA4255",
-              "MA5265",
-              "MA4268",
-              "MA4270",
-              "MA4272"
-            ],
-            "prereqTree": {
-              "and": [
-                {
-                  "or": [
-                    "MA1102R",
-                    "MA2002",
-                    "MA1312",
-                    "MA1507",
-                    "MA1505",
-                    "MA1521",
-                    "MA1511",
-                    "EG1402",
-                    "EE1401",
-                    "EE1461"
-                  ]
-                },
-                {
-                  "or": [
-                    "MA1101R",
-                    "MA2001",
-                    "MA1311",
-                    "MA1508",
-                    "MA1506",
-                    "MA1508E",
-                    "MA1513"
-                  ]
-                }
-              ]
-            }
-          },
-          {
-            "id": "8c7e491e-b782-416e-8b13-ef43652e6b8a",
-            "moduleCode": "MA2219",
-            "title": "Introduction to Geometry",
-            "prerequisite": "MA1100 or MA1100T or MA1101R or MA2001 or MA1506 or MA1508 or MA1508E or MA1513 or MA1102R or MA2002 or MA1505 or MA1507 or MA1511 or CS1231 or CS1231S",
-            "corequisite": "",
-            "preclusion": "",
-            "fulfillRequirements": "",
-            "prereqTree": {
-              "or": [
-                "MA1100",
-                "MA1100T",
-                "MA1101R",
-                "MA2001",
-                "MA1506",
-                "MA1508",
-                "MA1508E",
-                "MA1513",
-                "MA1102R",
-                "MA2002",
-                "MA1505",
-                "MA1507",
-                "MA1511",
-                "CS1231",
-                "CS1231S"
-              ]
-            }
-          },
-          {
-            "id": "0f79ca9e-27ec-4e68-a342-e32f8c16dd7f",
-            "moduleCode": "NM2207",
-            "title": "Computational Media Literacy",
+            "id": "3f1528be-bb34-4cec-87fa-9b6bb61f5739",
+            "moduleCode": "CS1101S",
+            "title": "Programming Methodology",
             "prerequisite": "",
             "corequisite": "",
-            "preclusion": "CS1010 and its equivalents; CS1101 and its equivalents; NM2207Y",
+            "preclusion": "CS1010 or its equivalents",
             "fulfillRequirements": [
-              "CS3240"
+              "FIN4124",
+              "FIN4719",
+              "MA3269",
+              "CS2109S",
+              "QF2103"
             ],
             "prereqTree": ""
+          },
+          {
+            "id": "7edf9f82-c5aa-4bd0-85f1-99f984d0b0dc",
+            "moduleCode": "CS2030S",
+            "title": "Programming Methodology II",
+            "prerequisite": "CS1010 or its equivalent",
+            "corequisite": "",
+            "preclusion": "CS2030",
+            "fulfillRequirements": "",
+            "prereqTree": "CS1010"
           }
         ]
+      }
+    ]
+  },
+  {
+    "method": "post",
+    "url": "http://localhost:8080/user",
+    "res": {
+      "authZeroId": "auth0|3",
+      "displayName": "Anonymous User",
+      "username": "anon",
+      "email": "anon@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        "MA2001",
+        "PC1101"
+      ],
+      "modulesDoing": [
+        "LAJ2203"
+      ],
+      "savedDegrees": [],
+      "savedGraphs": [],
+      "id": "aa2d7679-5210-4068-a3b9-e443e7307f11",
+      "mainDegree": "",
+      "mainGraph": ""
+    }
+  },
+  {
+    "method": "post",
+    "url": "http://localhost:8080/user/auth0|1/login",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        {
+          "id": "192ac988-4a56-40e1-a92b-516592a42212",
+          "moduleCode": "IS1103",
+          "title": "Ethics in Computing",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": [
+            "IS3221",
+            "IS3240",
+            "IS4240",
+            "IS4241",
+            "IS4250",
+            "IS3251",
+            "IS4301",
+            "IS3103"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+          "moduleCode": "MA2001",
+          "title": "Linear Algebra I",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+          "corequisite": "",
+          "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+          "fulfillRequirements": [
+            "BT4240",
+            "MA2101",
+            "MA2101S",
+            "MA2213",
+            "MA2214",
+            "MA2219",
+            "MA2288",
+            "MA3220",
+            "MA3252",
+            "MA3238",
+            "MA2289",
+            "DSA3102",
+            "DSA2101"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301FC",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "2069cf99-5f11-4c77-a574-0656f0b12252",
+          "moduleCode": "DTK1234",
+          "title": "Design Thinking",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "233e17fe-d021-4713-87ad-e64130515473",
+          "moduleCode": "HSH1000",
+          "title": "The Human Condition",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "33c67589-2204-4781-887b-778caf5ecbf4",
+          "moduleCode": "HS1401S",
+          "title": "Career Compass I",
+          "prerequisite": "Undergraduates admitted to the College of Humanities and Sciences (CHS)",
+          "corequisite": "",
+          "preclusion": "HS1401A",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "3c5f61c7-6683-45d5-888b-58f864a63778",
+          "moduleCode": "HSS1000",
+          "title": "Understanding Social Complexity",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "71d9b9e5-6e5c-4a11-a518-bd5cb16b4a6d",
+          "moduleCode": "MA2002",
+          "title": "Calculus",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+          "corequisite": "",
+          "preclusion": "EE1401, EE1461, EG1401, EG1402, CE1402, MA1312, MA1505, MA1505C, MA1507, MA1521, CEC students, COM students who matriculated on and after 2002 (including poly 2002 intake), FOE students, YSC1216, MA1102R",
+          "fulfillRequirements": [
+            "CS4248",
+            "BT2101",
+            "BT4240",
+            "IS4242",
+            "MA2108",
+            "MA2108S",
+            "MA2213",
+            "MA2219",
+            "MA2311",
+            "MA2216",
+            "MA2104",
+            "ST2334",
+            "ST2131"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301FC",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "870b32c4-c5b3-48d9-8727-f1efb4272dec",
+          "moduleCode": "HSA1000",
+          "title": "Asian Interconnections",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "AA1201",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "8c7e491e-b782-416e-8b13-ef43652e6b8a",
+          "moduleCode": "MA2219",
+          "title": "Introduction to Geometry",
+          "prerequisite": "MA1100 or MA1100T or MA1101R or MA2001 or MA1506 or MA1508 or MA1508E or MA1513 or MA1102R or MA2002 or MA1505 or MA1507 or MA1511 or CS1231 or CS1231S",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": {
+            "or": [
+              "MA1100",
+              "MA1100T",
+              "MA1101R",
+              "MA2001",
+              "MA1506",
+              "MA1508",
+              "MA1508E",
+              "MA1513",
+              "MA1102R",
+              "MA2002",
+              "MA1505",
+              "MA1507",
+              "MA1511",
+              "CS1231",
+              "CS1231S"
+            ]
+          }
+        },
+        {
+          "id": "b3e24b06-1c22-4757-86ee-27aec254429d",
+          "moduleCode": "HSI1000",
+          "title": "How Science Works, Why Science Works",
+          "prerequisite": "For CHS students only.",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": [
+            "HSI2003",
+            "HSI2002",
+            "HSI2004",
+            "HSI2001",
+            "HSI2008",
+            "HSI2009"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+          "moduleCode": "CS1010S",
+          "title": "Programming Methodology",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+          "fulfillRequirements": [
+            "FIN4124",
+            "FIN4719",
+            "IT3010",
+            "ZB4171",
+            "MA3269",
+            "DSA3102",
+            "ST3247",
+            "QF2103"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "c9db022b-b81d-4bf5-b29d-831ea07ee3bd",
+          "moduleCode": "PC1432",
+          "title": "Physics IIE",
+          "prerequisite": "Students from FOE ( i.e. Computer Eng, Common Engineering, Bioengineering, Industrial & Systems Eng and Material Science & Eng) with ‘A’ level or H2 pass in Physics; or 'A' level or H2 pass in Physics; or PC1221/PC1221FC/PC1221X & PC1222/PC1222X; or PC1201",
+          "corequisite": "",
+          "preclusion": "Students majoring in Physics or students who have passed in PC1143 or PC1144 or PC1432X are not allowed to take this module.",
+          "fulfillRequirements": [
+            "BN3501",
+            "BN2402",
+            "SP2251",
+            "PC2130",
+            "PC2130B",
+            "PC2131",
+            "PC2193",
+            "PC2267",
+            "PC3232B",
+            "PC3295",
+            "PC2031"
+          ],
+          "prereqTree": {
+            "and": [
+              {
+                "or": [
+                  "PC1221",
+                  "PC1221FC",
+                  "PC1221X"
+                ]
+              },
+              {
+                "or": [
+                  "PC1222",
+                  "PC1222X",
+                  "PC1201"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "d6a00971-ca03-47e2-a469-330ae801294a",
+          "moduleCode": "MA1100",
+          "title": "Basic Discrete Mathematics",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or equivalent or H2 Further Mathematics or  MA1301 or MA1301X",
+          "corequisite": "",
+          "preclusion": "MA1100T, CS1231, CS1231S, YSC2209",
+          "fulfillRequirements": [
+            "CS2102",
+            "CS3230",
+            "CS3234",
+            "CS3243",
+            "CS4236",
+            "CS5232",
+            "CS2102R",
+            "CS3236",
+            "CS2040S",
+            "CS5469",
+            "CS4269",
+            "MA2202",
+            "MA2202S",
+            "MA2214",
+            "MA2219",
+            "MA3205",
+            "MA3219",
+            "CS2109S"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "f447d3d4-c70a-4409-963b-ea982184a86c",
+          "moduleCode": "GEA1000",
+          "title": "Quantitative Reasoning with Data",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "DSA1101, DSE1101, ST1131, students who are majoring in Data Science and Analytics, Data Science and Economics, Statistics, GER1000, GER1000E, GER1000K, GER1000W, GER1000R, GER1000S, GER1000T, GER1000P, GER1000B\nDSA1101, DSE1101 and ST1131 are one-way preclusions. It is proposed that students who have passed GEA1000 are not precluded from reading DSA1101, DSE1101 (offered only to students in the Data Science and Economics cross-disciplinary programme) or ST1131.",
+          "fulfillRequirements": [
+            "DSA2101"
+          ],
+          "prereqTree": ""
+        }
+      ],
+      "modulesDoing": [
+        {
+          "id": "5c189054-8194-4f65-abac-463d83e221d8",
+          "moduleCode": "CP2106",
+          "title": "Independent Software Development Project (Orbital)",
+          "prerequisite": "CS1010 Programming Methodology or its equivalent",
+          "corequisite": "",
+          "preclusion": "CS2103 Software Engineering or its equivalent",
+          "fulfillRequirements": "",
+          "prereqTree": "CS1010"
+        }
+      ],
+      "savedDegrees": [
+        {
+          "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+          "title": "Mathematics"
+        }
+      ],
+      "savedGraphs": [
+        {
+          "id": "a433afdd-02f1-416c-baea-c060daa005a4",
+          "flowNodes": [
+            {
+              "id": "CS1101S",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "data": {
+                "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+                "moduleCode": "CS1010S",
+                "title": "Programming Methodology",
+                "prerequisite": "",
+                "corequisite": "",
+                "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+                "fulfillRequirements": [
+                  "FIN4124",
+                  "FIN4719",
+                  "IT3010",
+                  "ZB4171",
+                  "MA3269",
+                  "DSA3102",
+                  "ST3247",
+                  "QF2103"
+                ],
+                "prereqTree": ""
+              }
+            },
+            {
+              "id": "CS2030S",
+              "position": {
+                "x": 100,
+                "y": 0
+              },
+              "data": {
+                "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+                "moduleCode": "MA2001",
+                "title": "Linear Algebra I",
+                "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+                "corequisite": "",
+                "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+                "fulfillRequirements": [
+                  "BT4240",
+                  "MA2101",
+                  "MA2101S",
+                  "MA2213",
+                  "MA2214",
+                  "MA2219",
+                  "MA2288",
+                  "MA3220",
+                  "MA3252",
+                  "MA3238",
+                  "MA2289",
+                  "DSA3102",
+                  "DSA2101"
+                ],
+                "prereqTree": {
+                  "or": [
+                    "MA1301",
+                    "MA1301FC",
+                    "MA1301X"
+                  ]
+                }
+              }
+            }
+          ],
+          "flowEdges": [
+            {
+              "id": "CS1101S-CS2030S",
+              "source": "CS1101S",
+              "target": "CS2030S"
+            }
+          ]
+        }
+      ],
+      "mainDegree": {
+        "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+        "title": "Mathematics"
+      },
+      "mainGraph": {
+        "id": "a433afdd-02f1-416c-baea-c060daa005a4",
+        "flowNodes": [
+          {
+            "id": "CS1101S",
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+              "moduleCode": "CS1010S",
+              "title": "Programming Methodology",
+              "prerequisite": "",
+              "corequisite": "",
+              "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+              "fulfillRequirements": [
+                "FIN4124",
+                "FIN4719",
+                "IT3010",
+                "ZB4171",
+                "MA3269",
+                "DSA3102",
+                "ST3247",
+                "QF2103"
+              ],
+              "prereqTree": ""
+            }
+          },
+          {
+            "id": "CS2030S",
+            "position": {
+              "x": 100,
+              "y": 0
+            },
+            "data": {
+              "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+              "moduleCode": "MA2001",
+              "title": "Linear Algebra I",
+              "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+              "corequisite": "",
+              "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+              "fulfillRequirements": [
+                "BT4240",
+                "MA2101",
+                "MA2101S",
+                "MA2213",
+                "MA2214",
+                "MA2219",
+                "MA2288",
+                "MA3220",
+                "MA3252",
+                "MA3238",
+                "MA2289",
+                "DSA3102",
+                "DSA2101"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1301",
+                  "MA1301FC",
+                  "MA1301X"
+                ]
+              }
+            }
+          }
+        ],
+        "flowEdges": [
+          {
+            "id": "CS1101S-CS2030S",
+            "source": "CS1101S",
+            "target": "CS2030S"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        "IS1103",
+        "MA2001",
+        "DTK1234",
+        "HSH1000",
+        "HS1401S",
+        "HSS1000",
+        "MA2002",
+        "HSA1000",
+        "MA2219",
+        "HSI1000",
+        "CS1010S",
+        "PC1432",
+        "MA1100",
+        "GEA1000"
+      ],
+      "modulesDoing": [
+        "CP2106"
+      ],
+      "savedDegrees": [
+        "61de1462-7107-4ad0-8c47-3c13f49f3dac"
+      ],
+      "savedGraphs": [
+        "a433afdd-02f1-416c-baea-c060daa005a4"
+      ],
+      "mainDegree": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+    }
+  },
+  {
+    "method": "delete",
+    "url": "http://localhost:8080/user/aa2d7679-5210-4068-a3b9-e443e7307f11",
+    "res": {
+      "displayName": "Anonymous User",
+      "username": "anon",
+      "email": "anon@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        {
+          "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+          "moduleCode": "MA2001",
+          "title": "Linear Algebra I",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+          "corequisite": "",
+          "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+          "fulfillRequirements": [
+            "BT4240",
+            "MA2101",
+            "MA2101S",
+            "MA2213",
+            "MA2214",
+            "MA2219",
+            "MA2288",
+            "MA3220",
+            "MA3252",
+            "MA3238",
+            "MA2289",
+            "DSA3102",
+            "DSA2101"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301FC",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "c2f59878-02c6-4caf-843d-a550f2506382",
+          "moduleCode": "PC1101",
+          "title": "Frontiers of Physics",
+          "prerequisite": "H1 Mathematics or equivalent",
+          "corequisite": "",
+          "preclusion": "Cohort AY20/21 and earlier",
+          "fulfillRequirements": [
+            "SP2251",
+            "PC2267",
+            "PC2421",
+            "PC2031",
+            "PC2032"
+          ],
+          "prereqTree": ""
+        }
+      ],
+      "modulesDoing": [
+        {
+          "id": "9ca63e2b-0bbc-4d20-9f3b-7b8fb2c8a95e",
+          "moduleCode": "LAJ2203",
+          "title": "Japanese 4",
+          "prerequisite": "Passed LAJ2202 or placement test. Student must not have read a higher level module than this module.",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        }
+      ],
+      "savedDegrees": [],
+      "savedGraphs": [],
+      "mainDegree": null,
+      "mainGraph": null
+    }
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/degree",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        "IS1103",
+        "MA2001",
+        "DTK1234",
+        "HSH1000",
+        "HS1401S",
+        "HSS1000",
+        "MA2002",
+        "HSA1000",
+        "MA2219",
+        "HSI1000",
+        "CS1010S",
+        "PC1432",
+        "MA1100",
+        "GEA1000"
+      ],
+      "modulesDoing": [
+        "CP2106"
+      ],
+      "savedDegrees": [
+        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+      ],
+      "savedGraphs": [
+        "a433afdd-02f1-416c-baea-c060daa005a4"
+      ],
+      "mainDegree": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/get-full",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        {
+          "id": "192ac988-4a56-40e1-a92b-516592a42212",
+          "moduleCode": "IS1103",
+          "title": "Ethics in Computing",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": [
+            "IS3221",
+            "IS3240",
+            "IS4240",
+            "IS4241",
+            "IS4250",
+            "IS3251",
+            "IS4301",
+            "IS3103"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+          "moduleCode": "MA2001",
+          "title": "Linear Algebra I",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+          "corequisite": "",
+          "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+          "fulfillRequirements": [
+            "BT4240",
+            "MA2101",
+            "MA2101S",
+            "MA2213",
+            "MA2214",
+            "MA2219",
+            "MA2288",
+            "MA3220",
+            "MA3252",
+            "MA3238",
+            "MA2289",
+            "DSA3102",
+            "DSA2101"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301FC",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "2069cf99-5f11-4c77-a574-0656f0b12252",
+          "moduleCode": "DTK1234",
+          "title": "Design Thinking",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "233e17fe-d021-4713-87ad-e64130515473",
+          "moduleCode": "HSH1000",
+          "title": "The Human Condition",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "33c67589-2204-4781-887b-778caf5ecbf4",
+          "moduleCode": "HS1401S",
+          "title": "Career Compass I",
+          "prerequisite": "Undergraduates admitted to the College of Humanities and Sciences (CHS)",
+          "corequisite": "",
+          "preclusion": "HS1401A",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "3c5f61c7-6683-45d5-888b-58f864a63778",
+          "moduleCode": "HSS1000",
+          "title": "Understanding Social Complexity",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "71d9b9e5-6e5c-4a11-a518-bd5cb16b4a6d",
+          "moduleCode": "MA2002",
+          "title": "Calculus",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+          "corequisite": "",
+          "preclusion": "EE1401, EE1461, EG1401, EG1402, CE1402, MA1312, MA1505, MA1505C, MA1507, MA1521, CEC students, COM students who matriculated on and after 2002 (including poly 2002 intake), FOE students, YSC1216, MA1102R",
+          "fulfillRequirements": [
+            "CS4248",
+            "BT2101",
+            "BT4240",
+            "IS4242",
+            "MA2108",
+            "MA2108S",
+            "MA2213",
+            "MA2219",
+            "MA2311",
+            "MA2216",
+            "MA2104",
+            "ST2334",
+            "ST2131"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301FC",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "870b32c4-c5b3-48d9-8727-f1efb4272dec",
+          "moduleCode": "HSA1000",
+          "title": "Asian Interconnections",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "AA1201",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "8c7e491e-b782-416e-8b13-ef43652e6b8a",
+          "moduleCode": "MA2219",
+          "title": "Introduction to Geometry",
+          "prerequisite": "MA1100 or MA1100T or MA1101R or MA2001 or MA1506 or MA1508 or MA1508E or MA1513 or MA1102R or MA2002 or MA1505 or MA1507 or MA1511 or CS1231 or CS1231S",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": {
+            "or": [
+              "MA1100",
+              "MA1100T",
+              "MA1101R",
+              "MA2001",
+              "MA1506",
+              "MA1508",
+              "MA1508E",
+              "MA1513",
+              "MA1102R",
+              "MA2002",
+              "MA1505",
+              "MA1507",
+              "MA1511",
+              "CS1231",
+              "CS1231S"
+            ]
+          }
+        },
+        {
+          "id": "b3e24b06-1c22-4757-86ee-27aec254429d",
+          "moduleCode": "HSI1000",
+          "title": "How Science Works, Why Science Works",
+          "prerequisite": "For CHS students only.",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": [
+            "HSI2003",
+            "HSI2002",
+            "HSI2004",
+            "HSI2001",
+            "HSI2008",
+            "HSI2009"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+          "moduleCode": "CS1010S",
+          "title": "Programming Methodology",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+          "fulfillRequirements": [
+            "FIN4124",
+            "FIN4719",
+            "IT3010",
+            "ZB4171",
+            "MA3269",
+            "DSA3102",
+            "ST3247",
+            "QF2103"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "c9db022b-b81d-4bf5-b29d-831ea07ee3bd",
+          "moduleCode": "PC1432",
+          "title": "Physics IIE",
+          "prerequisite": "Students from FOE ( i.e. Computer Eng, Common Engineering, Bioengineering, Industrial & Systems Eng and Material Science & Eng) with ‘A’ level or H2 pass in Physics; or 'A' level or H2 pass in Physics; or PC1221/PC1221FC/PC1221X & PC1222/PC1222X; or PC1201",
+          "corequisite": "",
+          "preclusion": "Students majoring in Physics or students who have passed in PC1143 or PC1144 or PC1432X are not allowed to take this module.",
+          "fulfillRequirements": [
+            "BN3501",
+            "BN2402",
+            "SP2251",
+            "PC2130",
+            "PC2130B",
+            "PC2131",
+            "PC2193",
+            "PC2267",
+            "PC3232B",
+            "PC3295",
+            "PC2031"
+          ],
+          "prereqTree": {
+            "and": [
+              {
+                "or": [
+                  "PC1221",
+                  "PC1221FC",
+                  "PC1221X"
+                ]
+              },
+              {
+                "or": [
+                  "PC1222",
+                  "PC1222X",
+                  "PC1201"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "d6a00971-ca03-47e2-a469-330ae801294a",
+          "moduleCode": "MA1100",
+          "title": "Basic Discrete Mathematics",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or equivalent or H2 Further Mathematics or  MA1301 or MA1301X",
+          "corequisite": "",
+          "preclusion": "MA1100T, CS1231, CS1231S, YSC2209",
+          "fulfillRequirements": [
+            "CS2102",
+            "CS3230",
+            "CS3234",
+            "CS3243",
+            "CS4236",
+            "CS5232",
+            "CS2102R",
+            "CS3236",
+            "CS2040S",
+            "CS5469",
+            "CS4269",
+            "MA2202",
+            "MA2202S",
+            "MA2214",
+            "MA2219",
+            "MA3205",
+            "MA3219",
+            "CS2109S"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "f447d3d4-c70a-4409-963b-ea982184a86c",
+          "moduleCode": "GEA1000",
+          "title": "Quantitative Reasoning with Data",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "DSA1101, DSE1101, ST1131, students who are majoring in Data Science and Analytics, Data Science and Economics, Statistics, GER1000, GER1000E, GER1000K, GER1000W, GER1000R, GER1000S, GER1000T, GER1000P, GER1000B\nDSA1101, DSE1101 and ST1131 are one-way preclusions. It is proposed that students who have passed GEA1000 are not precluded from reading DSA1101, DSE1101 (offered only to students in the Data Science and Economics cross-disciplinary programme) or ST1131.",
+          "fulfillRequirements": [
+            "DSA2101"
+          ],
+          "prereqTree": ""
+        }
+      ],
+      "modulesDoing": [
+        {
+          "id": "5c189054-8194-4f65-abac-463d83e221d8",
+          "moduleCode": "CP2106",
+          "title": "Independent Software Development Project (Orbital)",
+          "prerequisite": "CS1010 Programming Methodology or its equivalent",
+          "corequisite": "",
+          "preclusion": "CS2103 Software Engineering or its equivalent",
+          "fulfillRequirements": "",
+          "prereqTree": "CS1010"
+        }
+      ],
+      "savedDegrees": [
+        {
+          "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+          "title": "Mathematics",
+          "modules": [
+            {
+              "id": "d6a00971-ca03-47e2-a469-330ae801294a",
+              "moduleCode": "MA1100",
+              "title": "Basic Discrete Mathematics",
+              "prerequisite": "GCE ‘A’ Level or H2 Mathematics or equivalent or H2 Further Mathematics or  MA1301 or MA1301X",
+              "corequisite": "",
+              "preclusion": "MA1100T, CS1231, CS1231S, YSC2209",
+              "fulfillRequirements": [
+                "CS2102",
+                "CS3230",
+                "CS3234",
+                "CS3243",
+                "CS4236",
+                "CS5232",
+                "CS2102R",
+                "CS3236",
+                "CS2040S",
+                "CS5469",
+                "CS4269",
+                "MA2202",
+                "MA2202S",
+                "MA2214",
+                "MA2219",
+                "MA3205",
+                "MA3219",
+                "CS2109S"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1301",
+                  "MA1301X"
+                ]
+              }
+            },
+            {
+              "id": "f45db0f1-ee7e-4cd0-b394-6ad9f5a5f8b6",
+              "moduleCode": "MA2216",
+              "title": "Probability",
+              "prerequisite": "MA1102R or MA2002 or MA1312 or MA1507 or MA1505 or MA1505C or MA1511 or MA1521",
+              "corequisite": "",
+              "preclusion": "ST2131 (Cross-listing), ST2334, CE2407, YSC2243",
+              "fulfillRequirements": [
+                "EC3303",
+                "DSC3223",
+                "CS3244",
+                "CS4222",
+                "CS4243",
+                "CS4248",
+                "CS5228",
+                "CS5233",
+                "CS5239",
+                "CS5240",
+                "CS5246",
+                "CS5340",
+                "CS4246",
+                "CS3236",
+                "CS4226",
+                "CS5332",
+                "CS4257",
+                "CS5338",
+                "CS5422",
+                "CS5446",
+                "CS4268",
+                "IT3011",
+                "MA3227",
+                "MA3259",
+                "MA4260",
+                "MA4264",
+                "MA3238",
+                "MA3269",
+                "MA4270",
+                "MA5249",
+                "ST2132",
+                "ST2137",
+                "ST3131",
+                "ST3234",
+                "ST3235",
+                "ST3239",
+                "ST3243",
+                "ST3247",
+                "ST4237",
+                "ST3236",
+                "ST3244",
+                "DSA2101"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1102R",
+                  "MA2002",
+                  "MA1312",
+                  "MA1507",
+                  "MA1505",
+                  "MA1505C",
+                  "MA1511",
+                  "MA1521"
+                ]
+              }
+            },
+            {
+              "id": "71d9b9e5-6e5c-4a11-a518-bd5cb16b4a6d",
+              "moduleCode": "MA2002",
+              "title": "Calculus",
+              "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+              "corequisite": "",
+              "preclusion": "EE1401, EE1461, EG1401, EG1402, CE1402, MA1312, MA1505, MA1505C, MA1507, MA1521, CEC students, COM students who matriculated on and after 2002 (including poly 2002 intake), FOE students, YSC1216, MA1102R",
+              "fulfillRequirements": [
+                "CS4248",
+                "BT2101",
+                "BT4240",
+                "IS4242",
+                "MA2108",
+                "MA2108S",
+                "MA2213",
+                "MA2219",
+                "MA2311",
+                "MA2216",
+                "MA2104",
+                "ST2334",
+                "ST2131"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1301",
+                  "MA1301FC",
+                  "MA1301X"
+                ]
+              }
+            },
+            {
+              "id": "c1fc555f-eb9a-47e9-b3a0-954e9c9c8679",
+              "moduleCode": "MA2202",
+              "title": "Algebra I",
+              "prerequisite": "MA1100 or MA1100S or CS1231 or CS1231S",
+              "corequisite": "",
+              "preclusion": "MA2202S, MA3250, MQ3201,CVE students, YSC3237",
+              "fulfillRequirements": [
+                "MA3201",
+                "MA3256",
+                "MA3265",
+                "MA4263"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1100",
+                  "MA1100S",
+                  "CS1231",
+                  "CS1231S"
+                ]
+              }
+            },
+            {
+              "id": "18723ae8-0ef1-42eb-9de4-177da4f3c16a",
+              "moduleCode": "MA2101",
+              "title": "Linear Algebra II",
+              "prerequisite": "MA1101R or MA2001 or MA1506 or MA1508 or MA1508E or MA1513",
+              "corequisite": "",
+              "preclusion": "MA2101S, MA2101H, MA2201, MA2203, MQ2201, MQ2101, MQ2203",
+              "fulfillRequirements": [
+                "MA3201",
+                "MA3218",
+                "MA4229",
+                "MA4230",
+                "MA5265",
+                "MA5266",
+                "MA3291",
+                "MA4271"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1101R",
+                  "MA2001",
+                  "MA1506",
+                  "MA1508",
+                  "MA1508E",
+                  "MA1513"
+                ]
+              }
+            },
+            {
+              "id": "b6aab48b-40f6-4ce0-924f-f5e36c23bf93",
+              "moduleCode": "MA2104",
+              "title": "Multivariable Calculus",
+              "prerequisite": "MA1102R or MA2002 or MA1505 or MA1511 or MA1521",
+              "corequisite": "",
+              "preclusion": "MA1104, MA2311, MA1507, MPE students, YSC2252",
+              "fulfillRequirements": [
+                "MA3111",
+                "MA3220",
+                "MA3227",
+                "MA3229",
+                "MA3236",
+                "MA3264",
+                "QF3101",
+                "MA4269",
+                "MA4271",
+                "DSA3102",
+                "MA4269A",
+                "MA3211",
+                "MA3211S"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1102R",
+                  "MA2002",
+                  "MA1505",
+                  "MA1511",
+                  "MA1521"
+                ]
+              }
+            },
+            {
+              "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+              "moduleCode": "MA2001",
+              "title": "Linear Algebra I",
+              "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+              "corequisite": "",
+              "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+              "fulfillRequirements": [
+                "BT4240",
+                "MA2101",
+                "MA2101S",
+                "MA2213",
+                "MA2214",
+                "MA2219",
+                "MA2288",
+                "MA3220",
+                "MA3252",
+                "MA3238",
+                "MA2289",
+                "DSA3102",
+                "DSA2101"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1301",
+                  "MA1301FC",
+                  "MA1301X"
+                ]
+              }
+            },
+            {
+              "id": "28f5fd0f-b90a-4f84-bc1c-b42957f30079",
+              "moduleCode": "MA2213",
+              "title": "Numerical Analysis I",
+              "prerequisite": "(MA1102R or MA2002 or MA1312 or MA1507 or MA1505 or MA1521 or MA1511 or EG1402 or EE1401 or EE1461) and (MA1101R or MA2001 or MA1311 or MA1508 or MA1506 or MA1508E or MA1513)",
+              "corequisite": "",
+              "preclusion": "CE2407, ME3291, CN3421, CN3411, CHE students (for breadth requirements), EVE students (for breadth requirements), DSA2102",
+              "fulfillRequirements": [
+                "MA3227",
+                "MA4230",
+                "MA4255",
+                "MA5265",
+                "MA4268",
+                "MA4270",
+                "MA4272"
+              ],
+              "prereqTree": {
+                "and": [
+                  {
+                    "or": [
+                      "MA1102R",
+                      "MA2002",
+                      "MA1312",
+                      "MA1507",
+                      "MA1505",
+                      "MA1521",
+                      "MA1511",
+                      "EG1402",
+                      "EE1401",
+                      "EE1461"
+                    ]
+                  },
+                  {
+                    "or": [
+                      "MA1101R",
+                      "MA2001",
+                      "MA1311",
+                      "MA1508",
+                      "MA1506",
+                      "MA1508E",
+                      "MA1513"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "8c7e491e-b782-416e-8b13-ef43652e6b8a",
+              "moduleCode": "MA2219",
+              "title": "Introduction to Geometry",
+              "prerequisite": "MA1100 or MA1100T or MA1101R or MA2001 or MA1506 or MA1508 or MA1508E or MA1513 or MA1102R or MA2002 or MA1505 or MA1507 or MA1511 or CS1231 or CS1231S",
+              "corequisite": "",
+              "preclusion": "",
+              "fulfillRequirements": "",
+              "prereqTree": {
+                "or": [
+                  "MA1100",
+                  "MA1100T",
+                  "MA1101R",
+                  "MA2001",
+                  "MA1506",
+                  "MA1508",
+                  "MA1508E",
+                  "MA1513",
+                  "MA1102R",
+                  "MA2002",
+                  "MA1505",
+                  "MA1507",
+                  "MA1511",
+                  "CS1231",
+                  "CS1231S"
+                ]
+              }
+            },
+            {
+              "id": "0f79ca9e-27ec-4e68-a342-e32f8c16dd7f",
+              "moduleCode": "NM2207",
+              "title": "Computational Media Literacy",
+              "prerequisite": "",
+              "corequisite": "",
+              "preclusion": "CS1010 and its equivalents; CS1101 and its equivalents; NM2207Y",
+              "fulfillRequirements": [
+                "CS3240"
+              ],
+              "prereqTree": ""
+            }
+          ]
+        },
+        {
+          "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+          "title": "Computer Science",
+          "modules": [
+            {
+              "id": "89a13cc2-5daf-47c1-a35f-7352929615e8",
+              "moduleCode": "CS2106",
+              "title": "Introduction to Operating Systems",
+              "prerequisite": "CS2100 or EE2007 or EE2024 or EE2028",
+              "corequisite": "",
+              "preclusion": "CG2271 or EE4214. CEG students are not allowed to take this module.",
+              "fulfillRequirements": [
+                "CS3211",
+                "CS3220",
+                "CS3221",
+                "CS3235",
+                "CS4344",
+                "CS4223",
+                "CS5248",
+                "CS5272",
+                "CS6211",
+                "CS6280",
+                "CS5250",
+                "CS6219",
+                "EE5903"
+              ],
+              "prereqTree": {
+                "or": [
+                  "CS2100",
+                  "EE2007",
+                  "EE2024",
+                  "EE2028"
+                ]
+              }
+            },
+            {
+              "id": "1b95073c-9aa5-4269-a385-481ed62f15b8",
+              "moduleCode": "CS2103T",
+              "title": "Software Engineering",
+              "prerequisite": "For SoC students only. (CS1020 or its equivalent) or CS2020 or ((CS2030 or its equivalent) and (CS2040 or its equivalent))",
+              "corequisite": "Students have to read CS2101 Effective Communication for Computing Professionals at the same time as this module",
+              "preclusion": "CS2103, CS2113, CS2113T, IS2101 or its equivalent.",
+              "fulfillRequirements": [
+                "CP3880",
+                "CS3283",
+                "CS3203",
+                "IS4234",
+                "BT3102",
+                "IS4302"
+              ],
+              "prereqTree": {
+                "or": [
+                  "CS1020",
+                  "CS2020",
+                  {
+                    "and": [
+                      "CS2030",
+                      "CS2040"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "22179d57-3a81-443e-ae0e-ab998829b839",
+              "moduleCode": "CS2109S",
+              "title": "Introduction to AI and Machine Learning",
+              "prerequisite": "[CS1231/S Discrete Structures or MA1100 Basic Discrete Mathematics or MA1100T Basic Discrete Mathematics (T)]\nCS1101S Programming Methodology (or equivalent)\nMA1521 Calculus for Computing (or equivalent)",
+              "corequisite": "",
+              "preclusion": "EE2211 (Intro to Machine Learning)\nDMX1401AI or its equivalents (Design Your Own Module)\nIT3011 (Introduction to Machine Learning and Applications)\nCS3243 (Introduction to Artificial Intelligence)\nCS3244 (Machine Learning)",
+              "fulfillRequirements": "",
+              "prereqTree": {
+                "or": [
+                  "CS1231",
+                  "CS1231S",
+                  "MA1100",
+                  "MA1100T",
+                  "CS1101S",
+                  "MA1521"
+                ]
+              }
+            },
+            {
+              "id": "1d72fe44-e564-4c61-9d56-e192952130ba",
+              "moduleCode": "CS3230",
+              "title": "Design and Analysis of Algorithms",
+              "prerequisite": "((CS2010 or its equivalent) or CS2020 or (CS2040 or its equivalent)) and (MA1100 or (CS1231 or its equivalent))",
+              "corequisite": "",
+              "preclusion": "EEE and CPE students can only take this module as a technical elective to satisfy the program requirements or UEM but not CFM/ULR-Breadth.",
+              "fulfillRequirements": [
+                "CS4231",
+                "CS4235",
+                "CS5234",
+                "CS5237",
+                "CS5238",
+                "CS6244",
+                "CS6210",
+                "CS6281",
+                "CS5330",
+                "CS4234",
+                "CS6215",
+                "CS4257",
+                "CS4268",
+                "CS6235",
+                "CS5562"
+              ],
+              "prereqTree": {
+                "and": [
+                  {
+                    "or": [
+                      "CS2010",
+                      "CS2020",
+                      "CS2040"
+                    ]
+                  },
+                  {
+                    "or": [
+                      "MA1100",
+                      "CS1231"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "id": "3869ccc1-0c03-4aaa-a6c6-1095f8fcdeb0",
+              "moduleCode": "CS2100",
+              "title": "Computer Organisation",
+              "prerequisite": "CS1010 or its equivalent",
+              "corequisite": "",
+              "preclusion": "CS1104 or Students from Department of ECE",
+              "fulfillRequirements": [
+                "CS2106",
+                "CS6280",
+                "CS6284",
+                "CS3210",
+                "CS3237",
+                "EE5902"
+              ],
+              "prereqTree": "CS1010"
+            },
+            {
+              "id": "f3e37399-8fd5-4b14-aaaa-2c00b36cb452",
+              "moduleCode": "CS2040S",
+              "title": "Data Structures and Algorithms",
+              "prerequisite": "(MA1100 or (CS1231 or its equivalent)) and (CS1010 or its equivalent)",
+              "corequisite": "",
+              "preclusion": "CS1020, CS1020E, CS2020, CS2010, CS2040, CS2040C",
+              "fulfillRequirements": [
+                "CS2113",
+                "CS2113T",
+                "CS5469",
+                "CS4269"
+              ],
+              "prereqTree": {
+                "and": [
+                  {
+                    "or": [
+                      "MA1100",
+                      "CS1231"
+                    ]
+                  },
+                  "CS1010"
+                ]
+              }
+            },
+            {
+              "id": "93253d8f-48c4-4b7d-a65c-0463fcd196e6",
+              "moduleCode": "CS1231S",
+              "title": "Discrete Structures",
+              "prerequisite": "A-level Mathematics or H2 Mathematics or MA1301 or MA1301FC or MA1301X",
+              "corequisite": "",
+              "preclusion": "MA1100 and CS1231 or its equivalent",
+              "fulfillRequirements": [
+                "CS5469",
+                "CS4269",
+                "MA2202",
+                "MA2202S",
+                "MA2214",
+                "MA2219",
+                "MA3205",
+                "MA3219",
+                "CS2109S"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1301",
+                  "MA1301FC",
+                  "MA1301X"
+                ]
+              }
+            },
+            {
+              "id": "3f1528be-bb34-4cec-87fa-9b6bb61f5739",
+              "moduleCode": "CS1101S",
+              "title": "Programming Methodology",
+              "prerequisite": "",
+              "corequisite": "",
+              "preclusion": "CS1010 or its equivalents",
+              "fulfillRequirements": [
+                "FIN4124",
+                "FIN4719",
+                "MA3269",
+                "CS2109S",
+                "QF2103"
+              ],
+              "prereqTree": ""
+            },
+            {
+              "id": "7edf9f82-c5aa-4bd0-85f1-99f984d0b0dc",
+              "moduleCode": "CS2030S",
+              "title": "Programming Methodology II",
+              "prerequisite": "CS1010 or its equivalent",
+              "corequisite": "",
+              "preclusion": "CS2030",
+              "fulfillRequirements": "",
+              "prereqTree": "CS1010"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/graph",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        "IS1103",
+        "MA2001",
+        "DTK1234",
+        "HSH1000",
+        "HS1401S",
+        "HSS1000",
+        "MA2002",
+        "HSA1000",
+        "MA2219",
+        "HSI1000",
+        "CS1010S",
+        "PC1432",
+        "MA1100",
+        "GEA1000"
+      ],
+      "modulesDoing": [
+        "CP2106"
+      ],
+      "savedDegrees": [
+        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+      ],
+      "savedGraphs": [
+        "a433afdd-02f1-416c-baea-c060daa005a4",
+        "164bbb11-3c9f-4783-ab1c-c43474bf010f"
+      ],
+      "mainDegree": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+    }
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/main-degree",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        "IS1103",
+        "MA2001",
+        "DTK1234",
+        "HSH1000",
+        "HS1401S",
+        "HSS1000",
+        "MA2002",
+        "HSA1000",
+        "MA2219",
+        "HSI1000",
+        "CS1010S",
+        "PC1432",
+        "MA1100",
+        "GEA1000"
+      ],
+      "modulesDoing": [
+        "CP2106"
+      ],
+      "savedDegrees": [
+        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+      ],
+      "savedGraphs": [
+        "164bbb11-3c9f-4783-ab1c-c43474bf010f",
+        "a433afdd-02f1-416c-baea-c060daa005a4"
+      ],
+      "mainDegree": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+    }
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/main-graph",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        "IS1103",
+        "MA2001",
+        "DTK1234",
+        "HSH1000",
+        "HS1401S",
+        "HSS1000",
+        "MA2002",
+        "HSA1000",
+        "MA2219",
+        "HSI1000",
+        "CS1010S",
+        "PC1432",
+        "MA1100",
+        "GEA1000"
+      ],
+      "modulesDoing": [
+        "CP2106"
+      ],
+      "savedDegrees": [
+        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+      ],
+      "savedGraphs": [
+        "164bbb11-3c9f-4783-ab1c-c43474bf010f",
+        "a433afdd-02f1-416c-baea-c060daa005a4"
+      ],
+      "mainDegree": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+      "mainGraph": "164bbb11-3c9f-4783-ab1c-c43474bf010f"
+    }
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/module",
+    "res": {
+      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "authZeroId": "auth0|1",
+      "displayName": "Nguyen Vu Khang",
+      "username": "nguyenvukhang",
+      "email": "khang@modtree.com",
+      "matriculationYear": 2021,
+      "graduationYear": 2024,
+      "graduationSemester": 2,
+      "modulesDone": [
+        {
+          "id": "192ac988-4a56-40e1-a92b-516592a42212",
+          "moduleCode": "IS1103",
+          "title": "Ethics in Computing",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": [
+            "IS3221",
+            "IS3240",
+            "IS4240",
+            "IS4241",
+            "IS4250",
+            "IS3251",
+            "IS4301",
+            "IS3103"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+          "moduleCode": "MA2001",
+          "title": "Linear Algebra I",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+          "corequisite": "",
+          "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+          "fulfillRequirements": [
+            "BT4240",
+            "MA2101",
+            "MA2101S",
+            "MA2213",
+            "MA2214",
+            "MA2219",
+            "MA2288",
+            "MA3220",
+            "MA3252",
+            "MA3238",
+            "MA2289",
+            "DSA3102",
+            "DSA2101"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301FC",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "2069cf99-5f11-4c77-a574-0656f0b12252",
+          "moduleCode": "DTK1234",
+          "title": "Design Thinking",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "233e17fe-d021-4713-87ad-e64130515473",
+          "moduleCode": "HSH1000",
+          "title": "The Human Condition",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "33c67589-2204-4781-887b-778caf5ecbf4",
+          "moduleCode": "HS1401S",
+          "title": "Career Compass I",
+          "prerequisite": "Undergraduates admitted to the College of Humanities and Sciences (CHS)",
+          "corequisite": "",
+          "preclusion": "HS1401A",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "3c5f61c7-6683-45d5-888b-58f864a63778",
+          "moduleCode": "HSS1000",
+          "title": "Understanding Social Complexity",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "71d9b9e5-6e5c-4a11-a518-bd5cb16b4a6d",
+          "moduleCode": "MA2002",
+          "title": "Calculus",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+          "corequisite": "",
+          "preclusion": "EE1401, EE1461, EG1401, EG1402, CE1402, MA1312, MA1505, MA1505C, MA1507, MA1521, CEC students, COM students who matriculated on and after 2002 (including poly 2002 intake), FOE students, YSC1216, MA1102R",
+          "fulfillRequirements": [
+            "CS4248",
+            "BT2101",
+            "BT4240",
+            "IS4242",
+            "MA2108",
+            "MA2108S",
+            "MA2213",
+            "MA2219",
+            "MA2311",
+            "MA2216",
+            "MA2104",
+            "ST2334",
+            "ST2131"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301FC",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "870b32c4-c5b3-48d9-8727-f1efb4272dec",
+          "moduleCode": "HSA1000",
+          "title": "Asian Interconnections",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "AA1201",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        },
+        {
+          "id": "8c7e491e-b782-416e-8b13-ef43652e6b8a",
+          "moduleCode": "MA2219",
+          "title": "Introduction to Geometry",
+          "prerequisite": "MA1100 or MA1100T or MA1101R or MA2001 or MA1506 or MA1508 or MA1508E or MA1513 or MA1102R or MA2002 or MA1505 or MA1507 or MA1511 or CS1231 or CS1231S",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": {
+            "or": [
+              "MA1100",
+              "MA1100T",
+              "MA1101R",
+              "MA2001",
+              "MA1506",
+              "MA1508",
+              "MA1508E",
+              "MA1513",
+              "MA1102R",
+              "MA2002",
+              "MA1505",
+              "MA1507",
+              "MA1511",
+              "CS1231",
+              "CS1231S"
+            ]
+          }
+        },
+        {
+          "id": "b3e24b06-1c22-4757-86ee-27aec254429d",
+          "moduleCode": "HSI1000",
+          "title": "How Science Works, Why Science Works",
+          "prerequisite": "For CHS students only.",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": [
+            "HSI2003",
+            "HSI2002",
+            "HSI2004",
+            "HSI2001",
+            "HSI2008",
+            "HSI2009"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+          "moduleCode": "CS1010S",
+          "title": "Programming Methodology",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+          "fulfillRequirements": [
+            "FIN4124",
+            "FIN4719",
+            "IT3010",
+            "ZB4171",
+            "MA3269",
+            "DSA3102",
+            "ST3247",
+            "QF2103"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "c9db022b-b81d-4bf5-b29d-831ea07ee3bd",
+          "moduleCode": "PC1432",
+          "title": "Physics IIE",
+          "prerequisite": "Students from FOE ( i.e. Computer Eng, Common Engineering, Bioengineering, Industrial & Systems Eng and Material Science & Eng) with ‘A’ level or H2 pass in Physics; or 'A' level or H2 pass in Physics; or PC1221/PC1221FC/PC1221X & PC1222/PC1222X; or PC1201",
+          "corequisite": "",
+          "preclusion": "Students majoring in Physics or students who have passed in PC1143 or PC1144 or PC1432X are not allowed to take this module.",
+          "fulfillRequirements": [
+            "BN3501",
+            "BN2402",
+            "SP2251",
+            "PC2130",
+            "PC2130B",
+            "PC2131",
+            "PC2193",
+            "PC2267",
+            "PC3232B",
+            "PC3295",
+            "PC2031"
+          ],
+          "prereqTree": {
+            "and": [
+              {
+                "or": [
+                  "PC1221",
+                  "PC1221FC",
+                  "PC1221X"
+                ]
+              },
+              {
+                "or": [
+                  "PC1222",
+                  "PC1222X",
+                  "PC1201"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "d6a00971-ca03-47e2-a469-330ae801294a",
+          "moduleCode": "MA1100",
+          "title": "Basic Discrete Mathematics",
+          "prerequisite": "GCE ‘A’ Level or H2 Mathematics or equivalent or H2 Further Mathematics or  MA1301 or MA1301X",
+          "corequisite": "",
+          "preclusion": "MA1100T, CS1231, CS1231S, YSC2209",
+          "fulfillRequirements": [
+            "CS2102",
+            "CS3230",
+            "CS3234",
+            "CS3243",
+            "CS4236",
+            "CS5232",
+            "CS2102R",
+            "CS3236",
+            "CS2040S",
+            "CS5469",
+            "CS4269",
+            "MA2202",
+            "MA2202S",
+            "MA2214",
+            "MA2219",
+            "MA3205",
+            "MA3219",
+            "CS2109S"
+          ],
+          "prereqTree": {
+            "or": [
+              "MA1301",
+              "MA1301X"
+            ]
+          }
+        },
+        {
+          "id": "f447d3d4-c70a-4409-963b-ea982184a86c",
+          "moduleCode": "GEA1000",
+          "title": "Quantitative Reasoning with Data",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "DSA1101, DSE1101, ST1131, students who are majoring in Data Science and Analytics, Data Science and Economics, Statistics, GER1000, GER1000E, GER1000K, GER1000W, GER1000R, GER1000S, GER1000T, GER1000P, GER1000B\nDSA1101, DSE1101 and ST1131 are one-way preclusions. It is proposed that students who have passed GEA1000 are not precluded from reading DSA1101, DSE1101 (offered only to students in the Data Science and Economics cross-disciplinary programme) or ST1131.",
+          "fulfillRequirements": [
+            "DSA2101"
+          ],
+          "prereqTree": ""
+        },
+        {
+          "id": "36cb1f7a-1938-408b-a55c-c1fbab7b988d",
+          "moduleCode": "AC5001",
+          "title": "Architectural History of Singapore",
+          "prerequisite": "",
+          "corequisite": "",
+          "preclusion": "",
+          "fulfillRequirements": "",
+          "prereqTree": ""
+        }
+      ],
+      "modulesDoing": [
+        {
+          "id": "5c189054-8194-4f65-abac-463d83e221d8",
+          "moduleCode": "CP2106",
+          "title": "Independent Software Development Project (Orbital)",
+          "prerequisite": "CS1010 Programming Methodology or its equivalent",
+          "corequisite": "",
+          "preclusion": "CS2103 Software Engineering or its equivalent",
+          "fulfillRequirements": "",
+          "prereqTree": "CS1010"
+        }
+      ],
+      "savedDegrees": [
+        {
+          "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+          "title": "Mathematics"
+        },
+        {
+          "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+          "title": "Computer Science"
+        }
+      ],
+      "savedGraphs": [
+        {
+          "id": "164bbb11-3c9f-4783-ab1c-c43474bf010f",
+          "flowNodes": [
+            {
+              "id": "CS1101S",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "data": {
+                "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+                "moduleCode": "CS1010S",
+                "title": "Programming Methodology",
+                "prerequisite": "",
+                "corequisite": "",
+                "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+                "fulfillRequirements": [
+                  "FIN4124",
+                  "FIN4719",
+                  "IT3010",
+                  "ZB4171",
+                  "MA3269",
+                  "DSA3102",
+                  "ST3247",
+                  "QF2103"
+                ],
+                "prereqTree": ""
+              }
+            },
+            {
+              "id": "CS2030S",
+              "position": {
+                "x": 100,
+                "y": 0
+              },
+              "data": {
+                "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+                "moduleCode": "MA2001",
+                "title": "Linear Algebra I",
+                "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+                "corequisite": "",
+                "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+                "fulfillRequirements": [
+                  "BT4240",
+                  "MA2101",
+                  "MA2101S",
+                  "MA2213",
+                  "MA2214",
+                  "MA2219",
+                  "MA2288",
+                  "MA3220",
+                  "MA3252",
+                  "MA3238",
+                  "MA2289",
+                  "DSA3102",
+                  "DSA2101"
+                ],
+                "prereqTree": {
+                  "or": [
+                    "MA1301",
+                    "MA1301FC",
+                    "MA1301X"
+                  ]
+                }
+              }
+            }
+          ],
+          "flowEdges": [
+            {
+              "id": "CS1101S-CS2030S",
+              "source": "CS1101S",
+              "target": "CS2030S"
+            }
+          ]
+        },
+        {
+          "id": "a433afdd-02f1-416c-baea-c060daa005a4",
+          "flowNodes": [
+            {
+              "id": "CS1101S",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "data": {
+                "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+                "moduleCode": "CS1010S",
+                "title": "Programming Methodology",
+                "prerequisite": "",
+                "corequisite": "",
+                "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+                "fulfillRequirements": [
+                  "FIN4124",
+                  "FIN4719",
+                  "IT3010",
+                  "ZB4171",
+                  "MA3269",
+                  "DSA3102",
+                  "ST3247",
+                  "QF2103"
+                ],
+                "prereqTree": ""
+              }
+            },
+            {
+              "id": "CS2030S",
+              "position": {
+                "x": 100,
+                "y": 0
+              },
+              "data": {
+                "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+                "moduleCode": "MA2001",
+                "title": "Linear Algebra I",
+                "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+                "corequisite": "",
+                "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+                "fulfillRequirements": [
+                  "BT4240",
+                  "MA2101",
+                  "MA2101S",
+                  "MA2213",
+                  "MA2214",
+                  "MA2219",
+                  "MA2288",
+                  "MA3220",
+                  "MA3252",
+                  "MA3238",
+                  "MA2289",
+                  "DSA3102",
+                  "DSA2101"
+                ],
+                "prereqTree": {
+                  "or": [
+                    "MA1301",
+                    "MA1301FC",
+                    "MA1301X"
+                  ]
+                }
+              }
+            }
+          ],
+          "flowEdges": [
+            {
+              "id": "CS1101S-CS2030S",
+              "source": "CS1101S",
+              "target": "CS2030S"
+            }
+          ]
+        }
+      ],
+      "mainDegree": {
+        "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+        "title": "Computer Science"
+      },
+      "mainGraph": {
+        "id": "164bbb11-3c9f-4783-ab1c-c43474bf010f",
+        "flowNodes": [
+          {
+            "id": "CS1101S",
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+              "moduleCode": "CS1010S",
+              "title": "Programming Methodology",
+              "prerequisite": "",
+              "corequisite": "",
+              "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+              "fulfillRequirements": [
+                "FIN4124",
+                "FIN4719",
+                "IT3010",
+                "ZB4171",
+                "MA3269",
+                "DSA3102",
+                "ST3247",
+                "QF2103"
+              ],
+              "prereqTree": ""
+            }
+          },
+          {
+            "id": "CS2030S",
+            "position": {
+              "x": 100,
+              "y": 0
+            },
+            "data": {
+              "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+              "moduleCode": "MA2001",
+              "title": "Linear Algebra I",
+              "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+              "corequisite": "",
+              "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+              "fulfillRequirements": [
+                "BT4240",
+                "MA2101",
+                "MA2101S",
+                "MA2213",
+                "MA2214",
+                "MA2219",
+                "MA2288",
+                "MA3220",
+                "MA3252",
+                "MA3238",
+                "MA2289",
+                "DSA3102",
+                "DSA2101"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1301",
+                  "MA1301FC",
+                  "MA1301X"
+                ]
+              }
+            }
+          }
+        ],
+        "flowEdges": [
+          {
+            "id": "CS1101S-CS2030S",
+            "source": "CS1101S",
+            "target": "CS2030S"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/users",
+    "res": [
+      {
+        "id": "5176d575-72e7-42f9-bd42-7a31edceb08f",
+        "authZeroId": "auth0|2",
+        "displayName": "Tan Wei Seng",
+        "username": "tanweiseng",
+        "email": "weiseng@modtree.com",
+        "matriculationYear": 2021,
+        "graduationYear": 2024,
+        "graduationSemester": 2,
+        "modulesDone": [
+          "CS2100",
+          "CS2040S",
+          "CS1231S",
+          "CS2030S",
+          "EL1101E",
+          "ES2660",
+          "IS1103",
+          "LAJ2203",
+          "MA1521",
+          "MA2101",
+          "MA2001",
+          "PC1201",
+          "ST1131",
+          "CS2106"
+        ],
+        "modulesDoing": [
+          "CP2106"
+        ],
+        "savedDegrees": [
+          "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+        ],
+        "savedGraphs": [
+          "164bbb11-3c9f-4783-ab1c-c43474bf010f"
+        ],
+        "mainDegree": "",
+        "mainGraph": ""
+      },
+      {
+        "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+        "authZeroId": "auth0|1",
+        "displayName": "Nguyen Vu Khang",
+        "username": "nguyenvukhang",
+        "email": "khang@modtree.com",
+        "matriculationYear": 2021,
+        "graduationYear": 2024,
+        "graduationSemester": 2,
+        "modulesDone": [
+          "CS1010S",
+          "AC5001",
+          "DTK1234",
+          "GEA1000",
+          "HSA1000",
+          "HS1401S",
+          "HSH1000",
+          "HSS1000",
+          "HSI1000",
+          "IS1103",
+          "MA1100",
+          "MA2002",
+          "MA2001",
+          "MA2219",
+          "PC1432"
+        ],
+        "modulesDoing": [
+          "CP2106"
+        ],
+        "savedDegrees": [
+          "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+          "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+        ],
+        "savedGraphs": [
+          "164bbb11-3c9f-4783-ab1c-c43474bf010f",
+          "a433afdd-02f1-416c-baea-c060daa005a4"
+        ],
+        "mainDegree": "",
+        "mainGraph": ""
       }
     ]
   }

@@ -1,5 +1,6 @@
 import { RouteMethod } from '@modtree/types'
 import { DegreeRoutes } from './degree'
+import { UserRoutes } from './user'
 import { ModuleCondensedRoutes, ModuleFullRoutes, ModuleRoutes } from './module'
 
 export type Route = {
@@ -39,4 +40,5 @@ export const routes: Route[] = [
   ...ModuleRoutes,
   ...ModuleFullRoutes,
   ...DegreeRoutes,
+  ...UserRoutes,
 ]

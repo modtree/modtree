@@ -8,6 +8,7 @@ type Init = {
   degree3: InitProps['Degree']
   user1: InitProps['User']
   user2: InitProps['User']
+  user3: InitProps['User']
   graph1: InitProps['Graph']
   graph2: InitProps['Graph']
   nodes: FlowNode[]
@@ -110,6 +111,18 @@ export const init: Init = {
       'LAJ2203',
     ],
     modulesDoing: ['CP2106'],
+    matriculationYear: 2021,
+    graduationYear: 2024,
+    graduationSemester: 2,
+  },
+
+  user3: {
+    authZeroId: 'auth0|3',
+    displayName: 'Anonymous User',
+    username: 'anon',
+    email: 'anon@modtree.com',
+    modulesDone: ['MA2001', 'PC1101'],
+    modulesDoing: ['LAJ2203'],
     matriculationYear: 2021,
     graduationYear: 2024,
     graduationSemester: 2,
