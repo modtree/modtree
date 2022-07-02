@@ -8,6 +8,7 @@ import { JestEach, routes } from '../src/routes'
 import { postman } from '../src/postman'
 import fs from 'fs'
 import { join } from 'path'
+import { RouteMethod } from '@modtree/types'
 
 const dbName = 'modtree'
 const db = getSource(dbName)
@@ -146,11 +147,32 @@ describe('samples', () => {
       url = url.replaceAll(':userId', u1.id)
       url = url.replaceAll(':degreeId', d1.id)
       url = url.replaceAll(':graphId', g1.id)
+      url = url.replaceAll(':authZeroId', u1.authZeroId)
     }
 
     // ---- fill in query params if required
-    if (params && params.hasOwnProperty('degreeIds')) {
-      params['degreeIds'].push(d1.id)
+    if (params) {
+      if (params.hasOwnProperty('degreeIds')) {
+        // used in:
+        // - degree list
+        // - user add degree
+        params['degreeIds'].push(d2.id)
+      }
+      if (params.hasOwnProperty('graphIds')) {
+        // used in:
+        // - user add graph
+        params['graphIds'].push(g2.id)
+      }
+      if (params.hasOwnProperty('degreeId')) {
+        // used in:
+        // - user set main degree
+        params['degreeId'] = d2.id
+      }
+      if (params.hasOwnProperty('graphId')) {
+        // used in:
+        // - user set main graph
+        params['graphId'] = g2.id
+      }
     }
 
     // make request
@@ -175,8 +197,8 @@ describe('samples', () => {
 
     all.push(data)
 
-    // save ID if POST
-    if (method === 'post') {
+    // save ID if POST, and the route is
+    if (isEntityCreation(method, route)) {
       id = response.id
     }
 
@@ -191,3 +213,12 @@ describe('samples', () => {
     expect(1).toEqual(1)
   })
 })
+
+function isEntityCreation(method: RouteMethod, route: string) {
+  return (
+    // POST request
+    method === 'post' &&
+    // path contains 1 slash (i.e. POST /entity)
+    route.split('/').length === 2
+  )
+}
