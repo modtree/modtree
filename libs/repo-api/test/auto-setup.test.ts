@@ -114,7 +114,7 @@ describe('samples', () => {
     const params = routeInfo.params
 
     // make request
-    const res = await postman.get(url, { params })
+    const res = await postman.send(method, url, { params })
 
     const data = {
       method: res.config.method,
