@@ -19,29 +19,10 @@ export enum ModuleStatus {
   DOING = 'doing',
 }
 
-/**
- * BaseRepository, but for now only in types
- * it is a interface that will be extended to form the final Repositories of modtree
- */
-interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
-  initialize(props: Partial<InitProps>): Promise<Entity>
+export interface IGraphRepository extends Repository<IGraph> {
+  initialize(props: InitProps['Graph']): Promise<IGraph>
   deleteAll(): Promise<DeleteResult>
-  findOneById: FindByKey<Entity>
-}
-
-/**
- * to shorten the lines below
- */
-type EGraph = IBaseRepo<IGraph, InitProps['Graph']>
-type EUser = IBaseRepo<IUser, InitProps['User']>
-type EDegree = IBaseRepo<IDegree, InitProps['Degree']>
-type EModule = IBaseRepo<IModule, InitProps['Module']>
-type EModuleCondensed = IBaseRepo<
-  IModuleCondensed,
-  InitProps['ModuleCondensed']
->
-
-export interface IGraphRepository extends EGraph {
+  findOneById: FindByKey<IGraph>
   toggleModule(graph: IGraph, moduleCode: string): Promise<IGraph>
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<IGraph>
   findManyByUserAndDegreeId(
@@ -58,7 +39,10 @@ export interface IGraphRepository extends EGraph {
   findByIds(id: string[]): Promise<IGraph[]>
 }
 
-export interface IUserRepository extends EUser {
+export interface IUserRepository extends Repository<IUser> {
+  initialize(props: InitProps['User']): Promise<IUser>
+  findOneById: FindByKey<IUser>
+  deleteAll(): Promise<DeleteResult>
   canTakeModule(user: IUser, moduleCode: string): Promise<boolean>
   findOneByUsername(username: string): Promise<IUser>
   findOneByAuthZeroId(authZeroId: string): Promise<IUser>
@@ -81,13 +65,19 @@ export interface IUserRepository extends EUser {
   insertGraphs(user: IUser, graphIds: string[]): Promise<IUser>
 }
 
-export interface IDegreeRepository extends EDegree {
+export interface IDegreeRepository extends Repository<IDegree> {
+  initialize(props: InitProps['Degree']): Promise<IDegree>
+  findOneById: FindByKey<IDegree>
+  deleteAll(): Promise<DeleteResult>
   insertModules(degree: IDegree, moduleCodes: string[]): Promise<IDegree>
   findOneByTitle(title: string): Promise<IDegree>
   findByIds(id: string[]): Promise<IDegree[]>
 }
 
-export interface IModuleRepository extends EModule {
+export interface IModuleRepository extends Repository<IModule> {
+  initialize(props: InitProps['Module']): Promise<IModule>
+  findOneById: FindByKey<IModule>
+  deleteAll(): Promise<DeleteResult>
   getCodes(): Promise<string[]>
   findByCodes(moduleCodes: string[]): Promise<IModule[]>
   canTakeModule(
@@ -114,7 +104,11 @@ export interface IModuleRepository extends EModule {
   ): Promise<string[]>
 }
 
-export interface IModuleCondensedRepository extends EModuleCondensed {
+export interface IModuleCondensedRepository
+  extends Repository<IModuleCondensed> {
+  initialize(props: InitProps['ModuleCondensed']): Promise<IModuleCondensed>
+  findOneById: FindByKey<IModuleCondensed>
+  deleteAll(): Promise<DeleteResult>
   getCodes(): Promise<string[]>
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
 }

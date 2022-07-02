@@ -7,13 +7,6 @@ export const emptyInit: InitProps = {
    */
   User: {
     authZeroId: '',
-    displayName: '',
-    username: '',
-    modulesDone: [],
-    modulesDoing: [],
-    matriculationYear: 0,
-    graduationYear: 0,
-    graduationSemester: 0,
     email: '',
   },
 

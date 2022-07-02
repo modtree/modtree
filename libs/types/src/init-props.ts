@@ -5,15 +5,20 @@ export type InitProps = {
    * props to initialize a User
    */
   User: {
+    /**
+     * required
+     * (immediately available after signing up with auth0)
+     */
     authZeroId: string
-    displayName: string
-    username: string
-    modulesDone: string[]
-    modulesDoing: string[]
-    matriculationYear: number
-    graduationYear: number
-    graduationSemester: number
     email: string
+    /** optional */
+    modulesDone?: string[]
+    modulesDoing?: string[]
+    displayName?: string
+    username?: string
+    matriculationYear?: number
+    graduationYear?: number
+    graduationSemester?: number
   }
 
   /**
