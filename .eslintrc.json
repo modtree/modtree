@@ -3,6 +3,7 @@
   "plugins": ["@nrwl/nx"],
   "overrides": [
     {
+      "plugins": ["jsdoc"],
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "no-unused-vars": ["error", { "argsIgnorePattern": "^_$" }],

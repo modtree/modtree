@@ -8,7 +8,20 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "rules": {}
+      "rules": {
+        "jsdoc/require-jsdoc": [
+          "warn",
+          {
+            "contexts": ["TSInterfaceDeclaration", "TSMethodSignature"],
+            "publicOnly": { "ancestorsOnly": true },
+            "require": {
+              "ClassDeclaration": true,
+              "ClassExpression": true,
+              "MethodDefinition": true
+            }
+          }
+        ]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
