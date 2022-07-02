@@ -9,7 +9,6 @@ export const ModuleCondensedRoutes: Route[] = [
   {
     route: '/modules-condensed',
     method: 'get',
-    url: '/modules-condensed',
     params: {
       moduleCodes: ['CS1010S', 'MA2001'],
     },
@@ -30,7 +29,6 @@ export const ModuleRoutes: Route[] = [
   {
     route: '/modules',
     method: 'get',
-    url: '/modules',
   },
   {
     route: '/search/modules/:searchQuery',

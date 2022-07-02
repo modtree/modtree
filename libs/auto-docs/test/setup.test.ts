@@ -121,7 +121,7 @@ describe('samples', () => {
 
   test.each(tests)('%p %p', async (method, route, routeInfo) => {
     // unpack data
-    const url = routeInfo.url
+    const url = routeInfo.url || route
     const params = routeInfo.params
 
     // fill in path params if required

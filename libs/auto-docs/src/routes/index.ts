@@ -4,7 +4,7 @@ import { ModuleCondensedRoutes, ModuleFullRoutes, ModuleRoutes } from './module'
 export type Route = {
   route: string
   method: RouteMethod
-  url: string
+  url?: string
   params?: Record<string, any>
 }
 
@@ -13,7 +13,7 @@ export type JestEach = [
   RouteMethod,
   string,
   {
-    url: string
+    url?: string
     params?: Record<string, any>
   }
 ]
