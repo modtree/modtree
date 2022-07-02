@@ -230,7 +230,10 @@ export interface IDegreeRepository extends Repository<IDegree> {
    */
   findOneByTitle(title: string): Promise<IDegree>
   /**
+   * finds some degrees by ids
    *
+   * @param id
+   * @returns degrees
    */
   findByIds(id: string[]): Promise<IDegree[]>
 }
@@ -260,15 +263,26 @@ export interface IModuleRepository extends Repository<IModule> {
    */
   deleteAll(): Promise<DeleteResult>
   /**
+   * lists all the module codes of modules in database
    *
+   * @returns module codes
    */
   getCodes(): Promise<string[]>
   /**
+   * finds some modules by codes
    *
+   * @param moduleCodes
+   * @returns module
    */
   findByCodes(moduleCodes: string[]): Promise<IModule[]>
   /**
+   * checks if a module is take-able given the modules
+   * that are already done/already doing
    *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param moduleCode
+   * @returns a boolean
    */
   canTakeModule(
     modulesDone: string[],
@@ -276,11 +290,19 @@ export interface IModuleRepository extends Repository<IModule> {
     moduleCode: string
   ): Promise<boolean>
   /**
+   * get a list of post-requisites
    *
+   * @param moduleCodes
+   * @returns module codes
    */
   getPostReqs(moduleCodes: string[]): Promise<string[]>
   /**
+   * get a list of eligible modules
    *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param modulesSelected
+   * @returns module codes
    */
   getEligibleModules(
     modulesDone: string[],
@@ -288,7 +310,13 @@ export interface IModuleRepository extends Repository<IModule> {
     modulesSelected: string[]
   ): Promise<string[]>
   /**
+   * get a list of suggested modules
    *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param modulesSelected
+   * @param requiredModules
+   * @returns module codes
    */
   getSuggestedModules(
     modulesDone: string[],
@@ -297,7 +325,12 @@ export interface IModuleRepository extends Repository<IModule> {
     requiredModules: string[]
   ): Promise<string[]>
   /**
+   * get a list of unlocked modules
    *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param moduleCode
+   * @returns module codes
    */
   getUnlockedModules(
     modulesDone: string[],
@@ -332,7 +365,7 @@ export interface IModuleCondensedRepository
    */
   deleteAll(): Promise<DeleteResult>
   /**
-   * lists all the module codes of condensed modules
+   * lists all the module codes of condensed modules in database
    *
    * @returns module codes
    */
