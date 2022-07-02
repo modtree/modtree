@@ -108,11 +108,19 @@ describe('properties checks', () => {
 
 describe('samples', () => {
   const all: any[] = []
+  const userId = u1.id
+  const degreeId = d1.id
+  const graphId = g1.id
 
   test.each(routes)('%p %p', async (method, route, routeInfo) => {
     // unpack data
     const url = routeInfo.url
     const params = routeInfo.params
+
+    // fill in path params if required
+    url.replaceAll(':userId', userId)
+    url.replaceAll(':degreeId', degreeId)
+    url.replaceAll(':graphId', graphId)
 
     // make request
     const res = await postman.send(method, url, { params })
