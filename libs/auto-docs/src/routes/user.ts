@@ -56,6 +56,9 @@ export const UserRoutes: Route[] = [
     route: '/user/:userId/module',
     method: 'patch',
     params: {
+      /**
+       * needs to not be in user1
+       */
       moduleCodes: ['AC5001'],
       status: ModuleStatus.DONE,
     },

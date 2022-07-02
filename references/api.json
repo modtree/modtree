@@ -268,14 +268,14 @@
         "PC2031",
         "PC2174A"
       ],
-      "id": "9669751c-2963-4b6a-8165-dc4ab359cf9d"
+      "id": "ce591084-2c86-447e-9810-8598cdaafc4b"
     }
   },
   {
     "method": "get",
-    "url": "http://localhost:8080/degree/61de1462-7107-4ad0-8c47-3c13f49f3dac",
+    "url": "http://localhost:8080/degree/1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
     "res": {
-      "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+      "id": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
       "title": "Mathematics",
       "modules": [
         "MA1100",
@@ -292,7 +292,7 @@
   },
   {
     "method": "delete",
-    "url": "http://localhost:8080/degree/9669751c-2963-4b6a-8165-dc4ab359cf9d",
+    "url": "http://localhost:8080/degree/ce591084-2c86-447e-9810-8598cdaafc4b",
     "res": {
       "title": "Physics",
       "modules": [
@@ -307,9 +307,9 @@
   },
   {
     "method": "patch",
-    "url": "http://localhost:8080/degree/61de1462-7107-4ad0-8c47-3c13f49f3dac",
+    "url": "http://localhost:8080/degree/1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
     "res": {
-      "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+      "id": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
       "title": "Mathematics",
       "modules": [
         {
@@ -643,9 +643,9 @@
   },
   {
     "method": "get",
-    "url": "http://localhost:8080/degree/61de1462-7107-4ad0-8c47-3c13f49f3dac/get-full",
+    "url": "http://localhost:8080/degree/1412fcd0-1594-4bdb-8c4e-a6b331e479a8/get-full",
     "res": {
-      "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+      "id": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
       "title": "Mathematics",
       "modules": [
         {
@@ -982,7 +982,7 @@
     "url": "http://localhost:8080/degrees",
     "res": [
       {
-        "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+        "id": "6793cbb8-2e6c-4422-b086-cb055ad349a3",
         "title": "Computer Science",
         "modules": [
           {
@@ -1223,7 +1223,7 @@
       ],
       "savedDegrees": [],
       "savedGraphs": [],
-      "id": "aa2d7679-5210-4068-a3b9-e443e7307f11",
+      "id": "afd8299a-a5d0-4411-aeb2-50c15eb2153b",
       "mainDegree": "",
       "mainGraph": ""
     }
@@ -1232,7 +1232,7 @@
     "method": "post",
     "url": "http://localhost:8080/user/auth0|1/login",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -1534,13 +1534,13 @@
       ],
       "savedDegrees": [
         {
-          "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+          "id": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
           "title": "Mathematics"
         }
       ],
       "savedGraphs": [
         {
-          "id": "a433afdd-02f1-416c-baea-c060daa005a4",
+          "id": "f9fee531-ccb2-452d-ad48-4228474284f5",
           "flowNodes": [
             {
               "id": "CS1101S",
@@ -1616,11 +1616,11 @@
         }
       ],
       "mainDegree": {
-        "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+        "id": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
         "title": "Mathematics"
       },
       "mainGraph": {
-        "id": "a433afdd-02f1-416c-baea-c060daa005a4",
+        "id": "f9fee531-ccb2-452d-ad48-4228474284f5",
         "flowNodes": [
           {
             "id": "CS1101S",
@@ -1698,9 +1698,9 @@
   },
   {
     "method": "get",
-    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+    "url": "http://localhost:8080/user/13c3e55d-743e-4c4c-a6af-ab88657deb6b",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -1728,18 +1728,18 @@
         "CP2106"
       ],
       "savedDegrees": [
-        "61de1462-7107-4ad0-8c47-3c13f49f3dac"
+        "1412fcd0-1594-4bdb-8c4e-a6b331e479a8"
       ],
       "savedGraphs": [
-        "a433afdd-02f1-416c-baea-c060daa005a4"
+        "f9fee531-ccb2-452d-ad48-4228474284f5"
       ],
-      "mainDegree": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+      "mainDegree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "mainGraph": "f9fee531-ccb2-452d-ad48-4228474284f5"
     }
   },
   {
     "method": "delete",
-    "url": "http://localhost:8080/user/aa2d7679-5210-4068-a3b9-e443e7307f11",
+    "url": "http://localhost:8080/user/afd8299a-a5d0-4411-aeb2-50c15eb2153b",
     "res": {
       "displayName": "Anonymous User",
       "username": "anon",
@@ -1815,9 +1815,9 @@
   },
   {
     "method": "patch",
-    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/degree",
+    "url": "http://localhost:8080/user/13c3e55d-743e-4c4c-a6af-ab88657deb6b/degree",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -1845,21 +1845,21 @@
         "CP2106"
       ],
       "savedDegrees": [
-        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+        "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+        "6793cbb8-2e6c-4422-b086-cb055ad349a3"
       ],
       "savedGraphs": [
-        "a433afdd-02f1-416c-baea-c060daa005a4"
+        "f9fee531-ccb2-452d-ad48-4228474284f5"
       ],
-      "mainDegree": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+      "mainDegree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "mainGraph": "f9fee531-ccb2-452d-ad48-4228474284f5"
     }
   },
   {
     "method": "get",
-    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/get-full",
+    "url": "http://localhost:8080/user/13c3e55d-743e-4c4c-a6af-ab88657deb6b/get-full",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -2161,7 +2161,7 @@
       ],
       "savedDegrees": [
         {
-          "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+          "id": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
           "title": "Mathematics",
           "modules": [
             {
@@ -2493,7 +2493,7 @@
           ]
         },
         {
-          "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+          "id": "6793cbb8-2e6c-4422-b086-cb055ad349a3",
           "title": "Computer Science",
           "modules": [
             {
@@ -2717,9 +2717,9 @@
   },
   {
     "method": "patch",
-    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/graph",
+    "url": "http://localhost:8080/user/13c3e55d-743e-4c4c-a6af-ab88657deb6b/graph",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -2747,22 +2747,22 @@
         "CP2106"
       ],
       "savedDegrees": [
-        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+        "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+        "6793cbb8-2e6c-4422-b086-cb055ad349a3"
       ],
       "savedGraphs": [
-        "a433afdd-02f1-416c-baea-c060daa005a4",
-        "164bbb11-3c9f-4783-ab1c-c43474bf010f"
+        "f9fee531-ccb2-452d-ad48-4228474284f5",
+        "30eb281f-0a6b-44bd-91e4-68c10d44e1d8"
       ],
-      "mainDegree": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+      "mainDegree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "mainGraph": "f9fee531-ccb2-452d-ad48-4228474284f5"
     }
   },
   {
     "method": "patch",
-    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/main-degree",
+    "url": "http://localhost:8080/user/13c3e55d-743e-4c4c-a6af-ab88657deb6b/main-degree",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -2790,22 +2790,22 @@
         "CP2106"
       ],
       "savedDegrees": [
-        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+        "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+        "6793cbb8-2e6c-4422-b086-cb055ad349a3"
       ],
       "savedGraphs": [
-        "164bbb11-3c9f-4783-ab1c-c43474bf010f",
-        "a433afdd-02f1-416c-baea-c060daa005a4"
+        "30eb281f-0a6b-44bd-91e4-68c10d44e1d8",
+        "f9fee531-ccb2-452d-ad48-4228474284f5"
       ],
-      "mainDegree": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
-      "mainGraph": "a433afdd-02f1-416c-baea-c060daa005a4"
+      "mainDegree": "6793cbb8-2e6c-4422-b086-cb055ad349a3",
+      "mainGraph": "f9fee531-ccb2-452d-ad48-4228474284f5"
     }
   },
   {
     "method": "patch",
-    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/main-graph",
+    "url": "http://localhost:8080/user/13c3e55d-743e-4c4c-a6af-ab88657deb6b/main-graph",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -2833,22 +2833,22 @@
         "CP2106"
       ],
       "savedDegrees": [
-        "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-        "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+        "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+        "6793cbb8-2e6c-4422-b086-cb055ad349a3"
       ],
       "savedGraphs": [
-        "164bbb11-3c9f-4783-ab1c-c43474bf010f",
-        "a433afdd-02f1-416c-baea-c060daa005a4"
+        "30eb281f-0a6b-44bd-91e4-68c10d44e1d8",
+        "f9fee531-ccb2-452d-ad48-4228474284f5"
       ],
-      "mainDegree": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
-      "mainGraph": "164bbb11-3c9f-4783-ab1c-c43474bf010f"
+      "mainDegree": "6793cbb8-2e6c-4422-b086-cb055ad349a3",
+      "mainGraph": "30eb281f-0a6b-44bd-91e4-68c10d44e1d8"
     }
   },
   {
     "method": "patch",
-    "url": "http://localhost:8080/user/81ebf5c6-60ad-42af-ab86-e0d182076a9e/module",
+    "url": "http://localhost:8080/user/13c3e55d-743e-4c4c-a6af-ab88657deb6b/module",
     "res": {
-      "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
+      "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
       "authZeroId": "auth0|1",
       "displayName": "Nguyen Vu Khang",
       "username": "nguyenvukhang",
@@ -3160,17 +3160,17 @@
       ],
       "savedDegrees": [
         {
-          "id": "61de1462-7107-4ad0-8c47-3c13f49f3dac",
+          "id": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
           "title": "Mathematics"
         },
         {
-          "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+          "id": "6793cbb8-2e6c-4422-b086-cb055ad349a3",
           "title": "Computer Science"
         }
       ],
       "savedGraphs": [
         {
-          "id": "164bbb11-3c9f-4783-ab1c-c43474bf010f",
+          "id": "30eb281f-0a6b-44bd-91e4-68c10d44e1d8",
           "flowNodes": [
             {
               "id": "CS1101S",
@@ -3245,7 +3245,7 @@
           ]
         },
         {
-          "id": "a433afdd-02f1-416c-baea-c060daa005a4",
+          "id": "f9fee531-ccb2-452d-ad48-4228474284f5",
           "flowNodes": [
             {
               "id": "CS1101S",
@@ -3321,11 +3321,11 @@
         }
       ],
       "mainDegree": {
-        "id": "b93c0ba6-a30f-4847-968b-d7e0465b0017",
+        "id": "6793cbb8-2e6c-4422-b086-cb055ad349a3",
         "title": "Computer Science"
       },
       "mainGraph": {
-        "id": "164bbb11-3c9f-4783-ab1c-c43474bf010f",
+        "id": "30eb281f-0a6b-44bd-91e4-68c10d44e1d8",
         "flowNodes": [
           {
             "id": "CS1101S",
@@ -3406,7 +3406,47 @@
     "url": "http://localhost:8080/users",
     "res": [
       {
-        "id": "5176d575-72e7-42f9-bd42-7a31edceb08f",
+        "id": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
+        "authZeroId": "auth0|1",
+        "displayName": "Nguyen Vu Khang",
+        "username": "nguyenvukhang",
+        "email": "khang@modtree.com",
+        "matriculationYear": 2021,
+        "graduationYear": 2024,
+        "graduationSemester": 2,
+        "modulesDone": [
+          "CS1010S",
+          "DTK1234",
+          "GEA1000",
+          "HSA1000",
+          "HS1401S",
+          "HSH1000",
+          "HSS1000",
+          "HSI1000",
+          "IS1103",
+          "MA1100",
+          "MA2002",
+          "MA2001",
+          "MA2219",
+          "PC1432",
+          "AC5001"
+        ],
+        "modulesDoing": [
+          "CP2106"
+        ],
+        "savedDegrees": [
+          "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+          "6793cbb8-2e6c-4422-b086-cb055ad349a3"
+        ],
+        "savedGraphs": [
+          "30eb281f-0a6b-44bd-91e4-68c10d44e1d8",
+          "f9fee531-ccb2-452d-ad48-4228474284f5"
+        ],
+        "mainDegree": "",
+        "mainGraph": ""
+      },
+      {
+        "id": "e42c7b00-d5bb-4adf-a059-117624e3896e",
         "authZeroId": "auth0|2",
         "displayName": "Tan Wei Seng",
         "username": "tanweiseng",
@@ -3434,53 +3474,507 @@
           "CP2106"
         ],
         "savedDegrees": [
-          "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+          "6793cbb8-2e6c-4422-b086-cb055ad349a3"
         ],
         "savedGraphs": [
-          "164bbb11-3c9f-4783-ab1c-c43474bf010f"
+          "30eb281f-0a6b-44bd-91e4-68c10d44e1d8"
         ],
         "mainDegree": "",
         "mainGraph": ""
-      },
+      }
+    ]
+  },
+  {
+    "method": "post",
+    "url": "http://localhost:8080/graph",
+    "res": {
+      "user": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
+      "degree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "modulesPlaced": [
+        "CS1231S",
+        "CS1101S"
+      ],
+      "modulesHidden": [
+        "CS2040S",
+        "MA2001"
+      ],
+      "id": "6d2fba2c-87bd-4d70-b6db-07cfe6f5c7dc",
+      "flowNodes": [],
+      "flowEdges": []
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/graph/f9fee531-ccb2-452d-ad48-4228474284f5",
+    "res": {
+      "id": "f9fee531-ccb2-452d-ad48-4228474284f5",
+      "flowNodes": [
+        {
+          "id": "CS1101S",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "data": {
+            "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+            "moduleCode": "CS1010S",
+            "title": "Programming Methodology",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+            "fulfillRequirements": [
+              "FIN4124",
+              "FIN4719",
+              "IT3010",
+              "ZB4171",
+              "MA3269",
+              "DSA3102",
+              "ST3247",
+              "QF2103"
+            ],
+            "prereqTree": ""
+          }
+        },
+        {
+          "id": "CS2030S",
+          "position": {
+            "x": 100,
+            "y": 0
+          },
+          "data": {
+            "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+            "moduleCode": "MA2001",
+            "title": "Linear Algebra I",
+            "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+            "corequisite": "",
+            "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+            "fulfillRequirements": [
+              "BT4240",
+              "MA2101",
+              "MA2101S",
+              "MA2213",
+              "MA2214",
+              "MA2219",
+              "MA2288",
+              "MA3220",
+              "MA3252",
+              "MA3238",
+              "MA2289",
+              "DSA3102",
+              "DSA2101"
+            ],
+            "prereqTree": {
+              "or": [
+                "MA1301",
+                "MA1301FC",
+                "MA1301X"
+              ]
+            }
+          }
+        }
+      ],
+      "flowEdges": [
+        {
+          "id": "CS1101S-CS2030S",
+          "source": "CS1101S",
+          "target": "CS2030S"
+        }
+      ],
+      "user": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
+      "degree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "modulesPlaced": [
+        "CS1101S",
+        "CS2030S"
+      ],
+      "modulesHidden": [
+        "GEA1000",
+        "MA2001"
+      ]
+    }
+  },
+  {
+    "method": "delete",
+    "url": "http://localhost:8080/graph/6d2fba2c-87bd-4d70-b6db-07cfe6f5c7dc",
+    "res": {
+      "raw": [],
+      "affected": 1
+    }
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/graph/f9fee531-ccb2-452d-ad48-4228474284f5/flow",
+    "res": {
+      "id": "f9fee531-ccb2-452d-ad48-4228474284f5",
+      "flowNodes": [
+        {
+          "id": "CS1101S",
+          "position": {
+            "x": 1000,
+            "y": 1000
+          },
+          "data": {
+            "id": "",
+            "moduleCode": "",
+            "title": "",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "",
+            "prereqTree": "",
+            "fulfillRequirements": []
+          }
+        },
+        {
+          "id": "CS2030S",
+          "position": {
+            "x": 2000,
+            "y": 2000
+          },
+          "data": {
+            "id": "",
+            "moduleCode": "",
+            "title": "",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "",
+            "prereqTree": "",
+            "fulfillRequirements": []
+          }
+        }
+      ],
+      "flowEdges": [
+        {
+          "id": "CS1101S-CS2030S",
+          "source": "CS1101S",
+          "target": "CS2030S"
+        }
+      ],
+      "user": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
+      "degree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "modulesPlaced": [
+        "CS1101S",
+        "CS2030S"
+      ],
+      "modulesHidden": [
+        "GEA1000",
+        "MA2001"
+      ]
+    }
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/graph/f9fee531-ccb2-452d-ad48-4228474284f5/node",
+    "res": {
+      "id": "f9fee531-ccb2-452d-ad48-4228474284f5",
+      "flowNodes": [
+        {
+          "id": "CS1101S",
+          "position": {
+            "x": 1000,
+            "y": 1000
+          },
+          "data": {
+            "id": "",
+            "moduleCode": "",
+            "title": "",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "",
+            "prereqTree": "",
+            "fulfillRequirements": []
+          }
+        },
+        {
+          "id": "CS2030S",
+          "position": {
+            "x": 420,
+            "y": 69
+          },
+          "data": {
+            "id": "",
+            "moduleCode": "",
+            "title": "",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "",
+            "prereqTree": "",
+            "fulfillRequirements": []
+          }
+        }
+      ],
+      "flowEdges": [
+        {
+          "id": "CS1101S-CS2030S",
+          "source": "CS1101S",
+          "target": "CS2030S"
+        }
+      ],
+      "user": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
+      "degree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "modulesPlaced": [
+        "CS1101S",
+        "CS2030S"
+      ],
+      "modulesHidden": [
+        "GEA1000",
+        "MA2001"
+      ]
+    }
+  },
+  {
+    "method": "post",
+    "url": "http://localhost:8080/graph/f9fee531-ccb2-452d-ad48-4228474284f5/suggest",
+    "res": [
+      "MA2216",
+      "MA2104",
+      "MA2213"
+    ]
+  },
+  {
+    "method": "patch",
+    "url": "http://localhost:8080/graph/f9fee531-ccb2-452d-ad48-4228474284f5/toggle/CS1101S",
+    "res": {
+      "id": "f9fee531-ccb2-452d-ad48-4228474284f5",
+      "flowNodes": [
+        {
+          "id": "CS1101S",
+          "position": {
+            "x": 1000,
+            "y": 1000
+          },
+          "data": {
+            "id": "",
+            "moduleCode": "",
+            "title": "",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "",
+            "prereqTree": "",
+            "fulfillRequirements": []
+          }
+        },
+        {
+          "id": "CS2030S",
+          "position": {
+            "x": 420,
+            "y": 69
+          },
+          "data": {
+            "id": "",
+            "moduleCode": "",
+            "title": "",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "",
+            "prereqTree": "",
+            "fulfillRequirements": []
+          }
+        }
+      ],
+      "flowEdges": [
+        {
+          "id": "CS1101S-CS2030S",
+          "source": "CS1101S",
+          "target": "CS2030S"
+        }
+      ],
+      "user": "13c3e55d-743e-4c4c-a6af-ab88657deb6b",
+      "degree": "1412fcd0-1594-4bdb-8c4e-a6b331e479a8",
+      "modulesPlaced": [
+        "CS2030S"
+      ],
+      "modulesHidden": [
+        "GEA1000",
+        "MA2001",
+        "CS1101S"
+      ]
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/graphs",
+    "res": [
       {
-        "id": "81ebf5c6-60ad-42af-ab86-e0d182076a9e",
-        "authZeroId": "auth0|1",
-        "displayName": "Nguyen Vu Khang",
-        "username": "nguyenvukhang",
-        "email": "khang@modtree.com",
-        "matriculationYear": 2021,
-        "graduationYear": 2024,
-        "graduationSemester": 2,
-        "modulesDone": [
-          "CS1010S",
-          "AC5001",
-          "DTK1234",
-          "GEA1000",
-          "HSA1000",
-          "HS1401S",
-          "HSH1000",
-          "HSS1000",
-          "HSI1000",
-          "IS1103",
-          "MA1100",
-          "MA2002",
-          "MA2001",
-          "MA2219",
-          "PC1432"
+        "id": "30eb281f-0a6b-44bd-91e4-68c10d44e1d8",
+        "flowNodes": [
+          {
+            "id": "CS1101S",
+            "position": {
+              "x": 0,
+              "y": 0
+            },
+            "data": {
+              "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+              "moduleCode": "CS1010S",
+              "title": "Programming Methodology",
+              "prerequisite": "",
+              "corequisite": "",
+              "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+              "fulfillRequirements": [
+                "FIN4124",
+                "FIN4719",
+                "IT3010",
+                "ZB4171",
+                "MA3269",
+                "DSA3102",
+                "ST3247",
+                "QF2103"
+              ],
+              "prereqTree": ""
+            }
+          },
+          {
+            "id": "CS2030S",
+            "position": {
+              "x": 100,
+              "y": 0
+            },
+            "data": {
+              "id": "1d9a484e-31b8-423f-a9f8-c7284eb3837a",
+              "moduleCode": "MA2001",
+              "title": "Linear Algebra I",
+              "prerequisite": "GCE ‘A’ Level or H2 Mathematics or H2 Further Mathematics or MA1301 or MA1301FC or MA1301X",
+              "corequisite": "",
+              "preclusion": "EG1401, EG1402, MA1506, MA1508, MA1508E, MA1513, FOE students, YSC2232, MA1101R",
+              "fulfillRequirements": [
+                "BT4240",
+                "MA2101",
+                "MA2101S",
+                "MA2213",
+                "MA2214",
+                "MA2219",
+                "MA2288",
+                "MA3220",
+                "MA3252",
+                "MA3238",
+                "MA2289",
+                "DSA3102",
+                "DSA2101"
+              ],
+              "prereqTree": {
+                "or": [
+                  "MA1301",
+                  "MA1301FC",
+                  "MA1301X"
+                ]
+              }
+            }
+          }
         ],
-        "modulesDoing": [
-          "CP2106"
+        "flowEdges": [
+          {
+            "id": "CS1101S-CS2030S",
+            "source": "CS1101S",
+            "target": "CS2030S"
+          }
         ],
-        "savedDegrees": [
-          "61de1462-7107-4ad0-8c47-3c13f49f3dac",
-          "b93c0ba6-a30f-4847-968b-d7e0465b0017"
+        "user": {
+          "id": "e42c7b00-d5bb-4adf-a059-117624e3896e",
+          "authZeroId": "auth0|2",
+          "displayName": "Tan Wei Seng",
+          "username": "tanweiseng",
+          "email": "weiseng@modtree.com",
+          "matriculationYear": 2021,
+          "graduationYear": 2024,
+          "graduationSemester": 2
+        },
+        "degree": {
+          "id": "6793cbb8-2e6c-4422-b086-cb055ad349a3",
+          "title": "Computer Science"
+        },
+        "modulesPlaced": [
+          {
+            "id": "3f1528be-bb34-4cec-87fa-9b6bb61f5739",
+            "moduleCode": "CS1101S",
+            "title": "Programming Methodology",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "CS1010 or its equivalents",
+            "fulfillRequirements": [
+              "FIN4124",
+              "FIN4719",
+              "MA3269",
+              "CS2109S",
+              "QF2103"
+            ],
+            "prereqTree": ""
+          },
+          {
+            "id": "7edf9f82-c5aa-4bd0-85f1-99f984d0b0dc",
+            "moduleCode": "CS2030S",
+            "title": "Programming Methodology II",
+            "prerequisite": "CS1010 or its equivalent",
+            "corequisite": "",
+            "preclusion": "CS2030",
+            "fulfillRequirements": "",
+            "prereqTree": "CS1010"
+          }
         ],
-        "savedGraphs": [
-          "164bbb11-3c9f-4783-ab1c-c43474bf010f",
-          "a433afdd-02f1-416c-baea-c060daa005a4"
-        ],
-        "mainDegree": "",
-        "mainGraph": ""
+        "modulesHidden": [
+          {
+            "id": "192ac988-4a56-40e1-a92b-516592a42212",
+            "moduleCode": "IS1103",
+            "title": "Ethics in Computing",
+            "prerequisite": "",
+            "corequisite": "",
+            "preclusion": "",
+            "fulfillRequirements": [
+              "IS3221",
+              "IS3240",
+              "IS4240",
+              "IS4241",
+              "IS4250",
+              "IS3251",
+              "IS4301",
+              "IS3103"
+            ],
+            "prereqTree": ""
+          },
+          {
+            "id": "a25be972-7e38-4dc5-83d1-033bf222dc04",
+            "moduleCode": "ST1131",
+            "title": "Introduction to Statistics and Statistical Computing",
+            "prerequisite": "GCE ‘AO’ Level or H1 Pass in Mathematics or its equivalent or MA1301 or MA1301FC or MA1301X",
+            "corequisite": "",
+            "preclusion": "ST1232",
+            "fulfillRequirements": [
+              "DSC3223",
+              "CS4243",
+              "CS5228",
+              "CS5233",
+              "CS5239",
+              "CS5240",
+              "CS5340",
+              "CS4246",
+              "CS5332",
+              "CS5346",
+              "CS4257",
+              "CS5446",
+              "IS3221",
+              "IS5152",
+              "IS4241",
+              "BT2101",
+              "BT2102",
+              "BT2201",
+              "EE3801",
+              "EE4802",
+              "IE4211",
+              "IE4213",
+              "ST2137",
+              "ST2288",
+              "ST2335",
+              "ST2289",
+              "DSA2101",
+              "SPH3101"
+            ],
+            "prereqTree": {
+              "or": [
+                "MA1301",
+                "MA1301FC",
+                "MA1301X"
+              ]
+            }
+          }
+        ]
       }
     ]
   }

@@ -2,13 +2,14 @@ import { RouteMethod } from '@modtree/types'
 import { DegreeRoutes } from './degree'
 import { UserRoutes } from './user'
 import { ModuleCondensedRoutes, ModuleFullRoutes, ModuleRoutes } from './module'
+import { GraphRoutes } from './graph'
 
 export type Route = {
   route: string
   method: RouteMethod
   /**
    * url is required when there is a specific route to be called.
-   * currently only used for module endpoints.
+   * currently only used for module endpoints, and graph toggle
    */
   url?: string
   /**
@@ -41,4 +42,5 @@ export const routes: Route[] = [
   ...ModuleFullRoutes,
   ...DegreeRoutes,
   ...UserRoutes,
+  ...GraphRoutes,
 ]

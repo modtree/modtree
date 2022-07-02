@@ -11,8 +11,11 @@ type Init = {
   user3: InitProps['User']
   graph1: InitProps['Graph']
   graph2: InitProps['Graph']
+  graph3: InitProps['Graph']
   nodes: FlowNode[]
   edges: Edge[]
+  updatedNodes: FlowNode[]
+  updatedNode: FlowNode
 }
 
 /**
@@ -144,6 +147,14 @@ export const init: Init = {
     pullAll: false,
   },
 
+  graph3: {
+    userId: '',
+    degreeId: '',
+    modulesPlacedCodes: ['CS1101S', 'CS1231S'],
+    modulesHiddenCodes: ['CS2040S', 'MA2001'],
+    pullAll: false,
+  },
+
   nodes: [
     {
       id: 'CS1101S',
@@ -174,4 +185,46 @@ export const init: Init = {
       target: 'CS2030S',
     },
   ],
+
+  /**
+   * needs to consist of nodes in graph1,
+   * i.e. the nodes property above.
+   */
+  updatedNodes: [
+    {
+      id: 'CS1101S',
+      position: {
+        x: 1000,
+        y: 1000,
+      },
+      data: {
+        ...empty.Module,
+      },
+    },
+    {
+      id: 'CS2030S',
+      position: {
+        x: 2000,
+        y: 2000,
+      },
+      data: {
+        ...empty.Module,
+      },
+    },
+  ],
+
+  /**
+   * needs to be a node in graph1,
+   * i.e. in the nodes property above.
+   */
+  updatedNode: {
+    id: 'CS2030S',
+    position: {
+      x: 420,
+      y: 69,
+    },
+    data: {
+      ...empty.Module,
+    },
+  },
 }

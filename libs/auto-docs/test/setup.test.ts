@@ -173,6 +173,12 @@ describe('samples', () => {
         // - user set main graph
         params['graphId'] = g2.id
       }
+      if (method === 'post' && route === '/graph') {
+        // used in:
+        // - create graph
+        params['userId'] = u1.id
+        params['degreeId'] = d1.id
+      }
     }
 
     // 2. Make request

@@ -19,6 +19,9 @@ export const DegreeRoutes: Route[] = [
     route: '/degree/:degreeId',
     method: 'patch',
     params: {
+      /**
+       * needs to be NOT in degree1
+       */
       moduleCodes: ['NM2207'],
     },
   },
