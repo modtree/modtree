@@ -121,13 +121,13 @@ describe('samples', () => {
 
   test.each(tests)('%p %p', async (method, route, routeInfo) => {
     // unpack data
-    const url = routeInfo.url || route
+    let url = routeInfo.url || route
     const params = routeInfo.params
 
     // fill in path params if required
-    url.replaceAll(':userId', u1.id)
-    url.replaceAll(':degreeId', d1.id)
-    url.replaceAll(':graphId', g1.id)
+    url = url.replaceAll(':userId', u1.id)
+    url = url.replaceAll(':degreeId', d1.id)
+    url = url.replaceAll(':graphId', g1.id)
 
     // make request
     const res = await postman.send(method, url, { params })
