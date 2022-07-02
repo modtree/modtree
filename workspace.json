@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "auto-docs": "libs/auto-docs",
     "docs": "apps/docs",
     "entity": "libs/entity",
     "repo-api": "libs/repo-api",

@@ -18,6 +18,7 @@
     "skipDefaultLibCheck": false,
     "baseUrl": ".",
     "paths": {
+      "@modtree/auto-docs": ["libs/auto-docs/src/index.ts"],
       "@modtree/entity": ["libs/entity/src/index.ts"],
       "@modtree/repo-api": ["libs/repo-api/src/index.ts"],
       "@modtree/repo-base": ["libs/repo-base/src/index.ts"],
