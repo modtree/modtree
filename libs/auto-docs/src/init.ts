@@ -16,7 +16,7 @@ type Init = {
 /**
  * fake data for test cases
  */
-export const auto: Init = {
+export const init: Init = {
   degree1: {
     moduleCodes: [
       'MA1100',

@@ -3,7 +3,7 @@ import { setup, Repo } from '@modtree/test-env'
 import { Api } from '@modtree/repo-api'
 import '@modtree/test-env/jest'
 import { User, Degree, Graph } from '@modtree/entity'
-import { auto } from '../src/init'
+import { init } from '../src/init'
 
 const dbName = 'modtree'
 const db = getSource(dbName)
@@ -25,7 +25,7 @@ beforeAll(() =>
 
 describe('bare minimum', () => {
   test('runs with no errors', async () => {
-    const res = await api.autoSetup(auto)
+    const res = await api.autoSetup(init)
     u1 = res.u1
     u2 = res.u2
     d1 = res.d1
