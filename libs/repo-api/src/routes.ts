@@ -1,9 +1,11 @@
+import { RouteMethod } from '@modtree/types'
+
 type RouteInfo = {
   url: string
   params?: Record<string, any>
 }
 
-type JestEach = ['post' | 'get' | 'patch' | 'delete', string, RouteInfo]
+type JestEach = [RouteMethod, string, RouteInfo]
 
 // TODO consider referring to references/routes.json to
 // make sure this is updated

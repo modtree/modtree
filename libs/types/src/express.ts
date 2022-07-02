@@ -17,3 +17,5 @@ export type CustomReqQuery<ReqQuery> = Request<
 >
 
 export type CustomReqParams<ReqParams> = Request<ReqParams, unknown, unknown>
+
+export type RouteMethod = 'get' | 'patch' | 'post' | 'delete'
