@@ -5,6 +5,7 @@ import { Edge } from 'react-flow-renderer'
 type Init = {
   degree1: InitProps['Degree']
   degree2: InitProps['Degree']
+  degree3: InitProps['Degree']
   user1: InitProps['User']
   user2: InitProps['User']
   graph1: InitProps['Graph']
@@ -45,6 +46,19 @@ export const init: Init = {
       'CS3230',
     ],
     title: 'Computer Science',
+  },
+
+  degree3: {
+    moduleCodes: [
+      'PC1101',
+      'PC2031',
+      'PC2032',
+      'PC2130',
+      'PC2135',
+      'PC2174A',
+      'PC2193',
+    ],
+    title: 'Physics',
   },
 
   user1: {
