@@ -184,28 +184,18 @@ describe('samples', () => {
     // 2. Make request
     const res = await postman.send(method, url, params)
 
-    // 3. Truncate response data if necessary
-    let response
-    if (Array.isArray(res.data) && res.data.length > 3) {
-      // if the response is an array, only give at most 3 entries
-      response = [res.data[0], res.data[1], res.data[2]]
-    } else {
-      // otherwise just leave it
-      response = res.data
-    }
-
-    // 4. Transform data
+    // 3. Transform data
     const data = {
       method: res.config.method,
       url: res.config.url,
-      res: response,
+      res: res.data,
     }
 
     all.push(data)
 
-    // 5. Save ID if created new entity
+    // 4. Save ID if created new entity
     if (isEntityCreation(method, route)) {
-      id = response.id
+      id = res.data.id
     }
 
     expect(1).toEqual(1)
