@@ -4,7 +4,7 @@ import { Api } from '@modtree/repo-api'
 import '@modtree/test-env/jest'
 import { User, Degree, Graph } from '@modtree/entity'
 import { init } from '../src/init'
-import { routes } from '../src/routes'
+import { JestEach, routes } from '../src/routes'
 import { postman } from '../src/postman'
 import fs from 'fs'
 import { join } from 'path'
@@ -108,19 +108,26 @@ describe('properties checks', () => {
 
 describe('samples', () => {
   const all: any[] = []
-  const userId = u1.id
-  const degreeId = d1.id
-  const graphId = g1.id
 
-  test.each(routes)('%p %p', async (method, route, routeInfo) => {
+  // Map routes into Jest requirements
+  const tests: JestEach[] = routes.map((r) => [
+    r.method,
+    r.route,
+    {
+      url: r.url,
+      params: r.params,
+    },
+  ])
+
+  test.each(tests)('%p %p', async (method, route, routeInfo) => {
     // unpack data
     const url = routeInfo.url
     const params = routeInfo.params
 
     // fill in path params if required
-    url.replaceAll(':userId', userId)
-    url.replaceAll(':degreeId', degreeId)
-    url.replaceAll(':graphId', graphId)
+    url.replaceAll(':userId', u1.id)
+    url.replaceAll(':degreeId', d1.id)
+    url.replaceAll(':graphId', g1.id)
 
     // make request
     const res = await postman.send(method, url, { params })

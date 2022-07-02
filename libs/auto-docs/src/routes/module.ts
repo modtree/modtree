@@ -1,62 +1,48 @@
-import { JestEach } from './index'
+import { Route } from './index'
 
-export const ModuleCondensedRoutes: JestEach[] = [
-  [
-    'get',
-    '/module-condensed/:moduleCode',
-    {
-      url: '/module-condensed/CS1010S',
+export const ModuleCondensedRoutes: Route[] = [
+  {
+    route: '/module-condensed/:moduleCode',
+    method: 'get',
+    url: '/module-condensed/CS1010S',
+  },
+  {
+    route: '/modules-condensed',
+    method: 'get',
+    url: '/modules-condensed',
+    params: {
+      moduleCodes: ['CS1010S', 'MA2001'],
     },
-  ],
-  [
-    'get',
-    '/modules-condensed',
-    {
-      url: '/modules-condensed',
-      params: {
-        moduleCodes: ['CS1010S', 'MA2001'],
-      },
-    },
-  ],
-  [
-    'get',
-    '/search/modules-condensed/:searchQuery',
-    {
-      url: '/search/modules-condensed/CS1010',
-    },
-  ],
+  },
+  {
+    route: '/search/modules-condensed/:searchQuery',
+    method: 'get',
+    url: '/search/modules-condensed/CS1010',
+  },
 ]
 
-export const ModuleRoutes: JestEach[] = [
-  [
-    'get',
-    '/module/:moduleCode',
-    {
-      url: '/module/CS1010S',
-    },
-  ],
-  [
-    'get',
-    '/modules',
-    {
-      url: '/modules',
-    },
-  ],
-  [
-    'get',
-    '/search/modules/:searchQuery',
-    {
-      url: '/search/modules/CS1010',
-    },
-  ],
+export const ModuleRoutes: Route[] = [
+  {
+    route: '/module/:moduleCode',
+    method: 'get',
+    url: '/module/CS1010S',
+  },
+  {
+    route: '/modules',
+    method: 'get',
+    url: '/modules',
+  },
+  {
+    route: '/search/modules/:searchQuery',
+    method: 'get',
+    url: '/search/modules/CS1010',
+  },
 ]
 
-export const ModuleFullRoutes: JestEach[] = [
-  [
-    'get',
-    '/module-full/:moduleCode',
-    {
-      url: '/module-full/EL3201',
-    },
-  ],
+export const ModuleFullRoutes: Route[] = [
+  {
+    route: '/module-full/:moduleCode',
+    method: 'get',
+    url: '/module-full/EL3201',
+  },
 ]
