@@ -119,10 +119,28 @@ describe('samples', () => {
     },
   ])
 
+  // In the tests, there is a single POST test per entity,
+  // that creates a new object.
+  //
+  // After this POST test and before the next POST test,
+  // there is most likely a DELETE test. In order to prevent side-effects,
+  // such as cascade deleting, or having to clear relations, the
+  // DELETE test will be performed on the newly POSTed object.
+  //
+  // This ID saves that ID for future use for DELETE.
+  let id: string
+
   test.each(tests)('%p %p', async (method, route, routeInfo) => {
     // unpack data
     let url = routeInfo.url || route
     const params = routeInfo.params
+
+    // fill in path params for delete
+    if (method === 'delete') {
+      url = url.replaceAll(':userId', id)
+      url = url.replaceAll(':degreeId', id)
+      url = url.replaceAll(':graphId', id)
+    }
 
     // fill in path params if required
     url = url.replaceAll(':userId', u1.id)
@@ -155,6 +173,11 @@ describe('samples', () => {
     }
 
     all.push(data)
+
+    // save ID if POST
+    if (method === 'post') {
+      id = response.id
+    }
 
     expect(1).toEqual(1)
   })
