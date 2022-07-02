@@ -7,13 +7,13 @@ export class postman {
   static send(method: RouteMethod, endpoint: string, params?: any) {
     switch (method) {
       case 'get':
-        return this.get(endpoint, params)
+        return this.get(endpoint, { params })
       case 'post':
         return this.post(endpoint, params)
       case 'patch':
         return this.patch(endpoint, params)
       case 'delete':
-        return this.delete(endpoint, params)
+        return this.delete(endpoint)
     }
   }
 

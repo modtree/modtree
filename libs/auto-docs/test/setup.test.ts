@@ -130,7 +130,7 @@ describe('samples', () => {
     url = url.replaceAll(':graphId', g1.id)
 
     // make request
-    const res = await postman.send(method, url, { params })
+    const res = await postman.send(method, url, params)
 
     // truncate response data if necessary
     let response
