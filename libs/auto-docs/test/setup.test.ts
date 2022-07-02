@@ -129,6 +129,11 @@ describe('samples', () => {
     url = url.replaceAll(':degreeId', d1.id)
     url = url.replaceAll(':graphId', g1.id)
 
+    // fill in query params if required
+    if (params && params.hasOwnProperty('degreeIds')) {
+      params['degreeIds'].push(d1.id)
+    }
+
     // make request
     const res = await postman.send(method, url, params)
 
