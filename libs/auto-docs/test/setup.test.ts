@@ -8,7 +8,7 @@ import { JestEach, routes } from '../src/routes'
 import { postman } from '../src/postman'
 import fs from 'fs'
 import { join } from 'path'
-import { RouteMethod } from '@modtree/types'
+import { isEntityCreation } from '../src/utils'
 
 const dbName = 'modtree'
 const db = getSource(dbName)
@@ -213,12 +213,3 @@ describe('samples', () => {
     expect(1).toEqual(1)
   })
 })
-
-function isEntityCreation(method: RouteMethod, route: string) {
-  return (
-    // POST request
-    method === 'post' &&
-    // path contains 1 slash (i.e. POST /entity)
-    route.split('/').length === 2
-  )
-}
