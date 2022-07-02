@@ -2,8 +2,7 @@ import { join } from 'path'
 import { Client } from 'pg'
 import { config } from '@modtree/typeorm-config'
 import { exec } from '@modtree/utils'
-import { ShellResponse } from '@modtree/types'
-import { DataSourceOptions } from '@modtree/types'
+import { ShellResponse, DataSourceOptions } from '@modtree/types'
 
 /* eslint no-useless-escape: 0 */
 // some piped shell commands below require seemingly useless escapes
