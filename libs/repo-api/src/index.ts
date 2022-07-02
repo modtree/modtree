@@ -173,6 +173,11 @@ export class Api {
     return Promise.all([user1, user2, user3, degree1, degree2, degree3])
   }
 
+  /**
+   * sets up database for endpoint response generation
+   * do run /scripts/migrate.sh to restore the database to a
+   * modules-only state first.
+   */
   async autoSetup() {
     // setup user and degree
     let u1: User = await this.userRepo.initialize(auto.user1)
