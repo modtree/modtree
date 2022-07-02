@@ -131,23 +131,24 @@ describe('samples', () => {
   let id: string
 
   test.each(tests)('%p %p', async (method, route, routeInfo) => {
-    // unpack data
+    // 1. Prepare request
+
+    // ---- unpack data
     let url = routeInfo.url || route
     const params = routeInfo.params
 
-    // fill in path params for delete
+    // ---- fill in path params if required
     if (method === 'delete') {
       url = url.replaceAll(':userId', id)
       url = url.replaceAll(':degreeId', id)
       url = url.replaceAll(':graphId', id)
+    } else {
+      url = url.replaceAll(':userId', u1.id)
+      url = url.replaceAll(':degreeId', d1.id)
+      url = url.replaceAll(':graphId', g1.id)
     }
 
-    // fill in path params if required
-    url = url.replaceAll(':userId', u1.id)
-    url = url.replaceAll(':degreeId', d1.id)
-    url = url.replaceAll(':graphId', g1.id)
-
-    // fill in query params if required
+    // ---- fill in query params if required
     if (params && params.hasOwnProperty('degreeIds')) {
       params['degreeIds'].push(d1.id)
     }

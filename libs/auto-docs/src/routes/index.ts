@@ -5,11 +5,22 @@ import { ModuleCondensedRoutes, ModuleFullRoutes, ModuleRoutes } from './module'
 export type Route = {
   route: string
   method: RouteMethod
+  /**
+   * url is required when there is a specific route to be called.
+   * currently only used for module endpoints.
+   */
   url?: string
+  /**
+   * assumes that there is strictly either body params only
+   * or query params only.
+   */
   params?: Record<string, any>
 }
 
-// to use test.each()
+/**
+ * Route will be mapped to JestEach.
+ * This allows usage of jest's test.each() util.
+ */
 export type JestEach = [
   RouteMethod,
   string,
