@@ -1,13 +1,6 @@
-import { RouteMethod } from '@modtree/types'
+import { JestEach } from './index'
 
-type RouteInfo = {
-  url: string
-  params?: Record<string, any>
-}
-
-type JestEach = [RouteMethod, string, RouteInfo]
-
-const ModuleCondensedRoutes: JestEach[] = [
+export const ModuleCondensedRoutes: JestEach[] = [
   [
     'get',
     '/module-condensed/:moduleCode',
@@ -34,7 +27,7 @@ const ModuleCondensedRoutes: JestEach[] = [
   ],
 ]
 
-const ModuleRoutes: JestEach[] = [
+export const ModuleRoutes: JestEach[] = [
   [
     'get',
     '/module/:moduleCode',
@@ -57,9 +50,3 @@ const ModuleRoutes: JestEach[] = [
     },
   ],
 ]
-
-// TODO consider referring to references/routes.json to
-// make sure this is updated
-//
-// however filling in the route properties will probably be manual
-export const routes: JestEach[] = [...ModuleCondensedRoutes, ...ModuleRoutes]
