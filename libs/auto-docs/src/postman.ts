@@ -18,7 +18,6 @@ export class postman {
   }
 
   static get(endpoint: string, params?: any) {
-    console.log('Sending request to ' + postman.url + endpoint)
     return axios.get(postman.url + endpoint, params)
   }
   static post(endpoint: string, params?: any) {
