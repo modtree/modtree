@@ -24,7 +24,7 @@ afterAll(() => teardown(db))
 
 const testRequest = async () =>
   request(app)
-    .get('/graph/017fc011-486c-4ec6-a038-9a92ab85a8f3/suggest')
+    .post('/graph/017fc011-486c-4ec6-a038-9a92ab85a8f3/suggest')
     .send({
       selectedCodes: ['CS1010', 'MA2001'],
     })

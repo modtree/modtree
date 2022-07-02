@@ -187,7 +187,7 @@ export const routes: Route[] = [
     validators: [body('flowNode').notEmpty()],
   },
   {
-    method: 'get',
+    method: 'post',
     route: '/graph/:graphId/suggest',
     fn: GraphApi.suggestModules,
     validators: [body('selectedCodes').isArray()],
