@@ -13,6 +13,9 @@ interface IController extends IReads {
   delete: APIEndpoint
 }
 
+/**
+ *
+ */
 export interface IUserController extends IController {
   getByPrimaryKeys: APIEndpoint
   getFull: APIEndpoint
@@ -21,17 +24,26 @@ export interface IUserController extends IController {
 
 export type IDegreeController = IController
 
+/**
+ *
+ */
 export interface IGraphController extends IController {
   toggle: APIEndpoint
   updateFrontendProps: APIEndpoint
 }
 
+/**
+ *
+ */
 export interface IModuleCondensedController extends IReads {
   list: APIEndpoint
   get: APIEndpoint
   findByCodes: APIEndpoint
 }
 
+/**
+ *
+ */
 export interface IModuleController extends IReads {
   list: APIEndpoint
   get: APIEndpoint
