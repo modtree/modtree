@@ -45,7 +45,7 @@
   },
   {
     "route": "/graph/:graphId/suggest",
-    "method": "get"
+    "method": "post"
   },
   {
     "route": "/graph/:graphId/toggle/:moduleCode",
