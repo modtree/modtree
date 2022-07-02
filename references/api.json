@@ -48,24 +48,140 @@
         "moduleCode": "CS1010J",
         "moduleLevel": 1010,
         "title": "Programming Methodology"
+      }
+    ]
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/module/CS1010S",
+    "res": {
+      "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+      "moduleCode": "CS1010S",
+      "title": "Programming Methodology",
+      "prerequisite": "",
+      "corequisite": "",
+      "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+      "fulfillRequirements": [
+        "FIN4124",
+        "FIN4719",
+        "IT3010",
+        "ZB4171",
+        "MA3269",
+        "DSA3102",
+        "ST3247",
+        "QF2103"
+      ],
+      "prereqTree": ""
+    }
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/modules",
+    "res": [
+      {
+        "id": "3316ace0-a791-494a-b1a7-3537e090e61c",
+        "moduleCode": "ACC2707",
+        "title": "Corporate Accounting & Reporting I",
+        "prerequisite": "ACC1701/ACC1701X or EC2204.\n(or AC1002 or ACC1002X)",
+        "corequisite": "",
+        "preclusion": "ACC3601",
+        "fulfillRequirements": [
+          "ACC2708",
+          "ACC3704",
+          "ACC3713",
+          "ACC3701"
+        ],
+        "prereqTree": {
+          "or": [
+            "ACC1701",
+            "ACC1701X",
+            "EC2204",
+            "AC1002",
+            "ACC1002X"
+          ]
+        }
       },
       {
-        "id": "34e0fddb-6258-45b2-af8b-389ca5664cd2",
-        "moduleCode": "CS1010R",
-        "moduleLevel": 1010,
-        "title": "Programming Methodology"
+        "id": "132f9c65-04df-4425-9d8b-82b39508ed2c",
+        "moduleCode": "AC5002",
+        "title": "Conservation Approaches and Philosophies",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "",
+        "fulfillRequirements": "",
+        "prereqTree": ""
       },
       {
-        "id": "afde7812-8f03-497e-8e23-15302d35df54",
-        "moduleCode": "CS1010S",
-        "moduleLevel": 1010,
-        "title": "Programming Methodology"
-      },
+        "id": "34ba17a0-7106-4ddc-ac47-08821fdcfac4",
+        "moduleCode": "AC5010",
+        "title": "Historic Buildings Survey and Recording",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "",
+        "fulfillRequirements": "",
+        "prereqTree": ""
+      }
+    ]
+  },
+  {
+    "method": "get",
+    "url": "http://localhost:8080/search/modules/CS1010",
+    "res": [
       {
-        "id": "4fe12b91-71da-4174-8ff8-3a6f23f62bc4",
+        "id": "25d0d7b2-d2d7-437c-9248-afb4e6bf624c",
         "moduleCode": "CS1010X",
-        "moduleLevel": 1010,
-        "title": "Programming Methodology"
+        "title": "Programming Methodology",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "CS1010 or its equivalent, CS1010FC",
+        "fulfillRequirements": [
+          "FIN4124",
+          "FIN4719",
+          "DSA3102"
+        ],
+        "prereqTree": ""
+      },
+      {
+        "id": "246b7be8-eda1-448d-8802-77b99917c2c6",
+        "moduleCode": "CS1010E",
+        "title": "Programming Methodology",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "CS1010, CS1010J, CS1010S, CS1010X, CS1010XCP, CS1101S",
+        "fulfillRequirements": [
+          "FIN4124",
+          "FIN4719",
+          "CS1020E",
+          "EE4702",
+          "EE2024",
+          "EE2028",
+          "ESP3201",
+          "IE4213",
+          "MA3269",
+          "DSA3102",
+          "ST3247",
+          "QF2103"
+        ],
+        "prereqTree": ""
+      },
+      {
+        "id": "b6cdc2bf-a6e9-4a85-86b8-1088069df0ee",
+        "moduleCode": "CS1010S",
+        "title": "Programming Methodology",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "CS1010, CS1010E, CS1010J, CS1010X, CS1010XCP, CS1101S",
+        "fulfillRequirements": [
+          "FIN4124",
+          "FIN4719",
+          "IT3010",
+          "ZB4171",
+          "MA3269",
+          "DSA3102",
+          "ST3247",
+          "QF2103"
+        ],
+        "prereqTree": ""
       }
     ]
   }

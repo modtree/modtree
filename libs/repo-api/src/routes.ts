@@ -34,8 +34,32 @@ const ModuleCondensedRoutes: JestEach[] = [
   ],
 ]
 
+const ModuleRoutes: JestEach[] = [
+  [
+    'get',
+    '/module/:moduleCode',
+    {
+      url: '/module/CS1010S',
+    },
+  ],
+  [
+    'get',
+    '/modules',
+    {
+      url: '/modules',
+    },
+  ],
+  [
+    'get',
+    '/search/modules/:searchQuery',
+    {
+      url: '/search/modules/CS1010',
+    },
+  ],
+]
+
 // TODO consider referring to references/routes.json to
 // make sure this is updated
 //
 // however filling in the route properties will probably be manual
-export const routes: JestEach[] = [...ModuleCondensedRoutes]
+export const routes: JestEach[] = [...ModuleCondensedRoutes, ...ModuleRoutes]
