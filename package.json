@@ -24,7 +24,9 @@
     "prepare": "bash ./scripts/yarn.sh setup",
     "i": "bash ./scripts/yarn.sh inverse",
     "heroku-postbuild": "nx build server",
-    "version": "auto-changelog -p && git add --all"
+    "version": "auto-changelog -p && git add --all",
+    "auto:setup": "nx test auto-docs --testPathPattern setup",
+    "auto:run": "nx test auto-docs --testPathPattern run"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.0",
