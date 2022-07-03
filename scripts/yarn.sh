@@ -32,8 +32,9 @@ weiseng_inv() {
 # khang's config
 
 khang_env() {
-  ln -sf $SRC/web/.env.local $WEB/.env.local
-  ln -sf $SRC/admin.config.json ./admin.config.json
+  # ln -sf $SRC/web/.env.local $WEB/.env.local
+  # ln -sf $SRC/admin.config.json ./admin.config.json
+  ln -sf $SRC/server/.env ./.env
 }
 
 khang_inv() {

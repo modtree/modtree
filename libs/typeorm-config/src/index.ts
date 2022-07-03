@@ -21,7 +21,7 @@ import { join } from 'path'
  *
  * NODE_ENV decides which key of that JSON is read.
  */
-function readJson(target: DataSourceOptions) {
+export function readJson(target: DataSourceOptions) {
   /**
    * do nothing if there's no NODE_ENV
    */
@@ -62,17 +62,21 @@ function readJson(target: DataSourceOptions) {
  * }
  * ```
  */
-function readEnv(target: DataSourceOptions) {
+export function readEnv(target: DataSourceOptions) {
   const prefix = (e: string): string | undefined => process.env[getPrefix() + e]
+  let activeDatabase = prefix('ACTIVE_DATABASE')
   const env: Partial<DataSourceOptions> = {
     username: prefix('USERNAME'),
     password: prefix('PASSWORD'),
     host: prefix('HOST'),
-    database: prefix('ACTIVE_DATABASE'),
+    port: parseInt(prefix('PORT') || '5432'),
+    database: prefix('DATABASE'),
   }
   if (env.username) target.username = env.username
   if (env.password) target.password = env.password
   if (env.host) target.host = env.host
+  if (env.port) target.port = env.port
+  if (activeDatabase) target.database = activeDatabase
   if (env.database) target.database = env.database
   /**
    * for postgres deployments
@@ -86,25 +90,27 @@ function readEnv(target: DataSourceOptions) {
   }
 }
 
+export const defaultConfig: DataSourceOptions = {
+  type: 'postgres',
+  rootDir: join(__dirname, '../../..'),
+  entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
+  migrations: [],
+  username: '',
+  password: '',
+  host: 'localhost',
+  database: 'mt_test',
+  restoreSource: 'mod3.sql',
+  synchronize: true,
+  migrationsRun: false,
+}
+
 /**
  * generate a config based on the database type
  *
  * @returns {DataSourceOptions}
  */
-function getConfig(): DataSourceOptions {
-  const base: DataSourceOptions = {
-    type: 'postgres',
-    rootDir: join(__dirname, '../../..'),
-    entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
-    migrations: [],
-    username: '',
-    password: '',
-    host: 'localhost',
-    database: 'mt_test',
-    restoreSource: 'mod3.sql',
-    synchronize: true,
-    migrationsRun: false,
-  }
+export function getConfig(): DataSourceOptions {
+  const base = defaultConfig
   readJson(base)
   readEnv(base)
   return base
