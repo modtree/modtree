@@ -43,10 +43,15 @@ export type IDegree = IBase & {
 }
 
 export type GraphFlowNode = Node<IModule>
+export type GraphFlowEdge = {
+  id: string // CS1010-CS2040S
+  source: string // CS1010
+  target: string // CS2040S
+} & Edge
 
 export type GraphFrontendProps = {
   flowNodes: GraphFlowNode[]
-  flowEdges: Edge[]
+  flowEdges: GraphFlowEdge[]
 }
 
 export type IGraph = IBase &
