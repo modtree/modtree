@@ -55,6 +55,11 @@ export class UserRepository
     ]).then(([modulesDone, modulesDoing]) => {
       const user = this.create({
         ...props,
+        displayName: '',
+        username: '',
+        matriculationYear: 0,
+        graduationYear: 0,
+        graduationSemester: 0,
         modulesDone,
         modulesDoing,
         savedDegrees: [],
