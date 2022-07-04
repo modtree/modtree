@@ -11,7 +11,7 @@ import {
   FlowNode,
   InitGraphProps,
 } from '@modtree/types'
-import { quickpop, flatten } from '@modtree/utils'
+import { quickpop, flatten, emptyInit } from '@modtree/utils'
 import {
   getRelationNames,
   useDeleteAll,
@@ -20,7 +20,6 @@ import {
 import { ModuleRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
-import { Node } from 'react-flow-renderer'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
@@ -58,23 +57,67 @@ export class GraphRepository
     degree: Degree,
     props: InitGraphProps
   ): Promise<[Module[], Module[]]> {
-    // if passed in, then find the modules
-    const hidden = this.moduleRepo.findByCodes(props.modulesHiddenCodes)
-    const placed = this.moduleRepo.findByCodes(props.modulesPlacedCodes)
-    const loadedHidden = hidden.then((hidden) => {
-      if (props.pullAll) {
-        /* if don't pass in anything, then by default add ALL of
-         * - user.modulesDoing
-         * - user.modulesDone
-         * - degree.modules
-         */
-        hidden.push(...degree.modules)
-        hidden.push(...user.modulesDone)
-        hidden.push(...user.modulesDoing)
-      }
-      return hidden
-    })
-    return Promise.all([loadedHidden, placed])
+    /**
+     * array of all loaded modules, to not have to pull again from database
+     */
+    const loadedModules = degree.modules
+    loadedModules.push(...user.modulesDoing)
+    loadedModules.push(...user.modulesDone)
+    const loadedCodes = loadedModules.map((m) => m.moduleCode)
+    /**
+     * determine what codes to pull from database
+     */
+    const codesToFetch = [
+      ...props.modulesHiddenCodes,
+      ...props.modulesPlacedCodes,
+    ].filter((code) => !loadedCodes.includes(code))
+    const fetchedModules = this.moduleRepo.findByCodes(codesToFetch)
+
+    /**
+     * combine all required modules into one
+     */
+    const moduleCache = fetchedModules.then((res) => [...res, ...loadedModules])
+
+    /**
+     * determine what codes go where
+     */
+    const codes = {
+      hidden: new Set(props.modulesHiddenCodes),
+      placed: new Set(props.modulesPlacedCodes),
+      degree: degree.modules.map((m) => m.moduleCode),
+      doing: user.modulesDoing.map((m) => m.moduleCode),
+      done: user.modulesDone.map((m) => m.moduleCode),
+    }
+
+    /**
+     * done/doing modules are immediately placed
+     */
+    user.modulesDoing.forEach((m) => codes.placed.add(m.moduleCode))
+    user.modulesDone.forEach((m) => codes.placed.add(m.moduleCode))
+
+    /**
+     * remaining modules in degree are hidden
+     */
+    degree.modules
+      .map((m) => m.moduleCode)
+      .forEach((code) => {
+        if (!codes.placed.has(code)) {
+          codes.hidden.add(code)
+        }
+      })
+
+    const empty = this.moduleRepo.create(emptyInit.Module)
+
+    const modules = moduleCache.then((cache) => ({
+      hidden: Array.from(codes.hidden).map(
+        (code) => cache.find((m) => m.moduleCode === code) || empty
+      ),
+      placed: Array.from(codes.hidden).map(
+        (code) => cache.find((m) => m.moduleCode === code) || empty
+      ),
+    }))
+
+    return modules.then((res) => [res.hidden, res.placed])
   }
 
   /**
