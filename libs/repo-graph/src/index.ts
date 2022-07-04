@@ -112,7 +112,7 @@ export class GraphRepository
       hidden: Array.from(codes.hidden).map(
         (code) => cache.find((m) => m.moduleCode === code) || empty
       ),
-      placed: Array.from(codes.hidden).map(
+      placed: Array.from(codes.placed).map(
         (code) => cache.find((m) => m.moduleCode === code) || empty
       ),
     }))

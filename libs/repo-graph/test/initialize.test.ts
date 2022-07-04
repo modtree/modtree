@@ -55,9 +55,10 @@ it('increments the count by 1', async () => {
 
 it('saves correct hidden modules', async () => {
   const codes = t.graph!.modulesHidden.map(flatten.module)
-  expect(codes).toIncludeSameMembers(['CS1101S', 'MA2001', 'MA2219'])
+  expect(codes).toIncludeSameMembers(['CS1101S'])
 })
 
-it('has no modules placed', () => {
-  expect(t.graph!.modulesPlaced).toHaveLength(0)
+it('saves correct placed modules', () => {
+  const codes = t.graph!.modulesPlaced.map(flatten.module)
+  expect(codes).toIncludeSameMembers(['MA2001', 'MA2219'])
 })
