@@ -1,31 +1,13 @@
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { Graph } from '@modtree/entity'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
+import { teardown, Repo, t, setup } from '@modtree/test-env'
+import { graphInitializeSetup } from './setup'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Promise.all([
-        Repo.User.initialize({
-          ...init.user1,
-          modulesDone: ['MA2001'],
-          modulesDoing: ['MA2219'],
-        }),
-        Repo.Degree.initialize({
-          moduleCodes: ['CS1101S', 'MA2001'],
-          title: 'Test Degree',
-        }),
-      ])
-    )
-    .then(([user, degree]) => {
-      t.user = user
-      t.degree = degree
-    })
-)
+beforeAll(() => setup(db).then(graphInitializeSetup))
 afterAll(() => teardown(db))
 
 it('initial count', async () => {

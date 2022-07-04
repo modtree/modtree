@@ -15,4 +15,5 @@ export function nodify(module: Module): GraphFlowNode {
 export function getFlowEdges(modules: Module[]): GraphFlowEdge[] {
   const result: GraphFlowEdge[] = []
   console.log(modules)
+  return []
 }
