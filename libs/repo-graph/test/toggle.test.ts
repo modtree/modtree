@@ -38,23 +38,23 @@ async function toggle(graph: Graph, moduleCode: string) {
   return Repo.Graph.toggleModule(graph, moduleCode)
 }
 
-test('MA2001 is hidden', async () => {
+test('CS2106 is hidden', async () => {
   await findGraph(t.graph!.id).then((graph) => {
     const codes = graph.modulesHidden.map(flatten.module)
-    expect(codes).toContain('MA2001')
+    expect(codes).toContain('CS2106')
   })
 })
 
-test('toggling MA2001 returns a graph', async () => {
-  await toggle(t.graph!, 'MA2001').then((graph) => {
+test('toggling CS2106 returns a graph', async () => {
+  await toggle(t.graph!, 'CS2106').then((graph) => {
     expect(graph).toBeInstanceOf(Graph)
   })
 })
 
-test('MA2001 becomes placed', async () => {
+test('CS2106 becomes placed', async () => {
   await findGraph(t.graph!.id).then((graph) => {
     const codes = graph.modulesPlaced.map(flatten.module)
-    expect(codes).toContain('MA2001')
+    expect(codes).toContain('CS2106')
   })
 })
 

@@ -190,7 +190,7 @@ export interface IUserRepository extends Repository<IUser> {
    * get all the user's unlocked module after completing one particular module
    *
    * @param user
-   * @param moduleCode of that particular module
+   * @param moduleCode
    * @returns module
    */
   getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
