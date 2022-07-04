@@ -40,16 +40,17 @@ test('server is running', async () => {
 })
 
 if (serverRunning) {
-  describe('bare minimum', () => {
+  describe('entity check', () => {
     test('runs with no errors', async () => {
       const res = await api.autoSetup(init)
+      expect(res).toHaveSameKeysAs(['u1', 'u2', 'd1', 'd2', 'g1', 'g2'])
+      // unpack data
       u1 = res.u1
       u2 = res.u2
       d1 = res.d1
       d2 = res.d2
       g1 = res.g1
       g2 = res.g2
-      expect(1).toEqual(1)
     })
 
     test('has 2 users', async () => {
@@ -76,14 +77,16 @@ if (serverRunning) {
     let degreeKeys: string[]
     let graphKeys: string[]
 
-    test('get keys', () => {
+    test('modtree entities have keys', () => {
       userKeys = Object.keys(Repo.User.metadata.propertiesMap)
       degreeKeys = Object.keys(Repo.Degree.metadata.propertiesMap)
       graphKeys = Object.keys(Repo.Graph.metadata.propertiesMap)
-      expect(1).toEqual(1)
+      expect(userKeys.length).toBeGreaterThan(0)
+      expect(degreeKeys.length).toBeGreaterThan(0)
+      expect(graphKeys.length).toBeGreaterThan(0)
     })
 
-    test('all properties exist', () => {
+    test('each entity instance has all keys', () => {
       expect(Object.keys(u1)).toIncludeSameMembers(userKeys)
       expect(Object.keys(u2)).toIncludeSameMembers(userKeys)
       expect(Object.keys(d1)).toIncludeSameMembers(degreeKeys)
