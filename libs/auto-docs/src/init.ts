@@ -1,5 +1,5 @@
 import {
-  FlowNode,
+  GraphFlowNode,
   InitDegreeProps,
   InitGraphProps,
   InitUserProps,
@@ -17,10 +17,10 @@ type Init = {
   graph1: InitGraphProps
   graph2: InitGraphProps
   graph3: InitGraphProps
-  nodes: FlowNode[]
+  nodes: GraphFlowNode[]
   edges: Edge[]
-  updatedNodes: FlowNode[]
-  updatedNode: FlowNode
+  updatedNodes: GraphFlowNode[]
+  updatedNode: GraphFlowNode
 }
 
 /**

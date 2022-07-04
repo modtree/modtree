@@ -1,6 +1,6 @@
 import type { UserProfile } from '@auth0/nextjs-auth0'
 import type { ButtonHTMLAttributes, ReactElement, ComponentProps } from 'react'
-import type { UseState, Modify, IModuleCondensed, IUser } from '@modtree/types'
+import type { UseState, Modify, IModuleCondensed } from '@modtree/types'
 
 /**
  * for frontend-specific types.
@@ -14,7 +14,7 @@ export type UserContext = {
 }
 
 export type ModtreeUserProfile = UserProfile & {
-  modtree?: IUser
+  modtreeId?: string // modtree database user id
 }
 
 export type ModtreeUserContext = {

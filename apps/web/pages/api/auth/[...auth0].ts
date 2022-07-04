@@ -10,7 +10,7 @@ const afterCallback = async (
   return api.user
     .login(session.user.sub, session.user.email)
     .then((user) => {
-      session.user.modtree = user
+      session.user.modtreeId = user.id
       return session
     })
     .catch((err) => {

@@ -2,23 +2,40 @@ import { setDegree } from '@/store/degree'
 import { setGraph } from '@/store/graph'
 import store from '@/store/redux'
 import { setUser } from '@/store/user'
+import { IUser } from '@modtree/types'
+import { empty } from '@modtree/utils'
 import { api } from 'api'
-import { ModtreeUserContext } from 'types'
+import { ModtreeUserProfile } from 'types'
 
 const redux = store.getState()
 const dispatch = store.dispatch
 
-export function rehydrate(user: ModtreeUserContext['user']) {
+async function getUser(user: ModtreeUserProfile): Promise<IUser> {
   if (redux.user.id === '') {
-    api.user
-      .getById(user.modtree.id)
-      .then((user) => dispatch(setUser(user)))
-      .catch(() => false)
+    return api.user
+      .getById(user.modtreeId)
+      .then((user) => {
+        dispatch(setUser(user))
+        return user
+      })
+      .catch(() => empty.User)
+  } else {
+    return redux.user
   }
-  if (redux.degree.id === '') {
-    dispatch(setDegree(user.modtree.savedDegrees[0]))
-  }
-  if (redux.graph.id === '') {
-    dispatch(setGraph(user.modtree.savedGraphs[0]))
-  }
+}
+
+export function rehydrate(user: ModtreeUserProfile) {
+  const userPromise = getUser(user)
+  userPromise.then((user) => {
+    if (redux.degree.id === '') {
+      const degree = user.savedDegrees[0]
+      if (!degree) return
+      dispatch(setDegree(degree))
+    }
+    if (redux.graph.id === '') {
+      const graph = user.savedGraphs[0]
+      if (!graph) return
+      dispatch(setGraph(graph))
+    }
+  })
 }

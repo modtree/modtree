@@ -1,7 +1,7 @@
 import { UserIcon } from '@/ui/icons'
 import { useUser } from '@/utils/auth0'
 import { DropdownMenu, Entries } from '@/ui/menu'
-import { useAppDispatch } from '@/store/redux'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { hideContextMenu, showDebugModal, showUserProfile } from '@/store/modal'
 import { MenuItem } from 'types'
 
@@ -9,6 +9,7 @@ export default function SignedInCircle() {
   const { user } = useUser()
   const dispatch = useAppDispatch()
   const dev = process.env['NODE_ENV'] === 'development'
+  const email = useAppSelector((state) => state.user.email)
 
   const items: MenuItem[] = [
     { text: 'Your profile', callback: () => dispatch(showUserProfile()) },
@@ -41,7 +42,7 @@ export default function SignedInCircle() {
         </>
         <>
           <div>Email{dev && ' (postgres)'}</div>
-          <b>{user.modtree?.email}</b>
+          <b>{email}</b>
         </>
       </Entries>
     </DropdownMenu>
