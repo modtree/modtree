@@ -1916,15 +1916,6 @@
     confusing-browser-globals "^1.0.9"
     semver "7.3.4"
 
-"@nrwl/express@^14.2.4":
-  version "14.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/express/-/express-14.2.4.tgz#a11856419bd2c94a9ea2bcf04f22296ae9e45044"
-  integrity sha512-9qD92exelH9FlZ5DTIVfLnZRnmezhmLPVjSrvqbMepvJZ6qK+9YMUgVWFJ1pGs2EtPLqvkj76Xa4rPbSv3IMwQ==
-  dependencies:
-    "@nrwl/devkit" "14.2.4"
-    "@nrwl/node" "14.2.4"
-    "@nrwl/workspace" "14.2.4"
-
 "@nrwl/jest@14.2.2":
   version "14.2.2"
   resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-14.2.2.tgz#9be9c8efb3c49112796f56a9ba9e6e5024b689bc"
