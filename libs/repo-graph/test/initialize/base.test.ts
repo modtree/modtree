@@ -1,7 +1,7 @@
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { Graph } from '@modtree/entity'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
+import { teardown, Repo, t, setup, init } from '@modtree/test-env'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
