@@ -28,10 +28,14 @@ export function rehydrate(user: ModtreeUserProfile) {
   const userPromise = getUser(user)
   userPromise.then((user) => {
     if (redux.degree.id === '') {
-      dispatch(setDegree(user.savedDegrees[0]))
+      const degree = user.savedDegrees[0]
+      if (!degree) return
+      dispatch(setDegree(degree))
     }
     if (redux.graph.id === '') {
-      dispatch(setGraph(user.savedGraphs[0]))
+      const graph = user.savedGraphs[0]
+      if (!graph) return
+      dispatch(setGraph(graph))
     }
   })
 }
