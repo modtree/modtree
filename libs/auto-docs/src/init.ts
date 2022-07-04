@@ -1,17 +1,22 @@
-import { FlowNode, InitProps } from '@modtree/types'
+import {
+  FlowNode,
+  InitDegreeProps,
+  InitGraphProps,
+  InitUserProps,
+} from '@modtree/types'
 import { empty } from '@modtree/utils'
 import { Edge } from 'react-flow-renderer'
 
 type Init = {
-  degree1: InitProps['Degree']
-  degree2: InitProps['Degree']
-  degree3: InitProps['Degree']
-  user1: InitProps['User']
-  user2: InitProps['User']
-  user3: InitProps['User']
-  graph1: InitProps['Graph']
-  graph2: InitProps['Graph']
-  graph3: InitProps['Graph']
+  degree1: InitDegreeProps
+  degree2: InitDegreeProps
+  degree3: InitDegreeProps
+  user1: InitUserProps
+  user2: InitUserProps
+  user3: InitUserProps
+  graph1: InitGraphProps
+  graph2: InitGraphProps
+  graph3: InitGraphProps
   nodes: FlowNode[]
   edges: Edge[]
   updatedNodes: FlowNode[]
