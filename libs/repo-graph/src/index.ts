@@ -1,5 +1,5 @@
 import { DataSource, In, Repository } from 'typeorm'
-import { Module, Graph, User, Degree } from '@modtree/entity'
+import { Module, Graph } from '@modtree/entity'
 import {
   IModuleRepository,
   IUserRepository,
@@ -11,7 +11,7 @@ import {
   FlowNode,
   InitGraphProps,
 } from '@modtree/types'
-import { quickpop, flatten, emptyInit } from '@modtree/utils'
+import { quickpop, flatten } from '@modtree/utils'
 import {
   getRelationNames,
   useDeleteAll,
