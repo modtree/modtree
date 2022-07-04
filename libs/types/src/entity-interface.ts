@@ -21,8 +21,6 @@ export type IBase = {
   id: string
 }
 
-export type FlowNode = Node<IModule>
-
 export type IUser = IBase & {
   authZeroId: string
   displayName: string
@@ -44,8 +42,10 @@ export type IDegree = IBase & {
   modules: IModule[]
 }
 
+export type GraphFlowNode = Node<IModule>
+
 export type GraphFrontendProps = {
-  flowNodes: FlowNode[]
+  flowNodes: GraphFlowNode[]
   flowEdges: Edge[]
 }
 

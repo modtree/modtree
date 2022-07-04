@@ -7,7 +7,7 @@ import {
   IModuleFull,
   IModuleCondensed,
   GraphFrontendProps,
-  FlowNode,
+  GraphFlowNode,
 } from './entity-interface'
 import {
   InitDegreeProps,
@@ -109,7 +109,7 @@ export interface IGraphRepository extends Repository<IGraph> {
    * @param node
    * @returns graph
    */
-  updateFlowNode(graph: IGraph, node: FlowNode): Promise<IGraph>
+  updateFlowNode(graph: IGraph, node: GraphFlowNode): Promise<IGraph>
   /**
    * finds graphs by ids
    *
