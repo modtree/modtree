@@ -8,5 +8,6 @@ export function nodify(module: Module): GraphFlowNode {
     id: module.moduleCode,
     position: origin,
     data: module,
+    type: 'moduleNode',
   }
 }
