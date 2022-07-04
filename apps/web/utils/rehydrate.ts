@@ -11,7 +11,7 @@ const dispatch = store.dispatch
 export function rehydrate(user: ModtreeUserContext['user']) {
   if (redux.user.id === '') {
     api.user
-      .getById(user.modtree.id)
+      .getById(user.modtreeId)
       .then((user) => dispatch(setUser(user)))
       .catch(() => false)
   }
