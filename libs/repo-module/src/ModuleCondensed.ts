@@ -1,10 +1,10 @@
 import { DataSource, Repository } from 'typeorm'
 import { ModuleCondensed } from '@modtree/entity'
 import {
-  InitProps,
   IModuleCondensedRepository,
   FindByKey,
   IModuleCondensed,
+  InitModuleCondensedProps,
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
 import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
@@ -27,12 +27,10 @@ export class ModuleCondensedRepository
   /**
    * initialize a Module Condensed
    *
-   * @param {InitProps['ModuleCondensed']} props
+   * @param {InitModuleCondensedProps} props
    * @returns {Promise<ModuleCondensed>}
    */
-  async initialize(
-    props: InitProps['ModuleCondensed']
-  ): Promise<ModuleCondensed> {
+  async initialize(props: InitModuleCondensedProps): Promise<ModuleCondensed> {
     return this.save(
       this.create({
         ...props,

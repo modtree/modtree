@@ -1,64 +1,47 @@
 import { PrereqTree } from './nusmods'
 
-export type InitProps = {
-  /**
-   * props to initialize a User
-   */
-  User: {
-    /**
-     * required
-     * (immediately available after signing up with auth0)
-     */
-    authZeroId: string
-    email: string
-    /** optional */
-    modulesDone?: string[]
-    modulesDoing?: string[]
-    displayName?: string
-    username?: string
-    matriculationYear?: number
-    graduationYear?: number
-    graduationSemester?: number
-  }
+export type InitDegreeProps = {
+  moduleCodes: string[]
+  title: string
+}
 
+export type InitUserProps = {
   /**
-   * props to initialize a Degree
+   * required
+   * (immediately available after signing up with auth0)
    */
-  Degree: {
-    moduleCodes: string[]
-    title: string
-  }
+  authZeroId: string
+  email: string
+  /** optional */
+  modulesDone?: string[]
+  modulesDoing?: string[]
+  displayName?: string
+  username?: string
+  matriculationYear?: number
+  graduationYear?: number
+  graduationSemester?: number
+}
 
-  /**
-   * props to initialize a Graph
-   */
-  Graph: {
-    userId: string
-    degreeId: string
-    modulesPlacedCodes: string[]
-    modulesHiddenCodes: string[]
-    pullAll: boolean
-  }
+export type InitGraphProps = {
+  userId: string
+  degreeId: string
+  modulesPlacedCodes: string[]
+  modulesHiddenCodes: string[]
+  pullAll: boolean
+}
 
-  /**
-   * props to initialize a Module
-   */
-  Module: {
-    moduleCode: string
-    title: string
-    description: string
-    prerequisite: string
-    corequisite: string
-    preclusion: string
-    prereqTree: PrereqTree
-    fulfillRequirements: string[]
-  }
+export type InitModuleCondensedProps = {
+  moduleCode: string
+  title: string
+}
 
-  /**
-   * props to initialize a ModuleCondensed
-   */
-  ModuleCondensed: {
-    moduleCode: string
-    title: string
-  }
+export type InitModuleProps = {
+  moduleCode: string
+  title: string
+  description: string
+  prerequisite: string
+  corequisite: string
+  preclusion: string
+  prereqTree: PrereqTree
+  fulfillRequirements: string[]
 }

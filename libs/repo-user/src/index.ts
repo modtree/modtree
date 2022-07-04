@@ -3,12 +3,12 @@ import { User, Module, Degree, Graph } from '@modtree/entity'
 import {
   FindByKey,
   IModuleRepository,
-  InitProps,
+  InitUserProps,
   IUser,
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
-import { emptyInit, flatten } from '@modtree/utils'
+import { flatten } from '@modtree/utils'
 import {
   getRelationNames,
   useDeleteAll,
@@ -45,16 +45,15 @@ export class UserRepository
   /**
    * Adds a User to DB
    *
-   * @param {InitProps['User']} props
+   * @param {InitUserProps} props
    * @returns {Promise<User>}
    */
-  async initialize(props: Partial<InitProps['User']>): Promise<User> {
+  async initialize(props: InitUserProps): Promise<User> {
     return Promise.all([
       this.moduleRepo.findByCodes(props.modulesDone || []),
       this.moduleRepo.findByCodes(props.modulesDoing || []),
     ]).then(([modulesDone, modulesDoing]) => {
       const user = this.create({
-        ...emptyInit.User,
         ...props,
         modulesDone,
         modulesDoing,

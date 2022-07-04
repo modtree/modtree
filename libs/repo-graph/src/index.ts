@@ -1,7 +1,6 @@
 import { DataSource, In, Repository } from 'typeorm'
 import { Module, Graph, User, Degree } from '@modtree/entity'
 import {
-  InitProps,
   IModuleRepository,
   IUserRepository,
   IDegreeRepository,
@@ -10,6 +9,7 @@ import {
   IGraph,
   GraphFrontendProps,
   FlowNode,
+  InitGraphProps,
 } from '@modtree/types'
 import { quickpop, flatten } from '@modtree/utils'
 import {
@@ -48,12 +48,15 @@ export class GraphRepository
   /**
    * gets lists of modules placed and modules hidden
    *
+   * @param {User} user
+   * @param {Degree} degree
+   * @param {InitGraphProps}  props
    * @returns {Promise<[Module[], Module[]]>}
    */
   private async getModulesFromUserAndDegree(
     user: User,
     degree: Degree,
-    props: InitProps['Graph']
+    props: InitGraphProps
   ): Promise<[Module[], Module[]]> {
     // if passed in, then find the modules
     const hidden = this.moduleRepo.findByCodes(props.modulesHiddenCodes)
@@ -77,10 +80,10 @@ export class GraphRepository
   /**
    * Adds a Graph to DB
    *
-   * @param {InitProps['Graph']} props
+   * @param {InitGraphProps} props
    * @returns {Promise<Graph>}
    */
-  async initialize(props: InitProps['Graph']): Promise<Graph> {
+  async initialize(props: InitGraphProps): Promise<Graph> {
     /**
      * fetch user and degree
      */

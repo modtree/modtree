@@ -4,7 +4,7 @@ import {
   IModule,
   IModuleRepository,
   FindByKey,
-  InitProps,
+  InitModuleProps,
 } from '@modtree/types'
 import { flatten, unique } from '@modtree/utils'
 import { hasTakenModule, checkTree } from './utils'
@@ -31,10 +31,10 @@ export class ModuleRepository
   /**
    * initialize a Module
    *
-   * @param {InitProps['Module']} props
+   * @param {InitModuleProps} props
    * @returns {Promise<Module>}
    */
-  async initialize(props: InitProps['Module']): Promise<Module> {
+  async initialize(props: InitModuleProps): Promise<Module> {
     return this.save(this.create(props))
   }
 

@@ -1,5 +1,4 @@
 import { DeleteResult, Repository } from 'typeorm'
-import { InitProps } from './init-props'
 import {
   IGraph,
   IUser,
@@ -10,6 +9,13 @@ import {
   GraphFrontendProps,
   FlowNode,
 } from './entity-interface'
+import {
+  InitDegreeProps,
+  InitGraphProps,
+  InitModuleCondensedProps,
+  InitModuleProps,
+  InitUserProps,
+} from './init-props'
 
 export type FindByKey<T> = (query: string) => Promise<T>
 
@@ -29,7 +35,7 @@ export interface IGraphRepository extends Repository<IGraph> {
    * @param props
    * @returns graph
    */
-  initialize(props: InitProps['Graph']): Promise<IGraph>
+  initialize(props: InitGraphProps): Promise<IGraph>
   /**
    * delete all graphs
    *
@@ -123,7 +129,7 @@ export interface IUserRepository extends Repository<IUser> {
    * @param props
    * @returns user
    */
-  initialize(props: InitProps['User']): Promise<IUser>
+  initialize(props: InitUserProps): Promise<IUser>
   /**
    * finds a user by id
    *
@@ -277,7 +283,7 @@ export interface IDegreeRepository extends Repository<IDegree> {
    * @param props
    * @returns degree
    */
-  initialize(props: InitProps['Degree']): Promise<IDegree>
+  initialize(props: InitDegreeProps): Promise<IDegree>
   /**
    * finds a degree by id
    *
@@ -325,7 +331,7 @@ export interface IModuleRepository extends Repository<IModule> {
    * @param props
    * @returns module
    */
-  initialize(props: InitProps['Module']): Promise<IModule>
+  initialize(props: InitModuleProps): Promise<IModule>
   /**
    * finds a module by id
    *
@@ -427,7 +433,7 @@ export interface IModuleCondensedRepository
    * @param props
    * @returns condensed module
    */
-  initialize(props: InitProps['ModuleCondensed']): Promise<IModuleCondensed>
+  initialize(props: InitModuleCondensedProps): Promise<IModuleCondensed>
   /**
    * finds a condensed module by id
    *
