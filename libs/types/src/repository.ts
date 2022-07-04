@@ -44,7 +44,11 @@ export interface IGraphRepository extends Repository<IGraph> {
    */
   findOneById(id: string): Promise<IGraph>
   /**
+   * toggle the state of a module in a graph
    *
+   * @param graph
+   * @param moduleCode
+   * @returns graph
    */
   toggleModule(graph: IGraph, moduleCode: string): Promise<IGraph>
   /**
@@ -56,33 +60,55 @@ export interface IGraphRepository extends Repository<IGraph> {
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<IGraph>
   /**
+   * lists graphs by user id and degree id
    *
+   * @param userId
+   * @param degreeId
+   * @returns graph list and its count
    */
   findManyByUserAndDegreeId(
     userId: string,
     degreeId: string
   ): Promise<[IGraph[], number]>
   /**
+   * preparatory function for getSuggestedModules
    *
+   * @param graph
+   * @param modulesSelected
    */
   getSuggestModulesParams(
     graph: IGraph,
     modulesSelected: string[]
   ): Promise<[string[], string[], string[], string[]]>
   /**
+   * suggest a list of modules to take next
    *
+   * @param graph
+   * @param moduleCodes
+   * @returns modules
    */
   suggestModules(graph: IGraph, moduleCodes: string[]): Promise<IModule[]>
   /**
+   * update frontend props of a graph
    *
+   * @param graph
+   * @param props
+   * @returns graph
    */
   updateFrontendProps(graph: IGraph, props: GraphFrontendProps): Promise<IGraph>
   /**
+   * updates one flow node of a graph
    *
+   * @param graph
+   * @param node
+   * @returns graph
    */
   updateFlowNode(graph: IGraph, node: FlowNode): Promise<IGraph>
   /**
+   * finds graphs by ids
    *
+   * @param id
+   * @returns graphs
    */
   findByIds(id: string[]): Promise<IGraph[]>
 }
@@ -112,7 +138,11 @@ export interface IUserRepository extends Repository<IUser> {
    */
   deleteAll(): Promise<DeleteResult>
   /**
+   * checks if a user can take a module
    *
+   * @param user
+   * @param moduleCode
+   * @returns boolean
    */
   canTakeModule(user: IUser, moduleCode: string): Promise<boolean>
   /**
@@ -137,43 +167,82 @@ export interface IUserRepository extends Repository<IUser> {
    */
   findOneByEmail(email: string): Promise<IUser>
   /**
+   * gets a user's eligible modules
    *
+   * @param user
+   * @returns modules
    */
   getEligibleModules(user: IUser): Promise<IModule[]>
   /**
+   * get all the post-requisites of the user's done/doing modules
    *
+   * @param user
+   * @returns modules
    */
   getPostReqs(user: IUser): Promise<IModule[]>
   /**
+   * get all the user's unlocked module after completing one particular module
    *
+   * @param user
+   * @param moduleCode of that particular module
+   * @returns module
    */
   getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
   /**
+   * checks if the user has taken a module
    *
+   * @param user
+   * @param moduleCode
+   * @returns boolean
    */
   hasTakenModule(user: IUser, moduleCode: string): Promise<boolean>
   /**
+   * filters a user's taken modules
    *
+   * @param user
+   * @param moduleCodes
+   * @returns module cdoes
    */
   filterTakenModules(user: IUser, moduleCodes: string[]): Promise<string[]>
   /**
+   * sets a user's main degree
    *
+   * @param user
+   * @param degreeId
+   * @returns user
    */
   setMainDegree(user: IUser, degreeId: string): Promise<IUser>
   /**
+   * inserts some degrees to a user's list of saved degrees
    *
+   * @param user
+   * @param degreeIds
+   * @returns user
    */
   insertDegrees(user: IUser, degreeIds: string[]): Promise<IUser>
   /**
+   * finds a degree within a user
    *
+   * @param user
+   * @param degreeId
+   * @returns degree
    */
   findDegree(user: IUser, degreeId: string): Promise<IDegree>
   /**
+   * removes a degree from a user's list of saved degrees
    *
+   * @param user
+   * @param degreeId
+   * @returns user
    */
   removeDegree(user: IUser, degreeId: string): Promise<IUser>
   /**
+   * sets the status of some modules of a user
    *
+   * @param user
+   * @param moduleCodes
+   * @param status
+   * @returns user
    */
   setModuleStatus(
     user: IUser,
@@ -181,11 +250,19 @@ export interface IUserRepository extends Repository<IUser> {
     status: ModuleStatus
   ): Promise<IUser>
   /**
+   * sets the main graph of the user
    *
+   * @param user
+   * @param graphId
+   * @returns user
    */
   setMainGraph(user: IUser, graphId: string): Promise<IUser>
   /**
+   * inserts some graphs to the user's list of saved graphs
    *
+   * @param user
+   * @param graphIds
+   * @returns user
    */
   insertGraphs(user: IUser, graphIds: string[]): Promise<IUser>
 }
