@@ -133,7 +133,7 @@ export const routes: Route[] = [
   {
     method: 'patch',
     route: '/degree/:degreeId',
-    fn: DegreeApi.insertModules,
+    fn: DegreeApi.setModules,
     validators: [body('moduleCodes').isArray().notEmpty()],
   },
 
