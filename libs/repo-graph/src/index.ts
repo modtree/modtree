@@ -20,6 +20,7 @@ import {
 import { ModuleRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
+import { getModules } from './get-modules'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
@@ -45,82 +46,6 @@ export class GraphRepository
   override findOneById: FindByKey<IGraph> = useFindOneByKey(this, 'id')
 
   /**
-   * gets lists of modules placed and modules hidden
-   *
-   * @param {User} user
-   * @param {Degree} degree
-   * @param {InitGraphProps}  props
-   * @returns {Promise<[Module[], Module[]]>}
-   */
-  private async getModulesFromUserAndDegree(
-    user: User,
-    degree: Degree,
-    props: InitGraphProps
-  ): Promise<[Module[], Module[]]> {
-    /**
-     * array of all loaded modules, to not have to pull again from database
-     */
-    const loadedModules = degree.modules
-    loadedModules.push(...user.modulesDoing)
-    loadedModules.push(...user.modulesDone)
-    const loadedCodes = loadedModules.map((m) => m.moduleCode)
-    /**
-     * determine what codes to pull from database
-     */
-    const codesToFetch = [
-      ...props.modulesHiddenCodes,
-      ...props.modulesPlacedCodes,
-    ].filter((code) => !loadedCodes.includes(code))
-    const fetchedModules = this.moduleRepo.findByCodes(codesToFetch)
-
-    /**
-     * combine all required modules into one
-     */
-    const moduleCache = fetchedModules.then((res) => [...res, ...loadedModules])
-
-    /**
-     * determine what codes go where
-     */
-    const codes = {
-      hidden: new Set(props.modulesHiddenCodes),
-      placed: new Set(props.modulesPlacedCodes),
-      degree: degree.modules.map((m) => m.moduleCode),
-      doing: user.modulesDoing.map((m) => m.moduleCode),
-      done: user.modulesDone.map((m) => m.moduleCode),
-    }
-
-    /**
-     * done/doing modules are immediately placed
-     */
-    user.modulesDoing.forEach((m) => codes.placed.add(m.moduleCode))
-    user.modulesDone.forEach((m) => codes.placed.add(m.moduleCode))
-
-    /**
-     * remaining modules in degree are hidden
-     */
-    degree.modules
-      .map((m) => m.moduleCode)
-      .forEach((code) => {
-        if (!codes.placed.has(code)) {
-          codes.hidden.add(code)
-        }
-      })
-
-    const empty = this.moduleRepo.create(emptyInit.Module)
-
-    const modules = moduleCache.then((cache) => ({
-      hidden: Array.from(codes.hidden).map(
-        (code) => cache.find((m) => m.moduleCode === code) || empty
-      ),
-      placed: Array.from(codes.placed).map(
-        (code) => cache.find((m) => m.moduleCode === code) || empty
-      ),
-    }))
-
-    return modules.then((res) => [res.hidden, res.placed])
-  }
-
-  /**
    * Adds a Graph to DB
    *
    * @param {InitGraphProps} props
@@ -136,13 +61,13 @@ export class GraphRepository
      * get all relavant modules, sorted into placed and hidden
      */
     const modules = Promise.all([user, degree]).then(([user, degree]) =>
-      this.getModulesFromUserAndDegree(user, degree, props)
+      getModules(this.moduleRepo, user, degree, props)
     )
     /**
      * save the newly created graph
      */
     return Promise.all([user, degree, modules]).then(
-      ([user, degree, [modulesHidden, modulesPlaced]]) =>
+      ([user, degree, { modulesHidden, modulesPlaced }]) =>
         this.save(
           this.create({
             user,
