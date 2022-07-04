@@ -1,4 +1,4 @@
-import { IDegree } from '@modtree/types'
+import { IDegree, IModule } from '@modtree/types'
 import { BaseApi } from './base-api'
 
 export class DegreeApi extends BaseApi {
@@ -16,6 +16,15 @@ export class DegreeApi extends BaseApi {
   async setModules(degreeId: string, moduleCodes: string[]): Promise<IDegree> {
     return this.server
       .patch(`/degree/${degreeId}`, { moduleCodes })
+      .then((res) => res.data)
+  }
+  /**
+   * create
+   */
+  async create(title: string, modules: IModule[]): Promise<IDegree> {
+    const moduleCodes = modules.map((m) => m.moduleCode)
+    return this.server
+      .post(`/degree`, { title, moduleCodes })
       .then((res) => res.data)
   }
 }
