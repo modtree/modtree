@@ -72,7 +72,6 @@
     "@nrwl/node": "14.2.4",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/react": "14.2.4",
-    "@nrwl/web": "14.2.4",
     "@nrwl/workspace": "14.2.2",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.2",
