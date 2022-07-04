@@ -10,4 +10,12 @@ export class DegreeApi extends BaseApi {
       .get(`/degree/${degreeId}/get-full`)
       .then((res) => res.data)
   }
+  /**
+   * sets modules
+   */
+  async setModules(degreeId: string, moduleCodes: string[]): Promise<IDegree> {
+    return this.server
+      .patch(`/degree/${degreeId}`, { moduleCodes })
+      .then((res) => res.data)
+  }
 }

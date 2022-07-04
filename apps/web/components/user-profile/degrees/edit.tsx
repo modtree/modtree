@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
 import { setBuildList } from '@/store/search'
 import { api } from 'api'
+import { setDegree } from '@/store/degree'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   const { buildList, buildTitle, buildId } = useAppSelector(
@@ -26,6 +27,16 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         dispatch(setBuildList(modules))
       })
   }, [])
+  /* update backend */
+  useEffect(() => {
+    // Don't run the logic, if the buildList is not loaded yet
+    if (buildList.length > 0) {
+      const moduleCodes = buildList.map((m) => m.moduleCode)
+      api.degree.setModules(buildId, moduleCodes).then((degree) => {
+        dispatch(setDegree(degree))
+      })
+    }
+  }, [buildList])
   return (
     <div className="flex flex-col">
       <SettingsSection
