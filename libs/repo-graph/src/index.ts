@@ -70,8 +70,8 @@ export class GraphRepository
     const flowEdges = modules.then(({ modulesPlaced }) =>
       getFlowEdges(modulesPlaced)
     )
-    return Promise.all([user, degree, modules]).then(
-      ([user, degree, { modulesHidden, modulesPlaced }]) =>
+    return Promise.all([user, degree, modules, flowEdges]).then(
+      ([user, degree, { modulesHidden, modulesPlaced }, flowEdges]) =>
         this.save(
           this.create({
             user,
@@ -79,6 +79,7 @@ export class GraphRepository
             modulesPlaced,
             modulesHidden,
             flowNodes: modulesPlaced.map(nodify),
+            flowEdges,
           })
         )
     )
