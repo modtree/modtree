@@ -1,25 +1,25 @@
-import type { DatabaseType } from 'typeorm'
+import type { DatabaseType, DataSourceOptions as DSO } from 'typeorm'
+import type { Modify } from './utils'
 
 export type AsyncFunction<T> = () => Promise<T>
 
 export type SupportedDatabases = Extract<DatabaseType, 'mysql' | 'postgres'>
 
-export type DataSourceOptions = {
-  type: SupportedDatabases
-  rootDir: string
-  restoreSource: string
-  port?: number
-  database: string
-  username?: string
-  password?: string
-  host: string
-  migrations: string[]
-  entities: any[]
-  synchronize: boolean
-  migrationsRun: boolean
-  extra?: {
-    ssl: {
-      rejectUnauthorized: false
+export type DataSourceOptions = Modify<
+  DSO,
+  {
+    type: SupportedDatabases
+    rootDir: string
+    restoreSource: string
+    username?: string
+    password?: string
+    database: string
+    port?: number
+    host: string
+    extra?: {
+      ssl: {
+        rejectUnauthorized: false
+      }
     }
   }
-}
+>

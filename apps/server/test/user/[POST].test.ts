@@ -40,12 +40,5 @@ test('`initialize` is called with correct args', async () => {
   expect(initialize).toBeCalledWith({
     authZeroId: 'auth0|012345678901234567890123',
     email: 'test@test.test',
-    displayName: '',
-    username: '',
-    modulesDone: [],
-    modulesDoing: [],
-    matriculationYear: 0,
-    graduationYear: 0,
-    graduationSemester: 0,
   })
 })

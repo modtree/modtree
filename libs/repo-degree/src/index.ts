@@ -1,11 +1,11 @@
 import { DataSource, In, Repository } from 'typeorm'
 import { Degree } from '@modtree/entity'
 import {
-  InitProps,
   IDegreeRepository,
   IModuleRepository,
   FindByKey,
   IDegree,
+  InitDegreeProps,
 } from '@modtree/types'
 import {
   getRelationNames,
@@ -35,10 +35,10 @@ export class DegreeRepository
   /**
    * Adds a Degree to DB
    *
-   * @param {InitProps['Degree']} props
+   * @param {InitDegreeProps} props
    * @returns {Promise<Degree>}
    */
-  async initialize(props: InitProps['Degree']): Promise<Degree> {
+  async initialize(props: InitDegreeProps): Promise<Degree> {
     return this.moduleRepo
       .findByCodes(props.moduleCodes)
       .then((modules) =>

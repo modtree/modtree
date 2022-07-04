@@ -1,5 +1,4 @@
 import { DeleteResult, Repository } from 'typeorm'
-import { InitProps } from './init-props'
 import {
   IGraph,
   IUser,
@@ -10,6 +9,13 @@ import {
   GraphFrontendProps,
   FlowNode,
 } from './entity-interface'
+import {
+  InitDegreeProps,
+  InitGraphProps,
+  InitModuleCondensedProps,
+  InitModuleProps,
+  InitUserProps,
+} from './init-props'
 
 export type FindByKey<T> = (query: string) => Promise<T>
 
@@ -20,93 +26,395 @@ export enum ModuleStatus {
 }
 
 /**
- * BaseRepository, but for now only in types
- * it is a interface that will be extended to form the final Repositories of modtree
+ * Graph Repository Interface
  */
-interface IBaseRepo<Entity, InitProps> extends Repository<Entity> {
-  initialize(props: Partial<InitProps>): Promise<Entity>
+export interface IGraphRepository extends Repository<IGraph> {
+  /**
+   * initialize a new graph and save it to the database
+   *
+   * @param props
+   * @returns graph
+   */
+  initialize(props: InitGraphProps): Promise<IGraph>
+  /**
+   * delete all graphs
+   *
+   * @returns delete result
+   */
   deleteAll(): Promise<DeleteResult>
-  findOneById: FindByKey<Entity>
-}
-
-/**
- * to shorten the lines below
- */
-type EGraph = IBaseRepo<IGraph, InitProps['Graph']>
-type EUser = IBaseRepo<IUser, InitProps['User']>
-type EDegree = IBaseRepo<IDegree, InitProps['Degree']>
-type EModule = IBaseRepo<IModule, InitProps['Module']>
-type EModuleCondensed = IBaseRepo<
-  IModuleCondensed,
-  InitProps['ModuleCondensed']
->
-
-export interface IGraphRepository extends EGraph {
+  /**
+   * finds a graph by id
+   *
+   * @param id
+   * @returns graph
+   */
+  findOneById(id: string): Promise<IGraph>
+  /**
+   * toggle the state of a module in a graph
+   *
+   * @param graph
+   * @param moduleCode
+   * @returns graph
+   */
   toggleModule(graph: IGraph, moduleCode: string): Promise<IGraph>
+  /**
+   * finds a graph by user and degree id
+   *
+   * @param userId
+   * @param degreeId
+   * @returns graph
+   */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<IGraph>
+  /**
+   * lists graphs by user id and degree id
+   *
+   * @param userId
+   * @param degreeId
+   * @returns graph list and its count
+   */
   findManyByUserAndDegreeId(
     userId: string,
     degreeId: string
   ): Promise<[IGraph[], number]>
+  /**
+   * preparatory function for getSuggestedModules
+   *
+   * @param graph
+   * @param modulesSelected
+   */
   getSuggestModulesParams(
     graph: IGraph,
     modulesSelected: string[]
   ): Promise<[string[], string[], string[], string[]]>
+  /**
+   * suggest a list of modules to take next
+   *
+   * @param graph
+   * @param moduleCodes
+   * @returns modules
+   */
   suggestModules(graph: IGraph, moduleCodes: string[]): Promise<IModule[]>
+  /**
+   * update frontend props of a graph
+   *
+   * @param graph
+   * @param props
+   * @returns graph
+   */
   updateFrontendProps(graph: IGraph, props: GraphFrontendProps): Promise<IGraph>
+  /**
+   * updates one flow node of a graph
+   *
+   * @param graph
+   * @param node
+   * @returns graph
+   */
   updateFlowNode(graph: IGraph, node: FlowNode): Promise<IGraph>
+  /**
+   * finds graphs by ids
+   *
+   * @param id
+   * @returns graphs
+   */
   findByIds(id: string[]): Promise<IGraph[]>
 }
 
-export interface IUserRepository extends EUser {
+/**
+ * User Repository Interface
+ */
+export interface IUserRepository extends Repository<IUser> {
+  /**
+   * initialize a new user and save it to the database
+   *
+   * @param props
+   * @returns user
+   */
+  initialize(props: InitUserProps): Promise<IUser>
+  /**
+   * finds a user by id
+   *
+   * @param id
+   * @returns user
+   */
+  findOneById(id: string): Promise<IUser>
+  /**
+   * delete all users
+   *
+   * @returns delete result
+   */
+  deleteAll(): Promise<DeleteResult>
+  /**
+   * checks if a user can take a module
+   *
+   * @param user
+   * @param moduleCode
+   * @returns boolean
+   */
   canTakeModule(user: IUser, moduleCode: string): Promise<boolean>
+  /**
+   * finds a user by username
+   *
+   * @param username
+   * @returns user
+   */
   findOneByUsername(username: string): Promise<IUser>
+  /**
+   * finds a user by auth0 id
+   *
+   * @param authZeroId
+   * @returns user
+   */
   findOneByAuthZeroId(authZeroId: string): Promise<IUser>
+  /**
+   * finds a user by email
+   *
+   * @param email
+   * @returns user
+   */
   findOneByEmail(email: string): Promise<IUser>
+  /**
+   * gets a user's eligible modules
+   *
+   * @param user
+   * @returns modules
+   */
   getEligibleModules(user: IUser): Promise<IModule[]>
+  /**
+   * get all the post-requisites of the user's done/doing modules
+   *
+   * @param user
+   * @returns modules
+   */
   getPostReqs(user: IUser): Promise<IModule[]>
+  /**
+   * get all the user's unlocked module after completing one particular module
+   *
+   * @param user
+   * @param moduleCode
+   * @returns module
+   */
   getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
+  /**
+   * checks if the user has taken a module
+   *
+   * @param user
+   * @param moduleCode
+   * @returns boolean
+   */
   hasTakenModule(user: IUser, moduleCode: string): Promise<boolean>
+  /**
+   * filters a user's taken modules
+   *
+   * @param user
+   * @param moduleCodes
+   * @returns module cdoes
+   */
   filterTakenModules(user: IUser, moduleCodes: string[]): Promise<string[]>
+  /**
+   * sets a user's main degree
+   *
+   * @param user
+   * @param degreeId
+   * @returns user
+   */
   setMainDegree(user: IUser, degreeId: string): Promise<IUser>
+  /**
+   * inserts some degrees to a user's list of saved degrees
+   *
+   * @param user
+   * @param degreeIds
+   * @returns user
+   */
   insertDegrees(user: IUser, degreeIds: string[]): Promise<IUser>
+  /**
+   * finds a degree within a user
+   *
+   * @param user
+   * @param degreeId
+   * @returns degree
+   */
   findDegree(user: IUser, degreeId: string): Promise<IDegree>
+  /**
+   * removes a degree from a user's list of saved degrees
+   *
+   * @param user
+   * @param degreeId
+   * @returns user
+   */
   removeDegree(user: IUser, degreeId: string): Promise<IUser>
+  /**
+   * sets the status of some modules of a user
+   *
+   * @param user
+   * @param moduleCodes
+   * @param status
+   * @returns user
+   */
   setModuleStatus(
     user: IUser,
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<IUser>
+  /**
+   * sets the main graph of the user
+   *
+   * @param user
+   * @param graphId
+   * @returns user
+   */
   setMainGraph(user: IUser, graphId: string): Promise<IUser>
+  /**
+   * inserts some graphs to the user's list of saved graphs
+   *
+   * @param user
+   * @param graphIds
+   * @returns user
+   */
   insertGraphs(user: IUser, graphIds: string[]): Promise<IUser>
 }
 
-export interface IDegreeRepository extends EDegree {
+/**
+ * Degree Repository Interface
+ */
+export interface IDegreeRepository extends Repository<IDegree> {
+  /**
+   * initialize a new degree and save it to the database
+   *
+   * @param props
+   * @returns degree
+   */
+  initialize(props: InitDegreeProps): Promise<IDegree>
+  /**
+   * finds a degree by id
+   *
+   * @param id
+   * @returns degree
+   */
+  findOneById(id: string): Promise<IDegree>
+  /**
+   * delete all degrees
+   *
+   * @returns delete result
+   */
+  deleteAll(): Promise<DeleteResult>
+  /**
+   * insert modules into a degree
+   *
+   * @param degree
+   * @param moduleCodes
+   * @returns degree
+   */
   insertModules(degree: IDegree, moduleCodes: string[]): Promise<IDegree>
+  /**
+   * finds a degree by title
+   *
+   * @param title
+   * @returns degree
+   */
   findOneByTitle(title: string): Promise<IDegree>
+  /**
+   * finds some degrees by ids
+   *
+   * @param id
+   * @returns degrees
+   */
   findByIds(id: string[]): Promise<IDegree[]>
 }
 
-export interface IModuleRepository extends EModule {
+/**
+ * Module Repository Interface
+ */
+export interface IModuleRepository extends Repository<IModule> {
+  /**
+   * initialize a new module and save it to the database
+   *
+   * @param props
+   * @returns module
+   */
+  initialize(props: InitModuleProps): Promise<IModule>
+  /**
+   * finds a module by id
+   *
+   * @param id
+   * @returns module
+   */
+  findOneById(id: string): Promise<IModule>
+  /**
+   * delete all modules
+   *
+   * @returns delete result
+   */
+  deleteAll(): Promise<DeleteResult>
+  /**
+   * lists all the module codes of modules in database
+   *
+   * @returns module codes
+   */
   getCodes(): Promise<string[]>
+  /**
+   * finds some modules by codes
+   *
+   * @param moduleCodes
+   * @returns module
+   */
   findByCodes(moduleCodes: string[]): Promise<IModule[]>
+  /**
+   * checks if a module is take-able given the modules
+   * that are already done/already doing
+   *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param moduleCode
+   * @returns a boolean
+   */
   canTakeModule(
     modulesDone: string[],
     modulesDoing: string[],
     moduleCode: string
   ): Promise<boolean>
+  /**
+   * get a list of post-requisites
+   *
+   * @param moduleCodes
+   * @returns module codes
+   */
   getPostReqs(moduleCodes: string[]): Promise<string[]>
+  /**
+   * get a list of eligible modules
+   *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param modulesSelected
+   * @returns module codes
+   */
   getEligibleModules(
     modulesDone: string[],
     modulesDoing: string[],
     modulesSelected: string[]
   ): Promise<string[]>
+  /**
+   * get a list of suggested modules
+   *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param modulesSelected
+   * @param requiredModules
+   * @returns module codes
+   */
   getSuggestedModules(
     modulesDone: string[],
     modulesDoing: string[],
     modulesSelected: string[],
     requiredModules: string[]
   ): Promise<string[]>
+  /**
+   * get a list of unlocked modules
+   *
+   * @param modulesDone
+   * @param modulesDoing
+   * @param moduleCode
+   * @returns module codes
+   */
   getUnlockedModules(
     modulesDone: string[],
     modulesDoing: string[],
@@ -114,13 +422,57 @@ export interface IModuleRepository extends EModule {
   ): Promise<string[]>
 }
 
-export interface IModuleCondensedRepository extends EModuleCondensed {
+/**
+ * ModuleCondensed Repository Interface
+ */
+export interface IModuleCondensedRepository
+  extends Repository<IModuleCondensed> {
+  /**
+   * initialize a new condensed module and save it to the database
+   *
+   * @param props
+   * @returns condensed module
+   */
+  initialize(props: InitModuleCondensedProps): Promise<IModuleCondensed>
+  /**
+   * finds a condensed module by id
+   *
+   * @param id
+   * @returns condensed module
+   */
+  findOneById(id: string): Promise<IModuleCondensed>
+  /**
+   * delete all condensed modules
+   *
+   * @returns delete result
+   */
+  deleteAll(): Promise<DeleteResult>
+  /**
+   * lists all the module codes of condensed modules in database
+   *
+   * @returns module codes
+   */
   getCodes(): Promise<string[]>
+  /**
+   * finds some condensed modules by codes
+   *
+   * @param moduleCodes
+   * @returns condensed module
+   */
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
 }
 
+/**
+ * ModuleFull Repository Interface
+ */
 export interface IModuleFullRepository extends Repository<IModuleFull> {
-  findOneByCode: FindByKey<IModuleFull>
+  /**
+   * finds a full module by code
+   *
+   * @param code
+   * @returns full module
+   */
+  findOneByCode(code: string): Promise<IModuleFull>
 }
 
 export type Repositories = {

@@ -62,7 +62,22 @@ export class Api {
    * @returns {Promise<User>}
    */
   async initializeUser(authZeroId: string, email: string): Promise<User> {
-    const user = this.userRepo.initialize({ authZeroId, email })
+    const user = this.userRepo.initialize({
+      authZeroId,
+      email,
+      modulesDone: ['MA2001', 'MA1100', 'HSH1000', 'HSA1000', 'GEA1000'],
+      modulesDoing: [
+        'IS1103',
+        'CS1010S',
+        'DTK1234',
+        'HS1401S',
+        'HSI1000',
+        'HSS1000',
+        'MA2002',
+        'MA2219',
+        'PC1432',
+      ],
+    })
     const degree = this.degreeRepo.initialize({
       ...emptyInit.Degree,
       title: 'Computer Science',

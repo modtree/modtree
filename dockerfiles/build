@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 if [[ $1 == 'server' ]]; then
   docker build -f server.Dockerfile -t brew4k/server ../

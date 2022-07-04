@@ -21,14 +21,16 @@ async function hasTakenModule(user: User, moduleCode: string) {
 
 it('returns true for modulesDone', async () => {
   const done = init.user1.modulesDone
-  await Promise.all(done.map((m) => hasTakenModule(t.user!, m))).then((res) => {
-    expect(res.every(Boolean)).toBe(true)
-  })
+  await Promise.all(done!.map((m) => hasTakenModule(t.user!, m))).then(
+    (res) => {
+      expect(res.every(Boolean)).toBe(true)
+    }
+  )
 })
 
 it('returns true for modulesDoing', async () => {
   const doing = init.user1.modulesDoing
-  await Promise.all(doing.map((m) => hasTakenModule(t.user!, m))).then(
+  await Promise.all(doing!.map((m) => hasTakenModule(t.user!, m))).then(
     (res) => {
       expect(res.every(Boolean)).toBe(true)
     }

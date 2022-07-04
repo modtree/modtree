@@ -1,13 +1,13 @@
-import { InitProps } from '@modtree/types'
+import { InitDegreeProps, InitGraphProps, InitUserProps } from '@modtree/types'
 
 type Init = {
-  degree1: InitProps['Degree']
-  degree2: InitProps['Degree']
-  user1: InitProps['User']
-  user2: InitProps['User']
-  user3: InitProps['User']
-  emptyUser: InitProps['User']
-  graph1: InitProps['Graph']
+  degree1: InitDegreeProps
+  degree2: InitDegreeProps
+  user1: InitUserProps
+  user2: InitUserProps
+  user3: InitUserProps
+  emptyUser: InitUserProps
+  graph1: InitGraphProps
   invalidUUID: string
   invalidModuleCode: string
 }

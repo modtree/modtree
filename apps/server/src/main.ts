@@ -19,6 +19,9 @@ function checkhealth(db: DataSource) {
     const names = ['Modules', 'Condensed', 'Full', 'Users', 'Degrees', 'Graphs']
     results.forEach((result, i) => {
       console.debug(names[i], result)
+      if (names[i] === 'Users' && result < 3) {
+        api.frontendSetup()
+      }
     })
   })
 }
