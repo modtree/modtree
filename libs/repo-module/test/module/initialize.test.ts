@@ -6,11 +6,17 @@ import { getSource } from '@modtree/typeorm-config'
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 let count: number
-const m = new Module()
-m.id = '58201858-5ce5-4ceb-8568-eecf55841b9f'
-m.title = ''
-m.moduleCode = 'TST1000MD'
-m.prereqTree = ''
+const m = {
+  id: '58201858-5ce5-4ceb-8568-eecf55841b9f',
+  title: '',
+  moduleCode: 'TST1000MD',
+  prereqTree: '',
+  description: '',
+  prerequisite: '',
+  corequisite: '',
+  preclusion: '',
+  fulfillRequirements: [],
+}
 
 beforeAll(() => setup(db))
 afterAll(() => teardown(db, true))
