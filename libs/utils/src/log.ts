@@ -1,4 +1,3 @@
-import boxen from 'boxen'
 import chalk from 'chalk'
 
 type Color =
@@ -34,34 +33,6 @@ function colorLog(color: Color): TextPrinter {
   return helper
 }
 
-/**
- * prints a colored box around text
- *
- * @param {Color} color
- * @returns {TextPrinter}
- */
-function boxColorLog(color: Color): TextPrinter {
-  /**
-   * sends string to boxen
-   *
-   * @param {string} text
-   */
-  function helper(text: string) {
-    console.debug(
-      boxen(text, {
-        borderColor: color,
-        padding: {
-          right: 1,
-          left: 1,
-          top: 0,
-          bottom: 0,
-        },
-      })
-    )
-  }
-  return helper
-}
-
 export const log = {
   red: colorLog('red'),
   green: colorLog('green'),
@@ -71,14 +42,4 @@ export const log = {
   cyan: colorLog('cyan'),
   gray: colorLog('gray'),
   warn: colorLog('yellow'),
-}
-
-export const box = {
-  red: boxColorLog('red'),
-  green: boxColorLog('green'),
-  yellow: boxColorLog('yellow'),
-  blue: boxColorLog('blue'),
-  magenta: boxColorLog('magenta'),
-  cyan: boxColorLog('cyan'),
-  gray: boxColorLog('gray'),
 }
