@@ -13,7 +13,7 @@ import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { GraphRepository } from '@modtree/repo-graph'
 import { ModuleFullRepository } from '@modtree/repo-module-full'
-import { User } from '@modtree/entity'
+import { User, Degree, Graph } from '@modtree/entity'
 import {
   ModuleCondensedRepository,
   ModuleRepository,
@@ -169,5 +169,82 @@ export class Api {
       return this.degreeRepo.save(degree)
     })
     return Promise.all([user1, user2, user3, degree1, degree2, degree3])
+  }
+
+  /**
+   * sets up database for endpoint response generation
+   * do run /scripts/migrate.sh to restore the database to a
+   * modules-only state first.
+   */
+  async autoSetup(data: any) {
+    // setup user and degree
+    let u1: User = await this.userRepo.initialize(data.user1)
+    let u2: User = await this.userRepo.initialize(data.user2)
+    let d1: Degree = await this.degreeRepo.initialize(data.degree1)
+    let d2: Degree = await this.degreeRepo.initialize(data.degree2)
+
+    // setup graphs
+    let g1: Graph = await this.graphRepo.initialize({
+      ...data.graph1,
+      userId: u1.id,
+      degreeId: d1.id,
+    })
+    let g2: Graph = await this.graphRepo.initialize({
+      ...data.graph2,
+      userId: u2.id,
+      degreeId: d2.id,
+    })
+
+    // insert degrees and graphs
+    // user1: {
+    //    savedDegrees: [d1],
+    //    savedGraphs: [g1],
+    // }
+    u1 = await this.userRepo.insertDegrees(u1, [d1.id])
+    u1 = await this.userRepo.insertGraphs(u1, [g1.id])
+    u2 = await this.userRepo.insertDegrees(u2, [d2.id])
+    u2 = await this.userRepo.insertGraphs(u2, [g2.id])
+
+    // set main degrees and graphs
+    // user1: {
+    //    mainDegree: d1,
+    //    savedDegrees: [d1],
+    //    mainGraph: g1,
+    //    savedGraphs: [g1],
+    // }
+    u1 = await this.userRepo.setMainDegree(u1, d1.id)
+    u1 = await this.userRepo.setMainGraph(u1, g1.id)
+    u2 = await this.userRepo.setMainDegree(u2, d2.id)
+    u2 = await this.userRepo.setMainGraph(u2, g2.id)
+
+    // fix fake nodes data
+    // nodes[0] is CS1010S
+    // nodes[1] is MA2001
+    const nodes = data.nodes
+    nodes[0].data = await this.moduleRepo.findOneByOrFail({
+      moduleCode: 'CS1010S',
+    })
+    nodes[1].data = await this.moduleRepo.findOneByOrFail({
+      moduleCode: 'MA2001',
+    })
+
+    // add in flow nodes and edges
+    g1 = await this.graphRepo.updateFrontendProps(g1, {
+      flowNodes: nodes,
+      flowEdges: data.edges,
+    })
+    g2 = await this.graphRepo.updateFrontendProps(g2, {
+      flowNodes: nodes,
+      flowEdges: data.edges,
+    })
+
+    return {
+      u1,
+      u2,
+      d1,
+      d2,
+      g1,
+      g2,
+    }
   }
 }
