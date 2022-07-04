@@ -4,6 +4,7 @@ import ReactFlow, {
   Node,
   useNodesState,
   Background,
+  useEdgesState,
 } from 'react-flow-renderer'
 import { ModuleNode } from '@/components/flow/ModuleNode'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
@@ -27,21 +28,24 @@ export default function ModtreeFlow() {
    * nodes and edges on-screen.
    */
   const [nodes, setNodes, onNodesChange] = useNodesState(graph.flowNodes)
+  const [edges, setEdges] = useEdgesState(graph.flowEdges)
 
   useEffect(() => {
     setNodes(graph.flowNodes)
+    setEdges(graph.flowEdges)
   }, [graph.flowNodes.length])
 
   /**
    * called when user drops a module node. (after having dragged it)
    */
-  const onNodeDragStop = (_: MouseEvent, node: Node, nodes: Node[]) => {
+  const onNodeDragStop = (_: MouseEvent, node: Node) => {
     dispatch(updateModuleNode(node))
   }
 
   return (
     <ReactFlow
       nodes={nodes}
+      edges={edges}
       nodeTypes={nodeTypes}
       /** hooks */
       onNodesChange={onNodesChange}
