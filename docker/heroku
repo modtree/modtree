@@ -3,7 +3,6 @@
 # change working directory to this script's directory
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 pushd $SCRIPT_DIR
-source ../scripts/utils.sh
 
 GIT_ROOT=$(git rev-parse --show-toplevel)
 
