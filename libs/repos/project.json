@@ -33,9 +33,10 @@
       "configurations": {
         "none": { "testPathIgnorePatterns": [".*"] },
         "utils": { "jestConfig": "libs/repos/src/utils/jest.config.ts" },
-        "user": { "jestConfig": "libs/repos/src/user/test/jest.config.ts" },
         "all": { "jestConfig": "libs/repos/jest.config.ts" },
+        "user": { "jestConfig": "libs/repos/src/user/test/jest.config.ts" },
         "degree": { "jestConfig": "libs/repos/src/degree/test/jest.config.ts" },
+        "api": { "jestConfig": "libs/repos/src/api/test/jest.config.ts" },
         "graph": { "jestConfig": "libs/repos/src/graph/test/jest.config.ts" },
         "module": { "jestConfig": "libs/repos/src/module/test/jest.config.ts" },
         "pull": { "jestConfig": "libs/repos/src/pull/test/jest.config.ts" },
