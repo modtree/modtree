@@ -5,7 +5,6 @@
   "dependencies": {
     "@modtree/typeorm-config": "*",
     "@modtree/utils": "*",
-    "@modtree/repo-base": "*",
     "@modtree/types": "*",
     "@modtree/test-env": "*"
   }

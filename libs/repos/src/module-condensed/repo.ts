@@ -7,7 +7,7 @@ import {
   InitModuleCondensedProps,
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
-import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
+import { useDeleteAll, useFindOneByKey } from '../utils'
 import { In } from 'typeorm'
 
 export class ModuleCondensedRepository

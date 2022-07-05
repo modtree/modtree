@@ -12,11 +12,7 @@ import {
   ModuleStatus,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
-import {
-  getRelationNames,
-  useDeleteAll,
-  useFindOneByKey,
-} from '@modtree/repo-base'
+import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
 import { ModuleRepository } from '../module'
 
 export class UserRepository

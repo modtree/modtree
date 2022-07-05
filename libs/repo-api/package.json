@@ -4,7 +4,6 @@
   "type": "commonjs",
   "dependencies": {
     "@modtree/typeorm-config": "*",
-    "@modtree/repo-base": "*",
     "@modtree/repos": "*",
     "@modtree/utils": "*",
     "@modtree/types": "*",

@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'repo:degree',
-  preset: '../../../../../jest.preset.js',
+  displayName: 'repo:utils',
+  preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../../../coverage/libs/repos/degree',
+  coverageDirectory: '../../../../coverage/libs/repos/utils',
   maxWorkers: 2,
 }

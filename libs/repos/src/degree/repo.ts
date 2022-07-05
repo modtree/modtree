@@ -7,11 +7,7 @@ import {
   IDegree,
   InitDegreeProps,
 } from '@modtree/types'
-import {
-  getRelationNames,
-  useDeleteAll,
-  useFindOneByKey,
-} from '@modtree/repo-base'
+import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
 import { ModuleRepository } from '../module'
 
 export class DegreeRepository

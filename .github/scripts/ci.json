@@ -16,6 +16,7 @@
       "repos:test:graph",
       "repos:test:module",
       "repos:test:module-condensed",
+      "repos:test:module-full",
       "utils:test",
       "docs:test",
       "server:test",

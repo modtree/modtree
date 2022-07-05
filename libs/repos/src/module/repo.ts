@@ -7,7 +7,7 @@ import {
 } from '@modtree/types'
 import { flatten, unique } from '@modtree/utils'
 import { hasTakenModule, checkTree } from './utils'
-import { useDeleteAll, useFindOneByKey } from '@modtree/repo-base'
+import { useDeleteAll, useFindOneByKey } from '../utils'
 
 type Data = {
   moduleCode: string

@@ -13,11 +13,7 @@ import {
   InitGraphProps,
 } from '@modtree/types'
 import { quickpop, flatten } from '@modtree/utils'
-import {
-  getRelationNames,
-  useDeleteAll,
-  useFindOneByKey,
-} from '@modtree/repo-base'
+import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'

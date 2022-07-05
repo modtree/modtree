@@ -1,55 +1,13 @@
 import { DataSource } from 'typeorm'
-import {
-  IUserRepository,
-  IDegreeRepository,
-  IGraphRepository,
-  IModuleRepository,
-  IModuleCondensedRepository,
-  EntityName,
-  IModuleFullRepository,
-  User,
-  Degree,
-  Graph,
-} from '@modtree/types'
+import { User, Degree, Graph } from '@modtree/types'
+import { BaseApi } from './base'
 import { emptyInit } from '@modtree/utils'
-import {
-  UserRepository,
-  DegreeRepository,
-  ModuleRepository,
-  ModuleCondensedRepository,
-  GraphRepository,
-} from '@modtree/repos'
-import { ModuleFullRepository } from '@modtree/repo-module-full'
-import { getRelationNames } from '@modtree/repo-base'
+import initializeUserConfig from './initialize-user.json'
+import frontendSetupConfig from './frontend-setup.json'
 
-type Relations = Record<string, boolean>
-
-export class Api {
-  db: DataSource
-  degreeRepo: IDegreeRepository
-  userRepo: IUserRepository
-  graphRepo: IGraphRepository
-  moduleRepo: IModuleRepository
-  moduleFullRepo: IModuleFullRepository
-  moduleCondensedRepo: IModuleCondensedRepository
-  relations: Record<EntityName, Relations>
-
+export class Api extends BaseApi {
   constructor(db: DataSource) {
-    this.db = db
-    this.degreeRepo = new DegreeRepository(db)
-    this.userRepo = new UserRepository(db)
-    this.graphRepo = new GraphRepository(db)
-    this.moduleRepo = new ModuleRepository(db)
-    this.moduleFullRepo = new ModuleFullRepository(db)
-    this.moduleCondensedRepo = new ModuleCondensedRepository(db)
-    this.relations = {
-      user: getRelationNames(this.userRepo),
-      degree: getRelationNames(this.degreeRepo),
-      graph: getRelationNames(this.graphRepo),
-      module: {},
-      moduleCondensed: {},
-      moduleFull: {},
-    }
+    super(db)
   }
 
   /**
@@ -64,52 +22,21 @@ export class Api {
    * @returns {Promise<User>}
    */
   async initializeUser(authZeroId: string, email: string): Promise<User> {
+    const c = initializeUserConfig
     const user = this.userRepo.initialize({
       authZeroId,
       email,
-      modulesDone: [
-        'MA2001',
-        'MA1100',
-        'HSH1000',
-        'HSA1000',
-        'GEA1000',
-        'MA2101',
-        'MA3201',
-      ],
-      modulesDoing: [
-        'IS1103',
-        'CS1010S',
-        'DTK1234',
-        'HS1401S',
-        'HSI1000',
-        'HSS1000',
-        'MA2002',
-        'MA2219',
-        'PC1432',
-      ],
+      ...c.user,
     })
     const degree = this.degreeRepo.initialize({
       ...emptyInit.Degree,
-      title: 'Computer Science',
-      moduleCodes: [
-        'CS1231S',
-        'CS2030S',
-        'CS2040S',
-        'CS2100',
-        'CS2101',
-        'CS2103T',
-        'CS2106',
-        'CS2109S',
-        'CS3230',
-        'CS2309',
-      ],
+      ...c.degree,
     })
     const graph = Promise.all([user, degree]).then(([user, degree]) =>
       this.graphRepo.initialize({
         ...emptyInit.Graph,
         userId: user.id,
         degreeId: degree.id,
-        modulesPlacedCodes: ['CS1010S'],
         pullAll: true,
       })
     )
@@ -151,46 +78,24 @@ export class Api {
    * modules-only state first.
    */
   async frontendSetup() {
-    const user1 = this.initializeUser(
-      'auth0|012345678901234567890001',
-      'chandler@bing.com'
-    )
-    const user2 = this.initializeUser(
-      'auth0|012345678901234567890002',
-      'joey@tribbiani.com'
-    )
-    const user3 = this.initializeUser(
-      'auth0|012345678901234567890003',
-      'ross@geller.com'
-    )
+    const c = frontendSetupConfig
+    const user1 = this.initializeUser(c.user1.authZeroId, c.user1.email)
+    const user2 = this.initializeUser(c.user2.authZeroId, c.user2.email)
+    const user3 = this.initializeUser(c.user3.authZeroId, c.user3.email)
     const degree1 = user1.then((user) => {
       const degree = user.savedDegrees[0]
       degree.title = 'Data Analytics'
       degree.modules = []
-      return this.degreeRepo.insertModules(degree, [
-        'DSA1101',
-        'CS2040',
-        'DSA2101',
-        'DSA2102',
-        'MA2001',
-        'MA2002',
-        'MA2311',
-        'ST2131',
-        'ST2132',
-        'CS3244',
-        'DSA3101',
-        'DSA3102',
-        'ST3131',
-      ])
+      return this.degreeRepo.insertModules(degree, c.degree1.moduleCodes)
     })
     const degree2 = user2.then((user) => {
       const degree = user.savedDegrees[0]
-      degree.title = 'Improvisation'
+      degree.title = c.degree2.title
       return this.degreeRepo.save(degree)
     })
     const degree3 = user3.then((user) => {
       const degree = user.savedDegrees[0]
-      degree.title = 'Paleontology'
+      degree.title = c.degree3.title
       return this.degreeRepo.save(degree)
     })
     return Promise.all([user1, user2, user3, degree1, degree2, degree3])

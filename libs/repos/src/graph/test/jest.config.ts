@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'graph',
+  displayName: 'repo:graph',
   preset: '../../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
