@@ -1,0 +1,51 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/repos/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
+        "outputPath": "dist/libs/repos",
+        "main": "libs/repos/src/index.ts",
+        "tsConfig": "libs/repos/tsconfig.lib.json",
+        "assets": ["libs/repos/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/repos/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "defaultConfiguration": "none",
+      "outputs": ["coverage/libs/repos"],
+      "options": {
+        "jestConfig": "libs/repos/jest.config.ts",
+        "passWithNoTests": true,
+        "runInBand": true
+      },
+      "configurations": {
+        "none": { "testPathIgnorePatterns": [".*"] },
+        "user": { "jestConfig": "libs/repos/src/user/test/jest.config.ts" },
+        "all": { "jestConfig": "libs/repos/jest.config.ts" },
+        "degree": { "jestConfig": "libs/repos/src/degree/test/jest.config.ts" },
+        "graph": { "jestConfig": "libs/repos/src/graph/test/jest.config.ts" },
+        "module": { "jestConfig": "libs/repos/src/module/test/jest.config.ts" },
+        "mc": {
+          "jestConfig": "libs/repos/src/module-condensed/test/jest.config.ts"
+        },
+        "module-condensed": {
+          "jestConfig": "libs/repos/src/module-condensed/test/jest.config.ts"
+        }
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["!test-env"]
+}

@@ -1,12 +1,11 @@
 {
-  "name": "@modtree/repo-api",
+  "name": "@modtree/repos",
   "version": "0.0.1",
   "type": "commonjs",
   "dependencies": {
     "@modtree/typeorm-config": "*",
-    "@modtree/repo-base": "*",
-    "@modtree/repos": "*",
     "@modtree/utils": "*",
+    "@modtree/repo-base": "*",
     "@modtree/types": "*",
     "@modtree/entity": "*",
     "@modtree/test-env": "*"

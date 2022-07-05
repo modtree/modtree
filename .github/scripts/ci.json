@@ -11,19 +11,18 @@
   },
   "test": {
     "projects": [
-      "repo-api",
-      "repo-base",
-      "repo-degree",
-      "repo-graph",
-      "repo-module",
-      "repo-user",
-      "utils",
-      "docs",
-      "server",
-      "sql"
+      "repos:test:user",
+      "repos:test:degree",
+      "repos:test:graph",
+      "repos:test:module",
+      "repos:test:module-condensed",
+      "utils:test",
+      "docs:test",
+      "server:test",
+      "sql:test"
     ],
     "dont-run": [],
-    "command": "yarn nx test",
+    "command": "yarn nx run",
     "args": {
       "ci": ["--coverage", "--runInBand"],
       "no_cache": ["--coverage", "--runInBand", "--skip-nx-cache"]

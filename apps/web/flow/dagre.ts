@@ -45,6 +45,5 @@ export function setPosition(
     ...node,
     position: positions[node.id],
   }))
-  console.log(positions)
   setNodes(result)
 }

@@ -1,0 +1,1 @@
+export { ModuleCondensedRepository } from './repo'
