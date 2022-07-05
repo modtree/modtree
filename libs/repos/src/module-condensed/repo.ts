@@ -1,6 +1,6 @@
 import { DataSource, Repository } from 'typeorm'
-import { ModuleCondensed } from '@modtree/entity'
 import {
+  ModuleCondensed,
   IModuleCondensedRepository,
   FindByKey,
   IModuleCondensed,

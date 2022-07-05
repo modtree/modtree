@@ -7,8 +7,8 @@ import {
   Degree,
   Graph,
   ModuleFull,
-} from '@modtree/entity'
-import { DataSourceOptions } from '@modtree/types'
+  DataSourceOptions,
+} from '@modtree/types'
 import { getPrefix } from './utils'
 import fs from 'fs'
 import { rawJson } from './utils'

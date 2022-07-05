@@ -6,7 +6,6 @@
   "description": "modtree frontend with Next.js and React Flow",
   "dependencies": {
     "@modtree/types": "*",
-    "@modtree/entity": "*",
     "@modtree/utils": "*"
   },
   "browser": {

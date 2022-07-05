@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { DataSource, Repository } from 'typeorm'
-import { ModuleCondensed } from '@modtree/entity'
-import { NUSMods } from '@modtree/types'
+import { NUSMods, ModuleCondensed } from '@modtree/types'
 import { nusmodsApi, getModuleLevel, flatten } from '@modtree/utils'
 
 export class ModuleCondensedRepository extends Repository<ModuleCondensed> {

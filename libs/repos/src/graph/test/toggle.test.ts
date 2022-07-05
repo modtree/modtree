@@ -1,4 +1,4 @@
-import { Graph, Module, ModuleCondensed } from '@modtree/entity'
+import { Graph, Module, ModuleCondensed } from '@modtree/types'
 import { init, Repo, setup, teardown, t } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { flatten, oneUp } from '@modtree/utils'

@@ -1,8 +1,7 @@
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
-import { ModuleStatus } from '@modtree/types'
-import { User } from '@modtree/entity'
+import { ModuleStatus, User } from '@modtree/types'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm'
-import { ModuleFull } from '@modtree/entity'
+import { ModuleFull } from '@modtree/types'
 import { FindByKey, IModuleFullRepository } from '@modtree/types'
 import { useFindOneByKey } from '@modtree/repo-base'
 

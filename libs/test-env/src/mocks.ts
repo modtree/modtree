@@ -1,4 +1,4 @@
-import { Module } from '@modtree/entity'
+import { Module } from '@modtree/types'
 import { DataSource, EntityTarget } from 'typeorm'
 
 function getMockDb(): any {

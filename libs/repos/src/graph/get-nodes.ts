@@ -1,5 +1,4 @@
-import { Module } from '@modtree/entity'
-import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
+import { GraphFlowEdge, GraphFlowNode, Module } from '@modtree/types'
 export * from './get-edges'
 import dagre from 'dagre'
 

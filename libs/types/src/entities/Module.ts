@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
-import type { NUSMods } from '@modtree/types'
+import type { PrereqTree } from '../nusmods'
 import { Base } from './Base'
 
 @Entity({ name: 'module' })
@@ -27,5 +27,5 @@ export class Module extends Base {
   fulfillRequirements: string[]
 
   @Column('json', { nullable: true })
-  prereqTree: NUSMods.PrereqTree
+  prereqTree: PrereqTree
 }

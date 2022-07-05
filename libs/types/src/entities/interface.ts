@@ -1,5 +1,5 @@
 import type { Node, Edge } from 'react-flow-renderer'
-import type { SemesterData, NUSModuleAttributes, PrereqTree } from './nusmods'
+import type { SemesterData, NUSModuleAttributes, PrereqTree } from '../nusmods'
 
 export type EntityName =
   | 'user'

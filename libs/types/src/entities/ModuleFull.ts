@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
-import type { NUSMods } from '@modtree/types'
+import type { NUSModuleAttributes, PrereqTree, SemesterData } from '../nusmods'
 import { Base } from './Base'
 
 @Entity({ name: 'module_full' })
@@ -33,7 +33,7 @@ export class ModuleFull extends Base {
   aliases: string[]
 
   @Column('json', { nullable: true })
-  attributes: NUSMods.NUSModuleAttributes
+  attributes: NUSModuleAttributes
 
   @Column('text', { nullable: true })
   prerequisite: string
@@ -48,10 +48,10 @@ export class ModuleFull extends Base {
   fulfillRequirements: string[]
 
   @Column('json', { nullable: true })
-  semesterData: NUSMods.SemesterData[]
+  semesterData: SemesterData[]
 
   @Column('json', { nullable: true })
-  prereqTree: NUSMods.PrereqTree
+  prereqTree: PrereqTree
 
   @Column('json', { nullable: true })
   workload: string | number[]

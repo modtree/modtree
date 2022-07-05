@@ -5,7 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import type { IDegree, IModule } from '@modtree/types'
+import type { IDegree, IModule } from './interface'
 
 @Entity({ name: 'degree' })
 /** Degree entity */

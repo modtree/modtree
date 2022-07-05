@@ -1,4 +1,4 @@
-import { Graph } from '@modtree/entity'
+import { Graph } from '@modtree/types'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { GraphFlowNode } from '@modtree/types'

@@ -1,7 +1,6 @@
-import { Graph, ModuleCondensed } from '@modtree/entity'
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
-import { GraphFrontendProps } from '@modtree/types'
+import { Graph, ModuleCondensed, GraphFrontendProps } from '@modtree/types'
 import { empty, oneUp } from '@modtree/utils'
 
 const dbName = oneUp(__filename)

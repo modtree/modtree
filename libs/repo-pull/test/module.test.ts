@@ -1,4 +1,4 @@
-import { Module } from '@modtree/entity'
+import { Module } from '@modtree/types'
 import { setup, teardown } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'

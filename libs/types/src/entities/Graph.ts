@@ -13,7 +13,7 @@ import type {
   IGraph,
   IModule,
   IUser,
-} from '@modtree/types'
+} from './interface'
 
 @Entity({ name: 'graph' })
 /** Graph entity */

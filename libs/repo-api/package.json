@@ -8,7 +8,6 @@
     "@modtree/repos": "*",
     "@modtree/utils": "*",
     "@modtree/types": "*",
-    "@modtree/entity": "*",
     "@modtree/test-env": "*"
   }
 }

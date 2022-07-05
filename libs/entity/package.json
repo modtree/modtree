@@ -1,8 +1,0 @@
-{
-  "name": "@modtree/entity",
-  "version": "0.0.1",
-  "type": "commonjs",
-  "dependencies": {
-    "@modtree/types": "*"
-  }
-}

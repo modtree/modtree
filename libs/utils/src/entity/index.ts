@@ -1,5 +1,5 @@
 import { ModtreeApiResponse } from '@modtree/types'
-import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/entity'
+import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 
 /** flattens TypeORM entities */
 export const flatten = {

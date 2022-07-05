@@ -1,5 +1,4 @@
-import { GraphFlowEdge } from '@modtree/types'
-import { Module } from '@modtree/entity'
+import { Module, GraphFlowEdge } from '@modtree/types'
 
 type BaseEdge = {
   source: string

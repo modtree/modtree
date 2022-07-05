@@ -1,7 +1,6 @@
 import { DataSource, In, Repository } from 'typeorm'
-import { Module } from '@modtree/entity'
 import {
-  IModule,
+  Module,
   IModuleRepository,
   FindByKey,
   InitModuleProps,
@@ -26,7 +25,7 @@ export class ModuleRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IModule> = useFindOneByKey(this, 'id')
+  override findOneById: FindByKey<Module> = useFindOneByKey(this, 'id')
 
   /**
    * initialize a Module

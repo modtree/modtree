@@ -1,6 +1,9 @@
 import { DataSource, In, Repository } from 'typeorm'
-import { User, Module, Degree, Graph } from '@modtree/entity'
 import {
+  User,
+  Module,
+  Degree,
+  Graph,
   FindByKey,
   IModuleRepository,
   InitUserProps,
