@@ -33,10 +33,20 @@ function getConfig() {
   return new DataSource(config)
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 console.debug('Initializing connection to database...')
-getConfig()
-  .initialize()
-  .then(async (db) => {
+const db = getConfig()
+
+const maxRetries = 60
+let attempts = 1
+
+async function attemptConnection() {
+  return db.initialize().then(async (db) => {
     console.debug(
       `Connection to database [${db.options.database}] established.`
     )
@@ -45,6 +55,19 @@ getConfig()
     const app = getApp(api)
     app.listen(process.env.PORT || 8080)
   })
-  .catch((err) => {
-    console.debug(err, 'Failed to initialize connection to database.')
+}
+
+let connect = attemptConnection()
+
+for (let i = 0; i < maxRetries; i++) {
+  connect = connect.catch(async () => {
+    if (attempts === maxRetries) {
+      console.debug('Max attempts reached')
+    } else {
+      console.debug('attempts', attempts)
+      attempts += 1
+      await sleep(1000)
+      return attemptConnection()
+    }
   })
+}

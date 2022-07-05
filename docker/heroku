@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# change working directory to this script's directory
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+pushd $SCRIPT_DIR
+
+GIT_ROOT=$(git rev-parse --show-toplevel)
+
+# execute this on quit no matter what
+cleanup() {
+  rm $GIT_ROOT/Dockerfile
+}; trap cleanup EXIT
+
+DOCKERFILE=server.Dockerfile
+
+# check for DOCKERFILE
+[ -f $DOCKERFILE ] \
+  && echo "Dockerfile [$DOCKERFILE] found" \
+  || (echo "Dockerfile [$DOCKERFILE] not found" && exit 1)
+
+cp $DOCKERFILE $GIT_ROOT/Dockerfile
+
+pushd $GIT_ROOT
+
+heroku() {
+  heroku container:push web --app modtree-server
+  heroku container:release web --app modtree-server
+}
+
+just_local() {
+  docker build -t modtree/server .
+}
+
+just_local

@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
 
-if [[ $1 == 'server' ]]; then
-  docker build -f server.Dockerfile -t brew4k/server ../
+[ $2 ] && TAG=":$2" || TAG=""
+
+if [[ $1 == 'Dockerfile.server' ]]; then
+  docker build -f $1 -t modtree/server${TAG} ../
 fi
 
-if [[ $1 == 'db' ]]; then
-  docker build -f db.Dockerfile -t brew4k/postgres ../
+if [[ $1 == 'Dockerfile.postgres' ]]; then
+  docker build -f $1 -t modtree/postgres${TAG} ../
+fi
+
+if [[ $1 == 'Dockerfile.node' ]]; then
+  docker build -f $1 -t modtree/node${TAG} ../
+fi
+
+if [[ $1 == 'Dockerfile.yarn' ]]; then
+  docker build -f $1 -t modtree/yarn${TAG} ../
 fi

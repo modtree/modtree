@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# change working directory to this script's directory
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+pushd $SCRIPT_DIR/..
+
+docker run --name server --env-file .env modtree/server
