@@ -25,7 +25,7 @@ afterAll(() => teardown(db))
 const testRequest = async () =>
   request(app)
     .patch('/degree/58201858-5ce5-4ceb-8568-eecf55841b9f')
-    .send({ moduleCodes: ['CS1010', 'MA1100'] })
+    .send({ title: 'test degree', moduleCodes: ['CS1010', 'MA1100'] })
 
 test('`findOneById` is called once', async () => {
   await testRequest()
