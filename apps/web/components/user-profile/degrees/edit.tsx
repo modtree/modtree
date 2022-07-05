@@ -38,7 +38,11 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
       title,
       moduleCodes: modules.map(flatten.module),
     }
-    api.degree.modify(buildId, props).then((degree) => {})
+    api.degree
+      .modify(buildId, props)
+      .then((degree) => {})
+      .then(() => api.user.getById(user.modtreeId))
+      .then((user) => dispatch(setUser(user)))
   }
 
   return (
