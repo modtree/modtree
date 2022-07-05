@@ -16,7 +16,9 @@ services:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
   server:
-    image: 'modtree/server:0.5.1'
+    image: 'modtree/server:0.5.5'
+    depends_on:
+      - 'db_web'
     ports:
       - '8080:8080'
     environment:

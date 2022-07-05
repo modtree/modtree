@@ -7,4 +7,4 @@ COPY . .
 RUN yarn
 RUN yarn build
 
-CMD ["yarn", "nx", "serve", "server"]
+CMD ["node", "dist/apps/server/main.js"]
