@@ -65,6 +65,12 @@ export const routes: Route[] = [
   },
   {
     method: 'delete',
+    route: '/user/:userId/degree/:degreeId',
+    fn: UserApi.removeDegree,
+    validators: [],
+  },
+  {
+    method: 'delete',
     route: '/user/:userId',
     fn: UserApi.delete,
     validators: [],

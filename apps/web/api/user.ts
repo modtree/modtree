@@ -56,4 +56,11 @@ export class UserApi extends BaseApi {
       degreeIds: [degreeId],
     })
   }
+
+  /**
+   * remove degree
+   */
+  async removeDegree(userId: string, degreeId: string): Promise<IUser> {
+    return this.server.delete(`/user/${userId}/degree/${degreeId}`)
+  }
 }

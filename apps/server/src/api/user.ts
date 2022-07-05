@@ -117,6 +117,22 @@ export class UserApi {
   }
 
   /**
+   * removes a degree from a User
+   *
+   * @param {Api} api
+   */
+  static removeDegree = (api: Api) => async (req: Request) => {
+    const { userId, degreeId } = req.params
+    return api.userRepo
+      .findOneOrFail({
+        where: { id: userId },
+        relations: api.relations.user,
+      })
+      .then((user) => api.userRepo.removeDegree(user, degreeId))
+      .then(flatten.user)
+  }
+
+  /**
    * handles user login
    *
    * @param {Api} api
