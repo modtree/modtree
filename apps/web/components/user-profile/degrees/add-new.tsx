@@ -51,7 +51,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   async function saveDegree(title: string, modules: IModule[]) {
     api.degree
       .create(title, modules)
-      .then((degree) => api.user.insertDegree(user.modtree.id, degree))
+      .then((degree) => api.user.insertDegree(user.modtreeId, degree))
       .then((user) => dispatch(setUser(user)))
   }
 
