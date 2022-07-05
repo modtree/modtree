@@ -7,7 +7,7 @@ import {
   PrimaryColumn,
   ManyToOne,
 } from 'typeorm'
-import type { IDegree, IGraph, IModule, IUser } from '@modtree/types'
+import type { IDegree, IGraph, IModule, IUser } from './interface'
 
 @Entity({ name: 'user' })
 /** User entity */

@@ -18,7 +18,6 @@
     "skipDefaultLibCheck": false,
     "baseUrl": ".",
     "paths": {
-      "@modtree/entity": ["libs/entity/src/index.ts"],
       "@modtree/repo-api": ["libs/repo-api/src/index.ts"],
       "@modtree/repos": ["libs/repos/src/index.ts"],
       "@modtree/repo-base": ["libs/repo-base/src/index.ts"],
