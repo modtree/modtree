@@ -1,0 +1,44 @@
+import { Module } from '@modtree/entity'
+import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
+export * from './get-edges'
+import dagre from 'dagre'
+
+const origin = { x: 0, y: 0 }
+
+export function nodify(module: Module): GraphFlowNode {
+  return {
+    id: module.moduleCode,
+    position: origin,
+    data: module,
+    type: 'moduleNode',
+  }
+}
+
+export function getFlowNodes(
+  modules: Module[],
+  edges: GraphFlowEdge[]
+): GraphFlowNode[] {
+  const g = new dagre.graphlib.Graph()
+  g.setGraph({})
+  // Default to assigning a new object as a label for each new edge.
+  g.setDefaultEdgeLabel(() => ({}))
+  modules.forEach((module) => {
+    console.log(['nodes'])
+    g.setNode(module.moduleCode, {
+      label: module.moduleCode,
+    })
+  })
+  edges.forEach((edge) => {
+    console.log(['edges'])
+    g.setEdge(edge.source, edge.target)
+  })
+
+  /** compute the layout */
+  dagre.layout(g)
+
+  g.nodes().forEach((value) => {
+    console.log(g.node(value))
+  })
+
+  return modules.map(nodify)
+}

@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
-# docker compose up -d
+[ $1 ] && P=$1
 
-docker compose down
+COMPOSE_PROFILES=$P \
+  docker compose \
+  down
