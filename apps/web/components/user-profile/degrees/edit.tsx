@@ -39,7 +39,6 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
     }
     api.degree
       .modify(buildId, degreeProps)
-      .then((degree) => {})
       .then(() => api.user.getById(user.modtreeId))
       .then((user) => dispatch(setUser(user)))
       .then(() => props.setPage('main'))
