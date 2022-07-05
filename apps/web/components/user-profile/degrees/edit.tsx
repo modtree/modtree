@@ -3,15 +3,19 @@ import { SettingsSection } from '@/ui/settings/lists/base'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
-import { SetState } from '@modtree/types'
+import { IModule, InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
 import { setBuildList } from '@/store/search'
 import { api } from 'api'
 import { setDegree } from '@/store/degree'
+import { useUser } from '@/utils/auth0'
+import { setUser } from '@/store/user'
+import { flatten } from '@modtree/utils'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
+  const { user } = useUser()
   const { buildList, buildTitle, buildId } = useAppSelector(
     (state) => state.search
   )
@@ -19,6 +23,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
     title: useState<string>(buildTitle),
   }
   const dispatch = useAppDispatch()
+  /* set build list */
   useEffect(() => {
     api.degree
       .getById(buildId)
@@ -27,16 +32,15 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         dispatch(setBuildList(modules))
       })
   }, [])
-  /* update backend */
-  useEffect(() => {
-    // Don't run the logic, if the buildList is not loaded yet
-    if (buildList.length > 0) {
-      const moduleCodes = buildList.map((m) => m.moduleCode)
-      api.degree.setModules(buildId, moduleCodes).then((degree) => {
-        dispatch(setDegree(degree))
-      })
+
+  async function modify(title: string, modules: IModule[]) {
+    const props: InitDegreeProps = {
+      title,
+      moduleCodes: modules.map(flatten.module),
     }
-  }, [buildList])
+    api.degree.modify(buildId, props).then((degree) => {})
+  }
+
   return (
     <div className="flex flex-col">
       <SettingsSection
@@ -55,7 +59,9 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         <SelectedModules modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green">Save degree</Button>
+        <Button color="green" onClick={() => modify(state.title[0], buildList)}>
+          Save degree
+        </Button>
       </div>
     </div>
   )

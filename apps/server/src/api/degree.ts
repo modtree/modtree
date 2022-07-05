@@ -69,15 +69,15 @@ export class DegreeApi {
   }
 
   /**
-   * sets Modules of a Degree
+   * modifies a Degree
    *
    * @param {Api} api
    */
-  static setModules = (api: Api) => async (req: Request) => {
+  static modify = (api: Api) => async (req: Request) => {
     const id = req.params.degreeId
-    const { moduleCodes } = req.body
+    const { title, moduleCodes } = req.body
     return api.degreeRepo
       .findOneById(id)
-      .then((degree) => api.degreeRepo.setModules(degree, moduleCodes))
+      .then((degree) => api.degreeRepo.modify(degree, { title, moduleCodes }))
   }
 }

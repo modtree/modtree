@@ -65,18 +65,19 @@ export class DegreeRepository
   }
 
   /**
-   * sets Modules of a Degree
+   * modifies a Degree
    *
    * @param {Degree} degree
-   * @param {string[]} moduleCodes
+   * @param {InitDegreeProps} props
    * @returns {Promise<Degree>}
    */
-  async setModules(degree: Degree, moduleCodes: string[]): Promise<Degree> {
+  async modify(degree: Degree, props: InitDegreeProps): Promise<Degree> {
     return this.moduleRepo
       .findBy({
-        moduleCode: In(moduleCodes),
+        moduleCode: In(props.moduleCodes),
       })
       .then((modules) => {
+        degree.title = props.title
         degree.modules = modules
         return this.save(degree)
       })
