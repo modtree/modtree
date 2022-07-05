@@ -1,6 +1,6 @@
 import { getSource } from '@modtree/typeorm-config'
 import { setup, Repo } from '@modtree/test-env'
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 import '@modtree/test-env/jest'
 import { User, Degree, Graph } from '@modtree/types'
 import { init } from '../src/init'

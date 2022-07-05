@@ -4,7 +4,6 @@
   "projects": {
     "auto-docs": "libs/auto-docs",
     "docs": "apps/docs",
-    "repo-api": "libs/repo-api",
     "repos": "libs/repos",
     "server": "apps/server",
     "sql": "libs/sql",

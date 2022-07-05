@@ -7,7 +7,6 @@
     "baseUrl": ".",
     "paths": {
       "app": ["./src/app.ts"],
-      "@modtree/repo-api": ["../../libs/repo-api/src/index.ts"],
       "@modtree/repos": ["../../libs/repos/src/index.ts"],
       "@modtree/sql": ["../../libs/sql/src/index.ts"],
       "@modtree/test-env": ["../../libs/test-env/src/index.ts"],

@@ -4,7 +4,7 @@ import type { Express } from 'express'
 import { getSource } from '@modtree/typeorm-config'
 import { oneUp } from '@modtree/utils'
 import { setup, teardown } from '@modtree/test-env'
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

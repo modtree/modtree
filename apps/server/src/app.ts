@@ -1,7 +1,7 @@
 import cors from 'cors'
 import express, { Request, Response, Express } from 'express'
 import { corsOpts } from './cors'
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 import { routes } from './routes'
 import { validate } from './validate'
 

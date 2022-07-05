@@ -1,4 +1,4 @@
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 import { Request } from 'express'
 
 export class ModuleFullApi {

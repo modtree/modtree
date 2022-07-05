@@ -1,4 +1,4 @@
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 import { CustomReqQuery } from '@modtree/types'
 import { copy, emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'

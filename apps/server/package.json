@@ -8,7 +8,7 @@
     "@modtree/typeorm-config": "*",
     "@modtree/utils": "*",
     "@modtree/types": "*",
-    "@modtree/test-env": "*",
-    "@modtree/repo-api": "*"
+    "@modtree/repos": "*",
+    "@modtree/test-env": "*"
   }
 }
