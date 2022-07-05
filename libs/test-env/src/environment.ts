@@ -3,13 +3,13 @@ import { sql } from '@modtree/sql'
 import { config } from '@modtree/typeorm-config'
 import { DataSource } from 'typeorm'
 import {
+  DegreeRepository,
   ModuleRepository,
   ModuleCondensedRepository,
-} from '@modtree/repo-module'
-import { DegreeRepository } from '@modtree/repo-degree'
+  GraphRepository,
+  UserRepository,
+} from '@modtree/repos'
 import { ModuleFullRepository } from '@modtree/repo-module-full'
-import { GraphRepository } from '@modtree/repo-graph'
-import { UserRepository } from '@modtree/repo-user'
 import { Api } from '@modtree/repo-api'
 
 /**

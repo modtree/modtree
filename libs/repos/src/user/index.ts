@@ -1,0 +1,1 @@
+export { UserRepository } from './repo'

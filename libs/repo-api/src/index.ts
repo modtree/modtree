@@ -9,15 +9,15 @@ import {
   IModuleFullRepository,
 } from '@modtree/types'
 import { emptyInit } from '@modtree/utils'
-import { UserRepository } from '@modtree/repo-user'
-import { DegreeRepository } from '@modtree/repo-degree'
-import { GraphRepository } from '@modtree/repo-graph'
+import {
+  UserRepository,
+  DegreeRepository,
+  ModuleRepository,
+  ModuleCondensedRepository,
+  GraphRepository,
+} from '@modtree/repos'
 import { ModuleFullRepository } from '@modtree/repo-module-full'
 import { User, Degree, Graph } from '@modtree/entity'
-import {
-  ModuleCondensedRepository,
-  ModuleRepository,
-} from '@modtree/repo-module'
 import { getRelationNames } from '@modtree/repo-base'
 
 type Relations = Record<string, boolean>
