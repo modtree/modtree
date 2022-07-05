@@ -21,7 +21,8 @@ import { ModuleRepository } from '@modtree/repo-module'
 import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { getModules } from './get-modules'
-import { getFlowEdges, nodify } from './flow'
+import { getFlowEdges } from './get-edges'
+import { nodify } from './get-nodes'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
