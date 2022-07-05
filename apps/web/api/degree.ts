@@ -21,10 +21,7 @@ export class DegreeApi extends BaseApi {
   /**
    * create
    */
-  async create(title: string, modules: IModule[]): Promise<IDegree> {
-    const moduleCodes = modules.map((m) => m.moduleCode)
-    return this.server
-      .post(`/degree`, { title, moduleCodes })
-      .then((res) => res.data)
+  async create(props: InitDegreeProps): Promise<IDegree> {
+    return this.server.post(`/degree`, props).then((res) => res.data)
   }
 }

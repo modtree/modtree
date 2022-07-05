@@ -51,8 +51,7 @@ export class UserApi extends BaseApi {
   /**
    * insert degree
    */
-  async insertDegree(userId: string, degree: Degree): Promise<IUser> {
-    const degreeId = degree.id
+  async insertDegree(userId: string, degreeId: string): Promise<IUser> {
     return this.server.patch(`/user/${userId}/degree`, {
       degreeIds: [degreeId],
     })

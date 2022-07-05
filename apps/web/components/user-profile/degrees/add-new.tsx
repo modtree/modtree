@@ -5,13 +5,14 @@ import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
-import { IModule, SetState } from '@modtree/types'
+import { IModule, InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, removeFromBuildList } from '@/store/search'
 import { api } from 'api'
 import { useUser } from '@/utils/auth0'
 import { setUser } from '@/store/user'
+import { flatten } from '@modtree/utils'
 
 function SelectedModules(props: { modules: IModule[] }) {
   const dispatch = useAppDispatch()
@@ -49,9 +50,13 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   }, [])
 
   async function saveDegree(title: string, modules: IModule[]) {
+    const degreeProps: InitDegreeProps = {
+      title,
+      moduleCodes: modules.map(flatten.module),
+    }
     api.degree
-      .create(title, modules)
-      .then((degree) => api.user.insertDegree(user.modtreeId, degree))
+      .create(degreeProps)
+      .then((degree) => api.user.insertDegree(user.modtreeId, degree.id))
       .then((user) => dispatch(setUser(user)))
       .then(() => props.setPage('main'))
   }
