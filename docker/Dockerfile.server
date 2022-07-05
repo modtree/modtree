@@ -1,0 +1,10 @@
+FROM modtree/yarn:0.5.0
+
+WORKDIR /app
+
+COPY . .
+
+RUN yarn
+RUN yarn build
+
+CMD ["yarn", "nx", "serve", "server"]
