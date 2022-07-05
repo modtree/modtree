@@ -300,7 +300,7 @@ export class UserRepository
   }
 
   /**
-   * Updates the status of modules for a user.
+   * Sets modulesDone/modulesDoing.
    *
    * @param {User} user
    * @param {string[]} moduleCodes
@@ -312,28 +312,32 @@ export class UserRepository
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<User> {
-    // 1. remove moduleCode from user if exists
-    user.modulesDone = user.modulesDone.filter(
-      (m) => !moduleCodes.includes(m.moduleCode)
-    )
-    user.modulesDoing = user.modulesDoing.filter(
-      (m) => !moduleCodes.includes(m.moduleCode)
-    )
-    // 2. add module to appropriate array (if necessary)
-    return Promise.all(
-      moduleCodes.map((moduleCode) =>
-        this.moduleRepo.findOneByOrFail({ moduleCode })
-      )
-    ).then((modules) => {
-      if (status === ModuleStatus.DONE) {
-        user.modulesDone.push(...modules)
-      } else if (status === ModuleStatus.DOING) {
-        user.modulesDoing.push(...modules)
-      } else {
-        // ModuleStatus.TAKEN
-        // do nothing
-      }
-      return this.save(user)
-    })
+    return this.moduleRepo
+      .findBy({ moduleCode: In(moduleCodes) })
+      .then((modules) => {
+        if (status === ModuleStatus.DONE) {
+          user.modulesDone = modules
+          // remove from modulesDoing
+          user.modulesDoing = user.modulesDoing.filter(
+            (m) => !modules.includes(m)
+          )
+        } else if (status === ModuleStatus.DOING) {
+          user.modulesDoing = modules
+          // remove from modulesDone
+          user.modulesDone = user.modulesDone.filter(
+            (m) => !modules.includes(m)
+          )
+        } else {
+          // ModuleStatus.NOT_TAKEN
+          // remove from modulesDone and modulesDoing
+          user.modulesDone = user.modulesDone.filter(
+            (m) => !modules.includes(m)
+          )
+          user.modulesDoing = user.modulesDoing.filter(
+            (m) => !modules.includes(m)
+          )
+        }
+        return this.save(user)
+      })
   }
 }

@@ -47,34 +47,19 @@ async function setModuleStatus(
   return Repo.User.setModuleStatus(user, [moduleCode], status)
 }
 
-it('done -> doing', async () => {
+it('doing', async () => {
   t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.DOING)
-  expectUserModules([], ['MA2001', 'MA2219'])
+  expectUserModules([], ['MA2001'])
 })
 
-it('doing -> done', async () => {
+it('done', async () => {
   t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.DONE)
-  expectUserModules(['MA2001'], ['MA2219'])
-})
-
-it('done -> not taken', async () => {
-  t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.NOT_TAKEN)
-  expectUserModules([], ['MA2219'])
-})
-
-it('not taken -> done', async () => {
-  t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.DONE)
-  expectUserModules(['MA2001'], ['MA2219'])
-})
-
-it('doing -> not taken', async () => {
-  t.user = await setModuleStatus(t.user!, 'MA2219', ModuleStatus.NOT_TAKEN)
   expectUserModules(['MA2001'], [])
 })
 
-it('not taken -> doing', async () => {
-  t.user = await setModuleStatus(t.user!, 'MA2219', ModuleStatus.DOING)
-  expectUserModules(['MA2001'], ['MA2219'])
+it('not taken', async () => {
+  t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.NOT_TAKEN)
+  expectUserModules([], [])
 })
 
 it('errors on invalid module code', async () => {
