@@ -11,6 +11,7 @@
   },
   "test": {
     "projects": [
+      "repos:test:api",
       "repos:test:user",
       "repos:test:degree",
       "repos:test:graph",
