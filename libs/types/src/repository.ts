@@ -8,7 +8,7 @@ import {
   IModuleCondensed,
   GraphFrontendProps,
   GraphFlowNode,
-} from './entity-interface'
+} from './entities'
 import {
   InitDegreeProps,
   InitGraphProps,

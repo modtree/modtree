@@ -2,7 +2,7 @@ import { defaultConfig, readEnv, readJson } from '@modtree/typeorm-config'
 import { getApp } from './app'
 import { DataSource, Repository } from 'typeorm'
 import { Api } from '@modtree/repo-api'
-import { ModuleFull } from '@modtree/entity'
+import { ModuleFull } from '@modtree/types'
 
 function checkhealth(db: DataSource) {
   const api = new Api(db)

@@ -7,6 +7,9 @@ import {
   IModuleCondensedRepository,
   EntityName,
   IModuleFullRepository,
+  User,
+  Degree,
+  Graph,
 } from '@modtree/types'
 import { emptyInit } from '@modtree/utils'
 import {
@@ -17,7 +20,6 @@ import {
   GraphRepository,
 } from '@modtree/repos'
 import { ModuleFullRepository } from '@modtree/repo-module-full'
-import { User, Degree, Graph } from '@modtree/entity'
 import { getRelationNames } from '@modtree/repo-base'
 
 type Relations = Record<string, boolean>

@@ -1,4 +1,4 @@
-import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/entity'
+import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 import { sql } from '@modtree/sql'
 import { config } from '@modtree/typeorm-config'
 import { DataSource } from 'typeorm'

@@ -1,6 +1,7 @@
 import { DataSource, In, Repository } from 'typeorm'
-import { Module, Graph } from '@modtree/entity'
 import {
+  Module,
+  Graph,
   IModuleRepository,
   IUserRepository,
   IDegreeRepository,

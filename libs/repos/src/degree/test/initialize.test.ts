@@ -1,4 +1,4 @@
-import { Degree } from '@modtree/entity'
+import { Degree } from '@modtree/types'
 import { setup, teardown, Repo, t } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'

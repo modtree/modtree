@@ -1,6 +1,6 @@
 import { setup, Repo, teardown } from '@modtree/test-env'
 import { flatten } from '@modtree/utils'
-import { Module, ModuleCondensed } from '@modtree/entity'
+import { Module, ModuleCondensed } from '@modtree/types'
 import { db } from '@modtree/typeorm-config'
 
 const count = {

@@ -1,6 +1,6 @@
 test.todo('this is actually meant to be a script')
 
-// import { Module, ModuleCondensed } from '@modtree/entity'
+// import { Module, ModuleCondensed } from '@modtree/types'
 // import { Repo, setup, teardown } from '@modtree/test-env'
 // import { getSource } from '@modtree/typeorm-config'
 // import { IModuleCondensedRepository, IModuleRepository } from '@modtree/types'

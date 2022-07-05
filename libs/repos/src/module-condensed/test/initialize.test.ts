@@ -1,4 +1,4 @@
-import { ModuleCondensed } from '@modtree/entity'
+import { ModuleCondensed } from '@modtree/types'
 import { setup, teardown, Repo, t } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'

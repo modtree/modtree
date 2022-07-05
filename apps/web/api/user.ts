@@ -1,7 +1,6 @@
 import { BaseApi } from './base-api'
 import { IUser, ModuleStatus } from '@modtree/types'
 import { setUser } from '@/store/user'
-import { Degree } from '@modtree/entity'
 
 export class UserApi extends BaseApi {
   /**

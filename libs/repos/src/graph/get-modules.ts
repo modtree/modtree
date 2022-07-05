@@ -1,5 +1,10 @@
-import { Degree, Module, User } from '@modtree/entity'
-import { IModuleRepository, InitGraphProps } from '@modtree/types'
+import {
+  IModuleRepository,
+  InitGraphProps,
+  Degree,
+  Module,
+  User,
+} from '@modtree/types'
 
 type Result = {
   modulesHidden: Module[]

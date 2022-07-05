@@ -1,5 +1,5 @@
 import { flatten } from '.'
-import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/entity'
+import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 
 function makeModule(moduleCode: string) {
   const a = new Module()

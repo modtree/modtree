@@ -6,7 +6,6 @@
     "@modtree/typeorm-config": "*",
     "@modtree/utils": "*",
     "@modtree/types": "*",
-    "@modtree/entity": "*",
     "@modtree/test-env": "*"
   }
 }

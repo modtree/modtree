@@ -1,6 +1,6 @@
 import { DataSource, In, Repository } from 'typeorm'
-import { Degree } from '@modtree/entity'
 import {
+  Degree,
   IDegreeRepository,
   IModuleRepository,
   FindByKey,

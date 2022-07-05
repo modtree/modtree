@@ -1,4 +1,4 @@
-import { ModuleFull } from '@modtree/entity'
+import { ModuleFull } from '@modtree/types'
 import { setup, teardown, Repo } from '@modtree/test-env'
 import { db } from '@modtree/typeorm-config'
 import { EntityNotFoundError } from 'typeorm'

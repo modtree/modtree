@@ -1,11 +1,5 @@
 import { IModuleFull } from '.'
-import {
-  IUser,
-  IDegree,
-  IGraph,
-  IModule,
-  IModuleCondensed,
-} from './entity-interface'
+import { IUser, IDegree, IGraph, IModule, IModuleCondensed } from './entities'
 import { Modify } from './utils'
 
 /**
