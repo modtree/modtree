@@ -2,21 +2,21 @@ version: '3.9'
 
 services:
   db_web:
-    image: 'modtree/postgres'
+    image: 'modtree/postgres:0.5.0'
     ports:
       - '4000:5432'
     environment:
       POSTGRES_USER: web
       POSTGRES_PASSWORD: web
   db_test:
-    image: 'modtree/postgres'
+    image: 'modtree/postgres:0.5.0'
     ports:
       - '4001:5432'
     environment:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
   server:
-    image: 'modtree/server:0.5.5'
+    image: 'modtree/server:0.5.0'
     depends_on:
       - 'db_web'
     ports:
