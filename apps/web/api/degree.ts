@@ -1,4 +1,4 @@
-import { IDegree } from '@modtree/types'
+import { IDegree, IModule, InitDegreeProps } from '@modtree/types'
 import { BaseApi } from './base-api'
 
 export class DegreeApi extends BaseApi {
@@ -9,5 +9,19 @@ export class DegreeApi extends BaseApi {
     return this.server
       .get(`/degree/${degreeId}/get-full`)
       .then((res) => res.data)
+  }
+  /**
+   * sets modules
+   */
+  async modify(degreeId: string, props: InitDegreeProps): Promise<IDegree> {
+    return this.server
+      .patch(`/degree/${degreeId}`, props)
+      .then((res) => res.data)
+  }
+  /**
+   * create
+   */
+  async create(props: InitDegreeProps): Promise<IDegree> {
+    return this.server.post(`/degree`, props).then((res) => res.data)
   }
 }

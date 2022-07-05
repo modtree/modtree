@@ -104,6 +104,10 @@
     "method": "patch"
   },
   {
+    "route": "/user/:userId/degree/:degreeId",
+    "method": "delete"
+  },
+  {
     "route": "/user/:userId/get-full",
     "method": "get"
   },

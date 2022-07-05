@@ -306,6 +306,14 @@ export interface IDegreeRepository extends Repository<IDegree> {
    */
   insertModules(degree: IDegree, moduleCodes: string[]): Promise<IDegree>
   /**
+   * modifies a degree
+   *
+   * @param degree
+   * @param props
+   * @returns degree
+   */
+  modify(degree: IDegree, props: InitDegreeProps): Promise<IDegree>
+  /**
    * finds a degree by title
    *
    * @param title

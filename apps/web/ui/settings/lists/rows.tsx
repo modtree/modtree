@@ -30,7 +30,7 @@ export function BaseRow(props: RowProps) {
       {...rest}
     >
       <div className="flex-1">{children}</div>
-      <div className="flex flex-row space-x-2">
+      <div className="flex flex-row items-center space-x-2">
         {editable && (
           <Button onClick={onEdit} className="text-sm px-3" color="gray">
             Edit

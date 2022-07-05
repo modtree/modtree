@@ -1,6 +1,7 @@
 import { BaseApi } from './base-api'
 import { IUser, ModuleStatus } from '@modtree/types'
 import { setUser } from '@/store/user'
+import { Degree } from '@modtree/entity'
 
 export class UserApi extends BaseApi {
   /**
@@ -45,5 +46,21 @@ export class UserApi extends BaseApi {
       status,
       moduleCodes,
     })
+  }
+
+  /**
+   * insert degree
+   */
+  async insertDegree(userId: string, degreeId: string): Promise<IUser> {
+    return this.server.patch(`/user/${userId}/degree`, {
+      degreeIds: [degreeId],
+    })
+  }
+
+  /**
+   * remove degree
+   */
+  async removeDegree(userId: string, degreeId: string): Promise<IUser> {
+    return this.server.delete(`/user/${userId}/degree/${degreeId}`)
   }
 }

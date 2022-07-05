@@ -65,6 +65,12 @@ export const routes: Route[] = [
   },
   {
     method: 'delete',
+    route: '/user/:userId/degree/:degreeId',
+    fn: UserApi.removeDegree,
+    validators: [],
+  },
+  {
+    method: 'delete',
     route: '/user/:userId',
     fn: UserApi.delete,
     validators: [],
@@ -133,8 +139,11 @@ export const routes: Route[] = [
   {
     method: 'patch',
     route: '/degree/:degreeId',
-    fn: DegreeApi.insertModules,
-    validators: [body('moduleCodes').isArray().notEmpty()],
+    fn: DegreeApi.modify,
+    validators: [
+      body('title').isString().notEmpty(),
+      body('moduleCodes').isArray().notEmpty(),
+    ],
   },
 
   /**

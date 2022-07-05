@@ -1,14 +1,18 @@
 import { Pages } from 'types'
 import { SettingsSection } from '@/ui/settings/lists/base'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
-import { IModule, IModuleCondensed, SetState } from '@modtree/types'
+import { IModule, InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { removeFromBuildList } from '@/store/search'
+import { clearBuildList, removeFromBuildList } from '@/store/search'
+import { api } from 'api'
+import { useUser } from '@/utils/auth0'
+import { setUser } from '@/store/user'
+import { flatten } from '@modtree/utils'
 
 function SelectedModules(props: { modules: IModule[] }) {
   const dispatch = useAppDispatch()
@@ -34,14 +38,30 @@ function SelectedModules(props: { modules: IModule[] }) {
 }
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
+  const dispatch = useAppDispatch()
+  const { user } = useUser()
   const state = {
     title: useState<string>(''),
-    moduleCode: useState<string>(''),
-    modules: useState<IModuleCondensed[]>([
-      { title: 'yes', moduleCode: 'MA1000', moduleLevel: 1000, id: '' },
-    ]),
   }
+
   const buildList = useAppSelector((state) => state.search.buildList)
+  useEffect(() => {
+    dispatch(clearBuildList())
+  }, [])
+
+  async function saveDegree(title: string, modules: IModule[]) {
+    const degreeProps: InitDegreeProps = {
+      title,
+      moduleCodes: modules.map(flatten.module),
+    }
+    api.degree
+      .create(degreeProps)
+      .then((degree) => api.user.insertDegree(user.modtreeId, degree.id))
+      .then(() => api.user.getById(user.modtreeId))
+      .then((user) => dispatch(setUser(user)))
+      .then(() => props.setPage('main'))
+  }
+
   return (
     <div className="flex flex-col">
       <SettingsSection
@@ -64,7 +84,12 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         <SelectedModules modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green">Save degree</Button>
+        <Button
+          color="green"
+          onClick={() => saveDegree(state.title[0], buildList)}
+        >
+          Save degree
+        </Button>
       </div>
     </div>
   )

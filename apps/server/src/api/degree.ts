@@ -69,15 +69,15 @@ export class DegreeApi {
   }
 
   /**
-   * inserts modules into a Degree
+   * modifies a Degree
    *
    * @param {Api} api
    */
-  static insertModules = (api: Api) => async (req: Request) => {
+  static modify = (api: Api) => async (req: Request) => {
     const id = req.params.degreeId
-    const { moduleCodes } = req.body
+    const { title, moduleCodes } = req.body
     return api.degreeRepo
       .findOneById(id)
-      .then((degree) => api.degreeRepo.insertModules(degree, moduleCodes))
+      .then((degree) => api.degreeRepo.modify(degree, { title, moduleCodes }))
   }
 }
