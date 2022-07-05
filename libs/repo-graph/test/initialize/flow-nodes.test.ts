@@ -27,7 +27,7 @@ beforeAll(() =>
       return Repo.Graph.initialize({
         userId: t.user!.id,
         degreeId: t.degree!.id,
-        modulesPlacedCodes: [],
+        modulesPlacedCodes: ['MA1100', 'MA2001', 'MA2002', 'MA2219'],
         modulesHiddenCodes: [],
         pullAll: true,
       })
@@ -57,6 +57,6 @@ test('has flow edges', () => {
 })
 
 test('flow nodes are arranged', () => {
-  console.log(nodes)
+  // console.log(nodes)
   expect(nodes).toBeDefined()
 })
