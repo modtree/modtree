@@ -61,9 +61,3 @@ it('not taken', async () => {
   t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.NOT_TAKEN)
   expectUserModules([], [])
 })
-
-it('errors on invalid module code', async () => {
-  await expect(() =>
-    setModuleStatus(t.user!, 'NOT_VALID', ModuleStatus.DONE)
-  ).rejects.toThrow(Error)
-})
