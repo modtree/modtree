@@ -319,22 +319,22 @@ export class UserRepository
           user.modulesDone = modules
           // remove from modulesDoing
           user.modulesDoing = user.modulesDoing.filter(
-            (m) => !modules.includes(m)
+            (m) => !moduleCodes.includes(m.moduleCode)
           )
         } else if (status === ModuleStatus.DOING) {
           user.modulesDoing = modules
           // remove from modulesDone
           user.modulesDone = user.modulesDone.filter(
-            (m) => !modules.includes(m)
+            (m) => !moduleCodes.includes(m.moduleCode)
           )
         } else {
           // ModuleStatus.NOT_TAKEN
           // remove from modulesDone and modulesDoing
           user.modulesDone = user.modulesDone.filter(
-            (m) => !modules.includes(m)
+            (m) => !moduleCodes.includes(m.moduleCode)
           )
           user.modulesDoing = user.modulesDoing.filter(
-            (m) => !modules.includes(m)
+            (m) => !moduleCodes.includes(m.moduleCode)
           )
         }
         return this.save(user)
