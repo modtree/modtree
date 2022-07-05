@@ -17,6 +17,7 @@
       "repos:test:module",
       "repos:test:module-condensed",
       "repos:test:module-full",
+      "repos:test:pull",
       "utils:test",
       "docs:test",
       "server:test",
