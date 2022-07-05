@@ -33,15 +33,16 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   }, [])
 
   async function modify(title: string, modules: IModule[]) {
-    const props: InitDegreeProps = {
+    const degreeProps: InitDegreeProps = {
       title,
       moduleCodes: modules.map(flatten.module),
     }
     api.degree
-      .modify(buildId, props)
+      .modify(buildId, degreeProps)
       .then((degree) => {})
       .then(() => api.user.getById(user.modtreeId))
       .then((user) => dispatch(setUser(user)))
+      .then(() => props.setPage('main'))
   }
 
   return (

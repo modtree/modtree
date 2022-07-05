@@ -53,6 +53,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
       .create(title, modules)
       .then((degree) => api.user.insertDegree(user.modtreeId, degree))
       .then((user) => dispatch(setUser(user)))
+      .then(() => props.setPage('main'))
   }
 
   return (
