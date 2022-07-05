@@ -3,10 +3,6 @@
   "version": "0.5.0",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "libs/*",
-    "apps/*"
-  ],
   "scripts": {
     "start": "node dist/apps/server/main.js",
     "serve": "nx run-many --target=serve --projects=web,server",
@@ -23,7 +19,7 @@
     "format": "prettier --write .",
     "prepare": "bash ./scripts/yarn.sh setup",
     "i": "bash ./scripts/yarn.sh inverse",
-    "heroku-postbuild": "nx build server --skip-nx-cache",
+    "heroku-postbuild": "nx build server",
     "auto": "nx test auto-docs",
     "version": "auto-changelog -p && git add --all"
   },
