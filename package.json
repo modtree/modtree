@@ -19,7 +19,7 @@
     "format": "prettier --write .",
     "prepare": "bash ./scripts/yarn.sh setup",
     "i": "bash ./scripts/yarn.sh inverse",
-    "heroku-postbuild": "nx build server --skip-nx-cache",
+    "heroku-postbuild": "nx build server",
     "auto": "nx test auto-docs",
     "version": "auto-changelog -p && git add --all"
   },
