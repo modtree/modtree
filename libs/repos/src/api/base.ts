@@ -17,7 +17,6 @@ import {
   GraphRepository,
   getRelationNames,
 } from '@modtree/repos'
-import { MiniApi } from './types'
 
 type Relations = Record<string, boolean>
 
@@ -30,7 +29,6 @@ export abstract class BaseApi {
   moduleFullRepo: IModuleFullRepository
   moduleCondensedRepo: IModuleCondensedRepository
   relations: Record<EntityName, Relations>
-  miniApi: MiniApi
 
   constructor(db: DataSource) {
     this.db = db
@@ -40,14 +38,6 @@ export abstract class BaseApi {
     this.moduleRepo = new ModuleRepository(db)
     this.moduleFullRepo = new ModuleFullRepository(db)
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
-    this.miniApi = {
-      degreeRepo: this.degreeRepo,
-      userRepo: this.userRepo,
-      graphRepo: this.graphRepo,
-      moduleRepo: this.moduleRepo,
-      moduleFullRepo: this.moduleFullRepo,
-      moduleCondensedRepo: this.moduleCondensedRepo,
-    }
     this.relations = {
       user: getRelationNames(this.userRepo),
       degree: getRelationNames(this.degreeRepo),
