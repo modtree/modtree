@@ -22,7 +22,7 @@ import { UserRepository } from '@modtree/repo-user'
 import { DegreeRepository } from '@modtree/repo-degree'
 import { getModules } from './get-modules'
 import { getFlowEdges } from './get-edges'
-import { nodify } from './get-nodes'
+import { getFlowNodes, nodify } from './get-nodes'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
@@ -66,20 +66,35 @@ export class GraphRepository
       getModules(this.moduleRepo, user, degree, props)
     )
     /**
-     * save the newly created graph
+     *  get flow edges from relations
      */
     const flowEdges = modules.then(({ modulesPlaced }) =>
       getFlowEdges(modulesPlaced)
     )
-    return Promise.all([user, degree, modules, flowEdges]).then(
-      ([user, degree, { modulesHidden, modulesPlaced }, flowEdges]) =>
+    /**
+     *  get flow nodes from dagre
+     */
+    const flowNodes = Promise.all([flowEdges, modules]).then(
+      ([edges, { modulesPlaced }]) => getFlowNodes(modulesPlaced, edges)
+    )
+    /**
+     * save the newly created graph
+     */
+    return Promise.all([user, degree, modules, flowEdges, flowNodes]).then(
+      ([
+        user,
+        degree,
+        { modulesHidden, modulesPlaced },
+        flowEdges,
+        flowNodes,
+      ]) =>
         this.save(
           this.create({
             user,
             degree,
             modulesPlaced,
             modulesHidden,
-            flowNodes: modulesPlaced.map(nodify),
+            flowNodes,
             flowEdges,
           })
         )

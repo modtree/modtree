@@ -1,5 +1,5 @@
 import { Module } from '@modtree/entity'
-import { GraphFlowNode } from '@modtree/types'
+import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
 export * from './get-edges'
 
 const origin = { x: 0, y: 0 }
@@ -11,4 +11,11 @@ export function nodify(module: Module): GraphFlowNode {
     data: module,
     type: 'moduleNode',
   }
+}
+
+export function getFlowNodes(
+  modules: Module[],
+  edges: GraphFlowEdge[]
+): GraphFlowNode[] {
+  return modules.map(nodify)
 }

@@ -39,14 +39,14 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 // for future deeper testing
-// let nodes: GraphFlowNode[]
+let nodes: GraphFlowNode[]
 // let edges: GraphFlowEdge[]
 
 test('has flow nodes', () => {
   const graphNodes = t.graph!.flowNodes
   expect(graphNodes).toBeInstanceOf(Array)
   expect(graphNodes.length).toBeGreaterThan(0)
-  // nodes = graphNodes
+  nodes = graphNodes
 })
 
 test('has flow edges', () => {
@@ -54,4 +54,9 @@ test('has flow edges', () => {
   expect(graphEdges).toBeInstanceOf(Array)
   expect(graphEdges.length).toBeGreaterThan(0)
   // edges = graphEdges
+})
+
+test('flow nodes are arranged', () => {
+  console.log(nodes)
+  expect(nodes).toBeDefined()
 })
