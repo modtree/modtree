@@ -65,7 +65,15 @@ export class Api {
     const user = this.userRepo.initialize({
       authZeroId,
       email,
-      modulesDone: ['MA2001', 'MA1100', 'HSH1000', 'HSA1000', 'GEA1000'],
+      modulesDone: [
+        'MA2001',
+        'MA1100',
+        'HSH1000',
+        'HSA1000',
+        'GEA1000',
+        'MA2101',
+        'MA3201',
+      ],
       modulesDoing: [
         'IS1103',
         'CS1010S',
