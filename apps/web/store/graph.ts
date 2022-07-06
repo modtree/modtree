@@ -5,6 +5,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { baseInitialState } from './initial-state'
 
+function alreadyHas(
+  newNode: GraphFlowNode,
+  currentNodes: GraphFlowNode[]
+): boolean {
+  const currentCodes = currentNodes.map((n) => n.data.moduleCode)
+  return currentCodes.includes(newNode.data.moduleCode)
+}
+
 export const graph = createSlice({
   name: 'graph',
   initialState: baseInitialState.graph,
@@ -22,8 +30,7 @@ export const graph = createSlice({
       /**
        * if the code is already in, do nothing.
        */
-      const currentCodes = graph.flowNodes.map((n) => n.data.moduleCode)
-      if (currentCodes.includes(node.data.moduleCode)) return
+      if (alreadyHas(node, graph.flowNodes)) return
 
       /**
        * otherwise, operate on the graph.
