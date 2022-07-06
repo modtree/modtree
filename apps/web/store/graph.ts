@@ -35,13 +35,13 @@ export const graph = createSlice({
     removeModuleNode: (graph, action: PayloadAction<GraphFlowNode>) => {
       const rmNode = action.payload
       if (!rmNode) return
-      console.log(rmNode)
-      // const nodes = graph.flowNodes.filter(
-      //   (node) => node.data.moduleCode !== rmNode.data.moduleCode
-      // )
+      const nodes = graph.flowNodes.filter(
+        (node) => node.data.moduleCode !== rmNode.data.moduleCode
+      )
+      console.log(nodes)
       // // TODO: remove edges
-      // const newPositions = getPosition(nodes, graph.flowEdges)
-      // graph.flowNodes = newPositions
+      const newPositions = getPosition(nodes, graph.flowEdges)
+      graph.flowNodes = newPositions
     },
     updateModuleNode: (graph, action: PayloadAction<Node<IModule>>) => {
       const node = action.payload
