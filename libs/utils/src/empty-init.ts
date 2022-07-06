@@ -26,7 +26,7 @@ const Degree: InitDegreeProps = {
  * empty Graph init props
  */
 const Graph: InitGraphProps = {
-  title: '',
+  title: 'graph',
   userId: '',
   degreeId: '',
   modulesPlacedCodes: [],
