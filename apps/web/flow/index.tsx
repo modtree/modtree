@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/components/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
-import { getPosition } from './dagre'
+import { redrawGraph } from '@/utils/flow'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -33,7 +33,10 @@ export default function ModtreeFlow() {
 
   useEffect(() => {
     setEdges(graph.flowEdges)
-    const newNodes = getPosition(graph.flowNodes, graph.flowEdges)
+    const newNodes = redrawGraph({
+      nodes: graph.flowNodes,
+      edges: graph.flowEdges,
+    }).nodes
     setNodes(newNodes)
   }, [graph.flowNodes.length])
 
@@ -42,7 +45,10 @@ export default function ModtreeFlow() {
    */
   const onNodeDragStop = (_: MouseEvent, node: Node) => {
     dispatch(updateModuleNode(node))
-    const newNodes = getPosition(graph.flowNodes, graph.flowEdges)
+    const newNodes = redrawGraph({
+      nodes: graph.flowNodes,
+      edges: graph.flowEdges,
+    }).nodes
     setNodes(newNodes)
   }
 
