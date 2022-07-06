@@ -16,7 +16,7 @@ export type ContextMenuProps = {
   top: number
   left: number
   menu: 'pane' | 'node'
-  module: IModule
+  module?: IModule
 }
 
 export type ReduxState = {
