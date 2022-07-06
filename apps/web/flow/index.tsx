@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/components/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
-import { setPosition } from './dagre'
+import { redrawGraph } from '@/utils/flow'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -32,8 +32,12 @@ export default function ModtreeFlow() {
   const [edges, setEdges] = useEdgesState(graph.flowEdges)
 
   useEffect(() => {
-    setNodes(graph.flowNodes)
     setEdges(graph.flowEdges)
+    const newNodes = redrawGraph({
+      nodes: graph.flowNodes,
+      edges: graph.flowEdges,
+    }).nodes
+    setNodes(newNodes)
   }, [graph.flowNodes.length])
 
   /**
@@ -41,7 +45,11 @@ export default function ModtreeFlow() {
    */
   const onNodeDragStop = (_: MouseEvent, node: Node) => {
     dispatch(updateModuleNode(node))
-    setPosition(graph.flowNodes, graph.flowEdges, setNodes)
+    const newNodes = redrawGraph({
+      nodes: graph.flowNodes,
+      edges: graph.flowEdges,
+    }).nodes
+    setNodes(newNodes)
   }
 
   return (
@@ -53,7 +61,7 @@ export default function ModtreeFlow() {
       onNodesChange={onNodesChange}
       onNodeDragStop={onNodeDragStop}
       onPaneContextMenu={(e) => onContextMenu(dispatch, e, 'pane')}
-      onNodeContextMenu={(e) => onContextMenu(dispatch, e, 'node')}
+      onNodeContextMenu={(e, node) => onContextMenu(dispatch, e, 'node', node)}
       onSelectionChange={(e) => dispatch(setGraphSelectedCodes(e.nodes))}
       /** pure configs */
       fitView={true}

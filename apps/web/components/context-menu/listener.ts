@@ -1,4 +1,5 @@
 import { showContextMenu } from '@/store/modal'
+import { GraphFlowNode } from '@modtree/types'
 import { MouseEvent } from 'react'
 import { Dispatch } from 'redux'
 
@@ -10,8 +11,16 @@ import { Dispatch } from 'redux'
 export function onContextMenu(
   dispatch: Dispatch,
   event: MouseEvent<Element, globalThis.MouseEvent>,
-  menu: 'pane' | 'node'
+  menu: 'pane' | 'node',
+  node?: GraphFlowNode
 ) {
   event.preventDefault()
-  dispatch(showContextMenu({ left: event.pageX, top: event.pageY, menu }))
+  dispatch(
+    showContextMenu({
+      left: event.pageX,
+      top: event.pageY,
+      menu,
+      flowNode: node,
+    })
+  )
 }

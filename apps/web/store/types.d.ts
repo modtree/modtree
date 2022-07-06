@@ -1,4 +1,5 @@
 import {
+  GraphFlowNode,
   IDegree,
   IGraph,
   IModule,
@@ -12,10 +13,13 @@ export type ModuleCondensedMap = {
   [key: string]: IModuleCondensed
 }
 
+export type ContextMenuType = 'node' | 'pane'
+
 export type ContextMenuProps = {
   top: number
   left: number
-  menu: 'pane' | 'node'
+  menu: ContextMenuType
+  flowNode?: GraphFlowNode
 }
 
 export type ReduxState = {

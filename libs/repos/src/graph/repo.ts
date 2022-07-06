@@ -12,14 +12,18 @@ import {
   GraphFlowNode,
   InitGraphProps,
 } from '@modtree/types'
-import { quickpop, flatten } from '@modtree/utils'
+import {
+  quickpop,
+  flatten,
+  getFlowEdges,
+  getFlowNodes,
+  nodify,
+} from '@modtree/utils'
 import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
-import { getFlowEdges } from './get-edges'
-import { getFlowNodes, nodify } from './get-nodes'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
@@ -66,13 +70,14 @@ export class GraphRepository
      *  get flow edges from relations
      */
     const flowEdges = modules.then(({ modulesPlaced }) =>
-      getFlowEdges(modulesPlaced)
+      getFlowEdges(modulesPlaced.map(nodify))
     )
     /**
      *  get flow nodes from dagre
      */
     const flowNodes = Promise.all([flowEdges, modules]).then(
-      ([edges, { modulesPlaced }]) => getFlowNodes(modulesPlaced, edges)
+      ([edges, { modulesPlaced }]) =>
+        getFlowNodes(modulesPlaced.map(nodify), edges)
     )
     /**
      * save the newly created graph

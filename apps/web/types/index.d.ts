@@ -1,6 +1,12 @@
 import type { UserProfile } from '@auth0/nextjs-auth0'
 import type { ButtonHTMLAttributes, ReactElement, ComponentProps } from 'react'
-import type { UseState, Modify, IModuleCondensed } from '@modtree/types'
+import type {
+  UseState,
+  Modify,
+  IModuleCondensed,
+  IModule,
+  GraphFlowNode,
+} from '@modtree/types'
 
 /**
  * for frontend-specific types.
@@ -33,7 +39,7 @@ export type UserMenuItem = {
 export type MenuItem = {
   text: string
   href?: string
-  callback?: () => void
+  callback?: (_: GraphFlowNode) => void
 }
 
 export type ButtonColor = 'red' | 'blue' | 'green' | 'gray'

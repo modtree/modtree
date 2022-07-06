@@ -1,4 +1,4 @@
-import { Module, GraphFlowEdge } from '@modtree/types'
+import { GraphFlowEdge, IModule } from '@modtree/types'
 
 type BaseEdge = {
   source: string
@@ -20,7 +20,7 @@ function createFlowEdge(props: BaseEdge): GraphFlowEdge {
   }
 }
 
-export function getFlowEdges(modules: Module[]): GraphFlowEdge[] {
+export function getFlowEdges(modules: IModule[]): GraphFlowEdge[] {
   const data: Record<string, GraphFlowEdge> = {}
   const codes = new Set(modules.map((m) => m.moduleCode))
 

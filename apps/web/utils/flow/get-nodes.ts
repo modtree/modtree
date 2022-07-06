@@ -3,45 +3,36 @@ import dagre from 'dagre'
 
 const config = {
   ratio: 3,
-}
-
-export function getPosition(
-  nodes: GraphFlowNode[],
-  edges: GraphFlowEdge[]
-): GraphFlowNode[] {
-  const nodeRecord: Record<string, GraphFlowNode> = {}
-  const positions: Record<string, { x: number; y: number }> = {}
-  const g = new dagre.graphlib.Graph({ compound: false })
-  g.setGraph({
+  graph: {
     rankdir: 'LR',
     ranksep: 200,
     ranker: 'longest-path',
-    // acyclicer: 'greedy'
-  })
-  // Default to assigning a new object as a label for each new edge.
+  },
+}
+
+export function getFlowNodes(
+  nodes: GraphFlowNode[],
+  edges: GraphFlowEdge[]
+): GraphFlowNode[] {
+  const positions: Record<string, { x: number; y: number }> = {}
+  const g = new dagre.graphlib.Graph()
+  g.setGraph(config.graph)
   g.setDefaultEdgeLabel(() => ({}))
   nodes.forEach((node) => {
-    nodeRecord[node.id] = node
     g.setNode(node.id, {
       label: node.id,
       height: 24 * config.ratio,
       width: 40 * config.ratio,
     })
   })
-  edges.forEach((edge) => {
-    g.setEdge(edge.source, edge.target)
-  })
-
-  /** compute the layout */
+  edges.forEach((edge) => g.setEdge(edge.source, edge.target))
   dagre.layout(g)
-
   g.nodes().forEach((value) => {
     const { label, x, y } = g.node(value)
     positions[label] = { x, y }
   })
-  const result: GraphFlowNode[] = nodes.map((node) => ({
+  return nodes.map((node) => ({
     ...node,
     position: positions[node.id],
   }))
-  return result
 }
