@@ -2,17 +2,7 @@ import { Graph } from '@modtree/types'
 import { empty } from '@modtree/utils'
 import { DegreeGraphs } from 'types'
 import { getGraphContent } from '.'
-
-/**
- * Custom sort comparator for DegreeGraphs.
- *
- * @param {DegreeGraphs} a
- * @param {DegreeGraphs} b
- * @returns {number}
- */
-const cmp = (a: DegreeGraphs, b: DegreeGraphs): number => {
-  return a.degree < b.degree ? -1 : 1
-}
+import '@modtree/test-env/jest'
 
 test('same degree title', () => {
   const graphs: Graph[] = [
@@ -39,7 +29,7 @@ test('same degree title', () => {
   const expected: DegreeGraphs[] = [
     { degree: 'my-degree', graphs: ['cs', 'math'] },
   ]
-  expect(getGraphContent(graphs).sort()).toEqual(expected.sort())
+  expect(getGraphContent(graphs)).toIncludeSameMembers(expected)
 })
 
 test('different degree titles', () => {
@@ -68,5 +58,5 @@ test('different degree titles', () => {
     { degree: 'my-degree', graphs: ['math'] },
     { degree: 'your-degree', graphs: ['cs'] },
   ]
-  expect(getGraphContent(graphs).sort(cmp)).toEqual(expected.sort(cmp))
+  expect(getGraphContent(graphs)).toIncludeSameMembers(expected)
 })
