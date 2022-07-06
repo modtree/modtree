@@ -1,8 +1,7 @@
 import { getPosition } from '@/flow/dagre'
-import { IModule, IGraph, GraphFlowNode, GraphFlowEdge } from '@modtree/types'
+import { IGraph, GraphFlowNode } from '@modtree/types'
 import { getFlowEdges } from '@modtree/utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Node } from 'react-flow-renderer'
 import { baseInitialState } from './initial-state'
 
 function alreadyHas(
@@ -17,15 +16,28 @@ export const graph = createSlice({
   name: 'graph',
   initialState: baseInitialState.graph,
   reducers: {
+    /**
+     * Overwrite the entire graph.
+     * Meant to be used for initial page loads.
+     */
     setGraph: (graph, action: PayloadAction<IGraph>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
         graph[key] = value
       })
     },
+
+    /**
+     * User's selected nodes
+     */
     setGraphSelectedCodes: (graph, action: PayloadAction<GraphFlowNode[]>) => {
       graph.selectedCodes = action.payload.map((node) => node.data.moduleCode)
     },
-    addModuleNode: (graph, action: PayloadAction<Node<IModule>>) => {
+
+    /**
+     * add a module node to the graph
+     */
+    addModuleNode: (graph, action: PayloadAction<GraphFlowNode>) => {
+      if (!action.payload) return
       const node = action.payload
       /**
        * if the code is already in, do nothing.
@@ -33,31 +45,43 @@ export const graph = createSlice({
       if (alreadyHas(node, graph.flowNodes)) return
 
       /**
-       * otherwise, operate on the graph.
+       * add the node and determine the new edges
        */
       const nodes = [...graph.flowNodes, node]
-      const edges = getFlowEdges(nodes.map((x) => x.data))
-      const newPositions = getPosition(nodes, edges)
-      graph.flowNodes = newPositions
+      const edges = getFlowEdges(nodes.map((n) => n.data))
+      /**
+       * update the graph
+       */
+      graph.flowNodes = getPosition(nodes, edges)
       graph.flowEdges = edges
     },
+
+    /**
+     * remove a module node from the graph
+     */
     removeModuleNode: (graph, action: PayloadAction<GraphFlowNode>) => {
-      const rmNode = action.payload
-      if (!rmNode) return
-      const rmCode = rmNode.data.moduleCode
-      const nodes = graph.flowNodes.filter(
-        (node) => node.data.moduleCode !== rmCode
-      )
+      if (!action.payload) return
+      const node = action.payload
+      const code = node.data.moduleCode
+      /**
+       * remove the node and associated edges
+       */
+      const nodes = graph.flowNodes.filter((n) => n.data.moduleCode !== code)
       const edges = graph.flowEdges.filter(
-        (edge) => edge.source !== rmCode && edge.target !== rmCode
+        (e) => e.source !== code && e.target !== code
       )
-      const id = (e: GraphFlowEdge[]) => e.map((x) => x.id)
-      console.log(id(graph.flowEdges), id(edges))
-      const newPositions = getPosition(nodes, edges)
+      /**
+       * update the graph
+       */
+      graph.flowNodes = getPosition(nodes, edges)
       graph.flowEdges = edges
-      graph.flowNodes = newPositions
     },
-    updateModuleNode: (graph, action: PayloadAction<Node<IModule>>) => {
+
+    /**
+     * Update one module node on the graph.
+     * Meant for state updates (doing/doing/etc.)
+     */
+    updateModuleNode: (graph, action: PayloadAction<GraphFlowNode>) => {
       const node = action.payload
       const index = graph.flowNodes.findIndex(
         (x) => x.data.moduleCode === node.data.moduleCode
