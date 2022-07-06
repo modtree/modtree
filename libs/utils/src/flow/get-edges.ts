@@ -1,18 +1,13 @@
-import { GraphFlowEdge, IModule } from '@modtree/types'
-
-type BaseEdge = {
-  source: string
-  target: string
-}
+import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
 
 /**
  * gets a flow edge from two module codes
  *
- * @param {BaseEdge} props
+ * @param {string} source
+ * @param {string} target
  * @returns {GraphFlowEdge}
  */
-function createFlowEdge(props: BaseEdge): GraphFlowEdge {
-  const { source, target } = props
+function createFlowEdge(source: string, target: string): GraphFlowEdge {
   return {
     id: source + '-' + target,
     source,
@@ -20,48 +15,57 @@ function createFlowEdge(props: BaseEdge): GraphFlowEdge {
   }
 }
 
-export function getFlowEdges(modules: IModule[]): GraphFlowEdge[] {
-  console.log(modules)
-  const data: Record<string, GraphFlowEdge> = {}
-  const codes = new Set(modules.map((m) => m.moduleCode))
+/**
+ * returns a list of all direct sources/children/pre-requisite
+ * of a graph node
+ */
 
-  modules.forEach((module) => {
-    /**
-     * scan the pre-requisite tree
-     */
-    const pre = module.prereqTree
-    if (typeof pre !== 'string') {
-      /**
-       * assemble direct children
-       */
-      const directSource: string[] = []
-      pre.or?.forEach((tree) => {
-        if (typeof tree === 'string') directSource.push(tree)
-      })
-      pre.and?.forEach((tree) => {
-        if (typeof tree === 'string') directSource.push(tree)
-      })
-      /**
-       * scan direct children for links
-       */
-      directSource.forEach((source) => {
-        if (codes.has(source)) {
-          const edge = createFlowEdge({ source, target: module.moduleCode })
-          data[edge.id] = edge
-        }
-      })
+function getDirectSources(node: GraphFlowNode): string[] {
+  const pre = node.data.prereqTree
+
+  /** handle string prereqTrees */
+  if (typeof pre === 'string') {
+    if (pre === '') return []
+    return [pre]
+  }
+
+  /** handle json prereqTrees */
+  const directSources: string[] = []
+  /**
+   * assemble direct children
+   */
+  pre.or?.forEach((tree) => {
+    if (typeof tree === 'string') directSources.push(tree)
+  })
+  pre.and?.forEach((tree) => {
+    if (typeof tree === 'string') directSources.push(tree)
+  })
+  return directSources
+}
+
+export function getFlowEdges(nodes: GraphFlowNode[]): GraphFlowEdge[] {
+  const edges: Record<string, GraphFlowEdge> = {}
+  const codes = new Set(nodes.map((n) => n.data.moduleCode))
+
+  nodes.forEach((node) => {
+    const saveEdge = (source: string, target: string) => {
+      /** don't save unrelated edges */
+      if (!codes.has(source) || !codes.has(target)) return
+      const edge = createFlowEdge(source, target)
+      edges[edge.id] = edge
     }
     /**
-     * scan the post-requisite array
+     * scan sources
      */
-    const post = module.fulfillRequirements
-    if (typeof post === 'string') return
-    post.forEach((target) => {
-      if (codes.has(target)) {
-        const edge = createFlowEdge({ source: module.moduleCode, target })
-        data[edge.id] = edge
-      }
-    })
+    const directSources = getDirectSources(node)
+    directSources.forEach((s) => saveEdge(s, node.data.moduleCode))
+    /**
+     * scan targets
+     */
+    const directTargets = node.data.fulfillRequirements
+    if (typeof directTargets === 'string') return
+    directTargets.forEach((t) => saveEdge(node.data.moduleCode, t))
   })
-  return Object.values(data)
+
+  return Object.values(edges)
 }

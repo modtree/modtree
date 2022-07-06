@@ -1,9 +1,9 @@
-import { GraphFlowEdge, GraphFlowNode, Module } from '@modtree/types'
+import { GraphFlowEdge, GraphFlowNode, IModule } from '@modtree/types'
 import dagre from 'dagre'
 
 const origin = { x: 0, y: 0 }
 
-export function nodify(module: Module): GraphFlowNode {
+export function nodify(module: IModule): GraphFlowNode {
   return {
     id: module.moduleCode,
     position: origin,
@@ -12,25 +12,38 @@ export function nodify(module: Module): GraphFlowNode {
   }
 }
 
+const config = {
+  ratio: 3,
+  graph: {
+    rankdir: 'LR',
+    ranksep: 200,
+    ranker: 'longest-path',
+  },
+}
+
 export function getFlowNodes(
-  modules: Module[],
+  nodes: GraphFlowNode[],
   edges: GraphFlowEdge[]
 ): GraphFlowNode[] {
+  const positions: Record<string, { x: number; y: number }> = {}
   const g = new dagre.graphlib.Graph()
-  g.setGraph({})
-  // Default to assigning a new object as a label for each new edge.
+  g.setGraph(config.graph)
   g.setDefaultEdgeLabel(() => ({}))
-  modules.forEach((module) => {
-    g.setNode(module.moduleCode, {
-      label: module.moduleCode,
+  nodes.forEach((node) => {
+    g.setNode(node.id, {
+      label: node.id,
+      height: 24 * config.ratio,
+      width: 40 * config.ratio,
     })
   })
-  edges.forEach((edge) => {
-    g.setEdge(edge.source, edge.target)
-  })
-
-  /** compute the layout */
+  edges.forEach((edge) => g.setEdge(edge.source, edge.target))
   dagre.layout(g)
-
-  return modules.map(nodify)
+  g.nodes().forEach((value) => {
+    const { label, x, y } = g.node(value)
+    positions[label!] = { x, y }
+  })
+  return nodes.map((node) => ({
+    ...node,
+    position: positions[node.id],
+  }))
 }
