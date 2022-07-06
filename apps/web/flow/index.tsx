@@ -12,6 +12,7 @@ import { onContextMenu } from '@/components/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { getPosition } from './dagre'
+import { empty } from '@modtree/utils'
 
 const nodeTypes = { moduleNode: ModuleNode }
 
@@ -54,7 +55,9 @@ export default function ModtreeFlow() {
       onNodesChange={onNodesChange}
       onNodeDragStop={onNodeDragStop}
       onPaneContextMenu={(e) => onContextMenu(dispatch, e, 'pane')}
-      onNodeContextMenu={(e) => onContextMenu(dispatch, e, 'node')}
+      onNodeContextMenu={(e, node) =>
+        onContextMenu(dispatch, e, 'node', node.data)
+      }
       onSelectionChange={(e) => dispatch(setGraphSelectedCodes(e.nodes))}
       /** pure configs */
       fitView={true}
