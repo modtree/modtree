@@ -23,6 +23,7 @@ beforeAll(() =>
     )
     .then(([user, degree]) =>
       Repo.Graph.initialize({
+        title: 'Test Graph',
         userId: user.id,
         degreeId: degree.id,
         modulesPlacedCodes: [],

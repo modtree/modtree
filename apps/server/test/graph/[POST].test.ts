@@ -27,6 +27,7 @@ afterAll(() => teardown(db))
 
 const testRequest = async () =>
   request(app).post('/graph').send({
+    title: 'Test Graph',
     userId: '017fc011-486c-4ec6-a038-9a92ab85a8f3',
     degreeId: 'dd9f2725-7a08-45f8-bbbb-10bb7e002bb3',
     modulesHiddenCodes: [],
@@ -44,6 +45,7 @@ test('`initialize` is called with correct args', async () => {
   await testRequest()
 
   expect(initialize).toBeCalledWith({
+    title: 'Test Graph',
     userId: '017fc011-486c-4ec6-a038-9a92ab85a8f3',
     degreeId: 'dd9f2725-7a08-45f8-bbbb-10bb7e002bb3',
     modulesPlacedCodes: [],

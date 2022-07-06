@@ -91,7 +91,10 @@ export class UserApi {
       relations: {
         modulesDone: true,
         modulesDoing: true,
-        savedGraphs: true,
+        savedGraphs: {
+          // does not fetch degree modules
+          degree: true,
+        },
         savedDegrees: {
           modules: true,
         },

@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'docs',
+  displayName: 'web',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/docs',
+  coverageDirectory: '../../coverage/apps/web',
 }

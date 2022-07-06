@@ -137,6 +137,7 @@ export const init: Init = {
   },
 
   graph1: {
+    title: 'graph1',
     userId: '',
     degreeId: '',
     modulesPlacedCodes: ['CS1101S', 'CS2030S'],
@@ -145,6 +146,7 @@ export const init: Init = {
   },
 
   graph2: {
+    title: 'graph2',
     userId: '',
     degreeId: '',
     modulesPlacedCodes: ['CS1101S', 'CS2030S'],
@@ -153,6 +155,7 @@ export const init: Init = {
   },
 
   graph3: {
+    title: 'graph3',
     userId: '',
     degreeId: '',
     modulesPlacedCodes: ['CS1101S', 'CS1231S'],

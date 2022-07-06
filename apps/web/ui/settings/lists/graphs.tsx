@@ -5,20 +5,20 @@ import { SettingsSection } from './base'
 import { EmptyBox } from '@/ui/settings/empty-box'
 import { Row } from './rows'
 import { Fragment } from 'react'
+import { text } from 'text'
 
 export function GraphListSection(props: {
   contents: DegreeGraphs[]
   title: string
-  summary?: string
 }) {
   const hasGraphs = props.contents.length !== 0
-  const { title, contents, summary } = props
+  const { title, contents } = props
   return (
     <div>
       <SettingsSection title={title} addButtonText={hasGraphs && 'New graph'}>
         {hasGraphs ? (
           <>
-            {summary && <p>{summary}</p>}
+            <p>{text.graphListSection.summary}</p>
             <div className="ui-rectangle flex flex-col overflow-hidden">
               <Row.Header>
                 <GraphIcon className="mr-2" />
@@ -38,7 +38,7 @@ export function GraphListSection(props: {
           </>
         ) : (
           <EmptyBox
-            summary="There are no graphs for this user"
+            summary={text.graphListSection.emptySummary}
             buttonText="New graph"
           />
         )}

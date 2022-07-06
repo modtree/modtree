@@ -113,6 +113,7 @@ export const init: Init = {
   },
 
   graph1: {
+    title: '',
     userId: '',
     degreeId: '',
     modulesPlacedCodes: [],

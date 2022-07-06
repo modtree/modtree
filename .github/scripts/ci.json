@@ -19,6 +19,7 @@
       "repos:test:module-condensed",
       "repos:test:module-full",
       "repos:test:pull",
+      "web:test",
       "utils:test",
       "docs:test",
       "server:test",

@@ -82,8 +82,16 @@ export class GraphRepository
     /**
      * save the newly created graph
      */
-    return Promise.all([user, degree, modules, flowEdges, flowNodes]).then(
+    return Promise.all([
+      props.title,
+      user,
+      degree,
+      modules,
+      flowEdges,
+      flowNodes,
+    ]).then(
       ([
+        title,
         user,
         degree,
         { modulesHidden, modulesPlaced },
@@ -92,6 +100,7 @@ export class GraphRepository
       ]) =>
         this.save(
           this.create({
+            title,
             user,
             degree,
             modulesPlaced,

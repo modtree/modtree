@@ -49,6 +49,7 @@ export function SettingsSearchBox() {
     api.module
       .getByCodes([query])
       .then((res) => dispatch(addToBuildList(res[0])))
+    selectState[1]('')
   }
 
   return (

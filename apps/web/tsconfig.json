@@ -18,6 +18,7 @@
     "paths": {
       "@modtree/types": ["../../libs/types/src/index.ts"],
       "@modtree/utils": ["../../libs/utils/src/index.ts"],
+      "@modtree/test-env/jest": ["../../libs/test-env/src/matcher-types.ts"],
       "@/components/*": ["components/*"],
       "@/store/*": ["store/*"],
       "@/ui/*": ["ui/*"],
