@@ -36,6 +36,7 @@ it('initial count', async () => {
 
 it('returns a graph', async () => {
   await Repo.Graph.initialize({
+    title: 'Test Graph',
     userId: t.user!.id,
     degreeId: t.degree!.id,
     modulesPlacedCodes: [],

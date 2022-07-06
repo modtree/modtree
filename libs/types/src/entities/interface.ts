@@ -56,6 +56,7 @@ export type GraphFrontendProps = {
 
 export type IGraph = IBase &
   GraphFrontendProps & {
+    title: string
     user: IUser
     degree: IDegree
     modulesPlaced: IModule[]

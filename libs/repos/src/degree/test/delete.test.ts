@@ -21,6 +21,7 @@ beforeAll(() =>
     })
     .then(() =>
       Repo.Graph.initialize({
+        title: 'Test Graph',
         userId: t.user!.id,
         degreeId: t.degree!.id,
         modulesPlacedCodes: [],

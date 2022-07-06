@@ -23,6 +23,7 @@ export type InitUserProps = {
 }
 
 export type InitGraphProps = {
+  title: string
   userId: string
   degreeId: string
   modulesPlacedCodes: string[]

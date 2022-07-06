@@ -25,6 +25,7 @@ beforeAll(() =>
       t.user = user
       return Promise.all([
         Repo.Graph.initialize({
+          title: 'Pull All',
           userId: user.id,
           degreeId: t.degree!.id,
           modulesPlacedCodes: [],
@@ -32,6 +33,7 @@ beforeAll(() =>
           pullAll: true,
         }),
         Repo.Graph.initialize({
+          title: 'Empty',
           userId: user.id,
           degreeId: t.degree!.id,
           modulesPlacedCodes: [],

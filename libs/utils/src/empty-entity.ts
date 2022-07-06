@@ -40,6 +40,7 @@ const User: IUser = {
 }
 
 const Graph: IGraph = {
+  title: '',
   id: '',
   user: User,
   degree: Degree,
