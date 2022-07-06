@@ -1,5 +1,5 @@
 import { getPosition } from '@/flow/dagre'
-import { IModule, IGraph } from '@modtree/types'
+import { IModule, IGraph, GraphFlowNode } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { baseInitialState } from './initial-state'
@@ -13,7 +13,7 @@ export const graph = createSlice({
         graph[key] = value
       })
     },
-    setGraphSelectedCodes: (graph, action: PayloadAction<Node<IModule>[]>) => {
+    setGraphSelectedCodes: (graph, action: PayloadAction<GraphFlowNode[]>) => {
       graph.selectedCodes = action.payload.map((node) => node.data.moduleCode)
     },
     addModuleNode: (graph, action: PayloadAction<Node<IModule>>) => {
@@ -28,6 +28,16 @@ export const graph = createSlice({
        * otherwise, operate on the graph.
        */
       const nodes = [...graph.flowNodes, node]
+      // TODO: add edges
+      const newPositions = getPosition(nodes, graph.flowEdges)
+      graph.flowNodes = newPositions
+    },
+    removeModuleNode: (graph, action: PayloadAction<GraphFlowNode>) => {
+      const rmNode = action.payload
+      const nodes = graph.flowNodes.filter(
+        (node) => node.data.moduleCode !== rmNode.data.moduleCode
+      )
+      // TODO: remove edges
       const newPositions = getPosition(nodes, graph.flowEdges)
       graph.flowNodes = newPositions
     },
@@ -45,6 +55,7 @@ export const {
   setGraphSelectedCodes,
   addModuleNode,
   updateModuleNode,
+  removeModuleNode,
   setGraph,
 } = graph.actions
 export default graph.reducer
