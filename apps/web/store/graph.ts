@@ -1,4 +1,5 @@
 import { getPosition } from '@/flow/dagre'
+import { redrawGraph } from '@/utils/flow'
 import { IGraph, GraphFlowNode } from '@modtree/types'
 import { getFlowEdges } from '@modtree/utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -43,16 +44,15 @@ export const graph = createSlice({
        * if the code is already in, do nothing.
        */
       if (alreadyHas(node, graph.flowNodes)) return
-
       /**
-       * add the node and determine the new edges
+       * obtain the new nodes and edges
        */
-      const nodes = [...graph.flowNodes, node]
-      const edges = getFlowEdges(nodes.map((n) => n.data))
-      /**
-       * update the graph
-       */
-      graph.flowNodes = getPosition(nodes, edges)
+      const { nodes, edges } = redrawGraph({
+        nodes: [...graph.flowNodes, node],
+        edges: graph.flowEdges,
+      })
+      /** update the graph */
+      graph.flowNodes = nodes
       graph.flowEdges = edges
     },
 
@@ -66,14 +66,14 @@ export const graph = createSlice({
       /**
        * remove the node and associated edges
        */
-      const nodes = graph.flowNodes.filter((n) => n.data.moduleCode !== code)
-      const edges = graph.flowEdges.filter(
-        (e) => e.source !== code && e.target !== code
-      )
-      /**
-       * update the graph
-       */
-      graph.flowNodes = getPosition(nodes, edges)
+      const { nodes, edges } = redrawGraph({
+        nodes: graph.flowNodes.filter((n) => n.data.moduleCode !== code),
+        edges: graph.flowEdges.filter(
+          (e) => e.source !== code && e.target !== code
+        ),
+      })
+      /** update the graph */
+      graph.flowNodes = nodes
       graph.flowEdges = edges
     },
 
