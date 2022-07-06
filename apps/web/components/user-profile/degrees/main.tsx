@@ -1,4 +1,4 @@
-import { DegreeSummary, Pages } from 'types'
+import { Pages } from 'types'
 import { text } from 'text'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { Row } from '@/ui/settings/lists/rows'
@@ -12,11 +12,10 @@ import { setUser } from '@/store/user'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Degrees']>>
-  content: DegreeSummary[]
 }) {
-  const hasDegree = props.content.length !== 0
   const dispatch = useAppDispatch()
   const degrees = useAppSelector((state) => state.user.savedDegrees)
+  const hasDegree = degrees.length !== 0
   const { user } = useUser()
 
   async function removeDegree(degreeId: string) {
