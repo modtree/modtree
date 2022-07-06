@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'user',
+  displayName: 'repo:user',
   preset: '../../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',

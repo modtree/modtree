@@ -1,4 +1,4 @@
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 import { ValidationChain } from 'express-validator'
 import { NextFunction, Request, Response } from 'express'
 

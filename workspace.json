@@ -4,11 +4,7 @@
   "projects": {
     "auto-docs": "libs/auto-docs",
     "docs": "apps/docs",
-    "repo-api": "libs/repo-api",
     "repos": "libs/repos",
-    "repo-base": "libs/repo-base",
-    "repo-module-full": "libs/repo-module-full",
-    "repo-pull": "libs/repo-pull",
     "server": "apps/server",
     "sql": "libs/sql",
     "test-env": "libs/test-env",

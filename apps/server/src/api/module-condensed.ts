@@ -1,4 +1,4 @@
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 import { CustomReqParams, CustomReqQuery } from '@modtree/types'
 import { Request } from 'express'
 import { Like } from 'typeorm'

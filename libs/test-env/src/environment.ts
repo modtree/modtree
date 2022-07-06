@@ -8,9 +8,9 @@ import {
   ModuleCondensedRepository,
   GraphRepository,
   UserRepository,
+  ModuleFullRepository,
+  Api,
 } from '@modtree/repos'
-import { ModuleFullRepository } from '@modtree/repo-module-full'
-import { Api } from '@modtree/repo-api'
 
 /**
  * imports custom matcher types

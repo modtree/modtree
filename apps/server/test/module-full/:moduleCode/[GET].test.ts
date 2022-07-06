@@ -2,7 +2,7 @@ import request from 'supertest'
 import { getApp } from 'app'
 import type { Express } from 'express'
 import { setup, teardown } from '@modtree/test-env'
-import { Api } from '@modtree/repo-api'
+import { Api } from '@modtree/repos'
 import { db } from '@modtree/typeorm-config'
 
 let app: Express
