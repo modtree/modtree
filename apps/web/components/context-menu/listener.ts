@@ -20,7 +20,7 @@ export function onContextMenu(
       left: event.pageX,
       top: event.pageY,
       menu,
-      moduleCode: node.data.moduleCode,
+      module: node.data,
     })
   )
 }
