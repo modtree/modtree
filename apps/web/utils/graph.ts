@@ -11,6 +11,15 @@ export function lowercaseAndDash(str: string) {
   return str.replace(/\s+/g, '-').toLowerCase()
 }
 
+/**
+ * Given graph, returns degree-title/graph-id.
+ */
+export function getUniqueGraphTitle(graph: Graph) {
+  const degreeTitle = lowercaseAndDash(graph.degree.title)
+  const graphId = graph.id
+  return degreeTitle + '/' + graphId
+}
+
 export function getGraphContent(graphs: Graph[]): DegreeGraphs[] {
   // convert into dictionary
   // key: degreeId, value: array of graphIds

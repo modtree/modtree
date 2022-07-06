@@ -1,22 +1,15 @@
 import { Button } from '@/ui/buttons'
 import { Input } from '@/ui/html'
 import { useState } from 'react'
-import { DegreeGraphs } from 'types'
 import { GraphListSection } from '@/ui/settings/lists'
-
-const graphContent: DegreeGraphs[] = [
-  {
-    degree: 'computer-science',
-    graphs: ['main', 'whack', 'blockchain', 'security'],
-  },
-  {
-    degree: 'mathematics',
-    graphs: ['minor', 'sidehustle'],
-  },
-]
+import { useAppSelector } from '@/store/redux'
+import { getGraphContent, getUniqueGraphTitle } from '@/utils/graph'
 
 export function GraphsTabContent() {
-  const original = 'computer-science/main'
+  const graphs = useAppSelector((state) => state.user.savedGraphs)
+  const graphContent = getGraphContent(graphs)
+  const original = getUniqueGraphTitle(graphs[0])
+
   const state = {
     graphName: useState<string>(original),
   }
