@@ -37,7 +37,6 @@ function getDirectSources(node: GraphFlowNode): string[] {
   pre.or?.forEach((tree) => {
     if (typeof tree === 'string') directSources.push(tree)
   })
-  console.log('got here')
   pre.and?.forEach((tree) => {
     if (typeof tree === 'string') directSources.push(tree)
   })
@@ -51,7 +50,7 @@ export function getFlowEdges(nodes: GraphFlowNode[]): GraphFlowEdge[] {
   nodes.forEach((node) => {
     const saveEdge = (source: string, target: string) => {
       /** don't save unrelated edges */
-      if (!codes.has(source)) return
+      if (!codes.has(source) || !codes.has(target)) return
       const edge = createFlowEdge(source, target)
       edges[edge.id] = edge
     }

@@ -1,5 +1,5 @@
 import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
-import { getFlowEdges } from '@modtree/utils'
+import { getFlowEdges } from './get-edges'
 import { getFlowNodes } from './get-nodes'
 
 type NodesAndEdges = {
@@ -9,5 +9,5 @@ type NodesAndEdges = {
 
 export const redrawGraph = (props: NodesAndEdges): NodesAndEdges => ({
   nodes: getFlowNodes(props.nodes, props.edges),
-  edges: getFlowEdges(props.nodes.map((n) => n.data)),
+  edges: getFlowEdges(props.nodes),
 })
