@@ -1,15 +1,6 @@
 import { Graph } from '@modtree/types'
 import { DegreeGraphs } from 'types'
-
-/**
- * Converts a string to lowercase and
- * replaces spaces with dashes.
- *
- * e.g. 'Computer Science' -> 'computer-science'
- */
-export function lowercaseAndDash(str: string) {
-  return str.replace(/\s+/g, '-').toLowerCase()
-}
+import { lowercaseAndDash } from '../string'
 
 /**
  * Given graph, returns degree-title/graph-title.
