@@ -1,16 +1,14 @@
 import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
-import type { SetState } from '@modtree/types'
 import dagre from 'dagre'
 
 const config = {
   ratio: 3,
 }
 
-export function setPosition(
+export function getPosition(
   nodes: GraphFlowNode[],
-  edges: GraphFlowEdge[],
-  setNodes: SetState<GraphFlowNode[]>
-) {
+  edges: GraphFlowEdge[]
+): GraphFlowNode[] {
   const nodeRecord: Record<string, GraphFlowNode> = {}
   const positions: Record<string, { x: number; y: number }> = {}
   const g = new dagre.graphlib.Graph({ compound: false })
@@ -45,5 +43,5 @@ export function setPosition(
     ...node,
     position: positions[node.id],
   }))
-  setNodes(result)
+  return result
 }
