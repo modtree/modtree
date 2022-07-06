@@ -21,6 +21,7 @@ function createFlowEdge(props: BaseEdge): GraphFlowEdge {
 }
 
 export function getFlowEdges(modules: IModule[]): GraphFlowEdge[] {
+  console.log(modules)
   const data: Record<string, GraphFlowEdge> = {}
   const codes = new Set(modules.map((m) => m.moduleCode))
 

@@ -1,5 +1,6 @@
 import { getPosition } from '@/flow/dagre'
 import { IModule, IGraph, GraphFlowNode, GraphFlowEdge } from '@modtree/types'
+import { getFlowEdges } from '@modtree/utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
 import { baseInitialState } from './initial-state'
@@ -28,9 +29,10 @@ export const graph = createSlice({
        * otherwise, operate on the graph.
        */
       const nodes = [...graph.flowNodes, node]
-      // TODO: add edges
-      const newPositions = getPosition(nodes, graph.flowEdges)
+      const edges = getFlowEdges(nodes.map((x) => x.data))
+      const newPositions = getPosition(nodes, edges)
       graph.flowNodes = newPositions
+      graph.flowEdges = edges
     },
     removeModuleNode: (graph, action: PayloadAction<GraphFlowNode>) => {
       const rmNode = action.payload
