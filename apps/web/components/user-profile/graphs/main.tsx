@@ -1,18 +1,24 @@
 import { Button } from '@/ui/buttons'
 import { Input } from '@/ui/html'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { GraphListSection } from '@/ui/settings/lists'
+import { Dispatch, Fragment, SetStateAction, useState } from 'react'
 import { useAppSelector } from '@/store/redux'
 import { getGraphContent, getUniqueGraphTitle } from '@/utils/graph'
 import { Pages } from 'types'
+import { SettingsSection } from '@/ui/settings/lists/base'
+import { text } from 'text'
+import { Row } from '@/ui/settings/lists/rows'
+import { GraphIcon } from '@/ui/icons'
+import { dashed } from '@/utils/array'
+import { EmptyBox } from '@/ui/settings/empty-box'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
   const graphs = useAppSelector((state) => state.user.savedGraphs)
-  const graphContent = getGraphContent(graphs)
-  const original = getUniqueGraphTitle(graphs[0])
+  const hasGraphs = graphs.length !== 0
+  const contents = getGraphContent(graphs)
 
+  const original = getUniqueGraphTitle(graphs[0])
   const state = {
     graphName: useState<string>(original),
   }
@@ -30,7 +36,34 @@ export function Main(props: {
           Update
         </Button>
       </div>
-      <GraphListSection contents={graphContent} title="Graphs" />
+      <SettingsSection title="Graphs" addButtonText={hasGraphs && 'New graph'}>
+        {hasGraphs ? (
+          <>
+            <p>{text.graphListSection.summary}</p>
+            <div className="ui-rectangle flex flex-col overflow-hidden">
+              <Row.Header>
+                <GraphIcon className="mr-2" />
+                Graphs
+              </Row.Header>
+              {contents.map(({ degree, graphs }, index) => (
+                <Fragment key={dashed(degree, index)}>
+                  <Row.Header>{degree}</Row.Header>
+                  {graphs.map((graph, index) => (
+                    <Row.Graph key={dashed(degree, graph, index)}>
+                      {degree}/{graph}
+                    </Row.Graph>
+                  ))}
+                </Fragment>
+              ))}
+            </div>
+          </>
+        ) : (
+          <EmptyBox
+            summary={text.graphListSection.emptySummary}
+            buttonText="New graph"
+          />
+        )}
+      </SettingsSection>
     </>
   )
 }
