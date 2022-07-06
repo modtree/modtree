@@ -12,10 +12,12 @@ export type ModuleCondensedMap = {
   [key: string]: IModuleCondensed
 }
 
+export type ContextMenuType = 'node' | 'pane'
+
 export type ContextMenuProps = {
   top: number
   left: number
-  menu: 'pane' | 'node'
+  menu: ContextMenuType
   module?: IModule
 }
 

@@ -1,8 +1,10 @@
 import { ContextMenu } from './base'
 import { useAppSelector } from '@/store/redux'
 import { dashed } from '@/utils/array'
+import { MenuItem } from 'types'
+import { ContextMenuType } from '@/store/types'
 
-const items = {
+const items: Record<ContextMenuType, MenuItem[]> = {
   node: [
     { text: 'More info', callback: () => alert('more info about this module') },
     { text: 'Suggest modules', callback: () => alert('suggest modules') },
