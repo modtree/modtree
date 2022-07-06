@@ -32,8 +32,9 @@ export default function ModtreeFlow() {
   const [edges, setEdges] = useEdgesState(graph.flowEdges)
 
   useEffect(() => {
-    setNodes(graph.flowNodes)
     setEdges(graph.flowEdges)
+    const newNodes = getPosition(graph.flowNodes, graph.flowEdges)
+    setNodes(newNodes)
   }, [graph.flowNodes.length])
 
   /**
