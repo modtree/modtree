@@ -17,4 +17,8 @@ export const text = {
       emptySummary: 'There are no modules that are currently in progress.',
     },
   },
+  graphListSection: {
+    summary: `This is a list of graphs. A graph represents a way to complete a degree.`,
+    emptySummary: 'There are no graphs associated with this account.',
+  },
 }
