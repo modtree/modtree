@@ -7,15 +7,7 @@ type NodesAndEdges = {
   edges: GraphFlowEdge[]
 }
 
-export function redrawGraph(props: NodesAndEdges): NodesAndEdges {
-  const [nodes, edges] = [
-    getFlowNodes(props.nodes, props.edges),
-    getFlowEdges(props.nodes.map((n) => n.data)),
-  ]
-  const result = {
-    nodes,
-    edges,
-  }
-  console.log(result)
-  return result
-}
+export const redrawGraph = (props: NodesAndEdges): NodesAndEdges => ({
+  nodes: getFlowNodes(props.nodes, props.edges),
+  edges: getFlowEdges(props.nodes.map((n) => n.data)),
+})
