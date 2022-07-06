@@ -7,6 +7,7 @@ const items = {
     { text: 'More info', callback: () => alert('more info about this module') },
     { text: 'Suggest modules', callback: () => alert('suggest modules') },
     { text: 'Mark as done', callback: () => alert('marked as done') },
+    { text: 'Remove', callback: () => alert('remove node') },
   ],
   pane: [
     { text: 'Suggest modules', callback: () => alert('suggest modules') },
