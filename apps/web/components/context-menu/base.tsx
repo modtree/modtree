@@ -7,7 +7,7 @@ export function ContextMenu(props: {
   contextMenuProps: ContextMenuProps
   show: boolean
 }) {
-  const { top, left, module } = props.contextMenuProps
+  const { top, left, flowNode } = props.contextMenuProps
   return props.show ? (
     <div
       id="modtree-context-menu"
@@ -19,7 +19,7 @@ export function ContextMenu(props: {
           items={props.items}
           className="py-1 px-1"
           roundedSelection
-          module={module}
+          flowNode={flowNode}
         />
       </BaseContextMenu>
     </div>

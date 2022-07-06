@@ -3,14 +3,14 @@ import { ReactElement } from 'react'
 import { MenuItem } from 'types'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
-import { IModule } from '@modtree/types'
+import { GraphFlowNode } from '@modtree/types'
 
 export default function Entries(props: {
   items: MenuItem[]
   children?: ReactElement | ReactElement[]
   className?: string
   roundedSelection?: boolean
-  module?: IModule
+  flowNode?: GraphFlowNode
 }) {
   const { children, className, items } = props
 
@@ -39,7 +39,7 @@ export default function Entries(props: {
             <Menu.Item key={dashed(menuItem.text, index)}>
               <a
                 href={menuItem.href}
-                onClick={() => menuItem.callback(props.module)}
+                onClick={() => menuItem.callback(props.flowNode)}
                 className={flatten(
                   'hover:bg-modtree-400/80 hover:text-white',
                   'text-gray-700 flex w-full px-4 py-1.5',

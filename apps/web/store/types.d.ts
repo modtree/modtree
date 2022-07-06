@@ -1,4 +1,5 @@
 import {
+  GraphFlowNode,
   IDegree,
   IGraph,
   IModule,
@@ -18,7 +19,7 @@ export type ContextMenuProps = {
   top: number
   left: number
   menu: ContextMenuType
-  module?: IModule
+  flowNode?: GraphFlowNode
 }
 
 export type ReduxState = {

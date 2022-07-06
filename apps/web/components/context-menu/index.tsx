@@ -1,8 +1,9 @@
 import { ContextMenu } from './base'
-import { useAppSelector } from '@/store/redux'
+import store, { useAppSelector } from '@/store/redux'
 import { dashed } from '@/utils/array'
 import { MenuItem } from 'types'
 import { ContextMenuType } from '@/store/types'
+import { removeModuleNode } from '@/store/graph'
 
 const items: Record<ContextMenuType, MenuItem[]> = {
   node: [
@@ -11,9 +12,7 @@ const items: Record<ContextMenuType, MenuItem[]> = {
     { text: 'Mark as done', callback: () => alert('marked as done') },
     {
       text: 'Remove',
-      callback: (e) => {
-        console.log(e)
-      },
+      callback: (e) => store.dispatch(removeModuleNode(e)),
     },
   ],
   pane: [

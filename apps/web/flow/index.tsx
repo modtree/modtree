@@ -12,7 +12,6 @@ import { onContextMenu } from '@/components/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { getPosition } from './dagre'
-import { empty } from '@modtree/utils'
 
 const nodeTypes = { moduleNode: ModuleNode }
 

@@ -1,6 +1,5 @@
 import { showContextMenu } from '@/store/modal'
 import { GraphFlowNode } from '@modtree/types'
-import { empty } from '@modtree/utils'
 import { MouseEvent } from 'react'
 import { Dispatch } from 'redux'
 
@@ -21,7 +20,7 @@ export function onContextMenu(
       left: event.pageX,
       top: event.pageY,
       menu,
-      module: node?.data,
+      flowNode: node,
     })
   )
 }
