@@ -12,12 +12,12 @@ export function lowercaseAndDash(str: string) {
 }
 
 /**
- * Given graph, returns degree-title/graph-id.
+ * Given graph, returns degree-title/graph-title.
  */
 export function getUniqueGraphTitle(graph: Graph) {
   const degreeTitle = lowercaseAndDash(graph.degree.title)
-  const graphId = graph.id
-  return degreeTitle + '/' + graphId
+  const graphTitle = lowercaseAndDash(graph.title)
+  return degreeTitle + '/' + graphTitle
 }
 
 export function getGraphContent(graphs: Graph[]): DegreeGraphs[] {
@@ -26,10 +26,11 @@ export function getGraphContent(graphs: Graph[]): DegreeGraphs[] {
   const dict: Record<string, string[]> = {}
   graphs.forEach((graph) => {
     const degreeTitle = lowercaseAndDash(graph.degree.title)
+    const graphTitle = lowercaseAndDash(graph.title)
     if (Object.keys(dict).includes(degreeTitle)) {
-      dict[degreeTitle].push(graph.id)
+      dict[degreeTitle].push(graphTitle)
     } else {
-      dict[degreeTitle] = [graph.id]
+      dict[degreeTitle] = [graphTitle]
     }
   })
   // flatten dictionary
