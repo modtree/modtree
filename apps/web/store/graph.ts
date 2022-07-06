@@ -44,7 +44,6 @@ export const graph = createSlice({
       )
       const id = (e: GraphFlowEdge[]) => e.map((x) => x.id)
       console.log(id(graph.flowEdges), id(edges))
-      // // TODO: remove edges
       const newPositions = getPosition(nodes, edges)
       graph.flowEdges = edges
       graph.flowNodes = newPositions

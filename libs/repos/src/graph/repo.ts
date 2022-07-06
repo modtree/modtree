@@ -12,14 +12,18 @@ import {
   GraphFlowNode,
   InitGraphProps,
 } from '@modtree/types'
-import { quickpop, flatten } from '@modtree/utils'
+import {
+  quickpop,
+  flatten,
+  getFlowEdges,
+  getFlowNodes,
+  nodify,
+} from '@modtree/utils'
 import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
-import { getFlowEdges } from './get-edges'
-import { getFlowNodes, nodify } from './get-nodes'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
 
