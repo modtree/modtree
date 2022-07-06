@@ -1,3 +1,4 @@
+import { getPosition } from '@/flow/dagre'
 import { IModule, IGraph } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Node } from 'react-flow-renderer'
@@ -17,10 +18,18 @@ export const graph = createSlice({
     },
     addModuleNode: (graph, action: PayloadAction<Node<IModule>>) => {
       const node = action.payload
+      /**
+       * if the code is already in, do nothing.
+       */
       const currentCodes = graph.flowNodes.map((n) => n.data.moduleCode)
-      if (!currentCodes.includes(node.data.moduleCode)) {
-        graph.flowNodes = [...graph.flowNodes, node]
-      }
+      if (currentCodes.includes(node.data.moduleCode)) return
+
+      /**
+       * otherwise, operate on the graph.
+       */
+      const nodes = [...graph.flowNodes, node]
+      const newPositions = getPosition(nodes, graph.flowEdges)
+      graph.flowNodes = newPositions
     },
     updateModuleNode: (graph, action: PayloadAction<Node<IModule>>) => {
       const node = action.payload
