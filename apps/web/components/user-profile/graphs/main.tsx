@@ -1,22 +1,25 @@
 import { Button } from '@/ui/buttons'
 import { Input } from '@/ui/html'
-import { Dispatch, Fragment, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useAppSelector } from '@/store/redux'
-import { getGraphContent, getUniqueGraphTitle } from '@/utils/graph'
+import { getUniqueGraphTitle } from '@/utils/graph'
 import { Pages } from 'types'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { text } from 'text'
 import { Row } from '@/ui/settings/lists/rows'
 import { GraphIcon } from '@/ui/icons'
-import { dashed } from '@/utils/array'
 import { EmptyBox } from '@/ui/settings/empty-box'
+import { Degree, Graph } from '@modtree/types'
+import { lowercaseAndDash } from '@/utils/string'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
   const graphs = useAppSelector((state) => state.user.savedGraphs)
   const hasGraphs = graphs.length !== 0
-  const contents = getGraphContent(graphs)
+
+  const degrees = useAppSelector((state) => state.user.savedDegrees)
+  const hasDegrees = degrees.length !== 0
 
   const original = getUniqueGraphTitle(graphs[0])
   const state = {
@@ -40,22 +43,7 @@ export function Main(props: {
         {hasGraphs ? (
           <>
             <p>{text.graphListSection.summary}</p>
-            <div className="ui-rectangle flex flex-col overflow-hidden">
-              <Row.Header>
-                <GraphIcon className="mr-2" />
-                Graphs
-              </Row.Header>
-              {contents.map(({ degree, graphs }, index) => (
-                <Fragment key={dashed(degree, index)}>
-                  <Row.Header>{degree}</Row.Header>
-                  {graphs.map((graph, index) => (
-                    <Row.Graph key={dashed(degree, graph, index)}>
-                      {degree}/{graph}
-                    </Row.Graph>
-                  ))}
-                </Fragment>
-              ))}
-            </div>
+            <GraphSection degrees={degrees} graphs={graphs} />
           </>
         ) : (
           <EmptyBox
@@ -65,5 +53,38 @@ export function Main(props: {
         )}
       </SettingsSection>
     </>
+  )
+}
+
+function GraphSection(props: { degrees: Degree[]; graphs: Graph[] }) {
+  const { degrees, graphs } = props
+  return (
+    <div className="ui-rectangle flex flex-col overflow-hidden">
+      <Row.Header>
+        <GraphIcon className="mr-2" />
+        Graphs
+      </Row.Header>
+      {degrees.map((d) => {
+        const thisGraphs = graphs.filter((g) => g.degree.id === d.id)
+        return (
+          <>
+            <Row.Header>{lowercaseAndDash(d.title)}</Row.Header>
+            {thisGraphs.length !== 0 ? (
+              <>
+                {thisGraphs.map((g) => {
+                  return (
+                    <Row.Graph key={getUniqueGraphTitle(g)}>
+                      {getUniqueGraphTitle(g)}
+                    </Row.Graph>
+                  )
+                })}
+              </>
+            ) : (
+              <Row.Empty>This degree has no graphs.</Row.Empty>
+            )}
+          </>
+        )
+      })}
+    </div>
   )
 }

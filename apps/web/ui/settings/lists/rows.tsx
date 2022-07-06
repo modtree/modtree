@@ -86,9 +86,19 @@ const HeaderRow = (props: RowProps) => {
   )
 }
 
+const EmptyRow = (props: RowProps) => {
+  const { children, ...rest } = props
+  return (
+    <BaseRow {...rest} className="bg-white">
+      {children}
+    </BaseRow>
+  )
+}
+
 export const Row = {
   Degree: DegreeRow,
   Graph: GraphRow,
   Module: ModuleRow,
   Header: HeaderRow,
+  Empty: EmptyRow,
 }
