@@ -70,13 +70,14 @@ export class GraphRepository
      *  get flow edges from relations
      */
     const flowEdges = modules.then(({ modulesPlaced }) =>
-      getFlowEdges(modulesPlaced)
+      getFlowEdges(modulesPlaced.map(nodify))
     )
     /**
      *  get flow nodes from dagre
      */
     const flowNodes = Promise.all([flowEdges, modules]).then(
-      ([edges, { modulesPlaced }]) => getFlowNodes(modulesPlaced, edges)
+      ([edges, { modulesPlaced }]) =>
+        getFlowNodes(modulesPlaced.map(nodify), edges)
     )
     /**
      * save the newly created graph
