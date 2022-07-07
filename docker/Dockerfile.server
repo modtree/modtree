@@ -1,10 +1,17 @@
-FROM modtree/yarn:0.5.1
+FROM modtree/node:0.5.0
 
+# load yarn post-setup script
+WORKDIR /app/scripts
+COPY scripts/yarn.sh .
+
+# load packages-related files
 WORKDIR /app
 
 COPY . .
 
-RUN yarn
-RUN yarn build:server
+# do all this in one layer so it doesn't cache too much
+RUN yarn install --frozen-lockfile \
+&& yarn build:server \
+&& rm -rf node_modules
 
 CMD ["node", "dist/apps/server/bundle.js"]
