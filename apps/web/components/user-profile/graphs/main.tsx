@@ -8,9 +8,10 @@ import { text } from 'text'
 import { Row } from '@/ui/settings/lists/rows'
 import { GraphIcon } from '@/ui/icons'
 import { EmptyBox } from '@/ui/settings/empty-box'
-import { Degree, Graph } from '@modtree/types'
+import { Degree, Graph, IGraph } from '@modtree/types'
 import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
+import { PickOne } from '@/ui/search/graph/pick-one'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
@@ -20,23 +21,15 @@ export function Main(props: {
 
   const degrees = useAppSelector((state) => state.user.savedDegrees)
 
-  const original = getUniqueGraphTitle(graphs[0])
   const state = {
-    graphName: useState<string>(original),
+    graph: useState<IGraph>(graphs[0]),
   }
   return (
     <>
       <h2>Default graph</h2>
       <p className="mb-4">Choose the default graph to display.</p>
       <div className="flex flex-row space-x-2 mb-4">
-        <Input className="w-64 mb-4" state={state.graphName} grayed />
-        <Button
-          disabled={
-            state.graphName[0] === original || state.graphName[0] === ''
-          }
-        >
-          Update
-        </Button>
+        <PickOne graphs={graphs} select={state.graph} />
       </div>
       <SettingsSection
         title="Graphs"
