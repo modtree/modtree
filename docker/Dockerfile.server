@@ -5,5 +5,6 @@ WORKDIR /app
 COPY . .
 
 RUN yarn
+RUN yarn build:server
 
-CMD ["yarn", "dev:server"]
+CMD ["node", "dist/apps/server/bundle.js"]
