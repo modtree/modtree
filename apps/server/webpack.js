@@ -2,10 +2,14 @@ const webpack = require('webpack')
 const path = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
-const outDir = path.resolve(__dirname, 'dist/apps/server')
+const rootDir = path.resolve(__dirname, '../..')
+
+const outDir = path.resolve(rootDir, 'dist/apps/server')
+const entry = path.resolve(rootDir, 'apps/server/src/main.ts')
+const tsconfig = path.resolve(rootDir, 'apps/server/tsconfig.app.json')
 
 const compiler = webpack({
-  entry: './apps/server/src/main.ts',
+  entry,
   target: 'node',
   mode: 'development',
   module: {
@@ -16,7 +20,7 @@ const compiler = webpack({
           {
             loader: 'ts-loader',
             options: {
-              configFile: 'apps/server/tsconfig.app.json',
+              configFile: tsconfig,
             },
           },
         ],
@@ -28,7 +32,7 @@ const compiler = webpack({
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [
       new TsconfigPathsPlugin({
-        configFile: 'apps/server/tsconfig.app.json',
+        configFile: tsconfig,
       }),
     ],
   },
@@ -38,9 +42,9 @@ const compiler = webpack({
   },
 })
 
-compiler.run((err, stats) => {
+compiler.run((_err, stats) => {
   if (stats.hasErrors()) {
     console.log(stats.toString())
   }
-  compiler.close((closeErr) => {})
+  compiler.close((_closeErr) => {})
 })
