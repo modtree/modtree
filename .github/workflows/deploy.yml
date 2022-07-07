@@ -21,14 +21,6 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} #Required
           vercel-project-id: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
           vercel-args: '--prod' #Optional
-        continue-on-error: true
-        id: deploy
-      - uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_GROUP }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            docs deploy: ${{ steps.deploy.outcome }}
 
   frontend:
     needs: [docs]
@@ -47,14 +39,6 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} #Required
           vercel-project-id: ${{ secrets.VERCEL_WEB_PROJECT_ID }} #Required
           vercel-args: '--prod' #Optional
-        continue-on-error: true
-        id: deploy
-      - uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_GROUP }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            frontend deploy: ${{ steps.deploy.outcome }}
 
   backend:
     if: |
@@ -70,14 +54,7 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: 'modtree-server' #Must be unique in Heroku
           heroku_email: 'brew4k@gmail.com'
-        continue-on-error: true
-        id: deploy
-      - uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_GROUP }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            backend deploy: ${{ steps.deploy.outcome }}
+
   telegram:
     needs: [frontend, backend, docs]
     if: always()
