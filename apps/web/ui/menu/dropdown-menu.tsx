@@ -1,6 +1,11 @@
 import { Menu, Transition } from '@headlessui/react'
 import { FC, Fragment, ReactElement } from 'react'
 
+/**
+ * Mostly copied from headless ui example.
+ *
+ * Added value is the custom trigger button.
+ */
 export function DropdownMenu(props: {
   TriggerButton: FC
   children: ReactElement[] | ReactElement
