@@ -46,20 +46,15 @@ const maxRetries = 30
 let attempts = 1
 
 async function attemptConnection() {
-  return db
-    .initialize()
-    .then(async (db) => {
-      console.debug(
-        `Connection to database [${db.options.database}] established.`
-      )
-      checkhealth(db)
-      const api = new Api(db)
-      const app = getApp(api)
-      app.listen(process.env.PORT || 8080)
-    })
-    .catch((err) => {
-      console.log(err, 'catch')
-    })
+  return db.initialize().then(async (db) => {
+    console.debug(
+      `Connection to database [${db.options.database}] established.`
+    )
+    checkhealth(db)
+    const api = new Api(db)
+    const app = getApp(api)
+    app.listen(process.env.PORT || 8080)
+  })
 }
 
 let connect = attemptConnection()
