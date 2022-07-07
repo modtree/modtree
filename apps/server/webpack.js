@@ -10,13 +10,42 @@ const outDir = path.resolve(rootDir, 'dist/apps/server')
 const entry = path.resolve(__dirname, 'src/main.ts')
 const tsconfig = path.resolve(__dirname, 'tsconfig.app.json')
 
-/** whether or not to watch for changes */
-const watch = false
+const defaultConfig = {
+  watch: false,
+  mode: 'development',
+  optimization: undefined,
+}
+
+/**
+ * handle arguments
+ */
+const getArgsConfig = () => {
+  const config = defaultConfig
+  const args = process.argv.slice(2)
+  const handled = []
+  args.forEach((arg) => {
+    switch (arg) {
+      case '--watch':
+        handled.push(arg)
+        config.watch = true
+        break
+      case '--prod':
+        handled.push(arg)
+        config.mode = 'production'
+        config.optimization = { minimize: false }
+        break
+    }
+  })
+  console.log('args handled:', handled)
+  return config
+}
+const argsConfig = getArgsConfig()
 
 const compiler = webpack({
   entry,
   target: 'node',
-  mode: 'development',
+  mode: argsConfig.mode,
+  optimization: argsConfig.optimization,
   module: {
     rules: [
       {
@@ -45,7 +74,7 @@ const compiler = webpack({
   },
 })
 
-if (watch) {
+if (argsConfig.watch) {
   /**
    * watch for changes
    */
@@ -53,7 +82,7 @@ if (watch) {
     {
       aggregateTimeout: 300,
     },
-    (err, stats) => {
+    (_err, stats) => {
       if (stats.hasErrors()) {
         console.log(stats.toString())
       }
