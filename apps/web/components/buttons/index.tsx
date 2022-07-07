@@ -1,2 +1,2 @@
-export { FloatingUserButton } from './FloatingUserButton'
-export { FloatingActionButton } from './FloatingActionButton'
+export { FloatingUserButton } from './floating-user-button'
+export { FloatingActionButton } from './floating-action-button'
