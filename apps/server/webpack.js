@@ -1,3 +1,7 @@
+/**
+ * executing this file bundles the the server project and all its dependencies
+ * into one executable pure nodejs file.
+ */
 const webpack = require('webpack')
 const path = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
