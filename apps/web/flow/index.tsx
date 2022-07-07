@@ -60,8 +60,12 @@ export default function ModtreeFlow() {
       /** hooks */
       onNodesChange={onNodesChange}
       onNodeDragStop={onNodeDragStop}
-      onPaneContextMenu={(e) => onContextMenu(dispatch, e, 'pane')}
-      onNodeContextMenu={(e, node) => onContextMenu(dispatch, e, 'node', node)}
+      onPaneContextMenu={(e) =>
+        onContextMenu(dispatch, e, 'flowPaneContextMenu')
+      }
+      onNodeContextMenu={(e, node) =>
+        onContextMenu(dispatch, e, 'flowNodeContextMenu', node)
+      }
       onSelectionChange={(e) => dispatch(setGraphSelectedCodes(e.nodes))}
       /** pure configs */
       fitView={true}

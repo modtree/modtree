@@ -4,7 +4,6 @@ import type {
   UseState,
   Modify,
   IModuleCondensed,
-  IModule,
   GraphFlowNode,
 } from '@modtree/types'
 
@@ -103,4 +102,13 @@ export type Pages = {
     | 'modules'
     | 'degrees'
     | 'debug'
+}
+
+export type ContextMenuType = 'flowPaneContextMenu' | 'flowNodeContextMenu'
+
+export type ContextMenuProps = {
+  top: number
+  left: number
+  menu: ContextMenuType
+  flowNode?: GraphFlowNode
 }

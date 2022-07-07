@@ -1,5 +1,4 @@
 import {
-  GraphFlowNode,
   IDegree,
   IGraph,
   IModule,
@@ -7,20 +6,7 @@ import {
   IModuleFull,
   IUser,
 } from '@modtree/types'
-import { Pages } from 'types'
-
-export type ModuleCondensedMap = {
-  [key: string]: IModuleCondensed
-}
-
-export type ContextMenuType = 'node' | 'pane'
-
-export type ContextMenuProps = {
-  top: number
-  left: number
-  menu: ContextMenuType
-  flowNode?: GraphFlowNode
-}
+import type { Pages, ContextMenuProps } from 'types'
 
 export type ReduxState = {
   user: IUser
