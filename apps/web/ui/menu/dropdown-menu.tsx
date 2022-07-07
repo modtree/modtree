@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react'
 import { FC, Fragment, ReactElement } from 'react'
 
-export default function DropdownMenu(props: {
+export function DropdownMenu(props: {
   TriggerButton: FC
   children: ReactElement[] | ReactElement
 }) {

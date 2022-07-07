@@ -5,7 +5,7 @@ import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
 import { GraphFlowNode } from '@modtree/types'
 
-export default function Entries(props: {
+export function Entries(props: {
   items: MenuItem[]
   children?: ReactElement | ReactElement[]
   className?: string

@@ -1,5 +1,3 @@
-import DropdownMenu from './dropdown-menu'
-import BaseContextMenu from './context-menu'
-import Entries from './entries'
-
-export { DropdownMenu, BaseContextMenu, Entries }
+export * from './dropdown-menu'
+export * from './context-menu'
+export * from './entries'

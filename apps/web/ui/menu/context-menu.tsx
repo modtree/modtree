@@ -16,7 +16,6 @@ import { Entries } from '@/ui/menu'
  * context:
  * Context menu and right-click menu are actually the same thing
  */
-
 export function onContextMenu(
   dispatch: Dispatch,
   event: MouseEvent<Element, globalThis.MouseEvent>,
@@ -34,10 +33,9 @@ export function onContextMenu(
   )
 }
 
-export function BaseContextMenu(props: {
+function ContextMenuArea(props: {
   children: ReactElement[] | ReactElement
   static?: boolean
-  className?: string
 }) {
   return (
     <div className="select-none text-right">
@@ -49,7 +47,7 @@ export function BaseContextMenu(props: {
             'divide-y',
             'divide-gray-200 rounded-md bg-white shadow-md',
             'focus:outline-none overflow-hidden',
-            props.className
+            'py-1 px-1'
           )}
         >
           {props.children}
@@ -71,24 +69,20 @@ export function ContextMenu(props: {
       style={{ top, left }}
       className="absolute z-20"
     >
-      <BaseContextMenu>
-        <Entries
-          items={props.items}
-          className="py-1 px-1"
-          roundedSelection
-          flowNode={flowNode}
-        />
-      </BaseContextMenu>
+      <ContextMenuArea>
+        <Entries items={props.items} roundedSelection flowNode={flowNode} />
+      </ContextMenuArea>
     </div>
   ) : null
 }
 
 export function ContextMenus() {
-  const { showContextMenu, contextMenuProps } = useAppSelector(
-    (state) => state.modal
-  )
-  const menus = ['flowNodeContextMenu', 'flowPaneContextMenu']
+  const { showContextMenu, contextMenuProps } = useAppSelector((s) => s.modal)
   const selected = contextMenuProps.menu
+  const menus: ContextMenuType[] = [
+    'flowNodeContextMenu',
+    'flowPaneContextMenu',
+  ]
   return (
     <>
       {menus.map((menu, index) => (
