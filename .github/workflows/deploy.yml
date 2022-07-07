@@ -76,3 +76,14 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             backend deploy: ${{ steps.deploy.outcome }}
+  telegram:
+    needs: [frontend, backend, docs]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/telegram
+        with:
+          telegram-token: ${{ secrets.TELEGRAM_TOKEN }}
+          telegram-chat-id: ${{ secrets.TELEGRAM_GROUP }}
+          needs: ${{ toJSON(needs) }}

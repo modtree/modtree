@@ -94,45 +94,9 @@ jobs:
       github.event.pull_request.draft == false
     runs-on: ubuntu-20.04
     steps:
-      - name: Log inputs
-        run: echo '${{ toJSON(needs) }}'
-
-      - name: Get commit SHA
-        id: sha
-        run: echo "::set-output name=sha::${GITHUB_SHA::7}"
-
-      - name: Get status emojis
-        id: results
-        run: |
-          emojize() {
-            [ "$2" = "success" ] && emoji="✅" || emoji="❌"
-            echo "::set-output name=${1}::${emoji}"
-          }
-          emojize tests ${{ needs.ci.result }}
-          emojize build ${{ needs.build.result }}
-
-      - uses: appleboy/telegram-action@master
-        if: |
-          needs.pre_job.outputs.should_skip != 'true' &&
-          github.event_name == 'pull_request'
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/telegram
         with:
-          to: ${{ secrets.TELEGRAM_GROUP }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: |
-            `${{ steps.results.outputs.sha }}` #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}
-            ${{ steps.results.outputs.build }} yarn build
-            ${{ steps.results.outputs.tests }} yarn test
-
-      - uses: appleboy/telegram-action@master
-        if: |
-          needs.pre_job.outputs.should_skip != 'true' &&
-          github.event_name == 'push' && endsWith(github.event.ref, '/main')
-        with:
-          to: ${{ secrets.TELEGRAM_GROUP }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          format: markdown
-          message: |
-            `${{ steps.results.outputs.sha }}` (push to main, cacheless ci)
-            ${{ steps.results.outputs.build }} yarn build
-            ${{ steps.results.outputs.tests }} yarn test
+          telegram-token: ${{ secrets.TELEGRAM_TOKEN }}
+          telegram-chat-id: ${{ secrets.TELEGRAM_GROUP }}
+          needs: ${{ toJSON(needs) }}
