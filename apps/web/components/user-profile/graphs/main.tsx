@@ -68,9 +68,7 @@ function GraphSection(props: { degrees: IDegree[]; graphs: IGraph[] }) {
               <>
                 {thisGraphs.map((g) => {
                   return (
-                    <Row.Graph key={getUniqueGraphTitle(g)}>
-                      {getUniqueGraphTitle(g)}
-                    </Row.Graph>
+                    <Row.Graph key={g.id}>{getUniqueGraphTitle(g)}</Row.Graph>
                   )
                 })}
               </>
