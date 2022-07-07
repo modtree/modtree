@@ -1,12 +1,15 @@
 import { Listbox, Switch } from '@headlessui/react'
-import { IDegree } from '@modtree/types'
-import { useState } from 'react'
+import { IDegree, UseState } from '@modtree/types'
 import { CheckIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 
-export function PickOne(props: { degrees: IDegree[] }) {
-  const [degree, setDegree] = useState(props.degrees[0])
-  const [pullAll, setPullAll] = useState(true)
+export function PickOne(props: {
+  degrees: IDegree[]
+  select: UseState<IDegree>
+  pull: UseState<boolean>
+}) {
+  const [degree, setDegree] = props.select
+  const [pullAll, setPullAll] = props.pull
   return (
     <div className="flex-col space-y-2">
       <div className={flatten('ui-rectangle', 'shadow-none', 'h-8 w-64')}>
