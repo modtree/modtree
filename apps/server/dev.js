@@ -19,7 +19,6 @@ nodemon
   })
   .on('quit', function () {
     console.log('App has quit')
-    compiler.close()
     process.exit()
   })
   .on('restart', function (files) {
