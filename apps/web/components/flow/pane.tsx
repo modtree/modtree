@@ -6,7 +6,7 @@ import ReactFlow, {
   Background,
   useEdgesState,
 } from 'react-flow-renderer'
-import { ModuleNode } from '@/components/flow/ModuleNode'
+import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/components/context-menu'
 import { hideContextMenu } from '@/store/modal'
