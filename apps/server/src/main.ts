@@ -30,6 +30,7 @@ function getConfig() {
   const config = defaultConfig
   readJson(config)
   readEnv(config)
+  console.log('getConfig', config)
   return new DataSource(config)
 }
 
@@ -42,19 +43,24 @@ function sleep(ms: number) {
 console.debug('Initializing connection to database...')
 const db = getConfig()
 
-const maxRetries = 60
+const maxRetries = 5
 let attempts = 1
 
 async function attemptConnection() {
-  return db.initialize().then(async (db) => {
-    console.debug(
-      `Connection to database [${db.options.database}] established.`
-    )
-    checkhealth(db)
-    const api = new Api(db)
-    const app = getApp(api)
-    app.listen(process.env.PORT || 8080)
-  })
+  return db
+    .initialize()
+    .then(async (db) => {
+      console.debug(
+        `Connection to database [${db.options.database}] established.`
+      )
+      checkhealth(db)
+      const api = new Api(db)
+      const app = getApp(api)
+      app.listen(process.env.PORT || 8080)
+    })
+    .catch((err) => {
+      console.log(err, 'catch')
+    })
 }
 
 let connect = attemptConnection()

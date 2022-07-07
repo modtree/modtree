@@ -4,7 +4,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node dist/apps/server/main.js",
     "serve": "nx run-many --target=serve --projects=web,server",
     "build": "nx run-many --all --target=build --parallel=4 --exclude=docs",
     "lint": "nx run-many --all --target=lint --parallel=4",
@@ -20,8 +19,8 @@
     "prepare": "bash ./scripts/yarn.sh setup",
     "i": "bash ./scripts/yarn.sh inverse",
     "heroku-postbuild": "nx build server",
-    "version": "auto-changelog -p && git add --all",
-    "auto": "nx test auto-docs"
+    "auto": "nx test auto-docs",
+    "version": "auto-changelog -p && git add --all"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.0",
@@ -43,7 +42,6 @@
     "nextra": "2.0.0-alpha.50",
     "nextra-theme-docs": "2.0.0-alpha.53",
     "pg": "^8.7.3",
-    "pg-native": "^3.0.0",
     "prismjs": "^1.28.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -94,6 +92,7 @@
     "eslint-plugin-jsdoc": "^39.3.3",
     "husky": "^8.0.1",
     "jest": "27.5.1",
+    "nodemon": "^2.0.19",
     "nx": "14.2.2",
     "postcss": "8.3.5",
     "prettier": "^2.6.2",

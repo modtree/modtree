@@ -28,6 +28,11 @@ const compiler = webpack({
       },
     ],
   },
+  plugins: [
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^pg-native$/,
+    }),
+  ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [
@@ -48,3 +53,14 @@ compiler.run((_err, stats) => {
   }
   compiler.close((_closeErr) => {})
 })
+
+// compiler.watch(
+//   {
+//     aggregateTimeout: 300,
+//   },
+//   (err, stats) => {
+//     if (stats.hasErrors()) {
+//       console.log(stats.toString())
+//     }
+//   }
+// )
