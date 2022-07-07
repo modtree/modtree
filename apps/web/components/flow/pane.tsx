@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect } from 'react'
+import { MouseEvent, useEffect, useMemo } from 'react'
 import ReactFlow, {
   Controls,
   Node,
@@ -13,9 +13,13 @@ import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { redrawGraph } from '@/utils/flow'
 
-const nodeTypes = { moduleNode: ModuleNode }
-
 export default function ModtreeFlow() {
+  const nodeTypes = useMemo(
+    () => ({
+      moduleNode: ModuleNode,
+    }),
+    []
+  )
   /**
    * redux dispatcher
    */
