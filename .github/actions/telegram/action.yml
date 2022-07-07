@@ -1,0 +1,17 @@
+name: 'Telegram Notify'
+description: 'Send status to telegram'
+inputs:
+  telegram-token:
+    required: true
+  telegram-chat-id:
+    required: true
+  pr-title:
+    required: false
+  needs:
+    required: true
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
