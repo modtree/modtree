@@ -1,5 +1,7 @@
 /**
- * starts a process that constantly watches the entire workspace for updates
+ * Starts a process that watches dist/apps/server for updates.
+ *
+ * Only works then ./webpack is ran with the --watch flag.
  */
 
 require('./webpack')
