@@ -62,4 +62,13 @@ export class UserApi extends BaseApi {
   async removeDegree(userId: string, degreeId: string): Promise<IUser> {
     return this.server.delete(`/user/${userId}/degree/${degreeId}`)
   }
+
+  /**
+   * set main graph
+   */
+  async setMainGraph(userId: string, graphId: string): Promise<IUser> {
+    return this.server.patch(`/user/${userId}/main-graph`, {
+      graphId,
+    })
+  }
 }

@@ -19,8 +19,10 @@ export function Main(props: {
 
   const degrees = useAppSelector((state) => state.user.savedDegrees)
 
+  const mainGraph = useAppSelector((state) => state.user.mainGraph)
+
   const state = {
-    graph: useState<IGraph>(graphs[0]),
+    graph: useState<IGraph>(mainGraph),
   }
   return (
     <>
