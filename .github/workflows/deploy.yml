@@ -31,7 +31,9 @@ jobs:
             docs deploy: ${{ steps.deploy.outcome }}
 
   frontend:
+    needs: [docs]
     if: |
+      always() &&
       github.ref_name == 'dep/front' ||
       github.ref_name == 'dep/app' ||
       github.ref_name == 'dep/all' ||
