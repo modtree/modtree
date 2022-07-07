@@ -7,8 +7,11 @@ import { GraphFlowNode } from '@modtree/types'
 
 /**
  * handles undefined, single, and array of children
+ * always returns exactly one safe React Element
  */
-const Children = (props: { elements?: ReactElement | ReactElement[] }) => {
+const Children = (props: {
+  elements?: ReactElement | ReactElement[]
+}): ReactElement => {
   const { elements } = props
   if (!elements) return null
   if (Array.isArray(elements)) {
@@ -28,7 +31,6 @@ const Children = (props: { elements?: ReactElement | ReactElement[] }) => {
 export function Entries(props: {
   items: MenuItem[]
   children?: ReactElement | ReactElement[]
-  className?: string
   roundedSelection?: boolean
   flowNode?: GraphFlowNode
 }) {
@@ -43,7 +45,7 @@ export function Entries(props: {
   return (
     <>
       <Children elements={props.children} />
-      <div className={flatten('py-2', props.className)}>
+      <div className="py-2">
         {props.items.map((menuItem, index) => (
           <Menu.Item key={dashed(menuItem.text, index)}>
             <a
