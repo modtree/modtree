@@ -14170,12 +14170,11 @@ and limitations under the License.
       const src_needs = JSON.parse(core.getInput('needs'))
       const prTitle = core.getInput('pr-title')
       const push = () => {
-        bot_bot.send([print_print.needs(src_needs)])
+        const title = lib_github.context.workflow + ' 📦'
+        bot_bot.send([title, print_print.needs(src_needs)])
       }
       const pullRequest = () => {
         const title = `#${lib_github.context.payload.pull_request.number} ${prTitle}`
-        console.log(lib_github.context.action)
-        console.log(lib_github.context.job)
         console.log(lib_github.context.workflow)
         bot_bot.send([title, print_print.needs(src_needs)])
       }

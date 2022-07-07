@@ -11,13 +11,12 @@ const needs: Needs = JSON.parse(core.getInput('needs'))
 const prTitle = core.getInput('pr-title')
 
 const push = () => {
-  bot.send([print.needs(needs)])
+  const title = github.context.workflow + ' 📦'
+  bot.send([title, print.needs(needs)])
 }
 
 const pullRequest = () => {
   const title = `#${github.context.payload.pull_request.number} ${prTitle}`
-  console.log(github.context.action)
-  console.log(github.context.job)
   console.log(github.context.workflow)
   bot.send([title, print.needs(needs)])
 }
