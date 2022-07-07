@@ -98,6 +98,11 @@ export class UserApi {
         savedDegrees: {
           modules: true,
         },
+        mainDegree: true,
+        mainGraph: {
+          // does not fetch degree modules
+          degree: true,
+        },
       },
     })
   }
