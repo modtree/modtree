@@ -14,6 +14,14 @@ export default function Entries(props: {
 }) {
   const { children, className, items } = props
 
+  const onClick = (menuItem: MenuItem) => {
+    /**
+     * only run the callback if it exists
+     */
+    if (!menuItem.callback) return
+    menuItem.callback(props.flowNode)
+  }
+
   const Children = () => {
     if (!children) return null
     if (Array.isArray(children)) {
@@ -39,7 +47,7 @@ export default function Entries(props: {
             <Menu.Item key={dashed(menuItem.text, index)}>
               <a
                 href={menuItem.href}
-                onClick={() => menuItem.callback(props.flowNode)}
+                onClick={() => onClick(menuItem)}
                 className={flatten(
                   'hover:bg-modtree-400/80 hover:text-white',
                   'text-gray-700 flex w-full px-4 py-1.5',
