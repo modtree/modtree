@@ -18,10 +18,10 @@ services:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
   server:
-    # image: 'modtree/server:0.5.8'
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile.server
+    image: 'modtree/server:0.5.8'
+    # build:
+    #   context: ..
+    #   dockerfile: docker/Dockerfile.server
     profiles: ['all', 'server']
     depends_on:
       - 'db_web'
