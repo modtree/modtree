@@ -24,7 +24,9 @@
     "dev:server": "node apps/server/dev.js --watch",
     "dev:web": "nx serve web",
     "dev": "sh ./scripts/serve.sh",
-    "build:server": "node apps/server/webpack.js --build"
+    "build:server": "node apps/server/webpack.js --build",
+    "start:server": "node dist/apps/server/bundle.js",
+    "all:server": "yarn build:server && yarn start:server"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.0",
