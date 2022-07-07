@@ -10,7 +10,7 @@ WORKDIR /app
 COPY . .
 
 # do all this in one layer so it doesn't cache too much
-RUN yarn install --frozen-lockfile \
+RUN yarn install --production --frozen-lockfile \
 && yarn build:server \
 && rm -rf node_modules
 
