@@ -1,5 +1,3 @@
-import { Button } from '@/ui/buttons'
-import { Input } from '@/ui/html'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useAppSelector } from '@/store/redux'
 import { getUniqueGraphTitle } from '@/utils/graph'
@@ -8,7 +6,7 @@ import { text } from 'text'
 import { Row } from '@/ui/settings/lists/rows'
 import { GraphIcon } from '@/ui/icons'
 import { EmptyBox } from '@/ui/settings/empty-box'
-import { Degree, Graph, IGraph } from '@modtree/types'
+import { IDegree, IGraph } from '@modtree/types'
 import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
 import { PickOne } from '@/ui/search/graph/pick-one'
@@ -42,7 +40,7 @@ export function Main(props: {
             <GraphSection degrees={degrees} graphs={graphs} />
           </>
         ) : (
-          // this button should also link to add-new
+          // TODO this button should also link to add-new
           <EmptyBox
             summary={text.graphListSection.emptySummary}
             buttonText="New graph"
@@ -53,7 +51,7 @@ export function Main(props: {
   )
 }
 
-function GraphSection(props: { degrees: Degree[]; graphs: Graph[] }) {
+function GraphSection(props: { degrees: IDegree[]; graphs: IGraph[] }) {
   const { degrees, graphs } = props
   return (
     <div className="ui-rectangle flex flex-col overflow-hidden">
