@@ -1,6 +1,6 @@
 import { Listbox, Switch } from '@headlessui/react'
 import { IDegree, UseState } from '@modtree/types'
-import { CheckIcon } from '@/ui/icons'
+import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 
 export function PickOne(props: {
@@ -14,8 +14,11 @@ export function PickOne(props: {
     <div className="flex-col space-y-2">
       <div className={flatten('ui-rectangle', 'shadow-none', 'h-8 w-64')}>
         <Listbox value={degree} onChange={setDegree}>
-          <Listbox.Button className={'h-full w-full'}>
-            {degree.title}
+          <Listbox.Button className="h-full w-full relative">
+            <span className="block truncate">{degree.title}</span>
+            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              <SelectorIcon className="h-5 w-5 text-gray-600" />
+            </span>
           </Listbox.Button>
           <Listbox.Options
             className={
