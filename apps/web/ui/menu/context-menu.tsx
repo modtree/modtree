@@ -10,7 +10,7 @@ import { useAppSelector } from '@/store/redux'
 import { dashed } from '@/utils/array'
 import { items } from '@/components/menu-items'
 import { MenuItem } from 'types'
-import { Entries } from '@/ui/menu'
+import { Entries } from './entries'
 
 /**
  * context:
