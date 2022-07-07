@@ -14148,11 +14148,15 @@ and limitations under the License.
       const emoji_namespaceObject = JSON.parse(
         '{"success":"✅","failure":"❌","rocket":"🚀","cheers":"🍺","fire":"🔥","skipped":"💨"}'
       ) // CONCATENATED MODULE: ./src/print.ts
+      /**
+       * ignore list for job ids
+       */
+      const ignore = ['pre_job']
       const needs = (data) => {
         const results = []
         Object.entries(data).forEach(([key, value]) => {
-          const e = emoji_namespaceObject[value.result]
-          results.push(`${e} ${key}`)
+          if (ignore.includes(key)) return
+          results.push(`${emoji_namespaceObject[value.result]} ${key}`)
         })
         return results.join('\n')
       }
