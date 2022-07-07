@@ -10,7 +10,7 @@ const rootDir = path.resolve(__dirname, '../..')
 
 nodemon({
   script: path.resolve(rootDir, 'dist/apps/server/bundle.js'),
-  watch: path.resolve(rootDir, 'dist'),
+  watch: path.resolve(rootDir, 'dist/apps/server'),
 })
 
 nodemon
