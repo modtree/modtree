@@ -5,5 +5,4 @@
 COMPOSE_PROFILES=$P \
   docker compose \
   up \
-  --build server \
   --detach
