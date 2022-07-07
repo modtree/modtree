@@ -14146,7 +14146,7 @@ and limitations under the License.
       } // CONCATENATED MODULE: ./src/emoji.json
 
       const emoji_namespaceObject = JSON.parse(
-        '{"success":"✅","failure":"❌","rocket":"🚀","cheers":"🍺","fire":"🔥","skipped":"⏭️","cancelled":"🚫"}'
+        '{"success":"✅","failure":"❌","rocket":"🚀","cheers":"🍺","fire":"🔥","skipped":"💨","cancelled":"💨"}'
       ) // CONCATENATED MODULE: ./src/print.ts
       /**
        * ignore list for job ids
