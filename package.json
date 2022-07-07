@@ -22,6 +22,8 @@
     "auto": "nx test auto-docs",
     "version": "auto-changelog -p && git add --all",
     "dev:server": "node apps/server/dev.js --watch",
+    "dev:web": "nx serve web",
+    "dev": "sh ./scripts/serve.sh",
     "build:server": "node apps/server/webpack.js --build"
   },
   "dependencies": {
