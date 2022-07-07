@@ -4,7 +4,7 @@ import { AddNew } from './add-new'
 import { Main } from './main'
 
 export function GraphsTabContent() {
-  const [page, setPage] = useState<Pages['Graphs']>('main')
+  const [page, setPage] = useState<Pages['Graphs']>('add-new')
   if (page === 'main') {
     return <Main setPage={setPage} />
   }
