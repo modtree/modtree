@@ -15,9 +15,9 @@ const entry = path.resolve(__dirname, 'src/main.ts')
 const tsconfig = path.resolve(__dirname, 'tsconfig.app.json')
 
 const defaultConfig = {
-  watch: false,
   mode: 'development',
   optimization: undefined,
+  build: false,
 }
 
 /**
@@ -29,9 +29,9 @@ const getArgsConfig = () => {
   const handled = []
   args.forEach((arg) => {
     switch (arg) {
-      case '--watch':
+      case '--build':
         handled.push(arg)
-        config.watch = true
+        config.build = true
         break
       case '--prod':
         handled.push(arg)
@@ -78,24 +78,10 @@ const compiler = webpack({
   },
 })
 
-if (argsConfig.watch) {
-  /**
-   * watch for changes
-   */
-  compiler.watch(
-    {
-      aggregateTimeout: 300,
-    },
-    (_err, stats) => {
-      if (stats.hasErrors()) {
-        console.log(stats.toString())
-      }
-    }
-  )
-} else {
-  /**
-   * just build once
-   */
+module.exports = compiler
+
+if (argsConfig.build == true) {
+  /** run the build once */
   compiler.run((_err, stats) => {
     if (stats.hasErrors()) {
       console.log(stats.toString())

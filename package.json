@@ -21,7 +21,8 @@
     "heroku-postbuild": "nx build server",
     "auto": "nx test auto-docs",
     "version": "auto-changelog -p && git add --all",
-    "dev:server": "node apps/server/dev.js --watch"
+    "dev:server": "node apps/server/dev.js --watch",
+    "build:server": "node apps/server/webpack.js --build"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.0",
