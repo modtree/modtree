@@ -22,5 +22,3 @@ export function ContextMenus() {
     </>
   )
 }
-
-export { onContextMenu } from './listener'

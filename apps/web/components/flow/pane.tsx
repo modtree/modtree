@@ -8,7 +8,7 @@ import ReactFlow, {
 } from 'react-flow-renderer'
 import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { onContextMenu } from '@/components/context-menu'
+import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { redrawGraph } from '@/utils/flow'
