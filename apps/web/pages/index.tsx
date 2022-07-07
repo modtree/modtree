@@ -1,6 +1,6 @@
 import { FloatingActionButton, FloatingUserButton } from '@/components/buttons'
 import { FullScreenOverlay } from '@/components/Views'
-import ModtreeFlow from 'flow'
+import ModtreeFlow from '@/components/flow/pane'
 import { HomeLoader } from '@/components/Loader'
 import { useUser } from '@/utils/auth0'
 import { useEffect } from 'react'
