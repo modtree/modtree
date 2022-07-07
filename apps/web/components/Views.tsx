@@ -19,15 +19,3 @@ export function FullScreenOverlay(props: { children: ReactChild }) {
     </div>
   )
 }
-
-/**
- * a header overlay that doesn't take any clicks on itself,
- * but still passes on click events to its children
- */
-export function HeaderOverlay(props: { children: ReactChild }) {
-  return (
-    <div className="z-10 fixed inset-0 h-16 w-screen py-2 pointer-events-none select-none">
-      {clickify(props.children)}
-    </div>
-  )
-}
