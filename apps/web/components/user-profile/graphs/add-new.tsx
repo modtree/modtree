@@ -20,7 +20,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         baseTitle="Graphs"
         onBack={() => props.setPage('main')}
         title="Add new"
-        className="mb-8 z-10"
+        className="mb-8"
       >
         <h6>Title</h6>
         <Input className="w-full mb-4" state={state.title} grayed />
