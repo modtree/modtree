@@ -53,6 +53,14 @@ export function PickOne(props: { degrees: IDegree[] }) {
           <Switch.Label>Insert degree required modules into graph</Switch.Label>
         </div>
       </Switch.Group>
+      {pullAll && (
+        <div className="bg-gray-200 p-2 rounded-xl">
+          <p>The following modules will be placed in the graph:</p>
+          <p className="mb-0">
+            {degree.modules.map((m) => m.moduleCode).join(', ')}
+          </p>
+        </div>
+      )}
     </div>
   )
 }
