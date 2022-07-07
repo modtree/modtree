@@ -1,6 +1,6 @@
 import { Button } from '@/ui/buttons'
 import { Input } from '@/ui/html'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useAppSelector } from '@/store/redux'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { SettingsSection } from '@/ui/settings/lists/base'
@@ -10,8 +10,11 @@ import { GraphIcon } from '@/ui/icons'
 import { EmptyBox } from '@/ui/settings/empty-box'
 import { Degree, Graph } from '@modtree/types'
 import { lowercaseAndDash } from '@/utils/string'
+import { Pages } from 'types'
 
-export function Main() {
+export function Main(props: {
+  setPage: Dispatch<SetStateAction<Pages['Graphs']>>
+}) {
   const graphs = useAppSelector((state) => state.user.savedGraphs)
   const hasGraphs = graphs.length !== 0
 
@@ -35,13 +38,18 @@ export function Main() {
           Update
         </Button>
       </div>
-      <SettingsSection title="Graphs" addButtonText={hasGraphs && 'New graph'}>
+      <SettingsSection
+        title="Graphs"
+        addButtonText={hasGraphs && 'New graph'}
+        onAddClick={() => props.setPage('add-new')}
+      >
         {hasGraphs ? (
           <>
             <p>{text.graphListSection.summary}</p>
             <GraphSection degrees={degrees} graphs={graphs} />
           </>
         ) : (
+          // this button should also link to add-new
           <EmptyBox
             summary={text.graphListSection.emptySummary}
             buttonText="New graph"
