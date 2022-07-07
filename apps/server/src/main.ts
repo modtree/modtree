@@ -30,7 +30,6 @@ function getConfig() {
   const config = defaultConfig
   readJson(config)
   readEnv(config)
-  console.log('getConfig', config)
   return new DataSource(config)
 }
 
@@ -43,7 +42,7 @@ function sleep(ms: number) {
 console.debug('Initializing connection to database...')
 const db = getConfig()
 
-const maxRetries = 5
+const maxRetries = 30
 let attempts = 1
 
 async function attemptConnection() {

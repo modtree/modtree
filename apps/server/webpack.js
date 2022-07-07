@@ -47,20 +47,30 @@ const compiler = webpack({
   },
 })
 
-compiler.run((_err, stats) => {
-  if (stats.hasErrors()) {
-    console.log(stats.toString())
-  }
-  compiler.close((_closeErr) => {})
-})
+const watch = true
 
-// compiler.watch(
-//   {
-//     aggregateTimeout: 300,
-//   },
-//   (err, stats) => {
-//     if (stats.hasErrors()) {
-//       console.log(stats.toString())
-//     }
-//   }
-// )
+if (watch) {
+  /**
+   * watch for changes
+   */
+  compiler.watch(
+    {
+      aggregateTimeout: 300,
+    },
+    (err, stats) => {
+      if (stats.hasErrors()) {
+        console.log(stats.toString())
+      }
+    }
+  )
+} else {
+  /**
+   * just build once
+   */
+  compiler.run((_err, stats) => {
+    if (stats.hasErrors()) {
+      console.log(stats.toString())
+    }
+    compiler.close((_closeErr) => {})
+  })
+}
