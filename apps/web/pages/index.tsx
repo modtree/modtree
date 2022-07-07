@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { ContextMenus } from '@/components/context-menu'
 import { ModuleInfoModal, DebugModal } from '@/components/modals'
 import { UserProfileModal } from '@/components/user-profile'
-import { RootSearchBox } from '@/ui/search'
+import { RootSearchBox } from '@/ui/search/module'
 import { rehydrate } from '@/utils/rehydrate'
 
 export default function Modtree() {
