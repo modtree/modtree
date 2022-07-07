@@ -32,6 +32,7 @@ function getConfig() {
   readEnv(config)
   return new DataSource(config)
 }
+const db = getConfig()
 
 function sleep(ms: number) {
   return new Promise((resolve) => {
@@ -40,7 +41,7 @@ function sleep(ms: number) {
 }
 
 console.debug('Initializing connection to database...')
-const db = getConfig()
+console.debug(db.options)
 
 const maxRetries = 30
 let attempts = 1
