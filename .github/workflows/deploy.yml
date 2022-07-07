@@ -15,12 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: amondnet/vercel-action@v20 #deploy
+      - uses: actions/setup-node@v3
         with:
-          vercel-token: ${{ secrets.TURBO_TOKEN }} # Required
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} #Required
-          vercel-project-id: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
-          vercel-args: '--prod' #Optional
+          node-version: 16
+      - run: npx vercel --token ${TOKEN} --prod
+        env:
+          TOKEN: ${{ secrets.TURBO_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
 
   frontend:
     needs: [docs]
@@ -33,12 +35,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: amondnet/vercel-action@v20 #deploy
+      - uses: actions/setup-node@v3
         with:
-          vercel-token: ${{ secrets.TURBO_TOKEN }} # Required
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} #Required
-          vercel-project-id: ${{ secrets.VERCEL_WEB_PROJECT_ID }} #Required
-          vercel-args: '--prod' #Optional
+          node-version: 16
+      - run: npx vercel --token ${TOKEN} --prod
+        env:
+          TOKEN: ${{ secrets.TURBO_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WEB_PROJECT_ID }} #Required
 
   backend:
     if: |
