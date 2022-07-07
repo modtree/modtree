@@ -44,8 +44,10 @@ export class Api extends BaseApi {
       ([user, degree, graph]) => {
         /** add the degree to the user */
         user.savedDegrees.push(degree)
+        user.mainDegree = degree
         /** add the graph to the user */
         user.savedGraphs.push(graph)
+        user.mainGraph = graph
         /** save and return the user */
         return this.userRepo.save(user)
       }
