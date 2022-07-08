@@ -8,6 +8,7 @@ import {
   InitUserProps,
   IUserRepository,
   ModuleStatus,
+  Relations,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
@@ -21,7 +22,8 @@ export class UserRepository
   private degreeRepo: Repository<Degree>
   private graphRepo: Repository<Graph>
 
-  private graphRelations
+  private graphRelations: Relations
+  private relations: Relations
 
   constructor(db: DataSource) {
     super(User, db.manager)
@@ -29,16 +31,23 @@ export class UserRepository
     this.degreeRepo = new Repository(Degree, db.manager)
     this.graphRepo = new Repository(Graph, db.manager)
     this.graphRelations = getRelationNames(this.graphRepo)
+    this.relations = getRelationNames(this)
   }
 
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
-  override findOneById = async (id: string) => this.findOneByOrFail({ id })
+
+  override findOneById = async (id: string) =>
+    this.findOneOrFail({ where: { id }, relations: this.relations })
+
   findOneByUsername = async (username: string) =>
-    this.findOneByOrFail({ username })
-  findOneByEmail = async (email: string) => this.findOneByOrFail({ email })
+    this.findOneOrFail({ where: { username }, relations: this.relations })
+
+  findOneByEmail = async (email: string) =>
+    this.findOneOrFail({ where: { email }, relations: this.relations })
+
   findOneByAuthZeroId = async (authZeroId: string) =>
-    this.findOneByOrFail({ authZeroId })
+    this.findOneOrFail({ where: { authZeroId }, relations: this.relations })
 
   /**
    * Adds a User to DB

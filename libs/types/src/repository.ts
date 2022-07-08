@@ -18,6 +18,7 @@ import {
 } from './init-props'
 
 export type FindByKey<T> = (query: string) => Promise<T>
+export type Relations = Record<string, boolean>
 
 export enum ModuleStatus {
   NOT_TAKEN = 'notTaken',

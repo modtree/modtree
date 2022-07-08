@@ -9,6 +9,7 @@ import {
   GraphFrontendProps,
   GraphFlowNode,
   InitGraphProps,
+  Relations,
 } from '@modtree/types'
 import {
   quickpop,
@@ -34,6 +35,7 @@ export class GraphRepository
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
+  private relations: Relations
 
   constructor(db: DataSource) {
     super(Graph, db.manager)
@@ -41,11 +43,14 @@ export class GraphRepository
     this.moduleRepo = new ModuleRepository(this.db)
     this.degreeRepo = new DegreeRepository(this.db)
     this.userRepo = new UserRepository(this.db)
+    this.relations = getRelationNames(this)
   }
 
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
-  override findOneById = async (id: string) => this.findOneByOrFail({ id })
+
+  override findOneById = async (id: string) =>
+    this.findOneOrFail({ where: { id }, relations: this.relations })
 
   /**
    * Adds a Graph to DB

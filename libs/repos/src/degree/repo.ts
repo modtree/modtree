@@ -4,6 +4,7 @@ import {
   IDegreeRepository,
   IModuleRepository,
   InitDegreeProps,
+  Relations,
 } from '@modtree/types'
 import { getRelationNames } from '../utils'
 import { ModuleRepository } from '../module'
@@ -15,17 +16,23 @@ export class DegreeRepository
   private db: DataSource
   private allRelations = getRelationNames(this)
   private moduleRepo: IModuleRepository
+  private relations: Relations
 
   constructor(db: DataSource) {
     super(Degree, db.manager)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
+    this.relations = getRelationNames(this)
   }
 
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
-  override findOneById = async (id: string) => this.findOneByOrFail({ id })
-  findOneByTitle = async (title: string) => this.findOneByOrFail({ title })
+
+  override findOneById = async (id: string) =>
+    this.findOneOrFail({ where: { id }, relations: this.relations })
+
+  findOneByTitle = async (title: string) =>
+    this.findOneOrFail({ where: { title }, relations: this.relations })
 
   /**
    * Adds a Degree to DB
