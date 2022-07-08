@@ -10,28 +10,33 @@ import {
   IUser,
   IUserRepository,
   ModuleStatus,
+  IDegreeRepository,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
-import { ModuleRepository } from '../module'
 
 export class UserRepository
   extends Repository<User>
   implements IUserRepository
 {
-  private db: DataSource
   private moduleRepo: IModuleRepository
   private degreeRepo: Repository<Degree>
   private graphRepo: Repository<Graph>
 
   private graphRelations
 
-  constructor(db: DataSource) {
+  constructor(
+    db: DataSource,
+    repos: {
+      module: IModuleRepository
+      degree: IDegreeRepository
+      graph: Repository<Graph>
+    }
+  ) {
     super(User, db.manager)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new Repository(Degree, this.db.manager)
-    this.graphRepo = new Repository(Graph, this.db.manager)
+    this.moduleRepo = repos.module
+    this.degreeRepo = repos.degree
+    this.graphRepo = repos.graph
     this.graphRelations = getRelationNames(this.graphRepo)
   }
 

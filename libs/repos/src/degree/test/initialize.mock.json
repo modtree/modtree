@@ -1,0 +1,71 @@
+{
+  "moduleRepo": {
+    "findByCodes": [
+      {
+        "id": "1",
+        "moduleCode": "CS1101S",
+        "title": "Programming Methodology",
+        "prerequisite": "",
+        "corequisite": "",
+        "preclusion": "CS1010 or its equivalents",
+        "fulfillRequirements": [
+          "FIN4124",
+          "FIN4719",
+          "MA3269",
+          "CS2109S",
+          "QF2103"
+        ],
+        "prereqTree": ""
+      },
+      {
+        "id": "2",
+        "moduleCode": "CS1231S",
+        "title": "Discrete Structures",
+        "prerequisite": "A-level Mathematics or H2 Mathematics or MA1301 or MA1301FC or MA1301X",
+        "corequisite": "",
+        "preclusion": "MA1100 and CS1231 or its equivalent",
+        "fulfillRequirements": [
+          "CS5469",
+          "CS4269",
+          "MA2202",
+          "MA2202S",
+          "MA2214",
+          "MA2219",
+          "MA3205",
+          "MA3219",
+          "CS2109S"
+        ],
+        "prereqTree": {
+          "or": ["MA1301", "MA1301FC", "MA1301X"]
+        }
+      },
+      {
+        "id": "3",
+        "moduleCode": "CS2030S",
+        "title": "Programming Methodology II",
+        "prerequisite": "CS1010 or its equivalent",
+        "corequisite": "",
+        "preclusion": "CS2030",
+        "fulfillRequirements": [],
+        "prereqTree": "CS1010"
+      },
+      {
+        "id": "4",
+        "moduleCode": "CS2040S",
+        "title": "Data Structures and Algorithms",
+        "prerequisite": "(MA1100 or (CS1231 or its equivalent)) and (CS1010 or its equivalent)",
+        "corequisite": "",
+        "preclusion": "CS1020, CS1020E, CS2020, CS2010, CS2040, CS2040C",
+        "fulfillRequirements": ["CS2113", "CS2113T", "CS5469", "CS4269"],
+        "prereqTree": {
+          "and": [
+            {
+              "or": ["MA1100", "CS1231"]
+            },
+            "CS1010"
+          ]
+        }
+      }
+    ]
+  }
+}

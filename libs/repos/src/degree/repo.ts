@@ -3,30 +3,27 @@ import {
   Degree,
   IDegreeRepository,
   IModuleRepository,
-  FindByKey,
-  IDegree,
   InitDegreeProps,
 } from '@modtree/types'
-import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
-import { ModuleRepository } from '../module'
+import { useDeleteAll } from '../utils'
+import { getRelationsFromMetadata } from '../utils/get-relation-names'
 
 export class DegreeRepository
   extends Repository<Degree>
   implements IDegreeRepository
 {
-  private db: DataSource
-  private allRelations = getRelationNames(this)
+  private allRelations: Record<string, boolean>
   private moduleRepo: IModuleRepository
 
-  constructor(db: DataSource) {
+  constructor(db: DataSource, repos: { module: IModuleRepository }) {
     super(Degree, db.manager)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
+    this.allRelations = getRelationsFromMetadata(db.getMetadata(Degree))
+    this.moduleRepo = repos.module
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IDegree> = useFindOneByKey(this, 'id')
-  findOneByTitle = useFindOneByKey(this, 'title')
+  override findOneById = async (id: string) => this.findOneByOrFail({ id })
+  findOneByTitle = async (title: string) => this.findOneByOrFail({ title })
 
   /**
    * Adds a Degree to DB

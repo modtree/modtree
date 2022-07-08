@@ -1,49 +1,58 @@
-import { Degree } from '@modtree/types'
-import { setup, teardown, Repo, t } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { DegreeRepository, ModuleRepository } from '@modtree/repos'
+import '@modtree/test-env/jest'
+import { mocks } from '@modtree/test-env'
+import mockJson from './initialize.mock.json'
+import { Degree, Module } from '@modtree/types'
+import { flatten } from '@modtree/utils'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+let savedDegree: Degree
 
 const props = {
-  moduleCodes: [
-    'CS1101S',
-    'CS1231S',
-    'CS2030S',
-    'CS2040S',
-    'CS2100',
-    'CS2103T',
-    'CS2106',
-    'CS2109S',
-    'CS3230',
-  ],
+  moduleCodes: ['CS1101S', 'CS1231S', 'CS2030S', 'CS2040S'],
   title: 'Test Degree',
 }
 
-it('initial count', async () => {
-  await Repo.Degree.count().then((count) => {
-    expect(count).toEqual(0)
+const moduleRepo = new ModuleRepository(mocks.db)
+const degreeRepo = new DegreeRepository(mocks.db, { module: moduleRepo })
+
+moduleRepo.findByCodes = async (_: string[]) => {
+  return new Promise((resolve) => {
+    const modules = mockJson.moduleRepo.findByCodes.map((j) => {
+      const m = new Module()
+      Object.assign(m, j)
+      return m
+    })
+    resolve(modules)
   })
-})
+}
+
+degreeRepo.create = <T>(e?: T | T[]): T | T[] => {
+  const degreefy = (e: T): T => {
+    const d = new Degree()
+    Object.assign(d, e)
+    return d as unknown as T
+  }
+  if (e === undefined) return new Degree() as unknown as T
+  if (Array.isArray(e)) {
+    return e.map(degreefy)
+  }
+  return degreefy(e)
+}
+degreeRepo.save = <T>(e: T | T[]): Promise<T | T[]> => new Promise((r) => r(e))
 
 it('returns a degree', async () => {
-  await Repo.Degree.initialize(props).then((res) => {
+  await degreeRepo.initialize(props).then((res) => {
     expect(res).toBeInstanceOf(Degree)
-    t.degree = res
+    savedDegree = res
   })
 })
 
-it('increments the count by 1', async () => {
-  await Repo.Degree.count().then((count) => {
-    expect(count).toEqual(1)
-  })
+it('saved the right title', () => {
+  expect(savedDegree.title).toEqual(props.title)
 })
 
-it('saves correct modules', async () => {
-  const codes = t.degree!.modules.map(flatten.module)
-  expect(codes).toIncludeSameMembers(props.moduleCodes)
+it('saved the right modules', () => {
+  expect(savedDegree.modules.map(flatten.module)).toIncludeSameMembers(
+    props.moduleCodes
+  )
 })

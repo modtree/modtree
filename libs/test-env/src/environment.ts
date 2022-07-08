@@ -1,7 +1,7 @@
 import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 import { sql } from '@modtree/sql'
 import { config } from '@modtree/typeorm-config'
-import { DataSource } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import {
   DegreeRepository,
   ModuleRepository,
@@ -48,13 +48,27 @@ export async function setup(
        * overwrite default db with the setup function's db parameter
        */
       api = new Api(db)
+      const moduleRepo = new ModuleRepository(db)
+      const moduleCondensedRepo = new ModuleCondensedRepository(db)
+      const moduleFullRepo = new ModuleFullRepository(db)
+      const degreeRepo = new DegreeRepository(db, { module: moduleRepo })
+      const userRepo = new UserRepository(db, {
+        module: moduleRepo,
+        degree: degreeRepo,
+        graph: new Repository(Graph, db.manager),
+      })
+      const graphRepo = new GraphRepository(db, {
+        module: moduleRepo,
+        degree: degreeRepo,
+        user: userRepo,
+      })
       Repo = {
-        ModuleFull: new ModuleFullRepository(db),
-        User: new UserRepository(db),
-        Degree: new DegreeRepository(db),
-        Graph: new GraphRepository(db),
-        Module: new ModuleRepository(db),
-        ModuleCondensed: new ModuleCondensedRepository(db),
+        Module: moduleRepo,
+        ModuleFull: moduleFullRepo,
+        ModuleCondensed: moduleCondensedRepo,
+        User: userRepo,
+        Degree: degreeRepo,
+        Graph: graphRepo,
       }
     })
   if (db.options.database === undefined) return

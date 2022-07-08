@@ -1,22 +1,21 @@
-import { Module } from '@modtree/types'
-import { DataSource, EntityTarget } from 'typeorm'
+import { DataSource } from 'typeorm'
 
-function getMockDb(): any {
-  const db: any = new DataSource({
+function getMockDb(): DataSource {
+  const db = new DataSource({
     database: 'mock',
     type: 'postgres',
-  })
-  db.getMetadata = <T>(e: EntityTarget<T>) => {
-    if (e === Module) {
-      return {
-        relations: [],
-      }
-    }
-    return {
-      relations: [],
-    }
+  }) as any
+  db.manager = {
+    whereInIds: () => {},
+    connection: { getMetadata: () => {} },
   }
+  db.getMetadata = () => ({
+    relations: [],
+  })
+  db.createQueryBuilder = () => ({
+    whereInIds: () => {},
+  })
   return db
 }
 
-export const db = getMockDb()
+export const db = getMockDb() as any

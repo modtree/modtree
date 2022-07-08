@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm'
+import { DataSource, Repository } from 'typeorm'
 import {
   IUserRepository,
   IDegreeRepository,
@@ -7,6 +7,7 @@ import {
   IModuleCondensedRepository,
   EntityName,
   IModuleFullRepository,
+  Graph,
 } from '@modtree/types'
 import {
   UserRepository,
@@ -32,12 +33,20 @@ export abstract class BaseApi {
 
   constructor(db: DataSource) {
     this.db = db
-    this.degreeRepo = new DegreeRepository(db)
-    this.userRepo = new UserRepository(db)
-    this.graphRepo = new GraphRepository(db)
-    this.moduleRepo = new ModuleRepository(db)
     this.moduleFullRepo = new ModuleFullRepository(db)
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
+    this.moduleRepo = new ModuleRepository(db)
+    this.degreeRepo = new DegreeRepository(db, { module: this.moduleRepo })
+    this.userRepo = new UserRepository(db, {
+      module: this.moduleRepo,
+      degree: this.degreeRepo,
+      graph: new Repository(Graph, db.manager),
+    })
+    this.graphRepo = new GraphRepository(db, {
+      module: this.moduleRepo,
+      degree: this.degreeRepo,
+      user: this.userRepo,
+    })
     this.relations = {
       user: getRelationNames(this.userRepo),
       degree: getRelationNames(this.degreeRepo),

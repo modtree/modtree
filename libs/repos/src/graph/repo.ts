@@ -20,9 +20,6 @@ import {
   nodify,
 } from '@modtree/utils'
 import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
-import { ModuleRepository } from '../module'
-import { UserRepository } from '../user'
-import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
 
 type ModuleState = 'placed' | 'hidden' | 'new'
@@ -31,18 +28,23 @@ export class GraphRepository
   extends Repository<Graph>
   implements IGraphRepository
 {
-  private db: DataSource
   private allRelations = getRelationNames(this)
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
 
-  constructor(db: DataSource) {
+  constructor(
+    db: DataSource,
+    repos: {
+      module: IModuleRepository
+      degree: IDegreeRepository
+      user: IUserRepository
+    }
+  ) {
     super(Graph, db.manager)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new DegreeRepository(this.db)
-    this.userRepo = new UserRepository(this.db)
+    this.moduleRepo = repos.module
+    this.degreeRepo = repos.degree
+    this.userRepo = repos.user
   }
 
   deleteAll = useDeleteAll(this)
