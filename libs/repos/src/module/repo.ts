@@ -1,13 +1,8 @@
-import { DataSource, In, Repository } from 'typeorm'
-import {
-  Module,
-  IModuleRepository,
-  FindByKey,
-  InitModuleProps,
-} from '@modtree/types'
+import { DataSource, In } from 'typeorm'
+import { Module, IModuleRepository, InitModuleProps } from '@modtree/types'
 import { flatten, unique } from '@modtree/utils'
 import { hasTakenModule, checkTree } from './utils'
-import { useDeleteAll, useFindOneByKey } from '../utils'
+import { BaseRepo } from '../base'
 
 type Data = {
   moduleCode: string
@@ -17,15 +12,15 @@ type Data = {
 }
 
 export class ModuleRepository
-  extends Repository<Module>
+  extends BaseRepo<Module>
   implements IModuleRepository
 {
   constructor(db: DataSource) {
-    super(Module, db.manager)
+    super(Module, db)
   }
 
-  deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<Module> = useFindOneByKey(this, 'id')
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+  override findOneById = async (id: string) => this.findOneByOrFail({ id })
 
   /**
    * initialize a Module

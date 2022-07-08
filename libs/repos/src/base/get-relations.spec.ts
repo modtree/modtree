@@ -2,7 +2,7 @@ import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 import { Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
 import { oneUp } from '@modtree/utils'
-import { getRelationNames } from '.'
+import { getRelations } from '.'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -41,31 +41,31 @@ const expectedRelations = {
 }
 
 test('User has correct relations', () => {
-  const received = getRelationNames(Repo.User)
+  const received = getRelations(Repo.User)
   const expected = expectedRelations.User
   expect(received).toStrictEqual(expected)
 })
 
 test('Degree has correct relations', () => {
-  const received = getRelationNames(Repo.Degree)
+  const received = getRelations(Repo.Degree)
   const expected = expectedRelations.Degree
   expect(received).toStrictEqual(expected)
 })
 
 test('Graph has correct relations', () => {
-  const received = getRelationNames(Repo.Graph)
+  const received = getRelations(Repo.Graph)
   const expected = expectedRelations.Graph
   expect(received).toStrictEqual(expected)
 })
 
 test('Module has correct relations', () => {
-  const received = getRelationNames(Repo.Module)
+  const received = getRelations(Repo.Module)
   const expected = expectedRelations.Module
   expect(received).toStrictEqual(expected)
 })
 
 test('ModuleCondensed has correct relations', () => {
-  const received = getRelationNames(Repo.ModuleCondensed)
+  const received = getRelations(Repo.ModuleCondensed)
   const expected = expectedRelations.ModuleCondensed
   expect(received).toStrictEqual(expected)
 })

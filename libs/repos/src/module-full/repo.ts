@@ -1,15 +1,16 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { ModuleFull } from '@modtree/types'
-import { FindByKey, IModuleFullRepository } from '@modtree/types'
-import { useFindOneByKey } from '@modtree/repos'
+import { IModuleFullRepository } from '@modtree/types'
+import { BaseRepo } from '../base'
 
 export class ModuleFullRepository
-  extends Repository<ModuleFull>
+  extends BaseRepo<ModuleFull>
   implements IModuleFullRepository
 {
   constructor(db: DataSource) {
-    super(ModuleFull, db.manager)
+    super(ModuleFull, db)
   }
 
-  findOneByCode: FindByKey<ModuleFull> = useFindOneByKey(this, 'moduleCode')
+  findOneByCode = async (moduleCode: string) =>
+    this.findOneByOrFail({ moduleCode })
 }

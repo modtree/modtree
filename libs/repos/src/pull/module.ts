@@ -3,7 +3,6 @@ import { DataSource, Repository } from 'typeorm'
 import { IModuleCondensedRepository, NUSMods, Module } from '@modtree/types'
 import { nusmodsApi, flatten, client, log } from '@modtree/utils'
 import { ModuleCondensedRepository } from '../module-condensed'
-import { useDeleteAll } from '../utils'
 
 export class ModuleRepository extends Repository<Module> {
   private moduleCondensedRepo: IModuleCondensedRepository
@@ -12,7 +11,7 @@ export class ModuleRepository extends Repository<Module> {
     super(Module, db.manager)
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
   }
-  deleteAll = useDeleteAll(this)
+  deleteAll = () => this.createQueryBuilder().delete().execute()
 
   /**
    * get all module codes from the module table

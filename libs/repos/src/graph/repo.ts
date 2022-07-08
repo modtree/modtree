@@ -1,4 +1,4 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   Module,
   Graph,
@@ -6,11 +6,10 @@ import {
   IUserRepository,
   IDegreeRepository,
   IGraphRepository,
-  FindByKey,
-  IGraph,
   GraphFrontendProps,
   GraphFlowNode,
   InitGraphProps,
+  ModuleState,
 } from '@modtree/types'
 import {
   quickpop,
@@ -19,34 +18,34 @@ import {
   getFlowNodes,
   nodify,
 } from '@modtree/utils'
-import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
+import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
 
-type ModuleState = 'placed' | 'hidden' | 'new'
-
 export class GraphRepository
-  extends Repository<Graph>
+  extends BaseRepo<Graph>
   implements IGraphRepository
 {
   private db: DataSource
-  private allRelations = getRelationNames(this)
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
 
   constructor(db: DataSource) {
-    super(Graph, db.manager)
+    super(Graph, db)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
     this.degreeRepo = new DegreeRepository(this.db)
     this.userRepo = new UserRepository(this.db)
   }
 
-  deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IGraph> = useFindOneByKey(this, 'id')
+  /** one-liners */
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+
+  override findOneById = async (id: string) =>
+    this.findOneOrFail({ where: { id }, relations: this.relations })
 
   /**
    * Adds a Graph to DB
@@ -119,7 +118,7 @@ export class GraphRepository
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
     return this.findOneOrFail({
-      relations: this.allRelations,
+      relations: this.relations,
       where: {
         user: {
           id: userId,
@@ -141,7 +140,7 @@ export class GraphRepository
     degreeId: string
   ): Promise<[Graph[], number]> {
     return this.findAndCount({
-      relations: this.allRelations,
+      relations: this.relations,
       where: {
         user: {
           id: userId,
@@ -298,7 +297,7 @@ export class GraphRepository
       where: {
         id: In(graphIds),
       },
-      relations: this.allRelations,
+      relations: this.relations,
     })
   }
 }

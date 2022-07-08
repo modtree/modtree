@@ -34,10 +34,7 @@ export class DegreeApi {
    * @param {Api} api
    */
   static getFull = (api: Api) => async (req: Request) => {
-    return api.degreeRepo.findOneOrFail({
-      where: { id: req.params.degreeId },
-      relations: api.relations.degree,
-    })
+    return api.degreeRepo.findOneById(req.params.degreeId)
   }
 
   /**

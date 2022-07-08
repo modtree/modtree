@@ -1,5 +1,5 @@
 import { getSource } from '@modtree/typeorm-config'
-import { setup, Repo } from '@modtree/test-env'
+import { setup, Repo, teardown } from '@modtree/test-env'
 import { Api } from '..'
 import '@modtree/test-env/jest'
 import { flatten } from '@modtree/utils'
@@ -14,6 +14,7 @@ beforeAll(() =>
     api = new Api(db)
   })
 )
+afterAll(() => teardown(db))
 
 test('runs with no errors', async () => {
   await expect(api.frontendSetup()).resolves.not.toThrowError()

@@ -1,28 +1,23 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   ModuleCondensed,
   IModuleCondensedRepository,
-  FindByKey,
   IModuleCondensed,
   InitModuleCondensedProps,
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
-import { useDeleteAll, useFindOneByKey } from '../utils'
-import { In } from 'typeorm'
+import { BaseRepo } from '../base'
 
 export class ModuleCondensedRepository
-  extends Repository<ModuleCondensed>
+  extends BaseRepo<ModuleCondensed>
   implements IModuleCondensedRepository
 {
   constructor(db: DataSource) {
-    super(ModuleCondensed, db.manager)
+    super(ModuleCondensed, db)
   }
 
-  deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IModuleCondensed> = useFindOneByKey(
-    this,
-    'id'
-  )
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+  override findOneById = async (id: string) => this.findOneByOrFail({ id })
 
   /**
    * initialize a Module Condensed

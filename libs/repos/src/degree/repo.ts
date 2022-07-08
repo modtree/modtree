@@ -1,32 +1,32 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   Degree,
   IDegreeRepository,
   IModuleRepository,
-  FindByKey,
-  IDegree,
   InitDegreeProps,
 } from '@modtree/types'
-import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
+import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 
 export class DegreeRepository
-  extends Repository<Degree>
+  extends BaseRepo<Degree>
   implements IDegreeRepository
 {
-  private db: DataSource
-  private allRelations = getRelationNames(this)
   private moduleRepo: IModuleRepository
 
   constructor(db: DataSource) {
-    super(Degree, db.manager)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
+    super(Degree, db)
+    this.moduleRepo = new ModuleRepository(db)
   }
 
-  deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IDegree> = useFindOneByKey(this, 'id')
-  findOneByTitle = useFindOneByKey(this, 'title')
+  /** one-liners */
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+
+  override findOneById = async (id: string) =>
+    this.findOneOrFail({ where: { id }, relations: this.relations })
+
+  findOneByTitle = async (title: string) =>
+    this.findOneOrFail({ where: { title }, relations: this.relations })
 
   /**
    * Adds a Degree to DB
@@ -88,7 +88,7 @@ export class DegreeRepository
       where: {
         id: In(degreeIds),
       },
-      relations: this.allRelations,
+      relations: this.relations,
     })
   }
 }

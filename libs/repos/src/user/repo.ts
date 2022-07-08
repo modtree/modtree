@@ -4,42 +4,41 @@ import {
   Module,
   Degree,
   Graph,
-  FindByKey,
   IModuleRepository,
   InitUserProps,
-  IUser,
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
-import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
 import { ModuleRepository } from '../module'
+import { BaseRepo } from '../base'
 
-export class UserRepository
-  extends Repository<User>
-  implements IUserRepository
-{
-  private db: DataSource
+export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository
   private degreeRepo: Repository<Degree>
-  private graphRepo: Repository<Graph>
-
-  private graphRelations
+  private graphRepo: BaseRepo<Graph>
 
   constructor(db: DataSource) {
-    super(User, db.manager)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new Repository(Degree, this.db.manager)
-    this.graphRepo = new Repository(Graph, this.db.manager)
-    this.graphRelations = getRelationNames(this.graphRepo)
+    super(User, db)
+    this.moduleRepo = new ModuleRepository(db)
+    this.degreeRepo = new Repository(Degree, db.manager)
+    this.graphRepo = new BaseRepo(Graph, db)
   }
 
-  deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IUser> = useFindOneByKey(this, 'id')
-  findOneByUsername: FindByKey<IUser> = useFindOneByKey(this, 'username')
-  findOneByEmail: FindByKey<IUser> = useFindOneByKey(this, 'email')
-  findOneByAuthZeroId: FindByKey<IUser> = useFindOneByKey(this, 'authZeroId')
+  /** one-liners */
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+
+  override findOneById = async (id: string) =>
+    this.findOneOrFail({ where: { id }, relations: this.relations })
+
+  findOneByUsername = async (username: string) =>
+    this.findOneOrFail({ where: { username }, relations: this.relations })
+
+  findOneByEmail = async (email: string) =>
+    this.findOneOrFail({ where: { email }, relations: this.relations })
+
+  findOneByAuthZeroId = async (authZeroId: string) =>
+    this.findOneOrFail({ where: { authZeroId }, relations: this.relations })
 
   /**
    * Adds a User to DB
@@ -260,7 +259,7 @@ export class UserRepository
     return this.graphRepo
       .findOneOrFail({
         where: { id: graphId },
-        relations: this.graphRelations,
+        relations: this.graphRepo.relations,
       })
       .then((graph) => {
         // if the graph is not in saved
