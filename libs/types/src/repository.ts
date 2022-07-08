@@ -25,6 +25,7 @@ export enum ModuleStatus {
   DONE = 'done',
   DOING = 'doing',
 }
+export type ModuleState = 'placed' | 'hidden' | 'new'
 
 /**
  * Graph Repository Interface

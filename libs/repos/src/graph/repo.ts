@@ -9,6 +9,7 @@ import {
   GraphFrontendProps,
   GraphFlowNode,
   InitGraphProps,
+  ModuleState,
 } from '@modtree/types'
 import {
   quickpop,
@@ -17,20 +18,17 @@ import {
   getFlowNodes,
   nodify,
 } from '@modtree/utils'
-import { BaseRepo, getRelations } from '../utils'
+import { BaseRepo } from '../utils'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
-
-type ModuleState = 'placed' | 'hidden' | 'new'
 
 export class GraphRepository
   extends BaseRepo<Graph>
   implements IGraphRepository
 {
   private db: DataSource
-  private allRelations = getRelations(this)
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
@@ -41,7 +39,6 @@ export class GraphRepository
     this.moduleRepo = new ModuleRepository(this.db)
     this.degreeRepo = new DegreeRepository(this.db)
     this.userRepo = new UserRepository(this.db)
-    this.relations = getRelations(this)
   }
 
   /** one-liners */
@@ -121,7 +118,7 @@ export class GraphRepository
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
     return this.findOneOrFail({
-      relations: this.allRelations,
+      relations: this.relations,
       where: {
         user: {
           id: userId,
@@ -143,7 +140,7 @@ export class GraphRepository
     degreeId: string
   ): Promise<[Graph[], number]> {
     return this.findAndCount({
-      relations: this.allRelations,
+      relations: this.relations,
       where: {
         user: {
           id: userId,
@@ -300,7 +297,7 @@ export class GraphRepository
       where: {
         id: In(graphIds),
       },
-      relations: this.allRelations,
+      relations: this.relations,
     })
   }
 }
