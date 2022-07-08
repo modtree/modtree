@@ -18,6 +18,17 @@ export type User = Modify<
 >
 
 /**
+ * User API respsonse
+ */
+export type UserFull = Modify<
+  IUser,
+  {
+    savedGraphs: string[]
+    mainGraph: string
+  }
+>
+
+/**
  * Degree API respsonse
  */
 export type Degree = Modify<

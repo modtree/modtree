@@ -1,5 +1,5 @@
 import { BaseApi } from './base-api'
-import { IUser, ModuleStatus } from '@modtree/types'
+import { IUser, ModtreeApiResponse, ModuleStatus, User } from '@modtree/types'
 import { setUser } from '@/store/user'
 
 export class UserApi extends BaseApi {
@@ -9,7 +9,7 @@ export class UserApi extends BaseApi {
    * @param {string} userId
    * @returns {Promise<User>}
    */
-  async getById(userId: string): Promise<IUser> {
+  async getById(userId: string): Promise<ModtreeApiResponse.UserFull> {
     return this.server.get(`/user/${userId}/get-full`).then((res) => res.data)
   }
 
