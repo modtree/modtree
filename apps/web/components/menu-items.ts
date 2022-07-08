@@ -1,6 +1,6 @@
 import { MenuItem } from 'types'
 import store from '@/store/redux'
-import { showDebugModal, showModuleModal, showUserProfile } from '@/store/modal'
+import { showDebugModal, showUserProfile } from '@/store/modal'
 import { removeModuleNode } from '@/store/graph'
 import { api } from 'api'
 
@@ -28,7 +28,13 @@ const flowNodeContextMenu: MenuItem[] = [
   { text: 'Mark as done', callback: () => alert('marked as done') },
   {
     text: 'Remove',
-    callback: (e) => store.dispatch(removeModuleNode(e)),
+    callback: async (e) => {
+      // update graph
+      const mainGraph = store.getState().user.mainGraph
+      api.graph.toggle(mainGraph.id, e.id)
+      // remove node from frontend
+      store.dispatch(removeModuleNode(e))
+    },
   },
 ]
 
