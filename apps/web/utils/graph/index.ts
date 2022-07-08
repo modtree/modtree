@@ -1,4 +1,4 @@
-import { Graph } from '@modtree/types'
+import { Graph, ModtreeApiResponse } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { lowercaseAndDash } from '../string'
 
@@ -14,7 +14,9 @@ export function getUniqueGraphTitle(graph: Graph) {
 /**
  * Returns true if module in modulesPlaced.
  */
-export function inModulesPlaced(graph: Graph, moduleCode: string) {
-  const placed = graph.modulesPlaced.map(flatten.module)
-  return placed.includes(moduleCode)
+export function inModulesPlaced(
+  graph: ModtreeApiResponse.GraphFull,
+  moduleCode: string
+) {
+  return graph.modulesPlaced.includes(moduleCode)
 }

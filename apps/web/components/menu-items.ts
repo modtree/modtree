@@ -31,13 +31,10 @@ const flowNodeContextMenu: MenuItem[] = [
     text: 'Remove',
     callback: async (e) => {
       // update graph
-      const mainGraph = store.getState().user.mainGraph
-      api.graph
-        .toggle(mainGraph.id, e.id)
-        .then(() => updateUser())
-        .then((user) => {
-          store.dispatch(setGraph(user.mainGraph))
-        })
+      const mainGraph = store.getState().graph
+      api.graph.toggle(mainGraph.id, e.id).then((g) => {
+        store.dispatch(setGraph(g))
+      })
       // remove node from frontend
       store.dispatch(removeModuleNode(e))
     },

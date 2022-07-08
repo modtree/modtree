@@ -18,7 +18,7 @@ export function ModuleDetails() {
 
   // to check if this module has been added
   // and to toggle node
-  const mainGraph = useAppSelector((state) => state.user.mainGraph)
+  const mainGraph = useAppSelector((state) => state.graph)
 
   function handleAddButton() {
     // 1. hide module modal
@@ -56,8 +56,7 @@ export function ModuleDetails() {
         // 4. update frontend props
         api.graph.updateFrontendProps(mainGraph.id, nodes, edges)
       )
-      .then(() => updateUser())
-      .then((user) => setGraph(user.mainGraph))
+      .then((g) => setGraph(g))
   }
   return (
     <div>
