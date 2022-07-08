@@ -1,4 +1,4 @@
-import { defaultConfig, readEnv, readJson } from '@modtree/typeorm-config'
+import { db } from '@modtree/typeorm-config'
 import { getApp } from './app'
 import { DataSource, Repository } from 'typeorm'
 import { Api } from '@modtree/repos'
@@ -25,14 +25,6 @@ function checkhealth(db: DataSource) {
     })
   })
 }
-
-function getConfig() {
-  const config = defaultConfig
-  readJson(config)
-  readEnv(config)
-  return new DataSource(config)
-}
-const db = getConfig()
 
 function sleep(ms: number) {
   return new Promise((resolve) => {

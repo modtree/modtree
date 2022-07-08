@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+[ $1 = 'web' ] && PORT=4000
+[ $1 = 'test' ] && PORT=4001
+
+PGPASSWORD=$1 psql -U $1 -h localhost -p $PORT
+
+# useful psql commands:
+#
+# list databases      |  \l
+# list tables         |  \d
+# list users          |  \du
+# show module schema  |  SELECT column_name FROM information_schema.columns WHERE TABLE_NAME = 'module';

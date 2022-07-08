@@ -7,13 +7,12 @@
     "serve": "nx run-many --target=serve --projects=web,server",
     "build": "nx run-many --all --target=build --parallel=4 --exclude=docs",
     "lint": "nx run-many --all --target=lint --parallel=4",
-    "test": "nx run-many --all --target=test --parallel=1 --exclude=auto-docs",
+    "test": "node scripts/test.js",
+    "test:a": "nx run-many --all --target=test --parallel=1 --exclude=auto-docs",
     "build:f": "yarn build --skip-nx-cache",
     "lint:f": "yarn lint --skip-nx-cache",
     "test:f": "yarn test --skip-nx-cache",
     "build:docs": "nx build docs",
-    "build:vercel:docs": "nx build docs --skip-nx-cache",
-    "build:vercel:web": "nx build web --skip-nx-cache",
     "e2e": "nx e2e web-e2e --watch",
     "format": "prettier --write .",
     "prepare": "bash ./scripts/yarn.sh setup",
@@ -26,7 +25,8 @@
     "dev": "sh ./scripts/serve.sh",
     "build:server": "node apps/server/webpack.js --build",
     "start:server": "node dist/apps/server/bundle.js",
-    "all:server": "yarn build:server && yarn start:server"
+    "all:server": "yarn build:server && yarn start:server",
+    "migration:create": "bash ./libs/typeorm-config/scripts/migration:create.sh"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.0",
@@ -78,7 +78,7 @@
     "@types/dagre": "^0.7.47",
     "@types/express": "^4.17.13",
     "@types/jest": "27.4.1",
-    "@types/node": "16.11.7",
+    "@types/node": "^18.0.3",
     "@types/pg": "^8.6.5",
     "@types/prismjs": "^1.26.0",
     "@types/react": "17.0.37",
@@ -108,7 +108,7 @@
     "ts-jest": "27.1.4",
     "ts-node": "~10.8.0",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
-    "typescript": "4.6.4",
+    "typescript": "^4.7.4",
     "webpack": "5.65.0"
   },
   "engines": {
