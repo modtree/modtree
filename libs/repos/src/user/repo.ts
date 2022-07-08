@@ -12,26 +12,21 @@ import {
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
-import { getRelations } from '../utils'
+import { BaseRepo, getRelations } from '../utils'
 
-export class UserRepository
-  extends Repository<User>
-  implements IUserRepository
-{
+export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository
   private degreeRepo: Repository<Degree>
   private graphRepo: Repository<Graph>
 
   private graphRelations: Relations
-  private relations: Relations
 
   constructor(db: DataSource) {
-    super(User, db.manager)
+    super(User, db)
     this.moduleRepo = new ModuleRepository(db)
     this.degreeRepo = new Repository(Degree, db.manager)
     this.graphRepo = new Repository(Graph, db.manager)
     this.graphRelations = getRelations(this.graphRepo)
-    this.relations = getRelations(this)
   }
 
   /** one-liners */
