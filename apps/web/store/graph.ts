@@ -54,6 +54,14 @@ export const graph = createSlice({
       graph.flowEdges = edges
     },
 
+    /**
+     * Update flow nodes and edges.
+     *
+     * redrawGraph is called in the React component, so that the new nodes and
+     * edges can be sent to the API endpoint to update the graph.
+     *
+     * No need to check for duplicates as the frontend prevents this
+     */
     setFlow: (graph, action: PayloadAction<GraphFrontendProps>) => {
       if (!action.payload) return
       const data = action.payload
