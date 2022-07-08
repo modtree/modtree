@@ -13,15 +13,12 @@ describe('web', () => {
     cy.get('.react-flow__pane.react-flow__container').click()
   })
 
-  it('should select a node', () => {
-    cy.get('.react-flow__node').click({ multiple: true })
-  })
-
   it('should select the search box', () => {
+    cy.intercept('GET', '/search/modules/CS1010S').as('searchModules')
     cy.get('[id^=headlessui-combobox-input-]').type('CS1010S')
     /* eslint-disable cypress/no-unnecessary-waiting */
     // TODO: wait for the resolution of the search itself, instead of an arbitrary time.
-    cy.wait(1000)
+    cy.wait('@searchModules')
     cy.get('[id^=headlessui-combobox-option]')
       .contains('Programming Methodology')
       .click()
