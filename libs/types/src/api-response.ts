@@ -52,6 +52,18 @@ export type Graph = Modify<
 >
 
 /**
+ * Graph API respsonse
+ */
+export type GraphFull = Modify<
+  IGraph,
+  {
+    user: string
+    modulesPlaced: string[]
+    modulesHidden: string[]
+  }
+>
+
+/**
  * already-flat entities
  */
 export type Module = IModule

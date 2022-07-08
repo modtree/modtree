@@ -70,6 +70,21 @@ export const flatten = {
   },
 
   /**
+   * flattens a graph to response shape
+   *
+   * @param {Graph} graph
+   * @returns {ModtreeApiResponse.GraphFull}
+   */
+  graphFull(graph: Graph): ModtreeApiResponse.GraphFull {
+    return {
+      ...graph,
+      user: graph.user.id,
+      modulesHidden: graph.modulesHidden.map(flatten.module),
+      modulesPlaced: graph.modulesPlaced.map(flatten.module),
+    }
+  },
+
+  /**
    * flattens a degree to response shape
    *
    * @param {Degree} degree
