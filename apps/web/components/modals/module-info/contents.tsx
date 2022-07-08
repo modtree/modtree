@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
 import { useUser } from '@/utils/auth0'
 import { empty } from '@modtree/utils'
+import { inModulesPlaced } from '@/utils/graph'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
@@ -28,6 +29,10 @@ export function ModuleDetails() {
     )
     dispatch(hideModuleModal())
   }
+
+  // get main graph to chek if this module has been added
+  const mainGraph = useAppSelector((state) => state.user.mainGraph)
+
   return (
     <div>
       <h1 className="text-modtree-400">{module.moduleCode}</h1>
@@ -41,7 +46,7 @@ export function ModuleDetails() {
       </p>
       <hr />
       <p className="mb-6">{module.description}</p>
-      {user && (
+      {user && !inModulesPlaced(mainGraph, module.moduleCode) && (
         <div className="flex flex-row-reverse">
           <Button onClick={handleAddButton}>Add to graph</Button>
         </div>

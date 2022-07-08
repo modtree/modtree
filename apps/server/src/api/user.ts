@@ -102,6 +102,8 @@ export class UserApi {
         mainGraph: {
           // does not fetch degree modules
           degree: true,
+          modulesPlaced: true,
+          modulesHidden: true,
         },
       },
     })
