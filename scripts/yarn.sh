@@ -35,7 +35,6 @@ khang_env() {
   # ln -sf $SRC/web/.env.local $WEB/.env.local
   # ln -sf $SRC/admin.config.json ./admin.config.json
   ln -sf $SRC/server/.env .
-  ln -sf $SRC/.env.production .
 }
 
 khang_inv() {

@@ -1,34 +1,64 @@
-const chalk = require('chalk')
-
+const fs = require('fs')
 const path = require('path')
+const getAllFiles = require('./get-all-files')
+const args = process.argv.slice(2)
+const chalk = require('chalk')
+const { spawn } = require('child_process')
 
-process.chdir(path.resolve(__dirname, '..'))
+const rootDir = path.resolve(__dirname, '..')
+const ignore = ['node_modules', 'dist']
 
-const projectMap = {
-  mc: 'libs/repos/src/module-condensed/test',
-  m: 'libs/repos/src/module/test',
-  user: 'libs/repos/src/user/test',
-  degree: 'libs/repos/src/degree/test',
-  graph: 'libs/repos/src/graph/test',
-  u: 'libs/repos/src/user/test',
-  d: 'libs/repos/src/degree/test',
-  g: 'libs/repos/src/graph/test',
-  utils: 'libs/utils',
+/**
+ * @param {string[]} arr - array of filepaths
+ * @returns {{names: string[][], record: Record<string, string>}} array of pairs: test name and test path
+ */
+const getTests = (arr = []) => {
+  const names = []
+  const record = {}
+  arr.forEach((f) => {
+    const contents = fs.readFileSync(f, 'utf8').toString()
+    const re = contents.match(/displayName: ?["'](.*)["'],/)
+    if (re) {
+      const displayName = re[1]
+      names.push(displayName)
+      record[displayName] = f
+    }
+  })
+  return { names, record }
 }
 
-const raw = process.argv.slice(2)
-const args = []
-const projects = []
+/**
+ * write to test-list.txt the test names and their filepaths
+ */
+const allFiles = getAllFiles(rootDir, ignore)
+const allProjects = allFiles.filter((f) => f.match(/jest.config.[jt]s$/))
+const tests = getTests(allProjects)
 
-const projectSet = new Set(Object.keys(projectMap))
-raw.forEach((a) => {
-  if (!projectSet.has(a)) {
-    console.debug(a, chalk.yellow('is an invalid project.\n'))
-    console.debug(chalk.green('Pick a project from this list:'))
-    console.debug(projectMap)
-    process.exit(1)
-  }
-  projects.push(projectMap[a])
-})
+/**
+ * handle arguments
+ */
+const allValid = args.every((a) => tests.names.includes(a))
+if (!allValid || args.length === 0) {
+  console.debug(
+    chalk.cyan('\nPlease choose from these tests:'),
+    tests.names,
+    '\n'
+  )
+  process.exit(0)
+} else {
+  console.debug(chalk.cyan('\nTests chosen:'), args, '\n')
+}
 
-console.debug(['--color', '--projects', ...projects, ...args].join(' '))
+const jest = (args) =>
+  spawn('yarn', [
+    'jest',
+    '--color',
+    '--projects',
+    ...args.map((a) => tests.record[a]),
+  ])
+
+const runner = jest(args)
+
+runner.stdout.on('data', (d) => process.stdout.write(d))
+runner.stderr.on('data', (d) => process.stderr.write(d))
+// runner.on('close', (c) => console.log(`runner exited with code ${c}`))
