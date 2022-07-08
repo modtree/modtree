@@ -15,7 +15,7 @@ import {
   ModuleCondensedRepository,
   ModuleFullRepository,
   GraphRepository,
-  getRelationNames,
+  getRelations,
 } from '@modtree/repos'
 
 type Relations = Record<string, boolean>
@@ -39,9 +39,9 @@ export abstract class BaseApi {
     this.moduleFullRepo = new ModuleFullRepository(db)
     this.moduleCondensedRepo = new ModuleCondensedRepository(db)
     this.relations = {
-      user: getRelationNames(this.userRepo),
-      degree: getRelationNames(this.degreeRepo),
-      graph: getRelationNames(this.graphRepo),
+      user: getRelations(this.userRepo),
+      degree: getRelations(this.degreeRepo),
+      graph: getRelations(this.graphRepo),
       module: {},
       moduleCondensed: {},
       moduleFull: {},

@@ -8,7 +8,7 @@ import { Repository } from 'typeorm'
  * @param {Repository<T>} repository
  * @returns {Record<string, boolean>}
  */
-export function getRelationNames<T>(repository: Repository<T>): Relations {
+export function getRelations<T>(repository: Repository<T>): Relations {
   const meta = repository.metadata
   const relationNames = meta.relations.map((r) => r.propertyName)
   // make into Record for loadRelations

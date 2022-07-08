@@ -6,7 +6,7 @@ import {
   InitDegreeProps,
   Relations,
 } from '@modtree/types'
-import { getRelationNames } from '../utils'
+import { getRelations } from '../utils'
 import { ModuleRepository } from '../module'
 
 export class DegreeRepository
@@ -14,7 +14,7 @@ export class DegreeRepository
   implements IDegreeRepository
 {
   private db: DataSource
-  private allRelations = getRelationNames(this)
+  private allRelations = getRelations(this)
   private moduleRepo: IModuleRepository
   private relations: Relations
 
@@ -22,7 +22,7 @@ export class DegreeRepository
     super(Degree, db.manager)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
-    this.relations = getRelationNames(this)
+    this.relations = getRelations(this)
   }
 
   /** one-liners */

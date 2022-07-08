@@ -18,7 +18,7 @@ import {
   getFlowNodes,
   nodify,
 } from '@modtree/utils'
-import { getRelationNames } from '../utils'
+import { getRelations } from '../utils'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
@@ -31,7 +31,7 @@ export class GraphRepository
   implements IGraphRepository
 {
   private db: DataSource
-  private allRelations = getRelationNames(this)
+  private allRelations = getRelations(this)
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
@@ -43,7 +43,7 @@ export class GraphRepository
     this.moduleRepo = new ModuleRepository(this.db)
     this.degreeRepo = new DegreeRepository(this.db)
     this.userRepo = new UserRepository(this.db)
-    this.relations = getRelationNames(this)
+    this.relations = getRelations(this)
   }
 
   /** one-liners */
