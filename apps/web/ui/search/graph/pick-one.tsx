@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { api } from 'api'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
+import { useAppDispatch } from '@/store/redux'
 
 export function PickOne(props: {
   graphs: ModtreeApiResponse.GraphFull[]
@@ -15,10 +16,11 @@ export function PickOne(props: {
 }) {
   const { user } = useUser()
   const [graph, setGraph] = props.select
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     api.user.setMainGraph(user.modtreeId, graph.id).then(() => updateUser())
-    setMainGraph(graph)
+    dispatch(setMainGraph(graph))
   }, [graph])
 
   return (
