@@ -1,7 +1,8 @@
 import { MenuItem } from 'types'
 import store from '@/store/redux'
-import { showDebugModal, showUserProfile } from '@/store/modal'
+import { showDebugModal, showModuleModal, showUserProfile } from '@/store/modal'
 import { removeModuleNode } from '@/store/graph'
+import { api } from 'api'
 
 const dispatch = store.dispatch
 
@@ -22,7 +23,7 @@ const userDropdownMenu: MenuItem[] = [
 ]
 
 const flowNodeContextMenu: MenuItem[] = [
-  { text: 'More info' },
+  { text: 'More info', callback: (e) => api.module.openModuleModal(e.id) },
   { text: 'Suggest modules', callback: () => alert('suggest modules') },
   { text: 'Mark as done', callback: () => alert('marked as done') },
   {
