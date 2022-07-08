@@ -1,5 +1,5 @@
 import { redrawGraph } from '@/utils/flow'
-import { IGraph, GraphFlowNode } from '@modtree/types'
+import { IGraph, GraphFlowNode, GraphFrontendProps } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 
@@ -55,6 +55,21 @@ export const graph = createSlice({
     },
 
     /**
+     * Update flow nodes and edges.
+     *
+     * redrawGraph is called in the React component, so that the new nodes and
+     * edges can be sent to the API endpoint to update the graph.
+     *
+     * No need to check for duplicates as the frontend prevents this
+     */
+    setFlow: (graph, action: PayloadAction<GraphFrontendProps>) => {
+      if (!action.payload) return
+      const data = action.payload
+      graph.flowNodes = data.flowNodes
+      graph.flowEdges = data.flowEdges
+    },
+
+    /**
      * remove a module node from the graph
      */
     removeModuleNode: (graph, action: PayloadAction<GraphFlowNode>) => {
@@ -92,6 +107,7 @@ export const graph = createSlice({
 export const {
   setGraphSelectedCodes,
   addModuleNode,
+  setFlow,
   updateModuleNode,
   removeModuleNode,
   setGraph,

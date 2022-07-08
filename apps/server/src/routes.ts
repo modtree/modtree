@@ -171,7 +171,7 @@ export const routes: Route[] = [
     method: 'post',
     route: '/graph',
     fn: GraphApi.create,
-    validators: [],
+    validators: [body('title').isString().notEmpty()],
   },
   {
     method: 'patch',

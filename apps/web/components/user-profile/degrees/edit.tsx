@@ -9,12 +9,10 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
 import { setBuildList } from '@/store/search'
 import { api } from 'api'
-import { useUser } from '@/utils/auth0'
-import { setUser } from '@/store/user'
 import { flatten } from '@modtree/utils'
+import { updateUser } from '@/utils/rehydrate'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
-  const { user } = useUser()
   const { buildList, buildTitle, buildId } = useAppSelector(
     (state) => state.search
   )
@@ -39,8 +37,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
     }
     api.degree
       .modify(buildId, degreeProps)
-      .then(() => api.user.getById(user.modtreeId))
-      .then((user) => dispatch(setUser(user)))
+      .then(() => updateUser())
       .then(() => props.setPage('main'))
   }
 

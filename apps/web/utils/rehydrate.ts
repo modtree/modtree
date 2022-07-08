@@ -24,6 +24,9 @@ async function getUser(user: ModtreeUserProfile): Promise<IUser> {
   }
 }
 
+/**
+ * Loads main degree/graph into store, if not yet loaded.
+ */
 export function rehydrate(user: ModtreeUserProfile) {
   const userPromise = getUser(user)
   userPromise.then((user) => {
@@ -37,5 +40,16 @@ export function rehydrate(user: ModtreeUserProfile) {
       if (!graph) return
       dispatch(setGraph(graph))
     }
+  })
+}
+
+/**
+ * Fetch and update user with latest data.
+ */
+export async function updateUser() {
+  const userId = store.getState().user.id
+  return api.user.getById(userId).then((user) => {
+    dispatch(setUser(user))
+    return user
   })
 }
