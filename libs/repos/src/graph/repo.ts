@@ -194,8 +194,14 @@ export class GraphRepository
     }
     if (state === 'hidden') {
       toggle(graph.modulesHidden, graph.modulesPlaced)
+      // remove from flowNodes and flowEdges
+      graph.flowNodes = graph.flowNodes.filter((n) => n.id !== moduleCode)
+      graph.flowEdges = graph.flowEdges.filter(
+        (n) => n.source !== moduleCode && n.target !== moduleCode
+      )
       return this.save(graph)
     }
+
     return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
       graph.modulesPlaced.push(module)
       return this.save(graph)
