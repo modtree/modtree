@@ -21,17 +21,27 @@ export function Main(props: {
 
   const degrees = useAppSelector((state) => state.user.savedDegrees)
 
+  // placeholder state
+  // updated correctly in useEffect
   const mainGraph = useAppSelector((state) => state.graph)
-
   const state = {
     graph: useState<ModtreeApiResponse.GraphFull>(mainGraph),
   }
 
   useEffect(() => {
     const promises = graphIds.map((g) => api.graph.getById(g))
-    Promise.all(promises).then((gs) => {
-      setGraphs(gs)
-    })
+    Promise.all(promises)
+      .then((graphs) => {
+        setGraphs(graphs)
+        return graphs
+      })
+      .then((graphs) => {
+        // mainGraph is different from gs
+        // mainGraph has an extra property selectedCodes
+        // removing that property is still not enough for React to check equality
+        const graph = graphs.filter((g) => g.id === mainGraph.id)
+        state.graph[1](graph[0])
+      })
   }, [])
 
   return (
