@@ -133,7 +133,7 @@ export class UserApi {
   static login = (api: Api) => async (req: Request) => {
     const authZeroId = req.params.authZeroId
     const { email } = req.body
-    return api.userLogin(authZeroId, email)
+    return api.userLogin(authZeroId, email).then(flatten.userFull)
   }
 
   /**

@@ -20,13 +20,16 @@ export class UserApi extends BaseApi {
    * @param {string} email
    * @returns {Promise<User>}
    */
-  async login(authZeroId: string, email: string): Promise<IUser> {
+  async login(
+    authZeroId: string,
+    email: string
+  ): Promise<ModtreeApiResponse.UserFull> {
     return this.server
       .post(`/user/${authZeroId}/login`, {
         email,
       })
       .then((res) => {
-        const user: IUser = res.data
+        const user: ModtreeApiResponse.UserFull = res.data
         this.dispatch(setUser(user))
         return user
       })
