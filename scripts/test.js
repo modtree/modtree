@@ -37,8 +37,36 @@ const tests = getTests(allProjects)
 /**
  * handle arguments
  */
-const allValid = args.every((a) => tests.names.includes(a))
-if (!allValid || args.length === 0) {
+const projectsToTest = []
+const testPathPattern = []
+const projectPathsToTest = []
+let testPathPatternIndex = -1
+let allOk = true
+args.map((arg, i) => {
+  if (arg === '-m') {
+    /** mark the next one to use as test path pattern */
+    testPathPatternIndex = i + i
+    return
+  }
+  if (testPathPatternIndex === i) {
+    console.log('--', arg)
+    testPathPattern.push('--testPathPattern', arg)
+    return
+  }
+  if (tests.names.includes(arg)) {
+    projectPathsToTest.push(tests.record[arg])
+    projectsToTest.push(arg)
+    return
+  }
+  const repoPrefix = `repo:${arg}`
+  if (tests.names.includes(repoPrefix)) {
+    projectPathsToTest.push(tests.record[repoPrefix])
+    projectsToTest.push(repoPrefix)
+    return
+  }
+  allOk = false
+})
+if (!allOk) {
   console.debug(
     chalk.cyan('\nPlease choose from these tests:'),
     tests.names,
@@ -46,19 +74,23 @@ if (!allValid || args.length === 0) {
   )
   process.exit(0)
 } else {
-  console.debug(chalk.cyan('\nTests chosen:'), args, '\n')
+  console.debug(chalk.cyan('\nTests chosen:'), projectsToTest)
+  console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
 }
 
-const jest = (args) =>
-  spawn('yarn', [
-    'jest',
-    '--color',
-    '--projects',
-    ...args.map((a) => tests.record[a]),
-  ])
+const spawnArgs = [
+  'jest',
+  '--color',
+  '--projects',
+  ...projectPathsToTest,
+  ...testPathPattern,
+]
 
-const runner = jest(args)
+const run = true
 
-runner.stdout.on('data', (d) => process.stdout.write(d))
-runner.stderr.on('data', (d) => process.stderr.write(d))
-// runner.on('close', (c) => console.log(`runner exited with code ${c}`))
+if (run) {
+  const jest = spawn('yarn', spawnArgs)
+  jest.stdout.on('data', (d) => process.stdout.write(d))
+  jest.stderr.on('data', (d) => process.stderr.write(d))
+}
+// jest.on('close', (c) => console.log(`runner exited with code ${c}`))
