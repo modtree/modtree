@@ -6,8 +6,6 @@ import {
   IUserRepository,
   IDegreeRepository,
   IGraphRepository,
-  FindByKey,
-  IGraph,
   GraphFrontendProps,
   GraphFlowNode,
   InitGraphProps,
@@ -19,7 +17,7 @@ import {
   getFlowNodes,
   nodify,
 } from '@modtree/utils'
-import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
+import { getRelationNames } from '../utils'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
@@ -45,8 +43,9 @@ export class GraphRepository
     this.userRepo = new UserRepository(this.db)
   }
 
-  deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IGraph> = useFindOneByKey(this, 'id')
+  /** one-liners */
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+  override findOneById = async (id: string) => this.findOneByOrFail({ id })
 
   /**
    * Adds a Graph to DB

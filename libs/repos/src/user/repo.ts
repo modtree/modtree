@@ -11,13 +11,12 @@ import {
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
-import { getRelationNames, useDeleteAll } from '../utils'
+import { getRelationNames } from '../utils'
 
 export class UserRepository
   extends Repository<User>
   implements IUserRepository
 {
-  private db: DataSource
   private moduleRepo: IModuleRepository
   private degreeRepo: Repository<Degree>
   private graphRepo: Repository<Graph>
@@ -26,17 +25,15 @@ export class UserRepository
 
   constructor(db: DataSource) {
     super(User, db.manager)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new Repository(Degree, this.db.manager)
-    this.graphRepo = new Repository(Graph, this.db.manager)
+    this.moduleRepo = new ModuleRepository(db)
+    this.degreeRepo = new Repository(Degree, db.manager)
+    this.graphRepo = new Repository(Graph, db.manager)
     this.graphRelations = getRelationNames(this.graphRepo)
   }
 
-  deleteAll = useDeleteAll(this)
-  private findByKey = (key: string) => async (value: string) =>
-    this.findOneByOrFail({ [key]: value })
-  override findOneById = this.findByKey('id')
+  /** one-liners */
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+  override findOneById = async (id: string) => this.findOneByOrFail({ id })
   findOneByUsername = async (username: string) =>
     this.findOneByOrFail({ username })
   findOneByEmail = async (email: string) => this.findOneByOrFail({ email })
