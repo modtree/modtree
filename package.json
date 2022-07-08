@@ -13,8 +13,6 @@
     "lint:f": "yarn lint --skip-nx-cache",
     "test:f": "yarn test --skip-nx-cache",
     "build:docs": "nx build docs",
-    "build:vercel:docs": "nx build docs --skip-nx-cache",
-    "build:vercel:web": "nx build web --skip-nx-cache",
     "e2e": "nx e2e web-e2e --watch",
     "format": "prettier --write .",
     "prepare": "bash ./scripts/yarn.sh setup",
