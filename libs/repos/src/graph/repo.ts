@@ -18,7 +18,7 @@ import {
   getFlowNodes,
   nodify,
 } from '@modtree/utils'
-import { BaseRepo } from '../utils'
+import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'

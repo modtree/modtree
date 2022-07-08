@@ -2,7 +2,7 @@ import { DataSource, In } from 'typeorm'
 import { Module, IModuleRepository, InitModuleProps } from '@modtree/types'
 import { flatten, unique } from '@modtree/utils'
 import { hasTakenModule, checkTree } from './utils'
-import { BaseRepo } from '../utils'
+import { BaseRepo } from '../base'
 
 type Data = {
   moduleCode: string

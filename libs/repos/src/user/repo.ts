@@ -11,7 +11,7 @@ import {
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
-import { BaseRepo } from '../utils'
+import { BaseRepo } from '../base'
 
 export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository

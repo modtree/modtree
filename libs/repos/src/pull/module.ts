@@ -3,7 +3,7 @@ import { DataSource, Repository } from 'typeorm'
 import { IModuleCondensedRepository, NUSMods, Module } from '@modtree/types'
 import { nusmodsApi, flatten, client, log } from '@modtree/utils'
 import { ModuleCondensedRepository } from '../module-condensed'
-import { useDeleteAll } from '../utils'
+import { useDeleteAll } from '../base'
 
 export class ModuleRepository extends Repository<Module> {
   private moduleCondensedRepo: IModuleCondensedRepository

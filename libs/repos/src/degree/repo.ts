@@ -5,7 +5,7 @@ import {
   IModuleRepository,
   InitDegreeProps,
 } from '@modtree/types'
-import { BaseRepo } from '../utils'
+import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 
 export class DegreeRepository
