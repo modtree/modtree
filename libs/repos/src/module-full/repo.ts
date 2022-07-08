@@ -1,7 +1,6 @@
 import { DataSource, Repository } from 'typeorm'
 import { ModuleFull } from '@modtree/types'
-import { FindByKey, IModuleFullRepository } from '@modtree/types'
-import { useFindOneByKey } from '@modtree/repos'
+import { IModuleFullRepository } from '@modtree/types'
 
 export class ModuleFullRepository
   extends Repository<ModuleFull>
@@ -11,5 +10,6 @@ export class ModuleFullRepository
     super(ModuleFull, db.manager)
   }
 
-  findOneByCode: FindByKey<ModuleFull> = useFindOneByKey(this, 'moduleCode')
+  findOneByCode = async (moduleCode: string) =>
+    this.findOneByOrFail({ moduleCode })
 }
