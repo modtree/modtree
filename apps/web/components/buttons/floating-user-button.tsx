@@ -36,6 +36,7 @@ const SignedInCircle = () => {
 
   const UserCircle = () => (
     <div
+      id="modtree-user-circle"
       className="w-10 h-10 rounded-full modtree-gradient flex centered"
       onClick={() => dispatch(hideContextMenu())}
     >
