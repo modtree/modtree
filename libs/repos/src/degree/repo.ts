@@ -5,22 +5,18 @@ import {
   IModuleRepository,
   InitDegreeProps,
 } from '@modtree/types'
-import { BaseRepo, getRelations } from '../utils'
+import { BaseRepo } from '../utils'
 import { ModuleRepository } from '../module'
 
 export class DegreeRepository
   extends BaseRepo<Degree>
   implements IDegreeRepository
 {
-  private db: DataSource
-  private allRelations = getRelations(this)
   private moduleRepo: IModuleRepository
 
   constructor(db: DataSource) {
     super(Degree, db)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.relations = getRelations(this)
+    this.moduleRepo = new ModuleRepository(db)
   }
 
   /** one-liners */
@@ -92,7 +88,7 @@ export class DegreeRepository
       where: {
         id: In(degreeIds),
       },
-      relations: this.allRelations,
+      relations: this.relations,
     })
   }
 }
