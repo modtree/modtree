@@ -8,7 +8,6 @@ import {
   InitUserProps,
   IUserRepository,
   ModuleStatus,
-  Relations,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
@@ -17,15 +16,13 @@ import { BaseRepo } from '../utils'
 export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository
   private degreeRepo: Repository<Degree>
-  private graphRepo: Repository<Graph>
-
-  private graphRelations: Relations
+  private graphRepo: BaseRepo<Graph>
 
   constructor(db: DataSource) {
     super(User, db)
     this.moduleRepo = new ModuleRepository(db)
     this.degreeRepo = new Repository(Degree, db.manager)
-    this.graphRepo = new Repository(Graph, db.manager)
+    this.graphRepo = new BaseRepo(Graph, db)
   }
 
   /** one-liners */
@@ -262,7 +259,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     return this.graphRepo
       .findOneOrFail({
         where: { id: graphId },
-        relations: this.graphRelations,
+        relations: this.graphRepo.relations,
       })
       .then((graph) => {
         // if the graph is not in saved
