@@ -1,4 +1,4 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   Module,
   Graph,
@@ -9,7 +9,6 @@ import {
   GraphFrontendProps,
   GraphFlowNode,
   InitGraphProps,
-  Relations,
 } from '@modtree/types'
 import {
   quickpop,
@@ -18,7 +17,7 @@ import {
   getFlowNodes,
   nodify,
 } from '@modtree/utils'
-import { getRelations } from '../utils'
+import { BaseRepo, getRelations } from '../utils'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
@@ -27,7 +26,7 @@ import { getModules } from './get-modules'
 type ModuleState = 'placed' | 'hidden' | 'new'
 
 export class GraphRepository
-  extends Repository<Graph>
+  extends BaseRepo<Graph>
   implements IGraphRepository
 {
   private db: DataSource
@@ -35,10 +34,9 @@ export class GraphRepository
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
-  private relations: Relations
 
   constructor(db: DataSource) {
-    super(Graph, db.manager)
+    super(Graph, db)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
     this.degreeRepo = new DegreeRepository(this.db)

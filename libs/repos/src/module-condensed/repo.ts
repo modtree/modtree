@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import {
   ModuleCondensed,
   IModuleCondensedRepository,
@@ -7,13 +7,14 @@ import {
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
 import { In } from 'typeorm'
+import { BaseRepo } from '../utils'
 
 export class ModuleCondensedRepository
-  extends Repository<ModuleCondensed>
+  extends BaseRepo<ModuleCondensed>
   implements IModuleCondensedRepository
 {
   constructor(db: DataSource) {
-    super(ModuleCondensed, db.manager)
+    super(ModuleCondensed, db)
   }
 
   deleteAll = () => this.createQueryBuilder().delete().execute()

@@ -1,7 +1,8 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import { Module, IModuleRepository, InitModuleProps } from '@modtree/types'
 import { flatten, unique } from '@modtree/utils'
 import { hasTakenModule, checkTree } from './utils'
+import { BaseRepo } from '../utils'
 
 type Data = {
   moduleCode: string
@@ -11,11 +12,11 @@ type Data = {
 }
 
 export class ModuleRepository
-  extends Repository<Module>
+  extends BaseRepo<Module>
   implements IModuleRepository
 {
   constructor(db: DataSource) {
-    super(Module, db.manager)
+    super(Module, db)
   }
 
   deleteAll = () => this.createQueryBuilder().delete().execute()

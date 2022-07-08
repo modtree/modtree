@@ -1,25 +1,23 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   Degree,
   IDegreeRepository,
   IModuleRepository,
   InitDegreeProps,
-  Relations,
 } from '@modtree/types'
-import { getRelations } from '../utils'
+import { BaseRepo, getRelations } from '../utils'
 import { ModuleRepository } from '../module'
 
 export class DegreeRepository
-  extends Repository<Degree>
+  extends BaseRepo<Degree>
   implements IDegreeRepository
 {
   private db: DataSource
   private allRelations = getRelations(this)
   private moduleRepo: IModuleRepository
-  private relations: Relations
 
   constructor(db: DataSource) {
-    super(Degree, db.manager)
+    super(Degree, db)
     this.db = db
     this.moduleRepo = new ModuleRepository(this.db)
     this.relations = getRelations(this)
