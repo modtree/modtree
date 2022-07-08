@@ -36,12 +36,18 @@ test('`find` is called with correct args', async () => {
     .query({ id: '58201858-5ce5-4ceb-8568-eecf55841b9f' })
 
   expect(find).toBeCalledWith({
-    where: { id: '58201858-5ce5-4ceb-8568-eecf55841b9f' },
+    where: {
+      id: '58201858-5ce5-4ceb-8568-eecf55841b9f',
+      authZeroId: undefined,
+      email: undefined,
+    },
     relations: {
       modulesDone: true,
       modulesDoing: true,
       savedDegrees: true,
       savedGraphs: true,
+      mainDegree: true,
+      mainGraph: true,
     },
   })
 })
