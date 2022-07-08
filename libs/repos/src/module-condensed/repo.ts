@@ -6,7 +6,6 @@ import {
   InitModuleCondensedProps,
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
-import { useDeleteAll } from '../utils'
 import { In } from 'typeorm'
 
 export class ModuleCondensedRepository
@@ -17,7 +16,7 @@ export class ModuleCondensedRepository
     super(ModuleCondensed, db.manager)
   }
 
-  deleteAll = useDeleteAll(this)
+  deleteAll = () => this.createQueryBuilder().delete().execute()
   override findOneById = async (id: string) => this.findOneByOrFail({ id })
 
   /**

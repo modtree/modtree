@@ -1,6 +1,6 @@
 import { Relations } from '@modtree/types'
 import { DataSource, EntityTarget, Repository } from 'typeorm'
-import { getRelations } from './get-relation-names'
+import { getRelations } from './get-relations'
 
 export abstract class BaseRepo<T> extends Repository<T> {
   relations: Relations
