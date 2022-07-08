@@ -24,6 +24,9 @@ async function getUser(user: ModtreeUserProfile): Promise<IUser> {
   }
 }
 
+/**
+ * Loads main degree/graph into store, if not yet loaded.
+ */
 export function rehydrate(user: ModtreeUserProfile) {
   const userPromise = getUser(user)
   userPromise.then((user) => {
