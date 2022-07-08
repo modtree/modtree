@@ -15,10 +15,18 @@ function help() {
 
 const args = new ParseArgs(__filename, help)
 const [userId, degreeId] = args.postArgs
-postman.post('graph/', {
-  userId,
-  degreeId,
-  modulesPlacedCodes: [],
-  modulesHiddenCodes: [],
-  pullAll: true,
-})
+
+postman
+  .post('graph/', {
+    userId,
+    degreeId,
+    modulesPlacedCodes: [],
+    modulesHiddenCodes: [],
+    pullAll: true,
+  })
+  .then((graph) =>
+    postman.patch(`user/${userId}/graph/`, {
+      graphIds: [graph.id],
+    })
+  )
+  .then(console.debug)
