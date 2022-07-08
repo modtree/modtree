@@ -5,7 +5,7 @@ import { lowercaseAndDash } from '../string'
 /**
  * Given graph, returns degree-title/graph-title.
  */
-export function getUniqueGraphTitle(graph: Graph) {
+export function getUniqueGraphTitle(graph: ModtreeApiResponse.GraphFull) {
   const degreeTitle = lowercaseAndDash(graph.degree.title)
   const graphTitle = lowercaseAndDash(graph.title)
   return degreeTitle + '/' + graphTitle

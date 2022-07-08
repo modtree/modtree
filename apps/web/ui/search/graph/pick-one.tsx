@@ -1,5 +1,5 @@
 import { Listbox } from '@headlessui/react'
-import { IGraph, UseState } from '@modtree/types'
+import { IGraph, UseState, ModtreeApiResponse } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
@@ -9,7 +9,10 @@ import { api } from 'api'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
 
-export function PickOne(props: { graphs: IGraph[]; select: UseState<IGraph> }) {
+export function PickOne(props: {
+  graphs: ModtreeApiResponse.GraphFull[]
+  select: UseState<ModtreeApiResponse.GraphFull>
+}) {
   const { user } = useUser()
   const [graph, setGraph] = props.select
 

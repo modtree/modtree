@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useAppSelector } from '@/store/redux'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { SettingsSection } from '@/ui/settings/lists/base'
@@ -6,24 +6,34 @@ import { text } from 'text'
 import { Row } from '@/ui/settings/lists/rows'
 import { GraphIcon } from '@/ui/icons'
 import { EmptyBox } from '@/ui/settings/empty-box'
-import { IDegree, IGraph } from '@modtree/types'
+import { IDegree, IGraph, ModtreeApiResponse } from '@modtree/types'
 import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
 import { PickOne } from '@/ui/search/graph/pick-one'
+import { api } from 'api'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
-  const graphs = useAppSelector((state) => state.user.savedGraphs)
-  const hasGraphs = graphs.length !== 0
+  const graphIds = useAppSelector((state) => state.user.savedGraphs)
+  const hasGraphs = graphIds.length !== 0
+  const [graphs, setGraphs] = useState([])
 
   const degrees = useAppSelector((state) => state.user.savedDegrees)
 
-  const mainGraph = useAppSelector((state) => state.user.mainGraph)
+  const mainGraph = useAppSelector((state) => state.graph)
 
   const state = {
-    graph: useState<IGraph>(mainGraph),
+    graph: useState<ModtreeApiResponse.GraphFull>(mainGraph),
   }
+
+  useEffect(() => {
+    const promises = graphIds.map((g) => api.graph.getById(g))
+    Promise.all(promises).then((gs) => {
+      setGraphs(gs)
+    })
+  }, [])
+
   return (
     <>
       <h2>Default graph</h2>
@@ -53,7 +63,10 @@ export function Main(props: {
   )
 }
 
-function GraphSection(props: { degrees: IDegree[]; graphs: IGraph[] }) {
+function GraphSection(props: {
+  degrees: IDegree[]
+  graphs: ModtreeApiResponse.GraphFull[]
+}) {
   const { degrees, graphs } = props
   return (
     <div className="ui-rectangle flex flex-col overflow-hidden">
