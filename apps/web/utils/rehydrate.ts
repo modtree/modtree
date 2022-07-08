@@ -42,3 +42,14 @@ export function rehydrate(user: ModtreeUserProfile) {
     }
   })
 }
+
+/**
+ * Fetch and update user with latest data.
+ */
+export async function updateUser() {
+  const userId = store.getState().user.id
+  return api.user.getById(userId).then((user) => {
+    dispatch(setUser(user))
+    return user
+  })
+}

@@ -7,19 +7,14 @@ import { setGraph as setMainGraph } from '@/store/graph'
 import { useEffect } from 'react'
 import { api } from 'api'
 import { useUser } from '@/utils/auth0'
-import { setUser } from '@/store/user'
-import { useAppDispatch } from '@/store/redux'
+import { updateUser } from '@/utils/rehydrate'
 
 export function PickOne(props: { graphs: IGraph[]; select: UseState<IGraph> }) {
   const { user } = useUser()
   const [graph, setGraph] = props.select
-  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    api.user
-      .setMainGraph(user.modtreeId, graph.id)
-      .then(() => api.user.getById(user.modtreeId))
-      .then((user) => dispatch(setUser(user)))
+    api.user.setMainGraph(user.modtreeId, graph.id).then(() => updateUser())
     setMainGraph(graph)
   }, [graph])
 
