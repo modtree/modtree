@@ -4,16 +4,14 @@ import {
   Module,
   Degree,
   Graph,
-  FindByKey,
   IModuleRepository,
   InitUserProps,
-  IUser,
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
-import { getRelationNames, useDeleteAll, useFindOneByKey } from '../utils'
 import { ModuleRepository } from '../module'
+import { getRelationNames, useDeleteAll } from '../utils'
 
 export class UserRepository
   extends Repository<User>
@@ -36,10 +34,14 @@ export class UserRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IUser> = useFindOneByKey(this, 'id')
-  findOneByUsername: FindByKey<IUser> = useFindOneByKey(this, 'username')
-  findOneByEmail: FindByKey<IUser> = useFindOneByKey(this, 'email')
-  findOneByAuthZeroId: FindByKey<IUser> = useFindOneByKey(this, 'authZeroId')
+  private findByKey = (key: string) => async (value: string) =>
+    this.findOneByOrFail({ [key]: value })
+  override findOneById = this.findByKey('id')
+  findOneByUsername = async (username: string) =>
+    this.findOneByOrFail({ username })
+  findOneByEmail = async (email: string) => this.findOneByOrFail({ email })
+  findOneByAuthZeroId = async (authZeroId: string) =>
+    this.findOneByOrFail({ authZeroId })
 
   /**
    * Adds a User to DB

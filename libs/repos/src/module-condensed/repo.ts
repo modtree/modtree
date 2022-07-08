@@ -2,12 +2,11 @@ import { DataSource, Repository } from 'typeorm'
 import {
   ModuleCondensed,
   IModuleCondensedRepository,
-  FindByKey,
   IModuleCondensed,
   InitModuleCondensedProps,
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
-import { useDeleteAll, useFindOneByKey } from '../utils'
+import { useDeleteAll } from '../utils'
 import { In } from 'typeorm'
 
 export class ModuleCondensedRepository
@@ -19,10 +18,7 @@ export class ModuleCondensedRepository
   }
 
   deleteAll = useDeleteAll(this)
-  override findOneById: FindByKey<IModuleCondensed> = useFindOneByKey(
-    this,
-    'id'
-  )
+  override findOneById = async (id: string) => this.findOneByOrFail({ id })
 
   /**
    * initialize a Module Condensed
