@@ -21,7 +21,7 @@ export class Graph implements IGraph {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column('character varying')
+  @Column('character varying', { default: 'graph' })
   title: string
 
   @ManyToOne('User', 'graph', { onDelete: 'CASCADE' })
