@@ -1,4 +1,4 @@
-import { IGraph } from '@modtree/types'
+import { GraphFlowEdge, GraphFlowNode, IGraph } from '@modtree/types'
 import { BaseApi } from './base-api'
 
 export class GraphApi extends BaseApi {
@@ -15,6 +15,22 @@ export class GraphApi extends BaseApi {
   async toggle(graphId: string, moduleCode: string): Promise<IGraph> {
     return this.server
       .patch(`/graph/${graphId}/toggle/${moduleCode}`)
+      .then((res) => res.data)
+  }
+
+  /**
+   * update frontend props
+   */
+  async updateFrontendProps(
+    graphId: string,
+    flowNodes: GraphFlowNode[],
+    flowEdges: GraphFlowEdge[]
+  ): Promise<IGraph> {
+    return this.server
+      .patch(`/graph/${graphId}/flow`, {
+        flowNodes,
+        flowEdges,
+      })
       .then((res) => res.data)
   }
 }
