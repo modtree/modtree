@@ -7,7 +7,6 @@ import { useUser } from '@/utils/auth0'
 import { empty } from '@modtree/utils'
 import { inModulesPlaced } from '@/utils/graph'
 import { api } from 'api'
-import { updateUser } from '@/utils/rehydrate'
 import { GraphFlowNode } from '@modtree/types'
 import { redrawGraph } from '@/utils/flow'
 

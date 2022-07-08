@@ -3,7 +3,6 @@ import store from '@/store/redux'
 import { showDebugModal, showUserProfile } from '@/store/modal'
 import { removeModuleNode, setGraph } from '@/store/graph'
 import { api } from 'api'
-import { updateUser } from '@/utils/rehydrate'
 
 const dispatch = store.dispatch
 
