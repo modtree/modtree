@@ -60,6 +60,7 @@ jobs:
           ${{ needs.pre_job.outputs.test_command }} \
           ${{ matrix.project }} ${{ needs.pre_job.outputs.test_args }}
         env:
+          TEST_POSTGRES_DATABASE: runner
           TEST_POSTGRES_USERNAME: runner
           TEST_POSTGRES_PASSWORD: runner
 

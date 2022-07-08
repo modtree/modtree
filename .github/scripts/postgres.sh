@@ -14,8 +14,8 @@ EOF
 sudo su postgres -c "psql --file=/tmp/setup.sql"
 
 # create databases for testing
-createdb mt_test
+createdb runner
 
 # fill the database with modules
 PGPASSWORD=runner psql -U runner \
-  mt_test < ./libs/sql/snapshots/mod3.sql
+  runner < ./libs/sql/snapshots/mod3.sql
