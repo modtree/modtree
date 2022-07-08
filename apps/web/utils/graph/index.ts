@@ -1,5 +1,4 @@
-import { Graph, ModtreeApiResponse } from '@modtree/types'
-import { flatten } from '@modtree/utils'
+import { ModtreeApiResponse } from '@modtree/types'
 import { lowercaseAndDash } from '../string'
 
 /**

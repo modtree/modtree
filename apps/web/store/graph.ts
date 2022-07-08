@@ -1,6 +1,5 @@
 import { redrawGraph } from '@/utils/flow'
 import {
-  IGraph,
   GraphFlowNode,
   GraphFrontendProps,
   ModtreeApiResponse,

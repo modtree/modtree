@@ -1,7 +1,6 @@
 import {
   GraphFlowEdge,
   GraphFlowNode,
-  IGraph,
   ModtreeApiResponse,
 } from '@modtree/types'
 import { BaseApi } from './base-api'
@@ -11,7 +10,7 @@ export class GraphApi extends BaseApi {
    * get a graph by its id directly from database
    */
   async getById(graphId: string): Promise<ModtreeApiResponse.GraphFull> {
-    return this.server.get(`/graph/${graphId}`).then((res) => res.data)
+    return this.server.get(`/graph/${graphId}/get-full`).then((res) => res.data)
   }
 
   /**

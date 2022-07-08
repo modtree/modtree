@@ -162,6 +162,12 @@ export const routes: Route[] = [
     validators: [],
   },
   {
+    method: 'get',
+    route: '/graph/:graphId/get-full',
+    fn: GraphApi.getFull,
+    validators: [],
+  },
+  {
     method: 'delete',
     route: '/graph/:graphId',
     fn: GraphApi.delete,
