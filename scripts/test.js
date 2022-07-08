@@ -40,6 +40,7 @@ const tests = getTests(allProjects)
 const projectsToTest = []
 const testPathPattern = []
 const projectPathsToTest = []
+
 let testPathPatternIndex = -1
 let allOk = true
 args.map((arg, i) => {
@@ -78,9 +79,16 @@ if (!allOk) {
   console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
 }
 
+const jsonOutputFile = new Date()
+  .toLocaleString('en-sg')
+  .replace(/(\/|:|,| )+/g, '.')
+
 const spawnArgs = [
   'jest',
   '--color',
+  '--json',
+  '--outputFile',
+  path.resolve(rootDir, 'dist/tests', `${jsonOutputFile}.json`),
   '--projects',
   ...projectPathsToTest,
   ...testPathPattern,
@@ -89,6 +97,8 @@ const spawnArgs = [
 const run = true
 
 if (run) {
+  /** create directory for json outputs */
+  fs.mkdirSync(path.resolve(rootDir, 'dist/tests'), { recursive: true })
   const jest = spawn('yarn', spawnArgs)
   jest.stdout.on('data', (d) => process.stdout.write(d))
   jest.stderr.on('data', (d) => process.stderr.write(d))
