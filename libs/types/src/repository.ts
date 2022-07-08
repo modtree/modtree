@@ -27,10 +27,14 @@ export enum ModuleStatus {
 }
 export type ModuleState = 'placed' | 'hidden' | 'new'
 
+export interface IBaseRepository<T> extends Repository<T> {
+  relations: Relations
+}
+
 /**
  * Graph Repository Interface
  */
-export interface IGraphRepository extends Repository<IGraph> {
+export interface IGraphRepository extends IBaseRepository<IGraph> {
   /**
    * initialize a new graph and save it to the database
    *
@@ -124,7 +128,7 @@ export interface IGraphRepository extends Repository<IGraph> {
 /**
  * User Repository Interface
  */
-export interface IUserRepository extends Repository<IUser> {
+export interface IUserRepository extends IBaseRepository<IUser> {
   /**
    * initialize a new user and save it to the database
    *
@@ -278,7 +282,7 @@ export interface IUserRepository extends Repository<IUser> {
 /**
  * Degree Repository Interface
  */
-export interface IDegreeRepository extends Repository<IDegree> {
+export interface IDegreeRepository extends IBaseRepository<IDegree> {
   /**
    * initialize a new degree and save it to the database
    *
@@ -334,7 +338,7 @@ export interface IDegreeRepository extends Repository<IDegree> {
 /**
  * Module Repository Interface
  */
-export interface IModuleRepository extends Repository<IModule> {
+export interface IModuleRepository extends IBaseRepository<IModule> {
   /**
    * initialize a new module and save it to the database
    *
@@ -436,7 +440,7 @@ export interface IModuleRepository extends Repository<IModule> {
  * ModuleCondensed Repository Interface
  */
 export interface IModuleCondensedRepository
-  extends Repository<IModuleCondensed> {
+  extends IBaseRepository<IModuleCondensed> {
   /**
    * initialize a new condensed module and save it to the database
    *
@@ -475,7 +479,7 @@ export interface IModuleCondensedRepository
 /**
  * ModuleFull Repository Interface
  */
-export interface IModuleFullRepository extends Repository<IModuleFull> {
+export interface IModuleFullRepository extends IBaseRepository<IModuleFull> {
   /**
    * finds a full module by code
    *

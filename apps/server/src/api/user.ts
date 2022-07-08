@@ -44,7 +44,7 @@ export class UserApi {
       return api.userRepo
         .findOneOrFail({
           where: { id, authZeroId, email },
-          relations: api.relations.user,
+          relations: api.userRepo.relations,
         })
         .then(flatten.user)
     }
@@ -59,12 +59,7 @@ export class UserApi {
     return api.userRepo
       .find({
         where: { id, authZeroId, email },
-        relations: {
-          modulesDone: true,
-          modulesDoing: true,
-          savedDegrees: true,
-          savedGraphs: true,
-        },
+        relations: api.userRepo.relations,
       })
       .then((users) => users.map((u) => flatten.user(u)))
   }
@@ -118,10 +113,7 @@ export class UserApi {
     const id = req.params.userId
     const { degreeIds } = req.body
     return api.userRepo
-      .findOneOrFail({
-        where: { id },
-        relations: api.relations.user,
-      })
+      .findOneById(id)
       .then((user) => api.userRepo.insertDegrees(user, degreeIds))
       .then(flatten.user)
   }
@@ -134,10 +126,7 @@ export class UserApi {
   static removeDegree = (api: Api) => async (req: Request) => {
     const { userId, degreeId } = req.params
     return api.userRepo
-      .findOneOrFail({
-        where: { id: userId },
-        relations: api.relations.user,
-      })
+      .findOneById(userId)
       .then((user) => api.userRepo.removeDegree(user, degreeId))
       .then(flatten.user)
   }
@@ -162,10 +151,7 @@ export class UserApi {
     const id = req.params.userId
     const { moduleCodes, status } = req.body
     return api.userRepo
-      .findOneOrFail({
-        where: { id },
-        relations: api.relations.user,
-      })
+      .findOneById(id)
       .then((user) => api.userRepo.setModuleStatus(user, moduleCodes, status))
   }
 
@@ -178,10 +164,7 @@ export class UserApi {
     const id = req.params.userId
     const { graphIds } = req.body
     return api.userRepo
-      .findOneOrFail({
-        where: { id },
-        relations: api.relations.user,
-      })
+      .findOneById(id)
       .then((user) => api.userRepo.insertGraphs(user, graphIds))
       .then(flatten.user)
   }
@@ -197,10 +180,7 @@ export class UserApi {
     const id = req.params.userId
     const { degreeId } = req.body
     return api.userRepo
-      .findOneOrFail({
-        where: { id },
-        relations: api.relations.user,
-      })
+      .findOneById(id)
       .then((user) => api.userRepo.setMainDegree(user, degreeId))
       .then(flatten.user)
   }
@@ -217,10 +197,7 @@ export class UserApi {
     const id = req.params.userId
     const { graphId } = req.body
     return api.userRepo
-      .findOneOrFail({
-        where: { id },
-        relations: api.relations.user,
-      })
+      .findOneById(id)
       .then((user) => api.userRepo.setMainGraph(user, graphId))
       .then(flatten.user)
   }
