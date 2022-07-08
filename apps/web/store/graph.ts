@@ -1,5 +1,5 @@
 import { redrawGraph } from '@/utils/flow'
-import { IGraph, GraphFlowNode } from '@modtree/types'
+import { IGraph, GraphFlowNode, GraphFrontendProps } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 
@@ -54,6 +54,13 @@ export const graph = createSlice({
       graph.flowEdges = edges
     },
 
+    setFlow: (graph, action: PayloadAction<GraphFrontendProps>) => {
+      if (!action.payload) return
+      const data = action.payload
+      graph.flowNodes = data.flowNodes
+      graph.flowEdges = data.flowEdges
+    },
+
     /**
      * remove a module node from the graph
      */
@@ -92,6 +99,7 @@ export const graph = createSlice({
 export const {
   setGraphSelectedCodes,
   addModuleNode,
+  setFlow,
   updateModuleNode,
   removeModuleNode,
   setGraph,
