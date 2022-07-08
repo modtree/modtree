@@ -1,8 +1,8 @@
 import { Pages } from 'types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
-import { ContextMenuProps } from './types'
 import { IModuleFull } from '@modtree/types'
+import type { ContextMenuProps } from 'types'
 
 export const modal = createSlice({
   name: 'modal',

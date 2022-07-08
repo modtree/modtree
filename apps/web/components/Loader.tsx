@@ -1,4 +1,4 @@
-import ModtreeLogo from './svgs/logo'
+import ModtreeLogo from '@/ui/svgs/logo'
 
 export default function Loader(props: {
   pingSize: number

@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect } from 'react'
+import { MouseEvent, useEffect, useMemo } from 'react'
 import ReactFlow, {
   Controls,
   Node,
@@ -6,16 +6,20 @@ import ReactFlow, {
   Background,
   useEdgesState,
 } from 'react-flow-renderer'
-import { ModuleNode } from '@/components/flow/ModuleNode'
+import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { onContextMenu } from '@/components/context-menu'
+import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { redrawGraph } from '@/utils/flow'
 
-const nodeTypes = { moduleNode: ModuleNode }
-
 export default function ModtreeFlow() {
+  const nodeTypes = useMemo(
+    () => ({
+      moduleNode: ModuleNode,
+    }),
+    []
+  )
   /**
    * redux dispatcher
    */
@@ -60,8 +64,12 @@ export default function ModtreeFlow() {
       /** hooks */
       onNodesChange={onNodesChange}
       onNodeDragStop={onNodeDragStop}
-      onPaneContextMenu={(e) => onContextMenu(dispatch, e, 'pane')}
-      onNodeContextMenu={(e, node) => onContextMenu(dispatch, e, 'node', node)}
+      onPaneContextMenu={(e) =>
+        onContextMenu(dispatch, e, 'flowPaneContextMenu')
+      }
+      onNodeContextMenu={(e, node) =>
+        onContextMenu(dispatch, e, 'flowNodeContextMenu', node)
+      }
       onSelectionChange={(e) => dispatch(setGraphSelectedCodes(e.nodes))}
       /** pure configs */
       fitView={true}
