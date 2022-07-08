@@ -1,13 +1,14 @@
-import { DataSource, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import { ModuleFull } from '@modtree/types'
 import { IModuleFullRepository } from '@modtree/types'
+import { BaseRepo } from '../base'
 
 export class ModuleFullRepository
-  extends Repository<ModuleFull>
+  extends BaseRepo<ModuleFull>
   implements IModuleFullRepository
 {
   constructor(db: DataSource) {
-    super(ModuleFull, db.manager)
+    super(ModuleFull, db)
   }
 
   findOneByCode = async (moduleCode: string) =>
