@@ -5,7 +5,7 @@ export const baseInitialState: ReduxState = {
   user: empty.UserFull,
   degree: empty.Degree,
   graph: {
-    ...empty.Graph,
+    ...empty.GraphFull,
     selectedCodes: [],
   },
   modal: {

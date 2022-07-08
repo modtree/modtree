@@ -67,6 +67,17 @@ const Graph: IGraph = {
   flowEdges: [],
 }
 
+const GraphFull: ModtreeApiResponse.GraphFull = {
+  title: '',
+  id: '',
+  user: '',
+  degree: Degree,
+  modulesPlaced: [],
+  modulesHidden: [],
+  flowNodes: [],
+  flowEdges: [],
+}
+
 const ModuleCondensed: IModuleCondensed = {
   id: '',
   moduleLevel: 0,
@@ -101,5 +112,6 @@ export const empty = {
   User,
   UserFull,
   Graph,
+  GraphFull,
   Degree,
 }
