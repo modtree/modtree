@@ -38,9 +38,11 @@ export function rehydrate(user: ModtreeUserProfile) {
       dispatch(setDegree(degree))
     }
     if (redux.graph.id === '') {
-      const graph = user.mainGraph
-      if (!graph) return
-      dispatch(setGraph(graph))
+      const graphId = user.mainGraph
+      if (!graphId) return
+      api.graph.getById(graphId).then((g) => {
+        dispatch(setGraph(g))
+      })
     }
   })
 }
