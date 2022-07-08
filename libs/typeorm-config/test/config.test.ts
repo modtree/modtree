@@ -27,10 +27,6 @@ test('root directory is correct', () => {
   )
 })
 
-test('there is a modtree.config.json', () => {
-  expect(rootFiles).toContainEqual('modtree.config.json')
-})
-
 test('NODE_ENV is test', () => {
   expect(process.env['NODE_ENV']).toEqual('test')
 })
