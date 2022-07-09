@@ -1,5 +1,5 @@
 import { BaseApi } from './base-api'
-import { IUser, ModtreeApiResponse, ModuleStatus, User } from '@modtree/types'
+import { IUser, ModtreeApiResponse, ModuleStatus } from '@modtree/types'
 import { setUser } from '@/store/user'
 
 export class UserApi extends BaseApi {
