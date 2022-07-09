@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+[ $1 = 'web' ] && PORT=4000
+[ $1 = 'test' ] && PORT=4001
+
+[ -z $2 ] && echo "Please provide a dump target" && exit 1
+
+PGPASSWORD=$1 pg_dump -U $1 -h localhost -p $PORT > $2
+
+# useful psql commands:
+#
+# list databases      |  \l
+# list tables         |  \d
+# list users          |  \du
+# show module schema  |  SELECT column_name FROM information_schema.columns WHERE TABLE_NAME = 'module';
