@@ -6,7 +6,7 @@ const config = {
   graph: {
     rankdir: 'LR',
     ranksep: 200,
-    ranker: 'longest-path',
+    ranker: 'network-simplex',
   },
 }
 

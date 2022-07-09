@@ -4,7 +4,6 @@ import { hideModuleModal } from '@/store/modal'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
 import { useUser } from '@/utils/auth0'
-import { empty } from '@modtree/utils'
 import { inModulesPlaced } from '@/utils/graph'
 import { api } from 'api'
 import { GraphFlowNode } from '@modtree/types'
@@ -32,9 +31,15 @@ export function ModuleDetails() {
       },
       type: 'moduleNode',
       data: {
-        ...empty.Module,
+        // basically extract IModule from IFull
+        id: module.id,
         moduleCode: module.moduleCode,
         title: module.title,
+        prerequisite: module.prerequisite,
+        corequisite: module.corequisite,
+        preclusion: module.preclusion,
+        fulfillRequirements: module.fulfillRequirements,
+        prereqTree: module.prereqTree,
       },
     }
     const { nodes, edges } = redrawGraph({
