@@ -2,7 +2,7 @@ import { setDegree } from '@/store/degree'
 import { setGraph } from '@/store/graph'
 import store from '@/store/redux'
 import { setUser } from '@/store/user'
-import { IUser } from '@modtree/types'
+import { ModtreeApiResponse } from '@modtree/types'
 import { empty } from '@modtree/utils'
 import { api } from 'api'
 import { ModtreeUserProfile } from 'types'
@@ -10,7 +10,9 @@ import { ModtreeUserProfile } from 'types'
 const redux = store.getState()
 const dispatch = store.dispatch
 
-async function getUser(user: ModtreeUserProfile): Promise<IUser> {
+async function getUser(
+  user: ModtreeUserProfile
+): Promise<ModtreeApiResponse.UserFull> {
   if (redux.user.id === '') {
     return api.user
       .getById(user.modtreeId)
@@ -18,7 +20,7 @@ async function getUser(user: ModtreeUserProfile): Promise<IUser> {
         dispatch(setUser(user))
         return user
       })
-      .catch(() => empty.User)
+      .catch(() => empty.UserFull)
   } else {
     return redux.user
   }
@@ -36,9 +38,11 @@ export function rehydrate(user: ModtreeUserProfile) {
       dispatch(setDegree(degree))
     }
     if (redux.graph.id === '') {
-      const graph = user.mainGraph
-      if (!graph) return
-      dispatch(setGraph(graph))
+      const graphId = user.mainGraph
+      if (!graphId) return
+      api.graph.getById(graphId).then((g) => {
+        dispatch(setGraph(g))
+      })
     }
   })
 }

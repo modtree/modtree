@@ -3,7 +3,6 @@ import store from '@/store/redux'
 import { showDebugModal, showUserProfile } from '@/store/modal'
 import { removeModuleNode, setGraph } from '@/store/graph'
 import { api } from 'api'
-import { updateUser } from '@/utils/rehydrate'
 
 const dispatch = store.dispatch
 
@@ -31,13 +30,10 @@ const flowNodeContextMenu: MenuItem[] = [
     text: 'Remove',
     callback: async (e) => {
       // update graph
-      const mainGraph = store.getState().user.mainGraph
-      api.graph
-        .toggle(mainGraph.id, e.id)
-        .then(() => updateUser())
-        .then((user) => {
-          store.dispatch(setGraph(user.mainGraph))
-        })
+      const mainGraph = store.getState().graph
+      api.graph.toggle(mainGraph.id, e.id).then((g) => {
+        store.dispatch(setGraph(g))
+      })
       // remove node from frontend
       store.dispatch(removeModuleNode(e))
     },

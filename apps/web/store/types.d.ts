@@ -4,14 +4,14 @@ import {
   IModule,
   IModuleCondensed,
   IModuleFull,
-  IUser,
+  ModtreeApiResponse,
 } from '@modtree/types'
 import type { Pages, ContextMenuProps } from 'types'
 
 export type ReduxState = {
-  user: IUser
+  user: ModtreeApiResponse.UserFull
   degree: IDegree
-  graph: IGraph & {
+  graph: ModtreeApiResponse.GraphFull & {
     selectedCodes: string[]
   }
   modal: {

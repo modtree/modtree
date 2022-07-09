@@ -81,27 +81,21 @@ export class UserApi {
    * @param {Api} api
    */
   static getFull = (api: Api) => async (req: Request) => {
-    return api.userRepo.findOneOrFail({
-      where: { id: req.params.userId || '_' },
-      relations: {
-        modulesDone: true,
-        modulesDoing: true,
-        savedGraphs: {
-          // does not fetch degree modules
-          degree: true,
+    return api.userRepo
+      .findOneOrFail({
+        where: { id: req.params.userId || '_' },
+        relations: {
+          modulesDone: true,
+          modulesDoing: true,
+          savedGraphs: true,
+          savedDegrees: {
+            modules: true,
+          },
+          mainDegree: true,
+          mainGraph: true,
         },
-        savedDegrees: {
-          modules: true,
-        },
-        mainDegree: true,
-        mainGraph: {
-          // does not fetch degree modules
-          degree: true,
-          modulesPlaced: true,
-          modulesHidden: true,
-        },
-      },
-    })
+      })
+      .then(flatten.userFull)
   }
 
   /**
@@ -139,7 +133,7 @@ export class UserApi {
   static login = (api: Api) => async (req: Request) => {
     const authZeroId = req.params.authZeroId
     const { email } = req.body
-    return api.userLogin(authZeroId, email)
+    return api.userLogin(authZeroId, email).then(flatten.userFull)
   }
 
   /**

@@ -35,6 +35,15 @@ export class GraphApi {
   }
 
   /**
+   * gets one Graph full
+   *
+   * @param {Api} api
+   */
+  static getFull = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
+    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graphFull)
+  }
+
+  /**
    * lists all Graphs
    *
    * @param {Api} api

@@ -5,6 +5,7 @@ import {
   IModule,
   IModuleCondensed,
   IModuleFull,
+  ModtreeApiResponse,
 } from '@modtree/types'
 
 const Module: IModule = {
@@ -39,10 +40,37 @@ const User: IUser = {
   savedGraphs: [],
 }
 
+const UserFull: ModtreeApiResponse.UserFull = {
+  id: '',
+  authZeroId: '',
+  displayName: '',
+  username: '',
+  modulesDone: [],
+  modulesDoing: [],
+  matriculationYear: 0,
+  graduationYear: 0,
+  graduationSemester: 0,
+  email: '',
+  savedDegrees: [],
+  savedGraphs: [],
+  mainGraph: '',
+}
+
 const Graph: IGraph = {
   title: '',
   id: '',
   user: User,
+  degree: Degree,
+  modulesPlaced: [],
+  modulesHidden: [],
+  flowNodes: [],
+  flowEdges: [],
+}
+
+const GraphFull: ModtreeApiResponse.GraphFull = {
+  title: '',
+  id: '',
+  user: '',
   degree: Degree,
   modulesPlaced: [],
   modulesHidden: [],
@@ -82,6 +110,8 @@ export const empty = {
   ModuleFull,
   ModuleCondensed,
   User,
+  UserFull,
   Graph,
+  GraphFull,
   Degree,
 }

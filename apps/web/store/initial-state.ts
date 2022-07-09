@@ -2,10 +2,10 @@ import type { ReduxState } from './types'
 import { empty } from '@modtree/utils'
 
 export const baseInitialState: ReduxState = {
-  user: empty.User,
+  user: empty.UserFull,
   degree: empty.Degree,
   graph: {
-    ...empty.Graph,
+    ...empty.GraphFull,
     selectedCodes: [],
   },
   modal: {

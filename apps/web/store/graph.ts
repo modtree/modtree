@@ -1,5 +1,9 @@
 import { redrawGraph } from '@/utils/flow'
-import { IGraph, GraphFlowNode, GraphFrontendProps } from '@modtree/types'
+import {
+  GraphFlowNode,
+  GraphFrontendProps,
+  ModtreeApiResponse,
+} from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 
@@ -19,7 +23,7 @@ export const graph = createSlice({
      * Overwrite the entire graph.
      * Meant to be used for initial page loads.
      */
-    setGraph: (graph, action: PayloadAction<IGraph>) => {
+    setGraph: (graph, action: PayloadAction<ModtreeApiResponse.GraphFull>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
         graph[key] = value
       })
