@@ -18,14 +18,14 @@ TSCONFIG=$REPO/tsconfig.lib.json
 HELP=scripts/migration/generate.help.txt
 
 # target destination of TypeScript file to be created
-SNAPSHOTS=$REPO/migrations
+SNAPSHOTS=$REPO/migrations/snapshots
 
 # function that generates the migration file
 generate() {
   yarn ts-node --project $TSCONFIG \
     -r tsconfig-paths/register \
     $TYPEORM migration:generate \
-    -d $REPO/src/migration/config.ts \
+    -d $REPO/migrations/config.ts \
     $SNAPSHOTS/$NAME ${POSITIONAL_ARGS[@]}
 }
 
@@ -64,4 +64,5 @@ handle_arguments $@
   || (printf "Generating migration: " && log $NAME)
 
 read -n 1 -p "Confirm? (Y/n) " yn
+log "\n\nGenerating migration..."
 ([ $yn = 'y' ] || [ $yn = 'Y' ]) && generate

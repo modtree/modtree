@@ -20,4 +20,4 @@ TSCONFIG=$REPO/tsconfig.lib.json
 yarn ts-node --project $TSCONFIG \
   -r tsconfig-paths/register \
   $TYPEORM migration:run \
-  -d $REPO/src/migration/config.ts
+  -d $REPO/migrations/config.ts

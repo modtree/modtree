@@ -31,5 +31,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["!test-env"]
+  "implicitDependencies": ["!test-env", "!repos"]
 }

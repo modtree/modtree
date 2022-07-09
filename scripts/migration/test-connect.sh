@@ -14,4 +14,4 @@ TSCONFIG=$REPO/tsconfig.lib.json
 
 yarn ts-node --project $TSCONFIG \
   -r tsconfig-paths/register \
-  $REPO/src/migration/test-connect.ts
+  $REPO/migrations/test-connect.ts

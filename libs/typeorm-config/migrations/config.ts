@@ -8,7 +8,7 @@ import {
   Graph,
   ModuleFull,
 } from '@modtree/types'
-import { migrations } from '../../migrations'
+import { migrations } from './snapshots'
 
 const p = process.env
 const base = {
