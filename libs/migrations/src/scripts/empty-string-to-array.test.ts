@@ -58,6 +58,7 @@ const end = main.finally(() => {
   return
 })
 
+jest.setTimeout(600000)
 test('end', async () => {
   await end
   expect(1).toBe(1)
