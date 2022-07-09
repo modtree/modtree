@@ -27,11 +27,18 @@ const defaultConfig: DataSourceOptions = {
   migrationsRun: false,
 }
 
-const getConfigFromEnv = (): ConfigFromEnv => {
+function getConfigFromEnv(): ConfigFromEnv {
   const nodeEnv = process.env['NODE_ENV']
-  return nodeEnv && ['production', 'development', 'test'].includes(nodeEnv)
-    ? env[nodeEnv]
-    : env.empty
+  switch (nodeEnv) {
+    case 'production':
+      return env.production
+    case 'development':
+      return env.development
+    case 'test':
+      return env.test
+    default:
+      return env.empty
+  }
 }
 
 /**
