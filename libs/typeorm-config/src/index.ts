@@ -10,14 +10,15 @@ import {
   DataSourceOptions,
   ConfigFromEnv,
 } from '@modtree/types'
-import { join } from 'path'
+import { migrations } from './migrations'
+import { resolve } from 'path'
 import { env } from './env'
 
 export const defaultConfig: DataSourceOptions = {
   type: 'postgres',
-  rootDir: join(__dirname, '../../..'),
+  rootDir: resolve(__dirname, '../../..'),
   entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
-  migrations: [],
+  migrations,
   username: '',
   password: '',
   host: 'localhost',
@@ -64,6 +65,11 @@ export function getConfig(): DataSourceOptions {
       },
     }
   }
+  /**
+   * migrations debugging
+   */
+  base.synchronize = false
+  base.migrationsRun = true
   return base
 }
 

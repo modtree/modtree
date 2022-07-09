@@ -1,5 +1,4 @@
-import type { DatabaseType, DataSourceOptions as DSO } from 'typeorm'
-import type { Modify } from './utils'
+import type { DatabaseType } from 'typeorm'
 
 export type AsyncFunction<T> = () => Promise<T>
 
@@ -30,21 +29,22 @@ export type ConfigsFromEnv = {
   empty: ConfigFromEnv
 }
 
-export type DataSourceOptions = Modify<
-  DSO,
-  {
-    type: SupportedDatabases
-    rootDir: string
-    restoreSource: string
-    username?: string
-    password?: string
-    database: string
-    port?: number
-    host: string
-    extra?: {
-      ssl: {
-        rejectUnauthorized: false
-      }
+export type DataSourceOptions = {
+  type: SupportedDatabases
+  rootDir: string
+  entities: Function[]
+  migrations: any[]
+  migrationsRun: boolean
+  restoreSource: string
+  username?: string
+  password?: string
+  database: string
+  port?: number
+  host: string
+  synchronize: boolean
+  extra?: {
+    ssl: {
+      rejectUnauthorized: false
     }
   }
->
+}

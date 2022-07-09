@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
-import { Base } from './Base'
+import { IModuleCondensed } from './interface'
 
 @Entity({ name: 'module_condensed' })
 /** ModuleCondensed entity */
-export class ModuleCondensed extends Base {
+export class ModuleCondensed implements IModuleCondensed {
   @PrimaryGeneratedColumn('uuid')
-  override id: string
+  id: string
 
   @Column('character varying')
   moduleCode: string

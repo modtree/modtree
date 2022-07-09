@@ -28,6 +28,14 @@
         "jestConfig": "libs/typeorm-config/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "generate-migration": {
+      "builder": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "ts-node --project tsconfig.lib.json -r tsconfig-paths/register ../../node_modules/.bin/typeorm migration:generate --pretty -d src/migration.config.ts src/migrations/untitled",
+        "cwd": "libs/typeorm-config"
+      }
     }
   },
   "tags": [],

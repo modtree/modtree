@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import type { NUSModuleAttributes, PrereqTree, SemesterData } from '../nusmods'
-import { Base } from './Base'
+import { IModuleFull } from './interface'
 
 @Entity({ name: 'module_full' })
 /** Module entity */
-export class ModuleFull extends Base {
+export class ModuleFull implements IModuleFull {
   @PrimaryGeneratedColumn('uuid')
-  override id: string
+  id: string
 
   @Column('text')
   acadYear: string
