@@ -2,6 +2,7 @@
  * runs a test connection to a data source and checks its basic status
  */
 
+import 'dotenv/config'
 import { migrationSource } from './migration.config'
 import { Api } from '@modtree/repos'
 import { QueryFailedError, Repository } from 'typeorm'
@@ -24,6 +25,7 @@ const q = {
     (message: string) =>
     <T>(e: T) => {
       console.debug(chalk.red(' ✗ ' + message))
+      log(e)
       return e
     },
 }

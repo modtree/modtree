@@ -26,8 +26,8 @@
     "build:server": "node apps/server/webpack.js --build",
     "start:server": "node dist/apps/server/bundle.js",
     "all:server": "yarn build:server && yarn start:server",
-    "mg": "nx generate-migration typeorm-config",
-    "tc": "nx test-connect typeorm-config"
+    "mg": "bash scripts/migration/generate.sh",
+    "tc": "bash scripts/migration/test-connect.sh"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.0",
