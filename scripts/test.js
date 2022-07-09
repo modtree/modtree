@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const getAllFiles = require('./get-all-files')
 const args = process.argv.slice(2)
+const getAllFiles = require('./get-all-files')
 const chalk = require('chalk')
 const { spawn } = require('child_process')
 
@@ -67,7 +67,7 @@ args.map((arg, i) => {
   }
   allOk = false
 })
-if (!allOk) {
+if (!allOk || args.length === 0) {
   console.debug(
     chalk.cyan('\nPlease choose from these tests:'),
     tests.names,
