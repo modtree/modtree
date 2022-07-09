@@ -15,14 +15,7 @@ function checkhealth(db: DataSource) {
     api.degreeRepo,
     api.graphRepo,
   ]
-  /**
-   * the find call will retrieve one real entry
-   * this help detect and throw an error if there's any changes to schema
-   */
-  const findAndCount = repos.map((r) =>
-    r.find({ take: 1 }).then(() => r.count())
-  )
-  Promise.all(findAndCount).then((results) => {
+  Promise.all(repos.map((r) => r.count())).then((results) => {
     const names = ['Modules', 'Condensed', 'Full', 'Users', 'Degrees', 'Graphs']
     results.forEach((result, i) => {
       console.debug(names[i], result)
@@ -60,8 +53,7 @@ async function attemptConnection() {
 let connect = attemptConnection()
 
 for (let i = 0; i < maxRetries; i++) {
-  connect = connect.catch(async (err) => {
-    console.log(err)
+  connect = connect.catch(async () => {
     if (attempts === maxRetries) {
       console.debug('Max attempts reached')
     } else {
