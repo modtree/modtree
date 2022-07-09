@@ -4,13 +4,45 @@
 
 import { migrationSource } from './migration.config'
 import { Api } from '@modtree/repos'
-import { Repository } from 'typeorm'
+import { QueryFailedError, Repository } from 'typeorm'
+import chalk from 'chalk'
 
-migrationSource
+const log = console.debug
+log(chalk.gray('Starting test-connect...'))
+
+// quick message
+const q = {
+  // then
+  t:
+    (message: string) =>
+    <T>(e: T) => {
+      console.debug(chalk.green(' ✓ ' + message))
+      return e
+    },
+  // catch
+  c:
+    (message: string) =>
+    <T>(e: T) => {
+      console.debug(chalk.red(' ✗ ' + message))
+      return e
+    },
+}
+
+/**
+ * initialize connection to database
+ */
+const connect = migrationSource
   .initialize()
+  .then(q.t('initialize connection'))
+  .catch(q.c('cannot initialize connection'))
+
+/**
+ * instantiate API, and get repositories as an array
+ */
+const getRepos: Promise<Repository<any>[]> = connect
   .then((db) => {
     const api = new Api(db)
-    const repos: Repository<any>[] = [
+    return [
       api.moduleRepo,
       api.moduleCondensedRepo,
       api.moduleFullRepo,
@@ -18,25 +50,50 @@ migrationSource
       api.degreeRepo,
       api.graphRepo,
     ]
-    const findOne = async <T>(repo: Repository<T>) => repo.find({ take: 1 })
-    const countAndPrint = async <T>(repo: Repository<T>) =>
-      repo.count().then((count) => {
-        console.log(repo.metadata.name, 'has', count, 'entries')
-      })
-
-    /**
-     * the find call will retrieve one real entry
-     * this help detect and throw an error if there's any changes to schema
-     */
-    const findAndCount = repos.map((repo) =>
-      findOne(repo)
-        .then(() => countAndPrint(repo))
-        .catch(() => console.log('error on', repo.metadata.name))
-    )
-    return Promise.allSettled(findAndCount)
   })
-  .then(() => console.log('all settled'))
-  .catch(() => console.log('not all settled'))
-  .finally(() =>
-    migrationSource.destroy().then(() => console.log('test-connect ended.'))
+  .then(q.t('instantiate repos'))
+  .catch(q.c('cannot instantiate repos'))
+
+const getNames = getRepos.then((repos) => repos.map((r) => r.metadata.name))
+
+const check = getRepos.then((repos) =>
+  Promise.allSettled(
+    /**
+     * retrieve one entity, and print the count
+     *
+     * retrieving one entity forces TypeORM to
+     * detect if there's any change in schema
+     */
+    repos.map((r) => r.find({ take: 1 }).then(() => r.count()))
   )
+)
+
+const zip = Promise.all([getNames, check]).then(([names, outcomes]) =>
+  names.map((n, i) => ({ name: n, outcome: outcomes[i] }))
+)
+
+const analyzeError = (repo: string, err: any) => {
+  if (err instanceof QueryFailedError) {
+    log(chalk.yellow(' * Repository:', repo))
+    log(chalk.red(' *', err.message))
+  }
+}
+
+const analyze = zip.then((results) => {
+  results.forEach((res) => {
+    if (res.outcome.status === 'rejected') {
+      analyzeError(res.name, res.outcome.reason)
+    } else {
+      log(chalk.green(' ✓ Repository:', res.name, 'is ok'))
+    }
+  })
+})
+
+analyze
+  .finally(() =>
+    migrationSource
+      .destroy()
+      .then(q.t('test connection destroyed'))
+      .catch(q.c('test connection left hanging'))
+  )
+  .finally(() => log(chalk.gray('Test-connect has ended.')))
