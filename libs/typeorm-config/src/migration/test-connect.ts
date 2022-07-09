@@ -17,14 +17,14 @@ const q = {
   t:
     (message: string) =>
     <T>(e: T) => {
-      console.debug(chalk.green(' ✓ ' + message))
+      log(chalk.green(' ✓ ' + message))
       return e
     },
   // catch
   c:
     (message: string) =>
     <T>(e: T) => {
-      console.debug(chalk.red(' ✗ ' + message))
+      log(chalk.red(' ✗ ' + message))
       log(e)
       return e
     },
@@ -56,8 +56,14 @@ const getRepos: Promise<Repository<any>[]> = connect
   .then(q.t('instantiate repos'))
   .catch(q.c('cannot instantiate repos'))
 
+/**
+ * gather the names
+ */
 const getNames = getRepos.then((repos) => repos.map((r) => r.metadata.name))
 
+/**
+ * run the checks (no output logged here just yet)
+ */
 const check = getRepos.then((repos) =>
   Promise.allSettled(
     /**
@@ -70,18 +76,49 @@ const check = getRepos.then((repos) =>
   )
 )
 
+/**
+ * match names to their check results for easier analysis
+ */
 const zip = Promise.all([getNames, check]).then(([names, outcomes]) =>
   names.map((n, i) => ({ name: n, outcome: outcomes[i] }))
 )
 
+/**
+ * This analyzes the error thrown, and is a possible place to inject
+ * custom error handling in the future
+ *
+ * @param {string} repo - name of the Repository
+ * @param {any} err - whatever error was thrown from the check
+ */
 const analyzeError = (repo: string, err: any) => {
+  /**
+   * QueryFailedError is our first known error.
+   * One cause of this is a change in schema.
+   */
   if (err instanceof QueryFailedError) {
     log(chalk.yellow(' * Repository:', repo))
-    log(chalk.red(' *', err.message))
+    log(chalk.red(' *', `${err.name}`, err.message))
+    // QueryFailedError-specific error handling
+    return
   }
+  if (err instanceof Error) {
+    log(chalk.yellow(' * Repository:', repo))
+    log(chalk.red(' *', `${err.name}`, err.message))
+    // general error handling
+    return
+  }
+  /**
+   * still show unknown erros anyway
+   */
+  log(chalk.yellow(' * Repository:', repo))
+  log(chalk.red(' *', err))
 }
 
-const analyze = zip.then((results) => {
+/**
+ * analyze each repository's outcome only if the Promise resolved
+ * as 'rejected'
+ */
+const analyze = zip.then((results) =>
   results.forEach((res) => {
     if (res.outcome.status === 'rejected') {
       analyzeError(res.name, res.outcome.reason)
@@ -89,13 +126,19 @@ const analyze = zip.then((results) => {
       log(chalk.green(' ✓ Repository:', res.name, 'is ok'))
     }
   })
-})
+)
 
-analyze
-  .finally(() =>
-    migrationSource
-      .destroy()
-      .then(q.t('test connection destroyed'))
-      .catch(q.c('test connection left hanging'))
-  )
-  .finally(() => log(chalk.gray('Test-connect has ended.')))
+/**
+ * shut down the database connection
+ */
+const destroy = analyze.finally(() =>
+  migrationSource
+    .destroy()
+    .then(q.t('test connection destroyed'))
+    .catch(q.c('test connection left hanging'))
+)
+
+/**
+ * end of script
+ */
+destroy.finally(() => log(chalk.gray('Test-connect has ended.')))

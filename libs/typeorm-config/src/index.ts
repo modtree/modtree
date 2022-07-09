@@ -10,17 +10,16 @@ import {
   DataSourceOptions,
   ConfigFromEnv,
 } from '@modtree/types'
-import { migrations } from './migrations'
 import { resolve } from 'path'
 import { env } from './env'
 
-export const defaultConfig: DataSourceOptions = {
+const defaultConfig: DataSourceOptions = {
   type: 'postgres',
   rootDir: resolve(__dirname, '../../..'),
   entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
-  migrations,
   username: '',
   password: '',
+  migrations: [],
   host: 'localhost',
   database: 'mt_test',
   restoreSource: 'mod3.sql',
@@ -28,32 +27,23 @@ export const defaultConfig: DataSourceOptions = {
   migrationsRun: false,
 }
 
-function getConfigFromEnv(): ConfigFromEnv {
-  const nodeEnv = process.env['NODE_ENV']
-  switch (nodeEnv) {
-    case 'production':
-      return env.production
-    case 'development':
-      return env.development
-    case 'test':
-      return env.test
-    default:
-      return env.empty
-  }
-}
+const nodeEnv = process.env['NODE_ENV']
+const getConfigFromEnv = (): ConfigFromEnv =>
+  ['production', 'development', 'test'].includes(nodeEnv)
+    ? env[nodeEnv]
+    : env.empty
 
 /**
  * generate a config based on the database type
  *
  * @returns {DataSourceOptions}
  */
-export function getConfig(): DataSourceOptions {
+function getConfig(): DataSourceOptions {
   const base = defaultConfig
-  const configFromEnv = getConfigFromEnv()
+  const { ssl, ...direct } = getConfigFromEnv()
   /**
    * `direct` is directly assignable to base, since it has all the right keys
    */
-  const { ssl, ...direct } = configFromEnv
   Object.assign(base, direct)
   /**
    * ssl requires more processing
@@ -65,11 +55,6 @@ export function getConfig(): DataSourceOptions {
       },
     }
   }
-  /**
-   * migrations debugging
-   */
-  base.synchronize = false
-  base.migrationsRun = true
   return base
 }
 

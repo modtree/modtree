@@ -27,6 +27,7 @@
     "start:server": "node dist/apps/server/bundle.js",
     "all:server": "yarn build:server && yarn start:server",
     "mg": "bash scripts/migration/generate.sh",
+    "mr": "bash scripts/migration/run.sh",
     "tc": "bash scripts/migration/test-connect.sh"
   },
   "dependencies": {

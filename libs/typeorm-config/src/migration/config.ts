@@ -12,6 +12,7 @@ import {
 const p = process.env
 const base = {
   entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
+  migrations: [],
 }
 
 const env = {
