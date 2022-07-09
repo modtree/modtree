@@ -8,11 +8,12 @@ import {
   Graph,
   ModuleFull,
 } from '@modtree/types'
+import { migrations } from '../../migrations'
 
 const p = process.env
 const base = {
   entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
-  migrations: [],
+  migrations,
 }
 
 const env = {
