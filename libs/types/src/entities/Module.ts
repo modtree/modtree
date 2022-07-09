@@ -8,9 +8,6 @@ export class Module implements IModule {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column('text', { default: 'meme' })
-  newProp2: string
-
   @Column('text')
   moduleCode: string
 

@@ -10,7 +10,6 @@ import {
 
 const Module: IModule = {
   id: '',
-  newProp2: '',
   moduleCode: '',
   title: '',
   prerequisite: '',
