@@ -1,4 +1,4 @@
-import { IDegree, IModule, InitDegreeProps } from '@modtree/types'
+import { IDegree, InitDegreeProps } from '@modtree/types'
 import { BaseApi } from './base-api'
 
 export class DegreeApi extends BaseApi {
