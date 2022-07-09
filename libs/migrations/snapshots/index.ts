@@ -1,1 +1,2 @@
-export const migrations = []
+import { mod3To202207091657375809467 } from './1657375809467-mod3_to_20220709'
+export const migrations = [mod3To202207091657375809467]

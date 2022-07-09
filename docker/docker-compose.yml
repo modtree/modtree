@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   db_web:
-    image: 'modtree/postgres:0.5.0'
+    image: 'modtree/postgres:0.5.2'
     profiles: ['all', 'db']
     ports:
       - '4000:5432'
@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: web
       POSTGRES_PASSWORD: web
   db_test:
-    image: 'modtree/postgres:0.5.0'
+    image: 'modtree/postgres:0.5.2'
     profiles: ['all', 'db']
     ports:
       - '4001:5432'

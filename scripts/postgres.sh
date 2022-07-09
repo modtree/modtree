@@ -1,37 +1,38 @@
 #!/usr/bin/env bash
 
-TARGET=development
-SOURCE=../libs/sql/snapshots/mod3.sql
-CONFIG=../admin.config.json
+source ../.env
 
-PASSWORD=$(cat $CONFIG | jq -r .${TARGET}.password)
-USERNAME=$(cat $CONFIG | jq -r .${TARGET}.username)
-HOST=$(cat $CONFIG | jq -r .${TARGET}.host)
-DATABASE=$(cat $CONFIG | jq -r .${TARGET}.database)
+SOURCE=../libs/sql/snapshots/20220709.sql
 
-remote_restore() {
-  PGPASSWORD=$PASSWORD psql --username=$USERNAME --host=$HOST \
+PROD=true
+
+if [[ $PROD == true ]]; then
+  USERNAME=$PRODUCTION_POSTGRES_USERNAME
+  HOST=$PRODUCTION_POSTGRES_HOST
+  PASSWORD=$PRODUCTION_POSTGRES_PASSWORD
+  DATABASE=$PRODUCTION_POSTGRES_DATABASE
+  PORT=$PRODUCTION_POSTGRES_PORT
+else
+  USERNAME=$DEVELOPMENT_POSTGRES_USERNAME
+  HOST=$DEVELOPMENT_POSTGRES_HOST
+  PASSWORD=$DEVELOPMENT_POSTGRES_PASSWORD
+  DATABASE=$DEVELOPMENT_POSTGRES_DATABASE
+  PORT=$DEVELOPMENT_POSTGRES_PORT
+fi
+
+restore() {
+  PGPASSWORD=$PASSWORD psql --username=$USERNAME --host=$HOST --port=$PORT \
     $DATABASE < $SOURCE
 }
 
-local_restore() {
-  psql $DATABASE < $SOURCE
-}
-
-remote_drop_all_tables() {
-  PGPASSWORD=$PASSWORD psql --username=$USERNAME --host=$HOST \
+drop_all_tables() {
+  PGPASSWORD=$PASSWORD psql --username=$USERNAME --host=$HOST --port=$PORT \
     $DATABASE < commands.sql
 }
 
-local_drop_all_tables() {
-  psql $DATABASE < commands.sql
-}
-
 main() {
-  remote_drop_all_tables
-  remote_restore
-  # local_drop_all_tables
-  # local_restore
+  # drop_all_tables
+  restore
 }
 
 main

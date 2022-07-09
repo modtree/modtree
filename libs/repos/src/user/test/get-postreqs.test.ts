@@ -51,7 +51,7 @@ describe('handles empty fulfillRequirements', () => {
   it('CP2106.fulfillRequirements is empty', async () => {
     await Repo.Module.findOneByOrFail({ moduleCode: 'CP2106' }).then(
       (module) => {
-        expect(module.fulfillRequirements).toBe('')
+        expect(module.fulfillRequirements).toEqual([])
       }
     )
   })
