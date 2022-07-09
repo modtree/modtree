@@ -1,0 +1,35 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/migrations/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
+        "outputPath": "dist/libs/migrations",
+        "main": "libs/migrations/src/index.ts",
+        "tsConfig": "libs/migrations/tsconfig.lib.json",
+        "assets": ["libs/migrations/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/migrations/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/migrations"],
+      "options": {
+        "jestConfig": "libs/migrations/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["!test-env", "!repos"]
+}

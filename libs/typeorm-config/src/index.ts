@@ -10,20 +10,20 @@ import {
   DataSourceOptions,
   ConfigFromEnv,
 } from '@modtree/types'
-import { join } from 'path'
+import { resolve } from 'path'
 import { env } from './env'
 
-export const defaultConfig: DataSourceOptions = {
+const defaultConfig: DataSourceOptions = {
   type: 'postgres',
-  rootDir: join(__dirname, '../../..'),
+  rootDir: resolve(__dirname, '../../..'),
   entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
-  migrations: [],
   username: '',
   password: '',
+  migrations: [],
   host: 'localhost',
   database: 'mt_test',
   restoreSource: 'mod3.sql',
-  synchronize: true,
+  synchronize: false,
   migrationsRun: false,
 }
 
@@ -46,13 +46,12 @@ function getConfigFromEnv(): ConfigFromEnv {
  *
  * @returns {DataSourceOptions}
  */
-export function getConfig(): DataSourceOptions {
+function getConfig(): DataSourceOptions {
   const base = defaultConfig
-  const configFromEnv = getConfigFromEnv()
+  const { ssl, ...direct } = getConfigFromEnv()
   /**
    * `direct` is directly assignable to base, since it has all the right keys
    */
-  const { ssl, ...direct } = configFromEnv
   Object.assign(base, direct)
   /**
    * ssl requires more processing
@@ -63,6 +62,12 @@ export function getConfig(): DataSourceOptions {
         rejectUnauthorized: false,
       },
     }
+  }
+  /**
+   * always synchronize for tests
+   */
+  if (process.env['NODE_ENV'] === 'test') {
+    base.synchronize = true
   }
   return base
 }

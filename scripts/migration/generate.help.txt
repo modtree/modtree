@@ -1,0 +1,5 @@
+
+Migration generator
+
+USAGE: yarn mg --name [NAME]
+

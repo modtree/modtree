@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
 import type { PrereqTree } from '../nusmods'
-import { Base } from './Base'
+import { IModule } from './interface'
 
 @Entity({ name: 'module' })
 /** Module entity */
-export class Module extends Base {
+export class Module implements IModule {
   @PrimaryGeneratedColumn('uuid')
-  override id: string
+  id: string
 
   @Column('text')
   moduleCode: string
