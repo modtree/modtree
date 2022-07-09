@@ -40,6 +40,10 @@ handle_arguments() {
         shift # past argument
         shift # past value
         ;;
+      --dr|--dryrun)
+        POSITIONAL_ARGS+=("--dryrun") # save positional arg
+        shift # past value
+        ;;
       -*|--*)
         echo "Unknown option $1"
         exit 1

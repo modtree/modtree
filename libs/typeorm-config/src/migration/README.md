@@ -17,8 +17,8 @@ This creates a TypeScript file that contains TypeORM SQL queries that
 upon running, executes a migration.
 
 ```bash
-yarn mg # migration: generate
-yarn mg --dr # to do a dry-run (doesn't create any files)
+yarn mg --name graph_title # migration: generate
+yarn mg --name graph_title --dr # to do a dry-run (doesn't create any files)
 ```
 
 ## Step 2 (last step): Run the migration file
