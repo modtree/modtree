@@ -64,6 +64,7 @@ export type IGraph = IBase &
   }
 
 export type IModule = IBase & {
+  newProp2: string
   title: string
   moduleCode: string
   prerequisite: string
