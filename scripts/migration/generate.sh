@@ -11,21 +11,21 @@
 TYPEORM=node_modules/.bin/typeorm
 
 # general configs
-REPO=libs/typeorm-config
+REPO=libs/migrations
 TSCONFIG=$REPO/tsconfig.lib.json
 
 # path to help text
 HELP=scripts/migration/generate.help.txt
 
 # target destination of TypeScript file to be created
-SNAPSHOTS=$REPO/migrations/snapshots
+SNAPSHOTS=$REPO/snapshots
 
 # function that generates the migration file
 generate() {
   yarn ts-node --project $TSCONFIG \
     -r tsconfig-paths/register \
     $TYPEORM migration:generate \
-    -d $REPO/migrations/config.ts \
+    -d $REPO/src/config.ts \
     $SNAPSHOTS/$NAME ${POSITIONAL_ARGS[@]}
 }
 

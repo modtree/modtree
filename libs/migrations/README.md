@@ -28,11 +28,11 @@ This executes the migration.
 This step is purposefully left as manual because it requires careful
 attention each time, and each time might be slightly different.
 
-Edit `libs/typeorm-config/migrations/snapshots/index.ts` to import and
+Edit `libs/migrations/snapshots/index.ts` to import and
 re-export the new migration `.ts` file generated.
 
 This will inherently modify the `migrations` array imported by
-`libs/typeorm-config/migrations/config.ts`, which the next command
+`libs/migrations/src/config.ts`, which the next command
 will read.
 
 ```bash

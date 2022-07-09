@@ -14,10 +14,10 @@
 TYPEORM=node_modules/.bin/typeorm
 
 # general configs
-REPO=libs/typeorm-config
+REPO=libs/migrations
 TSCONFIG=$REPO/tsconfig.lib.json
 
 yarn ts-node --project $TSCONFIG \
   -r tsconfig-paths/register \
   $TYPEORM migration:run \
-  -d $REPO/migrations/config.ts
+  -d $REPO/src/config.ts

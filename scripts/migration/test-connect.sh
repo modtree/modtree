@@ -9,9 +9,9 @@
 # has changed and it's time for a migration.
 
 # general configs
-REPO=libs/typeorm-config
+REPO=libs/migrations
 TSCONFIG=$REPO/tsconfig.lib.json
 
 yarn ts-node --project $TSCONFIG \
   -r tsconfig-paths/register \
-  $REPO/migrations/test-connect.ts
+  $REPO/src/test-connect.ts

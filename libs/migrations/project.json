@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/typeorm-config/src",
+  "sourceRoot": "libs/migrations/src",
   "projectType": "library",
   "targets": {
     "build": {
@@ -8,28 +8,28 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "updateBuildableProjectDepsInPackageJson": true,
-        "outputPath": "dist/libs/typeorm-config",
-        "main": "libs/typeorm-config/src/index.ts",
-        "tsConfig": "libs/typeorm-config/tsconfig.lib.json",
-        "assets": ["libs/typeorm-config/*.md"]
+        "outputPath": "dist/libs/migrations",
+        "main": "libs/migrations/src/index.ts",
+        "tsConfig": "libs/migrations/tsconfig.lib.json",
+        "assets": ["libs/migrations/*.md"]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/typeorm-config/**/*.ts"]
+        "lintFilePatterns": ["libs/migrations/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/typeorm-config"],
+      "outputs": ["coverage/libs/migrations"],
       "options": {
-        "jestConfig": "libs/typeorm-config/jest.config.ts",
+        "jestConfig": "libs/migrations/jest.config.ts",
         "passWithNoTests": true
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["!test-env"]
+  "implicitDependencies": ["!test-env", "!repos"]
 }
