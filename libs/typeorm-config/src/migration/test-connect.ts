@@ -3,7 +3,7 @@
  */
 
 import 'dotenv/config'
-import { migrationSource } from './migration.config'
+import { migrationSource } from './config'
 import { Api } from '@modtree/repos'
 import { QueryFailedError, Repository } from 'typeorm'
 import chalk from 'chalk'
