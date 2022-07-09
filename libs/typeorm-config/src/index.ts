@@ -27,11 +27,12 @@ const defaultConfig: DataSourceOptions = {
   migrationsRun: false,
 }
 
-const nodeEnv = process.env['NODE_ENV']
-const getConfigFromEnv = (): ConfigFromEnv =>
-  ['production', 'development', 'test'].includes(nodeEnv)
+const getConfigFromEnv = (): ConfigFromEnv => {
+  const nodeEnv = process.env['NODE_ENV']
+  return nodeEnv && ['production', 'development', 'test'].includes(nodeEnv)
     ? env[nodeEnv]
     : env.empty
+}
 
 /**
  * generate a config based on the database type
