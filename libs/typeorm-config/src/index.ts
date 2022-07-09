@@ -63,6 +63,12 @@ function getConfig(): DataSourceOptions {
       },
     }
   }
+  /**
+   * always synchronize for tests
+   */
+  if (process.env['NODE_ENV'] === 'test') {
+    base.synchronize = true
+  }
   return base
 }
 
