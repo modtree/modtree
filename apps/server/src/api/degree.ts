@@ -1,6 +1,6 @@
 import { Api } from '@modtree/repos'
 import { CustomReqQuery } from '@modtree/types'
-import { copy, emptyInit, flatten } from '@modtree/utils'
+import { emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
 
 type DegreeIds = {
@@ -14,8 +14,7 @@ export class DegreeApi {
    * @param {Api} api
    */
   static create = (api: Api) => async (req: Request) => {
-    const props = emptyInit.Degree
-    copy(req.body, props)
+    const props = { ...emptyInit.Degree, ...req.body }
     return api.degreeRepo.initialize(props).then(flatten.degree)
   }
 

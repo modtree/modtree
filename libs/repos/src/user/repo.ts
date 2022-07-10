@@ -9,9 +9,10 @@ import {
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
-import { empty, emptyInit, flatten } from '@modtree/utils'
+import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
 import { BaseRepo } from '../base'
+import defaultProps from './default.json'
 
 export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository
@@ -51,9 +52,12 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       this.moduleRepo.findByCodes(props.modulesDone || []),
       this.moduleRepo.findByCodes(props.modulesDoing || []),
     ]).then(([modulesDone, modulesDoing]) => {
-      const user = this.create(
-        Object.assign(empty.User, { ...props, modulesDone, modulesDoing })
-      )
+      const user = this.create({
+        ...defaultProps,
+        ...props,
+        modulesDone,
+        modulesDoing,
+      })
       return this.save(user)
     })
   }
