@@ -12,7 +12,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const degrees = useAppSelector((state) => state.user.savedDegrees)
   const modulesDone = useAppSelector((state) => state.user.modulesDone)
   const modulesDoing = useAppSelector((state) => state.user.modulesDoing)
-  
+
   const modulesDoneCodes = modulesDone.map(flatten.module)
   const modulesDoingCodes = modulesDoing.map(flatten.module)
 
@@ -33,12 +33,17 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         <h6>Title</h6>
         <Input className="w-full mb-4" state={state.title} grayed />
         <h6>Modules</h6>
-        <Modules modulesDoneCodes={modulesDoneCodes} modulesDoingCodes={modulesDoingCodes} />
+        <Modules
+          modulesDoneCodes={modulesDoneCodes}
+          modulesDoingCodes={modulesDoingCodes}
+        />
         <h6>Degree</h6>
         <DegreePicker
           degrees={degrees}
           select={state.degree}
           pull={state.pullAll}
+          modulesDoneCodes={modulesDoneCodes}
+          modulesDoingCodes={modulesDoingCodes}
         />
       </SettingsSection>
       <div className="flex flex-row-reverse">
@@ -48,7 +53,10 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   )
 }
 
-function Modules(props: { modulesDoneCodes: string[]; modulesDoingCodes: string[] }) {
+function Modules(props: {
+  modulesDoneCodes: string[]
+  modulesDoingCodes: string[]
+}) {
   return (
     <div className="mb-4">
       <div className="bg-gray-200 p-2 rounded-xl flex-col space-y-2">

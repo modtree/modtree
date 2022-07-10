@@ -2,14 +2,30 @@ import { Listbox, Switch } from '@headlessui/react'
 import { IDegree, UseState } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
+import { flatten as flat } from '@modtree/utils'
 
 export function DegreePicker(props: {
   degrees: IDegree[]
   select: UseState<IDegree>
   pull: UseState<boolean>
+  modulesDoneCodes: string[]
+  modulesDoingCodes: string[]
 }) {
   const [degree, setDegree] = props.select
   const [pullAll, setPullAll] = props.pull
+
+  /**
+   * Filters away modulesDone and modulesDoing from degree.modules
+   */
+  function getRemainingModuleCodes(degree: IDegree): string[] {
+    const modules = degree.modules.map(flat.module)
+    return modules.filter(
+      (m) =>
+        !props.modulesDoneCodes.includes(m) &&
+        !props.modulesDoingCodes.includes(m)
+    )
+  }
+
   return (
     <div className="flex-col space-y-2">
       <div className={flatten('ui-rectangle', 'shadow-none', 'h-8 w-64')}>
@@ -61,10 +77,10 @@ export function DegreePicker(props: {
       </Switch.Group>
       {pullAll && (
         <div className="bg-gray-200 p-2 rounded-xl">
-          <p>The following modules will be placed in the graph:</p>
-          <p className="mb-0">
-            {degree.modules.map((m) => m.moduleCode).join(', ')}
+          <p>
+            The following remaining degree modules will be placed in the graph:
           </p>
+          <p className="mb-0">{getRemainingModuleCodes(degree).join(', ')}</p>
         </div>
       )}
     </div>
