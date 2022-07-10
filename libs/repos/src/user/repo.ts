@@ -12,6 +12,7 @@ import {
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
 import { BaseRepo } from '../base'
+import defaultProps from './default.json'
 
 export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository
@@ -52,16 +53,10 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       this.moduleRepo.findByCodes(props.modulesDoing || []),
     ]).then(([modulesDone, modulesDoing]) => {
       const user = this.create({
+        ...defaultProps,
         ...props,
-        displayName: '',
-        username: '',
-        matriculationYear: 0,
-        graduationYear: 0,
-        graduationSemester: 0,
         modulesDone,
         modulesDoing,
-        savedDegrees: [],
-        savedGraphs: [],
       })
       return this.save(user)
     })

@@ -1,38 +1,28 @@
 import { quickpop } from '.'
 
-it('removes correct element', () => {
-  const arr = [3, 8, 7, 4, 9]
-  quickpop(arr, 2)
-  expect(arr).toStrictEqual([3, 8, 9, 4])
-})
+const correct: [number[], number, number[], number][] = [
+  [[3, 8, 7, 4, 9], 2, [3, 8, 9, 4], 7],
+  [[3, 8, 7, 4, 9], 0, [9, 8, 7, 4], 3],
+  [[3, 8, 7, 1, 9], 4, [3, 8, 7, 1], 9],
+]
 
-it('removes the first element', () => {
-  const arr = [3, 8, 7, 4, 9]
-  quickpop(arr, 0)
-  expect(arr).toStrictEqual([9, 8, 7, 4])
-})
+const errors: [any[], number, string][] = [
+  [[undefined], 0, 'Quickpop somehow popped an undefined element'],
+  [[1], 6, 'Out of bounds'],
+  [[1], -10, 'Out of bounds'],
+]
 
-it('removes the last element', () => {
-  const arr = [3, 8, 7, 1, 9]
-  quickpop(arr, 4)
-  expect(arr).toStrictEqual([3, 8, 7, 1])
-})
+test.each(correct)(
+  'quick-pop %s at index %d works',
+  (received, popIndex, expected, returned) => {
+    expect(quickpop(received, popIndex)).toEqual(returned)
+    expect(received).toEqual(expected)
+  }
+)
 
-it('error on empty array', () => {
-  expect(() => quickpop([], 0)).toThrow(
-    Error('Tried to quickpop an empty array')
-  )
-})
-
-it('error on index out of bounds', () => {
-  const arr = [1]
-  expect(() => quickpop(arr, 6)).toThrow(Error('Out of bounds'))
-  expect(() => quickpop(arr, -10)).toThrow(Error('Out of bounds'))
-})
-
-it('error on array of undefined', () => {
-  const arr = [undefined, undefined]
-  expect(() => quickpop(arr, 0)).toThrow(
-    Error('Quickpop somehow popped an undefined element')
-  )
-})
+test.each(errors)(
+  'quick-pop %s at index %d throws %s',
+  (received, popIndex, errorMessage) => {
+    expect(() => quickpop(received, popIndex)).toThrow(Error(errorMessage))
+  }
+)
