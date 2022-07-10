@@ -9,7 +9,7 @@ import { EmptyBox } from '@/ui/settings/empty-box'
 import { IDegree, ModtreeApiResponse } from '@modtree/types'
 import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
-import { PickOne } from '@/ui/search/graph/pick-one'
+import { GraphPicker } from '@/ui/search/graph/graph-picker'
 import { api } from 'api'
 
 export function Main(props: {
@@ -49,7 +49,7 @@ export function Main(props: {
       <h2>Default graph</h2>
       <p className="mb-4">Choose the default graph to display.</p>
       <div className="flex flex-row space-x-2 mb-4">
-        <PickOne graphs={graphs} select={state.graph} />
+        <GraphPicker graphs={graphs} select={state.graph} />
       </div>
       <SettingsSection
         title="Graphs"

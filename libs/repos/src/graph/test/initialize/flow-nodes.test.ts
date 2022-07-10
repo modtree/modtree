@@ -1,7 +1,7 @@
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { teardown, Repo, t, setup, init } from '@modtree/test-env'
-import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
+import { GraphFlowNode } from '@modtree/types'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
@@ -28,9 +28,6 @@ beforeAll(() =>
         title: 'Test Graph',
         userId: t.user!.id,
         degreeId: t.degree!.id,
-        modulesPlacedCodes: ['MA1100', 'MA2001', 'MA2002', 'MA2219'],
-        modulesHiddenCodes: [],
-        pullAll: true,
       })
     })
     .then((graph) => {

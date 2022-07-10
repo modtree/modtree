@@ -26,9 +26,6 @@ beforeAll(() =>
         title: 'Test Graph',
         userId: user.id,
         degreeId: degree.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: true,
       })
     )
     .then((graph) => {

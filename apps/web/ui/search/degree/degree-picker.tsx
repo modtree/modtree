@@ -2,14 +2,28 @@ import { Listbox, Switch } from '@headlessui/react'
 import { IDegree, UseState } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
+import { flatten as flat } from '@modtree/utils'
 
-export function PickOne(props: {
+export function DegreePicker(props: {
   degrees: IDegree[]
   select: UseState<IDegree>
-  pull: UseState<boolean>
+  modulesDoneCodes: string[]
+  modulesDoingCodes: string[]
 }) {
   const [degree, setDegree] = props.select
-  const [pullAll, setPullAll] = props.pull
+
+  /**
+   * Filters away modulesDone and modulesDoing from degree.modules
+   */
+  function getRemainingModuleCodes(degree: IDegree): string[] {
+    const modules = degree.modules.map(flat.module)
+    return modules.filter(
+      (m) =>
+        !props.modulesDoneCodes.includes(m) &&
+        !props.modulesDoingCodes.includes(m)
+    )
+  }
+
   return (
     <div className="flex-col space-y-2">
       <div className={flatten('ui-rectangle', 'shadow-none', 'h-8 w-64')}>
@@ -42,31 +56,12 @@ export function PickOne(props: {
           </Listbox.Options>
         </Listbox>
       </div>
-      <Switch.Group>
-        <div className="flex items-center space-x-2">
-          <Switch
-            checked={pullAll}
-            onChange={setPullAll}
-            className={`${pullAll ? 'bg-modtree-300' : 'bg-gray-300'}
-              relative inline-flex h-[26px] w-[58px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-          >
-            <span
-              aria-hidden="true"
-              className={`${pullAll ? 'translate-x-8' : 'translate-x-0'}
-                pointer-events-none inline-block h-[22px] w-[22px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-            />
-          </Switch>
-          <Switch.Label>Insert degree required modules into graph</Switch.Label>
-        </div>
-      </Switch.Group>
-      {pullAll && (
-        <div className="bg-gray-200 p-2 rounded-xl">
-          <p>The following modules will be placed in the graph:</p>
-          <p className="mb-0">
-            {degree.modules.map((m) => m.moduleCode).join(', ')}
-          </p>
-        </div>
-      )}
+      <div className="bg-gray-200 p-2 rounded-xl">
+        <p>
+          The following remaining degree modules will be placed in the graph:
+        </p>
+        <p className="mb-0">{getRemainingModuleCodes(degree).join(', ')}</p>
+      </div>
     </div>
   )
 }

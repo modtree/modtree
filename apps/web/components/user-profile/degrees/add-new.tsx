@@ -49,10 +49,10 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
     dispatch(clearBuildList())
   }, [])
 
-  async function saveDegree(title: string, modules: IModule[]) {
+  async function saveDegree() {
     const degreeProps: InitDegreeProps = {
-      title,
-      moduleCodes: modules.map(flatten.module),
+      title: state.title[0],
+      moduleCodes: buildList.map(flatten.module),
     }
     api.degree
       .create(degreeProps)
@@ -83,10 +83,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         <SelectedModules modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button
-          color="green"
-          onClick={() => saveDegree(state.title[0], buildList)}
-        >
+        <Button color="green" onClick={saveDegree}>
           Save degree
         </Button>
       </div>

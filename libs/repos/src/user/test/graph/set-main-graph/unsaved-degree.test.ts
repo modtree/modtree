@@ -25,17 +25,11 @@ beforeAll(() =>
           title: 'Pull All',
           userId: user.id,
           degreeId: t.degree!.id,
-          modulesPlacedCodes: [],
-          modulesHiddenCodes: [],
-          pullAll: true,
         }),
         Repo.Graph.initialize({
           title: 'Empty',
           userId: user.id,
           degreeId: t.degree!.id,
-          modulesPlacedCodes: [],
-          modulesHiddenCodes: [],
-          pullAll: false,
         }),
       ])
     })

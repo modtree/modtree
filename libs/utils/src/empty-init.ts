@@ -29,9 +29,6 @@ const Graph: InitGraphProps = {
   title: 'graph',
   userId: '',
   degreeId: '',
-  modulesPlacedCodes: [],
-  modulesHiddenCodes: [],
-  pullAll: false,
 }
 
 /**

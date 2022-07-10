@@ -26,9 +26,6 @@ export type InitGraphProps = {
   title: string
   userId: string
   degreeId: string
-  modulesPlacedCodes: string[]
-  modulesHiddenCodes: string[]
-  pullAll: boolean
 }
 
 export type InitModuleCondensedProps = {

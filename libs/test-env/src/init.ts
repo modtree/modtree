@@ -116,9 +116,6 @@ export const init: Init = {
     title: '',
     userId: '',
     degreeId: '',
-    modulesPlacedCodes: [],
-    modulesHiddenCodes: [],
-    pullAll: true,
   },
 
   emptyUser: {

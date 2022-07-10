@@ -10,7 +10,7 @@ import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
 import { useAppDispatch } from '@/store/redux'
 
-export function PickOne(props: {
+export function GraphPicker(props: {
   graphs: ModtreeApiResponse.GraphFull[]
   select: UseState<ModtreeApiResponse.GraphFull>
 }) {

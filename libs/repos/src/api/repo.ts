@@ -37,7 +37,6 @@ export class Api extends BaseApi {
         ...emptyInit.Graph,
         userId: user.id,
         degreeId: degree.id,
-        pullAll: true,
       })
     )
     const updatedUser = Promise.all([user, degree, graph]).then(

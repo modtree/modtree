@@ -22,7 +22,6 @@ postman
     degreeId,
     modulesPlacedCodes: [],
     modulesHiddenCodes: [],
-    pullAll: true,
   })
   .then((graph) =>
     postman.patch(`user/${userId}/graph/`, {
