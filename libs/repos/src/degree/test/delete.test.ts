@@ -1,70 +1,37 @@
-import { User } from '@modtree/types'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { setup, teardown } from '@modtree/test-env'
+import { db } from '@modtree/typeorm-config'
+import { Degree, Graph, User } from '@modtree/types'
+import { EntityTarget } from 'typeorm'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() =>
-  setup(db)
-    .then(() => {
-      return Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
-      ])
-    })
-    .then(([user, degree]) => {
-      t.user = user
-      t.degree = degree
-      return Repo.User.insertDegrees(t.user, [t.degree.id])
-    })
-    .then(() =>
-      Repo.Graph.initialize({
-        title: 'Test Graph',
-        userId: t.user!.id,
-        degreeId: t.degree!.id,
-        modulesPlacedCodes: [],
-        modulesHiddenCodes: [],
-        pullAll: false,
-      })
-    )
-    .then((graph) => {
-      t.graph = graph
-    })
-)
+beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
-it('user has 1 degree', async () => {
-  await Repo.User.findOneById(t.user!.id).then((user) => {
-    expect(user.savedDegrees).toHaveLength(1)
-  })
-})
+/**
+ * [Entity Name, Attribute, Whether it cascades]
+ */
+const correct = [
+  ['Graph', 'user', true], // deleting a user deletes its associated graphs
+  ['Graph', 'degree', true], // deleting a degree deletes its associated graphs
+  ['User', 'savedDegrees', false],
+  ['User', 'savedGraphs', false],
+  ['User', 'mainDegree', false],
+  ['User', 'mainGraph', false],
+]
 
-it('successfully deletes degree', async () => {
-  await Repo.Degree.remove(t.degree!).then((degree) => {
-    expect(degree.id).toEqual(undefined)
-  })
-})
+type Row = [string, string, boolean]
 
-it('degree does not exist', async () => {
-  await expect(() => Repo.Degree.findOneById(t.degree!.id)).rejects.toThrow(
-    Error
+test('cascades are correct', () => {
+  const getRelations = <T>(target: EntityTarget<T>) => {
+    const meta = db.getMetadata(target)
+    return meta.relations.map((r) => [
+      meta.name,
+      r.propertyName,
+      r.onDelete === 'CASCADE',
+    ]) as Row[]
+  }
+  const relations = [User, Degree, Graph].reduce(
+    (a, b) => a.concat(getRelations(b)),
+    [] as Row[]
   )
-})
-
-it('user exists', async () => {
-  await Repo.User.findOneById(t.user!.id).then((user) => {
-    expect(user).toBeInstanceOf(User)
-  })
-})
-
-it('user has 0 degrees', async () => {
-  await Repo.User.findOneById(t.user!.id).then((user) => {
-    expect(user.savedDegrees).toHaveLength(0)
-  })
-})
-
-it('graph does not exist', async () => {
-  await expect(() => Repo.Graph.findOneById(t.graph!.id)).rejects.toThrow(Error)
+  expect(relations).toStrictEqual(expect.arrayContaining(correct))
 })
