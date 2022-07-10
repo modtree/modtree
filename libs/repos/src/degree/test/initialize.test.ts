@@ -26,7 +26,7 @@ it('returns a degree', async () => {
   })
 })
 
-// it('saves correct modules', async () => {
-//   const codes = degree.modules.map((m) => m.moduleCode)
-//   expect(codes).toIncludeSameMembers(props.moduleCodes)
-// })
+it('saves correct modules', async () => {
+  const codes = degree.modules.map((m) => m.moduleCode)
+  expect(codes).toIncludeSameMembers(props.moduleCodes)
+})

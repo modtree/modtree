@@ -1,43 +1,61 @@
-import { User } from '@modtree/types'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { ModuleRepository, UserRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import { Module, User } from '@modtree/types'
+import { flatten } from '@modtree/utils'
+import '@modtree/test-env/jest'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
-
-it('initial count', async () => {
-  await Repo.User.count().then((count) => {
-    expect(count).toEqual(0)
+jest.mock('../../base')
+jest.mock('../../module', () => {
+  const actual = jest.requireActual('../../module')
+  const M: typeof ModuleRepository = actual.ModuleRepository
+  M.prototype.findByCodes = jest.fn(async (codes: string[]) => {
+    return codes.map((code) =>
+      Object.assign(new Module(), { moduleCode: code })
+    )
   })
+  return { ModuleRepository: M }
 })
+
+const init = {
+  authZeroId: 'auth0|012345678901234567890123',
+  displayName: 'Nguyen Vu Khang',
+  username: 'nguyenvukhang',
+  email: 'khang@modtree.com',
+  modulesDone: ['MA2001'],
+  modulesDoing: ['MA2219'],
+  matriculationYear: 2021,
+  graduationYear: 2025,
+  graduationSemester: 2,
+}
+
+const userRepo = new UserRepository(mocks.db)
+let user: User
 
 it('returns a user', async () => {
-  await Repo.User.initialize(init.user1).then((user) => {
-    expect(user).toBeInstanceOf(User)
-    t.user = user
+  await userRepo.initialize(init).then((res) => {
+    expect(res).toBeInstanceOf(User)
+    user = res
   })
 })
 
-it('increments the count by 1', async () => {
-  await Repo.User.count().then((count) => {
-    expect(count).toEqual(1)
-  })
+it('has correct modules', () => {
+  const [done, doing] = [
+    user.modulesDone.map(flatten.module),
+    user.modulesDoing.map(flatten.module),
+  ]
+  expect(done).toIncludeSameMembers(init.modulesDone)
+  expect(doing).toIncludeSameMembers(init.modulesDoing)
 })
 
-it('creates new user even with same auth0 id', async () => {
-  await Repo.User.initialize(init.user1).then((user) => {
-    expect(user.id).not.toEqual(t.user!.id)
-    expect(user.authZeroId).toEqual(t.user!.authZeroId)
-  })
-})
-
-it('increments the count by 1 again', async () => {
-  await Repo.User.count().then((count) => {
-    // same as previous count
-    expect(count).toEqual(2)
-  })
+it('preserves primitive data', () => {
+  const correct = [
+    [user.authZeroId, init.authZeroId],
+    [user.displayName, init.displayName],
+    [user.username, init.username],
+    [user.email, init.email],
+    [user.matriculationYear, init.matriculationYear],
+    [user.graduationYear, init.graduationYear],
+    [user.graduationSemester, init.graduationSemester],
+  ]
+  correct.forEach(([received, expected]) => expect(received).toEqual(expected))
 })

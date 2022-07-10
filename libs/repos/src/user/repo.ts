@@ -9,7 +9,7 @@ import {
   IUserRepository,
   ModuleStatus,
 } from '@modtree/types'
-import { flatten } from '@modtree/utils'
+import { empty, emptyInit, flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
 import { BaseRepo } from '../base'
 
@@ -51,18 +51,9 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       this.moduleRepo.findByCodes(props.modulesDone || []),
       this.moduleRepo.findByCodes(props.modulesDoing || []),
     ]).then(([modulesDone, modulesDoing]) => {
-      const user = this.create({
-        ...props,
-        displayName: '',
-        username: '',
-        matriculationYear: 0,
-        graduationYear: 0,
-        graduationSemester: 0,
-        modulesDone,
-        modulesDoing,
-        savedDegrees: [],
-        savedGraphs: [],
-      })
+      const user = this.create(
+        Object.assign(empty.User, { ...props, modulesDone, modulesDoing })
+      )
       return this.save(user)
     })
   }
