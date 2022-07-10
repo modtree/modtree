@@ -1,0 +1,12 @@
+{
+  "files": [
+    "apps/web/pages/index.tsx",
+    "apps/docs/pages/index.mdx",
+    "apps/server/src/main.ts",
+    "libs/repos/src/index.ts",
+    "libs/test-env/src/index.ts",
+    "libs/typeorm-config/src/index.ts",
+    "libs/types/src/index.ts",
+    "libs/utils/src/index.ts"
+  ]
+}

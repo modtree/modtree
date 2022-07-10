@@ -2,7 +2,28 @@
 
 Detailed changelog [here].
 
+## v0.6.0
+
+<h3>Core business logic 🚀</h3>
+
+- Add/remove modules to the graph and see relations.
+- Create and edit degrees.
+- Edit modules done and modules doing.
+- Essentially can plan out one full degree.
+
+<h3>Changes</h3>
+
+- Persist frontend state in database.
+- Use `dagre` library to draw edges and position nodes.
+- Create a migration handler.
+- Improve server build speed (4x faster).
+- Improve telegram bot CI reporting with custom GitHub Action.
+- Add more automated frontend end-to-end testing.
+- Sanitize `Module.fulfillRequirements` database column.
+
 ## v0.5.0
+
+> 4 July 2022
 
 - Create new `Module` entity to execute our business logic.
     - Has more properties than `ModuleCondensed` but fewer properties than `ModuleFull`
@@ -10,7 +31,7 @@ Detailed changelog [here].
 - Use matrix strategy to run CI in parallel for different nx projects.
 - Start using docker for database.
 
-## v0.4.0
+## v0.4.0 (Milestone 2)
 
 > 26 June 2022
 
