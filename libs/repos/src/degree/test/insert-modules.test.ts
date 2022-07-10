@@ -1,50 +1,52 @@
-import { setup, teardown, Repo, t } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { Degree } from '@modtree/types'
+import { DegreeRepository, ModuleRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import { Module } from '@modtree/types'
+import { validModuleCode } from '@modtree/utils'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../base')
+jest.mock('../../module', () => {
+  const actual = jest.requireActual('../../module')
+  const M: typeof ModuleRepository = actual.ModuleRepository
+  M.prototype.findByCodes = jest.fn(async (codes: string[]) =>
+    codes
+      .filter(validModuleCode)
+      .map((code) => Object.assign(new Module(), { moduleCode: code }))
+  )
+  return { ModuleRepository: M }
+})
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Repo.Degree.initialize({
-        moduleCodes: [],
-        title: 'Test Degree',
-      })
-    )
-    .then((degree) => {
-      t.degree = degree
-      t.combinedModuleCodes = degree.modules.map(flatten.module)
-    })
-)
-afterAll(() => teardown(db))
-
-async function insertModules(degree: Degree, moduleCodes: string[]) {
-  return Repo.Degree.insertModules(degree, moduleCodes)
-}
+const degreeRepo = new DegreeRepository(mocks.db)
+const degree = degreeRepo.create({
+  title: 'Test Degree',
+  modules: [],
+})
 
 it('correctly saves modules', async () => {
-  await insertModules(t.degree!, ['MA1521', 'MA2001', 'ST2334']).then(
-    (degree) => {
-      const codes = degree.modules.map(flatten.module)
+  await degreeRepo
+    .insertModules(degree, ['MA1521', 'MA2001', 'ST2334'])
+    .then((degree) => {
+      const codes = degree.modules.map((m) => m.moduleCode)
       expect(codes).toIncludeSameMembers(['MA1521', 'MA2001', 'ST2334'])
-    }
-  )
+    })
 })
 
 it("doesn't add modules if all are invalid", async () => {
-  await insertModules(t.degree!, ['NOT_VALID']).then((degree) => {
-    const codes = degree.modules.map(flatten.module)
-    // no change from previous test
+  await degreeRepo.insertModules(degree, ['NOT_VALID']).then((degree) => {
+    const codes = degree.modules.map((m) => m.moduleCode)
     expect(codes).toIncludeSameMembers(['MA1521', 'MA2001', 'ST2334'])
   })
 })
 
 it('handles mix of valid/invalid modules', async () => {
-  await insertModules(t.degree!, ['NOT_VALID', 'CS4269']).then((degree) => {
-    const codes = degree.modules.map(flatten.module)
-    expect(codes).toIncludeSameMembers(['MA1521', 'MA2001', 'ST2334', 'CS4269'])
-  })
+  await degreeRepo
+    .insertModules(degree, ['NOT_VALID', 'CS4269'])
+    .then((degree) => {
+      const codes = degree.modules.map((m) => m.moduleCode)
+      expect(codes).toIncludeSameMembers([
+        'MA1521',
+        'MA2001',
+        'ST2334',
+        'CS4269',
+      ])
+    })
 })

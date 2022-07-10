@@ -1,49 +1,32 @@
+import { DegreeRepository, ModuleRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
 import { Degree } from '@modtree/types'
-import { setup, teardown, Repo, t } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import database from './initialize.json'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../base')
+jest.mock('../../module', () => {
+  const actual = jest.requireActual('../../module')
+  const M: typeof ModuleRepository = actual.ModuleRepository
+  M.prototype.find = jest.fn(async () => database.moduleRepo.find)
+  return { ModuleRepository: M }
+})
 
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+const degreeRepo = new DegreeRepository(mocks.db)
+let degree: Degree
 
 const props = {
-  moduleCodes: [
-    'CS1101S',
-    'CS1231S',
-    'CS2030S',
-    'CS2040S',
-    'CS2100',
-    'CS2103T',
-    'CS2106',
-    'CS2109S',
-    'CS3230',
-  ],
+  moduleCodes: ['CS1101S', 'CS1231S', 'CS2030S', 'CS2040S'],
   title: 'Test Degree',
 }
 
-it('initial count', async () => {
-  await Repo.Degree.count().then((count) => {
-    expect(count).toEqual(0)
-  })
-})
-
 it('returns a degree', async () => {
-  await Repo.Degree.initialize(props).then((res) => {
+  await degreeRepo.initialize(props).then((res) => {
     expect(res).toBeInstanceOf(Degree)
-    t.degree = res
+    degree = res
   })
 })
 
-it('increments the count by 1', async () => {
-  await Repo.Degree.count().then((count) => {
-    expect(count).toEqual(1)
-  })
-})
-
-it('saves correct modules', async () => {
-  const codes = t.degree!.modules.map(flatten.module)
-  expect(codes).toIncludeSameMembers(props.moduleCodes)
-})
+// it('saves correct modules', async () => {
+//   const codes = degree.modules.map((m) => m.moduleCode)
+//   expect(codes).toIncludeSameMembers(props.moduleCodes)
+// })

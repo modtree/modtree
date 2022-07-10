@@ -50,14 +50,10 @@ export class DegreeRepository
    * @returns {Promise<Degree>}
    */
   async insertModules(degree: Degree, moduleCodes: string[]): Promise<Degree> {
-    return this.moduleRepo
-      .findBy({
-        moduleCode: In(moduleCodes),
-      })
-      .then((modules) => {
-        degree.modules.push(...modules)
-        return this.save(degree)
-      })
+    return this.moduleRepo.findByCodes(moduleCodes).then((modules) => {
+      degree.modules.push(...modules)
+      return this.save(degree)
+    })
   }
 
   /**
@@ -68,15 +64,11 @@ export class DegreeRepository
    * @returns {Promise<Degree>}
    */
   async modify(degree: Degree, props: InitDegreeProps): Promise<Degree> {
-    return this.moduleRepo
-      .findBy({
-        moduleCode: In(props.moduleCodes),
-      })
-      .then((modules) => {
-        degree.title = props.title
-        degree.modules = modules
-        return this.save(degree)
-      })
+    return this.moduleRepo.findByCodes(props.moduleCodes).then((modules) => {
+      degree.title = props.title
+      degree.modules = modules
+      return this.save(degree)
+    })
   }
 
   /**

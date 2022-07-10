@@ -1,61 +1,55 @@
-import { setup, teardown, Repo, t } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { InitDegreeProps, Degree } from '@modtree/types'
+import { DegreeRepository, ModuleRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import { Module } from '@modtree/types'
+import { validModuleCode } from '@modtree/utils'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../base')
+jest.mock('../../module', () => {
+  const actual = jest.requireActual('../../module')
+  const M: typeof ModuleRepository = actual.ModuleRepository
+  M.prototype.findByCodes = jest.fn(async (codes: string[]) =>
+    codes
+      .filter(validModuleCode)
+      .map((code) => Object.assign(new Module(), { moduleCode: code }))
+  )
+  return { ModuleRepository: M }
+})
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Repo.Degree.initialize({
-        moduleCodes: [],
-        title: 'Test Degree',
-      })
-    )
-    .then((degree) => {
-      t.degree = degree
-      t.combinedModuleCodes = degree.modules.map(flatten.module)
-    })
-)
-afterAll(() => teardown(db))
-
-async function modify(degree: Degree, props: InitDegreeProps) {
-  const { title, moduleCodes } = props
-  return Repo.Degree.modify(degree, { title, moduleCodes })
-}
+const degreeRepo = new DegreeRepository(mocks.db)
+const degree = degreeRepo.create({
+  title: 'Test Degree',
+  modules: [],
+})
 
 it('correctly saves modules', async () => {
-  const props: InitDegreeProps = {
-    title: t.degree!.title,
+  const props = {
+    title: 'Title 1',
     moduleCodes: ['MA1521', 'MA2001', 'ST2334'],
   }
-  await modify(t.degree!, props).then((degree) => {
-    const codes = degree.modules.map(flatten.module)
+  await degreeRepo.modify(degree, props).then((degree) => {
+    const codes = degree.modules.map((m) => m.moduleCode)
     expect(codes).toIncludeSameMembers(['MA1521', 'MA2001', 'ST2334'])
   })
 })
 
 it("doesn't add modules if all are invalid", async () => {
-  const props: InitDegreeProps = {
-    title: t.degree!.title,
+  const props = {
+    title: 'Title 2',
     moduleCodes: ['NOT_VALID'],
   }
-  await modify(t.degree!, props).then((degree) => {
-    const codes = degree.modules.map(flatten.module)
-    // no change from previous test
+  await degreeRepo.modify(degree, props).then((degree) => {
+    const codes = degree.modules.map((m) => m.moduleCode)
     expect(codes).toIncludeSameMembers([])
   })
 })
 
 it('handles mix of valid/invalid modules', async () => {
-  const props: InitDegreeProps = {
-    title: t.degree!.title,
+  const props = {
+    title: 'Title 3',
     moduleCodes: ['NOT_VALID', 'CS4269'],
   }
-  await modify(t.degree!, props).then((degree) => {
-    const codes = degree.modules.map(flatten.module)
+  await degreeRepo.modify(degree, props).then((degree) => {
+    const codes = degree.modules.map((m) => m.moduleCode)
     expect(codes).toIncludeSameMembers(['CS4269'])
   })
 })
