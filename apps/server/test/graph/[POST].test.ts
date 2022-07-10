@@ -30,9 +30,6 @@ const testRequest = async () =>
     title: 'Test Graph',
     userId: '017fc011-486c-4ec6-a038-9a92ab85a8f3',
     degreeId: 'dd9f2725-7a08-45f8-bbbb-10bb7e002bb3',
-    modulesHiddenCodes: [],
-    modulesPlacedCodes: [],
-    pullAll: false,
   })
 
 test('`initialize` is called once', async () => {
@@ -48,8 +45,5 @@ test('`initialize` is called with correct args', async () => {
     title: 'Test Graph',
     userId: '017fc011-486c-4ec6-a038-9a92ab85a8f3',
     degreeId: 'dd9f2725-7a08-45f8-bbbb-10bb7e002bb3',
-    modulesPlacedCodes: [],
-    modulesHiddenCodes: [],
-    pullAll: false,
   })
 })

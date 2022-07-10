@@ -116,7 +116,6 @@ export const init: Init = {
     title: '',
     userId: '',
     degreeId: '',
-    pullAll: true,
   },
 
   emptyUser: {

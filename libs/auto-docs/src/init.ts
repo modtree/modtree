@@ -140,21 +140,18 @@ export const init: Init = {
     title: 'graph1',
     userId: '',
     degreeId: '',
-    pullAll: false,
   },
 
   graph2: {
     title: 'graph2',
     userId: '',
     degreeId: '',
-    pullAll: false,
   },
 
   graph3: {
     title: 'graph3',
     userId: '',
     degreeId: '',
-    pullAll: false,
   },
 
   nodes: [

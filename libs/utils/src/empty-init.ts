@@ -29,7 +29,6 @@ const Graph: InitGraphProps = {
   title: 'graph',
   userId: '',
   degreeId: '',
-  pullAll: false,
 }
 
 /**

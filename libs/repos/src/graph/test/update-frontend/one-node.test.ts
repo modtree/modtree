@@ -21,7 +21,6 @@ beforeAll(() =>
         title: 'Test Graph',
         userId: user.id,
         degreeId: degree.id,
-        pullAll: true,
       })
     )
     .then((graph) =>

@@ -39,7 +39,6 @@ it('returns a graph', async () => {
     title: 'Test Graph',
     userId: t.user!.id,
     degreeId: t.degree!.id,
-    pullAll: true,
   }).then((graph) => {
     expect(graph).toBeInstanceOf(Graph)
     t.graph = graph
