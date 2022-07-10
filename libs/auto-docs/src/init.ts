@@ -140,8 +140,6 @@ export const init: Init = {
     title: 'graph1',
     userId: '',
     degreeId: '',
-    modulesPlacedCodes: ['CS1101S', 'CS2030S'],
-    modulesHiddenCodes: ['GEA1000', 'MA2001'],
     pullAll: false,
   },
 
@@ -149,8 +147,6 @@ export const init: Init = {
     title: 'graph2',
     userId: '',
     degreeId: '',
-    modulesPlacedCodes: ['CS1101S', 'CS2030S'],
-    modulesHiddenCodes: ['ST1131', 'IS1103'],
     pullAll: false,
   },
 
@@ -158,8 +154,6 @@ export const init: Init = {
     title: 'graph3',
     userId: '',
     degreeId: '',
-    modulesPlacedCodes: ['CS1101S', 'CS1231S'],
-    modulesHiddenCodes: ['CS2040S', 'MA2001'],
     pullAll: false,
   },
 

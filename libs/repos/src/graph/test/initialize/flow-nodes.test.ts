@@ -28,8 +28,6 @@ beforeAll(() =>
         title: 'Test Graph',
         userId: t.user!.id,
         degreeId: t.degree!.id,
-        modulesPlacedCodes: ['MA1100', 'MA2001', 'MA2002', 'MA2219'],
-        modulesHiddenCodes: [],
         pullAll: true,
       })
     })

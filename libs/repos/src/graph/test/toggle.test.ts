@@ -20,8 +20,6 @@ beforeAll(() =>
         title: 'Test Graph',
         userId: user.id,
         degreeId: degree.id,
-        modulesPlacedCodes: ['CM1501'],
-        modulesHiddenCodes: [],
         pullAll: true,
       })
     )
@@ -59,23 +57,23 @@ test('CS2106 becomes placed', async () => {
   })
 })
 
-test('CM1501 is placed', async () => {
+test('MA2001 is placed', async () => {
   await findGraph(t.graph!.id).then((graph) => {
     const codes = graph.modulesPlaced.map(flatten.module)
-    expect(codes).toContain('CM1501')
+    expect(codes).toContain('MA2001')
   })
 })
 
-test('toggling CM1501 returns a graph', async () => {
-  await toggle(t.graph!, 'CM1501').then((graph) => {
+test('toggling MA2001 returns a graph', async () => {
+  await toggle(t.graph!, 'MA2001').then((graph) => {
     expect(graph).toBeInstanceOf(Graph)
   })
 })
 
-test('CM1501 becomes hidden', async () => {
+test('MA2001 becomes hidden', async () => {
   await findGraph(t.graph!.id).then((graph) => {
     const codes = graph.modulesHidden.map(flatten.module)
-    expect(codes).toContain('CM1501')
+    expect(codes).toContain('MA2001')
   })
 })
 

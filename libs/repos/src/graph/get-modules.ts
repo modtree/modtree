@@ -1,10 +1,4 @@
-import {
-  IModuleRepository,
-  InitGraphProps,
-  Degree,
-  Module,
-  User,
-} from '@modtree/types'
+import { Degree, Module, User } from '@modtree/types'
 
 type Result = {
   modulesHidden: Module[]
@@ -15,33 +9,14 @@ type Result = {
  * load the required modules from database, without loading those that
  * are already loaded
  */
-async function loadModules(
-  moduleRepo: IModuleRepository,
-  user: User,
-  degree: Degree,
-  props: InitGraphProps
-): Promise<Module[]> {
+async function loadModules(user: User, degree: Degree): Promise<Module[]> {
   /**
    * array of all loaded modules, to not have to pull again from database
    */
   const alreadyLoaded = degree.modules
   alreadyLoaded.push(...user.modulesDoing)
   alreadyLoaded.push(...user.modulesDone)
-  const loadedCodes = alreadyLoaded.map((m) => m.moduleCode)
-
-  /**
-   * determine what codes to pull from database
-   */
-  const codesToFetch = [
-    ...props.modulesHiddenCodes,
-    ...props.modulesPlacedCodes,
-  ].filter((code) => !loadedCodes.includes(code))
-  const fetchedModules = moduleRepo.findByCodes(codesToFetch)
-
-  /**
-   * combine all required modules into one
-   */
-  return fetchedModules.then((res) => [...res, ...alreadyLoaded])
+  return alreadyLoaded
 }
 
 /**
@@ -69,15 +44,10 @@ function modulify(moduleCodeSet: Set<string>, cache: Module[]): Module[] {
  * @param {InitGraphProps}  props
  * @returns {Promise<[Module[], Module[]]>}
  */
-export async function getModules(
-  moduleRepo: IModuleRepository,
-  user: User,
-  degree: Degree,
-  props: InitGraphProps
-): Promise<Result> {
-  const moduleCache = loadModules(moduleRepo, user, degree, props)
-  const hiddenSet = new Set(props.modulesHiddenCodes)
-  const placedSet = new Set(props.modulesPlacedCodes)
+export async function getModules(user: User, degree: Degree): Promise<Result> {
+  const moduleCache = loadModules(user, degree)
+  const hiddenSet = new Set<string>()
+  const placedSet = new Set<string>()
 
   /**
    * done/doing modules are immediately placed
