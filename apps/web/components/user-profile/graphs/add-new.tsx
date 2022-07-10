@@ -2,7 +2,7 @@ import { SettingsSection } from '@/ui/settings/lists/base'
 import { Button } from '@/ui/buttons'
 import { useState } from 'react'
 import { Input } from '@/ui/html'
-import { IDegree, IModule, SetState } from '@modtree/types'
+import { IDegree, SetState } from '@modtree/types'
 import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { useAppSelector } from '@/store/redux'
@@ -12,6 +12,9 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const degrees = useAppSelector((state) => state.user.savedDegrees)
   const modulesDone = useAppSelector((state) => state.user.modulesDone)
   const modulesDoing = useAppSelector((state) => state.user.modulesDoing)
+  
+  const modulesDoneCodes = modulesDone.map(flatten.module)
+  const modulesDoingCodes = modulesDoing.map(flatten.module)
 
   const state = {
     title: useState<string>(''),
@@ -30,7 +33,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         <h6>Title</h6>
         <Input className="w-full mb-4" state={state.title} grayed />
         <h6>Modules</h6>
-        <Modules modulesDone={modulesDone} modulesDoing={modulesDoing} />
+        <Modules modulesDoneCodes={modulesDoneCodes} modulesDoingCodes={modulesDoingCodes} />
         <h6>Degree</h6>
         <DegreePicker
           degrees={degrees}
@@ -45,16 +48,16 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   )
 }
 
-function Modules(props: { modulesDone: IModule[]; modulesDoing: IModule[] }) {
+function Modules(props: { modulesDoneCodes: string[]; modulesDoingCodes: string[] }) {
   return (
     <div className="mb-4">
       <div className="bg-gray-200 p-2 rounded-xl flex-col space-y-2">
         <p>The following modules will be placed in the graph:</p>
         <p className="mb-0">
-          <b>Done:</b> {props.modulesDone.map(flatten.module).join(', ')}
+          <b>Done:</b> {props.modulesDoneCodes.join(', ')}
         </p>
         <p className="mb-0">
-          <b>Doing:</b> {props.modulesDoing.map(flatten.module).join(', ')}
+          <b>Doing:</b> {props.modulesDoingCodes.join(', ')}
         </p>
       </div>
     </div>
