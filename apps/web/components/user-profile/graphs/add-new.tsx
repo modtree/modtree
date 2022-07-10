@@ -6,6 +6,7 @@ import { IDegree, IModule, SetState } from '@modtree/types'
 import { Pages } from 'types'
 import { PickOne } from '@/ui/search/degree/pick-one'
 import { useAppSelector } from '@/store/redux'
+import { flatten } from '@modtree/utils'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const degrees = useAppSelector((state) => state.user.savedDegrees)
@@ -46,10 +47,10 @@ function Modules(props: { modulesDone: IModule[]; modulesDoing: IModule[] }) {
       <div className="bg-gray-200 p-2 rounded-xl flex-col space-y-2">
         <p>The following modules will be placed in the graph:</p>
         <p className="mb-0">
-          <b>Done:</b> {props.modulesDone.map((m) => m.moduleCode).join(', ')}
+          <b>Done:</b> {props.modulesDone.map(flatten.module).join(', ')}
         </p>
         <p className="mb-0">
-          <b>Doing:</b> {props.modulesDoing.map((m) => m.moduleCode).join(', ')}
+          <b>Doing:</b> {props.modulesDoing.map(flatten.module).join(', ')}
         </p>
       </div>
     </div>
