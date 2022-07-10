@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Input } from '@/ui/html'
 import { IDegree, IModule, SetState } from '@modtree/types'
 import { Pages } from 'types'
-import { PickOne } from '@/ui/search/degree/pick-one'
+import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { useAppSelector } from '@/store/redux'
 import { flatten } from '@modtree/utils'
 
@@ -32,7 +32,11 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         <h6>Modules</h6>
         <Modules modulesDone={modulesDone} modulesDoing={modulesDoing} />
         <h6>Degree</h6>
-        <PickOne degrees={degrees} select={state.degree} pull={state.pullAll} />
+        <DegreePicker
+          degrees={degrees}
+          select={state.degree}
+          pull={state.pullAll}
+        />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green">Save graph</Button>

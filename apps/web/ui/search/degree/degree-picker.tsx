@@ -3,7 +3,7 @@ import { IDegree, UseState } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 
-export function PickOne(props: {
+export function DegreePicker(props: {
   degrees: IDegree[]
   select: UseState<IDegree>
   pull: UseState<boolean>
