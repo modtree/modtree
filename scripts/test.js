@@ -8,6 +8,10 @@ const { spawn } = require('child_process')
 const rootDir = path.resolve(__dirname, '..')
 const ignore = ['node_modules', 'dist']
 
+const jsonOutputFile = new Date()
+  .toLocaleString('en-sg')
+  .replace(/(\/|:|,| )+/g, '.')
+
 /**
  * @param {string[]} arr - array of filepaths
  * @returns {{names: string[][], record: Record<string, string>}} array of pairs: test name and test path
@@ -38,20 +42,27 @@ const tests = getTests(allProjects)
  * handle arguments
  */
 const projectsToTest = []
-const testPathPattern = []
+const postArgs = []
 const projectPathsToTest = []
 
-let testPathPatternIndex = -1
+let markedIndex = -1
 let allOk = true
 args.map((arg, i) => {
+  /**
+   * --testPathPattern
+   */
   if (arg === '-m') {
-    /** mark the next one to use as test path pattern */
-    testPathPatternIndex = i + i
+    markedIndex = i + 1
+    return
+  } else if (markedIndex === i) {
+    postArgs.push('--testPathPattern', arg)
     return
   }
-  if (testPathPatternIndex === i) {
-    console.log('--', arg)
-    testPathPattern.push('--testPathPattern', arg)
+  /**
+   * --json
+   */
+  if (arg === '--json') {
+    postArgs.push('--json', '--outputFile', jsonOutputFile)
     return
   }
   if (tests.names.includes(arg)) {
@@ -76,22 +87,15 @@ if (!allOk || args.length === 0) {
   process.exit(0)
 } else {
   console.debug(chalk.cyan('\nTests chosen:'), projectsToTest)
-  console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
+  console.debug(chalk.cyan('Test path pattern:'), postArgs[1], '\n')
 }
-
-const jsonOutputFile = new Date()
-  .toLocaleString('en-sg')
-  .replace(/(\/|:|,| )+/g, '.')
 
 const spawnArgs = [
   'jest',
   '--color',
-  '--json',
-  '--outputFile',
-  path.resolve(rootDir, 'dist/tests', `${jsonOutputFile}.json`),
   '--projects',
   ...projectPathsToTest,
-  ...testPathPattern,
+  ...postArgs,
 ]
 
 const run = true

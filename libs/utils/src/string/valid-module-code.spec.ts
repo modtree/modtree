@@ -7,16 +7,14 @@ test('returns true on all existing codes', async () => {
   })
 })
 
-const err = Error('Invalid module code')
-
-test('error on cs1010s', () => {
-  expect(() => validModuleCode('cs1010s')).toThrowError(err)
+test('false on cs1010s', () => {
+  expect(validModuleCode('cs1010s')).toBe(false)
 })
 
-test('error on blank', () => {
-  expect(() => validModuleCode('')).toThrowError(err)
+test('false on blank', () => {
+  expect(validModuleCode('')).toBe(false)
 })
 
-test('error on NOT_VALID', () => {
-  expect(() => validModuleCode('NOT_VALID')).toThrowError(err)
+test('false on NOT_VALID', () => {
+  expect(validModuleCode('NOT_VALID')).toBe(false)
 })
