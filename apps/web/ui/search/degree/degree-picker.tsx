@@ -7,12 +7,10 @@ import { flatten as flat } from '@modtree/utils'
 export function DegreePicker(props: {
   degrees: IDegree[]
   select: UseState<IDegree>
-  pull: UseState<boolean>
   modulesDoneCodes: string[]
   modulesDoingCodes: string[]
 }) {
   const [degree, setDegree] = props.select
-  const [pullAll, setPullAll] = props.pull
 
   /**
    * Filters away modulesDone and modulesDoing from degree.modules
@@ -58,31 +56,12 @@ export function DegreePicker(props: {
           </Listbox.Options>
         </Listbox>
       </div>
-      <Switch.Group>
-        <div className="flex items-center space-x-2">
-          <Switch
-            checked={pullAll}
-            onChange={setPullAll}
-            className={`${pullAll ? 'bg-modtree-300' : 'bg-gray-300'}
-              relative inline-flex h-[26px] w-[58px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-          >
-            <span
-              aria-hidden="true"
-              className={`${pullAll ? 'translate-x-8' : 'translate-x-0'}
-                pointer-events-none inline-block h-[22px] w-[22px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-            />
-          </Switch>
-          <Switch.Label>Insert degree required modules into graph</Switch.Label>
-        </div>
-      </Switch.Group>
-      {pullAll && (
-        <div className="bg-gray-200 p-2 rounded-xl">
-          <p>
-            The following remaining degree modules will be placed in the graph:
-          </p>
-          <p className="mb-0">{getRemainingModuleCodes(degree).join(', ')}</p>
-        </div>
-      )}
+      <div className="bg-gray-200 p-2 rounded-xl">
+        <p>
+          The following remaining degree modules will be placed in the graph:
+        </p>
+        <p className="mb-0">{getRemainingModuleCodes(degree).join(', ')}</p>
+      </div>
     </div>
   )
 }

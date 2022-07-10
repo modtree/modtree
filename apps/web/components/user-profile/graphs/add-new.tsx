@@ -19,7 +19,6 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const state = {
     title: useState<string>(''),
     degree: useState<IDegree>(degrees[0]),
-    pullAll: useState<boolean>(true),
   }
 
   return (
@@ -41,7 +40,6 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         <DegreePicker
           degrees={degrees}
           select={state.degree}
-          pull={state.pullAll}
           modulesDoneCodes={modulesDoneCodes}
           modulesDoingCodes={modulesDoingCodes}
         />
