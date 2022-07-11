@@ -60,7 +60,7 @@ export class UserApi {
         where: { id, authZeroId, email },
         relations: api.userRepo.relations,
       })
-      .then((users) => users.map((u) => flatten.user(u)))
+      .then((users) => users.map(flatten.user))
   }
 
   /**

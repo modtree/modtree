@@ -126,6 +126,6 @@ export class GraphApi {
     return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.suggestModules(graph, selectedCodes))
-      .then((modules) => modules.map((m) => flatten.module(m)))
+      .then((modules) => modules.map(flatten.module))
   }
 }
