@@ -1,7 +1,5 @@
 import {
   IUser,
-  IGraph,
-  IDegree,
   IModule,
   IModuleCondensed,
   IModuleFull,
@@ -19,9 +17,15 @@ const Module: IModule = {
   fulfillRequirements: [],
 }
 
-const Degree: IDegree = {
+const Degree: ModtreeApiResponse.Degree = {
   id: '',
-  modules: [],
+  modules: [], // string arr
+  title: '',
+}
+
+const DegreeFull: ModtreeApiResponse.DegreeFull = {
+  id: '',
+  modules: [], // modules arr
   title: '',
 }
 
@@ -56,18 +60,7 @@ const UserFull: ModtreeApiResponse.UserFull = {
   mainGraph: '',
 }
 
-const Graph: IGraph = {
-  title: '',
-  id: '',
-  user: User,
-  degree: Degree,
-  modulesPlaced: [],
-  modulesHidden: [],
-  flowNodes: [],
-  flowEdges: [],
-}
-
-const GraphFull: ModtreeApiResponse.GraphFull = {
+const Graph: ModtreeApiResponse.Graph = {
   title: '',
   id: '',
   user: '',
@@ -112,6 +105,6 @@ export const empty = {
   User,
   UserFull,
   Graph,
-  GraphFull,
   Degree,
+  DegreeFull,
 }

@@ -23,7 +23,7 @@ export const graph = createSlice({
      * Overwrite the entire graph.
      * Meant to be used for initial page loads.
      */
-    setGraph: (graph, action: PayloadAction<ModtreeApiResponse.GraphFull>) => {
+    setGraph: (graph, action: PayloadAction<ModtreeApiResponse.Graph>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
         graph[key] = value
       })

@@ -25,7 +25,7 @@ export function Main(props: {
   // updated correctly in useEffect
   const mainGraph = useAppSelector((state) => state.graph)
   const state = {
-    graph: useState<ModtreeApiResponse.GraphFull>(mainGraph),
+    graph: useState<ModtreeApiResponse.Graph>(mainGraph),
   }
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export function Main(props: {
 
 function GraphSection(props: {
   degrees: IDegree[]
-  graphs: ModtreeApiResponse.GraphFull[]
+  graphs: ModtreeApiResponse.Graph[]
 }) {
   const { degrees, graphs } = props
   return (

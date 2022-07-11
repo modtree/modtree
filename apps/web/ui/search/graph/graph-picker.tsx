@@ -11,8 +11,8 @@ import { updateUser } from '@/utils/rehydrate'
 import { useAppDispatch } from '@/store/redux'
 
 export function GraphPicker(props: {
-  graphs: ModtreeApiResponse.GraphFull[]
-  select: UseState<ModtreeApiResponse.GraphFull>
+  graphs: ModtreeApiResponse.Graph[]
+  select: UseState<ModtreeApiResponse.Graph>
 }) {
   const { user } = useUser()
   const [graph, setGraph] = props.select

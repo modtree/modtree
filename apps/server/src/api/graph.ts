@@ -39,7 +39,7 @@ export class GraphApi {
    * @param {Api} api
    */
   static getFull = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
-    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graphFull)
+    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
   }
 
   /**
@@ -126,6 +126,6 @@ export class GraphApi {
     return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.suggestModules(graph, selectedCodes))
-      .then((modules) => modules.map((m) => flatten.module(m)))
+      .then((modules) => modules.map(flatten.module))
   }
 }

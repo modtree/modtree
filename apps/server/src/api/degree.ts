@@ -75,5 +75,6 @@ export class DegreeApi {
     return api.degreeRepo
       .findOneById(id)
       .then((degree) => api.degreeRepo.modify(degree, { title, moduleCodes }))
+      .then(flatten.degree)
   }
 }

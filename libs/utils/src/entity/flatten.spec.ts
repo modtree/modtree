@@ -9,6 +9,7 @@ function makeModule(moduleCode: string) {
 
 const degree = new Degree()
 degree.id = 'degree_id'
+degree.title = 'degree_title'
 degree.modules = [makeModule('CS2030'), makeModule('CS2040')]
 
 const user = new User()
@@ -57,6 +58,7 @@ describe('Degree', () => {
   test('flattens one', () => {
     expect(flatten.degree(degree)).toEqual({
       id: 'degree_id',
+      title: 'degree_title',
       modules: ['CS2030', 'CS2040'],
     })
   })
@@ -91,7 +93,10 @@ describe('Graph', () => {
       modulesHidden: ['CM1102', 'PC1432'],
       modulesPlaced: ['CS1231', 'MA2219'],
       user: 'user_id',
-      degree: 'degree_id',
+      degree: {
+        id: 'degree_id',
+        title: 'degree_title',
+      },
     })
   })
 
