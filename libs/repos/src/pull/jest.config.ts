@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'repo:graph',
-  preset: '../../../../../jest.preset.js',
+  displayName: 'repo:pull',
+  preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../../../coverage/libs/repos/graph',
+  coverageDirectory: '../../../../../coverage/libs/repos/pull',
   maxWorkers: 2,
 }
