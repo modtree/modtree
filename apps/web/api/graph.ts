@@ -45,7 +45,7 @@ export class GraphApi extends BaseApi {
   /**
    * create
    */
-  async create(props: InitGraphProps): Promise<ModtreeApiResponse.Graph> {
+  async create(props: InitGraphProps): Promise<ModtreeApiResponse.GraphFull> {
     return this.server.post(`/graph`, props).then((res) => res.data)
   }
 }

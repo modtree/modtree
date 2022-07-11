@@ -21,7 +21,7 @@ export class GraphApi {
    */
   static create = (api: Api) => async (req: Request) => {
     const props = { ...emptyInit.Graph, ...req.body }
-    return api.graphRepo.initialize(props).then(flatten.graph)
+    return api.graphRepo.initialize(props).then(flatten.graphFull)
   }
 
   /**
