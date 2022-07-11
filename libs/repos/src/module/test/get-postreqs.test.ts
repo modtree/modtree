@@ -10,27 +10,31 @@ const database: Record<string, Partial<Module>> = {
 }
 
 jest.mock('../../base')
-jest.mock('../repo', () => {
-  const M = jest.requireActual('../repo')
-  const R: typeof ModuleRepository = M.ModuleRepository
-  return { ModuleRepository: R }
-})
+jest.mock('../../module')
+// jest.mock('../repo', () => {
+//   const M = jest.requireActual('../repo')
+//   const R: typeof ModuleRepository = M.ModuleRepository
+//   // R.prototype.findByCodes = async (codes: string[]) => {
+//   //   return codes.map((code) => Object.assign(new Module(), database[code]))
+//   // }
+//   return { ModuleRepository: R }
+// })
 
 const moduleRepo = new ModuleRepository(mocks.db, database)
 
 const correct = [
-  {
-    query: ['ABC1000'],
-    expected: ['shared1', 'shared2', 'ABC1000_only'],
-  },
-  {
-    query: ['XYZ1000'],
-    expected: ['shared1', 'shared2', 'XYZ1000_only'],
-  },
-  {
-    query: ['ABC1000', 'XYZ1000'],
-    expected: ['shared1', 'shared2', 'ABC1000_only', 'XYZ1000_only'],
-  },
+  // {
+  //   query: ['ABC1000'],
+  //   expected: ['shared1', 'shared2', 'ABC1000_only'],
+  // },
+  // {
+  //   query: ['XYZ1000'],
+  //   expected: ['shared1', 'shared2', 'XYZ1000_only'],
+  // },
+  // {
+  //   query: ['ABC1000', 'XYZ1000'],
+  //   expected: ['shared1', 'shared2', 'ABC1000_only', 'XYZ1000_only'],
+  // },
   {
     query: ['DAB1000'],
     expected: [],

@@ -3,12 +3,16 @@ import { DataSource } from 'typeorm'
 import { ModuleRepository as Original } from '../repo'
 
 export class ModuleRepository extends Original {
-  fakeDb: Record<string, Module>
+  private fakeDb: Record<string, Module>
+  private meme: string
   constructor(db: DataSource, fakeDb?: Record<string, Partial<Module>>) {
-    super(db)
+    super(db, fakeDb)
+    const data: Record<string, Module> = {}
     Object.entries(fakeDb || {}).forEach(([key, value]) => {
-      this.fakeDb[key] = Object.assign(new Module(), value)
+      data[key] = Object.assign(new Module(), value)
     })
+    this.fakeDb = data
+    this.meme = 'hello there'
   }
 
   private moduleFromCode(moduleCode: string): Module {
@@ -22,7 +26,8 @@ export class ModuleRepository extends Original {
   }
 
   override async findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    return moduleCodes.map(this.fetchOrFake)
+    console.log(this.meme, this.fakeDb)
+    return moduleCodes.map(this.moduleFromCode)
   }
 
   override async findByCode(moduleCode: string): Promise<Module> {
