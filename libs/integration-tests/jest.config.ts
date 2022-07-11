@@ -12,4 +12,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/libs/integration-tests',
+  maxWorkers: 1,
 }

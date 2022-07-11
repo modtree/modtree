@@ -16,9 +16,9 @@ const fakeData = {
     B2000: { prereqTree: 'B1000', fulfillRequirements: ['A3000', 'B3000'] },
     C2000: { prereqTree: { or: ['A1000', 'C1000'] }, fulfillRequirements: [] },
     // 3000 mods
-    A3000: { prereqTree: { or: ['A2000', 'B2000'] } },
-    B3000: { prereqTree: { or: ['B2000', 'C2000'] } },
-    C3000: { prereqTree: { or: ['C2000'] } },
+    A3000: { prereqTree: { or: ['A2000', 'B2000'] }, fulfillRequirements: [] },
+    B3000: { prereqTree: { or: ['B2000', 'C2000'] }, fulfillRequirements: [] },
+    C3000: { prereqTree: { or: ['C2000'] }, fulfillRequirements: [] },
   },
 }
 
@@ -26,7 +26,7 @@ const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
-    type: 'it works',
+    type: 'it favors mods that unlock more',
     done: ['A1000', 'B1000', 'C1000'],
     doing: ['C2000'],
     required: [
@@ -42,6 +42,57 @@ const correct = [
     ],
     selected: ['C2000'],
     expected: ['B2000', 'A2000'],
+  },
+  {
+    type: 'it favors required modules',
+    done: ['A1000', 'B1000', 'C1000'],
+    doing: ['C2000'],
+    required: [
+      'A1000',
+      'A2000',
+      'A3000',
+      'B1000',
+      'B3000',
+      'C1000',
+      'C2000',
+      'C3000',
+    ],
+    selected: ['C2000'],
+    expected: ['A2000', 'B2000'],
+  },
+  {
+    type: "don't suggest done mods",
+    done: ['A1000', 'B1000', 'C1000', 'B2000'],
+    doing: ['C2000'],
+    required: [
+      'A1000',
+      'A2000',
+      'A3000',
+      'B1000',
+      'B3000',
+      'C1000',
+      'C2000',
+      'C3000',
+    ],
+    selected: ['C2000'],
+    expected: ['A2000', 'A3000', 'B3000'],
+  },
+  {
+    type: "don't suggest doing mods",
+    done: ['A1000', 'B1000', 'C1000'],
+    doing: ['B2000', 'C2000'],
+    required: [
+      'A1000',
+      'A2000',
+      'A3000',
+      'B1000',
+      'B3000',
+      'C1000',
+      'C2000',
+      'C3000',
+    ],
+    selected: ['C2000'],
+    expected: ['A2000'],
   },
 ]
 

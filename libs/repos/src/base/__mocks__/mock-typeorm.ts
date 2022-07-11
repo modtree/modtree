@@ -1,4 +1,11 @@
-import { Degree, Graph, Module, User } from '@modtree/types'
+import {
+  Degree,
+  Graph,
+  Module,
+  ModuleCondensed,
+  ModuleFull,
+  User,
+} from '@modtree/types'
 import {
   DeepPartial,
   EntityManager,
@@ -14,6 +21,8 @@ const assign = <T>(C: new () => any, e: DeepPartial<T>) =>
 export class Repository<T> extends TR<T> {
   private coerce = (e: DeepPartial<T>): T => {
     if (this.target === Module) return assign(Module, e)
+    if (this.target === ModuleCondensed) return assign(ModuleCondensed, e)
+    if (this.target === ModuleFull) return assign(ModuleFull, e)
     if (this.target === Degree) return assign(Degree, e)
     if (this.target === User) return assign(User, e)
     if (this.target === Graph) return assign(Graph, e)

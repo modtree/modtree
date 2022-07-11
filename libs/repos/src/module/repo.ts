@@ -14,7 +14,7 @@ export class ModuleRepository
   extends BaseRepo<Module>
   implements IModuleRepository
 {
-  constructor(db: DataSource, _fakeData?: Record<string, Partial<Module>>) {
+  constructor(db: DataSource) {
     super(Module, db)
   }
 
@@ -32,17 +32,8 @@ export class ModuleRepository
   }
 
   /**
-   * get all module codes from the module table
-   *
-   * @returns {Promise<string[]>}
-   */
-  async getCodes(): Promise<string[]> {
-    return this.find().then((res) => res.map(flatten.module))
-  }
-
-  /**
    * @param {string[]} moduleCode
-   * @returns {Promise<Module>}
+   * @returns {Promise<T>}
    */
   findByCode(moduleCode: string): Promise<Module> {
     return this.findOneByOrFail({ moduleCode })
@@ -50,10 +41,19 @@ export class ModuleRepository
 
   /**
    * @param {string[]} moduleCodes
-   * @returns {Promise<Module[]>}
+   * @returns {Promise<T[]>}
    */
   findByCodes(moduleCodes: string[]): Promise<Module[]> {
     return this.findBy({ moduleCode: In(moduleCodes) })
+  }
+
+  /**
+   * get all module codes from the module table
+   *
+   * @returns {Promise<string[]>}
+   */
+  async getCodes(): Promise<string[]> {
+    return this.find().then((res) => res.map(flatten.module))
   }
 
   /**

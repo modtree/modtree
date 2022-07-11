@@ -50,10 +50,11 @@ export class DegreeRepository
    * @returns {Promise<Degree>}
    */
   async insertModules(degree: Degree, moduleCodes: string[]): Promise<Degree> {
-    return this.moduleRepo.findByCodes(moduleCodes).then((modules) => {
-      degree.modules.push(...modules)
-      return this.save(degree)
-    })
+    return this.moduleRepo
+      .findByCodes(moduleCodes)
+      .then((modules) =>
+        this.save({ ...degree, modules: [...degree.modules, ...modules] })
+      )
   }
 
   /**
