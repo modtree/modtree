@@ -2,35 +2,30 @@ import { Module } from '@modtree/types'
 import { DataSource } from 'typeorm'
 import { ModuleRepository as Original } from '../repo'
 
+const moduleFromCode = (moduleCode: string): Module => {
+  return Object.assign(new Module(), { moduleCode })
+}
+
+const fetchOrFake = (code: string, data: Record<string, Module>): Module => {
+  return Object.keys(data).includes(code) ? data[code] : moduleFromCode(code)
+}
+
 export class ModuleRepository extends Original {
-  private fakeDb: Record<string, Module>
-  private meme: string
-  constructor(db: DataSource, fakeDb?: Record<string, Partial<Module>>) {
-    super(db, fakeDb)
+  private fakeData: Record<string, Module>
+  constructor(db: DataSource, fakeData?: Record<string, Partial<Module>>) {
+    super(db)
     const data: Record<string, Module> = {}
-    Object.entries(fakeDb || {}).forEach(([key, value]) => {
+    Object.entries(fakeData || {}).forEach(([key, value]) => {
       data[key] = Object.assign(new Module(), value)
     })
-    this.fakeDb = data
-    this.meme = 'hello there'
+    this.fakeData = data
   }
 
-  private moduleFromCode(moduleCode: string): Module {
-    return Object.assign(new Module(), { moduleCode })
+  override async findByCodes(codes: string[]): Promise<Module[]> {
+    return codes.map((c) => fetchOrFake(c, this.fakeData))
   }
 
-  private fetchOrFake(code: string): Module {
-    return Object.keys(this.fakeDb).includes(code)
-      ? this.fakeDb[code]
-      : this.moduleFromCode(code)
-  }
-
-  override async findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    console.log(this.meme, this.fakeDb)
-    return moduleCodes.map(this.moduleFromCode)
-  }
-
-  override async findByCode(moduleCode: string): Promise<Module> {
-    return this.fetchOrFake(moduleCode)
+  override async findByCode(code: string): Promise<Module> {
+    return fetchOrFake(code, this.fakeData)
   }
 }

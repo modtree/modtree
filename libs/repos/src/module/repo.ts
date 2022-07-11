@@ -15,9 +15,8 @@ export class ModuleRepository
   extends BaseRepo<Module>
   implements IModuleRepository
 {
-  constructor(db: DataSource, fakeData?: Record<string, Partial<Module>>) {
+  constructor(db: DataSource, _fakeData?: Record<string, Partial<Module>>) {
     super(Module, db)
-    console.debug('using fake data:', Object.keys(fakeData || {}))
   }
 
   deleteAll = () => this.createQueryBuilder().delete().execute()
