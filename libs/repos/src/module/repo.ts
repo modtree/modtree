@@ -90,15 +90,14 @@ export class ModuleRepository
    * @returns {Promise<string[]>}
    */
   async getPostReqs(moduleCodes: string[]): Promise<string[]> {
-    const result = new Set<string>()
-    return this.findByCodes(moduleCodes).then((modules) => {
-      modules.forEach((module) => {
-        if (Array.isArray(module.fulfillRequirements)) {
-          module.fulfillRequirements.forEach((m) => result.add(m))
-        }
-      })
-      return Array.from(result)
-    })
+    return this.findByCodes(moduleCodes).then((modules) =>
+      unique(
+        modules.reduce(
+          (result, curr) => [...result, ...curr.fulfillRequirements],
+          [] as string[]
+        )
+      )
+    )
   }
 
   /**
