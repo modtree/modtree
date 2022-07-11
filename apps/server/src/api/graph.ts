@@ -98,7 +98,7 @@ export class GraphApi {
           flowNodes,
         })
       )
-      .then(flatten.graph)
+      .then(flatten.graphFull)
   }
 
   /**

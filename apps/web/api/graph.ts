@@ -33,7 +33,7 @@ export class GraphApi extends BaseApi {
     graphId: string,
     flowNodes: GraphFlowNode[],
     flowEdges: GraphFlowEdge[]
-  ): Promise<ModtreeApiResponse.Graph> {
+  ): Promise<ModtreeApiResponse.GraphFull> {
     return this.server
       .patch(`/graph/${graphId}/flow`, {
         flowNodes,
