@@ -74,4 +74,13 @@ export class UserApi extends BaseApi {
       graphId,
     })
   }
+
+  /**
+   * insert graph
+   */
+  async insertGraph(userId: string, graphId: string): Promise<IUser> {
+    return this.server.patch(`/user/${userId}/graph`, {
+      graphIds: [graphId],
+    })
+  }
 }
