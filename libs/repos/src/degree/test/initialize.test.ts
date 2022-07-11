@@ -1,16 +1,9 @@
-import { DegreeRepository, ModuleRepository } from '@modtree/repos'
+import { DegreeRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
-import { Degree, Module } from '@modtree/types'
+import { Degree } from '@modtree/types'
 
 jest.mock('../../base')
-jest.mock('../../module', () => {
-  const actual = jest.requireActual('../../module')
-  const M: typeof ModuleRepository = actual.ModuleRepository
-  M.prototype.findByCodes = jest.fn(async (codes: string[]) =>
-    codes.map((code) => Object.assign(new Module(), { moduleCode: code }))
-  )
-  return { ModuleRepository: M }
-})
+jest.mock('../../module')
 
 const degreeRepo = new DegreeRepository(mocks.db)
 let degree: Degree
