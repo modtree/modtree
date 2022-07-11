@@ -30,7 +30,7 @@ export class GraphApi {
    * @param {Api} api
    */
   static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
-    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
+    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graphFull)
   }
 
   /**
@@ -112,7 +112,7 @@ export class GraphApi {
     return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.updateFlowNode(graph, flowNode))
-      .then(flatten.graph)
+      .then(flatten.graphFull)
   }
 
   /**

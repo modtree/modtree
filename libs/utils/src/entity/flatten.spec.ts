@@ -101,6 +101,6 @@ describe('Graph', () => {
   })
 
   test('errors on invalid', () => {
-    expect(() => flatten.graph(new Graph())).toThrowError()
+    expect(() => flatten.graphFull(new Graph())).toThrowError()
   })
 })
