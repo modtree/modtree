@@ -1,24 +1,43 @@
 import { ModuleRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
 import '@modtree/test-env/jest'
-import { Module } from '@modtree/types'
-import database from './can-take-module.json'
-
-const findByCode: Record<string, Partial<Module>> = database.moduleRepo
-  .findByCode
 
 jest.mock('../../base')
-jest.mock('../repo', () => {
-  const M = jest.requireActual('../repo')
-  const R: typeof ModuleRepository = M.ModuleRepository
-  R.prototype.findByCode = async (moduleCode: string) => {
-    const tree = findByCode[moduleCode]
-    return Object.assign(new Module(), tree)
-  }
-  return { ModuleRepository: R }
-})
+jest.mock('../../module')
 
-const moduleRepo = new ModuleRepository(mocks.db)
+const fakeData = {
+  module: {
+    MA2101: {
+      moduleCode: 'MA2101',
+      prereqTree: {
+        or: ['MA1101R', 'MA2001', 'MA1506', 'MA1508', 'MA1508E', 'MA1513'],
+      },
+    },
+    MA1100: {
+      moduleCode: 'MA1100',
+      prereqTree: {
+        or: ['MA1301', 'MA1301X'],
+      },
+    },
+    CS2040S: {
+      moduleCode: 'CS2040S',
+      prereqTree: {
+        and: [
+          {
+            or: ['MA1100', 'CS1231'],
+          },
+          'CS1010',
+        ],
+      },
+    },
+    CS1010S: {
+      moduleCode: 'CS1010S',
+      prereqTree: '',
+    },
+  },
+}
+
+const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 
 const correct = [
   { done: ['MA2001'], doing: ['MA2219'], tested: 'MA2101', expected: true },

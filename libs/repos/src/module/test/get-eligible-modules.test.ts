@@ -1,23 +1,52 @@
-import { setup, Repo, t, teardown } from '@modtree/test-env'
-import { db } from '@modtree/typeorm-config'
+import { ModuleRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import '@modtree/test-env/jest'
 
-beforeAll(() => setup(db, { restore: false }))
-afterAll(() => teardown(db))
+jest.mock('../../base')
+jest.mock('../../module')
 
-it('returns an array of strings', async () => {
-  await Repo.Module.getEligibleModules(['CS1101S'], [], []).then((codes) => {
-    expect(codes).toBeInstanceOf(Array)
-    codes.forEach((e) => expect(typeof e).toBe('string'))
-    t.moduleCodes = codes
-  })
-})
+const fakeData = {
+  module: {
+    // 1000 mods
+    A1000: { fulfillRequirements: ['A2000', 'C2000', 'D2000'] },
+    B1000: { fulfillRequirements: ['B2000', 'C2000', 'D2000'] },
+    // 2000 mods
+    A2000: { prereqTree: 'A1000' },
+    B2000: { prereqTree: 'A1000' },
+    C2000: { prereqTree: { and: ['A1000', 'B1000'] } },
+    D2000: { prereqTree: { or: ['A1000', 'B1000'] } },
+  },
+}
 
-it('returns correct modules', async () => {
-  expect(t.moduleCodes).toIncludeSameMembers(['CS2109S'])
-})
+const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 
-it('returns correct modules', async () => {
-  await Repo.Module.getEligibleModules([], [], ['CS1101S']).then((codes) => {
-    expect(codes).toIncludeSameMembers(['CS2109S'])
-  })
-})
+const correct = [
+  {
+    done: ['A1000'],
+    doing: [],
+    selected: [],
+    expected: ['A2000', 'D2000'],
+  },
+  {
+    done: [],
+    doing: ['A1000', 'B1000'],
+    selected: [],
+    expected: [],
+  },
+  {
+    done: ['A1000', 'B1000'],
+    doing: [],
+    selected: [],
+    expected: ['A2000', 'B2000', 'C2000', 'D2000'],
+  },
+]
+
+test.each(correct)(
+  `done: $done
+    doing: $doing
+    selected: $selected`,
+  async ({ done, doing, selected, expected }) => {
+    const received = await moduleRepo.getEligibleModules(done, doing, selected)
+    expect(received).toIncludeSameMembers(expected)
+  }
+)

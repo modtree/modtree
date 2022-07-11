@@ -7,5 +7,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../../../../coverage/libs/repos/module',
-  maxWorkers: 2,
+  maxWorkers: 1,
 }

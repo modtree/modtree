@@ -1,47 +1,41 @@
+import { ModuleRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import '@modtree/test-env/jest'
 import { Module } from '@modtree/types'
-import { setup, teardown, Repo, t } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-let count: number
-const m = {
+jest.mock('../../base')
+jest.mock('../../module')
+
+const moduleRepo = new ModuleRepository(mocks.db)
+let received: Module
+const init = {
   id: '58201858-5ce5-4ceb-8568-eecf55841b9f',
-  title: '',
+  title: 'Test Module',
   moduleCode: 'TST1000MD',
-  prereqTree: '',
-  description: '',
+  prereqTree: { and: ['CS1010S', 'MA1100'] },
   prerequisite: '',
   corequisite: '',
   preclusion: '',
-  fulfillRequirements: [],
+  fulfillRequirements: ['CS2040S'],
 }
 
-beforeAll(() => setup(db))
-afterAll(() => teardown(db, true))
-
-it('initial count', async () => {
-  await Repo.Module.count().then((c) => {
-    expect(c).toBeGreaterThan(6000)
-    count = c
-  })
-})
-
 it('returns a module', async () => {
-  await Repo.Module.initialize(m).then((res) => {
+  await moduleRepo.initialize(init).then((res) => {
     expect(res).toBeInstanceOf(Module)
-    t.modules = [res]
+    received = res
   })
 })
 
-it('increments the count by 1', async () => {
-  await Repo.Module.count().then((c) => {
-    expect(c).toEqual(count + 1)
-  })
-})
-
-it('saves correct information', async () => {
-  const module = t.modules![0]
-  expect(module.moduleCode).toBe('TST1000MD')
+test('saved all information', () => {
+  const correct: [any, any][] = [
+    [received.id, init.id],
+    [received.title, init.title],
+    [received.moduleCode, init.moduleCode],
+    [received.prereqTree, init.prereqTree],
+    [received.prerequisite, init.prerequisite],
+    [received.corequisite, init.corequisite],
+    [received.preclusion, init.preclusion],
+    [received.fulfillRequirements, init.fulfillRequirements],
+  ]
+  correct.forEach(([received, expected]) => expect(received).toEqual(expected))
 })
