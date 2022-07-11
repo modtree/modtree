@@ -46,7 +46,7 @@ export type DegreeFull = IDegree
 /**
  * Graph API respsonse
  */
-export type GraphFull = Modify<
+export type Graph = Modify<
   IGraph,
   {
     user: string

@@ -10,7 +10,7 @@ export class GraphApi extends BaseApi {
   /**
    * get a graph by its id directly from database
    */
-  async getById(graphId: string): Promise<ModtreeApiResponse.GraphFull> {
+  async getById(graphId: string): Promise<ModtreeApiResponse.Graph> {
     return this.server.get(`/graph/${graphId}/get-full`).then((res) => res.data)
   }
 
@@ -20,7 +20,7 @@ export class GraphApi extends BaseApi {
   async toggle(
     graphId: string,
     moduleCode: string
-  ): Promise<ModtreeApiResponse.GraphFull> {
+  ): Promise<ModtreeApiResponse.Graph> {
     return this.server
       .patch(`/graph/${graphId}/toggle/${moduleCode}`)
       .then((res) => res.data)
@@ -33,7 +33,7 @@ export class GraphApi extends BaseApi {
     graphId: string,
     flowNodes: GraphFlowNode[],
     flowEdges: GraphFlowEdge[]
-  ): Promise<ModtreeApiResponse.GraphFull> {
+  ): Promise<ModtreeApiResponse.Graph> {
     return this.server
       .patch(`/graph/${graphId}/flow`, {
         flowNodes,
@@ -45,7 +45,7 @@ export class GraphApi extends BaseApi {
   /**
    * create
    */
-  async create(props: InitGraphProps): Promise<ModtreeApiResponse.GraphFull> {
+  async create(props: InitGraphProps): Promise<ModtreeApiResponse.Graph> {
     return this.server.post(`/graph`, props).then((res) => res.data)
   }
 }

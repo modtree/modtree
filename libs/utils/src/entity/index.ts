@@ -59,23 +59,6 @@ export const flatten = {
    * @returns {ModtreeApiResponse.Graph}
    */
   graph(graph: Graph): ModtreeApiResponse.Graph {
-    return {
-      ...graph,
-      id: graph.id,
-      user: graph.user.id,
-      degree: graph.degree.id,
-      modulesHidden: graph.modulesHidden.map(flatten.module),
-      modulesPlaced: graph.modulesPlaced.map(flatten.module),
-    }
-  },
-
-  /**
-   * flattens a graph to response shape
-   *
-   * @param {Graph} graph
-   * @returns {ModtreeApiResponse.GraphFull}
-   */
-  graphFull(graph: Graph): ModtreeApiResponse.GraphFull {
     const degree = {
       title: graph.degree.title,
       id: graph.degree.id,

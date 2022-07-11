@@ -2,8 +2,8 @@ import { ModtreeApiResponse } from '@modtree/types'
 import { empty } from '@modtree/utils'
 import { getUniqueGraphTitle } from '.'
 
-const graph: ModtreeApiResponse.GraphFull = {
-  ...empty.GraphFull,
+const graph: ModtreeApiResponse.Graph = {
+  ...empty.Graph,
   title: 'my graph',
   degree: {
     id: '',

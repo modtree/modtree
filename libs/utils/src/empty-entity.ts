@@ -1,7 +1,5 @@
 import {
   IUser,
-  IGraph,
-  IDegree,
   IModule,
   IModuleCondensed,
   IModuleFull,
@@ -62,18 +60,7 @@ const UserFull: ModtreeApiResponse.UserFull = {
   mainGraph: '',
 }
 
-const Graph: IGraph = {
-  title: '',
-  id: '',
-  user: User,
-  degree: DegreeFull,
-  modulesPlaced: [],
-  modulesHidden: [],
-  flowNodes: [],
-  flowEdges: [],
-}
-
-const GraphFull: ModtreeApiResponse.GraphFull = {
+const Graph: ModtreeApiResponse.Graph = {
   title: '',
   id: '',
   user: '',
@@ -118,7 +105,6 @@ export const empty = {
   User,
   UserFull,
   Graph,
-  GraphFull,
   Degree,
   DegreeFull,
 }

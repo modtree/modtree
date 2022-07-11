@@ -88,7 +88,7 @@ describe('User', () => {
 
 describe('Graph', () => {
   test('flattens one', () => {
-    expect(flatten.graphFull(graph)).toEqual({
+    expect(flatten.graph(graph)).toEqual({
       id: 'graph_id',
       modulesHidden: ['CM1102', 'PC1432'],
       modulesPlaced: ['CS1231', 'MA2219'],
@@ -101,6 +101,6 @@ describe('Graph', () => {
   })
 
   test('errors on invalid', () => {
-    expect(() => flatten.graphFull(new Graph())).toThrowError()
+    expect(() => flatten.graph(new Graph())).toThrowError()
   })
 })

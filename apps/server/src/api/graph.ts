@@ -21,7 +21,7 @@ export class GraphApi {
    */
   static create = (api: Api) => async (req: Request) => {
     const props = { ...emptyInit.Graph, ...req.body }
-    return api.graphRepo.initialize(props).then(flatten.graphFull)
+    return api.graphRepo.initialize(props).then(flatten.graph)
   }
 
   /**
@@ -30,7 +30,7 @@ export class GraphApi {
    * @param {Api} api
    */
   static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
-    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graphFull)
+    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
   }
 
   /**
@@ -39,7 +39,7 @@ export class GraphApi {
    * @param {Api} api
    */
   static getFull = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
-    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graphFull)
+    return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
   }
 
   /**
@@ -79,7 +79,7 @@ export class GraphApi {
     return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.toggleModule(graph, moduleCode))
-      .then(flatten.graphFull)
+      .then(flatten.graph)
   }
 
   /**
@@ -98,7 +98,7 @@ export class GraphApi {
           flowNodes,
         })
       )
-      .then(flatten.graphFull)
+      .then(flatten.graph)
   }
 
   /**
@@ -112,7 +112,7 @@ export class GraphApi {
     return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.updateFlowNode(graph, flowNode))
-      .then(flatten.graphFull)
+      .then(flatten.graph)
   }
 
   /**
