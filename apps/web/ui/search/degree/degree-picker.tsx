@@ -1,4 +1,4 @@
-import { Listbox, Switch } from '@headlessui/react'
+import { Listbox } from '@headlessui/react'
 import { IDegree, UseState } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
