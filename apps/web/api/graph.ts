@@ -1,6 +1,7 @@
 import {
   GraphFlowEdge,
   GraphFlowNode,
+  InitGraphProps,
   ModtreeApiResponse,
 } from '@modtree/types'
 import { BaseApi } from './base-api'
@@ -39,5 +40,12 @@ export class GraphApi extends BaseApi {
         flowEdges,
       })
       .then((res) => res.data)
+  }
+
+  /**
+   * create
+   */
+  async create(props: InitGraphProps): Promise<ModtreeApiResponse.GraphFull> {
+    return this.server.post(`/graph`, props).then((res) => res.data)
   }
 }
