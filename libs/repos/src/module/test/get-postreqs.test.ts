@@ -19,7 +19,7 @@ jest.mock('../repo', () => {
   return { ModuleRepository: R }
 })
 
-const moduleRepo = new ModuleRepository(mocks.db)
+const moduleRepo = new ModuleRepository(mocks.db, database)
 
 const correct = [
   {
