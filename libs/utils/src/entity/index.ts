@@ -76,11 +76,17 @@ export const flatten = {
    * @returns {ModtreeApiResponse.GraphFull}
    */
   graphFull(graph: Graph): ModtreeApiResponse.GraphFull {
+    const degree = {
+      title: graph.degree.title,
+      id: graph.degree.id,
+    }
+
     return {
       ...graph,
       user: graph.user.id,
       modulesHidden: graph.modulesHidden.map(flatten.module),
       modulesPlaced: graph.modulesPlaced.map(flatten.module),
+      degree,
     }
   },
 
