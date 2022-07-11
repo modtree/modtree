@@ -14,7 +14,7 @@ export class DegreeApi extends BaseApi {
   async modify(
     degreeId: string,
     props: InitDegreeProps
-  ): Promise<ModtreeApiResponse.DegreeFull> {
+  ): Promise<ModtreeApiResponse.Degree> {
     return this.server
       .patch(`/degree/${degreeId}`, props)
       .then((res) => res.data)
