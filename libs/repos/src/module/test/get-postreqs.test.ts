@@ -13,9 +13,6 @@ jest.mock('../../base')
 jest.mock('../repo', () => {
   const M = jest.requireActual('../repo')
   const R: typeof ModuleRepository = M.ModuleRepository
-  R.prototype.findByCodes = async (codes: string[]) => {
-    return codes.map((code) => Object.assign(new Module(), database[code]))
-  }
   return { ModuleRepository: R }
 })
 
