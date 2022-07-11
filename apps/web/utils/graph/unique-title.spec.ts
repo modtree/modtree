@@ -8,7 +8,6 @@ const graph: ModtreeApiResponse.GraphFull = {
   degree: {
     id: '',
     title: 'my degree',
-    modules: [],
   },
 }
 
