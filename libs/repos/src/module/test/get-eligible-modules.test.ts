@@ -12,7 +12,7 @@ const fakeData = {
     B1000: { fulfillRequirements: ['B2000', 'C2000', 'D2000'] },
     // 2000 mods
     A2000: { prereqTree: 'A1000' },
-    B2000: { prereqTree: 'A1000' },
+    B2000: { prereqTree: 'B1000' },
     C2000: { prereqTree: { and: ['A1000', 'B1000'] } },
     D2000: { prereqTree: { or: ['A1000', 'B1000'] } },
   },

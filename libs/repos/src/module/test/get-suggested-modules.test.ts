@@ -23,7 +23,6 @@ const fakeData = {
 }
 
 const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
-moduleRepo.getUnlockedModules
 
 const correct = [
   {
