@@ -42,7 +42,7 @@ export default function ModtreeFlow() {
       edges: graph.flowEdges,
     }).nodes
     setNodes(newNodes)
-  }, [graph.flowNodes.length])
+  }, [graph.flowNodes.length, graph.id])
 
   /**
    * called when user drops a module node. (after having dragged it)
