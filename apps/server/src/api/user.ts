@@ -146,6 +146,7 @@ export class UserApi {
     return api.userRepo
       .findOneById(id)
       .then((user) => api.userRepo.setModuleStatus(user, moduleCodes, status))
+      .then(flatten.user)
   }
 
   /**

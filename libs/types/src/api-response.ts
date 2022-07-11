@@ -39,6 +39,11 @@ export type Degree = Modify<
 >
 
 /**
+ * Degree API respsonse
+ */
+export type DegreeFull = IDegree
+
+/**
  * Graph API respsonse
  */
 export type Graph = Modify<

@@ -43,7 +43,7 @@ export class UserApi extends BaseApi {
     userId: string,
     moduleCodes: string[],
     status: ModuleStatus
-  ) {
+  ): Promise<ModtreeApiResponse.User> {
     return this.server.patch(`/user/${userId}/module`, {
       status,
       moduleCodes,
@@ -53,7 +53,10 @@ export class UserApi extends BaseApi {
   /**
    * insert degree
    */
-  async insertDegree(userId: string, degreeId: string): Promise<IUser> {
+  async insertDegree(
+    userId: string,
+    degreeId: string
+  ): Promise<ModtreeApiResponse.User> {
     return this.server.patch(`/user/${userId}/degree`, {
       degreeIds: [degreeId],
     })
@@ -62,14 +65,20 @@ export class UserApi extends BaseApi {
   /**
    * remove degree
    */
-  async removeDegree(userId: string, degreeId: string): Promise<IUser> {
+  async removeDegree(
+    userId: string,
+    degreeId: string
+  ): Promise<ModtreeApiResponse.User> {
     return this.server.delete(`/user/${userId}/degree/${degreeId}`)
   }
 
   /**
    * set main graph
    */
-  async setMainGraph(userId: string, graphId: string): Promise<IUser> {
+  async setMainGraph(
+    userId: string,
+    graphId: string
+  ): Promise<ModtreeApiResponse.User> {
     return this.server.patch(`/user/${userId}/main-graph`, {
       graphId,
     })
@@ -78,7 +87,10 @@ export class UserApi extends BaseApi {
   /**
    * insert graph
    */
-  async insertGraph(userId: string, graphId: string): Promise<IUser> {
+  async insertGraph(
+    userId: string,
+    graphId: string
+  ): Promise<ModtreeApiResponse.User> {
     return this.server.patch(`/user/${userId}/graph`, {
       graphIds: [graphId],
     })
