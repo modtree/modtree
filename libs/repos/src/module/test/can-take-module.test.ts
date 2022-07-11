@@ -20,31 +20,22 @@ jest.mock('../repo', () => {
 
 const moduleRepo = new ModuleRepository(mocks.db)
 
-it('returns correct results', async () => {
-  const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
-  await Promise.all(
-    modulesTested.map((x) =>
-      moduleRepo.canTakeModule(['MA2001'], ['MA2219'], x)
-    )
-  ).then((res) => {
-    expect(res).toStrictEqual([true, false, false, true])
-  })
-})
+const correct = [
+  { done: ['MA2001'], doing: ['MA2219'], tested: 'MA2101', expected: true },
+  { done: ['MA2001'], doing: ['MA2219'], tested: 'MA1100', expected: false },
+  { done: ['MA2001'], doing: ['MA2219'], tested: 'CS2040S', expected: false },
+  { done: ['MA2001'], doing: ['MA2219'], tested: 'CS1010S', expected: true },
+  { done: ['MA2001'], doing: [], tested: 'MA2001', expected: false },
+  { done: [], doing: ['MA2001'], tested: 'MA2001', expected: false },
+  { done: ['CM1102'], doing: ['CS1010'], tested: 'NOT_VALID', expected: false },
+]
 
-// it('returns false for modules done', async () => {
-//   await canTakeModule(['MA2001'], [], 'MA2001').then((res) =>
-//     expect(res).toBe(false)
-//   )
-// })
-//
-// it('returns false for modules doing', async () => {
-//   await canTakeModule([], ['MA2001'], 'MA2001').then((res) =>
-//     expect(res).toBe(false)
-//   )
-// })
-//
-// it('Rejects invalid module code', async () => {
-//   await canTakeModule(['CM1102'], ['CS1010'], 'NOT_VALID').then((res) => {
-//     expect(res).toBe(false)
-//   })
-// })
+test.each(correct)(
+  `test: $tested, expect: $expected
+    done: $done
+    doing: $doing`,
+  async ({ done, doing, tested, expected }) => {
+    const received = await moduleRepo.canTakeModule(done, doing, tested)
+    expect(received).toBe(expected)
+  }
+)
