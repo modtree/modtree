@@ -1,21 +1,21 @@
 import { Module } from '@modtree/types'
 import { DataSource } from 'typeorm'
-import { BaseRepo } from '../../base'
+import { ModuleRepository as Original } from '../repo'
 
-export class ModuleRepository extends BaseRepo<Module> {
+export class ModuleRepository extends Original {
   constructor(db: DataSource) {
-    super(Module, db)
+    super(db)
   }
 
   private moduleFromCode(moduleCode: string): Module {
     return Object.assign(new Module(), { moduleCode })
   }
 
-  async findByCodes(moduleCodes: string[]): Promise<Module[]> {
+  override async findByCodes(moduleCodes: string[]): Promise<Module[]> {
     return moduleCodes.map(this.moduleFromCode)
   }
 
-  async findByCode(moduleCode: string): Promise<Module> {
+  override async findByCode(moduleCode: string): Promise<Module> {
     return this.moduleFromCode(moduleCode)
   }
 }
