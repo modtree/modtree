@@ -14,7 +14,7 @@ const jsonOutputFile = new Date()
 
 /**
  * @param {string[]} arr - array of filepaths
- * @returns {{names: string[][], record: Record<string, string>}} array of pairs: test name and test path
+ * @returns {{names: string[], record: Record<string, string>}} array of pairs: test name and test path
  */
 const getTests = (arr = []) => {
   const names = []
@@ -45,6 +45,20 @@ const projectsToTest = []
 const postArgs = []
 const projectPathsToTest = []
 
+const aliases = {
+  int: 'integration-tests',
+  mf: 'repo:module-full',
+  mc: 'repo:module-condensed',
+}
+/**
+ * auto-create aliases for repo:*
+ */
+tests.names.forEach((name) => {
+  if (name.includes('-')) return
+  const re = name.match(/^repo:(.*)$/)
+  if (re) aliases[re[1]] = name
+})
+
 let markedIndex = -1
 let allOk = true
 args.map((arg, i) => {
@@ -70,10 +84,12 @@ args.map((arg, i) => {
     projectsToTest.push(arg)
     return
   }
-  const repoPrefix = `repo:${arg}`
-  if (tests.names.includes(repoPrefix)) {
-    projectPathsToTest.push(tests.record[repoPrefix])
-    projectsToTest.push(repoPrefix)
+  if (
+    Object.keys(aliases).includes(arg) &&
+    tests.names.includes(aliases[arg])
+  ) {
+    projectPathsToTest.push(tests.record[aliases[arg]])
+    projectsToTest.push(aliases[arg])
     return
   }
   allOk = false
@@ -82,6 +98,8 @@ if (!allOk || args.length === 0) {
   console.debug(
     chalk.cyan('\nPlease choose from these tests:'),
     tests.names,
+    chalk.cyan('\nor use one of these aliases:'),
+    aliases,
     '\n'
   )
   process.exit(0)

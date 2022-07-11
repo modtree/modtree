@@ -1,7 +1,6 @@
 import { setup, Repo, teardown } from '@modtree/test-env'
-import { flatten } from '@modtree/utils'
+import { flatten, getNestedCodes } from '@modtree/utils'
 import { Module } from '@modtree/types'
-import { getNestedCodes } from '../../utils'
 import { db } from '@modtree/typeorm-config'
 
 let modules: Module[]
