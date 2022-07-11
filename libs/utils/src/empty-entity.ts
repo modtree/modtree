@@ -119,5 +119,6 @@ export const empty = {
   UserFull,
   Graph,
   GraphFull,
+  Degree,
   DegreeFull,
 }

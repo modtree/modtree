@@ -3,7 +3,7 @@ import { empty } from '@modtree/utils'
 
 export const baseInitialState: ReduxState = {
   user: empty.UserFull,
-  degree: empty.DegreeFull,
+  degree: empty.Degree,
   graph: {
     ...empty.GraphFull,
     selectedCodes: [],

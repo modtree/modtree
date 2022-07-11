@@ -1,6 +1,5 @@
 import {
   IDegree,
-  IGraph,
   IModule,
   IModuleCondensed,
   IModuleFull,
@@ -10,7 +9,7 @@ import type { Pages, ContextMenuProps } from 'types'
 
 export type ReduxState = {
   user: ModtreeApiResponse.UserFull
-  degree: IDegree
+  degree: ModtreeApiResponse.Degree
   graph: ModtreeApiResponse.GraphFull & {
     selectedCodes: string[]
   }
