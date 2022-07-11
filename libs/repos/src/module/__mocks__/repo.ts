@@ -11,11 +11,11 @@ export class ModuleRepository extends BaseRepo<Module> {
     return Object.assign(new Module(), { moduleCode })
   }
 
-  /**
-   * @param {string[]} moduleCodes
-   * @returns {Promise<Module[]>}
-   */
   async findByCodes(moduleCodes: string[]): Promise<Module[]> {
     return moduleCodes.map(this.moduleFromCode)
+  }
+
+  async findByCode(moduleCode: string): Promise<Module> {
+    return this.moduleFromCode(moduleCode)
   }
 }

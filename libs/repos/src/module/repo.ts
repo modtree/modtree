@@ -42,11 +42,19 @@ export class ModuleRepository
   }
 
   /**
+   * @param {string[]} moduleCode
+   * @returns {Promise<Module>}
+   */
+  findByCode(moduleCode: string): Promise<Module> {
+    return this.findOneByOrFail({ moduleCode })
+  }
+
+  /**
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */
   findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    return this.find({ where: { moduleCode: In(moduleCodes) } })
+    return this.findBy({ moduleCode: In(moduleCodes) })
   }
 
   /**
@@ -67,7 +75,7 @@ export class ModuleRepository
       return false
     }
     // 2. find module
-    return this.findOneByOrFail({ moduleCode })
+    return this.findByCode(moduleCode)
       .then((module) =>
         // 3. check if PrereqTree is fulfilled
         checkTree(module.prereqTree, modulesDone)

@@ -366,6 +366,13 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
    */
   getCodes(): Promise<string[]>
   /**
+   * finds one module by code
+   *
+   * @param moduleCode
+   * @returns module
+   */
+  findByCode(moduleCode: string): Promise<IModule>
+  /**
    * finds some modules by codes
    *
    * @param moduleCodes
