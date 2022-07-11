@@ -19,9 +19,15 @@ const Module: IModule = {
   fulfillRequirements: [],
 }
 
+const Degree: ModtreeApiResponse.Degree = {
+  id: '',
+  modules: [], // string arr
+  title: '',
+}
+
 const DegreeFull: ModtreeApiResponse.DegreeFull = {
   id: '',
-  modules: [],
+  modules: [], // modules arr
   title: '',
 }
 
@@ -71,7 +77,7 @@ const GraphFull: ModtreeApiResponse.GraphFull = {
   title: '',
   id: '',
   user: '',
-  degree: DegreeFull,
+  degree: Degree,
   modulesPlaced: [],
   modulesHidden: [],
   flowNodes: [],

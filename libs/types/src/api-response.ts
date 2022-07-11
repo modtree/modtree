@@ -65,6 +65,11 @@ export type GraphFull = Modify<
     user: string
     modulesPlaced: string[]
     modulesHidden: string[]
+    degree: {
+      // drop modules
+      id: string
+      title: string
+    }
   }
 >
 
