@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
   displayName: 'repo:degree',
-  preset: '../../../../../jest.preset.js',
+  preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },

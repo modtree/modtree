@@ -37,7 +37,6 @@ const Graph: InitGraphProps = {
 const Module: InitModuleProps = {
   moduleCode: '',
   title: '',
-  description: '',
   prerequisite: '',
   corequisite: '',
   preclusion: '',

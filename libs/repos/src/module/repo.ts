@@ -1,7 +1,6 @@
 import { DataSource, In } from 'typeorm'
 import { Module, IModuleRepository, InitModuleProps } from '@modtree/types'
-import { flatten, unique } from '@modtree/utils'
-import { hasTakenModule, checkTree } from './utils'
+import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
 type Data = {
@@ -154,14 +153,13 @@ export class ModuleRepository
     moduleCode: string
   ): Promise<string[]> {
     // future support for multiple mods
-    const addedModuleCodes = [moduleCode]
     // 1. Return empty array if module in modulesDone or modulesDoing
     if (hasTakenModule(modulesDone, modulesDoing, moduleCode)) return []
     return Promise.all([
       // 2. Get current eligible modules
       this.getEligibleModules(modulesDone, modulesDoing, []),
       // 3. Get unlocked eligible modules
-      this.getEligibleModules(modulesDone, modulesDoing, addedModuleCodes),
+      this.getEligibleModules(modulesDone, modulesDoing, [moduleCode]),
     ]).then(([eligible, unlocked]) =>
       // 4. Compare unlockedModules to eligibleModules
       unlocked.filter((code) => !eligible.includes(code))

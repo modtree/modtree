@@ -3,7 +3,7 @@ import { getSource } from '@modtree/typeorm-config'
 import { oneUp } from '@modtree/utils'
 import fs from 'fs'
 import { resolve } from 'path'
-import { Api } from '../../api'
+import { Api } from '@modtree/repos'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)

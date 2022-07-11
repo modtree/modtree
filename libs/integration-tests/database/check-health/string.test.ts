@@ -1,8 +1,7 @@
 import { setup, Repo, teardown } from '@modtree/test-env'
-import { flatten } from '@modtree/utils'
+import { flatten, validModuleCode } from '@modtree/utils'
 import { db } from '@modtree/typeorm-config'
 import { Module } from '@modtree/types'
-import { validModuleCode } from '@modtree/utils'
 
 const notInDb = new Set<string>()
 let modules: Module[]

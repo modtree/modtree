@@ -36,7 +36,6 @@ export type InitModuleCondensedProps = {
 export type InitModuleProps = {
   moduleCode: string
   title: string
-  description: string
   prerequisite: string
   corequisite: string
   preclusion: string
