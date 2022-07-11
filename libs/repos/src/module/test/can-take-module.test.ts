@@ -1,9 +1,22 @@
 import { ModuleRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
 import '@modtree/test-env/jest'
+import { Module } from '@modtree/types'
+import database from './can-take-module.json'
+
+const findByCode: Record<string, Partial<Module>> = database.moduleRepo
+  .findByCode
 
 jest.mock('../../base')
-jest.mock('../../module')
+jest.mock('../repo', () => {
+  const M = jest.requireActual('../repo')
+  const R: typeof ModuleRepository = M.ModuleRepository
+  R.prototype.findByCode = async (moduleCode: string) => {
+    const tree = findByCode[moduleCode]
+    return Object.assign(new Module(), tree)
+  }
+  return { ModuleRepository: R }
+})
 
 const moduleRepo = new ModuleRepository(mocks.db)
 
