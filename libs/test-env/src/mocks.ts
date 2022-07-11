@@ -39,16 +39,6 @@ export function getDb(fakeData?: FakeDataInit): FakeDataSource {
     database: 'mock',
     type: 'postgres',
   }) as any
-  db.manager = {
-    whereInIds: () => {},
-    connection: { getMetadata: () => {} },
-  }
-  db.getMetadata = () => ({
-    relations: [],
-  })
-  db.createQueryBuilder = () => ({
-    whereInIds: () => {},
-  })
   db.fakeData = {
     module: fillFakeData('module', fakeData?.module),
     degree: fillFakeData('degree', fakeData?.degree),

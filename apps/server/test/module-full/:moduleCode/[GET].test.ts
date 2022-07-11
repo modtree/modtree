@@ -1,23 +1,18 @@
 import request from 'supertest'
 import { getApp } from 'app'
 import type { Express } from 'express'
-import { setup, teardown } from '@modtree/test-env'
 import { Api } from '@modtree/repos'
-import { db } from '@modtree/typeorm-config'
+import { mocks } from '@modtree/test-env'
 
-let app: Express
-let api: Api
-let findOneByCode: jest.SpyInstance
-
-beforeAll(() =>
-  setup(db).then(() => {
-    api = new Api(db)
-    app = getApp(api)
-    findOneByCode = jest.spyOn(api.moduleFullRepo, 'findOneByCode')
-  })
-)
+jest.mock('@modtree/base-repo')
 beforeEach(() => jest.clearAllMocks())
-afterAll(() => teardown(db))
+
+const api = new Api(mocks.db)
+const app: Express = getApp(api)
+const findOneByCode: jest.SpyInstance = jest.spyOn(
+  api.moduleFullRepo,
+  'findOneByCode'
+)
 
 const testRequest = () => request(app).get('/module-full/MA1100')
 

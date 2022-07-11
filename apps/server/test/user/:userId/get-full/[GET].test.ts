@@ -1,26 +1,18 @@
 import request from 'supertest'
 import { getApp } from 'app'
 import type { Express } from 'express'
-import { getSource } from '@modtree/typeorm-config'
-import { oneUp } from '@modtree/utils'
-import { setup, teardown } from '@modtree/test-env'
 import { Api } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-let app: Express
-let api: Api
-let findOneOrFail: jest.SpyInstance
-
-beforeAll(() =>
-  setup(db).then(() => {
-    api = new Api(db)
-    app = getApp(api)
-    findOneOrFail = jest.spyOn(api.userRepo, 'findOneOrFail')
-  })
-)
+jest.mock('@modtree/base-repo')
 beforeEach(() => jest.clearAllMocks())
-afterAll(() => teardown(db))
+
+const api = new Api(mocks.db)
+const app: Express = getApp(api)
+const findOneOrFail: jest.SpyInstance = jest.spyOn(
+  api.userRepo,
+  'findOneOrFail'
+)
 
 test('`findOneOrFail` is called once', async () => {
   await request(app).get('/user/58201858-5ce5-4ceb-8568-eecf55841b9f/get-full')
