@@ -25,6 +25,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
     api.degree
       .getById(buildId)
       .then((degree) => degree.modules)
+      .then((moduleCodes) => api.module.getByCodes(moduleCodes))
       .then((modules) => {
         dispatch(setBuildList(modules))
       })

@@ -5,10 +5,8 @@ export class DegreeApi extends BaseApi {
   /**
    * get a degree by its id directly from database
    */
-  async getById(degreeId: string): Promise<ModtreeApiResponse.DegreeFull> {
-    return this.server
-      .get(`/degree/${degreeId}/get-full`)
-      .then((res) => res.data)
+  async getById(degreeId: string): Promise<ModtreeApiResponse.Degree> {
+    return this.server.get(`/degree/${degreeId}`).then((res) => res.data)
   }
   /**
    * sets modules
