@@ -1,29 +1,15 @@
 import request from 'supertest'
 import { getApp } from 'app'
 import type { Express } from 'express'
-import { getSource } from '@modtree/typeorm-config'
-import { oneUp } from '@modtree/utils'
-import { setup, teardown } from '@modtree/test-env'
 import { Api } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-let app: Express
-let api: Api
-let findOneById: jest.SpyInstance
-
-beforeAll(() =>
-  setup(db).then(() => {
-    api = new Api(db)
-    app = getApp(api)
-    findOneById = jest.spyOn(api.graphRepo, 'findOneById')
-  })
-)
+jest.mock('@modtree/base-repo')
 beforeEach(() => jest.clearAllMocks())
-afterAll(() => teardown(db))
 
-// dd9f2725-7a08-45f8-bbbb-10bb7e002bb3
-// 017fc011-486c-4ec6-a038-9a92ab85a8f3
+const api = new Api(mocks.db)
+const app: Express = getApp(api)
+const findOneById: jest.SpyInstance = jest.spyOn(api.graphRepo, 'findOneById')
 
 const testRequest = async () =>
   request(app).patch(
