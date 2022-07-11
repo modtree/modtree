@@ -5,6 +5,7 @@ import ReactFlow, {
   useNodesState,
   Background,
   useEdgesState,
+  useReactFlow,
 } from 'react-flow-renderer'
 import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
@@ -43,6 +44,17 @@ export default function ModtreeFlow() {
     }).nodes
     setNodes(newNodes)
   }, [graph.flowNodes.length, graph.id])
+
+  /**
+   * Fit view for ANY graph change
+   * - nodes
+   * - edges
+   * - change graph
+   */
+  const reactFlow = useReactFlow()
+  useEffect(() => {
+    reactFlow.fitView()
+  }, [nodes, edges])
 
   /**
    * called when user drops a module node. (after having dragged it)

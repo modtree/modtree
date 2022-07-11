@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { UserProvider } from '@auth0/nextjs-auth0'
 import { AppProps } from 'next/app'
 import { FC, useEffect } from 'react'
+import { ReactFlowProvider } from 'react-flow-renderer'
 
 export default function Modtree({
   Component,
@@ -23,7 +24,9 @@ export default function Modtree({
   return (
     <UserProvider>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <ReactFlowProvider>
+          <Component {...pageProps} />
+        </ReactFlowProvider>
       </Provider>
     </UserProvider>
   )
