@@ -79,7 +79,7 @@ export class GraphApi {
     return api.graphRepo
       .findOneById(graphId)
       .then((graph) => api.graphRepo.toggleModule(graph, moduleCode))
-      .then(flatten.graph)
+      .then(flatten.graphFull)
   }
 
   /**

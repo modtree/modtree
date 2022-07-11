@@ -20,7 +20,7 @@ export class GraphApi extends BaseApi {
   async toggle(
     graphId: string,
     moduleCode: string
-  ): Promise<ModtreeApiResponse.Graph> {
+  ): Promise<ModtreeApiResponse.GraphFull> {
     return this.server
       .patch(`/graph/${graphId}/toggle/${moduleCode}`)
       .then((res) => res.data)
