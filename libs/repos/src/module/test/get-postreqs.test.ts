@@ -1,51 +1,40 @@
-import { setup, t, Repo, teardown } from '@modtree/test-env'
-import { unique } from '@modtree/utils'
-import { In } from 'typeorm'
-import { db } from '@modtree/typeorm-config'
+import { ModuleRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import '@modtree/test-env/jest'
+import { Module } from '@modtree/types'
 
-beforeAll(() => setup(db, { restore: false }))
-afterAll(() => teardown(db))
+jest.mock('../../base')
+jest.mock('../../module')
 
-describe('single query', () => {
-  it('returns an array', async () => {
-    await Repo.Module.getPostReqs(['MA2001']).then((res) => {
-      expect(res).toBeInstanceOf(Array)
-      t.postReqsCodes = res
-    })
-  })
+const fakeData: Record<string, Partial<Module>> = {
+  ABC1000: { fulfillRequirements: ['shared1', 'shared2', 'ABC1000_only'] },
+  XYZ1000: { fulfillRequirements: ['shared1', 'shared2', 'XYZ1000_only'] },
+  DAB1000: { fulfillRequirements: [] },
+}
+const moduleRepo = new ModuleRepository(mocks.db, fakeData)
+const correct = [
+  {
+    query: ['ABC1000'],
+    expected: ['shared1', 'shared2', 'ABC1000_only'],
+  },
+  {
+    query: ['XYZ1000'],
+    expected: ['shared1', 'shared2', 'XYZ1000_only'],
+  },
+  {
+    query: ['ABC1000', 'XYZ1000'],
+    expected: ['shared1', 'shared2', 'ABC1000_only', 'XYZ1000_only'],
+  },
+  {
+    query: ['DAB1000'],
+    expected: [],
+  },
+]
 
-  it('returns correct modules', async () => {
-    await Repo.Module.findOneByOrFail({
-      moduleCode: 'MA2001',
-    }).then((module) => {
-      expect(t.postReqsCodes).toIncludeSameMembers(module.fulfillRequirements)
-    })
-  })
-})
-
-describe('multi query', () => {
-  it('returns an array', async () => {
-    await Repo.Module.getPostReqs(['MA2001', 'CS1010']).then((res) => {
-      expect(res).toBeInstanceOf(Array)
-      t.postReqsCodes = res
-    })
-  })
-
-  it('returns correct modules', async () => {
-    const codes: string[] = []
-    await Repo.Module.findBy({
-      moduleCode: In(['MA2001', 'CS1010']),
-    }).then((modules) => {
-      modules.forEach((module) => {
-        codes.push(...module.fulfillRequirements)
-      })
-    })
-    expect(t.postReqsCodes).toIncludeSameMembers(unique(codes))
-  })
-})
-
-it('returns [] for modules with no post reqs', async () => {
-  await Repo.Module.getPostReqs(['CP2106']).then((res) => {
-    expect(res).toStrictEqual([])
-  })
-})
+test.each(correct)(
+  'post-reqs of $query are correct',
+  async ({ query, expected }) => {
+    const res = await moduleRepo.getPostReqs(query)
+    expect(res).toIncludeSameMembers(expected)
+  }
+)

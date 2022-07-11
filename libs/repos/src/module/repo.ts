@@ -15,7 +15,7 @@ export class ModuleRepository
   extends BaseRepo<Module>
   implements IModuleRepository
 {
-  constructor(db: DataSource) {
+  constructor(db: DataSource, _fakeData?: Record<string, Partial<Module>>) {
     super(Module, db)
   }
 
@@ -42,11 +42,19 @@ export class ModuleRepository
   }
 
   /**
+   * @param {string[]} moduleCode
+   * @returns {Promise<Module>}
+   */
+  findByCode(moduleCode: string): Promise<Module> {
+    return this.findOneByOrFail({ moduleCode })
+  }
+
+  /**
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */
   findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    return this.find({ where: { moduleCode: In(moduleCodes) } })
+    return this.findBy({ moduleCode: In(moduleCodes) })
   }
 
   /**
@@ -67,7 +75,7 @@ export class ModuleRepository
       return false
     }
     // 2. find module
-    return this.findOneByOrFail({ moduleCode })
+    return this.findByCode(moduleCode)
       .then((module) =>
         // 3. check if PrereqTree is fulfilled
         checkTree(module.prereqTree, modulesDone)
@@ -82,15 +90,14 @@ export class ModuleRepository
    * @returns {Promise<string[]>}
    */
   async getPostReqs(moduleCodes: string[]): Promise<string[]> {
-    const result = new Set<string>()
-    return this.findByCodes(moduleCodes).then((modules) => {
-      modules.forEach((module) => {
-        if (Array.isArray(module.fulfillRequirements)) {
-          module.fulfillRequirements.forEach((m) => result.add(m))
-        }
-      })
-      return Array.from(result)
-    })
+    return this.findByCodes(moduleCodes).then((modules) =>
+      unique(
+        modules.reduce(
+          (result, curr) => [...result, ...curr.fulfillRequirements],
+          [] as string[]
+        )
+      )
+    )
   }
 
   /**

@@ -1,20 +1,11 @@
-import { ModuleRepository, UserRepository } from '@modtree/repos'
+import { UserRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
-import { Module, User } from '@modtree/types'
+import { User } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import '@modtree/test-env/jest'
 
 jest.mock('../../base')
-jest.mock('../../module', () => {
-  const actual = jest.requireActual('../../module')
-  const M: typeof ModuleRepository = actual.ModuleRepository
-  M.prototype.findByCodes = jest.fn(async (codes: string[]) => {
-    return codes.map((code) =>
-      Object.assign(new Module(), { moduleCode: code })
-    )
-  })
-  return { ModuleRepository: M }
-})
+jest.mock('../../module')
 
 const init = {
   authZeroId: 'auth0|012345678901234567890123',
