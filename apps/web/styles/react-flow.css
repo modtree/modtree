@@ -11,7 +11,7 @@
 }
 
 .react-flow__node.selected {
-  @apply bg-gradient-to-r from-orange-400 to-pink-400;
+  @apply border-4 border-orange-400;
 }
 
 .react-flow__attribution {
