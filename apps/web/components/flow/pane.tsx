@@ -37,7 +37,7 @@ export default function ModtreeFlow() {
   const user = useAppSelector((state) => state.user)
   const done = user.modulesDone.map(flatten.module)
   const doing = user.modulesDoing.map(flatten.module)
-  const props: ModuleSources = {
+  const modules: ModuleSources = {
     done,
     doing,
     planned: graph.modulesPlaced.filter(
@@ -61,8 +61,8 @@ export default function ModtreeFlow() {
     }).nodes
 
     // updates CSS after
-    api.graph.canTakeModules(graph.id, props.planned).then((res) => {
-      getCSS(newNodes, props, res).then((nodes) => {
+    api.graph.canTakeModules(graph.id, modules.planned).then((res) => {
+      getCSS(newNodes, modules, res).then((nodes) => {
         setNodes(nodes)
       })
     })
