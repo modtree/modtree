@@ -16,8 +16,8 @@ type NodesAndEdges = {
 /**
  * Wrapper for the function in libs/utils
  */
-export function redrawGraph(props: NodesAndEdges) {
-  const data: NodesAndEdges = redraw(props)
+export function redrawGraph(modules: NodesAndEdges) {
+  const data: NodesAndEdges = redraw(modules)
   return {
     nodes: data.nodes,
     edges: data.edges,
@@ -25,11 +25,11 @@ export function redrawGraph(props: NodesAndEdges) {
 }
 
 export async function getModuleStates(
-  props: ModuleSources,
+  modules: ModuleSources,
   canTake: CanTakeModuleMap
 ): Promise<ModuleStateDict> {
   // Get required data
-  const { done, doing, planned } = props
+  const { done, doing, planned } = modules
 
   // Create states
   let states: ModuleStateDict = {}
@@ -50,10 +50,10 @@ export async function getModuleStates(
 
 export async function getCSS(
   nodes: GraphFlowNode[],
-  props: ModuleSources,
+  modules: ModuleSources,
   canTake: CanTakeModuleMap
 ) {
-  const states = await getModuleStates(props, canTake)
+  const states = await getModuleStates(modules, canTake)
   return nodes.map((node) => ({
     ...node,
     style: cssMap[states[node.id]],
