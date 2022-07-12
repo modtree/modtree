@@ -17,7 +17,7 @@ const correct = [
     expected: ['MA1521', 'MA2001'],
   },
   {
-    type: "doesn't add modules if all are invalidit works",
+    type: "doesn't add modules if all are invalid",
     moduleCodes: ['NOT_VALID'],
     expected: [],
   },
