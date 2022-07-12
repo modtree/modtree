@@ -168,6 +168,17 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    */
   canTakeModule(user: IUser, moduleCode: string): Promise<boolean>
   /**
+   * multiple canTakeModule
+   *
+   * @param user
+   * @param moduleCodes
+   * @returns a boolean
+   */
+  canTakeModules(
+    user: IUser,
+    moduleCodes: string[]
+  ): Promise<Record<string, boolean>>
+  /**
    * finds a user by username
    *
    * @param username

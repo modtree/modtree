@@ -88,6 +88,33 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
   }
 
   /**
+   * Essentially multiple canTakeModules.
+   *
+   * Given an array of module codes, checks if user has cleared sufficient
+   * pre-requisites for each of them.
+   *
+   * Returns a dictionary keyed on moduleCode.
+   *
+   * @param {User} user
+   * @param {string[]} moduleCodes
+   * @returns {Promise<Record<string, boolean>>}
+   */
+  async canTakeModules(
+    user: User,
+    moduleCodes: string[]
+  ): Promise<Record<string, boolean>> {
+    return Promise.all(
+      moduleCodes.map((code) => this.canTakeModule(user, code))
+    ).then((results) => {
+      let dict: Record<string, boolean> = {}
+      moduleCodes.forEach((code, i) => {
+        dict[code] = results[i]
+      })
+      return dict
+    })
+  }
+
+  /**
    * List mods a user can take, based on what the user has completed.
    *
    * @param {User} user
