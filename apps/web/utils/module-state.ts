@@ -4,6 +4,7 @@ import {
   GraphFlowNode,
   GraphFlowEdge,
   CanTakeModuleMap,
+  ModuleSources,
 } from '@modtree/types'
 import { redrawGraph as redraw } from '@modtree/utils'
 
@@ -23,14 +24,8 @@ export function redrawGraph(props: NodesAndEdges) {
   }
 }
 
-type Props = {
-  done: string[]
-  doing: string[]
-  planned: string[]
-}
-
 export async function getModuleStates(
-  props: Props,
+  props: ModuleSources,
   canTake: CanTakeModuleMap
 ): Promise<ModuleStateDict> {
   // Get required data
@@ -55,7 +50,7 @@ export async function getModuleStates(
 
 export async function getCSS(
   nodes: GraphFlowNode[],
-  props: Props,
+  props: ModuleSources,
   canTake: CanTakeModuleMap
 ) {
   const states = await getModuleStates(props, canTake)

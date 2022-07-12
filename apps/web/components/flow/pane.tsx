@@ -15,6 +15,7 @@ import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { getCSS, redrawGraph } from '@/utils/module-state'
 import { flatten } from '@modtree/utils'
 import { api } from 'api'
+import { ModuleSources } from '@modtree/types'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -36,7 +37,7 @@ export default function ModtreeFlow() {
   const user = useAppSelector((state) => state.user)
   const done = user.modulesDone.map(flatten.module)
   const doing = user.modulesDoing.map(flatten.module)
-  const props = {
+  const props: ModuleSources = {
     done,
     doing,
     planned: graph.modulesPlaced.filter(
