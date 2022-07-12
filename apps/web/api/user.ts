@@ -95,4 +95,18 @@ export class UserApi extends BaseApi {
       graphIds: [graphId],
     })
   }
+
+  /**
+   * can take modules
+   */
+  async canTakeModules(
+    userId: string,
+    moduleCodes: string[]
+  ): Promise<ModtreeApiResponse.User> {
+    return this.server.get(`/user/${userId}/can-take-modules`, {
+      params: {
+        moduleCodes,
+      },
+    })
+  }
 }
