@@ -6,20 +6,20 @@ jest.mock('../../base')
 jest.mock('../../module')
 
 const fakeData = {
-  module: {
-    MA2101: {
+  module: [
+    {
       moduleCode: 'MA2101',
       prereqTree: {
         or: ['MA1101R', 'MA2001', 'MA1506', 'MA1508', 'MA1508E', 'MA1513'],
       },
     },
-    MA1100: {
+    {
       moduleCode: 'MA1100',
       prereqTree: {
         or: ['MA1301', 'MA1301X'],
       },
     },
-    CS2040S: {
+    {
       moduleCode: 'CS2040S',
       prereqTree: {
         and: [
@@ -30,11 +30,11 @@ const fakeData = {
         ],
       },
     },
-    CS1010S: {
+    {
       moduleCode: 'CS1010S',
       prereqTree: '',
     },
-  },
+  ],
 }
 
 const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))

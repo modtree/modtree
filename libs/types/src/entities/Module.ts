@@ -28,4 +28,16 @@ export class Module implements IModule {
 
   @Column('json', { nullable: true })
   prereqTree: PrereqTree
+
+  /**
+   * Do not put any parameters in this constructor.
+   *
+   * Many of TypeORM's builtins rely on calling this
+   * constructor freely with no parameters.
+   *
+   * This acts as an in-code default value of this entity.
+   */
+  constructor() {
+    this.fulfillRequirements = []
+  }
 }

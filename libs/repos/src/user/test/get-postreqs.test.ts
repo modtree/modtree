@@ -1,68 +1,64 @@
-import { Module } from '@modtree/types'
-import { init, Repo, setup, t, teardown } from '@modtree/test-env'
-import { getSource } from '@modtree/typeorm-config'
-import { flatten, oneUp } from '@modtree/utils'
+import '@modtree/test-env/jest'
+import { UserRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../base')
+jest.mock('../../module')
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Repo.User.initialize({
-        ...init.user1,
-        modulesDone: ['MA2001'],
-        modulesDoing: ['MA2101'],
-      })
-    )
-    .then((user) => {
-      t.user = user
+const fakeData = {
+  module: {
+    AX1000: { fulfillRequirements: ['AX2000', 'CX2000'] },
+    BX1000: { fulfillRequirements: ['BX2000', 'CX2000'] },
+    DX1000: { fulfillRequirements: [] },
+  },
+}
+
+const init = {
+  authZeroId: 'auth0|012345678901234567890123',
+  email: 'khang@modtree.com',
+}
+
+const userRepo = new UserRepository(mocks.getDb(fakeData))
+
+const correct = [
+  {
+    done: [],
+    doing: [],
+    expected: [],
+  },
+  {
+    done: ['AX1000'],
+    doing: [],
+    expected: ['AX2000', 'CX2000'],
+  },
+  {
+    done: ['BX1000'],
+    doing: [],
+    expected: ['BX2000', 'CX2000'],
+  },
+  {
+    done: ['AX1000', 'BX1000'],
+    doing: [],
+    expected: ['AX2000', 'BX2000', 'CX2000'],
+  },
+  {
+    done: ['DX1000'],
+    doing: ['AX1000', 'BX1000'], // don't take into account these
+    expected: [],
+  },
+]
+
+test.each(correct)(
+  'works with $done done',
+  async ({ done, doing, expected }) => {
+    const user = await userRepo.initialize({
+      ...init,
+      modulesDone: done,
+      modulesDoing: doing,
     })
+    await userRepo.getPostReqs(user).then((modules) => {
+      const codes = modules.map((m) => m.moduleCode)
+      expect(codes).toIncludeSameMembers(expected)
+    })
+  }
 )
-afterAll(() => teardown(db))
-
-it('returns an array of modules', async () => {
-  await Repo.User.getPostReqs(t.user!).then((res) => {
-    res.forEach((module) => expect(module).toBeInstanceOf(Module))
-  })
-})
-
-it("doesn't contain modules doing", async () => {
-  await Repo.User.getPostReqs(t.user!).then((res) => {
-    const codes = res.map(flatten.module)
-    expect(codes).not.toContain('MA2101')
-  })
-})
-
-it('gets correct post-reqs', async () => {
-  await Promise.all([
-    Repo.User.getPostReqs(t.user!),
-    Repo.Module.findOneByOrFail({ moduleCode: 'MA2001' }),
-  ]).then(([userPostReqs, module]) => {
-    const postReqCodes = userPostReqs.map(flatten.module)
-    const expectedCodes = module.fulfillRequirements
-    expect([...postReqCodes, 'MA2101']).toIncludeSameMembers(expectedCodes)
-  })
-})
-
-describe('handles empty fulfillRequirements', () => {
-  beforeEach(expect.hasAssertions)
-
-  it('CP2106.fulfillRequirements is empty', async () => {
-    await Repo.Module.findOneByOrFail({ moduleCode: 'CP2106' }).then(
-      (module) => {
-        expect(module.fulfillRequirements).toEqual([])
-      }
-    )
-  })
-
-  it('returns []', async () => {
-    // init new user with CP2106
-    // CP2106 has empty string fulfillRequirements
-    await Repo.User.initialize({ ...init.user2, modulesDone: ['CP2106'] })
-      .then((res) => Repo.User.getPostReqs(res))
-      .then((postReqs) => {
-        expect(postReqs).toStrictEqual([])
-      })
-  })
-})

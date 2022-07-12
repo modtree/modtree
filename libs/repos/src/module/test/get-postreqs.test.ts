@@ -6,11 +6,17 @@ jest.mock('../../base')
 jest.mock('../../module')
 
 const fakeData = {
-  module: {
-    ABC1000: { fulfillRequirements: ['shared1', 'shared2', 'ABC1000_only'] },
-    XYZ1000: { fulfillRequirements: ['shared1', 'shared2', 'XYZ1000_only'] },
-    DAB1000: { fulfillRequirements: [] },
-  },
+  module: [
+    {
+      moduleCode: 'ABC1000',
+      fulfillRequirements: ['shared1', 'shared2', 'ABC1000_only'],
+    },
+    {
+      moduleCode: 'XYZ1000',
+      fulfillRequirements: ['shared1', 'shared2', 'XYZ1000_only'],
+    },
+    { moduleCode: 'DAB1000', fulfillRequirements: [] },
+  ],
 }
 
 const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
