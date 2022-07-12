@@ -195,4 +195,18 @@ export class UserApi {
       .then((user) => api.userRepo.setMainGraph(user, graphId))
       .then(flatten.user)
   }
+
+  /**
+   * Return true if user can take modules.
+   * Returns a dictionary keyed on moduleCode.
+   *
+   * @param {Api} api
+   */
+  static canTakeModules = (api: Api) => async (req: Request) => {
+    const id = req.params.userId
+    const { moduleCodes } = req.body
+    return api.userRepo
+      .findOneById(id)
+      .then((user) => api.userRepo.canTakeModules(user, moduleCodes))
+  }
 }
