@@ -3,6 +3,7 @@ import {
   FrontendModuleState,
   GraphFlowNode,
   GraphFlowEdge,
+  CanTakeModuleMap,
 } from '@modtree/types'
 import { redrawGraph as redraw } from '@modtree/utils'
 
@@ -30,7 +31,7 @@ type Props = {
 
 export async function getModuleStates(
   props: Props,
-  canTake: Record<string, boolean>
+  canTake: CanTakeModuleMap
 ): Promise<ModuleStateDict> {
   // Get required data
   const { done, doing, planned } = props
@@ -55,7 +56,7 @@ export async function getModuleStates(
 export async function getCSS(
   nodes: GraphFlowNode[],
   props: Props,
-  canTake: Record<string, boolean>
+  canTake: CanTakeModuleMap
 ) {
   const states = await getModuleStates(props, canTake)
   return nodes.map((node) => ({

@@ -46,6 +46,7 @@ export function ModuleDetails() {
       nodes: [...mainGraph.flowNodes, node],
       edges: mainGraph.flowEdges,
     })
+
     dispatch(
       setFlow({
         flowNodes: nodes,

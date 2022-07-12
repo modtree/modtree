@@ -27,6 +27,8 @@ export enum ModuleStatus {
 }
 export type ModuleState = 'placed' | 'hidden' | 'new'
 
+export type CanTakeModuleMap = Record<string, boolean>
+
 export interface IBaseRepository<Entity> {
   relations: Relations
   /** direct inheritance */
@@ -144,7 +146,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
   canTakeModules(
     graph: IGraph,
     moduleCodes: string[]
-  ): Promise<Record<string, boolean>>
+  ): Promise<CanTakeModuleMap>
   /**
    * finds graphs by ids
    *
@@ -193,10 +195,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @param moduleCodes
    * @returns a boolean
    */
-  canTakeModules(
-    user: IUser,
-    moduleCodes: string[]
-  ): Promise<Record<string, boolean>>
+  canTakeModules(user: IUser, moduleCodes: string[]): Promise<CanTakeModuleMap>
   /**
    * finds a user by username
    *

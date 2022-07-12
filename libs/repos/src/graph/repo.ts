@@ -10,6 +10,7 @@ import {
   GraphFlowNode,
   InitGraphProps,
   ModuleState,
+  CanTakeModuleMap,
 } from '@modtree/types'
 import {
   quickpop,
@@ -319,16 +320,16 @@ export class GraphRepository
    *
    * @param {Graph} graph
    * @param {string[]} moduleCodes
-   * @returns {Promise<Record<string, boolean>>}
+   * @returns {Promise<CanTakeModuleMap>}
    */
   async canTakeModules(
     graph: Graph,
     moduleCodes: string[]
-  ): Promise<Record<string, boolean>> {
+  ): Promise<CanTakeModuleMap> {
     return Promise.all(
       moduleCodes.map((code) => this.canTakeModule(graph, code))
     ).then((results) => {
-      let dict: Record<string, boolean> = {}
+      let dict: CanTakeModuleMap = {}
       moduleCodes.forEach((code, i) => {
         dict[code] = results[i]
       })

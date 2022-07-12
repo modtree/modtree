@@ -9,6 +9,7 @@ import {
   IUserRepository,
   ModuleStatus,
   IDegreeRepository,
+  CanTakeModuleMap,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
@@ -97,16 +98,16 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    *
    * @param {User} user
    * @param {string[]} moduleCodes
-   * @returns {Promise<Record<string, boolean>>}
+   * @returns {Promise<CanTakeModuleMap>}
    */
   async canTakeModules(
     user: User,
     moduleCodes: string[]
-  ): Promise<Record<string, boolean>> {
+  ): Promise<CanTakeModuleMap> {
     return Promise.all(
       moduleCodes.map((code) => this.canTakeModule(user, code))
     ).then((results) => {
-      let dict: Record<string, boolean> = {}
+      let dict: CanTakeModuleMap = {}
       moduleCodes.forEach((code, i) => {
         dict[code] = results[i]
       })
