@@ -29,7 +29,13 @@ function fillFakeData<T>(
   if (!data) return {}
   const result: Record<string, T> = {}
   Object.entries(data || {}).forEach(([key, value]) => {
-    result[key] = Object.assign(new entityMap[entityName](), value)
+    const entity = Object.assign(new entityMap[entityName](), value)
+    /**
+     * module code clutch
+     */
+    if (entityName.startsWith('module'))
+      Object.assign(entity, { moduleCode: key })
+    result[key] = entity
   })
   return result
 }
