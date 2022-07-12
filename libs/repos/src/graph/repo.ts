@@ -298,4 +298,38 @@ export class GraphRepository
         )
       )
   }
+
+  /**
+   * Returns true if graph contains sufficient pre-reqs for the module.
+   *
+   * @param {Graph} graph
+   * @param {string} moduleCode
+   * @returns {Promise<boolean>}
+   */
+  async canTakeModule(graph: Graph, moduleCode: string): Promise<boolean> {
+    const modulesPlacedCodes = graph.modulesPlaced.map(flatten.module)
+    return this.moduleRepo.canTakeModule(modulesPlacedCodes, [], moduleCode)
+  }
+
+  /**
+   * Returns true if graph contains sufficient pre-reqs for the module.
+   *
+   * @param {Graph} graph
+   * @param {string[]} moduleCodes
+   * @returns {Promise<Record<string, boolean>>}
+   */
+  async canTakeModules(
+    graph: Graph,
+    moduleCodes: string[]
+  ): Promise<Record<string, boolean>> {
+    return Promise.all(
+      moduleCodes.map((code) => this.canTakeModule(graph, code))
+    ).then((results) => {
+      let dict: Record<string, boolean> = {}
+      moduleCodes.forEach((code, i) => {
+        dict[code] = results[i]
+      })
+      return dict
+    })
+  }
 }

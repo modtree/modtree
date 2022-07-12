@@ -127,6 +127,25 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    */
   updateFlowNode(graph: IGraph, node: GraphFlowNode): Promise<IGraph>
   /**
+   * checks if graph contains enough pre-reqs to take a module
+   *
+   * @param graph
+   * @param moduleCode
+   * @returns boolean
+   */
+  canTakeModule(graph: IGraph, moduleCode: string): Promise<boolean>
+  /**
+   * multiple canTakeModule
+   *
+   * @param graph
+   * @param moduleCodes
+   * @returns a boolean
+   */
+  canTakeModules(
+    graph: IGraph,
+    moduleCodes: string[]
+  ): Promise<Record<string, boolean>>
+  /**
    * finds graphs by ids
    *
    * @param id
