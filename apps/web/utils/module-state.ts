@@ -1,7 +1,6 @@
 import store from '@/store/redux'
-import { ModuleStatus } from '@modtree/types'
+import { ModuleStatus, ModuleStateDict } from '@modtree/types'
 import { flatten } from '@modtree/utils'
-import { ModuleStateDict } from 'types'
 
 export function getModuleStates(): ModuleStateDict {
   // Get required data
