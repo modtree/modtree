@@ -69,8 +69,10 @@ export function ModuleDetails() {
         // 4. update frontend props
         api.graph.updateFrontendProps(mainGraph.id, nodes, edges)
       )
-      .then((g) => setGraph(g))
-      .then(() => {
+      .then((g) => {
+        // backend is correctly updated
+        console.log('update', g)
+        setGraph(g)
         // 5. Dispatch new nodes
         dispatch(
           setFlow({

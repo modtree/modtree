@@ -8,7 +8,7 @@ import ReactFlow, {
   useReactFlow,
 } from 'react-flow-renderer'
 import { ModuleNode } from './module-node'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
+import store, { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
@@ -60,13 +60,18 @@ export default function ModtreeFlow() {
       edges: graph.flowEdges,
     }).nodes
 
+    // store is not updated
+    console.log(modules, graph.modulesPlaced)
+    console.log(store.getState().graph)
+
     // updates CSS after
     api.graph.canTakeModules(graph.id, modules.planned).then((res) => {
+      console.log(res)
       getCSS(newNodes, modules, res).then((nodes) => {
         setNodes(nodes)
       })
     })
-  }, [graph.flowNodes.length, graph.id])
+  }, [graph.flowNodes.length, graph.id, graph])
 
   /**
    * Fit view for ANY graph change
