@@ -5,6 +5,7 @@ import type {
   Modify,
   IModuleCondensed,
   GraphFlowNode,
+  ModuleStatus,
 } from '@modtree/types'
 
 /**
@@ -112,3 +113,14 @@ export type ContextMenuProps = {
   menu: ContextMenuType
   flowNode?: GraphFlowNode
 }
+
+/**
+ * For module styling
+ */
+export type ModuleState = {
+  done: ModuleStatus
+  canTake?: boolean
+  suggested?: boolean
+}
+
+export type ModuleStateDict = Record<string, ModuleState>
