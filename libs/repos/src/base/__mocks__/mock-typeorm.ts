@@ -12,14 +12,15 @@ import {
   EntityTarget,
   FindManyOptions,
   Repository as TR,
+  SaveOptions,
 } from 'typeorm'
 
 const whip = <T>(e: any) => e as T
 const assign = <T>(C: new () => any, e: DeepPartial<T>) =>
   whip<T>(Object.assign(new C(), e))
 
-export class Repository<T> extends TR<T> {
-  private coerce = (e: DeepPartial<T>): T => {
+export class Repository<Entity> extends TR<Entity> {
+  private coerce = (e: DeepPartial<Entity>): Entity => {
     if (this.target === Module) return assign(Module, e)
     if (this.target === ModuleCondensed) return assign(ModuleCondensed, e)
     if (this.target === ModuleFull) return assign(ModuleFull, e)
@@ -28,16 +29,26 @@ export class Repository<T> extends TR<T> {
     if (this.target === Graph) return assign(Graph, e)
     return whip(e)
   }
-  override create(): T
-  override create(e: DeepPartial<T>[]): T[]
-  override create(e: DeepPartial<T>): T
-  override create(e?: DeepPartial<T> | DeepPartial<T>[]): T | T[] {
+  override create(): Entity
+  override create(e: DeepPartial<Entity>[]): Entity[]
+  override create(e: DeepPartial<Entity>): Entity
+  override create(
+    e?: DeepPartial<Entity> | DeepPartial<Entity>[]
+  ): Entity | Entity[] {
     if (e === undefined) return []
     return Array.isArray(e) ? e.map(this.coerce) : this.coerce(e)
   }
-  override save = async <T>(e: T | T[]): Promise<T | T[]> => e
-  override find = async (_?: FindManyOptions<T>): Promise<T[]> => []
-  constructor(entity: EntityTarget<T>, manager: EntityManager) {
+
+  override async save<T extends DeepPartial<Entity>>(
+    e: T | T[]
+  ): Promise<T | T[]> {
+    return Array.isArray(e)
+      ? (e.map(this.coerce) as T[])
+      : (this.coerce(e) as T)
+  }
+
+  override find = async (_?: FindManyOptions<Entity>): Promise<Entity[]> => []
+  constructor(entity: EntityTarget<Entity>, manager: EntityManager) {
     super(entity, manager)
   }
 }

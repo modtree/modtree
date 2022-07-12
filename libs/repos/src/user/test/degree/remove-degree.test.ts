@@ -1,44 +1,54 @@
+import '@modtree/test-env/jest'
+import { UserRepository, DegreeRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
 import { User } from '@modtree/types'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../../base')
+jest.mock('../../../module')
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
-      ])
-    )
-    .then(([user, degree]) => {
-      t.degree = degree
-      return Repo.User.insertDegrees(user, [t.degree!.id])
-    })
-    .then((user) => {
-      t.user = user
-    })
+const init = {
+  authZeroId: 'auth0|012345678901234567890123',
+  email: 'khang@modtree.com',
+}
+
+const userRepo = new UserRepository(mocks.db)
+const degreeRepo = new DegreeRepository(mocks.db)
+
+const correct = [
+  { degreeIds: [], remove: 'a', expected: [] },
+  { degreeIds: ['a'], remove: 'a', expected: [] },
+  { degreeIds: ['a'], remove: 'b', expected: [] },
+  { degreeIds: ['b', 'a'], remove: 'a', expected: ['b'] },
+]
+
+test.each(correct)(
+  'ids: $degreeIds, query: $query',
+  async ({ degreeIds, remove, expected }) => {
+    /**
+     * test prep: initialize degrees and user
+     */
+    const savedDegrees = degreeIds.map((id) => degreeRepo.create({ id }))
+    const user = await userRepo
+      .initialize(init)
+      .then((user) => userRepo.save({ ...user, savedDegrees }))
+    /** pre-check */
+    expect(user.savedDegrees.map((d) => d.id)).toIncludeSameMembers(degreeIds)
+    /**
+     * the real test
+     */
+    if (degreeIds.includes(remove)) {
+      // removing a degree that the user has
+      await userRepo.removeDegree(user, remove).then((user) => {
+        expect(user).toBeInstanceOf(User)
+        expect(user.savedDegrees.map((d) => d.id)).toIncludeSameMembers(
+          expected
+        )
+      })
+    } else {
+      // removing a degree that the user doesn't have
+      await expect(userRepo.removeDegree(user, remove)).rejects.toThrowError(
+        'Degree not found in User'
+      )
+    }
+  }
 )
-afterAll(() => teardown(db))
-
-beforeEach(expect.hasAssertions)
-
-it('returns a user', async () => {
-  await Repo.User.removeDegree(t.user!, t.degree!.id).then((user) => {
-    expect(user).toBeInstanceOf(User)
-    t.user = user
-  })
-})
-
-it('removes a degree', () => {
-  expect(t.user!.savedDegrees).toHaveLength(0)
-})
-
-it('errors if degree not found', async () => {
-  await expect(() =>
-    Repo.User.removeDegree(t.user!, 'NOT_VALID')
-  ).rejects.toThrowError(Error('Degree not found in User'))
-})
