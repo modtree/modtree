@@ -59,22 +59,18 @@ const cssMap = {}
 cssMap[FrontendModuleState.DONE] = {
   color: 'green',
   opacity: '50%',
-  border: 'solid',
 }
 cssMap[FrontendModuleState.DOING] = {
   color: 'black',
   opacity: '100%',
-  border: 'solid',
 }
 cssMap[FrontendModuleState.PLAN_CANNOT_TAKE] = {
   color: 'red',
   opacity: '100%',
-  border: 'solid',
 }
 cssMap[FrontendModuleState.PLAN_CAN_TAKE] = {
   color: 'gray',
   opacity: '100%',
-  border: 'solid',
 }
 cssMap[FrontendModuleState.SUGGESTED] = {
   color: 'gray',
