@@ -1,63 +1,51 @@
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { ModuleStatus, User } from '@modtree/types'
+import '@modtree/test-env/jest'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+import { UserRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import { ModuleStatus } from '@modtree/types'
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Repo.User.initialize({
-        ...init.user1,
-        modulesDone: ['MA2001'],
-        modulesDoing: ['MA2219'],
-      })
-    )
-    .then((user) => {
-      t.user = user
-    })
-)
-afterAll(() => teardown(db))
+jest.mock('../../base')
+jest.mock('../../module')
 
-/**
- * @param {string[]} modulesDoneCodes
- * @param {string[]} modulesDoingCodes
- */
-function expectUserModules(
-  modulesDoneCodes: string[],
-  modulesDoingCodes: string[]
-) {
-  const modulesDone = t.user!.modulesDone.map(flatten.module)
-  const modulesDoing = t.user!.modulesDoing.map(flatten.module)
-  expect(modulesDone).toIncludeSameMembers(modulesDoneCodes)
-  expect(modulesDoing).toIncludeSameMembers(modulesDoingCodes)
+const fakeData = {
+  module: {
+    AX1000: { fulfillRequirements: ['AX2000'] },
+    BX1000: { fulfillRequirements: ['BX2000'] },
+    AX2000: { prereqTree: { or: ['AX1000', 'BX1000'] } },
+  },
 }
 
-/**
- * Tests setModuleStatus with 1 module.
- * The original repo function works with many modules.
- */
-async function setModuleStatus(
-  user: User,
-  moduleCode: string,
-  status: ModuleStatus
-) {
-  return Repo.User.setModuleStatus(user, [moduleCode], status)
+const init = {
+  authZeroId: 'auth0|012345678901234567890123',
+  email: 'khang@modtree.com',
 }
 
-it('doing', async () => {
-  t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.DOING)
-  expectUserModules([], ['MA2001'])
-})
+const userRepo = new UserRepository(mocks.getDb(fakeData))
 
-it('done', async () => {
-  t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.DONE)
-  expectUserModules(['MA2001'], [])
-})
+const correct = [
+  {
+    done: [],
+    doing: [],
+    codes: ['MA2001'],
+    status: ModuleStatus.DONE,
+    expectedDone: ['MA2001'],
+    expectedDoing: [],
+  },
+]
 
-it('not taken', async () => {
-  t.user = await setModuleStatus(t.user!, 'MA2001', ModuleStatus.NOT_TAKEN)
-  expectUserModules([], [])
+test.each(correct)('yes', async (props) => {
+  const { done, doing, codes, expectedDone, expectedDoing, status } = props
+  const user = await userRepo.initialize({
+    ...init,
+    modulesDone: done,
+    modulesDoing: doing,
+  })
+  await userRepo.setModuleStatus(user, codes, status).then((user) => {
+    const { modulesDone, modulesDoing } = {
+      modulesDone: user.modulesDone.map((m) => m.moduleCode),
+      modulesDoing: user.modulesDoing.map((m) => m.moduleCode),
+    }
+    expect(modulesDone).toIncludeSameMembers(expectedDone)
+    expect(modulesDoing).toIncludeSameMembers(expectedDoing)
+  })
 })

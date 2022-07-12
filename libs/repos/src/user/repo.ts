@@ -292,42 +292,42 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
   /**
    * Sets modulesDone/modulesDoing.
    *
-   * @param {User} user
+   * @param {User} _user
    * @param {string[]} moduleCodes
    * @param {ModuleStatus} status
    * @return {Promise<User>}
    */
   async setModuleStatus(
-    user: User,
+    _user: User,
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<User> {
-    return this.moduleRepo
-      .findBy({ moduleCode: In(moduleCodes) })
-      .then((modules) => {
-        if (status === ModuleStatus.DONE) {
-          user.modulesDone = modules
-          // remove from modulesDoing
-          user.modulesDoing = user.modulesDoing.filter(
-            (m) => !moduleCodes.includes(m.moduleCode)
-          )
-        } else if (status === ModuleStatus.DOING) {
-          user.modulesDoing = modules
-          // remove from modulesDone
-          user.modulesDone = user.modulesDone.filter(
-            (m) => !moduleCodes.includes(m.moduleCode)
-          )
-        } else {
-          // ModuleStatus.NOT_TAKEN
-          // remove from modulesDone and modulesDoing
-          user.modulesDone = user.modulesDone.filter(
-            (m) => !moduleCodes.includes(m.moduleCode)
-          )
-          user.modulesDoing = user.modulesDoing.filter(
-            (m) => !moduleCodes.includes(m.moduleCode)
-          )
-        }
-        return this.save(user)
-      })
+    /** don't mutate original user passed in */
+    const user = this.create(_user)
+    return this.moduleRepo.findByCodes(moduleCodes).then((modules) => {
+      if (status === ModuleStatus.DONE) {
+        user.modulesDone = modules
+        // remove from modulesDoing
+        user.modulesDoing = user.modulesDoing.filter(
+          (m) => !moduleCodes.includes(m.moduleCode)
+        )
+      } else if (status === ModuleStatus.DOING) {
+        user.modulesDoing = modules
+        // remove from modulesDone
+        user.modulesDone = user.modulesDone.filter(
+          (m) => !moduleCodes.includes(m.moduleCode)
+        )
+      } else {
+        // ModuleStatus.NOT_TAKEN
+        // remove from modulesDone and modulesDoing
+        user.modulesDone = user.modulesDone.filter(
+          (m) => !moduleCodes.includes(m.moduleCode)
+        )
+        user.modulesDoing = user.modulesDoing.filter(
+          (m) => !moduleCodes.includes(m.moduleCode)
+        )
+      }
+      return this.save(user)
+    })
   }
 }
