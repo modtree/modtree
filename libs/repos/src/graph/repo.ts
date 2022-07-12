@@ -307,8 +307,11 @@ export class GraphRepository
    * @returns {Promise<boolean>}
    */
   async canTakeModule(graph: Graph, moduleCode: string): Promise<boolean> {
+    // map to codes
     const modulesPlacedCodes = graph.modulesPlaced.map(flatten.module)
-    return this.moduleRepo.canTakeModule(modulesPlacedCodes, [], moduleCode)
+    // remove code of module to test
+    const filtered = modulesPlacedCodes.filter((m) => m !== moduleCode)
+    return this.moduleRepo.canTakeModule(filtered, [], moduleCode)
   }
 
   /**
