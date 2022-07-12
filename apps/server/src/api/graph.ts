@@ -128,4 +128,20 @@ export class GraphApi {
       .then((graph) => api.graphRepo.suggestModules(graph, selectedCodes))
       .then((modules) => modules.map(flatten.module))
   }
+
+  /**
+   * For a single module, return true if graph contains enough pre-reqs
+   * to take it.
+   *
+   * Returns a dictionary keyed on moduleCode.
+   *
+   * @param {Api} api
+   */
+  static canTakeModules = (api: Api) => async (req: Request) => {
+    const { graphId } = req.params
+    const { moduleCodes } = req.body
+    return api.graphRepo
+      .findOneById(graphId)
+      .then((g) => api.graphRepo.canTakeModules(g, moduleCodes))
+  }
 }

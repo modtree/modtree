@@ -213,6 +213,12 @@ export const routes: Route[] = [
     fn: GraphApi.suggestModules,
     validators: [body('selectedCodes').isArray()],
   },
+  {
+    method: 'post',
+    route: '/graph/:graphId/can-take-modules',
+    fn: GraphApi.canTakeModules,
+    validators: [body('moduleCodes').isArray().notEmpty()],
+  },
 
   /**
    * Module API
