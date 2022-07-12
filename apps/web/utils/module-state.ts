@@ -18,7 +18,7 @@ type NodesAndEdges = {
 export function redrawGraph(props: NodesAndEdges) {
   const data: NodesAndEdges = redraw(props)
   return {
-    nodes: data.nodes,
+    nodes: getCSS(data.nodes),
     edges: data.edges,
   }
 }
@@ -45,4 +45,39 @@ export function getModuleStates(): ModuleStateDict {
   })
 
   return states
+}
+
+export function getCSS(nodes: GraphFlowNode[]): GraphFlowNode[] {
+  const states = getModuleStates()
+  return nodes.map((node) => ({
+    ...node,
+    style: cssMap[states[node.id]],
+  }))
+}
+
+const cssMap = {}
+cssMap[FrontendModuleState.DONE] = {
+  color: 'green',
+  opacity: '50%',
+  border: 'solid black 2px',
+}
+cssMap[FrontendModuleState.DOING] = {
+  color: 'black',
+  opacity: '100%',
+  border: 'solid black 2px',
+}
+cssMap[FrontendModuleState.PLAN_CANNOT_TAKE] = {
+  color: 'red',
+  opacity: '100%',
+  border: 'solid black 2px',
+}
+cssMap[FrontendModuleState.PLAN_CAN_TAKE] = {
+  color: 'gray',
+  opacity: '100%',
+  border: 'solid black 2px',
+}
+cssMap[FrontendModuleState.SUGGESTED] = {
+  color: 'gray',
+  opacity: '50%',
+  border: 'dotted black 2px',
 }
