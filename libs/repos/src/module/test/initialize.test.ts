@@ -4,7 +4,6 @@ import '@modtree/test-env/jest'
 import { Module } from '@modtree/types'
 
 jest.mock('../../base')
-jest.mock('../../module')
 
 const moduleRepo = new ModuleRepository(mocks.db)
 let received: Module

@@ -8,13 +8,13 @@ jest.mock('../../module')
 const fakeData = {
   module: {
     // 1000 mods
-    A1000: { fulfillRequirements: ['A2000', 'C2000', 'D2000'] },
-    B1000: { fulfillRequirements: ['B2000', 'C2000', 'D2000'] },
+    AX1000: { fulfillRequirements: ['AX2000', 'CX2000', 'DX2000'] },
+    BX1000: { fulfillRequirements: ['BX2000', 'CX2000', 'DX2000'] },
     // 2000 mods
-    A2000: { prereqTree: 'A1000' },
-    B2000: { prereqTree: 'B1000' },
-    C2000: { prereqTree: { and: ['A1000', 'B1000'] } },
-    D2000: { prereqTree: { or: ['A1000', 'B1000'] } },
+    AX2000: { prereqTree: 'AX1000' },
+    BX2000: { prereqTree: 'BX1000' },
+    CX2000: { prereqTree: { and: ['AX1000', 'BX1000'] } },
+    DX2000: { prereqTree: { or: ['AX1000', 'BX1000'] } },
   },
 }
 
@@ -22,22 +22,22 @@ const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
-    done: ['A1000'],
+    done: ['AX1000'],
     doing: [],
     selected: [],
-    expected: ['A2000', 'D2000'],
+    expected: ['AX2000', 'DX2000'],
   },
   {
     done: [],
-    doing: ['A1000', 'B1000'],
+    doing: ['AX1000', 'BX1000'],
     selected: [],
     expected: [],
   },
   {
-    done: ['A1000', 'B1000'],
+    done: ['AX1000', 'BX1000'],
     doing: [],
     selected: [],
-    expected: ['A2000', 'B2000', 'C2000', 'D2000'],
+    expected: ['AX2000', 'BX2000', 'CX2000', 'DX2000'],
   },
 ]
 

@@ -8,17 +8,26 @@ jest.mock('../../module')
 const fakeData = {
   module: {
     // 1000 mods
-    A1000: { prereqTree: '', fulfillRequirements: ['A2000', 'C2000'] },
-    B1000: { prereqTree: '', fulfillRequirements: ['B2000'] },
-    C1000: { prereqTree: '', fulfillRequirements: ['C2000'] },
+    AX1000: { prereqTree: '', fulfillRequirements: ['AX2000', 'CX2000'] },
+    BX1000: { prereqTree: '', fulfillRequirements: ['BX2000'] },
+    CX1000: { prereqTree: '', fulfillRequirements: ['CX2000'] },
     // 2000 mods
-    A2000: { prereqTree: 'A1000', fulfillRequirements: ['A3000'] },
-    B2000: { prereqTree: 'B1000', fulfillRequirements: ['A3000', 'B3000'] },
-    C2000: { prereqTree: { or: ['A1000', 'C1000'] }, fulfillRequirements: [] },
+    AX2000: { prereqTree: 'AX1000', fulfillRequirements: ['AX3000'] },
+    BX2000: { prereqTree: 'BX1000', fulfillRequirements: ['AX3000', 'BX3000'] },
+    CX2000: {
+      prereqTree: { or: ['AX1000', 'CX1000'] },
+      fulfillRequirements: [],
+    },
     // 3000 mods
-    A3000: { prereqTree: { or: ['A2000', 'B2000'] } },
-    B3000: { prereqTree: { or: ['B2000', 'C2000'] } },
-    C3000: { prereqTree: { or: ['C2000'] } },
+    AX3000: {
+      prereqTree: { or: ['AX2000', 'BX2000'] },
+      fulfillRequirements: [],
+    },
+    BX3000: {
+      prereqTree: { or: ['BX2000', 'CX2000'] },
+      fulfillRequirements: [],
+    },
+    CX3000: { prereqTree: { or: ['CX2000'] }, fulfillRequirements: [] },
   },
 }
 
@@ -26,22 +35,73 @@ const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
-    type: 'it works',
-    done: ['A1000', 'B1000', 'C1000'],
-    doing: ['C2000'],
+    type: 'it favors mods that unlock more',
+    done: ['AX1000', 'BX1000', 'CX1000'],
+    doing: ['CX2000'],
     required: [
-      'A1000',
-      'A2000',
-      'A3000',
-      'B1000',
-      'B2000',
-      'B3000',
-      'C1000',
-      'C2000',
-      'C3000',
+      'AX1000',
+      'AX2000',
+      'AX3000',
+      'BX1000',
+      'BX2000',
+      'BX3000',
+      'CX1000',
+      'CX2000',
+      'CX3000',
     ],
-    selected: ['C2000'],
-    expected: ['B2000', 'A2000'],
+    selected: ['CX2000'],
+    expected: ['BX2000', 'AX2000'],
+  },
+  {
+    type: 'it favors required modules',
+    done: ['AX1000', 'BX1000', 'CX1000'],
+    doing: ['CX2000'],
+    required: [
+      'AX1000',
+      'AX2000',
+      'AX3000',
+      'BX1000',
+      'BX3000',
+      'CX1000',
+      'CX2000',
+      'CX3000',
+    ],
+    selected: ['CX2000'],
+    expected: ['AX2000', 'BX2000'],
+  },
+  {
+    type: "don't suggest done mods",
+    done: ['AX1000', 'BX1000', 'CX1000', 'BX2000'],
+    doing: ['CX2000'],
+    required: [
+      'AX1000',
+      'AX2000',
+      'AX3000',
+      'BX1000',
+      'BX3000',
+      'CX1000',
+      'CX2000',
+      'CX3000',
+    ],
+    selected: ['CX2000'],
+    expected: ['AX2000', 'AX3000', 'BX3000'],
+  },
+  {
+    type: "don't suggest doing mods",
+    done: ['AX1000', 'BX1000', 'CX1000'],
+    doing: ['BX2000', 'CX2000'],
+    required: [
+      'AX1000',
+      'AX2000',
+      'AX3000',
+      'BX1000',
+      'BX3000',
+      'CX1000',
+      'CX2000',
+      'CX3000',
+    ],
+    selected: ['CX2000'],
+    expected: ['AX2000'],
   },
 ]
 

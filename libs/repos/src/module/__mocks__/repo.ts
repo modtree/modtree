@@ -1,4 +1,5 @@
 import { Module, FakeDataSource } from '@modtree/types'
+import { validModuleCode } from '@modtree/utils'
 import { ModuleRepository as Original } from '../repo'
 
 const moduleFromCode = (moduleCode: string): Module => {
@@ -17,7 +18,9 @@ export class ModuleRepository extends Original {
   }
 
   override async findByCodes(codes: string[]): Promise<Module[]> {
-    return codes.map((c) => fetchOrFake(c, this.fakeData))
+    return codes
+      .filter(validModuleCode)
+      .map((c) => fetchOrFake(c, this.fakeData))
   }
 
   override async findByCode(code: string): Promise<Module> {

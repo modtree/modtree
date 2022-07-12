@@ -1,41 +1,32 @@
+import { ModuleCondensedRepository } from '@modtree/repos'
 import { ModuleCondensed } from '@modtree/types'
-import { setup, teardown, Repo, t } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { mocks } from '@modtree/test-env'
+import '@modtree/test-env/jest'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-let count: number
-const m = new ModuleCondensed()
-m.id = '58201858-5ce5-4ceb-8568-eecf55841b9f'
-m.title = 'Change-inator-inator'
-m.moduleCode = 'TST1000MD'
+jest.mock('../../base')
 
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+const moduleCondensedRepo = new ModuleCondensedRepository(mocks.db)
+let received: ModuleCondensed
 
-it('initial count', async () => {
-  await Repo.ModuleCondensed.count().then((c) => {
-    expect(c).toBeGreaterThan(6000)
-    count = c
-  })
-})
+const init = {
+  id: '58201858-5ce5-4ceb-8568-eecf55841b9f',
+  title: 'Test Module',
+  moduleCode: 'TST1000MD',
+}
 
-it('returns a module', async () => {
-  await Repo.ModuleCondensed.initialize(m).then((res) => {
+it('returns a condensed module', async () => {
+  await moduleCondensedRepo.initialize(init).then((res) => {
     expect(res).toBeInstanceOf(ModuleCondensed)
-    t.modulesCondensed = [res]
+    received = res
   })
 })
 
-it('increments the count by 1', async () => {
-  await Repo.ModuleCondensed.count().then((c) => {
-    expect(c).toEqual(count + 1)
-  })
-})
-
-it('saves correct information', async () => {
-  const module = t.modulesCondensed![0]
-  expect(module.moduleCode).toBe('TST1000MD')
-  expect(module.title).toBe('Change-inator-inator')
+test('saved all information', () => {
+  const correct: [any, any][] = [
+    [received.id, init.id],
+    [received.title, init.title],
+    [received.moduleCode, init.moduleCode],
+    [received.moduleLevel, 1000],
+  ]
+  correct.forEach(([received, expected]) => expect(received).toEqual(expected))
 })
