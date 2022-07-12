@@ -1,6 +1,7 @@
 import store from '@/store/redux'
-import { ModuleStatus, ModuleStateDict } from '@modtree/types'
+import { ModuleStatus, ModuleStateDict, GraphFlowNode } from '@modtree/types'
 import { flatten } from '@modtree/utils'
+import { ModuleState } from '../../../libs/types/src/flow'
 
 export function getModuleStates(): ModuleStateDict {
   // Get required data
@@ -14,20 +15,13 @@ export function getModuleStates(): ModuleStateDict {
   // Create states
   let states: ModuleStateDict = {}
   done.forEach((code) => {
-    states[code] = {
-      done: ModuleStatus.DONE,
-    }
+    states[code] = ModuleState.DONE
   })
   doing.forEach((code) => {
-    states[code] = {
-      done: ModuleStatus.DOING,
-    }
+    states[code] = ModuleState.DOING
   })
   planned.forEach((code) => {
-    states[code] = {
-      done: ModuleStatus.NOT_TAKEN,
-      canTake: true,
-    }
+    states[code] = ModuleState.PLAN_CAN_TAKE
   })
 
   return states
