@@ -6,8 +6,9 @@ import { Button } from '@/ui/buttons'
 import { useUser } from '@/utils/auth0'
 import { inModulesPlaced } from '@/utils/graph'
 import { api } from 'api'
-import { GraphFlowNode } from '@modtree/types'
+import { GraphFlowNode, ModuleSources } from '@modtree/types'
 import { redrawGraph } from '@/utils/module-state'
+import { flatten } from '@modtree/utils'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
@@ -17,6 +18,20 @@ export function ModuleDetails() {
   // to check if this module has been added
   // and to toggle node
   const mainGraph = useAppSelector((state) => state.graph)
+
+  /**
+   * setup for canTakeModules
+   */
+  const stateUser = useAppSelector((state) => state.user)
+  const done = stateUser.modulesDone.map(flatten.module)
+  const doing = stateUser.modulesDoing.map(flatten.module)
+  const modules: ModuleSources = {
+    done,
+    doing,
+    planned: mainGraph.modulesPlaced.filter(
+      (m) => !done.includes(m) && !doing.includes(m)
+    ),
+  }
 
   function handleAddButton() {
     // 1. hide module modal
@@ -47,13 +62,6 @@ export function ModuleDetails() {
       edges: mainGraph.flowEdges,
     })
 
-    dispatch(
-      setFlow({
-        flowNodes: nodes,
-        flowEdges: edges,
-      })
-    )
-
     // 3. toggle module in graph
     api.graph
       .toggle(mainGraph.id, module.moduleCode)
@@ -62,6 +70,15 @@ export function ModuleDetails() {
         api.graph.updateFrontendProps(mainGraph.id, nodes, edges)
       )
       .then((g) => setGraph(g))
+      .then(() => {
+        // 5. Dispatch new nodes
+        dispatch(
+          setFlow({
+            flowNodes: nodes,
+            flowEdges: edges,
+          })
+        )
+      })
   }
   return (
     <div>

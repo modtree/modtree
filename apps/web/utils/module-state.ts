@@ -32,17 +32,19 @@ export async function getModuleStates(
   const { done, doing, planned } = modules
 
   // Create states
+  // Assume that all modules are planned at first.
+  // If any modules are done/doing, they get updated later.
   let states: ModuleStateDict = {}
+  planned.forEach((code) => {
+    states[code] = canTake[code]
+      ? FrontendModuleState.PLAN_CAN_TAKE
+      : FrontendModuleState.PLAN_CANNOT_TAKE
+  })
   done.forEach((code) => {
     states[code] = FrontendModuleState.DONE
   })
   doing.forEach((code) => {
     states[code] = FrontendModuleState.DOING
-  })
-  planned.forEach((code) => {
-    states[code] = canTake[code]
-      ? FrontendModuleState.PLAN_CAN_TAKE
-      : FrontendModuleState.PLAN_CANNOT_TAKE
   })
 
   return states
