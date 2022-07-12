@@ -100,7 +100,7 @@ export const routes: Route[] = [
     validators: [body('graphId').isString().notEmpty()],
   },
   {
-    method: 'get',
+    method: 'post',
     route: '/user/:userId/can-take-modules',
     fn: UserApi.canTakeModules,
     validators: [body('moduleCodes').isArray().notEmpty()],

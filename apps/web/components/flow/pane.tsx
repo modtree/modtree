@@ -12,7 +12,9 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
-import { redrawGraph } from '@/utils/module-state'
+import { getCSS, redrawGraph } from '@/utils/module-state'
+import { flatten } from '@modtree/utils'
+import { api } from 'api'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -29,6 +31,20 @@ export default function ModtreeFlow() {
   document.addEventListener('click', () => dispatch(hideContextMenu()))
 
   /**
+   * redux state
+   */
+  const user = useAppSelector((state) => state.user)
+  const done = user.modulesDone.map(flatten.module)
+  const doing = user.modulesDoing.map(flatten.module)
+  const props = {
+    done,
+    doing,
+    planned: graph.modulesPlaced.filter(
+      (m) => !done.includes(m) && !doing.includes(m)
+    ),
+  }
+
+  /**
    * builtin react flow hooks that handle node/edge movement
    * here, the variables `nodes` and `edges` store the current state of all
    * nodes and edges on-screen.
@@ -42,7 +58,13 @@ export default function ModtreeFlow() {
       nodes: graph.flowNodes,
       edges: graph.flowEdges,
     }).nodes
-    setNodes(newNodes)
+
+    // updates CSS after
+    api.user.canTakeModules(user.id, props.planned).then((res) => {
+      getCSS(newNodes, props, res).then((nodes) => {
+        setNodes(nodes)
+      })
+    })
   }, [graph.flowNodes.length, graph.id])
 
   /**
@@ -62,8 +84,8 @@ export default function ModtreeFlow() {
   const onNodeDragStop = (_: MouseEvent, node: Node) => {
     dispatch(updateModuleNode(node))
     const newNodes = redrawGraph({
-      nodes: graph.flowNodes,
-      edges: graph.flowEdges,
+      nodes,
+      edges,
     }).nodes
     setNodes(newNodes)
   }

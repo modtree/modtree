@@ -102,11 +102,11 @@ export class UserApi extends BaseApi {
   async canTakeModules(
     userId: string,
     moduleCodes: string[]
-  ): Promise<ModtreeApiResponse.User> {
-    return this.server.get(`/user/${userId}/can-take-modules`, {
-      params: {
+  ): Promise<Record<string, boolean>> {
+    return this.server
+      .post(`/user/${userId}/can-take-modules`, {
         moduleCodes,
-      },
-    })
+      })
+      .then((res) => res.data)
   }
 }

@@ -1,11 +1,10 @@
-import store from '@/store/redux'
 import {
   ModuleStateDict,
   FrontendModuleState,
   GraphFlowNode,
   GraphFlowEdge,
 } from '@modtree/types'
-import { flatten, redrawGraph as redraw } from '@modtree/utils'
+import { redrawGraph as redraw } from '@modtree/utils'
 
 type NodesAndEdges = {
   nodes: GraphFlowNode[]
@@ -18,19 +17,23 @@ type NodesAndEdges = {
 export function redrawGraph(props: NodesAndEdges) {
   const data: NodesAndEdges = redraw(props)
   return {
-    nodes: getCSS(data.nodes),
+    nodes: data.nodes,
     edges: data.edges,
   }
 }
 
-export function getModuleStates(): ModuleStateDict {
+type Props = {
+  done: string[]
+  doing: string[]
+  planned: string[]
+}
+
+export async function getModuleStates(
+  props: Props,
+  canTake: Record<string, boolean>
+): Promise<ModuleStateDict> {
   // Get required data
-  const redux = store.getState()
-  const done = redux.user.modulesDone.map(flatten.module)
-  const doing = redux.user.modulesDoing.map(flatten.module)
-  const planned = redux.graph.modulesPlaced.filter(
-    (m) => !done.includes(m) && !doing.includes(m)
-  )
+  const { done, doing, planned } = props
 
   // Create states
   let states: ModuleStateDict = {}
@@ -41,14 +44,20 @@ export function getModuleStates(): ModuleStateDict {
     states[code] = FrontendModuleState.DOING
   })
   planned.forEach((code) => {
-    states[code] = FrontendModuleState.PLAN_CAN_TAKE
+    states[code] = canTake[code]
+      ? FrontendModuleState.PLAN_CAN_TAKE
+      : FrontendModuleState.PLAN_CANNOT_TAKE
   })
 
   return states
 }
 
-export function getCSS(nodes: GraphFlowNode[]): GraphFlowNode[] {
-  const states = getModuleStates()
+export async function getCSS(
+  nodes: GraphFlowNode[],
+  props: Props,
+  canTake: Record<string, boolean>
+) {
+  const states = await getModuleStates(props, canTake)
   return nodes.map((node) => ({
     ...node,
     style: cssMap[states[node.id]],
