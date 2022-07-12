@@ -1,7 +1,6 @@
 import store from '@/store/redux'
-import { ModuleStatus, ModuleStateDict, GraphFlowNode } from '@modtree/types'
+import { ModuleStateDict, FrontendModuleState, GraphFlowNode } from '@modtree/types'
 import { flatten } from '@modtree/utils'
-import { ModuleState } from '../../../libs/types/src/flow'
 
 export function getModuleStates(): ModuleStateDict {
   // Get required data

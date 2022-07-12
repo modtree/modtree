@@ -16,7 +16,7 @@ export type FlowEdgeCondensed = {
 /**
  * For module styling
  */
-export enum ModuleState {
+export enum FrontendModuleState {
   DONE = 'done',
   DOING = 'doing',
   PLAN_CAN_TAKE = 'plan can take',
@@ -24,4 +24,4 @@ export enum ModuleState {
   SUGGESTED = 'suggested',
 }
 
-export type ModuleStateDict = Record<string, ModuleState>
+export type ModuleStateDict = Record<string, FrontendModuleState>
