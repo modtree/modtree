@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
-import { redrawGraph } from '@modtree/utils'
+import { redrawGraph } from '@/utils/module-state'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
