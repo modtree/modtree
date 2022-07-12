@@ -3,7 +3,7 @@ import { Handle, Position } from 'react-flow-renderer'
 
 export function ModuleNode(props: { data: IModuleCondensed }) {
   return (
-    <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md border-2 border-gray-300">
+    <div className="bg-white flex flex-col justify-center h-24 w-40 shadow-md rounded-md">
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />
       <div className="h-min">
