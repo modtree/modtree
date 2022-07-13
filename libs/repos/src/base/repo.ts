@@ -3,8 +3,9 @@ import { DataSource, EntityTarget, Repository } from 'typeorm'
 import { getRelations } from './get-relations'
 
 export class BaseRepo<Entity> implements IBaseRepository<Entity> {
+  /** don't expose any organic TypeORM methods outside at all */
   private repo: Repository<Entity>
-  relations: Relations
+
   /** direct inheritance */
   create: Repository<Entity>['create']
   save: Repository<Entity>['save']
@@ -15,10 +16,14 @@ export class BaseRepo<Entity> implements IBaseRepository<Entity> {
   delete: Repository<Entity>['delete']
   findOneOrFail: Repository<Entity>['findOneOrFail']
   createQueryBuilder: Repository<Entity>['createQueryBuilder']
+
+  /** custom fields */
+  relations: Relations
+
   /** instantiate base repository */
   constructor(entity: EntityTarget<Entity>, db: DataSource) {
     this.repo = new Repository(entity, db.manager)
-    this.relations = getRelations(this.repo)
+
     /** direct inheritance */
     this.create = this.repo.create.bind(this.repo)
     this.save = this.repo.save.bind(this.repo)
@@ -29,5 +34,8 @@ export class BaseRepo<Entity> implements IBaseRepository<Entity> {
     this.delete = this.repo.delete.bind(this.repo)
     this.findOneOrFail = this.repo.findOneOrFail.bind(this.repo)
     this.createQueryBuilder = this.repo.createQueryBuilder.bind(this.repo)
+
+    /** custom fields */
+    this.relations = getRelations(this.repo)
   }
 }

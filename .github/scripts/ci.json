@@ -11,7 +11,8 @@
   },
   "test": {
     "projects": [
-      "docs web",
+      "docs",
+      "web",
       "server",
       "integration-tests",
       "base module",
