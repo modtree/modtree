@@ -3,6 +3,9 @@ import store from '@/store/redux'
 import { showDebugModal, showUserProfile } from '@/store/modal'
 import { removeModuleNode, setGraph } from '@/store/graph'
 import { api } from 'api'
+import { ModuleStatus } from '@modtree/types'
+import { flatten } from '@modtree/utils'
+import { updateUser } from '@/utils/rehydrate'
 
 const dispatch = store.dispatch
 
@@ -25,12 +28,36 @@ const userDropdownMenu: MenuItem[] = [
 const flowNodeContextMenu: MenuItem[] = [
   { text: 'More info', callback: (e) => api.module.openModuleModal(e.id) },
   { text: 'Suggest modules', callback: () => alert('suggest modules') },
-  { text: 'Mark as done', callback: () => alert('marked as done') },
+  {
+    text: 'Mark as done',
+    callback: (e) => {
+      const state = store.getState()
+      const userId = state.user.id
+      const codes = state.user.modulesDone.map(flatten.module)
+      const modules = [...codes, e.id]
+      api.user
+        .setModuleStatus(userId, modules, ModuleStatus.DONE)
+        .then(() => updateUser())
+    },
+  },
+  {
+    text: 'Mark as doing',
+    callback: (e) => {
+      const state = store.getState()
+      const userId = state.user.id
+      const codes = state.user.modulesDoing.map(flatten.module)
+      const modules = [...codes, e.id]
+      api.user
+        .setModuleStatus(userId, modules, ModuleStatus.DOING)
+        .then(() => updateUser())
+    },
+  },
   {
     text: 'Remove',
     callback: async (e) => {
       // update graph
-      const mainGraph = store.getState().graph
+      const state = store.getState()
+      const mainGraph = state.graph
       api.graph.toggle(mainGraph.id, e.id).then((g) => {
         store.dispatch(setGraph(g))
       })
