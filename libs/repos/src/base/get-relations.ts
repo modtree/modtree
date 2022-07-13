@@ -9,12 +9,6 @@ import { Repository } from 'typeorm'
  * @returns {Record<string, boolean>}
  */
 export function getRelations<T>(repository: Repository<T>): Relations {
-  const meta = repository.metadata
-  const relationNames = meta.relations.map((r) => r.propertyName)
-  // make into Record for loadRelations
-  const res: Record<string, boolean> = {}
-  relationNames.forEach((r) => {
-    res[r] = true
-  })
-  return res
+  const r = repository.metadata.relations
+  return r.reduce((acc, cur) => ({ ...acc, [cur.propertyName]: true }), {})
 }

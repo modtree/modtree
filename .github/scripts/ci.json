@@ -19,7 +19,7 @@
       "repo:module",
       "migrations",
       "repo:api",
-      "repo:utils",
+      "repo:base",
       "repo:degree",
       "repo:graph",
       "repo:module-condensed",
