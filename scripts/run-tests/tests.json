@@ -7,7 +7,7 @@
   "repo:module": "libs/repos/src/module/jest.config.ts",
   "migrations": "libs/migrations/jest.config.ts",
   "repo:api": "libs/repos/src/api/jest.config.ts",
-  "repo:utils": "libs/repos/src/base/jest.config.ts",
+  "repo:base": "libs/repos/src/base/jest.config.ts",
   "repo:degree": "libs/repos/src/degree/jest.config.ts",
   "repo:graph": "libs/repos/src/graph/jest.config.ts",
   "repo:module-condensed": "libs/repos/src/module-condensed/jest.config.ts",

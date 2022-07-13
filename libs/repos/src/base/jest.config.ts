@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
-  displayName: 'repo:utils',
-  preset: '../../../jest.preset.js',
+  displayName: 'repo:base',
+  preset: '../../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
