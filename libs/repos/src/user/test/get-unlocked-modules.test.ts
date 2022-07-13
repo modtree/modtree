@@ -1,53 +1,64 @@
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { flatten, oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { User, Module } from '@modtree/types'
+import '@modtree/test-env/jest'
+import { UserRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Repo.User.initialize({
-        ...init.user1,
-        modulesDone: ['CS1010'],
-      })
-    )
-    .then((user) => {
-      t.user = user
-    })
-)
-afterAll(() => teardown(db))
+jest.mock('../../base')
+jest.mock('../../module')
 
-async function getUnlockedModules(user: User, moduleCode: string) {
-  return Repo.User.getUnlockedModules(user, moduleCode)
+const fakeData = {
+  module: [
+    { moduleCode: 'AX1000', fulfillRequirements: ['AX2000', 'CX2000'] },
+    { moduleCode: 'BX1000', fulfillRequirements: ['BX2000', 'CX2000'] },
+    { moduleCode: 'DX1000', fulfillRequirements: [] },
+    {
+      moduleCode: 'AX2000',
+      prereqTree: { and: ['AX1000', 'BX1000'] },
+      fulfillRequirements: ['CX2000'],
+    },
+    { moduleCode: 'BX2000', prereqTree: { or: ['AX1000', 'BX1000'] } },
+    { moduleCode: 'CX2000', prereqTree: { and: ['AX1000', 'AX2000'] } },
+  ],
 }
 
-it('returns an array of modules', async () => {
-  await getUnlockedModules(t.user!, 'CS2100').then((modules) => {
-    expect(modules).toBeArrayOf(Module)
-  })
-})
+const init = {
+  authZeroId: 'auth0|012345678901234567890123',
+  email: 'khang@modtree.com',
+}
 
-it('gets correct modules', async () => {
-  // Get unlocked modules for CS2100
-  await getUnlockedModules(t.user!, 'CS2100').then((modules) => {
-    const codes = modules.map(flatten.module)
-    expect(codes).toIncludeSameMembers(['CS2106', 'CS3210', 'CS3237'])
-  })
-})
+const userRepo = new UserRepository(mocks.getDb(fakeData))
 
-it('does not modify User', async () => {
-  // Also loads relations
-  await Repo.User.findOneById(t.user!.id).then((res) => {
-    const modulesDoneCodes = res.modulesDone.map(flatten.module)
-    expect(modulesDoneCodes).toEqual(['CS1010'])
-  })
-})
+const correct = [
+  {
+    done: [],
+    doing: [],
+    code: 'AX1000',
+    expected: [],
+  },
+  {
+    done: ['BX1000', 'BX2000'],
+    doing: [],
+    code: 'AX1000',
+    expected: ['AX2000'], // doesn't have BX2000 because already done
+  },
+  {
+    done: ['BX1000', 'BX2000'],
+    doing: ['AX2000'],
+    code: 'AX1000',
+    expected: [], // AX2000 is already doing
+  },
+]
 
-it('returns empty array if module in User.modulesDone', async () => {
-  // Get unlocked modules for CS1010, which is in User.modulesDone
-  await getUnlockedModules(t.user!, 'CS1010').then((modules) => {
-    expect(modules).toStrictEqual([])
-  })
-})
+test.each(correct)(
+  'works with $done done',
+  async ({ done, doing, code, expected }) => {
+    const user = await userRepo.initialize({
+      ...init,
+      modulesDone: done,
+      modulesDoing: doing,
+    })
+    await userRepo.getUnlockedModules(user, code).then((modules) => {
+      const codes = modules.map((m) => m.moduleCode)
+      expect(codes).toIncludeSameMembers(expected)
+    })
+  }
+)

@@ -1,0 +1,1 @@
+export { DegreeRepository } from './repo'

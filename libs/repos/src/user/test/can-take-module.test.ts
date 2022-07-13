@@ -1,46 +1,61 @@
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { UserRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import '@modtree/test-env/jest'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../base')
+jest.mock('../../module')
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Repo.User.initialize({
-        ...init.user1,
-        modulesDone: ['MA2001'],
-        modulesDoing: ['MA2219'],
-      })
-    )
-    .then((user) => {
-      t.user = user
-    })
-)
-afterAll(() => teardown(db))
+const fakeData = {
+  module: [
+    { moduleCode: 'AX1000', fulfillRequirements: ['AX2000'] },
+    { moduleCode: 'BX1000', fulfillRequirements: ['BX2000'] },
+    { moduleCode: 'AX2000', prereqTree: { or: ['AX1000', 'BX1000'] } },
+  ],
+}
 
-it('resolves modules not taken', async () => {
-  const modulesTested = ['MA2101', 'MA1100', 'CS2040S', 'CS1010S']
-  await Promise.all(
-    modulesTested.map((x) => Repo.User.canTakeModule(t.user!, x))
-  ).then((res) => {
-    expect(res).toStrictEqual([true, false, false, true])
+const init = {
+  authZeroId: 'auth0|012345678901234567890123',
+  email: 'khang@modtree.com',
+}
+
+const userRepo = new UserRepository(mocks.getDb(fakeData))
+
+const correct = [
+  {
+    type: 'false if done',
+    code: 'AX1000',
+    done: ['AX1000'],
+    doing: ['BX1000'],
+    expected: false,
+  },
+  {
+    type: 'false if doing',
+    code: 'BX1000',
+    done: ['AX1000'],
+    doing: ['BX1000'],
+    expected: false,
+  },
+  {
+    type: 'false if pre-reqs not there',
+    code: 'AX2000',
+    done: [],
+    doing: [],
+    expected: false,
+  },
+  {
+    type: 'true if pre-reqs are there',
+    code: 'AX2000',
+    done: ['AX1000'],
+    doing: [],
+    expected: true,
+  },
+]
+
+test.each(correct)('$type', async ({ code, expected, done, doing }) => {
+  const user = await userRepo.initialize({
+    ...init,
+    modulesDone: done,
+    modulesDoing: doing,
   })
-})
-
-it('errors on modules taking/taken before', async () => {
-  // one done, one doing
-  const modulesTested = ['MA2001', 'MA2219']
-  await Promise.all(
-    modulesTested.map((x) => Repo.User.canTakeModule(t.user!, x))
-  ).then((res) => {
-    expect(res).toStrictEqual([false, false])
-  })
-})
-
-it('errors on invalid code', async () => {
-  await Repo.User.canTakeModule(t.user!, 'NOT_VALID').then((res) => {
-    expect(res).toStrictEqual(false)
-  })
+  await expect(userRepo.canTakeModule(user, code)).resolves.toBe(expected)
 })

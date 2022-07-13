@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+rg "setup" -l
+COUNT=$(rg "setup" -l | wc -l)
+
+echo $COUNT files left

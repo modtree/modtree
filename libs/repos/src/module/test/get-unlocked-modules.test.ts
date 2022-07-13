@@ -6,21 +6,34 @@ jest.mock('../../base')
 jest.mock('../../module')
 
 const fakeData = {
-  module: {
+  module: [
     // 1000 mods
-    AX1000: { prereqTree: '', fulfillRequirements: ['AX2000', 'CX2000'] },
-    BX1000: { prereqTree: '', fulfillRequirements: ['BX2000'] },
-    CX1000: { prereqTree: '', fulfillRequirements: ['CX2000'] },
+    {
+      moduleCode: 'AX1000',
+      prereqTree: '',
+      fulfillRequirements: ['AX2000', 'CX2000'],
+    },
+    { moduleCode: 'BX1000', prereqTree: '', fulfillRequirements: ['BX2000'] },
+    { moduleCode: 'CX1000', prereqTree: '', fulfillRequirements: ['CX2000'] },
     // 2000 mods
-    CX2000: {
+    {
+      moduleCode: 'CX2000',
       prereqTree: { or: ['AX1000', 'CX1000'] },
       fulfillRequirements: [],
     },
-    AX2000: { prereqTree: 'AX1000', fulfillRequirements: ['AX3000'] },
-    BX2000: { prereqTree: 'BX1000', fulfillRequirements: ['AX3000'] },
+    {
+      moduleCode: 'AX2000',
+      prereqTree: 'AX1000',
+      fulfillRequirements: ['AX3000'],
+    },
+    {
+      moduleCode: 'BX2000',
+      prereqTree: 'BX1000',
+      fulfillRequirements: ['AX3000'],
+    },
     // 3000 mods
-    AX3000: { prereqTree: { or: ['AX2000', 'BX2000'] } },
-  },
+    { moduleCode: 'AX3000', prereqTree: { or: ['AX2000', 'BX2000'] } },
+  ],
 }
 
 const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))

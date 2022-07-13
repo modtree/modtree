@@ -1,29 +1,22 @@
-import { Module, FakeDataSource } from '@modtree/types'
+import { Module, FakeDataSource, IFakeData } from '@modtree/types'
 import { validModuleCode } from '@modtree/utils'
 import { ModuleRepository as Original } from '../repo'
 
-const moduleFromCode = (moduleCode: string): Module => {
-  return Object.assign(new Module(), { moduleCode })
-}
-
-const fetchOrFake = (code: string, data: Record<string, Module>): Module => {
-  return Object.keys(data).includes(code) ? data[code] : moduleFromCode(code)
-}
-
 export class ModuleRepository extends Original {
-  private fakeData: Record<string, Module>
+  private fakeData: IFakeData
+  private findModuleByCode: (_: string) => Module
   constructor(db: FakeDataSource) {
     super(db)
-    this.fakeData = db.fakeData.module
+    this.fakeData = db.fakeData
+    this.findModuleByCode = this.fakeData.findModuleByCode.bind(this.fakeData)
   }
 
   override async findByCodes(codes: string[]): Promise<Module[]> {
-    return codes
-      .filter(validModuleCode)
-      .map((c) => fetchOrFake(c, this.fakeData))
+    return codes.filter(validModuleCode).map(this.findModuleByCode)
   }
 
   override async findByCode(code: string): Promise<Module> {
-    return fetchOrFake(code, this.fakeData)
+    if (!validModuleCode(code)) throw new Error('invalid moulde code')
+    return this.findModuleByCode(code)
   }
 }
