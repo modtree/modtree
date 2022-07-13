@@ -6,27 +6,13 @@ import { Degree } from '@modtree/types'
 jest.mock('../../../base')
 jest.mock('../../../module')
 
-const fakeData = {
-  module: {
-    AX1000: { fulfillRequirements: ['AX2000', 'CX2000'] },
-    BX1000: { fulfillRequirements: ['BX2000', 'CX2000'] },
-    DX1000: { fulfillRequirements: [] },
-    AX2000: {
-      prereqTree: { and: ['AX1000', 'BX1000'] },
-      fulfillRequirements: ['CX2000'],
-    },
-    BX2000: { prereqTree: { or: ['AX1000', 'BX1000'] } },
-    CX2000: { prereqTree: { and: ['AX1000', 'AX2000'] } },
-  },
-}
-
 const init = {
   authZeroId: 'auth0|012345678901234567890123',
   email: 'khang@modtree.com',
 }
 
-const userRepo = new UserRepository(mocks.getDb(fakeData))
-const degreeRepo = new DegreeRepository(mocks.getDb(fakeData))
+const userRepo = new UserRepository(mocks.db)
+const degreeRepo = new DegreeRepository(mocks.db)
 
 const correct = [
   { degreeIds: [], query: '', expectedId: '' },
@@ -62,16 +48,3 @@ test.each(correct)(
     }
   }
 )
-
-it('returns a user', async () => {
-  // get user with all relations
-  await Repo.User.insertDegrees(t.user!, [t.degree!.id]).then((user) => {
-    expect(user).toBeInstanceOf(User)
-    t.user = user
-  })
-})
-
-it('adds correct degree id', () => {
-  const degreeIds = t.user!.savedDegrees.map((d) => d.id)
-  expect(degreeIds).toContain(t.degree!.id)
-})
