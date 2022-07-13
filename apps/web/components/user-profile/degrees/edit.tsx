@@ -3,13 +3,12 @@ import { SettingsSection } from '@/ui/settings/lists/base'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
-import { IModule, InitDegreeProps, SetState } from '@modtree/types'
+import { InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
 import { setBuildList } from '@/store/search'
 import { api } from 'api'
-import { flatten } from '@modtree/utils'
 import { updateUser } from '@/utils/rehydrate'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
@@ -22,19 +21,15 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   const dispatch = useAppDispatch()
   /* set build list */
   useEffect(() => {
-    api.degree
-      .getById(buildId)
-      .then((degree) => degree.modules)
-      .then((moduleCodes) => api.module.getByCodes(moduleCodes))
-      .then((modules) => {
-        dispatch(setBuildList(modules))
-      })
+    api.degree.getById(buildId).then((degree) => {
+      dispatch(setBuildList(degree.modules))
+    })
   }, [])
 
-  async function modify(title: string, modules: IModule[]) {
+  async function modify(title: string, moduleCodes: string[]) {
     const degreeProps: InitDegreeProps = {
       title,
-      moduleCodes: modules.map(flatten.module),
+      moduleCodes,
     }
     api.degree
       .modify(buildId, degreeProps)

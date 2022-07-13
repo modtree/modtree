@@ -23,6 +23,8 @@ export type User = Modify<
 export type UserFull = Modify<
   IUser,
   {
+    modulesDone: string[]
+    modulesDoing: string[]
     savedGraphs: string[]
     mainGraph: string
   }
