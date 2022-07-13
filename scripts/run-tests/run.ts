@@ -9,14 +9,12 @@ const aliases = getAliases(tests, {
   mf: 'repo:module-full',
   mc: 'repo:module-condensed',
 })
-const args = process.argv.slice(2)
-const argsRes = handleArgs(args, tests, aliases)
+const argsRes = handleArgs(process.argv.slice(2), tests, aliases)
 const { tail, projectPaths, testPathPattern } = argsRes
 
 const spawnArgs = [
   'jest',
   '--color',
-  '--projects',
   ...projectPaths,
   ...testPathPattern,
   ...tail,

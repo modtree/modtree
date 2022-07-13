@@ -23,7 +23,7 @@ export function handleArgs(
   const testPathPattern: string[] = []
   const tail: string[] = []
   const projectNames: string[] = []
-  const projectPaths: string[] = []
+  let projectPaths: string[] = []
   let hasError = false
   let markedIndex = -1
 
@@ -81,6 +81,10 @@ export function handleArgs(
   } else {
     console.debug(chalk.cyan('\nTests chosen:'), projectNames)
     console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
+  }
+
+  if (projectPaths.length > 0) {
+    projectPaths = ['--projects', ...projectPaths]
   }
 
   return { tail, projectPaths, testPathPattern }
