@@ -34,7 +34,10 @@ export interface IBaseRepository<T> extends Repository<T> {
 /**
  * Graph Repository Interface
  */
-export interface IGraphRepository extends IBaseRepository<IGraph> {
+export interface IGraphRepository {
+  count(): Promise<number>
+  save(partial: Partial<IGraph>): Promise<IGraph>
+  create(props: Partial<IGraph>): IGraph
   /**
    * initialize a new graph and save it to the database
    *

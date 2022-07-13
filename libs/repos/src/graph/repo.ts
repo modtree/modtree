@@ -24,28 +24,49 @@ import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
 
-export class GraphRepository
-  extends BaseRepo<Graph>
-  implements IGraphRepository
-{
-  private db: DataSource
+export class GraphRepository implements IGraphRepository {
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
+  private repo: BaseRepo<Graph>
 
   constructor(db: DataSource) {
-    super(Graph, db)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new DegreeRepository(this.db)
-    this.userRepo = new UserRepository(this.db)
+    this.repo = new BaseRepo(Graph, db)
+    this.moduleRepo = new ModuleRepository(db)
+    this.degreeRepo = new DegreeRepository(db)
+    this.userRepo = new UserRepository(db)
+  }
+
+  async count(): Promise<number> {
+    return this.repo.count()
+  }
+
+  create(partial: Partial<Graph>): Graph {
+    return this.repo.create(partial)
+  }
+
+  async save(partial: Partial<Graph>): Promise<Graph> {
+    return this.repo.save(partial)
   }
 
   /** one-liners */
-  deleteAll = () => this.createQueryBuilder().delete().execute()
+  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
 
-  override findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
+  findOneById = async (id: string) =>
+    this.repo.findOneOrFail({ where: { id }, relations: this.repo.relations })
+
+  /**
+   * @param {string[]} graphIds
+   * @returns {Promise<Graph[]>}
+   */
+  async findByIds(graphIds: string[]): Promise<Graph[]> {
+    return this.repo.find({
+      where: {
+        id: In(graphIds),
+      },
+      relations: this.repo.relations,
+    })
+  }
 
   /**
    * Adds a Graph to DB
@@ -97,8 +118,8 @@ export class GraphRepository
         flowEdges,
         flowNodes,
       ]) =>
-        this.save(
-          this.create({
+        this.repo.save(
+          this.repo.create({
             title,
             user,
             degree,
@@ -117,8 +138,8 @@ export class GraphRepository
    * @returns {Promise<Graph>}
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
-    return this.findOneOrFail({
-      relations: this.relations,
+    return this.repo.findOneOrFail({
+      relations: this.repo.relations,
       where: {
         user: {
           id: userId,
@@ -139,8 +160,8 @@ export class GraphRepository
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]> {
-    return this.findAndCount({
-      relations: this.relations,
+    return this.repo.findAndCount({
+      relations: this.repo.relations,
       where: {
         user: {
           id: userId,
@@ -194,16 +215,16 @@ export class GraphRepository
       graph.flowEdges = graph.flowEdges.filter(
         (n) => n.source !== moduleCode && n.target !== moduleCode
       )
-      return this.save(graph)
+      return this.repo.save(graph)
     }
     if (state === 'hidden') {
       toggle(graph.modulesHidden, graph.modulesPlaced)
-      return this.save(graph)
+      return this.repo.save(graph)
     }
 
     return this.moduleRepo.findByCode(moduleCode).then((module) => {
       graph.modulesPlaced.push(module)
-      return this.save(graph)
+      return this.repo.save(graph)
     })
   }
 
@@ -218,7 +239,7 @@ export class GraphRepository
     graph: Graph,
     props: GraphFrontendProps
   ): Promise<Graph> {
-    return this.save({
+    return this.repo.save({
       ...graph,
       flowEdges: props.flowEdges,
       flowNodes: props.flowNodes,
@@ -240,7 +261,7 @@ export class GraphRepository
       throw new Error('Invalid flow node ID')
     }
     graph.flowNodes[index] = node
-    return this.save(graph)
+    return this.repo.save(graph)
   }
 
   /**
@@ -286,18 +307,5 @@ export class GraphRepository
           )
         )
       )
-  }
-
-  /**
-   * @param {string[]} graphIds
-   * @returns {Promise<Graph[]>}
-   */
-  override async findByIds(graphIds: string[]): Promise<Graph[]> {
-    return this.find({
-      where: {
-        id: In(graphIds),
-      },
-      relations: this.relations,
-    })
   }
 }

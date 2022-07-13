@@ -2,7 +2,6 @@ import { DataSource, In } from 'typeorm'
 import {
   ModuleCondensed,
   IModuleCondensedRepository,
-  IModuleCondensed,
   InitModuleCondensedProps,
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
@@ -45,7 +44,15 @@ export class ModuleCondensedRepository implements IModuleCondensedRepository {
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */
-  findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]> {
+  findByCodes(moduleCodes: string[]): Promise<ModuleCondensed[]> {
     return this.repo.find({ where: { moduleCode: In(moduleCodes) } })
+  }
+
+  /**
+   * @param {string[]} moduleCode
+   * @returns {Promise<T>}
+   */
+  findByCode(moduleCode: string): Promise<ModuleCondensed> {
+    return this.repo.findOneByOrFail({ moduleCode })
   }
 }
