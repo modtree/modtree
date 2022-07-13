@@ -446,8 +446,7 @@ export interface IModuleRepository {
 /**
  * ModuleCondensed Repository Interface
  */
-export interface IModuleCondensedRepository
-  extends IBaseRepository<IModuleCondensed> {
+export interface IModuleCondensedRepository {
   /**
    * initialize a new condensed module and save it to the database
    *

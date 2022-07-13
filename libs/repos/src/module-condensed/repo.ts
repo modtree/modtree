@@ -8,16 +8,14 @@ import {
 import { getModuleLevel, flatten } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
-export class ModuleCondensedRepository
-  extends BaseRepo<ModuleCondensed>
-  implements IModuleCondensedRepository
-{
+export class ModuleCondensedRepository implements IModuleCondensedRepository {
+  private repo: BaseRepo<ModuleCondensed>
   constructor(db: DataSource) {
-    super(ModuleCondensed, db)
+    this.repo = new BaseRepo(ModuleCondensed, db)
   }
 
-  deleteAll = () => this.createQueryBuilder().delete().execute()
-  override findOneById = async (id: string) => this.findOneByOrFail({ id })
+  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
+  findOneById = async (id: string) => this.repo.findOneByOrFail({ id })
 
   /**
    * initialize a Module Condensed
@@ -26,8 +24,8 @@ export class ModuleCondensedRepository
    * @returns {Promise<ModuleCondensed>}
    */
   async initialize(props: InitModuleCondensedProps): Promise<ModuleCondensed> {
-    return this.save(
-      this.create({
+    return this.repo.save(
+      this.repo.create({
         ...props,
         moduleLevel: getModuleLevel(props.moduleCode),
       })
@@ -40,7 +38,7 @@ export class ModuleCondensedRepository
    * @returns {Promise<string[]>}
    */
   async getCodes(): Promise<string[]> {
-    return this.find().then((modules) => modules.map(flatten.module))
+    return this.repo.find().then((modules) => modules.map(flatten.module))
   }
 
   /**
@@ -48,6 +46,6 @@ export class ModuleCondensedRepository
    * @returns {Promise<Module[]>}
    */
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]> {
-    return this.find({ where: { moduleCode: In(moduleCodes) } })
+    return this.repo.find({ where: { moduleCode: In(moduleCodes) } })
   }
 }
