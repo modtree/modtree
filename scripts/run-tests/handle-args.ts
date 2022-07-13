@@ -42,9 +42,16 @@ export function handleArgs(
 
     /** --json */
     if (arg === '--json') {
-      tail.push('--json', '--outputFile', jsonOutputFile)
+      const jsonDir = path.resolve(rootDir, 'dist/tests')
       /** create directory for json outputs */
-      fs.mkdirSync(path.resolve(rootDir, 'dist/tests'), { recursive: true })
+      fs.mkdirSync(jsonDir, { recursive: true })
+      tail.push('--json', '--outputFile', path.resolve(jsonDir, jsonOutputFile))
+      return
+    }
+
+    /** --verbose */
+    if (arg === '--verbose') {
+      tail.push('--verbose')
       return
     }
 
