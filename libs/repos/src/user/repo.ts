@@ -194,8 +194,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
         throw new Error('Degree not in savedDegrees')
       }
       // set main degree
-      user.mainDegree = degree
-      return this.save(user)
+      return this.save({ ...user, mainDegree: degree })
     })
   }
 
@@ -210,8 +209,10 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     // 1. find degrees in DB
     return this.degreeRepo.findByIds(degreeIds).then((degrees) => {
       // 2. append degrees
-      user.savedDegrees.push(...degrees)
-      return this.save(user)
+      return this.save({
+        ...user,
+        savedDegrees: [...user.savedDegrees, ...degrees],
+      })
     })
   }
 
@@ -272,8 +273,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
         throw new Error("Graph's degree not in savedDegrees")
       }
       // set main graph
-      user.mainGraph = graph
-      return this.save(user)
+      return this.save({ ...user, mainGraph: graph })
     })
   }
 

@@ -1,46 +1,43 @@
+import '@modtree/test-env/jest'
+import { UserRepository, GraphRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
 import { User } from '@modtree/types'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
-import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../../base')
+jest.mock('../../../module')
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
-      ])
-    )
-    .then(([user, degree]) => {
-      t.user = user
-      return Repo.Graph.initialize({
-        title: 'Test Graph',
-        userId: user.id,
-        degreeId: degree.id,
-      })
-    })
-    .then((graph) => {
-      t.graph = graph
-    })
-)
-afterAll(() => teardown(db))
+const init = {
+  authZeroId: 'auth0|012345678901234567890123',
+  email: 'khang@modtree.com',
+}
 
-describe('insertGraphs', () => {
-  beforeEach(expect.hasAssertions)
+const userRepo = new UserRepository(mocks.db)
+const graphRepo = new GraphRepository(mocks.db)
 
-  it('returns a user', async () => {
-    // get user with all relations
-    await Repo.User.insertGraphs(t.user!, [t.graph!.id]).then((user) => {
+const correct = [
+  { graphIds: [], insert: [''], expected: [] },
+  { graphIds: ['a'], insert: [''], expected: ['a'] },
+  { graphIds: ['a'], insert: ['b'], expected: ['a'] },
+  { graphIds: ['b', 'a'], insert: ['a'], expected: ['a', 'b'] },
+]
+
+test.each(correct)(
+  'ids: $degreeIds, insert: $insert',
+  async ({ graphIds, insert, expected }) => {
+    /**
+     * test prep: initialize degrees and user
+     */
+    const savedGraphs = graphIds.map((id) => graphRepo.create({ id }))
+    const originalUser = await userRepo
+      .initialize(init)
+      .then((user) => userRepo.save({ ...user, savedGraphs }))
+    /**
+     * the real test
+     */
+    await userRepo.insertGraphs(originalUser, insert).then((user) => {
       expect(user).toBeInstanceOf(User)
-      t.user = user
+      const savedGraphIds = user.savedGraphs.map((d) => d.id)
+      expect(savedGraphIds).toIncludeSameMembers(expected)
     })
-  })
-
-  it('adds correct graph id', () => {
-    const graphIds = t.user!.savedGraphs.map((g) => g.id)
-    expect(graphIds).toContain(t.graph!.id)
-  })
-})
+  }
+)

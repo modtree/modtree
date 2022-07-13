@@ -10,7 +10,6 @@ import {
   FakeDataSource,
 } from '@modtree/types'
 import {
-  DataSource,
   EntityMetadata,
   EntityTarget,
   DeepPartial,
@@ -82,10 +81,45 @@ const getFakeRelations = <T>(entity: EntityTarget<T>): RelationMetadata[] => {
 }
 
 export class BaseRepo<Entity extends { id: string }> extends Original<Entity> {
+  private database: Entity[]
   constructor(entity: EntityTarget<Entity>, db: FakeDataSource) {
     /** mock relations */
     db.manager.connection.getMetadata = () =>
       ({ relations: getFakeRelations(entity) } as EntityMetadata)
     super(entity, db)
+    if (entity === Module) this.setDb(db.fakeData.modules)
+    if (entity === Degree) this.setDb(db.fakeData.degrees)
+    if (entity === Graph) this.setDb(db.fakeData.graphs)
+    if (entity === User) this.setDb(db.fakeData.users)
+    if (entity === ModuleFull) this.setDb(db.fakeData.modulesFull)
+    if (entity === ModuleCondensed) this.setDb(db.fakeData.modulesCondensed)
+  }
+
+  private setDb(data: any[]) {
+    this.database = data as unknown as Entity[]
+  }
+
+  override async findOneById(id: string): Promise<Entity> {
+    return new Promise((resolve, reject) => {
+      const result = this.database.find((e) => e.id === id)
+      if (!result) {
+        reject()
+      } else {
+        resolve(result)
+      }
+    })
+  }
+
+  override async findByIds(ids: string[]): Promise<Entity[]> {
+    return new Promise((resolve, reject) => {
+      const results = ids
+        .map((id) => this.database.find((e) => e.id === id))
+        .filter((x) => x !== undefined) as Entity[]
+      if (!results) {
+        reject()
+      } else {
+        resolve(results)
+      }
+    })
   }
 }

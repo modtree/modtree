@@ -52,30 +52,3 @@ test.each(correct)('ids: $degreeIds, set main: $setMain', async (props) => {
     )
   }
 })
-
-// describe('Saved degree', () => {
-//   beforeEach(expect.hasAssertions)
-//
-//   it('returns a user', async () => {
-//     // get user with all relations
-//     await Repo.User.setMainDegree(t.user!, saved.id).then((user) => {
-//       expect(user).toBeInstanceOf(User)
-//       t.user = user
-//     })
-//   })
-//
-//   it('sets correct main degree', () => {
-//     const degreeId = t.user!.mainDegree!.id
-//     expect(degreeId).toEqual(saved.id)
-//   })
-// })
-//
-// describe('Unsaved degree', () => {
-//   beforeEach(expect.hasAssertions)
-//
-//   it('throws an error', async () => {
-//     await expect(() =>
-//       Repo.User.setMainDegree(t.user!, unsaved.id)
-//     ).rejects.toThrow(Error('Degree not in savedDegrees'))
-//   })
-// })
