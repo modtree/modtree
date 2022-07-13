@@ -34,6 +34,7 @@ export interface IBaseRepository<Entity> {
   save: Repository<Entity>['save']
   find: Repository<Entity>['find']
   count: Repository<Entity>['count']
+  findAndCount: Repository<Entity>['findAndCount']
   remove: Repository<Entity>['remove']
   delete: Repository<Entity>['delete']
   findOneOrFail: Repository<Entity>['findOneOrFail']
