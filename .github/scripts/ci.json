@@ -11,9 +11,8 @@
   },
   "test": {
     "projects": [
-      "docs",
+      "docs web",
       "server",
-      "web",
       "integration-tests",
       "base module",
       "mc mf pull",
