@@ -7,7 +7,7 @@
     "serve": "nx run-many --target=serve --projects=web,server",
     "build": "nx run-many --all --target=build --parallel=4 --exclude=docs",
     "lint": "nx run-many --all --target=lint --parallel=4",
-    "test": "node scripts/test.js",
+    "test": "ts-node scripts/run-tests/run.ts",
     "test:a": "nx run-many --all --target=test --parallel=1 --exclude=auto-docs",
     "build:f": "yarn build --skip-nx-cache",
     "lint:f": "yarn lint --skip-nx-cache",

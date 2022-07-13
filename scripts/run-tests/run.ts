@@ -6,7 +6,7 @@ import { getAllFiles } from './get-all-files'
 
 const args = process.argv.slice(2)
 
-const rootDir = path.resolve(__dirname, '..')
+const rootDir = path.resolve(__dirname, '../..')
 const ignore = ['node_modules', 'dist']
 
 const jsonOutputFile = new Date()
