@@ -7,7 +7,11 @@
       "@/components/*": ["components/*"],
       "@/data/*": ["data/*"],
       "@modtree/test-env/jest": ["../../libs/test-env/src/matcher-types.ts"],
-      "@modtree/types": ["../../libs/types/src"]
+      "@modtree/types": ["../../libs/types/src"],
+      "@modtree/utils": ["../../libs/utils/src"],
+      "@modtree/sql": ["../../libs/sql/src/index.ts"],
+      "@modtree/repos": ["../../libs/repos/src/index.ts"],
+      "@modtree/typeorm-config": ["../../libs/typeorm-config/src/index.ts"]
     },
     "allowJs": true,
     "strict": false,
