@@ -24,21 +24,19 @@ export const search = createSlice({
     clearBuildList: (state) => {
       state.buildList = []
     },
-    setBuildList: (state, action: PayloadAction<IModule[]>) => {
+    setBuildList: (state, action: PayloadAction<string[]>) => {
       state.buildList = action.payload
     },
-    addToBuildList: (state, action: PayloadAction<IModule>) => {
-      const codes = new Set(state.buildList.map((m) => m.moduleCode))
-      if (!codes.has(action.payload.moduleCode)) {
+    addToBuildList: (state, action: PayloadAction<string>) => {
+      const codes = new Set(state.buildList)
+      if (!codes.has(action.payload)) {
         state.buildList = [...state.buildList, action.payload]
       }
     },
-    removeFromBuildList: (state, action: PayloadAction<IModule>) => {
-      const codes = new Set(state.buildList.map((m) => m.moduleCode))
-      if (codes.has(action.payload.moduleCode)) {
-        state.buildList = state.buildList.filter(
-          (x) => x.moduleCode !== action.payload.moduleCode
-        )
+    removeFromBuildList: (state, action: PayloadAction<string>) => {
+      const codes = new Set(state.buildList)
+      if (codes.has(action.payload)) {
+        state.buildList = state.buildList.filter((x) => x !== action.payload)
       }
     },
   },

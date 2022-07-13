@@ -5,32 +5,35 @@ import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
-import { IModule, InitDegreeProps, SetState } from '@modtree/types'
+import { InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, removeFromBuildList } from '@/store/search'
 import { api } from 'api'
 import { useUser } from '@/utils/auth0'
-import { flatten } from '@modtree/utils'
 import { updateUser } from '@/utils/rehydrate'
 
-function SelectedModules(props: { modules: IModule[] }) {
+function SelectedModules(props: { modules: string[] }) {
   const dispatch = useAppDispatch()
+  const cache = useAppSelector((state) => state.cache)
   return (
     <>
       {props.modules.length !== 0 && (
         <div className="ui-rectangle flex flex-col overflow-hidden">
-          {props.modules.map((module, index) => (
-            <Row.Module
-              key={dashed(module.moduleCode, index)}
-              deletable
-              onDelete={() => dispatch(removeFromBuildList(module))}
-            >
-              <span className="font-semibold">{module.moduleCode}</span>
-              <span className="mx-1">/</span>
-              {module.title}
-            </Row.Module>
-          ))}
+          {props.modules.map((code, index) => {
+            const module = cache.modules[code]
+            return (
+              <Row.Module
+                key={dashed(code, index)}
+                deletable
+                onDelete={() => dispatch(removeFromBuildList(code))}
+              >
+                <span className="font-semibold">{code}</span>
+                <span className="mx-1">/</span>
+                {module.title}
+              </Row.Module>
+            )
+          })}
         </div>
       )}
     </>
@@ -52,7 +55,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   async function saveDegree() {
     const degreeProps: InitDegreeProps = {
       title: state.title[0],
-      moduleCodes: buildList.map(flatten.module),
+      moduleCodes: buildList,
     }
     api.degree
       .create(degreeProps)

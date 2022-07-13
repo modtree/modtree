@@ -46,9 +46,7 @@ export function SettingsSearchBox() {
 
   const onSelect = (query: string) => {
     selectState[1](query)
-    api.module
-      .getByCodes([query])
-      .then((res) => dispatch(addToBuildList(res[0])))
+    dispatch(addToBuildList(query))
     selectState[1]('')
   }
 

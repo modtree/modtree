@@ -4,8 +4,6 @@ import { showDebugModal, showUserProfile } from '@/store/modal'
 import { removeModuleNode, setGraph } from '@/store/graph'
 import { api } from 'api'
 import { ModuleStatus } from '@modtree/types'
-import { flatten } from '@modtree/utils'
-import { updateModulesDone } from '@/store/user'
 import { updateUser } from '@/utils/rehydrate'
 
 const state = store.getState()
@@ -34,7 +32,7 @@ const flowNodeContextMenu: MenuItem[] = [
     text: 'Mark as done',
     callback: (e) => {
       const userId = state.user.id
-      const codes = state.user.modulesDone.map(flatten.module)
+      const codes = state.user.modulesDone
       const modules = [...codes, e.id]
       api.user
         .setModuleStatus(userId, modules, ModuleStatus.DONE)
@@ -45,7 +43,7 @@ const flowNodeContextMenu: MenuItem[] = [
     text: 'Mark as doing',
     callback: (e) => {
       const userId = state.user.id
-      const codes = state.user.modulesDoing.map(flatten.module)
+      const codes = state.user.modulesDoing
       const modules = [...codes, e.id]
       api.user
         .setModuleStatus(userId, modules, ModuleStatus.DOING)

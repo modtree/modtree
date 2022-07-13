@@ -13,7 +13,7 @@ import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { getCSS } from '@/utils/module-state'
-import { flatten, redrawGraph } from '@modtree/utils'
+import { redrawGraph } from '@modtree/utils'
 import { api } from 'api'
 
 export default function ModtreeFlow() {
@@ -57,8 +57,8 @@ export default function ModtreeFlow() {
       api.user.getById(user.id),
       api.graph.canTakeModules(graph.id),
     ]).then(([user, canTake]) => {
-      const done = user.modulesDone.map(flatten.module)
-      const doing = user.modulesDoing.map(flatten.module)
+      const done = user.modulesDone
+      const doing = user.modulesDoing
       getCSS(newNodes, done, doing, canTake).then((nodes) => {
         setNodes(nodes)
       })
@@ -68,8 +68,8 @@ export default function ModtreeFlow() {
   // Update CSS of nodes, if modulesDone/modulesDoing has changed
   // Uses redux state user.
   useEffect(() => {
-    const done = user.modulesDone.map(flatten.module)
-    const doing = user.modulesDoing.map(flatten.module)
+    const done = user.modulesDone
+    const doing = user.modulesDoing
     Promise.all([done, doing, api.graph.canTakeModules(graph.id)]).then(
       ([done, doing, canTake]) => {
         getCSS(nodes, done, doing, canTake).then((nodes) => {

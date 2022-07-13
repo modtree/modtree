@@ -6,7 +6,6 @@ import { IDegree, InitGraphProps, SetState } from '@modtree/types'
 import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { useAppSelector } from '@/store/redux'
-import { flatten } from '@modtree/utils'
 import { useUser } from '@/utils/auth0'
 import { api } from 'api'
 import { updateUser } from '@/utils/rehydrate'
@@ -15,9 +14,6 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const degrees = useAppSelector((state) => state.user.savedDegrees)
   const modulesDone = useAppSelector((state) => state.user.modulesDone)
   const modulesDoing = useAppSelector((state) => state.user.modulesDoing)
-
-  const modulesDoneCodes = modulesDone.map(flatten.module)
-  const modulesDoingCodes = modulesDoing.map(flatten.module)
 
   const { user } = useUser()
 
@@ -57,15 +53,15 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         <Input className="w-full mb-4" state={state.title} grayed />
         <h6>Modules</h6>
         <Modules
-          modulesDoneCodes={modulesDoneCodes}
-          modulesDoingCodes={modulesDoingCodes}
+          modulesDoneCodes={modulesDone}
+          modulesDoingCodes={modulesDoing}
         />
         <h6>Degree</h6>
         <DegreePicker
           degrees={degrees}
           select={state.degree}
-          modulesDoneCodes={modulesDoneCodes}
-          modulesDoingCodes={modulesDoingCodes}
+          modulesDoneCodes={modulesDone}
+          modulesDoingCodes={modulesDoing}
         />
       </SettingsSection>
       <div className="flex flex-row-reverse">

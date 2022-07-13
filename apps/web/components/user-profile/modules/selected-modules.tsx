@@ -1,26 +1,29 @@
-import { useAppDispatch } from '@/store/redux'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { removeFromBuildList } from '@/store/search'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
-import { IModule } from '@modtree/types'
 
-export function SelectedModules(props: { modules: IModule[] }) {
+export function SelectedModules(props: { modules: string[] }) {
   const dispatch = useAppDispatch()
+  const cache = useAppSelector((state) => state.cache)
   return (
     <>
       {props.modules.length !== 0 && (
         <div className="ui-rectangle flex flex-col overflow-hidden">
-          {props.modules.map((module, index) => (
-            <Row.Module
-              key={dashed(module.moduleCode, index)}
-              deletable
-              onDelete={() => dispatch(removeFromBuildList(module))}
-            >
-              <span className="font-semibold">{module.moduleCode}</span>
-              <span className="mx-1">/</span>
-              {module.title}
-            </Row.Module>
-          ))}
+          {props.modules.map((code, index) => {
+            const module = cache.modules[code]
+            return (
+              <Row.Module
+                key={dashed(code, index)}
+                deletable
+                onDelete={() => dispatch(removeFromBuildList(code))}
+              >
+                <span className="font-semibold">{code}</span>
+                <span className="mx-1">/</span>
+                {module.title}
+              </Row.Module>
+            )
+          })}
         </div>
       )}
     </>
