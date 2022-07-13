@@ -56,11 +56,26 @@ export default function ModtreeFlow() {
       api.user.getById(user.id),
       api.graph.canTakeModules(graph.id),
     ]).then(([user, canTake]) => {
-      getCSS(newNodes, user, canTake).then((nodes) => {
+      const done = user.modulesDone.map(flatten.module)
+      const doing = user.modulesDoing.map(flatten.module)
+      getCSS(newNodes, done, doing, canTake).then((nodes) => {
         setNodes(nodes)
       })
     })
   }, [graph.flowNodes, graph.id])
+
+  // Update CSS of nodes, if modulesDone/modulesDoing has changed
+  useEffect(() => {
+    const done = user.modulesDone.map(flatten.module)
+    const doing = user.modulesDoing.map(flatten.module)
+    Promise.all([done, doing, api.graph.canTakeModules(graph.id)]).then(
+      ([done, doing, canTake]) => {
+        getCSS(nodes, done, doing, canTake).then((nodes) => {
+          setNodes(nodes)
+        })
+      }
+    )
+  }, [user.modulesDone, user.modulesDoing])
 
   /**
    * Fit view for ANY graph change

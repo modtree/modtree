@@ -6,6 +6,7 @@ import {
   CanTakeModuleMap,
   ModuleSources,
   ModtreeApiResponse,
+  IModule,
 } from '@modtree/types'
 import { flatten, redrawGraph as redraw } from '@modtree/utils'
 import { api } from 'api'
@@ -59,12 +60,11 @@ export async function getModuleStates(
  */
 export async function getCSS(
   nodes: GraphFlowNode[],
-  user: ModtreeApiResponse.UserFull,
+  done: string[],
+  doing: string[],
   canTake: CanTakeModuleMap
 ) {
   // get LATEST modules done and doing
-  const done = user.modulesDone.map(flatten.module)
-  const doing = user.modulesDoing.map(flatten.module)
   const modulesPlaced = nodes.map((n) => n.id)
 
   const modules: ModuleSources = {
