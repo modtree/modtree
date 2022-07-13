@@ -60,13 +60,8 @@ export default function ModtreeFlow() {
       edges: graph.flowEdges,
     }).nodes
 
-    // store is not updated
-    console.log(modules, graph.modulesPlaced)
-    console.log(store.getState().graph)
-
     // updates CSS after
     api.graph.canTakeModules(graph.id, modules.planned).then((res) => {
-      console.log(res)
       getCSS(newNodes, modules, res).then((nodes) => {
         setNodes(nodes)
       })

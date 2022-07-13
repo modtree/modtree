@@ -70,8 +70,6 @@ export function ModuleDetails() {
         api.graph.updateFrontendProps(mainGraph.id, nodes, edges)
       )
       .then((g) => {
-        // backend is correctly updated
-        console.log('update', g)
         setGraph(g)
         // 5. Dispatch new nodes
         dispatch(
