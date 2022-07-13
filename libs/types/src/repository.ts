@@ -489,6 +489,13 @@ export interface IModuleCondensedRepository {
    * @returns condensed module
    */
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
+  /**
+   * finds one condensed module by code
+   *
+   * @param moduleCode
+   * @returns condensed module
+   */
+  findByCode(moduleCode: string): Promise<IModuleCondensed>
 }
 
 /**

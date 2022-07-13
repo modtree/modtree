@@ -105,7 +105,7 @@ test('EE1111A becomes placed', async () => {
 
 test('CS420BZT is not in database', async () => {
   await expect(() =>
-    Repo.ModuleCondensed.findOneByOrFail({ moduleCode: 'CS420BZT' })
+    Repo.ModuleCondensed.findByCode('CS420BZT')
   ).rejects.toThrowError(
     new EntityNotFoundError(ModuleCondensed, {
       moduleCode: 'CS420BZT',
