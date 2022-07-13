@@ -27,3 +27,16 @@ export class BaseRepo<T> extends Repository<T> {
     this.relations = getRelations(entity)
   }
 }
+
+export class BaseRepo2<Entity> {
+  protected relations: Relations
+  protected repo: Repository<Entity>
+  create: Repository<Entity>['create']
+  save: Repository<Entity>['save']
+  constructor(entity: EntityTarget<Entity>, db: DataSource) {
+    this.repo = new Repository(entity, db.manager)
+    this.relations = getRelations(entity)
+    this.create = this.repo.create.bind(this.repo)
+    this.save = this.repo.save.bind(this.repo)
+  }
+}

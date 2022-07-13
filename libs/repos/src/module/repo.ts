@@ -1,7 +1,7 @@
 import { DataSource, In } from 'typeorm'
 import { Module, InitModuleProps, IModuleRepository } from '@modtree/types'
 import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
-import { BaseRepo } from '../base'
+import { BaseRepo2 } from '../base'
 
 type Data = {
   moduleCode: string
@@ -10,18 +10,14 @@ type Data = {
   origIdx: number
 }
 
-export class ModuleRepository implements IModuleRepository {
-  private repo: BaseRepo<Module>
+export class ModuleRepository
+  extends BaseRepo2<Module>
+  implements IModuleRepository
+{
+  // private repo: BaseRepo<Module>
   constructor(db: DataSource) {
-    this.repo = new BaseRepo(Module, db)
-  }
-
-  create(partial: Partial<Module>): Module {
-    return this.repo.create(partial)
-  }
-
-  async save(partial: Partial<Module>): Promise<Module> {
-    return this.repo.save(partial)
+    super(Module, db)
+    // this.repo = new BaseRepo()
   }
 
   deleteAll = () => this.repo.createQueryBuilder().delete().execute()

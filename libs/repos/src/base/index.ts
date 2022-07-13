@@ -1,1 +1,1 @@
-export { BaseRepo } from './repo'
+export * from './repo'
