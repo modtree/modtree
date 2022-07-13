@@ -51,6 +51,8 @@ export default function ModtreeFlow() {
     }).nodes
 
     // updates CSS after
+    // Redux state user is not detecting changes, so rely on API call for
+    // updated user.
     Promise.all([
       api.user.getById(user.id),
       api.graph.canTakeModules(graph.id),
@@ -64,6 +66,7 @@ export default function ModtreeFlow() {
   }, [graph.flowNodes, graph.id])
 
   // Update CSS of nodes, if modulesDone/modulesDoing has changed
+  // Uses redux state user.
   useEffect(() => {
     const done = user.modulesDone.map(flatten.module)
     const doing = user.modulesDoing.map(flatten.module)
