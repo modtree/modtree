@@ -16,4 +16,4 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: markdown
           message: |
-            PR #${{ github.event.pull_request.number }} has auto-merge enabled 🚀
+            PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }} has auto-merge enabled 🚀
