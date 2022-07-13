@@ -30,7 +30,7 @@ function SelectedModules(props: { modules: string[] }) {
               >
                 <span className="font-semibold">{code}</span>
                 <span className="mx-1">/</span>
-                {module.title}
+                {module && module.title}
               </Row.Module>
             )
           })}
