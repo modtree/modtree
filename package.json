@@ -8,6 +8,7 @@
     "build": "nx run-many --all --target=build --parallel=4 --exclude=docs",
     "lint": "nx run-many --all --target=lint --parallel=4",
     "test": "ts-node scripts/run-tests/run.ts",
+    "test:scan": "ts-node scripts/run-tests/scan.ts",
     "test:a": "nx run-many --all --target=test --parallel=1 --exclude=auto-docs",
     "build:f": "yarn build --skip-nx-cache",
     "lint:f": "yarn lint --skip-nx-cache",

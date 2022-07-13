@@ -3,6 +3,7 @@ import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
 import { getAllFiles } from './get-all-files'
+import { scanForTests } from './scan'
 
 const args = process.argv.slice(2)
 
@@ -13,38 +14,12 @@ const jsonOutputFile = new Date()
   .toLocaleString('en-sg')
   .replace(/(\/|:|,| )+/g, '.')
 
-type Tests = {
-  names: string[]
-  record: Record<string, string>
-}
-
-/**
- * @param {string[]} arr - array of filepaths
- * @returns {Tests} array of pairs: test name and test path
- */
-const getTests = (arr: string[] = []): Tests => {
-  const res: Tests = {
-    names: [],
-    record: {},
-  }
-  arr.forEach((f) => {
-    const contents = fs.readFileSync(f, 'utf8').toString()
-    const re = contents.match(/displayName: ?["'](.*)["'],/)
-    if (re) {
-      const displayName = re[1]
-      res.names.push(displayName)
-      res.record[displayName] = f
-    }
-  })
-  return res
-}
-
 /**
  * write to test-list.txt the test names and their filepaths
  */
 const allFiles = getAllFiles(rootDir, ignore)
 const allProjects = allFiles.filter((f) => f.match(/jest.config.[jt]s$/))
-const tests = getTests(allProjects)
+const tests = scanForTests(allProjects)
 
 /**
  * handle arguments
