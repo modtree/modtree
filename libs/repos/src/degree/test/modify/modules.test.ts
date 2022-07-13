@@ -1,8 +1,8 @@
 import { DegreeRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
 
-jest.mock('../../base')
-jest.mock('../../module')
+jest.mock('../../../base')
+jest.mock('../../../module')
 
 const degreeRepo = new DegreeRepository(mocks.db)
 const degree = degreeRepo.create({
