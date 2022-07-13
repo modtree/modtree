@@ -5,7 +5,6 @@ import { removeModuleNode, setGraph } from '@/store/graph'
 import { api } from 'api'
 import { ModuleStatus } from '@modtree/types'
 import { flatten } from '@modtree/utils'
-import { updateModulesDone } from '@/store/user'
 import { updateUser } from '@/utils/rehydrate'
 
 const dispatch = store.dispatch
