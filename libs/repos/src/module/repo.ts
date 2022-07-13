@@ -21,7 +21,6 @@ export class ModuleRepository
   }
 
   deleteAll = () => this.createQueryBuilder().delete().execute()
-  findOneById = async (id: string) => this.findOneOrFail({ where: { id } })
 
   /**
    * initialize a Module
@@ -38,7 +37,7 @@ export class ModuleRepository
    * @returns {Promise<T>}
    */
   findByCode(moduleCode: string): Promise<Module> {
-    return this.findOneOrFail({ where: { moduleCode } })
+    return this.findOne({ where: { moduleCode } })
   }
 
   /**

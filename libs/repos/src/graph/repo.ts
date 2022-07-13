@@ -1,4 +1,4 @@
-import { DataSource, In } from 'typeorm'
+import { DataSource } from 'typeorm'
 import {
   Module,
   Graph,
@@ -42,22 +42,6 @@ export class GraphRepository
 
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
-
-  findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
-
-  /**
-   * @param {string[]} graphIds
-   * @returns {Promise<Graph[]>}
-   */
-  async findByIds(graphIds: string[]): Promise<Graph[]> {
-    return this.find({
-      where: {
-        id: In(graphIds),
-      },
-      relations: this.relations,
-    })
-  }
 
   /**
    * Adds a Graph to DB
@@ -129,7 +113,7 @@ export class GraphRepository
    * @returns {Promise<Graph>}
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
-    return this.findOneOrFail({
+    return this.findOne({
       relations: this.relations,
       where: {
         user: {

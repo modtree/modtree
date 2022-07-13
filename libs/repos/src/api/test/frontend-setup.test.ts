@@ -50,7 +50,7 @@ test('degree titles are correct', async () => {
 })
 
 test('Chandler is doing Data Analytics', async () => {
-  await Repo.User.findOneOrFail({
+  await Repo.User.findOne({
     where: { email: 'chandler@bing.com' },
     relations: { savedDegrees: true },
   }).then((user) => {
@@ -60,7 +60,7 @@ test('Chandler is doing Data Analytics', async () => {
 })
 
 test('Chandler has correct mods', async () => {
-  await Repo.User.findOneOrFail({
+  await Repo.User.findOne({
     where: { email: 'chandler@bing.com' },
     relations: { savedDegrees: { modules: true } },
   }).then((user) => {

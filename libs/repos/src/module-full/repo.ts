@@ -12,5 +12,5 @@ export class ModuleFullRepository
   }
 
   findByCode = async (moduleCode: string) =>
-    this.findOneOrFail({ where: { moduleCode } })
+    this.findOne({ where: { moduleCode } })
 }

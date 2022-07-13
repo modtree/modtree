@@ -8,27 +8,14 @@ export class DegreeRepository extends Original {
     this.fakeData = db.fakeData
   }
 
-  private findDegreeById(id: string): Degree {
-    const result = this.fakeData.degrees.find((d) => d.id === id)
-    if (!result) return this.fakeData.create(Degree)
-    return result
+  override findOneById(id: string): Promise<Degree> {
+    return new Promise((resolve, reject) => {
+      const result = this.fakeData.degrees.find((d) => d.id === id)
+      if (!result) {
+        reject()
+      } else {
+        resolve(result)
+      }
+    })
   }
-
-  override findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
-  //
-  // override findOneByTitle = async (title: string) =>
-  //   this.findOneOrFail({ where: { title }, relations: this.relations })
-  // /**
-  //  * @param {string[]} degreeIds
-  //  * @returns {Promise<Degree[]>}
-  //  */
-  // override async findByIds(degreeIds: string[]): Promise<Degree[]> {
-  //   return this.find({
-  //     where: {
-  //       id: In(degreeIds),
-  //     },
-  //     relations: this.relations,
-  //   })
-  // }
 }

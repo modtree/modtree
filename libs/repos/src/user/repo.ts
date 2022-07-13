@@ -32,23 +32,20 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
 
-  findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
-
   findOneByUsername = async (username: string) =>
-    this.findOneOrFail({
+    this.findOne({
       where: { username },
       relations: this.relations,
     })
 
   findOneByEmail = async (email: string) =>
-    this.findOneOrFail({
+    this.findOne({
       where: { email },
       relations: this.relations,
     })
 
   findOneByAuthZeroId = async (authZeroId: string) =>
-    this.findOneOrFail({
+    this.findOne({
       where: { authZeroId },
       relations: this.relations,
     })
@@ -197,8 +194,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
         throw new Error('Degree not in savedDegrees')
       }
       // set main degree
-      user.mainDegree = degree
-      return this.save(user)
+      return this.save({ ...user, mainDegree: degree })
     })
   }
 
@@ -213,8 +209,10 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     // 1. find degrees in DB
     return this.degreeRepo.findByIds(degreeIds).then((degrees) => {
       // 2. append degrees
-      user.savedDegrees.push(...degrees)
-      return this.save(user)
+      return this.save({
+        ...user,
+        savedDegrees: [...user.savedDegrees, ...degrees],
+      })
     })
   }
 
@@ -263,26 +261,20 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    * @returns {Promise<User>}
    */
   async setMainGraph(user: User, graphId: string): Promise<User> {
-    return this.graphRepo
-      .findOneOrFail({
-        where: { id: graphId },
-        relations: this.graphRepo.relations,
-      })
-      .then((graph) => {
-        // if the graph is not in saved
-        const savedGraphIds = user.savedGraphs.map((graph) => graph.id)
-        if (!savedGraphIds.includes(graphId)) {
-          throw new Error('Graph not in savedGraphs')
-        }
-        // if the graph's degree is not in saved
-        const savedDegreeIds = user.savedDegrees.map((degree) => degree.id)
-        if (!savedDegreeIds.includes(graph.degree.id)) {
-          throw new Error("Graph's degree not in savedDegrees")
-        }
-        // set main graph
-        user.mainGraph = graph
-        return this.save(user)
-      })
+    return this.graphRepo.findOneById(graphId).then((graph) => {
+      // if the graph is not in saved
+      const savedGraphIds = user.savedGraphs.map((graph) => graph.id)
+      if (!savedGraphIds.includes(graphId)) {
+        throw new Error('Graph not in savedGraphs')
+      }
+      // if the graph's degree is not in saved
+      const savedDegreeIds = user.savedDegrees.map((degree) => degree.id)
+      if (!savedDegreeIds.includes(graph.degree.id)) {
+        throw new Error("Graph's degree not in savedDegrees")
+      }
+      // set main graph
+      return this.save({ ...user, mainGraph: graph })
+    })
   }
 
   /**

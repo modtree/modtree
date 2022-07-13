@@ -1,4 +1,4 @@
-import { DataSource, In } from 'typeorm'
+import { DataSource } from 'typeorm'
 import {
   Degree,
   IDegreeRepository,
@@ -22,27 +22,11 @@ export class DegreeRepository
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
 
-  findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
-
   findOneByTitle = async (title: string) =>
-    this.findOneOrFail({
+    this.findOne({
       where: { title },
       relations: this.relations,
     })
-
-  /**
-   * @param {string[]} degreeIds
-   * @returns {Promise<Degree[]>}
-   */
-  async findByIds(degreeIds: string[]): Promise<Degree[]> {
-    return this.find({
-      where: {
-        id: In(degreeIds),
-      },
-      relations: this.relations,
-    })
-  }
 
   /**
    * Adds a Degree to DB
