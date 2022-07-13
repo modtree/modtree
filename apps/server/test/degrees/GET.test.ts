@@ -28,11 +28,11 @@ const withQueryRequest = () =>
 
 describe('with query params', () => {
   /**
-   * findByIds actually calls find
+   * findByIds does not call this.find
    */
   test('`find` is called once', async () => {
     await withQueryRequest()
-    expect(find).toBeCalledTimes(1)
+    expect(find).toBeCalledTimes(0)
   })
 
   test('`findByIds` is called once', async () => {

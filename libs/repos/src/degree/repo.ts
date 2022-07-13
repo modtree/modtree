@@ -1,4 +1,4 @@
-import { DataSource, In } from 'typeorm'
+import { DataSource } from 'typeorm'
 import {
   Degree,
   IDegreeRepository,
