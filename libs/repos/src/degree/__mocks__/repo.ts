@@ -15,7 +15,7 @@ export class DegreeRepository extends Original {
   }
 
   override findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
+    this.findOne({ where: { id }, relations: this.relations })
   //
   // override findOneByTitle = async (title: string) =>
   //   this.findOneOrFail({ where: { title }, relations: this.relations })

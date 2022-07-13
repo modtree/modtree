@@ -45,13 +45,16 @@ export interface IBaseRepository<Entity> {
   /** direct inheritance */
   create: Repository<Entity>['create']
   save: Repository<Entity>['save']
-  find: Repository<Entity>['find']
   count: Repository<Entity>['count']
   findAndCount: Repository<Entity>['findAndCount']
   remove: Repository<Entity>['remove']
   delete: Repository<Entity>['delete']
-  findOneOrFail: Repository<Entity>['findOneOrFail']
+  find: Repository<Entity>['find']
+  findOne: Repository<Entity>['findOneOrFail']
   createQueryBuilder: Repository<Entity>['createQueryBuilder']
+  /** derivative methods */
+  findOneById(id: string): Promise<Entity>
+  findByIds(ids: string[]): Promise<Entity[]>
 }
 
 /**

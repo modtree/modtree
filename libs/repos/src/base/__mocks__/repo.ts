@@ -80,7 +80,7 @@ const getFakeRelations = <T>(entity: EntityTarget<T>): RelationMetadata[] => {
   return mapPropertyName(arr) as RelationMetadata[]
 }
 
-export class BaseRepo<Entity> extends Original<Entity> {
+export class BaseRepo<Entity extends { id: string }> extends Original<Entity> {
   constructor(entity: EntityTarget<Entity>, db: DataSource) {
     /** mock relations */
     db.manager.connection.getMetadata = () =>

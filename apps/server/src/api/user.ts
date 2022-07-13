@@ -41,7 +41,7 @@ export class UserApi {
     (api: Api) => async (req: CustomReqBody<ListRequest>) => {
       const { id, authZeroId, email } = req.body
       return api.userRepo
-        .findOneOrFail({
+        .findOne({
           where: { id, authZeroId, email },
           relations: api.userRepo.relations,
         })
@@ -81,7 +81,7 @@ export class UserApi {
    */
   static getFull = (api: Api) => async (req: Request) => {
     return api.userRepo
-      .findOneOrFail({
+      .findOne({
         where: { id: req.params.userId || '_' },
         relations: {
           modulesDone: true,
