@@ -6,7 +6,6 @@ import { api } from 'api'
 import { ModuleStatus } from '@modtree/types'
 import { updateUser } from '@/utils/rehydrate'
 
-const state = store.getState()
 const dispatch = store.dispatch
 
 /**
@@ -31,6 +30,7 @@ const flowNodeContextMenu: MenuItem[] = [
   {
     text: 'Mark as done',
     callback: (e) => {
+      const state = store.getState()
       const userId = state.user.id
       const codes = state.user.modulesDone
       const modules = [...codes, e.id]
@@ -42,6 +42,7 @@ const flowNodeContextMenu: MenuItem[] = [
   {
     text: 'Mark as doing',
     callback: (e) => {
+      const state = store.getState()
       const userId = state.user.id
       const codes = state.user.modulesDoing
       const modules = [...codes, e.id]
@@ -54,6 +55,7 @@ const flowNodeContextMenu: MenuItem[] = [
     text: 'Remove',
     callback: async (e) => {
       // update graph
+      const state = store.getState()
       const mainGraph = state.graph
       api.graph.toggle(mainGraph.id, e.id).then((g) => {
         store.dispatch(setGraph(g))

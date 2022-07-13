@@ -10,7 +10,7 @@ import { ModtreeUserProfile } from 'types'
 const redux = store.getState()
 const dispatch = store.dispatch
 
-async function getUser(
+export async function getUser(
   user: ModtreeUserProfile
 ): Promise<ModtreeApiResponse.UserFull> {
   if (redux.user.id === '') {
