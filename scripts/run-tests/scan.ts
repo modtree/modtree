@@ -12,21 +12,27 @@ type Test = {
  * @returns {Test} test display name
  */
 const getTestName = (path: string): Test => {
-  const output = {
-    path,
-    name: '',
-  }
   const regexMatch = fs
     .readFileSync(path, 'utf8')
     .toString()
     .match(/displayName: ?["'](.*)["'],/)
-  return regexMatch ? { ...output, name: regexMatch[1] } : output
+  return regexMatch ? { name: regexMatch[1], path } : { name: '', path }
 }
 
 const rootDir = path.resolve(__dirname, '../..')
-const allTestNames = getAllFiles(rootDir, ['node_modules', 'dist'])
+const allTests = getAllFiles(rootDir, ['node_modules', 'dist'])
   .filter((f) => f.match(/jest.config.[jt]s$/))
   .map(getTestName)
   .filter((t) => t.name !== '')
+  .reduce(
+    (acc, cur) => ({
+      ...acc,
+      [cur.name]: cur.path,
+    }),
+    {} as Record<string, string>
+  )
 
-console.log(allTestNames)
+fs.writeFileSync(
+  path.resolve(__dirname, 'tests.json'),
+  JSON.stringify(allTests)
+)
