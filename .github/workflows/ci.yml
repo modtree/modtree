@@ -39,9 +39,7 @@ jobs:
 
   tests: # don't change this name, else will also need to change branch rules
     needs: [pre_job]
-    if: |
-      github.event.pull_request.draft == false &&
-      needs.pre_job.outputs.should_skip != 'true'
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
