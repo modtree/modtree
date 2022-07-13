@@ -52,14 +52,9 @@ export class GraphApi extends BaseApi {
   /**
    * can take modules
    */
-  async canTakeModules(
-    graphId: string,
-    moduleCodes: string[]
-  ): Promise<Record<string, boolean>> {
+  async canTakeModules(graphId: string): Promise<Record<string, boolean>> {
     return this.server
-      .post(`/graph/${graphId}/can-take-modules`, {
-        moduleCodes,
-      })
+      .get(`/graph/${graphId}/can-take-modules`)
       .then((res) => res.data)
   }
 }

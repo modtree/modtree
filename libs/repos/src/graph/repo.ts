@@ -319,13 +319,10 @@ export class GraphRepository
    * Returns true if graph contains sufficient pre-reqs for the module.
    *
    * @param {Graph} graph
-   * @param {string[]} moduleCodes
    * @returns {Promise<CanTakeModuleMap>}
    */
-  async canTakeModules(
-    graph: Graph,
-    moduleCodes: string[]
-  ): Promise<CanTakeModuleMap> {
+  async canTakeModules(graph: Graph): Promise<CanTakeModuleMap> {
+    const moduleCodes = graph.modulesPlaced.map(flatten.module)
     return Promise.all(
       moduleCodes.map((code) => this.canTakeModule(graph, code))
     ).then((results) => {

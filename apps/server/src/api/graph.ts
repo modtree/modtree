@@ -139,9 +139,8 @@ export class GraphApi {
    */
   static canTakeModules = (api: Api) => async (req: Request) => {
     const { graphId } = req.params
-    const { moduleCodes } = req.body
     return api.graphRepo
       .findOneById(graphId)
-      .then((g) => api.graphRepo.canTakeModules(g, moduleCodes))
+      .then((g) => api.graphRepo.canTakeModules(g))
   }
 }

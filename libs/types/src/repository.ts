@@ -151,13 +151,9 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * multiple canTakeModule
    *
    * @param graph
-   * @param moduleCodes
    * @returns a boolean
    */
-  canTakeModules(
-    graph: IGraph,
-    moduleCodes: string[]
-  ): Promise<CanTakeModuleMap>
+  canTakeModules(graph: IGraph): Promise<CanTakeModuleMap>
   /**
    * finds graphs by ids
    *
