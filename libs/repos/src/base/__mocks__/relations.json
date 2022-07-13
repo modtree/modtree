@@ -1,19 +1,12 @@
 {
-  "degree": {
-    "modules": true
-  },
-  "user": {
-    "savedDegrees": true,
-    "savedGraphs": true,
-    "mainDegree": true,
-    "mainGraph": true,
-    "modulesDone": true,
-    "modulesDoing": true
-  },
-  "graph": {
-    "user": true,
-    "degree": true,
-    "modulesPlaced": true,
-    "modulesHidden": true
-  }
+  "degree": ["modules"],
+  "user": [
+    "savedDegrees",
+    "savedGraphs",
+    "mainDegree",
+    "mainGraph",
+    "modulesDone",
+    "modulesDoing"
+  ],
+  "graph": ["user", "degree", "modulesPlaced", "modulesHidden"]
 }
