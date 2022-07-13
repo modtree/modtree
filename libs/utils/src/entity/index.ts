@@ -46,6 +46,8 @@ export const flatten = {
   userFull(user: User): ModtreeApiResponse.UserFull {
     return {
       ...user,
+      modulesDoing: user.modulesDoing.map(flatten.module),
+      modulesDone: user.modulesDone.map(flatten.module),
       savedGraphs: user.savedGraphs.map((g) => g.id),
       // in case no graph yet
       mainGraph: user.mainGraph ? user.mainGraph.id : '',

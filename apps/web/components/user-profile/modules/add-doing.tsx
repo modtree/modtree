@@ -14,9 +14,9 @@ export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const buildList = useAppSelector((state) => state.search.buildList)
   const { user } = useUser()
   function confirm() {
-    const codes = buildList.map((m) => m.moduleCode)
+    const codes = buildList
     api.user.setModuleStatus(user.modtreeId, codes, ModuleStatus.DOING)
-    dispatch(updateModulesDoing(buildList))
+    dispatch(updateModulesDoing(codes))
     props.setPage('main')
   }
   return (

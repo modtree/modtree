@@ -12,15 +12,13 @@ import { api } from 'api'
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user)
+  const cache = useAppSelector((state) => state.cache)
 
   /**
    * update the cache with required modules
    */
   useEffect(() => {
-    api.module.loadCodes([
-      ...user.modulesDone.map((m) => m.moduleCode),
-      ...user.modulesDoing.map((m) => m.moduleCode),
-    ])
+    api.module.loadCodes([...user.modulesDone, ...user.modulesDoing])
   }, [user.modulesDone, user.modulesDoing])
 
   const hasModules = {
@@ -43,13 +41,16 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             <>
               <p>{text.moduleListSection.doing.summary}</p>
               <div className="ui-rectangle flex flex-col overflow-hidden">
-                {user.modulesDoing.map((module, index) => (
-                  <Row.Module key={dashed(module.moduleCode, index)}>
-                    <span className="font-semibold">{module.moduleCode}</span>
-                    <span className="mx-1">/</span>
-                    {module.title}
-                  </Row.Module>
-                ))}
+                {user.modulesDoing.map((code, index) => {
+                  const module = cache.modules[code]
+                  return (
+                    <Row.Module key={dashed(code, index)}>
+                      <span className="font-semibold">{code}</span>
+                      <span className="mx-1">/</span>
+                      {module.title}
+                    </Row.Module>
+                  )
+                })}
               </div>
             </>
           ) : (
@@ -71,13 +72,16 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             <>
               <p>{text.moduleListSection.done.summary}</p>
               <div className="ui-rectangle flex flex-col overflow-hidden">
-                {user.modulesDone.map((module, index) => (
-                  <Row.Module key={dashed(module.moduleCode, index)}>
-                    <span className="font-semibold">{module.moduleCode}</span>
-                    <span className="mx-1">/</span>
-                    {module.title}
-                  </Row.Module>
-                ))}
+                {user.modulesDone.map((code, index) => {
+                  const module = cache.modules[code]
+                  return (
+                    <Row.Module key={dashed(code, index)}>
+                      <span className="font-semibold">{code}</span>
+                      <span className="mx-1">/</span>
+                      {module.title}
+                    </Row.Module>
+                  )
+                })}
               </div>
             </>
           ) : (
