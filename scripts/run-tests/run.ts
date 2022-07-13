@@ -1,4 +1,4 @@
-import { spawn } from 'child_process'
+import fs from 'fs'
 import rawTests from './tests.json'
 import { getAliases } from './get-aliases'
 import { handleArgs } from './handle-args'
@@ -20,10 +20,4 @@ const spawnArgs = [
   ...tail,
 ]
 
-const run = true
-
-if (run) {
-  const jest = spawn('yarn', spawnArgs)
-  jest.stdout.on('data', (d) => process.stdout.write(d))
-  jest.stderr.on('data', (d) => process.stderr.write(d))
-}
+fs.writeFileSync('test.command', ['yarn', ...spawnArgs].join(' '))
