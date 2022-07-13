@@ -7,7 +7,7 @@ beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 let mod: ModuleFull
 
-const testFn = (code: string) => Repo.ModuleFull.findOneByCode(code)
+const testFn = (code: string) => Repo.ModuleFull.findByCode(code)
 
 test('returns a full module', async () => {
   await testFn('CS1010S').then((res) => {

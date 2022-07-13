@@ -105,10 +105,12 @@ test('EE1111A becomes placed', async () => {
 
 test('CS420BZT is not in database', async () => {
   await expect(() =>
-    Repo.ModuleCondensed.findOneByOrFail({ moduleCode: 'CS420BZT' })
+    Repo.ModuleCondensed.findByCode('CS420BZT')
   ).rejects.toThrowError(
     new EntityNotFoundError(ModuleCondensed, {
-      moduleCode: 'CS420BZT',
+      where: {
+        moduleCode: 'CS420BZT',
+      },
     })
   )
 })
@@ -118,7 +120,9 @@ test('error on toggling CS420BZT', async () => {
     Repo.Graph.toggleModule(t.graph!, 'CS420BZT')
   ).rejects.toThrowError(
     new EntityNotFoundError(Module, {
-      moduleCode: 'CS420BZT',
+      where: {
+        moduleCode: 'CS420BZT',
+      },
     })
   )
 })

@@ -1,1 +1,2 @@
-export { BaseRepo } from './repo'
+export * from './repo'
+export * from './get-relations'

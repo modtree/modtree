@@ -28,7 +28,7 @@ const apiRoutes = routes.map(({ route, method }) => ({ route, method }))
 const fileRoutes = allFiles
   .map((filepath) => {
     const [route, method] = filepath
-      .replace(/(.*)\/\[(GET|POST|PATCH|DELETE)\]\.test\.ts/, '$1___$2')
+      .replace(/(.*)\/(GET|POST|PATCH|DELETE)\.test\.ts/, '$1___$2')
       .split('___')
     return { route, method: method.toLowerCase() }
   })
@@ -42,7 +42,7 @@ test('all files end with `.test.ts`', () => {
 
 test('all filenames are [METHOD]', () => {
   allFiles.forEach((file) => {
-    expect(basename(file)).toMatch(/^\[(GET|POST|PATCH|DELETE)\]\.test\.ts$/)
+    expect(basename(file)).toMatch(/^(GET|POST|PATCH|DELETE)\.test\.ts$/)
   })
 })
 

@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import { Module, IModuleRepository, InitModuleProps } from '@modtree/types'
+import { Module, InitModuleProps, IModuleRepository } from '@modtree/types'
 import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
@@ -14,12 +14,14 @@ export class ModuleRepository
   extends BaseRepo<Module>
   implements IModuleRepository
 {
+  // private repo: BaseRepo<Module>
   constructor(db: DataSource) {
     super(Module, db)
+    // this = new BaseRepo()
   }
 
   deleteAll = () => this.createQueryBuilder().delete().execute()
-  override findOneById = async (id: string) => this.findOneByOrFail({ id })
+  findOneById = async (id: string) => this.findOneOrFail({ where: { id } })
 
   /**
    * initialize a Module
@@ -36,7 +38,7 @@ export class ModuleRepository
    * @returns {Promise<T>}
    */
   findByCode(moduleCode: string): Promise<Module> {
-    return this.findOneByOrFail({ moduleCode })
+    return this.findOneOrFail({ where: { moduleCode } })
   }
 
   /**
@@ -44,7 +46,7 @@ export class ModuleRepository
    * @returns {Promise<T[]>}
    */
   findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    return this.findBy({ moduleCode: In(moduleCodes) })
+    return this.find({ where: { moduleCode: In(moduleCodes) } })
   }
 
   /**

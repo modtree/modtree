@@ -8,6 +8,6 @@ export class ModuleFullApi {
    * @param {Api} api
    */
   static get = (api: Api) => (req: Request) => {
-    return api.moduleFullRepo.findOneByCode(req.params.moduleCode)
+    return api.moduleFullRepo.findByCode(req.params.moduleCode)
   }
 }

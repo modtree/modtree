@@ -2,7 +2,6 @@ import { DataSource, In } from 'typeorm'
 import {
   ModuleCondensed,
   IModuleCondensedRepository,
-  IModuleCondensed,
   InitModuleCondensedProps,
 } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
@@ -17,7 +16,7 @@ export class ModuleCondensedRepository
   }
 
   deleteAll = () => this.createQueryBuilder().delete().execute()
-  override findOneById = async (id: string) => this.findOneByOrFail({ id })
+  findOneById = async (id: string) => this.findOneOrFail({ where: { id } })
 
   /**
    * initialize a Module Condensed
@@ -47,7 +46,15 @@ export class ModuleCondensedRepository
    * @param {string[]} moduleCodes
    * @returns {Promise<Module[]>}
    */
-  findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]> {
+  findByCodes(moduleCodes: string[]): Promise<ModuleCondensed[]> {
     return this.find({ where: { moduleCode: In(moduleCodes) } })
+  }
+
+  /**
+   * @param {string[]} moduleCode
+   * @returns {Promise<T>}
+   */
+  findByCode(moduleCode: string): Promise<ModuleCondensed> {
+    return this.findOneOrFail({ where: { moduleCode } })
   }
 }

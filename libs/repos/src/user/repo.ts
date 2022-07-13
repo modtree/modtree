@@ -1,4 +1,4 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   User,
   Module,
@@ -8,38 +8,49 @@ import {
   InitUserProps,
   IUserRepository,
   ModuleStatus,
+  IDegreeRepository,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
 import { BaseRepo } from '../base'
 import defaultProps from './default.json'
+import { DegreeRepository } from '../degree'
 
 export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository
-  private degreeRepo: Repository<Degree>
+  private degreeRepo: IDegreeRepository
   private graphRepo: BaseRepo<Graph>
 
   constructor(db: DataSource) {
     super(User, db)
     this.moduleRepo = new ModuleRepository(db)
-    this.degreeRepo = new Repository(Degree, db.manager)
+    this.degreeRepo = new DegreeRepository(db)
     this.graphRepo = new BaseRepo(Graph, db)
   }
 
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
 
-  override findOneById = async (id: string) =>
+  findOneById = async (id: string) =>
     this.findOneOrFail({ where: { id }, relations: this.relations })
 
   findOneByUsername = async (username: string) =>
-    this.findOneOrFail({ where: { username }, relations: this.relations })
+    this.findOneOrFail({
+      where: { username },
+      relations: this.relations,
+    })
 
   findOneByEmail = async (email: string) =>
-    this.findOneOrFail({ where: { email }, relations: this.relations })
+    this.findOneOrFail({
+      where: { email },
+      relations: this.relations,
+    })
 
   findOneByAuthZeroId = async (authZeroId: string) =>
-    this.findOneOrFail({ where: { authZeroId }, relations: this.relations })
+    this.findOneOrFail({
+      where: { authZeroId },
+      relations: this.relations,
+    })
 
   /**
    * Adds a User to DB
@@ -178,7 +189,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    * @returns {Promise<User>}
    */
   async setMainDegree(user: User, degreeId: string): Promise<User> {
-    return this.degreeRepo.findOneByOrFail({ id: degreeId }).then((degree) => {
+    return this.degreeRepo.findOneById(degreeId).then((degree) => {
       // if the degree is not in saved
       const savedDegreeIds = user.savedDegrees.map((degree) => degree.id)
       if (!savedDegreeIds.includes(degreeId)) {
@@ -199,7 +210,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    */
   async insertDegrees(user: User, degreeIds: string[]): Promise<User> {
     // 1. find degrees in DB
-    return this.degreeRepo.findBy({ id: In(degreeIds) }).then((degrees) => {
+    return this.degreeRepo.findByIds(degreeIds).then((degrees) => {
       // 2. append degrees
       user.savedDegrees.push(...degrees)
       return this.save(user)
@@ -282,11 +293,13 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    */
   async insertGraphs(user: User, graphIds: string[]): Promise<User> {
     // 1. find graphs in DB
-    return this.graphRepo.findBy({ id: In(graphIds) }).then((graphs) => {
-      // 2. append graphs
-      user.savedGraphs.push(...graphs)
-      return this.save(user)
-    })
+    return this.graphRepo
+      .find({ where: { id: In(graphIds) } })
+      .then((graphs) => {
+        // 2. append graphs
+        user.savedGraphs.push(...graphs)
+        return this.save(user)
+      })
   }
 
   /**

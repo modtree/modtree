@@ -1,12 +1,11 @@
 import { init, Repo, setup, teardown } from '@modtree/test-env'
 import { getSource } from '@modtree/typeorm-config'
-import { Graph, ModuleCondensed, GraphFrontendProps } from '@modtree/types'
+import { Graph, GraphFrontendProps } from '@modtree/types'
 import { empty, oneUp } from '@modtree/utils'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 const t: Partial<{ graph: Graph; moduleCodes: string[] }> = {}
-let CS1010S: ModuleCondensed
 
 beforeAll(() =>
   setup(db)
@@ -14,11 +13,6 @@ beforeAll(() =>
       Promise.all([
         Repo.User.initialize(init.user1),
         Repo.Degree.initialize(init.degree1),
-        Repo.ModuleCondensed.findOneByOrFail({ moduleCode: 'CS1010S' }).then(
-          (module) => {
-            CS1010S = module
-          }
-        ),
       ])
     )
     .then(([user, degree]) =>

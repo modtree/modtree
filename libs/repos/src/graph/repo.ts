@@ -28,24 +28,35 @@ export class GraphRepository
   extends BaseRepo<Graph>
   implements IGraphRepository
 {
-  private db: DataSource
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
 
   constructor(db: DataSource) {
     super(Graph, db)
-    this.db = db
-    this.moduleRepo = new ModuleRepository(this.db)
-    this.degreeRepo = new DegreeRepository(this.db)
-    this.userRepo = new UserRepository(this.db)
+    this.moduleRepo = new ModuleRepository(db)
+    this.degreeRepo = new DegreeRepository(db)
+    this.userRepo = new UserRepository(db)
   }
 
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
 
-  override findOneById = async (id: string) =>
+  findOneById = async (id: string) =>
     this.findOneOrFail({ where: { id }, relations: this.relations })
+
+  /**
+   * @param {string[]} graphIds
+   * @returns {Promise<Graph[]>}
+   */
+  async findByIds(graphIds: string[]): Promise<Graph[]> {
+    return this.find({
+      where: {
+        id: In(graphIds),
+      },
+      relations: this.relations,
+    })
+  }
 
   /**
    * Adds a Graph to DB
@@ -201,7 +212,7 @@ export class GraphRepository
       return this.save(graph)
     }
 
-    return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
+    return this.moduleRepo.findByCode(moduleCode).then((module) => {
       graph.modulesPlaced.push(module)
       return this.save(graph)
     })
@@ -282,22 +293,9 @@ export class GraphRepository
       .then((moduleCodes) =>
         Promise.all(
           moduleCodes.map((moduleCode) =>
-            this.moduleRepo.findOneByOrFail({ moduleCode })
+            this.moduleRepo.findByCode(moduleCode)
           )
         )
       )
-  }
-
-  /**
-   * @param {string[]} graphIds
-   * @returns {Promise<Graph[]>}
-   */
-  override async findByIds(graphIds: string[]): Promise<Graph[]> {
-    return this.find({
-      where: {
-        id: In(graphIds),
-      },
-      relations: this.relations,
-    })
   }
 }

@@ -19,7 +19,7 @@ export class ModuleApi {
    * @param {Api} api
    */
   static get = (api: Api) => (req: Request) => {
-    return api.moduleRepo.findOneByOrFail({ moduleCode: req.params.moduleCode })
+    return api.moduleRepo.findByCode(req.params.moduleCode)
   }
 
   /**

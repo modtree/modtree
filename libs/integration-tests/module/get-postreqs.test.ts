@@ -1,6 +1,5 @@
 import { setup, t, Repo, teardown } from '@modtree/test-env'
 import { unique } from '@modtree/utils'
-import { In } from 'typeorm'
 import { db } from '@modtree/typeorm-config'
 
 beforeAll(() => setup(db, { restore: false }))
@@ -15,9 +14,7 @@ describe('single query', () => {
   })
 
   it('returns correct modules', async () => {
-    await Repo.Module.findOneByOrFail({
-      moduleCode: 'MA2001',
-    }).then((module) => {
+    await Repo.Module.findByCode('MA2001').then((module) => {
       expect(t.postReqsCodes).toIncludeSameMembers(module.fulfillRequirements)
     })
   })
@@ -33,9 +30,7 @@ describe('multi query', () => {
 
   it('returns correct modules', async () => {
     const codes: string[] = []
-    await Repo.Module.findBy({
-      moduleCode: In(['MA2001', 'CS1010']),
-    }).then((modules) => {
+    await Repo.Module.findByCodes(['MA2001', 'CS1010']).then((modules) => {
       modules.forEach((module) => {
         codes.push(...module.fulfillRequirements)
       })

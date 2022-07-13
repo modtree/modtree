@@ -27,8 +27,18 @@ export enum ModuleStatus {
 }
 export type ModuleState = 'placed' | 'hidden' | 'new'
 
-export interface IBaseRepository<T> extends Repository<T> {
+export interface IBaseRepository<Entity> {
   relations: Relations
+  /** direct inheritance */
+  create: Repository<Entity>['create']
+  save: Repository<Entity>['save']
+  find: Repository<Entity>['find']
+  count: Repository<Entity>['count']
+  findAndCount: Repository<Entity>['findAndCount']
+  remove: Repository<Entity>['remove']
+  delete: Repository<Entity>['delete']
+  findOneOrFail: Repository<Entity>['findOneOrFail']
+  createQueryBuilder: Repository<Entity>['createQueryBuilder']
 }
 
 /**
@@ -481,6 +491,13 @@ export interface IModuleCondensedRepository
    * @returns condensed module
    */
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
+  /**
+   * finds one condensed module by code
+   *
+   * @param moduleCode
+   * @returns condensed module
+   */
+  findByCode(moduleCode: string): Promise<IModuleCondensed>
 }
 
 /**
@@ -493,7 +510,7 @@ export interface IModuleFullRepository extends IBaseRepository<IModuleFull> {
    * @param code
    * @returns full module
    */
-  findOneByCode(code: string): Promise<IModuleFull>
+  findByCode(code: string): Promise<IModuleFull>
 }
 
 export type Repositories = {

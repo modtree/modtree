@@ -9,17 +9,14 @@ beforeEach(() => jest.clearAllMocks())
 
 const api = new Api(mocks.db)
 const app: Express = getApp(api)
-const findOneOrFail: jest.SpyInstance = jest.spyOn(
-  api.degreeRepo,
-  'findOneOrFail'
-)
+const findOneById: jest.SpyInstance = jest.spyOn(api.degreeRepo, 'findOneById')
 
-test('`findOneOrFail` is called once', async () => {
+test('`findOneById` is called once', async () => {
   await request(app).get(
     '/degree/58201858-5ce5-4ceb-8568-eecf55841b9f/get-full'
   )
 
-  expect(findOneOrFail).toBeCalledTimes(1)
+  expect(findOneById).toBeCalledTimes(1)
 })
 
 /**

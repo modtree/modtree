@@ -22,11 +22,27 @@ export class DegreeRepository
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
 
-  override findOneById = async (id: string) =>
+  findOneById = async (id: string) =>
     this.findOneOrFail({ where: { id }, relations: this.relations })
 
   findOneByTitle = async (title: string) =>
-    this.findOneOrFail({ where: { title }, relations: this.relations })
+    this.findOneOrFail({
+      where: { title },
+      relations: this.relations,
+    })
+
+  /**
+   * @param {string[]} degreeIds
+   * @returns {Promise<Degree[]>}
+   */
+  async findByIds(degreeIds: string[]): Promise<Degree[]> {
+    return this.find({
+      where: {
+        id: In(degreeIds),
+      },
+      relations: this.relations,
+    })
+  }
 
   /**
    * Adds a Degree to DB
@@ -69,19 +85,6 @@ export class DegreeRepository
       degree.title = props.title
       degree.modules = modules
       return this.save(degree)
-    })
-  }
-
-  /**
-   * @param {string[]} degreeIds
-   * @returns {Promise<Degree[]>}
-   */
-  override async findByIds(degreeIds: string[]): Promise<Degree[]> {
-    return this.find({
-      where: {
-        id: In(degreeIds),
-      },
-      relations: this.relations,
     })
   }
 }

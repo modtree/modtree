@@ -33,4 +33,4 @@ cleanup() {
   rm -f test.command
 }; trap cleanup EXIT
 
-[ -f test.command ] && source test.command || exit 0
+[ -f test.command ] && source test.command
