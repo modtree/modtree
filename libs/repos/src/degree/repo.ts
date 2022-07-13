@@ -8,25 +8,34 @@ import {
 import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 
-export class DegreeRepository
-  extends BaseRepo<Degree>
-  implements IDegreeRepository
-{
+export class DegreeRepository implements IDegreeRepository {
   private moduleRepo: IModuleRepository
+  private repo: BaseRepo<Degree>
 
   constructor(db: DataSource) {
-    super(Degree, db)
+    this.repo = new BaseRepo(Degree, db)
     this.moduleRepo = new ModuleRepository(db)
   }
 
-  /** one-liners */
-  deleteAll = () => this.createQueryBuilder().delete().execute()
+  create(partial: Partial<Degree>): Degree {
+    return this.repo.create(partial)
+  }
 
-  override findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
+  async save(partial: Partial<Degree>): Promise<Degree> {
+    return this.repo.save(partial)
+  }
+
+  /** one-liners */
+  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
+
+  findOneById = async (id: string) =>
+    this.repo.findOneOrFail({ where: { id }, relations: this.repo.relations })
 
   findOneByTitle = async (title: string) =>
-    this.findOneOrFail({ where: { title }, relations: this.relations })
+    this.repo.findOneOrFail({
+      where: { title },
+      relations: this.repo.relations,
+    })
 
   /**
    * Adds a Degree to DB
@@ -38,7 +47,7 @@ export class DegreeRepository
     return this.moduleRepo
       .findByCodes(props.moduleCodes)
       .then((modules) =>
-        this.save(this.create({ title: props.title, modules }))
+        this.repo.save(this.repo.create({ title: props.title, modules }))
       )
   }
 
@@ -53,7 +62,7 @@ export class DegreeRepository
     return this.moduleRepo
       .findByCodes(moduleCodes)
       .then((modules) =>
-        this.save({ ...degree, modules: [...degree.modules, ...modules] })
+        this.repo.save({ ...degree, modules: [...degree.modules, ...modules] })
       )
   }
 
@@ -68,7 +77,7 @@ export class DegreeRepository
     return this.moduleRepo.findByCodes(props.moduleCodes).then((modules) => {
       degree.title = props.title
       degree.modules = modules
-      return this.save(degree)
+      return this.repo.save(degree)
     })
   }
 
@@ -76,12 +85,12 @@ export class DegreeRepository
    * @param {string[]} degreeIds
    * @returns {Promise<Degree[]>}
    */
-  override async findByIds(degreeIds: string[]): Promise<Degree[]> {
-    return this.find({
+  async findByIds(degreeIds: string[]): Promise<Degree[]> {
+    return this.repo.find({
       where: {
         id: In(degreeIds),
       },
-      relations: this.relations,
+      relations: this.repo.relations,
     })
   }
 }

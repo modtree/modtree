@@ -282,7 +282,9 @@ export interface IUserRepository extends IBaseRepository<IUser> {
 /**
  * Degree Repository Interface
  */
-export interface IDegreeRepository extends IBaseRepository<IDegree> {
+export interface IDegreeRepository {
+  save(partial: Partial<IDegree>): Promise<IDegree>
+  create(props: Partial<IDegree>): IDegree
   /**
    * initialize a new degree and save it to the database
    *
@@ -339,6 +341,8 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
  * Module Repository Interface
  */
 export interface IModuleRepository {
+  save(partial: Partial<IModule>): Promise<IModule>
+  create(props: Partial<IModule>): IModule
   /**
    * initialize a new module and save it to the database
    *

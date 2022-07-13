@@ -16,6 +16,14 @@ export class ModuleRepository implements IModuleRepository {
     this.repo = new BaseRepo(Module, db)
   }
 
+  create(partial: Partial<Module>): Module {
+    return this.repo.create(partial)
+  }
+
+  async save(partial: Partial<Module>): Promise<Module> {
+    return this.repo.save(partial)
+  }
+
   deleteAll = () => this.repo.createQueryBuilder().delete().execute()
   findOneById = async (id: string) => this.repo.findOneByOrFail({ id })
 
