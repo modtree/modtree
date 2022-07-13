@@ -1,5 +1,4 @@
 import { spawn } from 'child_process'
-import chalk from 'chalk'
 import rawTests from './tests.json'
 import { getAliases } from './get-aliases'
 import { handleArgs } from './handle-args'
@@ -12,21 +11,7 @@ const aliases = getAliases(tests, {
 })
 const args = process.argv.slice(2)
 const argsRes = handleArgs(args, tests, aliases)
-const { tail, projectNames, projectPaths, hasError, testPathPattern } = argsRes
-
-if (hasError || args.length === 0) {
-  console.debug(
-    chalk.cyan('\nPlease choose from these tests:'),
-    Object.keys(tests),
-    chalk.cyan('\nor use one of these aliases:'),
-    aliases,
-    '\n'
-  )
-  process.exit(0)
-} else {
-  console.debug(chalk.cyan('\nTests chosen:'), projectNames)
-  console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
-}
+const { tail, projectPaths, testPathPattern } = argsRes
 
 const spawnArgs = [
   'jest',

@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import type { StrRec } from './types'
+import chalk from 'chalk'
 
 const rootDir = path.resolve(__dirname, '../..')
 
@@ -11,8 +12,6 @@ const jsonOutputFile = new Date()
 type ProcessedArgs = {
   tail: string[]
   projectPaths: string[]
-  projectNames: string[]
-  hasError: boolean
   testPathPattern: string[]
 }
 
@@ -67,5 +66,22 @@ export function handleArgs(
     hasError = true
   })
 
-  return { tail, projectNames, projectPaths, hasError, testPathPattern }
+  /**
+   * args processing reporter
+   */
+  if (hasError || args.length === 0) {
+    console.debug(
+      chalk.cyan('\nPlease choose from these tests:'),
+      Object.keys(tests),
+      chalk.cyan('\nor use one of these aliases:'),
+      aliases,
+      '\n'
+    )
+    process.exit(0)
+  } else {
+    console.debug(chalk.cyan('\nTests chosen:'), projectNames)
+    console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
+  }
+
+  return { tail, projectPaths, testPathPattern }
 }
