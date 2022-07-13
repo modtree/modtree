@@ -1,83 +1,20 @@
 import { spawn } from 'child_process'
 import chalk from 'chalk'
-import fs from 'fs'
-import path from 'path'
-import { getAllFiles } from './get-all-files'
-import { scanForTests } from './scan'
+import rawTests from './tests.json'
+import { getAliases } from './get-aliases'
+import { handleArgs } from './handle-args'
 
-const args = process.argv.slice(2)
-
-const rootDir = path.resolve(__dirname, '../..')
-const ignore = ['node_modules', 'dist']
-
-const jsonOutputFile = new Date()
-  .toLocaleString('en-sg')
-  .replace(/(\/|:|,| )+/g, '.')
-
-/**
- * write to test-list.txt the test names and their filepaths
- */
-const allFiles = getAllFiles(rootDir, ignore)
-const allProjects = allFiles.filter((f) => f.match(/jest.config.[jt]s$/))
-const tests = scanForTests(allProjects)
-
-/**
- * handle arguments
- */
-const projectsToTest: string[] = []
-const postArgs: string[] = []
-const projectPathsToTest: string[] = []
-
-const aliases: Record<string, string> = {
+const tests = rawTests as Record<string, string>
+const aliases = getAliases(tests, {
   int: 'integration-tests',
   mf: 'repo:module-full',
   mc: 'repo:module-condensed',
-}
-/**
- * auto-create aliases for repo:*
- */
-tests.names.forEach((name) => {
-  if (name.includes('-')) return
-  const re = name.match(/^repo:(.*)$/)
-  if (re) aliases[re[1]] = name
 })
+const args = process.argv.slice(2)
+const argsRes = handleArgs(args, tests, aliases)
+const { tail, projectNames, projectPaths, hasError, testPathPattern } = argsRes
 
-let markedIndex = -1
-let allOk = true
-args.map((arg, i) => {
-  /**
-   * --testPathPattern
-   */
-  if (arg === '-m') {
-    markedIndex = i + 1
-    return
-  } else if (markedIndex === i) {
-    postArgs.push('--testPathPattern', arg)
-    return
-  }
-  /**
-   * --json
-   */
-  if (arg === '--json') {
-    postArgs.push('--json', '--outputFile', jsonOutputFile)
-    return
-  }
-  if (tests.names.includes(arg)) {
-    projectPathsToTest.push(tests.record[arg])
-    projectsToTest.push(arg)
-    return
-  }
-  if (
-    Object.keys(aliases).includes(arg) &&
-    tests.names.includes(aliases[arg])
-  ) {
-    projectPathsToTest.push(tests.record[aliases[arg]])
-    projectsToTest.push(aliases[arg])
-    return
-  }
-  allOk = false
-})
-if (!allOk || args.length === 0) {
+if (hasError || args.length === 0) {
   console.debug(
     chalk.cyan('\nPlease choose from these tests:'),
     tests.names,
@@ -87,25 +24,23 @@ if (!allOk || args.length === 0) {
   )
   process.exit(0)
 } else {
-  console.debug(chalk.cyan('\nTests chosen:'), projectsToTest)
-  console.debug(chalk.cyan('Test path pattern:'), postArgs[1], '\n')
+  console.debug(chalk.cyan('\nTests chosen:'), projectNames)
+  console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
 }
 
 const spawnArgs = [
   'jest',
   '--color',
   '--projects',
-  ...projectPathsToTest,
-  ...postArgs,
+  ...projectPaths,
+  ...testPathPattern,
+  ...tail,
 ]
 
 const run = true
 
 if (run) {
-  /** create directory for json outputs */
-  fs.mkdirSync(path.resolve(rootDir, 'dist/tests'), { recursive: true })
   const jest = spawn('yarn', spawnArgs)
   jest.stdout.on('data', (d) => process.stdout.write(d))
   jest.stderr.on('data', (d) => process.stderr.write(d))
 }
-// jest.on('close', (c) => console.log(`runner exited with code ${c}`))
