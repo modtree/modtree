@@ -49,9 +49,10 @@ export function handleArgs(
       return
     }
 
-    /** --verbose */
-    if (arg === '--verbose') {
-      tail.push('--verbose')
+    /** jest bypasses */
+    const bypass = ['--verbose', '--coverage', '--runInBand']
+    if (bypass.includes(arg)) {
+      tail.push(arg)
       return
     }
 

@@ -11,25 +11,32 @@
   },
   "test": {
     "projects": [
-      "repos:test:api",
-      "repos:test:user",
-      "repos:test:degree",
-      "repos:test:graph",
-      "repos:test:module",
-      "repos:test:module-condensed",
-      "repos:test:module-full",
-      "repos:test:pull",
-      "web:test",
-      "utils:test",
-      "docs:test",
-      "server:test",
-      "sql:test"
+      "docs",
+      "server",
+      "web",
+      "auto-docs",
+      "integration-tests",
+      "repo:module",
+      "migrations",
+      "repo:api",
+      "repo:utils",
+      "repo:degree",
+      "repo:graph",
+      "repo:module-condensed",
+      "repo:module-full",
+      "repo:pull",
+      "repo:user",
+      "sql",
+      "test-env",
+      "typeorm-config",
+      "types",
+      "utils"
     ],
     "dont-run": [],
-    "command": "yarn nx run",
+    "command": "yarn test",
     "args": {
       "ci": ["--coverage", "--runInBand"],
-      "no_cache": ["--coverage", "--runInBand", "--skip-nx-cache"]
+      "no_cache": ["--coverage", "--runInBand"]
     }
   }
 }
