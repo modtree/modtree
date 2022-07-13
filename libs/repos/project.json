@@ -20,39 +20,6 @@
       "options": {
         "lintFilePatterns": ["libs/repos/**/*.ts"]
       }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "defaultConfiguration": "none",
-      "outputs": ["coverage/libs/repos"],
-      "options": {
-        "jestConfig": "libs/repos/jest.config.ts",
-        "passWithNoTests": true,
-        "runInBand": true
-      },
-      "configurations": {
-        "none": { "testPathIgnorePatterns": [".*"] },
-        "utils": { "jestConfig": "libs/repos/src/utils/jest.config.ts" },
-        "all": { "jestConfig": "libs/repos/jest.config.ts" },
-        "user": { "jestConfig": "libs/repos/src/user/jest.config.ts" },
-        "degree": { "jestConfig": "libs/repos/src/degree/jest.config.ts" },
-        "api": { "jestConfig": "libs/repos/src/api/jest.config.ts" },
-        "graph": { "jestConfig": "libs/repos/src/graph/jest.config.ts" },
-        "module": { "jestConfig": "libs/repos/src/module/jest.config.ts" },
-        "pull": { "jestConfig": "libs/repos/src/pull/jest.config.ts" },
-        "module-condensed": {
-          "jestConfig": "libs/repos/src/module-condensed/jest.config.ts"
-        },
-        "module-full": {
-          "jestConfig": "libs/repos/src/module-full/jest.config.ts"
-        },
-        "mc": {
-          "jestConfig": "libs/repos/src/module-condensed/jest.config.ts"
-        },
-        "mf": {
-          "jestConfig": "libs/repos/src/module-full/jest.config.ts"
-        }
-      }
     }
   },
   "tags": [],

@@ -20,14 +20,6 @@
       "options": {
         "lintFilePatterns": ["libs/typeorm-config/**/*.ts"]
       }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/typeorm-config"],
-      "options": {
-        "jestConfig": "libs/typeorm-config/jest.config.ts",
-        "passWithNoTests": true
-      }
     }
   },
   "tags": [],

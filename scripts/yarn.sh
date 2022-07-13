@@ -10,70 +10,30 @@ _P_='\033[0;35m'  # Purple
 _C_='\033[0;36m'  # Cyan
 _S_='\033[0;37m'  # Soft (Gray)
 
-SERVER=./apps/server
-WEB=./apps/web
-[[ $USER == "khang" ]]   && SRC=~/dots/personal/.secrets/modtree
-[[ $USER == "weiseng" ]] && SRC=$REPOS/orbital/env
-
-# weiseng's config
-
-weiseng_env() {
-  cp $SRC/.env* $WEB
-  cp $SRC/admin.config.json .
-}
-
-weiseng_inv() {
-  mkdir -p $SRC/web
-  mkdir -p $SRC/database
-  cp admin.config.json $SRC
-  cp $WEB/.env.local $WEB/.env.example $SRC/web
-}
-
-# khang's config
-
-khang_env() {
-  # ln -sf $SRC/web/.env.local $WEB/.env.local
-  # ln -sf $SRC/admin.config.json ./admin.config.json
-  ln -sf $SRC/server/.env .
-}
-
-khang_inv() {
-  echo "nothing happened."
-}
-
-# fancy
+[[ $USER == "khang" ]]   && DOT_ENV=$HOME/dots/personal/.secrets/modtree/.env
+[[ $USER == "weiseng" ]] && DOT_ENV=$REPOS/orbital/env/.env
 
 env_start() {
  	printf "\n${_S_}[installing .env files]${_N_}\n"
- 	printf "${_G_}source:${_N_} $SRC\n"
+ 	printf "${_G_}.env:${_N_} $DOT_ENV\n"
+}
+
+env_install() {
+  ln -sf $DOT_ENV .
 }
 
 env_end() {
-  [ -f $SERVER/.env ] \
-    && [ -f $WEB/.env.local ] \
-    && printf "📦  Env files loaded.\n\n"
-}
-
-inv_start() {
- 	printf "\n${_S_}[saving .env files]${_N_}\n"
- 	printf "${_G_}target:${_N_} $SRC\n"
-}
-
-inv_end() {
-  printf "📦  Env files saved.\n\n"
+  [ -f ./.env ] \
+    && printf "\n${_G_} ✓ .env file loaded.${_N_}" \
+    || printf "\n${_Y_} ✗ .env file not loaded.${_N_}"
+  printf "\n\n"
 }
 
 setup() {
-  yarn husky install
+  git config core.hooksPath scripts/.hooks
   env_start
-  eval ${USER}_env
+  env_install
   env_end
-}
-
-inverse() {
-  inv_start
-  eval ${USER}_inv
-  inv_end
 }
 
 rg_tests() {
@@ -88,10 +48,9 @@ rg_imports() {
 }
 
 handle_args() {
-  [ -z $SRC ] && return 0
+  [ -z $DOT_ENV ] && return 0
   local cmd="$1"
   [[ $cmd == "setup" ]] && setup && return
-  [[ $cmd == "inverse" ]] && inverse && return
   [[ $cmd == "rg-tests" ]] && rg_tests && return
   [[ $cmd == "rg-imports" ]] && rg_imports && return
   return 0

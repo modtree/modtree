@@ -3,7 +3,6 @@
   "version": 2,
   "projects": {
     "auto-docs": "libs/auto-docs",
-    "docs": "apps/docs",
     "repos": "libs/repos",
     "server": "apps/server",
     "sql": "libs/sql",

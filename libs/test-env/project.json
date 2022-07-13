@@ -20,14 +20,6 @@
       "options": {
         "lintFilePatterns": ["libs/test-env/**/*.ts"]
       }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/test-env"],
-      "options": {
-        "jestConfig": "libs/test-env/jest.config.ts",
-        "passWithNoTests": true
-      }
     }
   },
   "tags": []

@@ -5,9 +5,8 @@ import chalk from 'chalk'
 
 const rootDir = path.resolve(__dirname, '../..')
 
-const jsonOutputFile = new Date()
-  .toLocaleString('en-sg')
-  .replace(/(\/|:|,| )+/g, '.')
+const jsonFileName =
+  new Date().toLocaleString('en-sg').replace(/(\/|:|,| )+/g, '.') + '.json'
 
 type ProcessedArgs = {
   tail: string[]
@@ -45,7 +44,7 @@ export function handleArgs(
       const jsonDir = path.resolve(rootDir, 'dist/tests')
       /** create directory for json outputs */
       fs.mkdirSync(jsonDir, { recursive: true })
-      tail.push('--json', '--outputFile', path.resolve(jsonDir, jsonOutputFile))
+      tail.push('--json', '--outputFile', path.resolve(jsonDir, jsonFileName))
       return
     }
 
