@@ -35,15 +35,6 @@ export default function ModtreeFlow() {
    * redux state
    */
   const user = useAppSelector((state) => state.user)
-  const done = user.modulesDone.map(flatten.module)
-  const doing = user.modulesDoing.map(flatten.module)
-  const modules: ModuleSources = {
-    done,
-    doing,
-    planned: graph.modulesPlaced.filter(
-      (m) => !done.includes(m) && !doing.includes(m)
-    ),
-  }
 
   /**
    * builtin react flow hooks that handle node/edge movement
