@@ -7,7 +7,8 @@
   "scripts": {
     "load:lock": "cp ../../yarn.lock .",
     "drop:lock": "rm yarn.lock",
-    "bundle": "yarn load:lock && yarn && yarn drop:lock",
+    "// bundle": "yarn load:lock && yarn --frozen-lockfile && yarn drop:lock",
+    "bundle": "yarn --frozen-lockfile",
     "build": "next build",
     "serve": "next dev --port=3001",
     "start": "next start --port=3001"
@@ -20,15 +21,13 @@
     "nextra-theme-docs": "2.0.0-alpha.53",
     "prismjs": "^1.28.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "swr": "^1.3.0"
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.4.0",
     "@types/prismjs": "^1.26.0",
     "@types/react": "17.0.37",
     "@types/react-dom": "17.0.17",
-    "auto-changelog": "^2.4.0",
     "autoprefixer": "10.2.6",
     "postcss": "8.3.5",
     "tailwindcss": "3.1.4",
