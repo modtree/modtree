@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import { Module, IModuleRepository, InitModuleProps } from '@modtree/types'
+import { Module, InitModuleProps, IModuleRepository } from '@modtree/types'
 import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
@@ -10,16 +10,14 @@ type Data = {
   origIdx: number
 }
 
-export class ModuleRepository
-  extends BaseRepo<Module>
-  implements IModuleRepository
-{
+export class ModuleRepository implements IModuleRepository {
+  private repo: BaseRepo<Module>
   constructor(db: DataSource) {
-    super(Module, db)
+    this.repo = new BaseRepo(Module, db)
   }
 
-  deleteAll = () => this.createQueryBuilder().delete().execute()
-  override findOneById = async (id: string) => this.findOneByOrFail({ id })
+  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
+  findOneById = async (id: string) => this.repo.findOneByOrFail({ id })
 
   /**
    * initialize a Module
@@ -28,7 +26,7 @@ export class ModuleRepository
    * @returns {Promise<Module>}
    */
   async initialize(props: InitModuleProps): Promise<Module> {
-    return this.save(this.create(props))
+    return this.repo.save(this.repo.create(props))
   }
 
   /**
@@ -36,7 +34,7 @@ export class ModuleRepository
    * @returns {Promise<T>}
    */
   findByCode(moduleCode: string): Promise<Module> {
-    return this.findOneByOrFail({ moduleCode })
+    return this.repo.findOneByOrFail({ moduleCode })
   }
 
   /**
@@ -44,7 +42,7 @@ export class ModuleRepository
    * @returns {Promise<T[]>}
    */
   findByCodes(moduleCodes: string[]): Promise<Module[]> {
-    return this.findBy({ moduleCode: In(moduleCodes) })
+    return this.repo.findBy({ moduleCode: In(moduleCodes) })
   }
 
   /**
@@ -53,7 +51,7 @@ export class ModuleRepository
    * @returns {Promise<string[]>}
    */
   async getCodes(): Promise<string[]> {
-    return this.find().then((res) => res.map(flatten.module))
+    return this.repo.find().then((res) => res.map(flatten.module))
   }
 
   /**

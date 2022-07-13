@@ -201,7 +201,7 @@ export class GraphRepository
       return this.save(graph)
     }
 
-    return this.moduleRepo.findOneByOrFail({ moduleCode }).then((module) => {
+    return this.moduleRepo.findByCode(moduleCode).then((module) => {
       graph.modulesPlaced.push(module)
       return this.save(graph)
     })
@@ -282,7 +282,7 @@ export class GraphRepository
       .then((moduleCodes) =>
         Promise.all(
           moduleCodes.map((moduleCode) =>
-            this.moduleRepo.findOneByOrFail({ moduleCode })
+            this.moduleRepo.findByCode(moduleCode)
           )
         )
       )

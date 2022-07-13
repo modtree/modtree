@@ -152,12 +152,8 @@ export class Api extends BaseApi {
     // nodes[0] is CS1010S
     // nodes[1] is MA2001
     const nodes = data.nodes
-    nodes[0].data = await this.moduleRepo.findOneByOrFail({
-      moduleCode: 'CS1010S',
-    })
-    nodes[1].data = await this.moduleRepo.findOneByOrFail({
-      moduleCode: 'MA2001',
-    })
+    nodes[0].data = await this.moduleRepo.findByCode('CS1010S')
+    nodes[1].data = await this.moduleRepo.findByCode('MA2001')
 
     // add in flow nodes and edges
     g1 = await this.graphRepo.updateFrontendProps(g1, {

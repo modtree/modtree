@@ -338,7 +338,7 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
 /**
  * Module Repository Interface
  */
-export interface IModuleRepository extends IBaseRepository<IModule> {
+export interface IModuleRepository {
   /**
    * initialize a new module and save it to the database
    *
