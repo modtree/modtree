@@ -39,5 +39,6 @@ export class Module implements IModule {
    */
   constructor() {
     this.fulfillRequirements = []
+    this.prereqTree = {}
   }
 }

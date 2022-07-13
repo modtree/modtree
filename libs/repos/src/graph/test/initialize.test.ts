@@ -1,6 +1,6 @@
 import { GraphRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
-import { Module } from '@modtree/types'
+import { Degree, Graph, Module, User } from '@modtree/types'
 import '@modtree/test-env/jest'
 
 jest.mock('../../base')
@@ -38,45 +38,61 @@ const graphRepo = new GraphRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
+    title: 'anything',
     userId: 'user-1',
     degreeId: 'degree-1',
     hidden: ['MA1100'],
     placed: ['MA2219', 'MA2001'],
-    expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['MA2001', 'MA1100']],
   },
   {
+    title: '_x*.-/\\',
     userId: 'user-2',
     degreeId: 'degree-1',
     hidden: ['MA2001', 'MA1100', 'MA2219'],
     placed: ['HSH1000', 'CM1102'],
-    expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['MA2001', 'MA1100']],
   },
   {
+    title: '.',
     userId: 'user-1',
     degreeId: 'degree-2',
     hidden: ['CM1102', 'CS1010S'],
     placed: ['MA2219', 'MA2001'],
-    expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['CM1102', 'CS1010S']],
   },
   {
+    title: '/',
     userId: 'user-2',
     degreeId: 'degree-2',
     hidden: ['CS1010S', 'MA2219', 'MA2001'],
     placed: ['HSH1000', 'CM1102'],
-    expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['CM1102', 'CS1010S']],
   },
-].map((e, i) => ({ ...e, index: i + 1 }))
+]
 
-test.each(correct)('test: $index', async ({ userId, degreeId, expected }) => {
-  const graph = graphRepo.create({
-    user: { id: userId },
-    degree: { id: degreeId },
-  })
-  await graphRepo.getSuggestModulesParams(graph, ['CS1010S']).then((res) => {
-    expect(res).toBeInstanceOf(Array)
-    expect(res).toHaveLength(4)
-    for (let i = 0; i < 4; i++) {
-      expect(res[i]).toIncludeSameMembers(expected[i])
-    }
-  })
-})
+test.each(correct)(
+  'title: $title',
+  async ({ title, userId, degreeId, hidden, placed }) => {
+    await graphRepo.initialize({ title, userId, degreeId }).then((graph) => {
+      expect(graph).toBeInstanceOf(Graph)
+      expect(graph.title).toEqual(title)
+      const { modulesPlaced, modulesHidden, user, degree } = graph
+      expect(user).toBeInstanceOf(User)
+      expect(degree).toBeInstanceOf(Degree)
+      expect(user.id).toEqual(userId)
+      expect(degree.id).toEqual(degreeId)
+      /**
+       * modules
+       */
+      expect(modulesHidden.map((m) => m.moduleCode)).toIncludeSameMembers(
+        hidden
+      )
+      expect(modulesPlaced.map((m) => m.moduleCode)).toIncludeSameMembers(
+        placed
+      )
+      /**
+       * flow props
+       */
+      expect(graph.flowNodes).toBeInstanceOf(Array)
+      expect(graph.flowNodes).toHaveLength(modulesPlaced.length)
+      expect(graph.flowEdges).toBeInstanceOf(Array)
+    })
+  }
+)

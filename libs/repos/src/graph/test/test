@@ -2,4 +2,4 @@
 
 [ -z $1 ] && echo "supply a matcher" && exit 0
 
-yarn --cwd ../../../../.. test user -m $1
+yarn --cwd ../../../../.. test graph -m $1
