@@ -12,8 +12,8 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
-import { getCSS, redrawGraph } from '@/utils/module-state'
-import { flatten } from '@modtree/utils'
+import { getCSS } from '@/utils/module-state'
+import { flatten, redrawGraph } from '@modtree/utils'
 import { api } from 'api'
 
 export default function ModtreeFlow() {

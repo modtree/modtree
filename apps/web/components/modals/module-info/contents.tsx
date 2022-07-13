@@ -7,8 +7,7 @@ import { useUser } from '@/utils/auth0'
 import { inModulesPlaced } from '@/utils/graph'
 import { api } from 'api'
 import { GraphFlowNode, ModuleSources } from '@modtree/types'
-import { redrawGraph } from '@/utils/module-state'
-import { flatten } from '@modtree/utils'
+import { flatten, redrawGraph } from '@modtree/utils'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)

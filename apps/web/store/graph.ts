@@ -1,4 +1,4 @@
-import { redrawGraph } from '@/utils/module-state'
+import { redrawGraph } from '@modtree/utils'
 import {
   GraphFlowNode,
   GraphFrontendProps,

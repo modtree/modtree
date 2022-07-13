@@ -2,27 +2,9 @@ import {
   ModuleStateDict,
   FrontendModuleState,
   GraphFlowNode,
-  GraphFlowEdge,
   CanTakeModuleMap,
   ModuleSources,
 } from '@modtree/types'
-import { redrawGraph as redraw } from '@modtree/utils'
-
-type NodesAndEdges = {
-  nodes: GraphFlowNode[]
-  edges: GraphFlowEdge[]
-}
-
-/**
- * Wrapper for the function in libs/utils
- */
-export function redrawGraph(modules: NodesAndEdges) {
-  const data: NodesAndEdges = redraw(modules)
-  return {
-    nodes: data.nodes,
-    edges: data.edges,
-  }
-}
 
 export async function getModuleStates(
   modules: ModuleSources,
