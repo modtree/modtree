@@ -30,9 +30,7 @@ export class ModuleCondensedApi {
    * @param {Api} api
    */
   static get = (api: Api) => (req: Request) => {
-    return api.moduleCondensedRepo.findOneByOrFail({
-      moduleCode: req.params.moduleCode,
-    })
+    return api.moduleCondensedRepo.findByCode(req.params.moduleCode)
   }
 
   /**

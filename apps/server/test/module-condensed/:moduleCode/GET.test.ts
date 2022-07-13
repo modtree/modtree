@@ -9,20 +9,20 @@ beforeEach(() => jest.clearAllMocks())
 
 const api = new Api(mocks.db)
 const app: Express = getApp(api)
-const findOneByOrFail: jest.SpyInstance = jest.spyOn(
+const findByCode: jest.SpyInstance = jest.spyOn(
   api.moduleCondensedRepo,
-  'findOneByOrFail'
+  'findByCode'
 )
 
 const testRequest = () => request(app).get('/module-condensed/MA1100')
 
-test('`findOneByOrFail` is called once', async () => {
+test('`findByCode` is called once', async () => {
   await testRequest()
-  expect(findOneByOrFail).toBeCalledTimes(1)
+  expect(findByCode).toBeCalledTimes(1)
 })
 
-test('`findOneByOrFail` is called with correct args', async () => {
+test('`findByCode` is called with correct args', async () => {
   await testRequest()
 
-  expect(findOneByOrFail).toBeCalledWith({ moduleCode: 'MA1100' })
+  expect(findByCode).toBeCalledWith('MA1100')
 })

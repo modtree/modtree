@@ -15,8 +15,8 @@ export class ModuleCondensedRepository
     super(ModuleCondensed, db)
   }
 
-  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
-  findOneById = async (id: string) => this.repo.findOneByOrFail({ id })
+  deleteAll = () => this.createQueryBuilder().delete().execute()
+  findOneById = async (id: string) => this.findOneOrFail({ where: { id } })
 
   /**
    * initialize a Module Condensed
@@ -25,8 +25,8 @@ export class ModuleCondensedRepository
    * @returns {Promise<ModuleCondensed>}
    */
   async initialize(props: InitModuleCondensedProps): Promise<ModuleCondensed> {
-    return this.repo.save(
-      this.repo.create({
+    return this.save(
+      this.create({
         ...props,
         moduleLevel: getModuleLevel(props.moduleCode),
       })
@@ -39,7 +39,7 @@ export class ModuleCondensedRepository
    * @returns {Promise<string[]>}
    */
   async getCodes(): Promise<string[]> {
-    return this.repo.find().then((modules) => modules.map(flatten.module))
+    return this.find().then((modules) => modules.map(flatten.module))
   }
 
   /**
@@ -47,7 +47,7 @@ export class ModuleCondensedRepository
    * @returns {Promise<Module[]>}
    */
   findByCodes(moduleCodes: string[]): Promise<ModuleCondensed[]> {
-    return this.repo.find({ where: { moduleCode: In(moduleCodes) } })
+    return this.find({ where: { moduleCode: In(moduleCodes) } })
   }
 
   /**
@@ -55,6 +55,6 @@ export class ModuleCondensedRepository
    * @returns {Promise<T>}
    */
   findByCode(moduleCode: string): Promise<ModuleCondensed> {
-    return this.repo.findOneByOrFail({ moduleCode })
+    return this.findOneOrFail({ where: { moduleCode } })
   }
 }

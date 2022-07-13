@@ -12,7 +12,6 @@ import {
   EntityTarget,
   FindManyOptions,
   Repository as TR,
-  SaveOptions,
 } from 'typeorm'
 
 const whip = <T>(e: any) => e as T

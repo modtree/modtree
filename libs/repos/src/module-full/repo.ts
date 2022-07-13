@@ -11,6 +11,6 @@ export class ModuleFullRepository
     super(ModuleFull, db)
   }
 
-  findOneByCode = async (moduleCode: string) =>
+  findByCode = async (moduleCode: string) =>
     this.findOneOrFail({ where: { moduleCode } })
 }

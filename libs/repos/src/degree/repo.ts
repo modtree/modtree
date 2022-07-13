@@ -20,13 +20,13 @@ export class DegreeRepository
   }
 
   /** one-liners */
-  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
+  deleteAll = () => this.createQueryBuilder().delete().execute()
 
   findOneById = async (id: string) =>
-    this.repo.findOneOrFail({ where: { id }, relations: this.relations })
+    this.findOneOrFail({ where: { id }, relations: this.relations })
 
   findOneByTitle = async (title: string) =>
-    this.repo.findOneOrFail({
+    this.findOneOrFail({
       where: { title },
       relations: this.relations,
     })
@@ -36,7 +36,7 @@ export class DegreeRepository
    * @returns {Promise<Degree[]>}
    */
   async findByIds(degreeIds: string[]): Promise<Degree[]> {
-    return this.repo.find({
+    return this.find({
       where: {
         id: In(degreeIds),
       },
@@ -54,7 +54,7 @@ export class DegreeRepository
     return this.moduleRepo
       .findByCodes(props.moduleCodes)
       .then((modules) =>
-        this.repo.save(this.repo.create({ title: props.title, modules }))
+        this.save(this.create({ title: props.title, modules }))
       )
   }
 
@@ -69,7 +69,7 @@ export class DegreeRepository
     return this.moduleRepo
       .findByCodes(moduleCodes)
       .then((modules) =>
-        this.repo.save({ ...degree, modules: [...degree.modules, ...modules] })
+        this.save({ ...degree, modules: [...degree.modules, ...modules] })
       )
   }
 
@@ -84,7 +84,7 @@ export class DegreeRepository
     return this.moduleRepo.findByCodes(props.moduleCodes).then((modules) => {
       degree.title = props.title
       degree.modules = modules
-      return this.repo.save(degree)
+      return this.save(degree)
     })
   }
 }

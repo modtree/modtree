@@ -34,6 +34,8 @@ export interface IBaseRepository<Entity> {
   save: Repository<Entity>['save']
   find: Repository<Entity>['find']
   count: Repository<Entity>['count']
+  remove: Repository<Entity>['remove']
+  delete: Repository<Entity>['delete']
   findOneOrFail: Repository<Entity>['findOneOrFail']
   createQueryBuilder: Repository<Entity>['createQueryBuilder']
 }
@@ -507,7 +509,7 @@ export interface IModuleFullRepository extends IBaseRepository<IModuleFull> {
    * @param code
    * @returns full module
    */
-  findOneByCode(code: string): Promise<IModuleFull>
+  findByCode(code: string): Promise<IModuleFull>
 }
 
 export type Repositories = {

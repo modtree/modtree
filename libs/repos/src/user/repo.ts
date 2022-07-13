@@ -29,25 +29,25 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
   }
 
   /** one-liners */
-  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
+  deleteAll = () => this.createQueryBuilder().delete().execute()
 
   findOneById = async (id: string) =>
-    this.repo.findOneOrFail({ where: { id }, relations: this.relations })
+    this.findOneOrFail({ where: { id }, relations: this.relations })
 
   findOneByUsername = async (username: string) =>
-    this.repo.findOneOrFail({
+    this.findOneOrFail({
       where: { username },
       relations: this.relations,
     })
 
   findOneByEmail = async (email: string) =>
-    this.repo.findOneOrFail({
+    this.findOneOrFail({
       where: { email },
       relations: this.relations,
     })
 
   findOneByAuthZeroId = async (authZeroId: string) =>
-    this.repo.findOneOrFail({
+    this.findOneOrFail({
       where: { authZeroId },
       relations: this.relations,
     })
@@ -63,13 +63,13 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       this.moduleRepo.findByCodes(props.modulesDone || []),
       this.moduleRepo.findByCodes(props.modulesDoing || []),
     ]).then(([modulesDone, modulesDoing]) => {
-      const user = this.repo.create({
+      const user = this.create({
         ...defaultProps,
         ...props,
         modulesDone,
         modulesDoing,
       })
-      return this.repo.save(user)
+      return this.save(user)
     })
   }
 
@@ -197,7 +197,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       }
       // set main degree
       user.mainDegree = degree
-      return this.repo.save(user)
+      return this.save(user)
     })
   }
 
@@ -213,7 +213,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     return this.degreeRepo.findByIds(degreeIds).then((degrees) => {
       // 2. append degrees
       user.savedDegrees.push(...degrees)
-      return this.repo.save(user)
+      return this.save(user)
     })
   }
 
@@ -251,7 +251,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     }
     // 3. update entity and save
     user.savedDegrees = filtered
-    return this.repo.save(user)
+    return this.save(user)
   }
 
   /**
@@ -280,7 +280,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
         }
         // set main graph
         user.mainGraph = graph
-        return this.repo.save(user)
+        return this.save(user)
       })
   }
 
@@ -298,7 +298,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       .then((graphs) => {
         // 2. append graphs
         user.savedGraphs.push(...graphs)
-        return this.repo.save(user)
+        return this.save(user)
       })
   }
 
@@ -316,7 +316,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     status: ModuleStatus
   ): Promise<User> {
     /** don't mutate original user passed in */
-    const user = this.repo.create(_user)
+    const user = this.create(_user)
     return this.moduleRepo.findByCodes(moduleCodes).then((modules) => {
       if (status === ModuleStatus.DONE) {
         user.modulesDone = modules
@@ -340,7 +340,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
           (m) => !moduleCodes.includes(m.moduleCode)
         )
       }
-      return this.repo.save(user)
+      return this.save(user)
     })
   }
 }

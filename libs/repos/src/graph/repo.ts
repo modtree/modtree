@@ -40,17 +40,17 @@ export class GraphRepository
   }
 
   /** one-liners */
-  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
+  deleteAll = () => this.createQueryBuilder().delete().execute()
 
   findOneById = async (id: string) =>
-    this.repo.findOneOrFail({ where: { id }, relations: this.relations })
+    this.findOneOrFail({ where: { id }, relations: this.relations })
 
   /**
    * @param {string[]} graphIds
    * @returns {Promise<Graph[]>}
    */
   async findByIds(graphIds: string[]): Promise<Graph[]> {
-    return this.repo.find({
+    return this.find({
       where: {
         id: In(graphIds),
       },
@@ -108,8 +108,8 @@ export class GraphRepository
         flowEdges,
         flowNodes,
       ]) =>
-        this.repo.save(
-          this.repo.create({
+        this.save(
+          this.create({
             title,
             user,
             degree,
@@ -128,7 +128,7 @@ export class GraphRepository
    * @returns {Promise<Graph>}
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
-    return this.repo.findOneOrFail({
+    return this.findOneOrFail({
       relations: this.relations,
       where: {
         user: {
@@ -150,7 +150,7 @@ export class GraphRepository
     userId: string,
     degreeId: string
   ): Promise<[Graph[], number]> {
-    return this.repo.findAndCount({
+    return this.findAndCount({
       relations: this.relations,
       where: {
         user: {
@@ -205,16 +205,16 @@ export class GraphRepository
       graph.flowEdges = graph.flowEdges.filter(
         (n) => n.source !== moduleCode && n.target !== moduleCode
       )
-      return this.repo.save(graph)
+      return this.save(graph)
     }
     if (state === 'hidden') {
       toggle(graph.modulesHidden, graph.modulesPlaced)
-      return this.repo.save(graph)
+      return this.save(graph)
     }
 
     return this.moduleRepo.findByCode(moduleCode).then((module) => {
       graph.modulesPlaced.push(module)
-      return this.repo.save(graph)
+      return this.save(graph)
     })
   }
 
@@ -229,7 +229,7 @@ export class GraphRepository
     graph: Graph,
     props: GraphFrontendProps
   ): Promise<Graph> {
-    return this.repo.save({
+    return this.save({
       ...graph,
       flowEdges: props.flowEdges,
       flowNodes: props.flowNodes,
@@ -251,7 +251,7 @@ export class GraphRepository
       throw new Error('Invalid flow node ID')
     }
     graph.flowNodes[index] = node
-    return this.repo.save(graph)
+    return this.save(graph)
   }
 
   /**
