@@ -2,36 +2,31 @@ import path from 'path'
 import fs from 'fs'
 import { getAllFiles } from './get-all-files'
 
-type Test = {
-  name: string
-  path: string
-}
-
 /**
  * @param {string} path
- * @returns {Test} test display name
  */
-const getTestName = (path: string): Test => {
-  const regexMatch = fs
+const getTestName = (path: string): string => {
+  const re = fs
     .readFileSync(path, 'utf8')
     .toString()
     .match(/displayName: ?["'](.*)["'],/)
-  return regexMatch ? { name: regexMatch[1], path } : { name: '', path }
+  return re ? re[1] : ''
 }
 
 const rootDir = path.resolve(__dirname, '../..')
-const allTests = getAllFiles(rootDir, ['node_modules', 'dist'])
-  .filter((f) => f.match(/jest.config.[jt]s$/))
-  .map(getTestName)
-  .filter((t) => t.name !== '')
-  .reduce(
-    (acc, cur) => ({
-      ...acc,
-      [cur.name]: cur.path,
-    }),
-    {} as Record<string, string>
-  )
 
+/**
+ * scan for jest configs recursively
+ */
+const allTests = getAllFiles(rootDir, ['node_modules', 'dist'])
+  .filter((path) => path.match(/jest.config.[jt]s$/))
+  .map((path) => ({ path, name: getTestName(path) }))
+  .filter((t) => t.name !== '')
+  .reduce((acc, cur) => ({ ...acc, [cur.name]: cur.path }), {})
+
+/**
+ * cache them in a tests.json
+ */
 fs.writeFileSync(
   path.resolve(__dirname, 'tests.json'),
   JSON.stringify(allTests)
