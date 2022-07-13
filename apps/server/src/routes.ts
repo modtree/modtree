@@ -99,12 +99,6 @@ export const routes: Route[] = [
     fn: UserApi.setMainGraph,
     validators: [body('graphId').isString().notEmpty()],
   },
-  {
-    method: 'post',
-    route: '/user/:userId/can-take-modules',
-    fn: UserApi.canTakeModules,
-    validators: [body('moduleCodes').isArray().notEmpty()],
-  },
 
   /**
    * Degree API
