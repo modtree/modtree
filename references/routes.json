@@ -36,6 +36,10 @@
     "method": "delete"
   },
   {
+    "route": "/graph/:graphId/can-take-modules",
+    "method": "get"
+  },
+  {
     "route": "/graph/:graphId/flow",
     "method": "patch"
   },

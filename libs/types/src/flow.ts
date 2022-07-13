@@ -12,3 +12,16 @@ export type FlowEdgeCondensed = {
   source: string
   target: string
 }
+
+/**
+ * For module styling
+ */
+export enum FrontendModuleState {
+  DONE = 'done',
+  DOING = 'doing',
+  PLAN_CAN_TAKE = 'plan can take',
+  PLAN_CANNOT_TAKE = 'plan cannot take',
+  SUGGESTED = 'suggested',
+}
+
+export type ModuleStateDict = Record<string, FrontendModuleState>

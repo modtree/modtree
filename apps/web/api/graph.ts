@@ -48,4 +48,13 @@ export class GraphApi extends BaseApi {
   async create(props: InitGraphProps): Promise<ModtreeApiResponse.Graph> {
     return this.server.post(`/graph`, props).then((res) => res.data)
   }
+
+  /**
+   * can take modules
+   */
+  async canTakeModules(graphId: string): Promise<Record<string, boolean>> {
+    return this.server
+      .get(`/graph/${graphId}/can-take-modules`)
+      .then((res) => res.data)
+  }
 }

@@ -10,6 +10,7 @@ import {
   GraphFlowNode,
   InitGraphProps,
   ModuleState,
+  CanTakeModuleMap,
 } from '@modtree/types'
 import {
   quickpop,
@@ -297,5 +298,39 @@ export class GraphRepository
           )
         )
       )
+  }
+
+  /**
+   * Returns true if graph contains sufficient pre-reqs for the module.
+   *
+   * @param {Graph} graph
+   * @param {string} moduleCode
+   * @returns {Promise<boolean>}
+   */
+  async canTakeModule(graph: Graph, moduleCode: string): Promise<boolean> {
+    // map to codes
+    const modulesPlacedCodes = graph.modulesPlaced.map(flatten.module)
+    // remove code of module to test
+    const filtered = modulesPlacedCodes.filter((m) => m !== moduleCode)
+    return this.moduleRepo.canTakeModule(filtered, [], moduleCode)
+  }
+
+  /**
+   * Returns true if graph contains sufficient pre-reqs for the module.
+   *
+   * @param {Graph} graph
+   * @returns {Promise<CanTakeModuleMap>}
+   */
+  async canTakeModules(graph: Graph): Promise<CanTakeModuleMap> {
+    const moduleCodes = graph.modulesPlaced.map(flatten.module)
+    return Promise.all(
+      moduleCodes.map((code) => this.canTakeModule(graph, code))
+    ).then((results) => {
+      let dict: CanTakeModuleMap = {}
+      moduleCodes.forEach((code, i) => {
+        dict[code] = results[i]
+      })
+      return dict
+    })
   }
 }

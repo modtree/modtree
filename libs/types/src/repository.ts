@@ -20,12 +20,25 @@ import {
 export type FindByKey<T> = (query: string) => Promise<T>
 export type Relations = Record<string, boolean>
 
+/**
+ * types for module status
+ */
 export enum ModuleStatus {
   NOT_TAKEN = 'notTaken',
   DONE = 'done',
   DOING = 'doing',
 }
 export type ModuleState = 'placed' | 'hidden' | 'new'
+
+/**
+ * types for canTakeModules
+ */
+export type CanTakeModuleMap = Record<string, boolean>
+export type ModuleSources = {
+  done: string[]
+  doing: string[]
+  planned: string[]
+}
 
 export interface IBaseRepository<Entity> {
   relations: Relations
@@ -126,6 +139,21 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   updateFlowNode(graph: IGraph, node: GraphFlowNode): Promise<IGraph>
+  /**
+   * checks if graph contains enough pre-reqs to take a module
+   *
+   * @param graph
+   * @param moduleCode
+   * @returns boolean
+   */
+  canTakeModule(graph: IGraph, moduleCode: string): Promise<boolean>
+  /**
+   * multiple canTakeModule
+   *
+   * @param graph
+   * @returns a boolean
+   */
+  canTakeModules(graph: IGraph): Promise<CanTakeModuleMap>
   /**
    * finds graphs by ids
    *

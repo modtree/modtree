@@ -1,5 +1,5 @@
 import { BaseApi } from './base-api'
-import { IUser, ModtreeApiResponse, ModuleStatus } from '@modtree/types'
+import { ModtreeApiResponse, ModuleStatus } from '@modtree/types'
 import { setUser } from '@/store/user'
 
 export class UserApi extends BaseApi {
@@ -94,5 +94,19 @@ export class UserApi extends BaseApi {
     return this.server.patch(`/user/${userId}/graph`, {
       graphIds: [graphId],
     })
+  }
+
+  /**
+   * can take modules
+   */
+  async canTakeModules(
+    userId: string,
+    moduleCodes: string[]
+  ): Promise<Record<string, boolean>> {
+    return this.server
+      .post(`/user/${userId}/can-take-modules`, {
+        moduleCodes,
+      })
+      .then((res) => res.data)
   }
 }

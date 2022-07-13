@@ -12,7 +12,9 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
-import { redrawGraph } from '@modtree/utils'
+import { getCSS } from '@/utils/module-state'
+import { flatten, redrawGraph } from '@modtree/utils'
+import { api } from 'api'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -29,6 +31,11 @@ export default function ModtreeFlow() {
   document.addEventListener('click', () => dispatch(hideContextMenu()))
 
   /**
+   * redux state
+   */
+  const user = useAppSelector((state) => state.user)
+
+  /**
    * builtin react flow hooks that handle node/edge movement
    * here, the variables `nodes` and `edges` store the current state of all
    * nodes and edges on-screen.
@@ -42,8 +49,35 @@ export default function ModtreeFlow() {
       nodes: graph.flowNodes,
       edges: graph.flowEdges,
     }).nodes
-    setNodes(newNodes)
-  }, [graph.flowNodes.length, graph.id])
+
+    // updates CSS after
+    // Redux state user is not detecting changes, so rely on API call for
+    // updated user.
+    Promise.all([
+      api.user.getById(user.id),
+      api.graph.canTakeModules(graph.id),
+    ]).then(([user, canTake]) => {
+      const done = user.modulesDone.map(flatten.module)
+      const doing = user.modulesDoing.map(flatten.module)
+      getCSS(newNodes, done, doing, canTake).then((nodes) => {
+        setNodes(nodes)
+      })
+    })
+  }, [graph.flowNodes, graph.id])
+
+  // Update CSS of nodes, if modulesDone/modulesDoing has changed
+  // Uses redux state user.
+  useEffect(() => {
+    const done = user.modulesDone.map(flatten.module)
+    const doing = user.modulesDoing.map(flatten.module)
+    Promise.all([done, doing, api.graph.canTakeModules(graph.id)]).then(
+      ([done, doing, canTake]) => {
+        getCSS(nodes, done, doing, canTake).then((nodes) => {
+          setNodes(nodes)
+        })
+      }
+    )
+  }, [user.modulesDone, user.modulesDoing])
 
   /**
    * Fit view for ANY graph change
@@ -62,8 +96,8 @@ export default function ModtreeFlow() {
   const onNodeDragStop = (_: MouseEvent, node: Node) => {
     dispatch(updateModuleNode(node))
     const newNodes = redrawGraph({
-      nodes: graph.flowNodes,
-      edges: graph.flowEdges,
+      nodes,
+      edges,
     }).nodes
     setNodes(newNodes)
   }

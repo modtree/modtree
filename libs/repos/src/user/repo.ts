@@ -9,6 +9,7 @@ import {
   IUserRepository,
   ModuleStatus,
   IDegreeRepository,
+  CanTakeModuleMap,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'

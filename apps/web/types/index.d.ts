@@ -5,6 +5,7 @@ import type {
   Modify,
   IModuleCondensed,
   GraphFlowNode,
+  ModuleStatus,
 } from '@modtree/types'
 
 /**

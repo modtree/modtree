@@ -25,10 +25,12 @@ export function getFlowNodes(
   nodes: GraphFlowNode[],
   edges: GraphFlowEdge[]
 ): GraphFlowNode[] {
+  // init graph
   const positions: Record<string, { x: number; y: number }> = {}
   const g = new dagre.graphlib.Graph()
   g.setGraph(config.graph)
   g.setDefaultEdgeLabel(() => ({}))
+  // set nodes
   nodes.forEach((node) => {
     g.setNode(node.id, {
       label: node.id,
