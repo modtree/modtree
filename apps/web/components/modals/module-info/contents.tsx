@@ -16,7 +16,7 @@ export function ModuleDetails() {
 
   // to check if this module has been added
   // and to toggle node
-  const mainGraph = useAppSelector((state) => state.graph)
+  const graph = useAppSelector((state) => state.graph)
 
   function handleAddButton() {
     // 1. hide module modal
@@ -43,16 +43,16 @@ export function ModuleDetails() {
       },
     }
     const { nodes, edges } = redrawGraph({
-      nodes: [...mainGraph.flowNodes, node],
-      edges: mainGraph.flowEdges,
+      nodes: [...graph.flowNodes, node],
+      edges: graph.flowEdges,
     })
 
     // 3. toggle module in graph
     api.graph
-      .toggle(mainGraph.id, module.moduleCode)
+      .toggle(graph.id, module.moduleCode)
       .then(() =>
         // 4. update frontend props
-        api.graph.updateFrontendProps(mainGraph.id, nodes, edges)
+        api.graph.updateFrontendProps(graph.id, nodes, edges)
       )
       .then((g) => {
         setGraph(g)
@@ -78,7 +78,7 @@ export function ModuleDetails() {
       </p>
       <hr />
       <p className="mb-6">{module.description}</p>
-      {user && !inModulesPlaced(mainGraph, module.moduleCode) && (
+      {user && !inModulesPlaced(graph, module.moduleCode) && (
         <div className="flex flex-row-reverse">
           <Button onClick={handleAddButton}>Add to graph</Button>
         </div>
