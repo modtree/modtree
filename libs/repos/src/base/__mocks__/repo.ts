@@ -7,6 +7,7 @@ import {
   Module,
   ModuleCondensed,
   ModuleFull,
+  FakeDataSource,
 } from '@modtree/types'
 import {
   DataSource,
@@ -81,7 +82,7 @@ const getFakeRelations = <T>(entity: EntityTarget<T>): RelationMetadata[] => {
 }
 
 export class BaseRepo<Entity extends { id: string }> extends Original<Entity> {
-  constructor(entity: EntityTarget<Entity>, db: DataSource) {
+  constructor(entity: EntityTarget<Entity>, db: FakeDataSource) {
     /** mock relations */
     db.manager.connection.getMetadata = () =>
       ({ relations: getFakeRelations(entity) } as EntityMetadata)
