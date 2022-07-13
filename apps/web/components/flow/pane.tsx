@@ -60,7 +60,7 @@ export default function ModtreeFlow() {
         setNodes(nodes)
       })
     })
-  }, [graph.flowNodes.length, graph.id, graph])
+  }, [graph.flowNodes, graph.id])
 
   /**
    * Fit view for ANY graph change
