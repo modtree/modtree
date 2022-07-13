@@ -8,14 +8,13 @@ import ReactFlow, {
   useReactFlow,
 } from 'react-flow-renderer'
 import { ModuleNode } from './module-node'
-import store, { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
 import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { getCSS, redrawGraph } from '@/utils/module-state'
 import { flatten } from '@modtree/utils'
 import { api } from 'api'
-import { ModuleSources } from '@modtree/types'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(

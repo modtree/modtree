@@ -5,11 +5,8 @@ import {
   GraphFlowEdge,
   CanTakeModuleMap,
   ModuleSources,
-  ModtreeApiResponse,
-  IModule,
 } from '@modtree/types'
-import { flatten, redrawGraph as redraw } from '@modtree/utils'
-import { api } from 'api'
+import { redrawGraph as redraw } from '@modtree/utils'
 
 type NodesAndEdges = {
   nodes: GraphFlowNode[]
