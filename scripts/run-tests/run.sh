@@ -3,7 +3,7 @@
 yarn ts-node scripts/run-tests/run.ts $@
 
 cleanup() {
-  rm test.command
+  rm -f test.command
 }; trap cleanup EXIT
 
-source test.command
+[ -f test.command ] && source test.command || exit 0

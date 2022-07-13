@@ -12,12 +12,6 @@ const aliases = getAliases(tests, {
 const argsRes = handleArgs(process.argv.slice(2), tests, aliases)
 const { tail, projectPaths, testPathPattern } = argsRes
 
-const spawnArgs = [
-  'jest',
-  '--color',
-  ...projectPaths,
-  ...testPathPattern,
-  ...tail,
-]
+const spawnArgs = ['yarn', 'jest', ...projectPaths, ...testPathPattern, ...tail]
 
-fs.writeFileSync('test.command', ['yarn', ...spawnArgs].join(' '))
+fs.writeFileSync('test.command', spawnArgs.join(' '))
