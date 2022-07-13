@@ -24,36 +24,26 @@ import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
 
-export class GraphRepository implements IGraphRepository {
+export class GraphRepository
+  extends BaseRepo<Graph>
+  implements IGraphRepository
+{
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private userRepo: IUserRepository
-  private repo: BaseRepo<Graph>
 
   constructor(db: DataSource) {
-    this.repo = new BaseRepo(Graph, db)
+    super(Graph, db)
     this.moduleRepo = new ModuleRepository(db)
     this.degreeRepo = new DegreeRepository(db)
     this.userRepo = new UserRepository(db)
-  }
-
-  async count(): Promise<number> {
-    return this.repo.count()
-  }
-
-  create(partial: Partial<Graph>): Graph {
-    return this.repo.create(partial)
-  }
-
-  async save(partial: Partial<Graph>): Promise<Graph> {
-    return this.repo.save(partial)
   }
 
   /** one-liners */
   deleteAll = () => this.repo.createQueryBuilder().delete().execute()
 
   findOneById = async (id: string) =>
-    this.repo.findOneOrFail({ where: { id }, relations: this.repo.relations })
+    this.repo.findOneOrFail({ where: { id }, relations: this.relations })
 
   /**
    * @param {string[]} graphIds
@@ -64,7 +54,7 @@ export class GraphRepository implements IGraphRepository {
       where: {
         id: In(graphIds),
       },
-      relations: this.repo.relations,
+      relations: this.relations,
     })
   }
 
@@ -139,7 +129,7 @@ export class GraphRepository implements IGraphRepository {
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
     return this.repo.findOneOrFail({
-      relations: this.repo.relations,
+      relations: this.relations,
       where: {
         user: {
           id: userId,
@@ -161,7 +151,7 @@ export class GraphRepository implements IGraphRepository {
     degreeId: string
   ): Promise<[Graph[], number]> {
     return this.repo.findAndCount({
-      relations: this.repo.relations,
+      relations: this.relations,
       where: {
         user: {
           id: userId,

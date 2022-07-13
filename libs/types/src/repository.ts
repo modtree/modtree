@@ -27,17 +27,21 @@ export enum ModuleStatus {
 }
 export type ModuleState = 'placed' | 'hidden' | 'new'
 
-export interface IBaseRepository<T> extends Repository<T> {
+export interface IBaseRepository<Entity> {
   relations: Relations
+  /** direct inheritance */
+  create: Repository<Entity>['create']
+  save: Repository<Entity>['save']
+  find: Repository<Entity>['find']
+  count: Repository<Entity>['count']
+  findOneOrFail: Repository<Entity>['findOneOrFail']
+  createQueryBuilder: Repository<Entity>['createQueryBuilder']
 }
 
 /**
  * Graph Repository Interface
  */
-export interface IGraphRepository {
-  count(): Promise<number>
-  save(partial: Partial<IGraph>): Promise<IGraph>
-  create(props: Partial<IGraph>): IGraph
+export interface IGraphRepository extends IBaseRepository<IGraph> {
   /**
    * initialize a new graph and save it to the database
    *
@@ -131,9 +135,7 @@ export interface IGraphRepository {
 /**
  * User Repository Interface
  */
-export interface IUserRepository {
-  save(partial: Partial<IUser>): Promise<IUser>
-  create(props: Partial<IUser>): IUser
+export interface IUserRepository extends IBaseRepository<IUser> {
   /**
    * initialize a new user and save it to the database
    *
@@ -287,9 +289,7 @@ export interface IUserRepository {
 /**
  * Degree Repository Interface
  */
-export interface IDegreeRepository {
-  save(partial: Partial<IDegree>): Promise<IDegree>
-  create(props: Partial<IDegree>): IDegree
+export interface IDegreeRepository extends IBaseRepository<IDegree> {
   /**
    * initialize a new degree and save it to the database
    *
@@ -345,9 +345,7 @@ export interface IDegreeRepository {
 /**
  * Module Repository Interface
  */
-export interface IModuleRepository {
-  save(partial: Partial<IModule>): Promise<IModule>
-  create(props: Partial<IModule>): IModule
+export interface IModuleRepository extends IBaseRepository<IModule> {
   /**
    * initialize a new module and save it to the database
    *
@@ -455,7 +453,8 @@ export interface IModuleRepository {
 /**
  * ModuleCondensed Repository Interface
  */
-export interface IModuleCondensedRepository {
+export interface IModuleCondensedRepository
+  extends IBaseRepository<IModuleCondensed> {
   /**
    * initialize a new condensed module and save it to the database
    *
@@ -501,7 +500,7 @@ export interface IModuleCondensedRepository {
 /**
  * ModuleFull Repository Interface
  */
-export interface IModuleFullRepository {
+export interface IModuleFullRepository extends IBaseRepository<IModuleFull> {
   /**
    * finds a full module by code
    *

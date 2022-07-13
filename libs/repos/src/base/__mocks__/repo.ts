@@ -16,27 +16,27 @@ const getRelations = <T>(entity: EntityTarget<T>) => {
   }
 }
 
-export class BaseRepo<T> extends Repository<T> {
-  relations: Relations
-  constructor(entity: EntityTarget<T>, db: DataSource) {
-    const relations = getRelations(entity)
-    db.manager.connection.getMetadata = () => {
-      return { relations } as EntityMetadata
-    }
-    super(entity, db.manager)
-    this.relations = getRelations(entity)
-  }
-}
-
-export class BaseRepo2<Entity> {
+export class BaseRepo<Entity> {
   protected relations: Relations
   protected repo: Repository<Entity>
   create: Repository<Entity>['create']
   save: Repository<Entity>['save']
+  find: Repository<Entity>['find']
+  findOneOrFail: Repository<Entity>['findOneOrFail']
+  createQueryBuilder: Repository<Entity>['createQueryBuilder']
   constructor(entity: EntityTarget<Entity>, db: DataSource) {
     this.repo = new Repository(entity, db.manager)
+    /** mock relations */
+    const relations = getRelations(entity)
+    db.manager.connection.getMetadata = () => {
+      return { relations } as EntityMetadata
+    }
     this.relations = getRelations(entity)
+    /** full inheriance */
     this.create = this.repo.create.bind(this.repo)
     this.save = this.repo.save.bind(this.repo)
+    this.find = this.repo.find.bind(this.repo)
+    this.findOneOrFail = this.repo.findOneOrFail.bind(this.repo)
+    this.createQueryBuilder = this.repo.createQueryBuilder.bind(this.repo)
   }
 }

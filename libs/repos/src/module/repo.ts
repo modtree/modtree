@@ -1,7 +1,7 @@
 import { DataSource, In } from 'typeorm'
 import { Module, InitModuleProps, IModuleRepository } from '@modtree/types'
 import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
-import { BaseRepo2 } from '../base'
+import { BaseRepo } from '../base'
 
 type Data = {
   moduleCode: string
@@ -11,7 +11,7 @@ type Data = {
 }
 
 export class ModuleRepository
-  extends BaseRepo2<Module>
+  extends BaseRepo<Module>
   implements IModuleRepository
 {
   // private repo: BaseRepo<Module>

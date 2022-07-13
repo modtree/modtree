@@ -8,33 +8,27 @@ import {
 import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 
-export class DegreeRepository implements IDegreeRepository {
+export class DegreeRepository
+  extends BaseRepo<Degree>
+  implements IDegreeRepository
+{
   private moduleRepo: IModuleRepository
-  private repo: BaseRepo<Degree>
 
   constructor(db: DataSource) {
-    this.repo = new BaseRepo(Degree, db)
+    super(Degree, db)
     this.moduleRepo = new ModuleRepository(db)
-  }
-
-  create(partial: Partial<Degree>): Degree {
-    return this.repo.create(partial)
-  }
-
-  async save(partial: Partial<Degree>): Promise<Degree> {
-    return this.repo.save(partial)
   }
 
   /** one-liners */
   deleteAll = () => this.repo.createQueryBuilder().delete().execute()
 
   findOneById = async (id: string) =>
-    this.repo.findOneOrFail({ where: { id }, relations: this.repo.relations })
+    this.repo.findOneOrFail({ where: { id }, relations: this.relations })
 
   findOneByTitle = async (title: string) =>
     this.repo.findOneOrFail({
       where: { title },
-      relations: this.repo.relations,
+      relations: this.relations,
     })
 
   /**
@@ -46,7 +40,7 @@ export class DegreeRepository implements IDegreeRepository {
       where: {
         id: In(degreeIds),
       },
-      relations: this.repo.relations,
+      relations: this.relations,
     })
   }
 

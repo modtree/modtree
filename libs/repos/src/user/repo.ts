@@ -16,49 +16,40 @@ import { BaseRepo } from '../base'
 import defaultProps from './default.json'
 import { DegreeRepository } from '../degree'
 
-export class UserRepository implements IUserRepository {
+export class UserRepository extends BaseRepo<User> implements IUserRepository {
   private moduleRepo: IModuleRepository
   private degreeRepo: IDegreeRepository
   private graphRepo: BaseRepo<Graph>
-  private repo: BaseRepo<User>
 
   constructor(db: DataSource) {
-    this.repo = new BaseRepo(User, db)
+    super(User, db)
     this.moduleRepo = new ModuleRepository(db)
     this.degreeRepo = new DegreeRepository(db)
     this.graphRepo = new BaseRepo(Graph, db)
-  }
-
-  create(partial: Partial<User>): User {
-    return this.repo.create(partial)
-  }
-
-  async save(partial: Partial<User>): Promise<User> {
-    return this.repo.save(partial)
   }
 
   /** one-liners */
   deleteAll = () => this.repo.createQueryBuilder().delete().execute()
 
   findOneById = async (id: string) =>
-    this.repo.findOneOrFail({ where: { id }, relations: this.repo.relations })
+    this.repo.findOneOrFail({ where: { id }, relations: this.relations })
 
   findOneByUsername = async (username: string) =>
     this.repo.findOneOrFail({
       where: { username },
-      relations: this.repo.relations,
+      relations: this.relations,
     })
 
   findOneByEmail = async (email: string) =>
     this.repo.findOneOrFail({
       where: { email },
-      relations: this.repo.relations,
+      relations: this.relations,
     })
 
   findOneByAuthZeroId = async (authZeroId: string) =>
     this.repo.findOneOrFail({
       where: { authZeroId },
-      relations: this.repo.relations,
+      relations: this.relations,
     })
 
   /**
@@ -302,11 +293,13 @@ export class UserRepository implements IUserRepository {
    */
   async insertGraphs(user: User, graphIds: string[]): Promise<User> {
     // 1. find graphs in DB
-    return this.graphRepo.findBy({ id: In(graphIds) }).then((graphs) => {
-      // 2. append graphs
-      user.savedGraphs.push(...graphs)
-      return this.repo.save(user)
-    })
+    return this.graphRepo
+      .find({ where: { id: In(graphIds) } })
+      .then((graphs) => {
+        // 2. append graphs
+        user.savedGraphs.push(...graphs)
+        return this.repo.save(user)
+      })
   }
 
   /**

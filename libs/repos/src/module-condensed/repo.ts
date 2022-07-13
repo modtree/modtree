@@ -7,10 +7,12 @@ import {
 import { getModuleLevel, flatten } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
-export class ModuleCondensedRepository implements IModuleCondensedRepository {
-  private repo: BaseRepo<ModuleCondensed>
+export class ModuleCondensedRepository
+  extends BaseRepo<ModuleCondensed>
+  implements IModuleCondensedRepository
+{
   constructor(db: DataSource) {
-    this.repo = new BaseRepo(ModuleCondensed, db)
+    super(ModuleCondensed, db)
   }
 
   deleteAll = () => this.repo.createQueryBuilder().delete().execute()
