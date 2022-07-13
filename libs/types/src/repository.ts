@@ -485,7 +485,7 @@ export interface IModuleCondensedRepository {
 /**
  * ModuleFull Repository Interface
  */
-export interface IModuleFullRepository extends IBaseRepository<IModuleFull> {
+export interface IModuleFullRepository {
   /**
    * finds a full module by code
    *

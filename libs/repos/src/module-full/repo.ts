@@ -3,14 +3,12 @@ import { ModuleFull } from '@modtree/types'
 import { IModuleFullRepository } from '@modtree/types'
 import { BaseRepo } from '../base'
 
-export class ModuleFullRepository
-  extends BaseRepo<ModuleFull>
-  implements IModuleFullRepository
-{
+export class ModuleFullRepository implements IModuleFullRepository {
+  private repo: BaseRepo<ModuleFull>
   constructor(db: DataSource) {
-    super(ModuleFull, db)
+    this.repo = new BaseRepo(ModuleFull, db)
   }
 
   findOneByCode = async (moduleCode: string) =>
-    this.findOneByOrFail({ moduleCode })
+    this.repo.findOneByOrFail({ moduleCode })
 }
