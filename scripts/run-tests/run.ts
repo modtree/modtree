@@ -17,7 +17,7 @@ const { tail, projectNames, projectPaths, hasError, testPathPattern } = argsRes
 if (hasError || args.length === 0) {
   console.debug(
     chalk.cyan('\nPlease choose from these tests:'),
-    tests.names,
+    Object.keys(tests),
     chalk.cyan('\nor use one of these aliases:'),
     aliases,
     '\n'
