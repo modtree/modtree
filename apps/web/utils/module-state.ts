@@ -5,8 +5,10 @@ import {
   GraphFlowEdge,
   CanTakeModuleMap,
   ModuleSources,
+  ModtreeApiResponse,
 } from '@modtree/types'
-import { redrawGraph as redraw } from '@modtree/utils'
+import { flatten, redrawGraph as redraw } from '@modtree/utils'
+import { api } from 'api'
 
 type NodesAndEdges = {
   nodes: GraphFlowNode[]
@@ -50,12 +52,31 @@ export async function getModuleStates(
   return states
 }
 
+/**
+ * canTake tells you if you can take each module in the graph,
+ * having taken the rest of the modules.
+ *
+ */
 export async function getCSS(
   nodes: GraphFlowNode[],
-  modules: ModuleSources,
+  user: ModtreeApiResponse.UserFull,
   canTake: CanTakeModuleMap
 ) {
+  // get LATEST modules done and doing
+  const done = user.modulesDone.map(flatten.module)
+  const doing = user.modulesDoing.map(flatten.module)
+  const modulesPlaced = nodes.map((n) => n.id)
+
+  const modules: ModuleSources = {
+    done,
+    doing,
+    planned: modulesPlaced.filter(
+      (m) => !done.includes(m) && !doing.includes(m)
+    ),
+  }
+
   const states = await getModuleStates(modules, canTake)
+
   return nodes.map((node) => ({
     ...node,
     style: cssMap[states[node.id]],

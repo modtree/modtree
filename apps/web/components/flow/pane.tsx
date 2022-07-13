@@ -61,8 +61,11 @@ export default function ModtreeFlow() {
     }).nodes
 
     // updates CSS after
-    api.graph.canTakeModules(graph.id).then((res) => {
-      getCSS(newNodes, modules, res).then((nodes) => {
+    Promise.all([
+      api.user.getById(user.id),
+      api.graph.canTakeModules(graph.id),
+    ]).then(([user, canTake]) => {
+      getCSS(newNodes, user, canTake).then((nodes) => {
         setNodes(nodes)
       })
     })
