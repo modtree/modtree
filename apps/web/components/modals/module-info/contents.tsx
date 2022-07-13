@@ -6,8 +6,8 @@ import { Button } from '@/ui/buttons'
 import { useUser } from '@/utils/auth0'
 import { inModulesPlaced } from '@/utils/graph'
 import { api } from 'api'
-import { GraphFlowNode, ModuleSources } from '@modtree/types'
-import { flatten, redrawGraph } from '@modtree/utils'
+import { GraphFlowNode } from '@modtree/types'
+import { redrawGraph } from '@modtree/utils'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
@@ -17,20 +17,6 @@ export function ModuleDetails() {
   // to check if this module has been added
   // and to toggle node
   const mainGraph = useAppSelector((state) => state.graph)
-
-  /**
-   * setup for canTakeModules
-   */
-  const stateUser = useAppSelector((state) => state.user)
-  const done = stateUser.modulesDone.map(flatten.module)
-  const doing = stateUser.modulesDoing.map(flatten.module)
-  const modules: ModuleSources = {
-    done,
-    doing,
-    planned: mainGraph.modulesPlaced.filter(
-      (m) => !done.includes(m) && !doing.includes(m)
-    ),
-  }
 
   function handleAddButton() {
     // 1. hide module modal
