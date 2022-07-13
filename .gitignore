@@ -45,3 +45,4 @@ Thumbs.db
 .env.local
 .env.production
 admin.config.json
+test.command

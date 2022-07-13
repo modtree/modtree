@@ -1,12 +1,12 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 /**
  * gets all files recursively under the root provided
  */
-const getAllFiles = (root, ignore = []) => {
-  const allFiles = []
-  const ls = (cwd) => {
+export const getAllFiles = (root: string, ignore: string[] = []) => {
+  const allFiles: string[] = []
+  const ls = (cwd: string) => {
     fs.readdirSync(cwd)
       .filter((x) => !ignore.includes(x))
       .forEach((file) => {
@@ -23,5 +23,3 @@ const getAllFiles = (root, ignore = []) => {
     .map((path) => path.replace(root + '/', ''))
     .filter((entry) => entry !== '')
 }
-
-module.exports = getAllFiles
