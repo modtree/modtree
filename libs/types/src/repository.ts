@@ -128,7 +128,9 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
 /**
  * User Repository Interface
  */
-export interface IUserRepository extends IBaseRepository<IUser> {
+export interface IUserRepository {
+  save(partial: Partial<IUser>): Promise<IUser>
+  create(props: Partial<IUser>): IUser
   /**
    * initialize a new user and save it to the database
    *

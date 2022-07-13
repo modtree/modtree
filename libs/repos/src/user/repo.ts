@@ -1,4 +1,4 @@
-import { DataSource, In, Repository } from 'typeorm'
+import { DataSource, In } from 'typeorm'
 import {
   User,
   Module,
@@ -8,38 +8,58 @@ import {
   InitUserProps,
   IUserRepository,
   ModuleStatus,
+  IDegreeRepository,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
 import { BaseRepo } from '../base'
 import defaultProps from './default.json'
+import { DegreeRepository } from '../degree'
 
-export class UserRepository extends BaseRepo<User> implements IUserRepository {
+export class UserRepository implements IUserRepository {
   private moduleRepo: IModuleRepository
-  private degreeRepo: Repository<Degree>
+  private degreeRepo: IDegreeRepository
   private graphRepo: BaseRepo<Graph>
+  private repo: BaseRepo<User>
 
   constructor(db: DataSource) {
-    super(User, db)
+    this.repo = new BaseRepo(User, db)
     this.moduleRepo = new ModuleRepository(db)
-    this.degreeRepo = new Repository(Degree, db.manager)
+    this.degreeRepo = new DegreeRepository(db)
     this.graphRepo = new BaseRepo(Graph, db)
   }
 
-  /** one-liners */
-  deleteAll = () => this.createQueryBuilder().delete().execute()
+  create(partial: Partial<User>): User {
+    return this.repo.create(partial)
+  }
 
-  override findOneById = async (id: string) =>
-    this.findOneOrFail({ where: { id }, relations: this.relations })
+  async save(partial: Partial<User>): Promise<User> {
+    return this.repo.save(partial)
+  }
+
+  /** one-liners */
+  deleteAll = () => this.repo.createQueryBuilder().delete().execute()
+
+  findOneById = async (id: string) =>
+    this.repo.findOneOrFail({ where: { id }, relations: this.repo.relations })
 
   findOneByUsername = async (username: string) =>
-    this.findOneOrFail({ where: { username }, relations: this.relations })
+    this.repo.findOneOrFail({
+      where: { username },
+      relations: this.repo.relations,
+    })
 
   findOneByEmail = async (email: string) =>
-    this.findOneOrFail({ where: { email }, relations: this.relations })
+    this.repo.findOneOrFail({
+      where: { email },
+      relations: this.repo.relations,
+    })
 
   findOneByAuthZeroId = async (authZeroId: string) =>
-    this.findOneOrFail({ where: { authZeroId }, relations: this.relations })
+    this.repo.findOneOrFail({
+      where: { authZeroId },
+      relations: this.repo.relations,
+    })
 
   /**
    * Adds a User to DB
@@ -52,13 +72,13 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       this.moduleRepo.findByCodes(props.modulesDone || []),
       this.moduleRepo.findByCodes(props.modulesDoing || []),
     ]).then(([modulesDone, modulesDoing]) => {
-      const user = this.create({
+      const user = this.repo.create({
         ...defaultProps,
         ...props,
         modulesDone,
         modulesDoing,
       })
-      return this.save(user)
+      return this.repo.save(user)
     })
   }
 
@@ -178,7 +198,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    * @returns {Promise<User>}
    */
   async setMainDegree(user: User, degreeId: string): Promise<User> {
-    return this.degreeRepo.findOneByOrFail({ id: degreeId }).then((degree) => {
+    return this.degreeRepo.findOneById(degreeId).then((degree) => {
       // if the degree is not in saved
       const savedDegreeIds = user.savedDegrees.map((degree) => degree.id)
       if (!savedDegreeIds.includes(degreeId)) {
@@ -186,7 +206,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       }
       // set main degree
       user.mainDegree = degree
-      return this.save(user)
+      return this.repo.save(user)
     })
   }
 
@@ -199,10 +219,10 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    */
   async insertDegrees(user: User, degreeIds: string[]): Promise<User> {
     // 1. find degrees in DB
-    return this.degreeRepo.findBy({ id: In(degreeIds) }).then((degrees) => {
+    return this.degreeRepo.findByIds(degreeIds).then((degrees) => {
       // 2. append degrees
       user.savedDegrees.push(...degrees)
-      return this.save(user)
+      return this.repo.save(user)
     })
   }
 
@@ -240,7 +260,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     }
     // 3. update entity and save
     user.savedDegrees = filtered
-    return this.save(user)
+    return this.repo.save(user)
   }
 
   /**
@@ -269,7 +289,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
         }
         // set main graph
         user.mainGraph = graph
-        return this.save(user)
+        return this.repo.save(user)
       })
   }
 
@@ -285,7 +305,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     return this.graphRepo.findBy({ id: In(graphIds) }).then((graphs) => {
       // 2. append graphs
       user.savedGraphs.push(...graphs)
-      return this.save(user)
+      return this.repo.save(user)
     })
   }
 
@@ -303,7 +323,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
     status: ModuleStatus
   ): Promise<User> {
     /** don't mutate original user passed in */
-    const user = this.create(_user)
+    const user = this.repo.create(_user)
     return this.moduleRepo.findByCodes(moduleCodes).then((modules) => {
       if (status === ModuleStatus.DONE) {
         user.modulesDone = modules
@@ -327,7 +347,7 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
           (m) => !moduleCodes.includes(m.moduleCode)
         )
       }
-      return this.save(user)
+      return this.repo.save(user)
     })
   }
 }

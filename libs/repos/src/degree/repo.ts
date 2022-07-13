@@ -38,6 +38,19 @@ export class DegreeRepository implements IDegreeRepository {
     })
 
   /**
+   * @param {string[]} degreeIds
+   * @returns {Promise<Degree[]>}
+   */
+  async findByIds(degreeIds: string[]): Promise<Degree[]> {
+    return this.repo.find({
+      where: {
+        id: In(degreeIds),
+      },
+      relations: this.repo.relations,
+    })
+  }
+
+  /**
    * Adds a Degree to DB
    *
    * @param {InitDegreeProps} props
@@ -78,19 +91,6 @@ export class DegreeRepository implements IDegreeRepository {
       degree.title = props.title
       degree.modules = modules
       return this.repo.save(degree)
-    })
-  }
-
-  /**
-   * @param {string[]} degreeIds
-   * @returns {Promise<Degree[]>}
-   */
-  async findByIds(degreeIds: string[]): Promise<Degree[]> {
-    return this.repo.find({
-      where: {
-        id: In(degreeIds),
-      },
-      relations: this.repo.relations,
     })
   }
 }
