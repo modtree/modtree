@@ -20,8 +20,10 @@
     "baseUrl": ".",
     "paths": {
       "@modtree/repos": ["libs/repos/src/index.ts"],
+      "@modtree/server/app": ["apps/server/src/app"],
       "@modtree/sql": ["libs/sql/src/index.ts"],
       "@modtree/test-env": ["libs/test-env/src/index.ts"],
+      "@modtree/base-repo": ["libs/repos/src/base"],
       "@modtree/test-env/jest": ["libs/test-env/src/matcher-types.ts"],
       "@modtree/typeorm-config": ["libs/typeorm-config/src/index.ts"],
       "@modtree/types": ["libs/types/src/index.ts"],

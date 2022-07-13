@@ -10,23 +10,24 @@ _P_='\033[0;35m'  # Purple
 _C_='\033[0;36m'  # Cyan
 _S_='\033[0;37m'  # Soft (Gray)
 
+EXECUTABLE=dist/scripts/run-tests.js
+SOURCE=scripts/run-tests/run.ts
+
 run_node() {
   printf "\n🚀 compiled test runner\n"
-  node dist/scripts/run-tests $@
+  node $EXECUTABLE $@
 }
 
 run_tsnode() {
   printf "\n🍙 ts-noded test runner\n"
-  yarn ts-node scripts/run-tests/run.ts $@
+  yarn ts-node $SOURCE $@
 }
 
-if [ -f dist/scripts/run-tests/index.js ]; then
+if [ -f $EXECUTABLE ]; then
   run_node $@
 else
   yarn test:build
-  [ -f dist/scripts/run-tests/index.js ] \
-    && run_node $@ \
-    || run_tsnode $@
+  [ -f $EXECUTABLE ] && run_node $@ || run_tsnode $@
 fi
 
 cleanup() {

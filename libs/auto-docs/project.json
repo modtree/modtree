@@ -19,14 +19,6 @@
       "options": {
         "lintFilePatterns": ["libs/auto-docs/**/*.ts"]
       }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/auto-docs"],
-      "options": {
-        "jestConfig": "libs/auto-docs/jest.config.ts",
-        "passWithNoTests": true
-      }
     }
   },
   "tags": []

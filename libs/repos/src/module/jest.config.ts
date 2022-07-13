@@ -1,3 +1,5 @@
+import path from 'path'
+
 /* eslint-disable */
 export default {
   displayName: 'repo:module',
