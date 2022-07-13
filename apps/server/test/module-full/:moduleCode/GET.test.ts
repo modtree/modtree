@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { getApp } from 'app'
+import { getApp } from '@modtree/server/app'
 import type { Express } from 'express'
 import { Api } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
