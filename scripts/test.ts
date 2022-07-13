@@ -1,9 +1,10 @@
-const fs = require('fs')
-const path = require('path')
+import { spawn } from 'child_process'
+import chalk from 'chalk'
+import fs from 'fs'
+import path from 'path'
+import { getAllFiles } from './get-all-files'
+
 const args = process.argv.slice(2)
-const getAllFiles = require('./get-all-files')
-const chalk = require('chalk')
-const { spawn } = require('child_process')
 
 const rootDir = path.resolve(__dirname, '..')
 const ignore = ['node_modules', 'dist']
@@ -12,23 +13,30 @@ const jsonOutputFile = new Date()
   .toLocaleString('en-sg')
   .replace(/(\/|:|,| )+/g, '.')
 
+type Tests = {
+  names: string[]
+  record: Record<string, string>
+}
+
 /**
  * @param {string[]} arr - array of filepaths
- * @returns {{names: string[], record: Record<string, string>}} array of pairs: test name and test path
+ * @returns {Tests} array of pairs: test name and test path
  */
-const getTests = (arr = []) => {
-  const names = []
-  const record = {}
+const getTests = (arr: string[] = []): Tests => {
+  const res: Tests = {
+    names: [],
+    record: {},
+  }
   arr.forEach((f) => {
     const contents = fs.readFileSync(f, 'utf8').toString()
     const re = contents.match(/displayName: ?["'](.*)["'],/)
     if (re) {
       const displayName = re[1]
-      names.push(displayName)
-      record[displayName] = f
+      res.names.push(displayName)
+      res.record[displayName] = f
     }
   })
-  return { names, record }
+  return res
 }
 
 /**
@@ -41,11 +49,11 @@ const tests = getTests(allProjects)
 /**
  * handle arguments
  */
-const projectsToTest = []
-const postArgs = []
-const projectPathsToTest = []
+const projectsToTest: string[] = []
+const postArgs: string[] = []
+const projectPathsToTest: string[] = []
 
-const aliases = {
+const aliases: Record<string, string> = {
   int: 'integration-tests',
   mf: 'repo:module-full',
   mc: 'repo:module-condensed',
