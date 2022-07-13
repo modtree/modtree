@@ -6,11 +6,11 @@ jest.mock('../../base')
 jest.mock('../../module')
 
 const fakeData = {
-  module: {
-    AX1000: { fulfillRequirements: ['AX2000', 'CX2000'] },
-    BX1000: { fulfillRequirements: ['BX2000', 'CX2000'] },
-    DX1000: { fulfillRequirements: [] },
-  },
+  module: [
+    { moduleCode: 'AX1000', fulfillRequirements: ['AX2000', 'CX2000'] },
+    { moduleCode: 'BX1000', fulfillRequirements: ['BX2000', 'CX2000'] },
+    { moduleCode: 'DX1000', fulfillRequirements: [] },
+  ],
 }
 
 const init = {

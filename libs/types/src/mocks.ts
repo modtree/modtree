@@ -25,6 +25,7 @@ export interface IFakeData {
   modulesCondensed: ModuleCondensed[]
   modulesFull: ModuleFull[]
   findModuleByCode(moduleCode: string): Module
+  create<T>(Entity: new () => T, params?: Partial<T>): T
 }
 
 export type FakeDataSource = DataSource & {
