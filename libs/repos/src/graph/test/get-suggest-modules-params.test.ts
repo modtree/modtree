@@ -1,89 +1,74 @@
-import { setup, teardown, t, init, Repo } from '@modtree/test-env'
-import { oneUp } from '@modtree/utils'
-import { getSource } from '@modtree/typeorm-config'
+import { GraphRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import { Module } from '@modtree/types'
+import '@modtree/test-env/jest'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../base')
 
-const degreeProps = {
-  moduleCodes: [
-    'CS1010',
-    'CS1231',
-    'CG2111A', // in modulesDone, should not suggest
-    'IT2002', // in modulesDoing, should not suggest
-    'CS2030', // unlocks CS2102, CS2104, CS3240, IS2103, IS2102 (5 mods)
-    'CS2100', // unlocks CS3210, CS3237, CS2106 (3 mods)
-    'CS2040S', // unlocks CS4269, CS5469 (2 mods, alias count as 2)
-    'CS2107', // unlocks IS4231, IS5151, IFS4101 (3 mods)
-    'CP2106', // unlocks 0 mods
-    'CS3234', // unlocks 0 mods
-    'CS2109S', // unlocks 0 mods
+const mod = (moduleCode: string): Module =>
+  Object.assign(new Module(), { moduleCode })
+
+const fakeData = {
+  user: [
+    {
+      id: 'user-1',
+      modulesDone: [mod('MA2001')],
+      modulesDoing: [mod('MA2219')],
+    },
+    {
+      id: 'user-2',
+      modulesDone: [mod('CM1102')],
+      modulesDoing: [mod('HSH1000')],
+    },
   ],
-  title: 'Test Degree',
+  degree: [
+    {
+      id: 'degree-1',
+      modules: [mod('MA2001'), mod('MA1100')],
+    },
+    {
+      id: 'degree-2',
+      modules: [mod('CM1102'), mod('CS1010S')],
+    },
+  ],
 }
 
-const userProps = {
-  ...init.user1,
-  modulesDone: ['CS1010', 'CS1231'],
-  modulesDoing: ['IT2002', 'CG2111A'],
-}
+const graphRepo = new GraphRepository(mocks.getDb(fakeData))
+// let graph: Graph
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Promise.all([
-        Repo.User.initialize(userProps),
-        Repo.Degree.initialize(degreeProps),
-      ])
-    )
-    .then(([user, degree]) => {
-      t.user = user
-      return Repo.Graph.initialize({
-        title: 'Test Graph',
-        userId: user.id,
-        degreeId: degree.id,
-      })
-    })
-    .then((graph) => {
-      t.graph = graph
-    })
-)
-afterAll(() => teardown(db))
+const correct = [
+  {
+    userId: 'user-1',
+    degreeId: 'degree-1',
+    expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['MA2001', 'MA1100']],
+  },
+  {
+    userId: 'user-2',
+    degreeId: 'degree-1',
+    expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['MA2001', 'MA1100']],
+  },
+  {
+    userId: 'user-1',
+    degreeId: 'degree-2',
+    expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['CM1102', 'CS1010S']],
+  },
+  {
+    userId: 'user-2',
+    degreeId: 'degree-2',
+    expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['CM1102', 'CS1010S']],
+  },
+].map((e, i) => ({ ...e, index: i + 1 }))
 
-it('returns an array of arrays', async () => {
-  await Repo.Graph.getSuggestModulesParams(t.graph!, ['CM1102']).then((res) => {
-    expect(res).toBeArrayOf(Array)
-    // res.forEach((e) => expect(typeof e).toBe('string'))
-    t.arrayOfArrays = res
+test.each(correct)('test: $index', async ({ userId, degreeId, expected }) => {
+  const graph = graphRepo.create({
+    user: { id: userId },
+    degree: { id: degreeId },
   })
-})
-
-it('the array has length of 4', () => {
-  expect(t.arrayOfArrays).toHaveLength(4)
-})
-
-it('each nested array contains only strings', () => {
-  t.arrayOfArrays!.forEach((nestedArr) => {
-    nestedArr.forEach((e) => expect(typeof e).toBe('string'))
+  await graphRepo.getSuggestModulesParams(graph, ['CS1010S']).then((res) => {
+    expect(res).toBeInstanceOf(Array)
+    expect(res).toHaveLength(4)
+    for (let i = 0; i < 4; i++) {
+      expect(res[i]).toIncludeSameMembers(expected[i])
+    }
   })
-})
-
-it('1/4: correct modules done', () => {
-  const modulesDone = t.arrayOfArrays![0]
-  expect(modulesDone).toIncludeSameMembers(userProps.modulesDone)
-})
-
-it('2/4: correct modules doing', () => {
-  const modulesDoing = t.arrayOfArrays![1]
-  expect(modulesDoing).toIncludeSameMembers(userProps.modulesDoing)
-})
-
-it('3/4: correct modules selected', () => {
-  const modulesSelected = t.arrayOfArrays![2]
-  expect(modulesSelected).toIncludeSameMembers(['CM1102'])
-})
-
-it('4/4: correct required modules', () => {
-  const requiredModules = t.arrayOfArrays![3]
-  expect(requiredModules).toIncludeSameMembers(degreeProps.moduleCodes)
 })

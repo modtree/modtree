@@ -49,7 +49,7 @@ const main = () => {
   return Promise.allSettled(promises)
 }
 
-test('generate jsons', async () => {
-  // await main()
+test.skip('generate jsons', async () => {
+  await main()
   expect(1).toBe(1)
 })

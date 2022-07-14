@@ -1,128 +1,94 @@
-import { Graph, Module, ModuleCondensed } from '@modtree/types'
-import { init, Repo, setup, teardown, t } from '@modtree/test-env'
-import { getSource } from '@modtree/typeorm-config'
-import { flatten, oneUp } from '@modtree/utils'
-import { EntityNotFoundError } from 'typeorm'
+import { GraphRepository } from '@modtree/repos'
+import { mocks } from '@modtree/test-env'
+import { Module } from '@modtree/types'
+import '@modtree/test-env/jest'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
+jest.mock('../../base')
+jest.mock('../../module')
 
-beforeAll(() =>
-  setup(db)
-    .then(() =>
-      Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
-      ])
-    )
-    .then(([user, degree]) =>
-      Repo.Graph.initialize({
-        title: 'Test Graph',
-        userId: user.id,
-        degreeId: degree.id,
+const mod = (moduleCode: string): Module =>
+  Object.assign(new Module(), { moduleCode })
+
+const fakeData = {
+  user: [
+    {
+      id: 'user-1',
+      modulesDone: [mod('MA2001')],
+      modulesDoing: [mod('MA2219')],
+    },
+    {
+      id: 'user-2',
+      modulesDone: [mod('CM1102')],
+      modulesDoing: [mod('HSH1000')],
+    },
+  ],
+  degree: [
+    {
+      id: 'degree-1',
+      modules: [mod('MA2001'), mod('MA1100')],
+    },
+    {
+      id: 'degree-2',
+      modules: [mod('CM1102'), mod('CS1010S')],
+    },
+  ],
+}
+
+const graphRepo = new GraphRepository(mocks.getDb(fakeData))
+// let graph: Graph
+
+const correct = [
+  {
+    userId: 'user-1',
+    degreeId: 'degree-1',
+    toggle: 'MA1100',
+    expectedHidden: [],
+    expectedPlaced: ['MA2219', 'MA2001', 'MA1100'],
+  },
+  {
+    userId: 'user-2',
+    degreeId: 'degree-1',
+    toggle: 'HSH1000',
+    expectedHidden: ['MA2001', 'MA1100', 'MA2219', 'HSH1000'],
+    expectedPlaced: ['CM1102'],
+  },
+  {
+    userId: 'user-1',
+    degreeId: 'degree-1',
+    toggle: 'CS420BZT',
+    expectedHidden: ['MA1100'],
+    expectedPlaced: ['MA2219', 'MA2001'],
+    error: 'invalid moulde code',
+  },
+].map((e, i) => ({ ...e, index: i + 1 }))
+
+test.each(correct)(
+  'it works #$index',
+  async ({
+    userId,
+    degreeId,
+    toggle,
+    expectedHidden,
+    expectedPlaced,
+    error,
+  }) => {
+    const graph = await graphRepo.initialize({
+      title: 'test',
+      userId,
+      degreeId,
+    })
+    if (!error) {
+      await graphRepo.toggleModule(graph, toggle).then((graph) => {
+        const { modulesHidden, modulesPlaced } = graph
+        const hidden = modulesHidden.map((m) => m.moduleCode)
+        const placed = modulesPlaced.map((m) => m.moduleCode)
+        expect(hidden).toIncludeSameMembers(expectedHidden)
+        expect(placed).toIncludeSameMembers(expectedPlaced)
       })
-    )
-    .then((graph) => {
-      t.graph = graph
-    })
+    } else {
+      await expect(graphRepo.toggleModule(graph, toggle)).rejects.toThrowError(
+        error
+      )
+    }
+  }
 )
-afterAll(() => teardown(db))
-
-async function findGraph(id: string) {
-  return Repo.Graph.findOneById(id)
-}
-
-async function toggle(graph: Graph, moduleCode: string) {
-  return Repo.Graph.toggleModule(graph, moduleCode)
-}
-
-test('CS2106 is hidden', async () => {
-  await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.modulesHidden.map(flatten.module)
-    expect(codes).toContain('CS2106')
-  })
-})
-
-test('toggling CS2106 returns a graph', async () => {
-  await toggle(t.graph!, 'CS2106').then((graph) => {
-    expect(graph).toBeInstanceOf(Graph)
-  })
-})
-
-test('CS2106 becomes placed', async () => {
-  await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.modulesPlaced.map(flatten.module)
-    expect(codes).toContain('CS2106')
-  })
-})
-
-test('MA2001 is placed', async () => {
-  await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.modulesPlaced.map(flatten.module)
-    expect(codes).toContain('MA2001')
-  })
-})
-
-test('toggling MA2001 returns a graph', async () => {
-  await toggle(t.graph!, 'MA2001').then((graph) => {
-    expect(graph).toBeInstanceOf(Graph)
-  })
-})
-
-test('MA2001 becomes hidden', async () => {
-  await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.modulesHidden.map(flatten.module)
-    expect(codes).toContain('MA2001')
-  })
-})
-
-test('EE1111A is not placed', async () => {
-  await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.modulesPlaced.map(flatten.module)
-    expect(codes).not.toContain('EE1111A')
-  })
-})
-
-test('EE1111A is not hidden', async () => {
-  await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.modulesHidden.map(flatten.module)
-    expect(codes).not.toContain('EE1111A')
-  })
-})
-
-test('toggling EE1111A returns a graph', async () => {
-  await toggle(t.graph!, 'EE1111A').then((graph) => {
-    expect(graph).toBeInstanceOf(Graph)
-  })
-})
-
-test('EE1111A becomes placed', async () => {
-  await findGraph(t.graph!.id).then((graph) => {
-    const codes = graph.modulesPlaced.map(flatten.module)
-    expect(codes).toContain('EE1111A')
-  })
-})
-
-test('CS420BZT is not in database', async () => {
-  await expect(() =>
-    Repo.ModuleCondensed.findByCode('CS420BZT')
-  ).rejects.toThrowError(
-    new EntityNotFoundError(ModuleCondensed, {
-      where: {
-        moduleCode: 'CS420BZT',
-      },
-    })
-  )
-})
-
-test('error on toggling CS420BZT', async () => {
-  await expect(() =>
-    Repo.Graph.toggleModule(t.graph!, 'CS420BZT')
-  ).rejects.toThrowError(
-    new EntityNotFoundError(Module, {
-      where: {
-        moduleCode: 'CS420BZT',
-      },
-    })
-  )
-})

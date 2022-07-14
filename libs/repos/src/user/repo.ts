@@ -207,13 +207,16 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    */
   async insertDegrees(user: User, degreeIds: string[]): Promise<User> {
     // 1. find degrees in DB
-    return this.degreeRepo.findByIds(degreeIds).then((degrees) => {
-      // 2. append degrees
-      return this.save({
-        ...user,
-        savedDegrees: [...user.savedDegrees, ...degrees],
-      })
-    })
+    return this.degreeRepo
+      .findByIds(degreeIds)
+      .then((degrees) =>
+        // 2. append degrees
+        this.save({
+          ...user,
+          savedDegrees: [...user.savedDegrees, ...degrees],
+        })
+      )
+      .then((user) => Object.assign(new User(), user))
   }
 
   /**
