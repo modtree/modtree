@@ -115,6 +115,7 @@ export class ModuleRepository
     modulesDoing: string[],
     modulesSelected: string[]
   ): Promise<string[]> {
+    // assumes that modules selected are done
     const modules = unique(modulesDone.concat(modulesSelected))
     const postReqsPromise = this.getPostReqs(modules)
     const canTakePromise = postReqsPromise.then((postReqs) =>

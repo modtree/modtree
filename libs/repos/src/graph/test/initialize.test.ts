@@ -4,6 +4,7 @@ import { Degree, Graph, Module, User } from '@modtree/types'
 import '@modtree/test-env/jest'
 
 jest.mock('../../base')
+jest.mock('../../graph')
 
 const mod = (moduleCode: string): Module =>
   Object.assign(new Module(), { moduleCode })
@@ -34,10 +35,10 @@ const fakeData = {
 }
 
 const graphRepo = new GraphRepository(mocks.getDb(fakeData))
-// let graph: Graph
 
 const correct = [
   {
+    type: 'hide remaining degree modules',
     title: 'anything',
     userId: 'user-1',
     degreeId: 'degree-1',
@@ -45,13 +46,15 @@ const correct = [
     placed: ['MA2219', 'MA2001'],
   },
   {
+    type: 'no module overlap between user and degree',
     title: '_x*.-/\\',
     userId: 'user-2',
     degreeId: 'degree-1',
-    hidden: ['MA2001', 'MA1100', 'MA2219'],
+    hidden: ['MA2001', 'MA1100'],
     placed: ['HSH1000', 'CM1102'],
   },
   {
+    type: 'extra test case',
     title: '.',
     userId: 'user-1',
     degreeId: 'degree-2',
@@ -59,21 +62,27 @@ const correct = [
     placed: ['MA2219', 'MA2001'],
   },
   {
+    type: 'extra test case',
     title: '/',
     userId: 'user-2',
     degreeId: 'degree-2',
-    hidden: ['CS1010S', 'MA2219', 'MA2001'],
+    hidden: ['CS1010S'],
     placed: ['HSH1000', 'CM1102'],
   },
 ]
 
+beforeEach(() => jest.clearAllMocks())
+
 test.each(correct)(
-  'title: $title',
+  '$type',
   async ({ title, userId, degreeId, hidden, placed }) => {
     await graphRepo.initialize({ title, userId, degreeId }).then((graph) => {
+      const { modulesPlaced, modulesHidden, user, degree } = graph
+      /**
+       * basic data
+       */
       expect(graph).toBeInstanceOf(Graph)
       expect(graph.title).toEqual(title)
-      const { modulesPlaced, modulesHidden, user, degree } = graph
       expect(user).toBeInstanceOf(User)
       expect(degree).toBeInstanceOf(Degree)
       expect(user.id).toEqual(userId)

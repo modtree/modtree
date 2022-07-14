@@ -1,9 +1,19 @@
 import '@modtree/test-env/jest'
-import { UserRepository } from '@modtree/repos'
+import { UserRepository, ModuleRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
 
 jest.mock('../../base')
-jest.mock('../../module')
+jest.mock('../../module', () => {
+  const A = jest.requireActual('../../module/__mocks__')
+  const M = A.ModuleRepository as any
+  const spy = jest.spyOn(M.prototype, 'getUnlockedModules')
+  M.spy = spy
+  return {
+    __esModule: true,
+    ...A,
+    ModuleRepository: M,
+  }
+})
 
 const fakeData = {
   module: [
@@ -29,36 +39,44 @@ const userRepo = new UserRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
+    type: 'no module requirements met',
     done: [],
     doing: [],
     code: 'AX1000',
     expected: [],
   },
   {
+    type: "don't show modules already done",
     done: ['BX1000', 'BX2000'],
     doing: [],
     code: 'AX1000',
-    expected: ['AX2000'], // doesn't have BX2000 because already done
+    expected: ['AX2000'],
   },
   {
+    type: "don't show modules already doing",
     done: ['BX1000', 'BX2000'],
     doing: ['AX2000'],
     code: 'AX1000',
-    expected: [], // AX2000 is already doing
+    expected: [],
   },
 ]
 
-test.each(correct)(
-  'works with $done done',
-  async ({ done, doing, code, expected }) => {
-    const user = await userRepo.initialize({
-      ...init,
-      modulesDone: done,
-      modulesDoing: doing,
-    })
-    await userRepo.getUnlockedModules(user, code).then((modules) => {
-      const codes = modules.map((m) => m.moduleCode)
-      expect(codes).toIncludeSameMembers(expected)
-    })
-  }
-)
+beforeEach(() => jest.clearAllMocks())
+
+test.each(correct)('$type', async ({ done, doing, code, expected }) => {
+  const user = await userRepo.initialize({
+    ...init,
+    modulesDone: done,
+    modulesDoing: doing,
+  })
+  await userRepo.getUnlockedModules(user, code).then((modules) => {
+    const codes = modules.map((m) => m.moduleCode)
+    expect(codes).toIncludeSameMembers(expected)
+    const m = ModuleRepository as any
+    const spy = m.spy as jest.Mock
+    const calls = spy.mock.calls[0]
+    expect(calls[0]).toIncludeSameMembers(done)
+    expect(calls[1]).toIncludeSameMembers(doing)
+    expect(calls[2]).toEqual(code)
+  })
+})

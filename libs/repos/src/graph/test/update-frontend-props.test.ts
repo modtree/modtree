@@ -36,18 +36,7 @@ function expectNestedProp(received: any, prop: { [key: string]: any }) {
 
 const correct = [
   {
-    userId: 'user-1',
-    degreeId: 'degree-1',
-    flowNodes: [nod('MA2219', 271, 608)],
-    flowEdges: [],
-    expected: [
-      {
-        id: 'MA2219',
-        position: { x: 271, y: 608 },
-      },
-    ],
-  },
-  {
+    type: 'override the entire graph',
     userId: 'user-1',
     degreeId: 'degree-1',
     flowNodes: [nod('CM1102', 271, 608)],
@@ -60,10 +49,24 @@ const correct = [
     ],
     error: '',
   },
+  {
+    type: 'FIXME: make a validity check',
+    userId: 'user-1',
+    degreeId: 'degree-1',
+    flowNodes: [nod('NOT_VALID', 271, 608)],
+    flowEdges: [],
+    expected: [
+      {
+        id: 'NOT_VALID',
+        position: { x: 271, y: 608 },
+      },
+    ],
+    error: '',
+  },
 ].map((e, i) => ({ ...e, index: i + 1 }))
 
 test.each(correct)(
-  'it works #$index',
+  '$type',
   async ({ userId, degreeId, expected, error, ...frontEndProps }) => {
     const graph = await graphRepo.initialize({
       title: 'test',
@@ -73,6 +76,7 @@ test.each(correct)(
     await graphRepo.updateFrontendProps(graph, frontEndProps).then((graph) => {
       expect(graph).toBeInstanceOf(Graph)
       const { flowNodes } = graph
+      expect(flowNodes).toHaveLength(expected.length)
       expected.forEach((expected) => expectNestedProp(flowNodes, expected))
     })
   }

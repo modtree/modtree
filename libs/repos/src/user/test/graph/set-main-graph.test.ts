@@ -5,7 +5,6 @@ import { Graph, User, Degree } from '@modtree/types'
 
 jest.mock('../../../base')
 jest.mock('../../../module')
-// jest.mock('../../../degree')
 jest.mock('../../../graph')
 
 const init = {
@@ -15,10 +14,10 @@ const init = {
 
 const fakeData = {
   graph: [
-    { id: 'a', degree: { id: 'x' } as Degree },
-    { id: 'b', degree: { id: 'y' } as Degree },
+    { id: 'graph-a', degree: { id: 'degree-a' } as Degree },
+    { id: 'graph-b', degree: { id: 'degree-b' } as Degree },
   ],
-  degree: [{ id: 'x' }, { id: 'y' }, { id: 'z' }],
+  degree: [{ id: 'degree-a' }, { id: 'degree-b' }],
 }
 
 const userRepo = new UserRepository(mocks.getDb(fakeData))
@@ -26,20 +25,22 @@ const graphRepo = new GraphRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
-    graphIds: ['a', 'b'],
-    savedDegrees: ['x'],
-    setMain: 'a',
-    expectedId: 'a',
+    type: 'change main graph',
+    graphIds: ['graph-a', 'graph-b'],
+    savedDegrees: ['degree-a', 'degree-b'],
+    setMain: 'graph-b',
+    expectedId: 'graph-b',
   },
   {
-    graphIds: ['a', 'b'],
-    savedDegrees: ['y'],
-    setMain: 'a',
-    expectedError: "Graph's degree not in savedDegrees",
+    type: 'graph not in saved graphs',
+    graphIds: ['graph-a'],
+    savedDegrees: ['degree-a'],
+    setMain: 'graph-b',
+    expectedError: 'Graph not in savedGraphs',
   },
 ]
 
-test.each(correct)('ids: $graphIds, set main: $setMain', async (props) => {
+test.each(correct)('$type', async (props) => {
   const { graphIds, setMain, expectedId, savedDegrees, expectedError } = props
   /**
    * test prep: initialize degrees and user
@@ -50,6 +51,7 @@ test.each(correct)('ids: $graphIds, set main: $setMain', async (props) => {
       ...user,
       savedGraphs,
       savedDegrees: savedDegrees.map((id) => ({ id })),
+      mainGraph: graphRepo.create({ id: 'graph-a' }),
     })
   )
   /**
@@ -69,50 +71,3 @@ test.each(correct)('ids: $graphIds, set main: $setMain', async (props) => {
     })
   }
 })
-
-/** saved degree */
-// describe('Saved graph with saved degree', () => {
-//   it('returns a user', async () => {
-//     // get user with all relations
-//     await Repo.User.setMainGraph(t.user!, saved.id).then((user) => {
-//       expect(user).toBeInstanceOf(User)
-//       t.user = user
-//     })
-//   })
-//
-//   it('sets correct main graph', () => {
-//     const graphId = t.user!.mainGraph!.id
-//     expect(graphId).toEqual(saved.id)
-//   })
-// })
-//
-// describe('Unsaved graph with saved degree', () => {
-//   beforeEach(expect.hasAssertions)
-//
-//   it('throws an error', async () => {
-//     await expect(() =>
-//       Repo.User.setMainGraph(t.user!, unsaved.id)
-//     ).rejects.toThrow(Error('Graph not in savedGraphs'))
-//   })
-// })
-
-/** unsaved */
-// describe('Saved graph with unsaved degree', () => {
-//   beforeEach(expect.hasAssertions)
-//
-//   it('throws an error', async () => {
-//     await expect(() =>
-//       Repo.User.setMainGraph(t.user!, saved.id)
-//     ).rejects.toThrow(Error("Graph's degree not in savedDegrees"))
-//   })
-// })
-//
-// describe('Unsaved graph with unsaved degree', () => {
-//   beforeEach(expect.hasAssertions)
-//
-//   it('throws an error', async () => {
-//     await expect(() =>
-//       Repo.User.setMainGraph(t.user!, unsaved.id)
-//     ).rejects.toThrow(Error('Graph not in savedGraphs'))
-//   })
-// })

@@ -13,7 +13,7 @@ async function loadModules(user: User, degree: Degree): Promise<Module[]> {
   /**
    * array of all loaded modules, to not have to pull again from database
    */
-  const alreadyLoaded = degree.modules
+  const alreadyLoaded = [...degree.modules]
   alreadyLoaded.push(...user.modulesDoing)
   alreadyLoaded.push(...user.modulesDone)
   return alreadyLoaded
@@ -41,7 +41,6 @@ function modulify(moduleCodeSet: Set<string>, cache: Module[]): Module[] {
  *
  * @param {User} user
  * @param {Degree} degree
- * @param {InitGraphProps}  props
  * @returns {Promise<[Module[], Module[]]>}
  */
 export async function getModules(user: User, degree: Degree): Promise<Result> {

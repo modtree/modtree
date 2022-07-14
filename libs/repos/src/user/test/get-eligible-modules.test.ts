@@ -30,48 +30,39 @@ const userRepo = new UserRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
-    done: [],
-    doing: [],
-    expected: [],
-  },
-  {
+    type: 'no modules have requirements met',
     done: ['AX1000'],
     doing: [],
     expected: [],
   },
   {
+    type: 'prereqTree or test',
     done: ['BX1000'],
     doing: [],
     expected: ['BX2000'],
   },
   {
-    done: ['AX1000', 'BX1000'],
-    doing: [],
-    expected: ['AX2000', 'BX2000'],
-  },
-  {
+    type: 'prereqTree and test',
     done: ['AX1000', 'AX2000'],
     doing: [],
     expected: ['CX2000'],
   },
   {
+    type: 'modules doing are ignored',
     done: ['DX1000'],
     doing: ['AX1000', 'BX1000'], // don't take into account these
     expected: [],
   },
 ]
 
-test.each(correct)(
-  'works with $done done',
-  async ({ done, doing, expected }) => {
-    const user = await userRepo.initialize({
-      ...init,
-      modulesDone: done,
-      modulesDoing: doing,
-    })
-    await userRepo.getEligibleModules(user).then((modules) => {
-      const codes = modules.map((m) => m.moduleCode)
-      expect(codes).toIncludeSameMembers(expected)
-    })
-  }
-)
+test.each(correct)('$type', async ({ done, doing, expected }) => {
+  const user = await userRepo.initialize({
+    ...init,
+    modulesDone: done,
+    modulesDoing: doing,
+  })
+  await userRepo.getEligibleModules(user).then((modules) => {
+    const codes = modules.map((m) => m.moduleCode)
+    expect(codes).toIncludeSameMembers(expected)
+  })
+})

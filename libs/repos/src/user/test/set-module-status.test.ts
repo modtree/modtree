@@ -15,6 +15,7 @@ const userRepo = new UserRepository(mocks.db)
 
 const correct = [
   {
+    type: 'sets a new done',
     done: [],
     doing: [],
     codes: ['MA2001'],
@@ -23,6 +24,7 @@ const correct = [
     expectedDoing: [],
   },
   {
+    type: 'removes from done',
     done: ['MA1100'],
     doing: [],
     codes: ['MA1100', 'MA2001'],
@@ -31,6 +33,7 @@ const correct = [
     expectedDoing: ['MA1100', 'MA2001'],
   },
   {
+    type: 'remove everything',
     done: ['MA2001'],
     doing: ['MA1100'],
     codes: ['MA1100', 'MA2001'],
@@ -39,6 +42,7 @@ const correct = [
     expectedDoing: [],
   },
   {
+    type: 'invalid code',
     done: ['MA2001'],
     doing: ['MA1100'],
     codes: ['NOT_VALID'],
@@ -46,9 +50,18 @@ const correct = [
     expectedDone: ['MA2001'],
     expectedDoing: ['MA1100'],
   },
+  {
+    type: 'set doing without mutating done',
+    done: ['CM1102'],
+    doing: [],
+    codes: ['MA1100', 'MA2001'],
+    status: ModuleStatus.DOING,
+    expectedDone: ['CM1102'],
+    expectedDoing: ['MA1100', 'MA2001'],
+  },
 ]
 
-test.each(correct)('works', async (props) => {
+test.each(correct)('$type', async (props) => {
   const { done, doing, codes, expectedDone, expectedDoing, status } = props
   const user = await userRepo.initialize({
     ...init,

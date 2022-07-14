@@ -1,5 +1,4 @@
 import '@modtree/test-env/jest'
-
 import { GraphRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
 import { Graph, GraphFlowNode, Module } from '@modtree/types'
@@ -37,6 +36,7 @@ function expectNestedProp(received: any, prop: { [key: string]: any }) {
 
 const correct = [
   {
+    type: 'move an existing flow node',
     userId: 'user-1',
     degreeId: 'degree-1',
     node: nod('MA2219', 271, 608),
@@ -48,6 +48,7 @@ const correct = [
     ],
   },
   {
+    type: 'inserting new module fails',
     userId: 'user-1',
     degreeId: 'degree-1',
     node: nod('CM1102', 271, 608),
@@ -57,7 +58,7 @@ const correct = [
 ].map((e, i) => ({ ...e, index: i + 1 }))
 
 test.each(correct)(
-  'it works #$index',
+  '$type',
   async ({ userId, degreeId, node, expected, error }) => {
     const graph = await graphRepo.initialize({
       title: 'test',
