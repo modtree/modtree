@@ -9,7 +9,6 @@ import {
   IUserRepository,
   ModuleStatus,
   IDegreeRepository,
-  CanTakeModuleMap,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
@@ -289,13 +288,11 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    */
   async insertGraphs(user: User, graphIds: string[]): Promise<User> {
     // 1. find graphs in DB
-    return this.graphRepo
-      .find({ where: { id: In(graphIds) } })
-      .then((graphs) => {
-        // 2. append graphs
-        user.savedGraphs.push(...graphs)
-        return this.save(user)
-      })
+    return this.graphRepo.findByIds(graphIds).then((graphs) => {
+      // 2. append graphs
+      user.savedGraphs.push(...graphs)
+      return this.save(user)
+    })
   }
 
   /**

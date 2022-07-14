@@ -1,8 +1,8 @@
-import { IBaseRepository, Relations } from '@modtree/types'
+import { IBaseRepository, Relations, EntityTarget } from '@modtree/types'
 import {
   DataSource,
   DeepPartial,
-  EntityTarget,
+  EntityManager,
   FindManyOptions,
   FindOneOptions,
   In,
@@ -15,11 +15,10 @@ export class BaseRepo<Entity extends { id: string }>
 {
   /** don't expose any organic TypeORM methods outside at all */
   private repo: Repository<Entity>
-  private _save: Repository<Entity>['save']
+  private readonly manager: EntityManager
+  readonly target: EntityTarget<Entity>
 
   /** direct inheritance */
-  create: Repository<Entity>['create']
-  // save: Repository<Entity>['save']
   count: Repository<Entity>['count']
   findAndCount: Repository<Entity>['findAndCount']
   remove: Repository<Entity>['remove']
@@ -32,12 +31,12 @@ export class BaseRepo<Entity extends { id: string }>
   relations: Relations
 
   /** instantiate base repository */
-  constructor(entity: EntityTarget<Entity>, db: DataSource) {
-    this.repo = new Repository(entity, db.manager)
+  constructor(target: EntityTarget<Entity>, db: DataSource) {
+    this.repo = new Repository(target, db.manager)
+    this.manager = db.manager
+    this.target = target
 
     /** direct inheritance */
-    this.create = this.repo.create.bind(this.repo)
-    this._save = this.repo.save.bind(this.repo)
     this.find = this.repo.find.bind(this.repo)
     this.count = this.repo.count.bind(this.repo)
     this.findAndCount = this.repo.findAndCount.bind(this.repo)
@@ -49,11 +48,8 @@ export class BaseRepo<Entity extends { id: string }>
     this.relations = getRelations(this.repo)
   }
 
-  private reshape = (data: any): Entity => {
-    const entity = new (this.repo.target as new () => Entity)()
-    Object.assign(entity, data)
-    return entity
-  }
+  private readonly reshape = (e: any): Entity =>
+    this.manager.create(this.target, e)
 
   /**
    * TypeORM's builtin save doesn't return a type-safe entity.
@@ -62,14 +58,25 @@ export class BaseRepo<Entity extends { id: string }>
    * from this since save() is usually called at the end of processing
    * and may not really need to be type-safe at that point.
    */
-  async save<T extends DeepPartial<Entity>>(e: T[]): Promise<Entity[]>
-  async save<T extends DeepPartial<Entity>>(e: T): Promise<Entity>
-  async save<T extends DeepPartial<Entity>>(e: T | T[]): Promise<any> {
+  save(e: DeepPartial<Entity>): Promise<Entity>
+  save(e: DeepPartial<Entity>[]): Promise<Entity[]>
+  async save(
+    e: DeepPartial<Entity> | DeepPartial<Entity>[]
+  ): Promise<Entity | Entity[]> {
     if (Array.isArray(e)) {
-      return this._save(e).then((res) => res.map(this.reshape))
+      return this.repo.save(e).then((arr) => arr.map(this.reshape))
     } else {
-      return this._save(e).then(this.reshape)
+      return this.repo.save(e).then(this.reshape)
     }
+  }
+
+  create(): Entity
+  create(p: DeepPartial<Entity>[]): Entity[]
+  create(p: DeepPartial<Entity>): Entity
+  create(
+    partial?: DeepPartial<Entity> | DeepPartial<Entity>[]
+  ): Entity | Entity[] {
+    return this.manager.create<any>(this.target, partial)
   }
 
   /**

@@ -5,6 +5,7 @@ import { User } from '@modtree/types'
 
 jest.mock('../../../base')
 jest.mock('../../../module')
+jest.mock('../../../graph')
 
 const init = {
   authZeroId: 'auth0|012345678901234567890123',
@@ -15,9 +16,9 @@ const userRepo = new UserRepository(mocks.db)
 const graphRepo = new GraphRepository(mocks.db)
 
 const correct = [
-  { graphIds: [], insert: [''], expected: [] },
-  { graphIds: ['a'], insert: [''], expected: ['a'] },
-  { graphIds: ['a'], insert: ['b'], expected: ['a'] },
+  // { graphIds: [], insert: [''], expected: [] },
+  // { graphIds: ['a'], insert: [''], expected: ['a'] },
+  // { graphIds: ['a'], insert: ['b'], expected: ['a'] },
   { graphIds: ['b', 'a'], insert: ['a'], expected: ['a', 'b'] },
 ]
 

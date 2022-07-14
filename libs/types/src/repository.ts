@@ -1,4 +1,4 @@
-import { DeleteResult, Repository } from 'typeorm'
+import { DeepPartial, DeleteResult, Repository } from 'typeorm'
 import {
   IGraph,
   IUser,
@@ -44,7 +44,8 @@ export interface IBaseRepository<Entity> {
   relations: Relations
   /** direct inheritance */
   create: Repository<Entity>['create']
-  save: Repository<Entity>['save']
+  save(e: DeepPartial<Entity>): Promise<Entity>
+  save(e: DeepPartial<Entity>[]): Promise<Entity[]>
   count: Repository<Entity>['count']
   findAndCount: Repository<Entity>['findAndCount']
   remove: Repository<Entity>['remove']
