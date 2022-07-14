@@ -2,6 +2,8 @@ import path from 'path'
 import fs from 'fs'
 import { getAllFiles } from './get-all-files'
 
+const outFile = path.resolve(__dirname, 'tests.json')
+
 /**
  * @param {string} path
  */
@@ -18,7 +20,7 @@ const rootDir = path.resolve(__dirname, '../..')
 /**
  * scan for jest configs recursively
  */
-const allTests = getAllFiles(rootDir, ['node_modules', 'dist'])
+const jestProjects = getAllFiles(rootDir, ['node_modules', 'dist'])
   .filter((path) => path.match(/jest.config.[jt]s$/))
   .map((path) => ({ path, name: getTestName(path) }))
   .filter((t) => t.name !== '')
@@ -27,7 +29,5 @@ const allTests = getAllFiles(rootDir, ['node_modules', 'dist'])
 /**
  * cache them in a tests.json
  */
-fs.writeFileSync(
-  path.resolve(__dirname, 'tests.json'),
-  JSON.stringify(allTests)
-)
+const current = JSON.parse(fs.readFileSync(outFile, 'utf8'))
+fs.writeFileSync(outFile, JSON.stringify({ ...current, jestProjects }, null, 2))

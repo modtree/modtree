@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import type { StrRec } from './types'
+import type { Test } from './types'
 import chalk from 'chalk'
 
 const rootDir = path.resolve(__dirname, '../..')
@@ -14,20 +14,25 @@ type ProcessedArgs = {
   testPathPattern: string[]
 }
 
-export function handleArgs(
-  args: string[],
-  tests: StrRec,
-  aliases: StrRec
-): ProcessedArgs {
+function sortByAlias(a: Test, b: Test) {
+  if (!a.alias) return 1
+  if (!b.alias) return -1
+  return a.alias > b.alias ? 1 : -1
+}
+
+function zip(k: string[], v: string[]): Record<string, string> {
+  return k.reduce((a, k, i) => ({ ...a, [k]: v[i] }), {})
+}
+
+export function handleArgs(args: string[], tests: Test[]): ProcessedArgs {
   const testPathPattern: string[] = []
   const tail: string[] = []
   const projectNames: string[] = []
   let projectPaths: string[] = []
   let hasError = false
   let markedIndex = -1
-
-  const hasTest = (t: string) => Object.keys(tests).includes(t)
-  const hasAlias = (a: string) => Object.keys(aliases).includes(a)
+  let hit: Test | undefined
+  let hits: Test[]
 
   args.forEach((arg, i) => {
     /** --testPathPattern */
@@ -49,23 +54,33 @@ export function handleArgs(
     }
 
     /** jest bypasses */
-    const bypass = ['--verbose', '--coverage', '--runInBand']
+    const bypass = ['--verbose', '--coverage', '--runInBand', '--dr']
     if (bypass.includes(arg)) {
       tail.push(arg)
       return
     }
 
     /** direct test */
-    if (hasTest(arg)) {
-      projectPaths.push(tests[arg])
-      projectNames.push(arg)
+    hit = tests.find((t) => t.name === arg)
+    if (hit) {
+      projectPaths.push(hit.path)
+      projectNames.push(hit.name)
       return
     }
 
     /** aliased test */
-    if (hasAlias(arg) && hasTest(aliases[arg])) {
-      projectPaths.push(tests[aliases[arg]])
-      projectNames.push(aliases[arg])
+    hit = tests.find((t) => t.alias === arg)
+    if (hit) {
+      projectPaths.push(hit.path)
+      projectNames.push(hit.name)
+      return
+    }
+
+    /** grouped test */
+    hits = tests.filter((t) => t.groups.includes(arg))
+    if (hits.length > 0) {
+      projectPaths.push(...hits.map((t) => t.path))
+      projectNames.push(...hits.map((t) => t.name))
       return
     }
 
@@ -78,21 +93,28 @@ export function handleArgs(
    */
   if (hasError || args.length === 0) {
     console.debug(
-      chalk.cyan('\nPlease choose from these tests:'),
-      Object.keys(tests),
-      chalk.cyan('\nor use one of these aliases:'),
-      aliases,
+      chalk.cyan('Please choose from these tests:'),
+      tests
+        .sort(sortByAlias)
+        .map(({ name, alias }) => (alias ? { name, alias } : { name })),
       '\n'
     )
     process.exit(0)
   } else {
-    console.debug(chalk.cyan('\nTests chosen:'), projectNames)
-    console.debug(chalk.cyan('Test path pattern:'), testPathPattern[1], '\n')
+    console.debug({
+      projects: zip(projectNames, projectPaths),
+      testPathPattern,
+      tail,
+    })
   }
 
+  /**
+   * set the output for handleArgs
+   */
   if (projectPaths.length > 0) {
     projectPaths = ['--projects', ...projectPaths]
   }
+  const output = { projectPaths, testPathPattern, tail }
 
-  return { tail, projectPaths, testPathPattern }
+  return output
 }
