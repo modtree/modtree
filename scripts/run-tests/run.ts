@@ -1,8 +1,12 @@
 import fs from 'fs'
-import json from './tests.json'
 import { parse } from './parse'
+import { resolve } from 'path'
 import type { TestAlias, TestGroup, Test } from './types'
 import { handleArgs } from './handle-args'
+
+const json = JSON.parse(
+  fs.readFileSync(resolve(__dirname, '../..', 'tests.json'), 'utf8')
+)
 
 const useAddGroup =
   (groups: TestGroup[]) =>
