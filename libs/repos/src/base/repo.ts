@@ -1,6 +1,7 @@
 import { IBaseRepository, Relations } from '@modtree/types'
 import {
   DataSource,
+  DeepPartial,
   EntityTarget,
   FindManyOptions,
   FindOneOptions,
@@ -14,10 +15,11 @@ export class BaseRepo<Entity extends { id: string }>
 {
   /** don't expose any organic TypeORM methods outside at all */
   private repo: Repository<Entity>
+  private _save: Repository<Entity>['save']
 
   /** direct inheritance */
   create: Repository<Entity>['create']
-  save: Repository<Entity>['save']
+  // save: Repository<Entity>['save']
   count: Repository<Entity>['count']
   findAndCount: Repository<Entity>['findAndCount']
   remove: Repository<Entity>['remove']
@@ -35,7 +37,7 @@ export class BaseRepo<Entity extends { id: string }>
 
     /** direct inheritance */
     this.create = this.repo.create.bind(this.repo)
-    this.save = this.repo.save.bind(this.repo)
+    this._save = this.repo.save.bind(this.repo)
     this.find = this.repo.find.bind(this.repo)
     this.count = this.repo.count.bind(this.repo)
     this.findAndCount = this.repo.findAndCount.bind(this.repo)
@@ -45,6 +47,31 @@ export class BaseRepo<Entity extends { id: string }>
     this.createQueryBuilder = this.repo.createQueryBuilder.bind(this.repo)
     /** custom fields */
     this.relations = getRelations(this.repo)
+  }
+
+  private reshape(data: any): Entity {
+    const entity = this.create()
+    Object.assign(entity, data)
+    return entity
+  }
+
+  /**
+   * TypeORM's builtin save doesn't return a type-safe entity.
+   *
+   * This override ensures that it does, through we could possibly move away
+   * from this since save() is usually called at the end of processing
+   * and may not really need to be type-safe at that point.
+   */
+  async save<T extends DeepPartial<Entity>>(e: T[]): Promise<Entity[]>
+  async save<T extends DeepPartial<Entity>>(e: T): Promise<Entity>
+  async save(e: any): Promise<any> {
+    return this._save(e).then((res) => {
+      if (Array.isArray(res)) {
+        return res.map(this.reshape)
+      } else {
+        return this.reshape(res)
+      }
+    })
   }
 
   /**

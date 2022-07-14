@@ -1,0 +1,27 @@
+import { setup, teardown, Repo, t, init } from '@modtree/test-env'
+import { flatten, oneUp } from '@modtree/utils'
+import { getSource } from '@modtree/typeorm-config'
+
+const dbName = oneUp(__filename)
+const db = getSource(dbName)
+
+beforeAll(() =>
+  setup(db)
+    .then(() =>
+      Repo.User.initialize({
+        ...init.user1,
+        modulesDone: ['CS1101S'],
+      })
+    )
+    .then((user) => {
+      t.user = user
+    })
+)
+afterAll(() => teardown(db))
+
+it('adds correct modules', async () => {
+  await Repo.User.getEligibleModules(t.user!).then((modules) => {
+    const codes = modules.map(flatten.module)
+    expect(codes).toIncludeSameMembers(['CS2109S'])
+  })
+})
