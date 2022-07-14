@@ -14,12 +14,12 @@ EXECUTABLE=dist/scripts/run-tests.js
 SOURCE=scripts/run-tests/run.ts
 
 run_node() {
-  printf "\n🚀 compiled test runner\n"
+  printf "\n${_G_}compiled test runner${_N_}\n\n"
   node $EXECUTABLE $@
 }
 
 run_tsnode() {
-  printf "\n🍙 ts-noded test runner\n"
+  printf "\n${_B_}ts-noded test runner${_N_}\n\n"
   yarn ts-node $SOURCE $@
 }
 
@@ -34,4 +34,6 @@ cleanup() {
   rm -f test.command
 }; trap cleanup EXIT
 
-[ -f test.command ] && source test.command
+[ -f test.command ] \
+  && source test.command \
+  || printf "${_S_}No tests to run.\n\n${_N_}"

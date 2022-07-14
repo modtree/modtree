@@ -2,7 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const entrypoint = path.resolve(__dirname, 'run.ts')
 
-const distDir = path.resolve(__dirname, '../..', 'dist/scripts')
+const rootDir = path.resolve(__dirname, '../..')
+const distDir = path.resolve(rootDir, 'dist/scripts')
 const distFile = path.resolve(distDir, 'run-tests.js')
 
 require('@vercel/ncc')(entrypoint).then(({ code }) => {

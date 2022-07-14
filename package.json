@@ -14,6 +14,7 @@
     "all:server": "yarn build:server && yarn start:server",
     "2 //": "................................................. testing",
     "test": "bash scripts/run-tests/run.sh",
+    "test:dev": "yarn test:build && yarn test",
     "test:scan": "ts-node scripts/run-tests/scan.ts",
     "test:build": "yarn test:scan && node scripts/run-tests/build.js",
     "e2e": "nx e2e web-e2e --watch",

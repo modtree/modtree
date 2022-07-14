@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+yarn --cwd ../../../.. test int -m /integration-tests/base/ $@

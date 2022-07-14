@@ -1,6 +1,10 @@
 import type { Node, Edge } from 'react-flow-renderer'
 import type { SemesterData, NUSModuleAttributes, PrereqTree } from '../nusmods'
 
+export type EntityTarget<T> = {
+  new (): T
+}
+
 export type EntityName =
   | 'user'
   | 'degree'
