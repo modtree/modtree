@@ -40,29 +40,21 @@ const correct = [
   {
     userId: 'user-1',
     degreeId: 'degree-1',
-    hidden: ['MA1100'],
-    placed: ['MA2219', 'MA2001'],
     expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['MA2001', 'MA1100']],
   },
   {
     userId: 'user-2',
     degreeId: 'degree-1',
-    hidden: ['MA2001', 'MA1100', 'MA2219'],
-    placed: ['HSH1000', 'CM1102'],
     expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['MA2001', 'MA1100']],
   },
   {
     userId: 'user-1',
     degreeId: 'degree-2',
-    hidden: ['CM1102', 'CS1010S'],
-    placed: ['MA2219', 'MA2001'],
     expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['CM1102', 'CS1010S']],
   },
   {
     userId: 'user-2',
     degreeId: 'degree-2',
-    hidden: ['CS1010S', 'MA2219', 'MA2001'],
-    placed: ['HSH1000', 'CM1102'],
     expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['CM1102', 'CS1010S']],
   },
 ].map((e, i) => ({ ...e, index: i + 1 }))
