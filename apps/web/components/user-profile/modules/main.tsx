@@ -47,7 +47,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                     <Row.Module key={dashed(code, index)}>
                       <span className="font-semibold">{code}</span>
                       <span className="mx-1">/</span>
-                      {module.title}
+                      {module && module.title}
                     </Row.Module>
                   )
                 })}
@@ -78,7 +78,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                     <Row.Module key={dashed(code, index)}>
                       <span className="font-semibold">{code}</span>
                       <span className="mx-1">/</span>
-                      {module.title}
+                      {module && module.title}
                     </Row.Module>
                   )
                 })}
