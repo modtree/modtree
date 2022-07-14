@@ -1,12 +1,8 @@
 import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 import { Repo, setup, teardown } from '@modtree/test-env'
-import { getSource } from '@modtree/typeorm-config'
-import { oneUp } from '@modtree/utils'
+import { db } from '@modtree/typeorm-config'
 
-const dbName = oneUp(__filename)
-const db = getSource(dbName)
-
-beforeAll(() => setup(db))
+beforeAll(() => setup(db, { restore: false }))
 afterAll(() => teardown(db))
 
 const entities = [User, Degree, Graph, Module, ModuleCondensed]
