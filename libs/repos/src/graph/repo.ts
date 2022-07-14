@@ -58,9 +58,9 @@ export class GraphRepository
     /**
      * get all relavant modules, sorted into placed and hidden
      */
-    const modules = Promise.all([user, degree]).then(([user, degree]) =>
-      getModules(user, degree)
-    )
+    const modules = Promise.all([user, degree]).then(([user, degree]) => {
+      return getModules(user, degree)
+    })
     /**
      *  get flow edges from relations
      */

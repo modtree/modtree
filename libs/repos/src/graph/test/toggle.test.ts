@@ -39,6 +39,7 @@ const graphRepo = new GraphRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
+    type: 'from hidden to placed',
     userId: 'user-1',
     degreeId: 'degree-1',
     toggle: 'MA1100',
@@ -46,13 +47,23 @@ const correct = [
     expectedPlaced: ['MA2219', 'MA2001', 'MA1100'],
   },
   {
+    type: 'from placed to hidden',
     userId: 'user-2',
     degreeId: 'degree-1',
     toggle: 'HSH1000',
-    expectedHidden: ['MA2001', 'MA1100', 'MA2219', 'HSH1000'],
+    expectedHidden: ['MA2001', 'MA1100', 'HSH1000'],
     expectedPlaced: ['CM1102'],
   },
   {
+    type: 'from void to placed',
+    userId: 'user-2',
+    degreeId: 'degree-1',
+    toggle: 'HSI1000',
+    expectedHidden: ['MA2001', 'MA1100'],
+    expectedPlaced: ['HSH1000', 'CM1102', 'HSI1000'],
+  },
+  {
+    type: 'invalid module code',
     userId: 'user-1',
     degreeId: 'degree-1',
     toggle: 'CS420BZT',
@@ -63,7 +74,7 @@ const correct = [
 ].map((e, i) => ({ ...e, index: i + 1 }))
 
 test.each(correct)(
-  'it works #$index',
+  '$type',
   async ({
     userId,
     degreeId,

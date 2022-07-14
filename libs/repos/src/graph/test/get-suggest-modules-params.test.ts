@@ -34,28 +34,28 @@ const fakeData = {
 }
 
 const graphRepo = new GraphRepository(mocks.getDb(fakeData))
-// let graph: Graph
 
+const selected = ['CS1010S']
 const correct = [
   {
     userId: 'user-1',
     degreeId: 'degree-1',
-    expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['MA2001', 'MA1100']],
+    expected: [['MA2001'], ['MA2219'], selected, ['MA2001', 'MA1100']],
   },
   {
     userId: 'user-2',
     degreeId: 'degree-1',
-    expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['MA2001', 'MA1100']],
+    expected: [['CM1102'], ['HSH1000'], selected, ['MA2001', 'MA1100']],
   },
   {
     userId: 'user-1',
     degreeId: 'degree-2',
-    expected: [['MA2001'], ['MA2219'], ['CS1010S'], ['CM1102', 'CS1010S']],
+    expected: [['MA2001'], ['MA2219'], selected, ['CM1102', 'CS1010S']],
   },
   {
     userId: 'user-2',
     degreeId: 'degree-2',
-    expected: [['CM1102'], ['HSH1000'], ['CS1010S'], ['CM1102', 'CS1010S']],
+    expected: [['CM1102'], ['HSH1000'], selected, ['CM1102', 'CS1010S']],
   },
 ].map((e, i) => ({ ...e, index: i + 1 }))
 
@@ -64,7 +64,7 @@ test.each(correct)('test: $index', async ({ userId, degreeId, expected }) => {
     user: { id: userId },
     degree: { id: degreeId },
   })
-  await graphRepo.getSuggestModulesParams(graph, ['CS1010S']).then((res) => {
+  await graphRepo.getSuggestModulesParams(graph, selected).then((res) => {
     expect(res).toBeInstanceOf(Array)
     expect(res).toHaveLength(4)
     for (let i = 0; i < 4; i++) {

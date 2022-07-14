@@ -28,18 +28,21 @@ const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 
 const correct = [
   {
+    type: 'return subset of fulfillRequirements',
     done: ['AX1000'],
     doing: [],
     selected: [],
     expected: ['AX2000', 'DX2000'],
   },
   {
+    type: 'returns nothing if no modules done',
     done: [],
     doing: ['AX1000', 'BX1000'],
     selected: [],
     expected: [],
   },
   {
+    type: 'handles multiple modules',
     done: ['AX1000', 'BX1000'],
     doing: [],
     selected: [],
@@ -47,12 +50,7 @@ const correct = [
   },
 ]
 
-test.each(correct)(
-  `done: $done
-    doing: $doing
-    selected: $selected`,
-  async ({ done, doing, selected, expected }) => {
-    const received = await moduleRepo.getEligibleModules(done, doing, selected)
-    expect(received).toIncludeSameMembers(expected)
-  }
-)
+test.each(correct)('$type', async ({ done, doing, selected, expected }) => {
+  const received = await moduleRepo.getEligibleModules(done, doing, selected)
+  expect(received).toIncludeSameMembers(expected)
+})

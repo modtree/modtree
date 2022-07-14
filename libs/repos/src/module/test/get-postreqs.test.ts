@@ -22,27 +22,23 @@ const fakeData = {
 const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 const correct = [
   {
+    type: 'returns fulfillRequirements for 1 module',
     query: ['ABC1000'],
     expected: ['shared1', 'shared2', 'ABC1000_only'],
   },
   {
-    query: ['XYZ1000'],
-    expected: ['shared1', 'shared2', 'XYZ1000_only'],
-  },
-  {
+    type: 'returns union of fulfillRequirements for multiple modules',
     query: ['ABC1000', 'XYZ1000'],
     expected: ['shared1', 'shared2', 'ABC1000_only', 'XYZ1000_only'],
   },
   {
+    type: 'handles empty fulfillRequirements',
     query: ['DAB1000'],
     expected: [],
   },
 ]
 
-test.each(correct)(
-  'post-reqs of $query are correct',
-  async ({ query, expected }) => {
-    const res = await moduleRepo.getPostReqs(query)
-    expect(res).toIncludeSameMembers(expected)
-  }
-)
+test.each(correct)('$type', async ({ query, expected }) => {
+  const res = await moduleRepo.getPostReqs(query)
+  expect(res).toIncludeSameMembers(expected)
+})

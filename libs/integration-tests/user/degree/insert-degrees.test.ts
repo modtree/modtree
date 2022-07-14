@@ -43,3 +43,11 @@ it('adds correct degree id', () => {
   const degreeIds = returnedUser.savedDegrees.map((d) => d.id)
   expect(degreeIds).toContain(t.degree!.id)
 })
+
+it('add same degree', async () => {
+  // get user with all relations
+  await Repo.User.insertDegrees(t.user!, [t.degree!.id]).then((user) => {
+    expect(user).toBeInstanceOf(User)
+    expect(user.savedDegrees).toHaveLength(1)
+  })
+})

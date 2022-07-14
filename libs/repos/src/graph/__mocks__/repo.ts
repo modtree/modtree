@@ -9,7 +9,6 @@ export class GraphRepository extends Original {
   }
 
   override findOneById(id: string): Promise<Graph> {
-    console.log('GOT HERE WITH', id)
     return new Promise((resolve, reject) => {
       const result = this.fakeData.graphs.find((g) => g.id === id)
       if (!result) {

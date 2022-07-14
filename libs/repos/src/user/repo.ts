@@ -1,4 +1,4 @@
-import { DataSource, In } from 'typeorm'
+import { DataSource } from 'typeorm'
 import {
   User,
   Module,
@@ -121,6 +121,8 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
   /**
    * List mods that will be unlocked by completing a mod.
    *
+   * (almost directly pipes input into ModuleRepository's getUnlockedModules method)
+   *
    * @param {User} user
    * @param {string} moduleCode
    * @returns {Promise<Module[]>}
@@ -206,16 +208,13 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    */
   async insertDegrees(user: User, degreeIds: string[]): Promise<User> {
     // 1. find degrees in DB
-    return this.degreeRepo
-      .findByIds(degreeIds)
-      .then((degrees) =>
-        // 2. append degrees
-        this.save({
-          ...user,
-          savedDegrees: [...user.savedDegrees, ...degrees],
-        })
-      )
-      .then((user) => Object.assign(new User(), user))
+    return this.degreeRepo.findByIds(degreeIds).then((degrees) =>
+      // 2. append degrees
+      this.save({
+        ...user,
+        savedDegrees: [...user.savedDegrees, ...degrees],
+      })
+    )
   }
 
   /**
@@ -227,11 +226,9 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
    */
   async findDegree(user: User, degreeId: string): Promise<Degree> {
     // find degree among user's savedDegrees
-    const filtered = user.savedDegrees.filter(
-      (degree) => degree.id === degreeId
-    )
-    if (filtered.length === 0) throw new Error('Degree not found in User')
-    return filtered[0]
+    const res = user.savedDegrees.find((degree) => degree.id === degreeId)
+    if (!res) throw new Error('Degree not found in User')
+    return res
   }
 
   /**
@@ -289,9 +286,11 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
   async insertGraphs(user: User, graphIds: string[]): Promise<User> {
     // 1. find graphs in DB
     return this.graphRepo.findByIds(graphIds).then((graphs) => {
-      // 2. append graphs
-      user.savedGraphs.push(...graphs)
-      return this.save(user)
+      return this.save({
+        ...user,
+        // 2. append graphs
+        savedGraphs: [...user.savedGraphs, ...graphs],
+      })
     })
   }
 

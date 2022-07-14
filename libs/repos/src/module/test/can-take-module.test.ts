@@ -10,7 +10,7 @@ const fakeData = {
     {
       moduleCode: 'MA2101',
       prereqTree: {
-        or: ['MA1101R', 'MA2001', 'MA1506', 'MA1508', 'MA1508E', 'MA1513'],
+        or: ['MA2001', 'MA1508'],
       },
     },
     {
@@ -26,7 +26,7 @@ const fakeData = {
           {
             or: ['MA1100', 'CS1231'],
           },
-          'CS1010',
+          'MA2001',
         ],
       },
     },
@@ -40,21 +40,58 @@ const fakeData = {
 const moduleRepo = new ModuleRepository(mocks.getDb(fakeData))
 
 const correct = [
-  { done: ['MA2001'], doing: ['MA2219'], tested: 'MA2101', expected: true },
-  { done: ['MA2001'], doing: ['MA2219'], tested: 'MA1100', expected: false },
-  { done: ['MA2001'], doing: ['MA2219'], tested: 'CS2040S', expected: false },
-  { done: ['MA2001'], doing: ['MA2219'], tested: 'CS1010S', expected: true },
-  { done: ['MA2001'], doing: [], tested: 'MA2001', expected: false },
-  { done: [], doing: ['MA2001'], tested: 'MA2001', expected: false },
-  { done: ['CM1102'], doing: ['CS1010'], tested: 'NOT_VALID', expected: false },
+  {
+    type: 'pre-requisite fulfilled',
+    done: ['MA2001'],
+    doing: ['MA2219'],
+    tested: 'MA2101',
+    expected: true,
+  },
+  {
+    type: 'pre-requisite not fulfilled',
+    done: ['MA2001'],
+    doing: ['MA2219'],
+    tested: 'MA1100',
+    expected: false,
+  },
+  {
+    type: 'some pre-requisites fulfilled',
+    done: ['MA2001'],
+    doing: ['MA2219'],
+    tested: 'CS2040S',
+    expected: false,
+  },
+  {
+    type: 'no pre-requisites',
+    done: ['MA2001'],
+    doing: ['MA2219'],
+    tested: 'CS1010S',
+    expected: true,
+  },
+  {
+    type: 'already done',
+    done: ['MA2001'],
+    doing: [],
+    tested: 'MA2001',
+    expected: false,
+  },
+  {
+    type: 'already doing',
+    done: [],
+    doing: ['MA2001'],
+    tested: 'MA2001',
+    expected: false,
+  },
+  {
+    type: 'invalid code',
+    done: ['CM1102'],
+    doing: ['CS1010'],
+    tested: 'NOT_VALID',
+    expected: false,
+  },
 ]
 
-test.each(correct)(
-  `test: $tested, expect: $expected
-    done: $done
-    doing: $doing`,
-  async ({ done, doing, tested, expected }) => {
-    const received = await moduleRepo.canTakeModule(done, doing, tested)
-    expect(received).toBe(expected)
-  }
-)
+test.each(correct)('$type', async ({ done, doing, tested, expected }) => {
+  const received = await moduleRepo.canTakeModule(done, doing, tested)
+  expect(received).toBe(expected)
+})
