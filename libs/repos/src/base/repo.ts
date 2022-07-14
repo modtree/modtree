@@ -49,8 +49,8 @@ export class BaseRepo<Entity extends { id: string }>
     this.relations = getRelations(this.repo)
   }
 
-  private reshape(data: any): Entity {
-    const entity = this.create()
+  private reshape = (data: any): Entity => {
+    const entity = new (this.repo.target as new () => Entity)()
     Object.assign(entity, data)
     return entity
   }
@@ -64,14 +64,12 @@ export class BaseRepo<Entity extends { id: string }>
    */
   async save<T extends DeepPartial<Entity>>(e: T[]): Promise<Entity[]>
   async save<T extends DeepPartial<Entity>>(e: T): Promise<Entity>
-  async save(e: any): Promise<any> {
-    return this._save(e).then((res) => {
-      if (Array.isArray(res)) {
-        return res.map(this.reshape)
-      } else {
-        return this.reshape(res)
-      }
-    })
+  async save<T extends DeepPartial<Entity>>(e: T | T[]): Promise<any> {
+    if (Array.isArray(e)) {
+      return this._save(e).then((res) => res.map(this.reshape))
+    } else {
+      return this._save(e).then(this.reshape)
+    }
   }
 
   /**
