@@ -4,6 +4,8 @@ export type ArrRec = Record<string, string[]>
 type TestGroup = {
   name: string
   tests: string[]
+  pattern?: string
+  args?: string[]
 }
 
 type TestAlias = {

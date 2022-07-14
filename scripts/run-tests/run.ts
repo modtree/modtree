@@ -24,12 +24,11 @@ const useAddAlias =
     return alias ? { ...test, alias } : test
   }
 
+const groups = parse.groups(json.groups)
 const addAlias = useAddAlias(parse.aliases(json.aliases))
-const addGroup = useAddGroup(parse.groups(json.groups))
-
+const addGroup = useAddGroup(groups)
 const tests = parse.tests(json.jestProjects).map(addGroup).map(addAlias)
-
-const args = handleArgs(process.argv.slice(2), tests)
+const args = handleArgs(process.argv.slice(2), tests, groups)
 
 const spawnArgs = [
   'yarn',

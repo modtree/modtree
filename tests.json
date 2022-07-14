@@ -34,6 +34,13 @@
     "int": "integration-tests"
   },
   "groups": {
-    "core": ["repo:module", "repo:degree", "repo:user", "repo:graph"]
+    "core": {
+      "tests": ["module", "degree", "user", "graph"]
+    },
+    "init": {
+      "tests": ["module", "degree", "user", "graph", "integration-tests"],
+      "pattern": "initialize",
+      "args": ["--runInBand"]
+    }
   }
 }

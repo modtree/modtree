@@ -7,9 +7,11 @@ function parseTestsFromJson(json: Record<string, string>): Test[] {
   )
 }
 
-function parseGroupsFromJson(json: Record<string, string[]>): TestGroup[] {
+function parseGroupsFromJson(
+  json: Record<string, Omit<TestGroup, 'name'>>
+): TestGroup[] {
   return Object.entries(json).reduce(
-    (acc, [name, tests]) => [...acc, { name, tests }],
+    (acc, [name, props]) => [...acc, { name, ...props }],
     [] as TestGroup[]
   )
 }

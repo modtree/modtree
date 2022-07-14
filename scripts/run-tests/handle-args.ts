@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import type { Test } from './types'
+import type { Test, TestGroup } from './types'
 import chalk from 'chalk'
 
 const rootDir = path.resolve(__dirname, '../..')
@@ -24,15 +24,22 @@ function zip(k: string[], v: string[]): Record<string, string> {
   return k.reduce((a, k, i) => ({ ...a, [k]: v[i] }), {})
 }
 
-export function handleArgs(args: string[], tests: Test[]): ProcessedArgs {
-  const testPathPattern: string[] = []
+export function handleArgs(
+  args: string[],
+  tests: Test[],
+  groups: TestGroup[]
+): ProcessedArgs {
+  let testPathPattern: string[] = []
   const tail: string[] = []
   const projectNames: string[] = []
   let projectPaths: string[] = []
   let hasError = false
   let markedIndex = -1
   let hit: Test | undefined
-  let hits: Test[]
+  let groupHit: TestGroup | undefined
+  const setTestPathPattern = (p: string | undefined) => {
+    if (p !== undefined) testPathPattern = ['--testPathPattern', p]
+  }
 
   args.forEach((arg, i) => {
     /** --testPathPattern */
@@ -40,7 +47,7 @@ export function handleArgs(args: string[], tests: Test[]): ProcessedArgs {
       markedIndex = i + 1
       return
     } else if (markedIndex === i) {
-      testPathPattern.push('--testPathPattern', arg)
+      setTestPathPattern(arg)
       return
     }
 
@@ -76,11 +83,19 @@ export function handleArgs(args: string[], tests: Test[]): ProcessedArgs {
       return
     }
 
+    groupHit = groups.find((g) => g.name === arg)
     /** grouped test */
-    hits = tests.filter((t) => t.groups.includes(arg))
-    if (hits.length > 0) {
-      projectPaths.push(...hits.map((t) => t.path))
-      projectNames.push(...hits.map((t) => t.name))
+    if (groupHit) {
+      const paths: string[] = groupHit.tests
+        .map((name) =>
+          tests.filter((test) => test.name === name || test.alias === name)
+        )
+        .reduce((acc, cur) => [...acc, ...cur], [] as Test[])
+        .map((t) => t.path)
+      projectPaths.push(...paths)
+      projectNames.push(...groupHit.tests)
+      tail.push(...(groupHit.args || []))
+      setTestPathPattern(groupHit.pattern)
       return
     }
 
