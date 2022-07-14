@@ -4,49 +4,14 @@ on:
   push:
     branches:
       - main
-      - dep/**
+      - d/docs
+      - d/prod
+      - d/dev
 
 jobs:
-  docs:
+  server-dev:
     if: |
-      github.ref_name == 'dep/docs' ||
-      github.ref_name == 'dep/all' ||
-      github.ref_name == 'main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npx vercel --token ${TOKEN} --prod
-        env:
-          TOKEN: ${{ secrets.TURBO_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
-
-  frontend:
-    if: |
-      github.ref_name == 'dep/front' ||
-      github.ref_name == 'dep/app' ||
-      github.ref_name == 'dep/all' ||
-      github.ref_name == 'main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npx vercel --token ${TOKEN} --prod
-        env:
-          TOKEN: ${{ secrets.TURBO_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WEB_PROJECT_ID }} #Required
-
-  backend:
-    if: |
-      github.ref_name == 'dep/back' ||
-      github.ref_name == 'dep/app' ||
-      github.ref_name == 'dep/all' ||
+      github.ref_name == 'd/dev' ||
       github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
@@ -54,11 +19,68 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: 'modtree-server' #Must be unique in Heroku
+          heroku_app_name: 'modtree-dev' #Must be unique in Heroku
           heroku_email: 'brew4k@gmail.com'
 
+  web-dev:
+    if: |
+      github.ref_name == 'd/dev' ||
+      github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npx vercel --token ${TOKEN} --prod
+        env:
+          TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WEB_DEV_PROJECT_ID }} #Required
+
+  server-prod:
+    if: github.ref_name == 'd/prod'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'modtree' #Must be unique in Heroku
+          heroku_email: 'brew4k@gmail.com'
+
+  web-prod:
+    if: github.ref_name == 'd/prod'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npx vercel --token ${TOKEN} --prod
+        env:
+          TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WEB_PROD_PROJECT_ID }} #Required
+
+  docs:
+    if: |
+      github.ref_name == 'd/docs' ||
+      github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npx vercel --token ${TOKEN} --prod
+        env:
+          TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
+
   telegram:
-    needs: [frontend, backend, docs]
+    needs: [docs, web-dev, web-prod, server-dev, server-prod]
     if: always()
     runs-on: ubuntu-latest
     steps:
