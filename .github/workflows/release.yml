@@ -1,30 +1,21 @@
-name: auto deploy
+name: release deploy
 
 on:
-  push:
-    branches:
-      - main
-      - d/docs
-      - d/dev
+  release:
+    types: [published]
 
 jobs:
-  server-dev:
-    if: |
-      github.ref_name == 'd/dev' ||
-      github.ref_name == 'main'
+  server-prod:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: 'modtree-dev' #Must be unique in Heroku
+          heroku_app_name: 'modtree' #Must be unique in Heroku
           heroku_email: 'brew4k@gmail.com'
 
-  web-dev:
-    if: |
-      github.ref_name == 'd/dev' ||
-      github.ref_name == 'main'
+  web-prod:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -35,12 +26,9 @@ jobs:
         env:
           TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }} #Required
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WEB_DEV_PROJECT_ID }} #Required
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_WEB_PROD_PROJECT_ID }} #Required
 
   docs:
-    if: |
-      github.ref_name == 'd/docs' ||
-      github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -54,7 +42,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
 
   telegram:
-    needs: [docs, web-dev, server-dev]
+    needs: [docs, web-prod, server-prod]
     if: always()
     runs-on: ubuntu-latest
     steps:
