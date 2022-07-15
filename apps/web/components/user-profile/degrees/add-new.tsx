@@ -9,9 +9,9 @@ import { InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, removeFromBuildList } from '@/store/search'
-import { api } from 'api'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
+import { trpc } from '@/utils/trpc'
 
 function SelectedModules(props: { modules: string[] }) {
   const dispatch = useAppDispatch()
@@ -57,11 +57,19 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
       title: state.title[0],
       moduleCodes: buildList,
     }
-    api.degree
-      .create(degreeProps)
-      .then((degree) => api.user.insertDegree(user.modtreeId, degree.id))
-      .then(() => updateUser())
-      .then(() => props.setPage('main'))
+    const userId = user?.modtreeId
+    if (userId) {
+      trpc
+        .mutation('degree/create', degreeProps)
+        .then((degree) =>
+          trpc.mutation('user/insert-degrees', {
+            userId,
+            degreeIds: [degree.id],
+          })
+        )
+        .then(() => updateUser())
+        .then(() => props.setPage('main'))
+    }
   }
 
   return (

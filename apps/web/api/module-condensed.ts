@@ -1,4 +1,5 @@
 import { addModulesCondensedToCache } from '@/store/cache'
+import { trpc } from '@/utils/trpc'
 import { IModuleCondensed } from '@modtree/types'
 import { BaseApi } from './base-api'
 
@@ -18,15 +19,9 @@ export class ModuleCondensedApi extends BaseApi {
     const codesToFetch = moduleCodes.filter((code) => !existingCodes.has(code))
     if (codesToFetch.length === 0) return
     /** send the http request */
-    return this.server
-      .get('/modules-condensed', {
-        params: { moduleCodes: codesToFetch },
-      })
-      .then((res) => {
-        const modules: IModuleCondensed[] = res.data
-        /** update the redux store */
-        this.dispatch(addModulesCondensedToCache(modules))
-      })
+    return trpc.query('modules-condensed', codesToFetch).then((modules) => {
+      this.dispatch(addModulesCondensedToCache(modules))
+    })
   }
 
   /**

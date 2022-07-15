@@ -25,7 +25,7 @@ export function DebugModal() {
     return (
       <div className="mt-2">
         <h2>useUser().user</h2>
-        <Content>{user}</Content>
+        <Content>{user ? user : {}}</Content>
 
         <h2>Redux Graph State</h2>
         <Content>{redux.graph}</Content>

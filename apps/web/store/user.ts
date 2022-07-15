@@ -14,7 +14,7 @@ export const user = createSlice({
     },
     setUser: (user, action: PayloadAction<ModtreeApiResponse.UserFull>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
-        user[key] = value
+        ;(user as any)[key] = value
       })
     },
   },

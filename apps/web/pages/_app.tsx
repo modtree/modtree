@@ -13,8 +13,9 @@ import { AppProps } from 'next/app'
 const ModtreeApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     try {
-      if (window['Cypress']) {
-        window['store'] = store
+      const a: any = window
+      if (a['Cypress']) {
+        a['store'] = store
       }
     } catch {
       // frontend testing things, don't sweat it
@@ -34,10 +35,7 @@ const ModtreeApp = ({ Component, pageProps }: AppProps) => {
 export default withTRPC<AppRouter>({
   config() {
     const envUrl = process.env.NEXT_PUBLIC_BACKEND
-    const url = envUrl ? envUrl : 'http://localhost:8080/trpc'
-    console.log('using url:', url)
-    return {
-      url: 'http://localhost:8080/trpc',
-    }
+    const url = envUrl ? envUrl + '/trpc' : 'http://localhost:8080/trpc'
+    return { url }
   },
 })(ModtreeApp)

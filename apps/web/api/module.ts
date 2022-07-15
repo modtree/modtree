@@ -3,6 +3,7 @@ import { BaseApi } from './base-api'
 import { setModalModule, showModuleModal } from '@/store/modal'
 import { IModule, IModuleFull } from '@modtree/types'
 import { clearSearches, setSearchedModule } from '@/store/search'
+import { trpc } from '@/utils/trpc'
 
 /**
  * NOTE TO DEVS
@@ -27,15 +28,10 @@ export class ModuleApi extends BaseApi {
     const codesToFetch = moduleCodes.filter((code) => !existingCodes.has(code))
     if (codesToFetch.length === 0) return
     /** send the http request */
-    return this.server
-      .get('/modules', {
-        params: { moduleCodes: codesToFetch },
-      })
-      .then((res) => {
-        const modules: IModule[] = res.data
-        /** update the redux store */
-        this.dispatch(addModulesToCache(modules))
-      })
+    return trpc.query('modules', codesToFetch).then((modules) => {
+      /** update the redux store */
+      this.dispatch(addModulesToCache(modules))
+    })
   }
 
   /**
@@ -73,7 +69,7 @@ export class ModuleApi extends BaseApi {
    * @returns {Promise<Module>}
    */
   async directGetByCode(moduleCode: string): Promise<IModuleFull> {
-    return this.server.get(`/module-full/${moduleCode}`).then((res) => res.data)
+    return trpc.query('module-full', moduleCode)
   }
 
   /**
@@ -99,9 +95,9 @@ export class ModuleApi extends BaseApi {
       return
     }
     const upper = query.toUpperCase()
-    return this.server
-      .get(`/search/modules/${upper}`)
-      .then((res) => this.dispatch(setSearchedModule(res.data)))
+    return trpc
+      .query('search/modules', upper)
+      .then((res) => this.dispatch(setSearchedModule(res)))
       .catch(() => true)
   }
 }

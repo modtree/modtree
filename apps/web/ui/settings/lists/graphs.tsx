@@ -15,7 +15,10 @@ export function GraphListSection(props: {
   const { title, contents } = props
   return (
     <div>
-      <SettingsSection title={title} addButtonText={hasGraphs && 'New graph'}>
+      <SettingsSection
+        title={title}
+        addButtonText={hasGraphs ? 'New graph' : ''}
+      >
         {hasGraphs ? (
           <>
             <p>{text.graphListSection.summary}</p>

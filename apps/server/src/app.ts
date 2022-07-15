@@ -1,5 +1,5 @@
 import cors from 'cors'
-import express, { Request, Response, Express } from 'express'
+import express, { Request, Response, Express, NextFunction } from 'express'
 import { corsOpts } from './cors'
 import { Api } from '@modtree/repos'
 import { routes } from './routes'
@@ -10,9 +10,9 @@ import { appRouter } from './trpc'
 /**
  * register trpc
  */
-const createContext = (ctx: trpcExpress.CreateExpressContextOptions) => {
-  const k = Object.keys
-  console.log('context:', k(ctx))
+const createContext = (_ctx: trpcExpress.CreateExpressContextOptions) => {
+  // const k = Object.keys
+  // console.log('context:', k(ctx))
   return {}
 }
 
@@ -45,23 +45,27 @@ export function getApp(api: Api): Express {
     res.status(200).send('modtree server is running')
   })
   routes.forEach((route) => {
-    app[route.method](route.route, ...route.validators, (req, res, next) => {
-      if (!validate(req, res)) return
-      const result = route.fn(api)(req, res, next)
-      if (result instanceof Promise) {
-        result
-          .then((result) =>
-            result !== null && result !== undefined
-              ? res.json(result)
-              : undefined
-          )
-          .catch((error) => {
-            res.status(500).json({ error })
-          })
-      } else if (result !== null && result !== undefined) {
-        res.json(result)
+    app[route.method](
+      route.route,
+      ...route.validators,
+      (req: Request, res: Response, next: NextFunction) => {
+        if (!validate(req, res)) return
+        const result = route.fn(api)(req, res, next)
+        if (result instanceof Promise) {
+          result
+            .then((result) =>
+              result !== null && result !== undefined
+                ? res.json(result)
+                : undefined
+            )
+            .catch((error) => {
+              res.status(500).json({ error })
+            })
+        } else if (result !== null && result !== undefined) {
+          res.json(result)
+        }
       }
-    })
+    )
   })
   return app
 }

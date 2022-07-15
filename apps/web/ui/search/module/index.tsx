@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { useAppDispatch } from '@/store/redux'
-import {
-  addToBuildList,
-  clearSearches,
-  setSearchedModule,
-} from '@/store/search'
+import { clearSearches, setSearchedModule } from '@/store/search'
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
+import { setModalModule, showModuleModal } from '@/store/modal'
+import { trpc } from '@/utils/trpc'
 import { api } from 'api'
 
 export function RootSearchBox() {
@@ -15,11 +13,15 @@ export function RootSearchBox() {
    * only changes upon clicking on the search result
    */
   const selectState = useState('')
+  const dispatch = useAppDispatch()
 
   const onSelect = (query: string) => {
     if (!query) return
     selectState[1](query)
-    api.module.openModuleModal(query)
+    dispatch(showModuleModal())
+    trpc
+      .query('module-full', query)
+      .then((module) => dispatch(setModalModule(module)))
   }
 
   return (
@@ -38,15 +40,14 @@ export function RootSearchBox() {
 }
 
 export function SettingsSearchBox(props: { cypress?: string }) {
-  const dispatch = useAppDispatch()
   /**
    * only changes upon clicking on the search result
    */
   const selectState = useState('')
 
-  const onSelect = (query: string) => {
-    selectState[1](query)
-    dispatch(addToBuildList(query))
+  const onSelect = (moduleCode: string) => {
+    selectState[1](moduleCode)
+    api.degree.addToBuildList(moduleCode)
     selectState[1]('')
   }
 

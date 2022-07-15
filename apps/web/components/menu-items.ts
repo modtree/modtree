@@ -1,10 +1,15 @@
 import { MenuItem } from 'types'
 import store from '@/store/redux'
-import { showDebugModal, showUserProfile } from '@/store/modal'
+import {
+  setModalModule,
+  showDebugModal,
+  showModuleModal,
+  showUserProfile,
+} from '@/store/modal'
 import { removeModuleNode, setGraph } from '@/store/graph'
-import { api } from 'api'
 import { ModuleStatus } from '@modtree/types'
 import { updateUser } from '@/utils/rehydrate'
+import { trpc } from '@/utils/trpc'
 
 const dispatch = store.dispatch
 
@@ -17,7 +22,6 @@ const userDropdownMenu: MenuItem[] = [
     text: 'Debug',
     callback: () => dispatch(showDebugModal()),
   },
-  { text: 'Settings', callback: () => alert('open settings') },
   {
     text: 'Sign out',
     href: '/api/auth/logout',
@@ -25,41 +29,64 @@ const userDropdownMenu: MenuItem[] = [
 ]
 
 const flowNodeContextMenu: MenuItem[] = [
-  { text: 'More info', callback: (e) => api.module.openModuleModal(e.id) },
+  {
+    text: 'More info',
+    callback: (e) => {
+      if (!e) return
+      dispatch(showModuleModal())
+      trpc
+        .query('module-full', e.id)
+        .then((module) => dispatch(setModalModule(module)))
+    },
+  },
   { text: 'Suggest modules', callback: () => alert('suggest modules') },
   {
     text: 'Mark as done',
     callback: (e) => {
+      if (!e) return
       const state = store.getState()
       const userId = state.user.id
-      const codes = state.user.modulesDone
-      const modules = [...codes, e.id]
-      api.user
-        .setModuleStatus(userId, modules, ModuleStatus.DONE)
+      const moduleCodes = [...state.user.modulesDone, e.id]
+      trpc
+        .mutation('user/set-module-status', {
+          userId,
+          moduleCodes,
+          status: ModuleStatus.DONE,
+        })
         .then(() => updateUser())
     },
   },
   {
     text: 'Mark as doing',
     callback: (e) => {
+      if (!e) return
       const state = store.getState()
       const userId = state.user.id
-      const codes = state.user.modulesDoing
-      const modules = [...codes, e.id]
-      api.user
-        .setModuleStatus(userId, modules, ModuleStatus.DOING)
+      const moduleCodes = [...state.user.modulesDoing, e.id]
+      trpc
+        .mutation('user/set-module-status', {
+          userId,
+          moduleCodes,
+          status: ModuleStatus.DOING,
+        })
         .then(() => updateUser())
     },
   },
   {
     text: 'Remove',
     callback: async (e) => {
+      if (!e) return
       // update graph
       const state = store.getState()
       const mainGraph = state.graph
-      api.graph.toggle(mainGraph.id, e.id).then((g) => {
-        store.dispatch(setGraph(g))
-      })
+      trpc
+        .mutation('graph/toggle', {
+          graphId: mainGraph.id,
+          moduleCode: e.id,
+        })
+        .then((g) => {
+          store.dispatch(setGraph(g))
+        })
       // remove node from frontend
       store.dispatch(removeModuleNode(e))
     },

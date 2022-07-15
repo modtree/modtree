@@ -5,10 +5,10 @@ import { flatten } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { setGraph as setMainGraph } from '@/store/graph'
 import { useEffect } from 'react'
-import { api } from 'api'
 import { useUser } from '@/utils/auth0'
-import { updateUser } from '@/utils/rehydrate'
 import { useAppDispatch } from '@/store/redux'
+import { isUUID } from '@/utils/string'
+import { api } from 'api'
 
 export function GraphPicker(props: {
   graphs: ModtreeApiResponse.Graph[]
@@ -19,8 +19,11 @@ export function GraphPicker(props: {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    api.user.setMainGraph(user.modtreeId, graph.id).then(() => updateUser())
-    dispatch(setMainGraph(graph))
+    const userId = user?.modtreeId
+    if (userId && isUUID(userId) && isUUID(graph.id)) {
+      api.user.setMainGraph(userId, graph.id)
+      dispatch(setMainGraph(graph))
+    }
   }, [graph])
 
   return (
