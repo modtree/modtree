@@ -57,7 +57,7 @@ export default function ModtreeFlow() {
       // updated user.
       Promise.all([
         trpcClient.query('user/get-full', user.id),
-        trpcClient.query('graph/can-take-modules', graph.id as any),
+        trpcClient.query('graph/can-take-modules', graph.id),
       ])
         .then(([user, canTake]) =>
           getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake)
@@ -72,8 +72,8 @@ export default function ModtreeFlow() {
     const done = user.modulesDone
     const doing = user.modulesDoing
     if (graph.id) {
-      api.graph
-        .canTakeModules(graph.id)
+      trpcClient
+        .query('graph/can-take-modules', graph.id)
         .then((canTake) => setNodes(getCSS(nodes, done, doing, canTake)))
     }
   }, [user.modulesDone, user.modulesDoing])

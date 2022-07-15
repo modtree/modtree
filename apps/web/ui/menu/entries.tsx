@@ -40,7 +40,11 @@ export function Entries(props: {
      */
     if (!menuItem.callback) return
     const node = props.flowNode
-    if (node) menuItem.callback(node)
+    if (node) {
+      menuItem.callback(node)
+    } else {
+      menuItem.callback()
+    }
   }
 
   return (

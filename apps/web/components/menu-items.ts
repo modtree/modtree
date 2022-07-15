@@ -23,7 +23,6 @@ const userDropdownMenu: MenuItem[] = [
     text: 'Debug',
     callback: () => dispatch(showDebugModal()),
   },
-  { text: 'Settings', callback: () => alert('open settings') },
   {
     text: 'Sign out',
     href: '/api/auth/logout',
@@ -34,6 +33,7 @@ const flowNodeContextMenu: MenuItem[] = [
   {
     text: 'More info',
     callback: (e) => {
+      if (!e) return
       dispatch(showModuleModal())
       trpcClient
         .query('module-full', e.id)
@@ -44,6 +44,7 @@ const flowNodeContextMenu: MenuItem[] = [
   {
     text: 'Mark as done',
     callback: (e) => {
+      if (!e) return
       const state = store.getState()
       const userId = state.user.id
       const moduleCodes = [...state.user.modulesDone, e.id]
@@ -59,24 +60,34 @@ const flowNodeContextMenu: MenuItem[] = [
   {
     text: 'Mark as doing',
     callback: (e) => {
+      if (!e) return
       const state = store.getState()
       const userId = state.user.id
-      const codes = state.user.modulesDoing
-      const modules = [...codes, e.id]
-      api.user
-        .setModuleStatus(userId, modules, ModuleStatus.DOING)
+      const moduleCodes = [...state.user.modulesDoing, e.id]
+      trpcClient
+        .mutation('user/set-module-status', {
+          userId,
+          moduleCodes,
+          status: ModuleStatus.DOING,
+        })
         .then(() => updateUser())
     },
   },
   {
     text: 'Remove',
     callback: async (e) => {
+      if (!e) return
       // update graph
       const state = store.getState()
       const mainGraph = state.graph
-      api.graph.toggle(mainGraph.id, e.id).then((g) => {
-        store.dispatch(setGraph(g))
-      })
+      trpcClient
+        .mutation('graph/toggle', {
+          id: mainGraph.id,
+          moduleCode: e.id,
+        })
+        .then((g) => {
+          store.dispatch(setGraph(g))
+        })
       // remove node from frontend
       store.dispatch(removeModuleNode(e))
     },

@@ -9,7 +9,7 @@ const afterCallback = async (
 ) => {
   const opts = { authZeroId: session.user.sub, email: session.user.email }
   return trpcClient
-    .mutation('user/login', opts as any)
+    .mutation('user/login', opts)
     .then((user) => ({
       ...session,
       user: { ...session.user, modtreeId: user.id },

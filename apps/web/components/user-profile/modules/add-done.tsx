@@ -7,19 +7,24 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDone } from '@/store/user'
 import { SelectedModules } from './selected-modules'
 import { useUser } from '@/utils/auth0'
-import { api } from 'api'
+import { trpcClient } from '@/utils/trpc'
 
 export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const { user } = useUser()
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
-    const codes = buildList
+    const moduleCodes = buildList
+    dispatch(updateModulesDone(moduleCodes))
+    props.setPage('main')
+    /** persist state */
     const userId = user?.modtreeId
     if (!userId) return
-    api.user.setModuleStatus(userId, codes, ModuleStatus.DONE)
-    dispatch(updateModulesDone(codes))
-    props.setPage('main')
+    trpcClient.mutation('user/set-module-status', {
+      userId,
+      moduleCodes,
+      status: ModuleStatus.DONE,
+    })
   }
   return (
     <div className="flex flex-col">
