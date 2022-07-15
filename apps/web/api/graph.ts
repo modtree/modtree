@@ -1,3 +1,4 @@
+import { setGraph } from '@/store/graph'
 import { trpc } from '@/utils/trpc'
 import {
   CanTakeModuleMap,
@@ -23,7 +24,10 @@ export class GraphApi extends BaseApi {
     graphId: string,
     moduleCode: string
   ): Promise<ModtreeApiResponse.Graph> {
-    return trpc.mutation('graph/toggle', { graphId, moduleCode })
+    return trpc.mutation('graph/toggle', { graphId, moduleCode }).then((g) => {
+      this.dispatch(setGraph(g))
+      return g
+    })
   }
 
   /**

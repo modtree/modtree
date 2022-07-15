@@ -41,11 +41,16 @@ export class UserApi extends BaseApi {
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<ModtreeApiResponse.User> {
-    return trpc.mutation('user/set-module-status', {
-      userId,
-      moduleCodes,
-      status,
-    })
+    return trpc
+      .mutation('user/set-module-status', {
+        userId,
+        moduleCodes,
+        status,
+      })
+      .then((res) => {
+        updateUser()
+        return res
+      })
   }
 
   /**
