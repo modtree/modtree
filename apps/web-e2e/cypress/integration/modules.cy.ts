@@ -21,21 +21,23 @@ describe('module nodes', () => {
     // sign in
     cy.get('a[href="/api/auth/login"]').click()
     cy.wait('@signInToModtree')
-  })
 
-  it('all checks', () => {
     // getUser
     cy.intercept('/user/*/get-full').as('getUser')
     cy.wait('@getUser')
 
     // open modules panel
-    cy.get('[id="modtree-user-circle"]').click()
-    cy.contains('Your profile').click()
-    cy.contains('Modules').click()
+    cy.get('[id="modtree-user-circle"]').then((icon) => {
+      icon.click()
+      cy.contains('Your profile').click()
+      cy.contains('Modules').click()
 
-    // preset count
-    checkLengths()
+      // preset count
+      checkLengths()
+    })
+  })
 
+  it('Adds to modules done', () => {
     // add LAC1201 to modules done
     cy.get('[data-cy="modify-done"]').click()
     cy.get('[data-cy="add-done-search"]').type('LAC1201')
@@ -44,7 +46,9 @@ describe('module nodes', () => {
 
     doneCount++
     checkLengths()
+  })
 
+  it('Adds to modules doing', () => {
     // add LAC2201 to modules doing
     cy.get('[data-cy="modify-doing"]').click()
     cy.get('[data-cy="add-doing-search"]').type('LAC2201')
@@ -53,7 +57,9 @@ describe('module nodes', () => {
 
     doingCount++
     checkLengths()
+  })
 
+  it('Removes from modules done', () => {
     // remove last module from modules done (LAC1201)
     cy.get('[data-cy="modify-done"]').click()
     cy.get('[data-cy="build-list"]').should('be.visible')
@@ -63,7 +69,9 @@ describe('module nodes', () => {
 
     doneCount--
     checkLengths()
+  })
 
+  it('Removes from modules doing', () => {
     // remove last module from modules doing (LAC2201)
     cy.get('[data-cy="modify-doing"]').click()
     cy.get('[data-cy="build-list"]').should('be.visible')
@@ -73,7 +81,5 @@ describe('module nodes', () => {
 
     doingCount--
     checkLengths()
-
-    // refresh page and the above should be persisted
   })
 })
