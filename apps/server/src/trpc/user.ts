@@ -1,6 +1,5 @@
 import { ModuleStatus } from '@modtree/types'
-import { flatten } from '@modtree/utils'
-import { validModuleRegex } from 'libs/utils/src/string/valid-module-code'
+import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
 import { createRouter } from './router'

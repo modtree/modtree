@@ -8,9 +8,9 @@ import { Provider } from 'react-redux'
 import { UserProvider } from '@auth0/nextjs-auth0'
 import { useEffect } from 'react'
 import { ReactFlowProvider } from 'react-flow-renderer'
-import { AppType } from 'next/dist/shared/lib/utils'
+import { AppProps } from 'next/app'
 
-const ModtreeApp: AppType = ({ Component, pageProps }) => {
+const ModtreeApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     try {
       if (window['Cypress']) {

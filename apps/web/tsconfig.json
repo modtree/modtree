@@ -17,6 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@modtree/types": ["../../libs/types/src/index.ts"],
+      "@modtree/repos": ["../../libs/repos/src/index.ts"],
+      "@modtree/typeorm-config": ["../../libs/typeorm-config/src/index.ts"],
       "@modtree/server": ["../server/src/index.ts"],
       "@modtree/utils": ["../../libs/utils/src/index.ts"],
       "@modtree/test-env/jest": ["../../libs/test-env/src/matcher-types.ts"],
