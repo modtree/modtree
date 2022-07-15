@@ -42,18 +42,14 @@ function SearchResultList(props: { modules: IModule[] }) {
   )
 }
 
-export function SearchResultContainer(props: {
-  selectState: UseState<string>
-}) {
+export function SearchResultContainer() {
   const searchResults = useAppSelector((state) => state.search.module)
-  const [selected, setSelected] = props.selectState
   return (
     <Transition
       as={Fragment}
       leave="transition ease-in duration-100"
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
-      afterLeave={() => setSelected(selected)}
     >
       <Combobox.Options
         className={flatten(

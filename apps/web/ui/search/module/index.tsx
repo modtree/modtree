@@ -1,23 +1,22 @@
 import { useState } from 'react'
 import { useAppDispatch } from '@/store/redux'
-import { clearSearches, setSearchedModule } from '@/store/search'
-import { SearchContainer } from './container'
-import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
 import { setModalModule, showModuleModal } from '@/store/modal'
 import { trpc } from '@/utils/trpc'
 import { api } from 'api'
+import { SearchContainer } from './container'
+import { SearchResultContainer } from './results'
 
 export function RootSearchBox() {
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState('')
+  const [selected, setSelected] = useState('')
   const dispatch = useAppDispatch()
 
   const onSelect = (query: string) => {
     if (!query) return
-    selectState[1](query)
+    setSelected(query)
     dispatch(showModuleModal())
     trpc
       .query('module-full', query)
@@ -27,14 +26,13 @@ export function RootSearchBox() {
   return (
     <div className="fixed top-3 left-3 w-72 z-10">
       <SearchContainer
-        resultsComponent={SearchResultContainer}
-        set={setSearchedModule}
-        clear={clearSearches}
-        selectState={selectState}
+        selected={selected}
         onSelect={onSelect}
         inputContainerClass="h-10"
         searchIcon
-      />
+      >
+        <SearchResultContainer />
+      </SearchContainer>
     </div>
   )
 }
@@ -43,12 +41,12 @@ export function SettingsSearchBox(props: { cypress?: string }) {
   /**
    * only changes upon clicking on the search result
    */
-  const selectState = useState('')
+  const [selected, setSelected] = useState('')
 
   const onSelect = (moduleCode: string) => {
-    selectState[1](moduleCode)
+    if (!moduleCode) return
+    setSelected(moduleCode)
     api.degree.addToBuildList(moduleCode)
-    selectState[1]('')
   }
 
   return (
@@ -61,15 +59,14 @@ export function SettingsSearchBox(props: { cypress?: string }) {
       )}
     >
       <SearchContainer
-        resultsComponent={SearchResultContainer}
-        set={setSearchedModule}
-        clear={clearSearches}
-        selectState={selectState}
+        selected={selected}
         onSelect={onSelect}
         inputContainerClass="h-full shadow-none"
         inputClass="h-full shadow-none"
         cypress={props.cypress}
-      />
+      >
+        <SearchResultContainer />
+      </SearchContainer>
     </div>
   )
 }
