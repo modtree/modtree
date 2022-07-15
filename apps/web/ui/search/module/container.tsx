@@ -15,6 +15,7 @@ export function SearchContainer(props: {
   inputContainerClass?: string
   hideResults?: boolean
   searchIcon?: boolean
+  cypress?: string
 }) {
   const [selected] = props.selectState
   return (
@@ -25,6 +26,7 @@ export function SearchContainer(props: {
         inputClass={props.inputClass}
         inputContainerClass={props.inputContainerClass}
         searchIcon={props.searchIcon}
+        cypress={props.cypress}
       />
       <div className="relative w-full">
         {!props.hideResults && (

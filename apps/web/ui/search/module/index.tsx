@@ -37,7 +37,7 @@ export function RootSearchBox() {
   )
 }
 
-export function SettingsSearchBox() {
+export function SettingsSearchBox(props: { cypress?: string }) {
   const dispatch = useAppDispatch()
   /**
    * only changes upon clicking on the search result
@@ -67,6 +67,7 @@ export function SettingsSearchBox() {
         onSelect={onSelect}
         inputContainerClass="h-full shadow-none"
         inputClass="h-full shadow-none"
+        cypress={props.cypress}
       />
     </div>
   )
