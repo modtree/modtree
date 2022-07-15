@@ -15,6 +15,7 @@ import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
 import { getCSS } from '@/utils/module-state'
 import { redrawGraph } from '@modtree/utils'
 import { api } from 'api'
+import { trpcClient } from '@/utils/trpc'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -55,15 +56,13 @@ export default function ModtreeFlow() {
       // Redux state user is not detecting changes, so rely on API call for
       // updated user.
       Promise.all([
-        api.user.getById(user.id),
-        api.graph.canTakeModules(graph.id),
-      ]).then(([user, canTake]) => {
-        const done = user.modulesDone
-        const doing = user.modulesDoing
-        getCSS(newNodes, done, doing, canTake).then((nodes) => {
-          setNodes(nodes)
-        })
-      })
+        trpcClient.query('user/get-full', user.id),
+        trpcClient.query('graph/can-take-modules', graph.id as any),
+      ])
+        .then(([user, canTake]) =>
+          getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake)
+        )
+        .then((nodes) => setNodes(nodes))
     }
   }, [graph.flowNodes, graph.id])
 
@@ -73,13 +72,9 @@ export default function ModtreeFlow() {
     const done = user.modulesDone
     const doing = user.modulesDoing
     if (graph.id) {
-      Promise.all([done, doing, api.graph.canTakeModules(graph.id)]).then(
-        ([done, doing, canTake]) => {
-          getCSS(nodes, done, doing, canTake).then((nodes) => {
-            setNodes(nodes)
-          })
-        }
-      )
+      api.graph
+        .canTakeModules(graph.id)
+        .then((canTake) => setNodes(getCSS(nodes, done, doing, canTake)))
     }
   }, [user.modulesDone, user.modulesDoing])
 

@@ -118,13 +118,10 @@ export const graph = createRouter()
    * Returns a dictionary keyed on moduleCode.
    */
   .query('can-take-modules', {
-    input: z.object({
-      id: z.string().uuid(),
-    }),
+    input: z.string().uuid(),
     async resolve(req) {
-      const { id } = req.input
       return api.graphRepo
-        .findOneById(id)
+        .findOneById(req.input)
         .then((g) => api.graphRepo.canTakeModules(g))
     },
   })
