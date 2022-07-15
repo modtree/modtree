@@ -360,7 +360,7 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
    * @param props
    * @returns degree
    */
-  modify(degree: IDegree, props: InitDegreeProps): Promise<IDegree>
+  update(degree: IDegree, props: InitDegreeProps): Promise<IDegree>
   /**
    * finds a degree by title
    *
