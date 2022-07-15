@@ -2,14 +2,14 @@ import { Combobox } from '@headlessui/react'
 import { IModule, UseState } from '@modtree/types'
 import { AnyAction } from 'redux'
 import { SearchInput } from './input'
-import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { FC } from 'react'
 
 export function SearchContainer(props: {
   selectState: UseState<string>
   onSelect: (_: string) => void
   clear: () => AnyAction
-  set: ActionCreatorWithOptionalPayload<IModule[], string>
+  set: ActionCreatorWithPayload<IModule[], string>
   resultsComponent: FC<{ selectState: UseState<string> }>
   inputClass?: string
   inputContainerClass?: string

@@ -520,7 +520,7 @@ export interface IModuleCondensedRepository
    * finds some condensed modules by codes
    *
    * @param moduleCodes
-   * @returns condensed module
+   * @returns condensed modules
    */
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
   /**
@@ -543,6 +543,13 @@ export interface IModuleFullRepository extends IBaseRepository<IModuleFull> {
    * @returns full module
    */
   findByCode(code: string): Promise<IModuleFull>
+  /**
+   * finds some full modules by codes
+   *
+   * @param moduleCodes
+   * @returns full modules
+   */
+  findByCodes(moduleCodes: string[]): Promise<IModuleFull[]>
 }
 
 export type Repositories = {

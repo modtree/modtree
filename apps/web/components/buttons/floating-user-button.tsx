@@ -53,7 +53,7 @@ const SignedInCircle = () => {
       >
         <>
           <div>Signed in as{dev && ' (auth0)'}</div>
-          <b>{user.nickname}</b>
+          <b>{user?.nickname}</b>
         </>
         <>
           <div>Email{dev && ' (postgres)'}</div>

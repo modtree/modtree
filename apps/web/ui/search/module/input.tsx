@@ -1,9 +1,9 @@
 import { flatten } from '@/utils/tailwind'
 import { Combobox } from '@headlessui/react'
 import { AnyAction } from 'redux'
-import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { SearchIcon } from '@/ui/icons'
-import { trpc } from '@/utils/trpc'
+import { trpcReact } from '@/utils/trpc'
 import { useState } from 'react'
 import { useAppDispatch } from '@/store/redux'
 import { setSearchedModule } from '@/store/search'
@@ -13,7 +13,7 @@ export function SearchInput<T>(props: {
   inputClass?: string
   inputContainerClass?: string
   clear: () => AnyAction
-  set: ActionCreatorWithOptionalPayload<T[], string>
+  set: ActionCreatorWithPayload<T[], string>
   searchIcon?: boolean
   cypress?: string
 }) {
@@ -21,7 +21,7 @@ export function SearchInput<T>(props: {
   const [query, setQuery] = useState('')
   const dispatch = useAppDispatch()
 
-  const res = trpc.useQuery(['search/modules', query])
+  const res = trpcReact.useQuery(['search/modules', query])
   if (res && res.data) {
     dispatch(setSearchedModule(res.data || []))
   }

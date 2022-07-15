@@ -1,4 +1,6 @@
+import { trpc } from '@/utils/trpc'
 import {
+  CanTakeModuleMap,
   GraphFlowEdge,
   GraphFlowNode,
   InitGraphProps,
@@ -11,7 +13,7 @@ export class GraphApi extends BaseApi {
    * get a graph by its id directly from database
    */
   async getById(graphId: string): Promise<ModtreeApiResponse.Graph> {
-    return this.server.get(`/graph/${graphId}/get-full`).then((res) => res.data)
+    return trpc.query('graph', graphId)
   }
 
   /**
@@ -21,9 +23,7 @@ export class GraphApi extends BaseApi {
     graphId: string,
     moduleCode: string
   ): Promise<ModtreeApiResponse.Graph> {
-    return this.server
-      .patch(`/graph/${graphId}/toggle/${moduleCode}`)
-      .then((res) => res.data)
+    return trpc.mutation('graph/toggle', { graphId, moduleCode })
   }
 
   /**
@@ -34,27 +34,24 @@ export class GraphApi extends BaseApi {
     flowNodes: GraphFlowNode[],
     flowEdges: GraphFlowEdge[]
   ): Promise<ModtreeApiResponse.Graph> {
-    return this.server
-      .patch(`/graph/${graphId}/flow`, {
-        flowNodes,
-        flowEdges,
-      })
-      .then((res) => res.data)
+    return trpc.mutation('graph/update-frontend-props', {
+      graphId,
+      flowNodes,
+      flowEdges,
+    })
   }
 
   /**
    * create
    */
   async create(props: InitGraphProps): Promise<ModtreeApiResponse.Graph> {
-    return this.server.post(`/graph`, props).then((res) => res.data)
+    return trpc.mutation('graph/create', props)
   }
 
   /**
    * can take modules
    */
-  async canTakeModules(graphId: string): Promise<Record<string, boolean>> {
-    return this.server
-      .get(`/graph/${graphId}/can-take-modules`)
-      .then((res) => res.data)
+  async canTakeModules(graphId: string): Promise<CanTakeModuleMap> {
+    return trpc.query('graph/can-take-modules', graphId)
   }
 }

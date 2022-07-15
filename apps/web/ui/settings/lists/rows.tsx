@@ -37,7 +37,7 @@ export function BaseRow(props: RowProps) {
           </Button>
         )}
         {deletable && (
-          <DeleteButton onClick={onDelete} />
+          <DeleteButton onClick={onDelete ? onDelete : () => {}} />
           // <Button onClick={onDelete} className="text-sm px-3" color="red">
           // Delete
           // </Button>

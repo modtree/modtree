@@ -7,8 +7,8 @@ import { Dispatch, SetStateAction } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, setBuildId, setBuildTitle } from '@/store/search'
 import { useUser } from '@/utils/auth0'
-import { api } from 'api'
 import { updateUser } from '@/utils/rehydrate'
+import { trpc } from '@/utils/trpc'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Degrees']>>
@@ -19,7 +19,15 @@ export function Main(props: {
   const { user } = useUser()
 
   async function removeDegree(degreeId: string) {
-    api.user.removeDegree(user.modtreeId, degreeId).then(() => updateUser())
+    const userId = user?.modtreeId
+    if (userId) {
+      trpc
+        .mutation('user/remove-degree', {
+          userId,
+          degreeId,
+        })
+        .then(() => updateUser())
+    }
   }
 
   return (

@@ -1,6 +1,8 @@
 import { BaseApi } from './base-api'
 import { ModtreeApiResponse, ModuleStatus } from '@modtree/types'
 import { setUser } from '@/store/user'
+import { trpc } from '@/utils/trpc'
+import { updateUser } from '@/utils/rehydrate'
 
 export class UserApi extends BaseApi {
   /**
@@ -10,7 +12,7 @@ export class UserApi extends BaseApi {
    * @returns {Promise<User>}
    */
   async getById(userId: string): Promise<ModtreeApiResponse.UserFull> {
-    return this.server.get(`/user/${userId}/get-full`).then((res) => res.data)
+    return trpc.query('user/get-full', userId)
   }
 
   /**
@@ -24,15 +26,10 @@ export class UserApi extends BaseApi {
     authZeroId: string,
     email: string
   ): Promise<ModtreeApiResponse.UserFull> {
-    return this.server
-      .post(`/user/${authZeroId}/login`, {
-        email,
-      })
-      .then((res) => {
-        const user: ModtreeApiResponse.UserFull = res.data
-        this.dispatch(setUser(user))
-        return user
-      })
+    return trpc.mutation('user/login', { authZeroId, email }).then((user) => {
+      this.dispatch(setUser(user))
+      return user
+    })
   }
 
   /**
@@ -44,9 +41,10 @@ export class UserApi extends BaseApi {
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<ModtreeApiResponse.User> {
-    return this.server.patch(`/user/${userId}/module`, {
-      status,
+    return trpc.mutation('user/set-module-status', {
+      userId,
       moduleCodes,
+      status,
     })
   }
 
@@ -57,7 +55,8 @@ export class UserApi extends BaseApi {
     userId: string,
     degreeId: string
   ): Promise<ModtreeApiResponse.User> {
-    return this.server.patch(`/user/${userId}/degree`, {
+    return trpc.mutation('user/insert-degrees', {
+      userId,
       degreeIds: [degreeId],
     })
   }
@@ -69,19 +68,18 @@ export class UserApi extends BaseApi {
     userId: string,
     degreeId: string
   ): Promise<ModtreeApiResponse.User> {
-    return this.server.delete(`/user/${userId}/degree/${degreeId}`)
+    return trpc.mutation('user/remove-degree', { userId, degreeId })
   }
 
   /**
    * set main graph
    */
-  async setMainGraph(
-    userId: string,
-    graphId: string
-  ): Promise<ModtreeApiResponse.User> {
-    return this.server.patch(`/user/${userId}/main-graph`, {
-      graphId,
-    })
+  async setMainGraph(userId: string, graphId: string): Promise<void> {
+    return trpc
+      .mutation('user/set-main-graph', { userId, graphId })
+      .then(() => {
+        updateUser()
+      })
   }
 
   /**
@@ -91,22 +89,6 @@ export class UserApi extends BaseApi {
     userId: string,
     graphId: string
   ): Promise<ModtreeApiResponse.User> {
-    return this.server.patch(`/user/${userId}/graph`, {
-      graphIds: [graphId],
-    })
-  }
-
-  /**
-   * can take modules
-   */
-  async canTakeModules(
-    userId: string,
-    moduleCodes: string[]
-  ): Promise<Record<string, boolean>> {
-    return this.server
-      .post(`/user/${userId}/can-take-modules`, {
-        moduleCodes,
-      })
-      .then((res) => res.data)
+    return trpc.mutation('user/insert-graphs', { userId, graphIds: [graphId] })
   }
 }

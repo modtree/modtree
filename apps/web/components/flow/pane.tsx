@@ -11,10 +11,11 @@ import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
-import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
+import { setGraphSelectedCodes } from '@/store/graph'
 import { getCSS } from '@/utils/module-state'
 import { redrawGraph } from '@modtree/utils'
 import { api } from 'api'
+import { trpc } from '@/utils/trpc'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -57,13 +58,11 @@ export default function ModtreeFlow() {
       Promise.all([
         api.user.getById(user.id),
         api.graph.canTakeModules(graph.id),
-      ]).then(([user, canTake]) => {
-        const done = user.modulesDone
-        const doing = user.modulesDoing
-        getCSS(newNodes, done, doing, canTake).then((nodes) => {
-          setNodes(nodes)
-        })
-      })
+      ])
+        .then(([user, canTake]) =>
+          getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake)
+        )
+        .then((nodes) => setNodes(nodes))
     }
   }, [graph.flowNodes, graph.id])
 
@@ -73,13 +72,9 @@ export default function ModtreeFlow() {
     const done = user.modulesDone
     const doing = user.modulesDoing
     if (graph.id) {
-      Promise.all([done, doing, api.graph.canTakeModules(graph.id)]).then(
-        ([done, doing, canTake]) => {
-          getCSS(nodes, done, doing, canTake).then((nodes) => {
-            setNodes(nodes)
-          })
-        }
-      )
+      trpc
+        .query('graph/can-take-modules', graph.id)
+        .then((canTake) => setNodes(getCSS(nodes, done, doing, canTake)))
     }
   }, [user.modulesDone, user.modulesDoing])
 
@@ -91,19 +86,19 @@ export default function ModtreeFlow() {
    */
   const reactFlow = useReactFlow()
   useEffect(() => {
-    reactFlow.fitView()
+    reactFlow.fitView({ maxZoom: 1 })
   }, [nodes, edges])
 
   /**
    * called when user drops a module node. (after having dragged it)
    */
-  const onNodeDragStop = (_: MouseEvent, node: Node) => {
-    dispatch(updateModuleNode(node))
-    const newNodes = redrawGraph({
-      nodes,
-      edges,
-    }).nodes
-    setNodes(newNodes)
+  const onNodeDragStop = (_event: MouseEvent, _node: Node) => {
+    setNodes(
+      redrawGraph({
+        nodes,
+        edges,
+      }).nodes
+    )
   }
 
   return (
@@ -127,6 +122,7 @@ export default function ModtreeFlow() {
       zoomOnDoubleClick={false}
       defaultZoom={1}
       maxZoom={2}
+      deleteKeyCode={null}
     >
       <Controls showInteractive={false} />
       <Background />

@@ -13,14 +13,10 @@ export const search = createRouter()
       if (!req.input) return []
       return api.moduleCondensedRepo
         .find({
-          where: [
-            { moduleCode: Like(`${req.input.toUpperCase()}%`) },
-            // { title: Like(`%${req.input}%`) },
-          ],
+          where: [{ moduleCode: Like(`${req.input.toUpperCase()}%`) }],
           take: 4,
         })
         .then((r) => {
-          console.log(r, req.input)
           return Promise.all(
             r.map((m) => api.moduleRepo.findByCode(m.moduleCode))
           )

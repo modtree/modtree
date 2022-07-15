@@ -25,7 +25,7 @@ export const graph = createSlice({
      */
     setGraph: (graph, action: PayloadAction<ModtreeApiResponse.Graph>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
-        graph[key] = value
+        ;(graph as any)[key] = value
       })
     },
 

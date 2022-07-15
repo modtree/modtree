@@ -6,7 +6,7 @@ import { Button } from '@/ui/buttons'
 export function PublicProfileTabContent() {
   const { user } = useUser()
   const state = {
-    name: useState<string>(user.nickname),
+    name: useState<string>(user?.nickname || ''),
     faculty: useState<string>('Computing'),
     bio: useState<string>(''),
   }
