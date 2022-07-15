@@ -13,7 +13,11 @@ const dispatch = store.dispatch
 async function getUser(
   user: ModtreeUserProfile
 ): Promise<ModtreeApiResponse.UserFull> {
-  if (redux.user.id === '') {
+  const authZeroLoaded = user.modtreeId !== ''
+  const reduxLoaded = redux.user.id !== ''
+  if (reduxLoaded) {
+    return redux.user
+  } else if (authZeroLoaded) {
     return api.user
       .getById(user.modtreeId)
       .then((user) => {
@@ -22,7 +26,7 @@ async function getUser(
       })
       .catch(() => empty.UserFull)
   } else {
-    return redux.user
+    return empty.UserFull
   }
 }
 

@@ -50,19 +50,21 @@ export default function ModtreeFlow() {
       edges: graph.flowEdges,
     }).nodes
 
-    // updates CSS after
-    // Redux state user is not detecting changes, so rely on API call for
-    // updated user.
-    Promise.all([
-      api.user.getById(user.id),
-      api.graph.canTakeModules(graph.id),
-    ]).then(([user, canTake]) => {
-      const done = user.modulesDone
-      const doing = user.modulesDoing
-      getCSS(newNodes, done, doing, canTake).then((nodes) => {
-        setNodes(nodes)
+    if (user.id && graph.id) {
+      // updates CSS after
+      // Redux state user is not detecting changes, so rely on API call for
+      // updated user.
+      Promise.all([
+        api.user.getById(user.id),
+        api.graph.canTakeModules(graph.id),
+      ]).then(([user, canTake]) => {
+        const done = user.modulesDone
+        const doing = user.modulesDoing
+        getCSS(newNodes, done, doing, canTake).then((nodes) => {
+          setNodes(nodes)
+        })
       })
-    })
+    }
   }, [graph.flowNodes, graph.id])
 
   // Update CSS of nodes, if modulesDone/modulesDoing has changed
@@ -70,13 +72,15 @@ export default function ModtreeFlow() {
   useEffect(() => {
     const done = user.modulesDone
     const doing = user.modulesDoing
-    Promise.all([done, doing, api.graph.canTakeModules(graph.id)]).then(
-      ([done, doing, canTake]) => {
-        getCSS(nodes, done, doing, canTake).then((nodes) => {
-          setNodes(nodes)
-        })
-      }
-    )
+    if (graph.id) {
+      Promise.all([done, doing, api.graph.canTakeModules(graph.id)]).then(
+        ([done, doing, canTake]) => {
+          getCSS(nodes, done, doing, canTake).then((nodes) => {
+            setNodes(nodes)
+          })
+        }
+      )
+    }
   }, [user.modulesDone, user.modulesDoing])
 
   /**
