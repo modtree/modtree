@@ -15,6 +15,7 @@ type SettingsSectionProps = {
   onAddClick?: () => void
   children: ReactElement | ReactElement[]
   className?: string
+  cypress?: string
 } & TitleProps
 
 const Title = (props: TitleProps) => {
@@ -43,6 +44,7 @@ export function SettingsSection(props: SettingsSectionProps) {
             <Button
               color={props.addButtonColor || 'green'}
               onClick={props.onAddClick}
+              data-cy={props.cypress}
             >
               {props.addButtonText}
             </Button>

@@ -36,11 +36,15 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             dispatch(setBuildList(user.modulesDoing))
             props.setPage('add-doing')
           }}
+          cypress="modify-doing"
         >
           {hasModules.doing ? (
             <>
               <p>{text.moduleListSection.doing.summary}</p>
-              <div className="ui-rectangle flex flex-col overflow-hidden">
+              <div
+                data-cy="doing-section"
+                className="ui-rectangle flex flex-col overflow-hidden"
+              >
                 {user.modulesDoing.map((code, index) => {
                   const module = cache.modules[code]
                   return (
@@ -67,11 +71,15 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
             dispatch(setBuildList(user.modulesDone))
             props.setPage('add-done')
           }}
+          cypress="modify-done"
         >
           {hasModules.done ? (
             <>
               <p>{text.moduleListSection.done.summary}</p>
-              <div className="ui-rectangle flex flex-col overflow-hidden">
+              <div
+                data-cy="done-section"
+                className="ui-rectangle flex flex-col overflow-hidden"
+              >
                 {user.modulesDone.map((code, index) => {
                   const module = cache.modules[code]
                   return (
