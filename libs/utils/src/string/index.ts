@@ -1,5 +1,5 @@
 import { dirname, basename, join } from 'path'
-export { validModuleCode } from './valid-module-code'
+export * from './valid-module-code'
 
 /**
  * parses out the numbers that represent the module level

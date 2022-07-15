@@ -9,6 +9,7 @@ import { ModuleInfoModal, DebugModal } from '@/components/modals'
 import { UserProfileModal } from '@/components/user-profile'
 import { RootSearchBox } from '@/ui/search/module'
 import { rehydrate } from '@/utils/rehydrate'
+import { trpc } from '@/utils/trpc'
 
 export default function Modtree() {
   const { isLoading, user } = useUser()
@@ -21,6 +22,11 @@ export default function Modtree() {
       rehydrate(user)
     }
   }, [isLoading])
+
+  const res = trpc.useQuery(['user/get-full', user?.modtreeId])
+  if (res) {
+    console.log(res.data)
+  }
 
   return (
     <div className="fixed inset-0 bg-gray-50">

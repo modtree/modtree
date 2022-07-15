@@ -11,6 +11,15 @@ type ListRequest = {
 
 export class UserApi {
   /**
+   * gets one User by id
+   *
+   * @param {Api} api
+   */
+  static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
+    return api.userRepo.findOneById(req.params.userId).then(flatten.user)
+  }
+
+  /**
    * creates a User
    *
    * @param {Api} api
@@ -21,39 +30,11 @@ export class UserApi {
   }
 
   /**
-   * gets one User by id
-   *
-   * @param {Api} api
-   */
-  static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
-    return api.userRepo.findOneById(req.params.userId).then(flatten.user)
-  }
-
-  /**
-   * gets one User by primary keys
-   * at least one of id, authZeroId, or email
-   *
-   * UNUSED
-   *
-   * @param {Api} api
-   */
-  static getByPrimaryKeys =
-    (api: Api) => async (req: CustomReqBody<ListRequest>) => {
-      const { id, authZeroId, email } = req.body
-      return api.userRepo
-        .findOne({
-          where: { id, authZeroId, email },
-          relations: api.userRepo.relations,
-        })
-        .then(flatten.user)
-    }
-
-  /**
    * lists all Users
    *
    * @param {Api} api
    */
-  static list = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
+  static list = (api: Api) => async (req: any) => {
     const { id, authZeroId, email } = req.query
     return api.userRepo
       .find({

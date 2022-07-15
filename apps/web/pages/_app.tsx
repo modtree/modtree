@@ -1,17 +1,16 @@
 import '@/styles/globals.css'
 import '@/styles/react-flow.css'
 import '@/styles/html.css'
+import { withTRPC } from '@trpc/next'
+import type { AppRouter } from '@modtree/server'
 import store from '@/store/redux'
 import { Provider } from 'react-redux'
 import { UserProvider } from '@auth0/nextjs-auth0'
-import { AppProps } from 'next/app'
-import { FC, useEffect } from 'react'
+import { useEffect } from 'react'
 import { ReactFlowProvider } from 'react-flow-renderer'
+import { AppProps } from 'next/app'
 
-export default function Modtree({
-  Component,
-  pageProps,
-}: AppProps & { Component: FC }) {
+const ModtreeApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     try {
       if (window['Cypress']) {
@@ -31,3 +30,14 @@ export default function Modtree({
     </UserProvider>
   )
 }
+
+export default withTRPC<AppRouter>({
+  config() {
+    const envUrl = process.env.NEXT_PUBLIC_BACKEND
+    const url = envUrl ? envUrl : 'http://localhost:8080/trpc'
+    console.log('using url:', url)
+    return {
+      url: 'http://localhost:8080/trpc',
+    }
+  },
+})(ModtreeApp)

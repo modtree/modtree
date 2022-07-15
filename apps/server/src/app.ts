@@ -4,6 +4,17 @@ import { corsOpts } from './cors'
 import { Api } from '@modtree/repos'
 import { routes } from './routes'
 import { validate } from './validate'
+import * as trpcExpress from '@trpc/server/adapters/express'
+import { appRouter } from './trpc'
+
+/**
+ * register trpc
+ */
+const createContext = (ctx: trpcExpress.CreateExpressContextOptions) => {
+  const k = Object.keys
+  console.log('context:', k(ctx))
+  return {}
+}
 
 /**
  * **********************************************
@@ -20,6 +31,13 @@ export function getApp(api: Api): Express {
   const app = express()
   app.use(cors(corsOpts))
   app.use(express.json())
+  app.use(
+    '/trpc',
+    trpcExpress.createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    })
+  )
   /**
    * register express routes from defined application routes
    */

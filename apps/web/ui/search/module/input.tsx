@@ -3,7 +3,10 @@ import { Combobox } from '@headlessui/react'
 import { AnyAction } from 'redux'
 import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
 import { SearchIcon } from '@/ui/icons'
-import { api } from 'api'
+import { trpc } from '@/utils/trpc'
+import { useState } from 'react'
+import { useAppDispatch } from '@/store/redux'
+import { setSearchedModule } from '@/store/search'
 
 export function SearchInput<T>(props: {
   hideResults?: boolean
@@ -14,6 +17,14 @@ export function SearchInput<T>(props: {
   searchIcon?: boolean
 }) {
   const { inputClass, inputContainerClass } = props
+  const [query, setQuery] = useState('')
+  const dispatch = useAppDispatch()
+
+  const res = trpc.useQuery(['search/modules', query])
+  if (res && res.data) {
+    dispatch(setSearchedModule(res.data || []))
+  }
+
   return (
     <>
       <div
@@ -29,7 +40,7 @@ export function SearchInput<T>(props: {
             inputClass
           )}
           placeholder="Search for a module"
-          onChange={(event) => api.module.search(event.target.value)}
+          onChange={(event) => setQuery(event.target.value)}
         />
         {props.searchIcon && (
           <Combobox.Button className="flex items-center px-3">
