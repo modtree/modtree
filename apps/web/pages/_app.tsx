@@ -13,8 +13,9 @@ import { AppProps } from 'next/app'
 const ModtreeApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     try {
-      if (window['Cypress']) {
-        window['store'] = store
+      const a: any = window
+      if (a['Cypress']) {
+        a['store'] = store
       }
     } catch {
       // frontend testing things, don't sweat it

@@ -20,7 +20,7 @@ export function Button(props: ButtonProps) {
   const color = props.color || 'gray'
   const { className, children, ...rest } = props
   return (
-    <button className={flatten(colorMap[color], className)} {...rest}>
+    <button className={flatten(colorMap[color])} {...rest}>
       {children}
     </button>
   )

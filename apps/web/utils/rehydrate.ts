@@ -18,8 +18,10 @@ async function getUser(
   if (reduxLoaded) {
     return redux.user
   } else if (authZeroLoaded) {
+    const userId = user?.modtreeId
+    if (!userId) throw new Error('No user id to fetch')
     return api.user
-      .getById(user.modtreeId)
+      .getById(userId)
       .then((user) => {
         dispatch(setUser(user))
         return user
@@ -35,20 +37,22 @@ async function getUser(
  */
 export function rehydrate(user: ModtreeUserProfile) {
   const userPromise = getUser(user)
-  userPromise.then((user) => {
-    if (redux.degree.id === '') {
-      const degree = user.mainDegree
-      if (!degree) return
-      dispatch(setDegree(degree))
-    }
-    if (redux.graph.id === '') {
-      const graphId = user.mainGraph
-      if (!graphId) return
-      api.graph.getById(graphId).then((g) => {
-        dispatch(setGraph(g))
-      })
-    }
-  })
+  userPromise
+    .then((user) => {
+      if (redux.degree.id === '') {
+        const degree = user.mainDegree
+        if (!degree) return
+        dispatch(setDegree(degree))
+      }
+      if (redux.graph.id === '') {
+        const graphId = user.mainGraph
+        if (!graphId) return
+        api.graph.getById(graphId).then((g) => {
+          dispatch(setGraph(g))
+        })
+      }
+    })
+    .catch(() => console.debug('rehydrate failed'))
 }
 
 /**

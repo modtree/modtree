@@ -1,7 +1,7 @@
 import { flatten } from '@/utils/tailwind'
 import { Combobox } from '@headlessui/react'
 import { AnyAction } from 'redux'
-import { ActionCreatorWithOptionalPayload } from '@reduxjs/toolkit'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { SearchIcon } from '@/ui/icons'
 import { trpc } from '@/utils/trpc'
 import { useState } from 'react'
@@ -13,7 +13,7 @@ export function SearchInput<T>(props: {
   inputClass?: string
   inputContainerClass?: string
   clear: () => AnyAction
-  set: ActionCreatorWithOptionalPayload<T[], string>
+  set: ActionCreatorWithPayload<T[], string>
   searchIcon?: boolean
   cypress?: string
 }) {

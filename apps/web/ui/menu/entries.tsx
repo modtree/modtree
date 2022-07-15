@@ -13,7 +13,7 @@ const Children = (props: {
   elements?: ReactElement | ReactElement[]
 }): ReactElement => {
   const { elements } = props
-  if (!elements) return null
+  if (!elements) return <></>
   if (Array.isArray(elements)) {
     return (
       <>
@@ -39,7 +39,8 @@ export function Entries(props: {
      * only run the callback if it exists
      */
     if (!menuItem.callback) return
-    menuItem.callback(props.flowNode)
+    const node = props.flowNode
+    if (node) menuItem.callback(node)
   }
 
   return (
@@ -55,7 +56,7 @@ export function Entries(props: {
                 'hover:bg-modtree-400/80 hover:text-white',
                 'text-gray-700 flex w-full px-4 py-1.5',
                 'hover:no-underline',
-                props.roundedSelection && 'rounded-md'
+                props.roundedSelection ? 'rounded-md' : ''
               )}
             >
               {menuItem.text}

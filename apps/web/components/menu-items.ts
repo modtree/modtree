@@ -46,10 +46,13 @@ const flowNodeContextMenu: MenuItem[] = [
     callback: (e) => {
       const state = store.getState()
       const userId = state.user.id
-      const codes = state.user.modulesDone
-      const modules = [...codes, e.id]
-      api.user
-        .setModuleStatus(userId, modules, ModuleStatus.DONE)
+      const moduleCodes = [...state.user.modulesDone, e.id]
+      trpcClient
+        .mutation('user/set-module-status', {
+          userId,
+          moduleCodes,
+          status: ModuleStatus.DONE,
+        })
         .then(() => updateUser())
     },
   },

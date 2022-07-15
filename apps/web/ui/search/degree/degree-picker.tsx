@@ -12,7 +12,7 @@ export function DegreePicker(props: {
   modulesDoingCodes: string[]
 }) {
   const [degree, setDegree] = props.select
-  const [remainingCodes, setRemainingCodes] = useState([])
+  const [remainingCodes, setRemainingCodes] = useState<string[]>([])
 
   /**
    * Filters away modulesDone and modulesDoing from degree.modules,

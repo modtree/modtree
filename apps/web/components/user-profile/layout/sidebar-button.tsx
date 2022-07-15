@@ -21,7 +21,7 @@ export default function SidebarButton(props: {
         'flex flex-row items-center',
         'active:bg-gray-200',
         'select-none',
-        props.selected && 'bg-gray-100'
+        props.selected ? 'bg-gray-100' : ''
       )}
       onClick={() => dispatch(setUserProfilePage(props.pageId))}
     >

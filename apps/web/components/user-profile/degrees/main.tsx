@@ -19,7 +19,10 @@ export function Main(props: {
   const { user } = useUser()
 
   async function removeDegree(degreeId: string) {
-    api.user.removeDegree(user.modtreeId, degreeId).then(() => updateUser())
+    const userId = user?.modtreeId
+    if (userId) {
+      api.user.removeDegree(userId, degreeId).then(() => updateUser())
+    }
   }
 
   return (

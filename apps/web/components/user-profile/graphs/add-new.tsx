@@ -23,9 +23,11 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   }
 
   async function saveGraph() {
+    const userId = user?.modtreeId
+    if (!userId) return
     const graphProps: InitGraphProps = {
       title: state.title[0],
-      userId: user.modtreeId,
+      userId,
       degreeId: state.degree[0].id,
     }
     // frontend validation
@@ -36,7 +38,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
     // send request
     api.graph
       .create(graphProps)
-      .then((graph) => api.user.insertGraph(user.modtreeId, graph.id))
+      .then((graph) => api.user.insertGraph(userId, graph.id))
       .then(() => updateUser())
       .then(() => props.setPage('main'))
   }

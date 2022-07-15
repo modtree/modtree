@@ -23,7 +23,7 @@ export default function SidebarWithContents(props: {
       <Sidebar contents={contents} />
       <div className="flex-1 px-6 pb-12 overflow-y-auto">
         <div>
-          <div className="mb-6">{currentPanel.content}</div>
+          <div className="mb-6">{currentPanel?.content}</div>
         </div>
       </div>
     </div>

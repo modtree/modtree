@@ -17,7 +17,7 @@ export function Main(props: {
 }) {
   const graphIds = useAppSelector((state) => state.user.savedGraphs)
   const hasGraphs = graphIds.length !== 0
-  const [graphs, setGraphs] = useState([])
+  const [graphs, setGraphs] = useState<ModtreeApiResponse.Graph[]>([])
 
   const degrees = useAppSelector((state) => state.user.savedDegrees)
 
@@ -53,7 +53,7 @@ export function Main(props: {
       </div>
       <SettingsSection
         title="Graphs"
-        addButtonText={hasGraphs && 'New graph'}
+        addButtonText={hasGraphs ? 'New graph' : ''}
         onAddClick={() => props.setPage('add-new')}
       >
         {hasGraphs ? (

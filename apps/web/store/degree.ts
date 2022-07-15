@@ -8,7 +8,7 @@ export const degree = createSlice({
   reducers: {
     setDegree: (degree, action: PayloadAction<IDegree>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
-        degree[key] = value
+        ;(degree as any)[key] = value
       })
     },
   },

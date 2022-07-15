@@ -1,11 +1,6 @@
 import { Api } from '@modtree/repos'
-import { CustomReqParams, CustomReqQuery } from '@modtree/types'
 import { Request } from 'express'
 import { Like } from 'typeorm'
-
-type ModuleCodes = {
-  moduleCodes: string[] | string
-}
 
 export class ModuleCondensedApi {
   /**
@@ -13,11 +8,11 @@ export class ModuleCondensedApi {
    *
    * @param {Api} api
    */
-  static list = (api: Api) => (req: CustomReqQuery<ModuleCodes>) => {
+  static list = (api: Api) => (req: Request) => {
     const moduleCodes = req.query.moduleCodes
     if (Array.isArray(moduleCodes)) {
-      return api.moduleCondensedRepo.findByCodes(moduleCodes)
-    } else if (moduleCodes.length > 0) {
+      return api.moduleCondensedRepo.findByCodes(moduleCodes as string[])
+    } else if (typeof moduleCodes === 'string' && moduleCodes.length > 0) {
       return api.moduleCondensedRepo.findByCodes([moduleCodes])
     } else {
       return []
@@ -38,11 +33,10 @@ export class ModuleCondensedApi {
    *
    * @param {Api} api
    */
-  static search =
-    (api: Api) => (req: CustomReqParams<{ searchQuery: string }>) => {
-      return api.moduleCondensedRepo.find({
-        where: { moduleCode: Like(`${req.params.searchQuery}%`) },
-        take: 10,
-      })
-    }
+  static search = (api: Api) => (req: Request) => {
+    return api.moduleCondensedRepo.find({
+      where: { moduleCode: Like(`${req.params.searchQuery}%`) },
+      take: 10,
+    })
+  }
 }

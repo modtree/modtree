@@ -15,7 +15,9 @@ export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
     const codes = buildList
-    api.user.setModuleStatus(user.modtreeId, codes, ModuleStatus.DONE)
+    const userId = user?.modtreeId
+    if (!userId) return
+    api.user.setModuleStatus(userId, codes, ModuleStatus.DONE)
     dispatch(updateModulesDone(codes))
     props.setPage('main')
   }

@@ -19,8 +19,11 @@ export function GraphPicker(props: {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    api.user.setMainGraph(user.modtreeId, graph.id).then(() => updateUser())
-    dispatch(setMainGraph(graph))
+    const userId = user?.modtreeId
+    if (userId) {
+      api.user.setMainGraph(userId, graph.id).then(() => updateUser())
+      dispatch(setMainGraph(graph))
+    }
   }, [graph])
 
   return (

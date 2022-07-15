@@ -15,4 +15,5 @@ export function DegreesTabContent() {
   if (page === 'edit') {
     return <Edit setPage={setPage} />
   }
+  return <></>
 }
