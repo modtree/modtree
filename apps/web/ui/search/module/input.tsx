@@ -21,7 +21,7 @@ export function SearchInput<T>(props: {
   const dispatch = useAppDispatch()
 
   const res = trpc.useQuery(['search/modules', query])
-  if (res) {
+  if (res && res.data) {
     dispatch(setSearchedModule(res.data || []))
   }
 
