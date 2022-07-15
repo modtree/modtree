@@ -3,13 +3,19 @@ import { removeFromBuildList } from '@/store/search'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings/lists/rows'
 
-export function SelectedModules(props: { modules: string[] }) {
+export function SelectedModules(props: {
+  modules: string[]
+  cypress?: string
+}) {
   const dispatch = useAppDispatch()
   const cache = useAppSelector((state) => state.cache)
   return (
     <>
       {props.modules.length !== 0 && (
-        <div className="ui-rectangle flex flex-col overflow-hidden">
+        <div
+          className="ui-rectangle flex flex-col overflow-hidden"
+          data-cy={props.cypress}
+        >
           {props.modules.map((code, index) => {
             const module = cache.modules[code]
             return (

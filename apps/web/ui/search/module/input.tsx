@@ -15,6 +15,7 @@ export function SearchInput<T>(props: {
   clear: () => AnyAction
   set: ActionCreatorWithOptionalPayload<T[], string>
   searchIcon?: boolean
+  cypress?: string
 }) {
   const { inputClass, inputContainerClass } = props
   const [query, setQuery] = useState('')
@@ -41,6 +42,7 @@ export function SearchInput<T>(props: {
           )}
           placeholder="Search for a module"
           onChange={(event) => setQuery(event.target.value)}
+          data-cy={props.cypress}
         />
         {props.searchIcon && (
           <Combobox.Button className="flex items-center px-3">

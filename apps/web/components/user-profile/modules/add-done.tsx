@@ -29,10 +29,10 @@ export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
       >
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
-          <SettingsSearchBox />
+          <SettingsSearchBox cypress="add-done-search" />
           <Button>Add Module</Button>
         </div>
-        <SelectedModules modules={buildList} />
+        <SelectedModules cypress="build-list" modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={() => confirm()}>
