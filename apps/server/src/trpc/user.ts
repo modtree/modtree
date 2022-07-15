@@ -1,34 +1,23 @@
 import { ModuleStatus } from '@modtree/types'
-import { flatten, validModuleRegex } from '@modtree/utils'
+import { emptyInit, flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
 import { createRouter } from './router'
 
-const zUser = {
-  authZeroId: z.string().length(30),
-  email: z.string().email(),
-}
-
 export const user = createRouter()
-  /**
-   * get a user by id
-   */
-  .query('', {
-    input: z.string().uuid(),
-    async resolve(req) {
-      return api.userRepo.findOneById(req.input).then(flatten.user)
-    },
-  })
-
   /**
    * create a user
    */
-  .mutation('/create', {
-    input: z.object(zUser),
+  .mutation('create', {
+    input: z.object({
+      authZeroId: z.string().length(30),
+      email: z.string().email(),
+    }),
     async resolve(req) {
       const { authZeroId, email } = req.input
       return api.userRepo
         .initialize({
+          ...emptyInit.User,
           authZeroId,
           email,
         })
@@ -39,22 +28,19 @@ export const user = createRouter()
   /**
    * hard-deletes a user by id
    */
-  .query('/delete', {
+  .query('delete', {
     input: z.string().uuid(),
     async resolve(req) {
-      return api.userRepo
-        .findOneById(req.input)
-        .then((user) => api.userRepo.remove(user))
+      return api.userRepo.delete(req.input)
     },
   })
 
   /**
    * get a full user
    */
-  .query('/get-full', {
+  .query('get-full', {
     input: z.string().uuid(),
     async resolve(req) {
-      console.log('GOT HERE')
       return api.userRepo.findOneById(req.input).then(flatten.userFull)
     },
   })
@@ -62,7 +48,7 @@ export const user = createRouter()
   /**
    * insert degrees into user
    */
-  .mutation('/insert-degrees', {
+  .mutation('insert-degrees', {
     input: z.object({
       userId: z.string().uuid(),
       degreeIds: z.array(z.string().uuid()),
@@ -78,7 +64,7 @@ export const user = createRouter()
   /**
    * set main degree of user
    */
-  .mutation('/set-main-degree', {
+  .mutation('set-main-degree', {
     input: z.object({
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
@@ -94,7 +80,7 @@ export const user = createRouter()
   /**
    * remove degree from user
    */
-  .mutation('/remove-degree', {
+  .mutation('remove-degree', {
     input: z.object({
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
@@ -110,7 +96,7 @@ export const user = createRouter()
   /**
    * insert graphs into user
    */
-  .mutation('/insert-graphs', {
+  .mutation('insert-graphs', {
     input: z.object({
       userId: z.string().uuid(),
       graphIds: z.array(z.string().uuid()),
@@ -126,7 +112,7 @@ export const user = createRouter()
   /**
    * set main graph of user
    */
-  .mutation('/set-main-graph', {
+  .mutation('set-main-graph', {
     input: z.object({
       userId: z.string().uuid(),
       graphId: z.string().uuid(),
@@ -142,7 +128,7 @@ export const user = createRouter()
   /**
    * remove graph from user
    */
-  .mutation('/remove-graph', {
+  .mutation('remove-graph', {
     input: z.object({
       userId: z.string().uuid(),
       graphId: z.string().uuid(),
@@ -155,7 +141,7 @@ export const user = createRouter()
   /**
    * sets module status of a user
    */
-  .mutation('/set-module-status', {
+  .mutation('set-module-status', {
     input: z.object({
       userId: z.string().uuid(),
       moduleCodes: z.array(z.string().regex(validModuleRegex)),
@@ -178,7 +164,7 @@ export const user = createRouter()
   /**
    * user login
    */
-  .query('/login', {
+  .query('login', {
     input: z.object({
       authZeroId: z.string().length(30),
       email: z.string().email(),
