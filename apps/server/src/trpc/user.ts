@@ -164,7 +164,7 @@ export const user = createRouter()
   /**
    * user login
    */
-  .query('login', {
+  .mutation('login', {
     input: z.object({
       authZeroId: z.string().length(30),
       email: z.string().email(),

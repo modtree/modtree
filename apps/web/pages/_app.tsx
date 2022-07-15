@@ -34,10 +34,7 @@ const ModtreeApp = ({ Component, pageProps }: AppProps) => {
 export default withTRPC<AppRouter>({
   config() {
     const envUrl = process.env.NEXT_PUBLIC_BACKEND
-    const url = envUrl ? envUrl : 'http://localhost:8080/trpc'
-    console.log('using url:', url)
-    return {
-      url: 'http://localhost:8080/trpc',
-    }
+    const url = envUrl ? envUrl + '/trpc' : 'http://localhost:8080/trpc'
+    return { url }
   },
 })(ModtreeApp)

@@ -1,20 +1,21 @@
 import { handleAuth, handleCallback, Session } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { api } from 'api'
+import { trpcClient } from '@/utils/trpc'
 
 const afterCallback = async (
   _req: NextApiRequest,
   _res: NextApiResponse,
   session: Session
 ) => {
-  return api.user
-    .login(session.user.sub, session.user.email)
-    .then((user) => {
-      session.user.modtreeId = user.id
-      return session
-    })
+  const opts = { authZeroId: session.user.sub, email: session.user.email }
+  return trpcClient
+    .mutation('user/login', opts as any)
+    .then((user) => ({
+      ...session,
+      user: { ...session.user, modtreeId: user.id },
+    }))
     .catch((err) => {
-      console.debug(err, 'User not found. Own time own target carry on.')
+      console.debug(err, 'Auth0 login callback: User not found.')
       return session
     })
 }
