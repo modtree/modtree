@@ -60,16 +60,16 @@ export class DegreeApi {
   }
 
   /**
-   * modifies a Degree
+   * updates a Degree
    *
    * @param {Api} api
    */
-  static modify = (api: Api) => async (req: Request) => {
+  static update = (api: Api) => async (req: Request) => {
     const id = req.params.degreeId
     const { title, moduleCodes } = req.body
     return api.degreeRepo
       .findOneById(id)
-      .then((degree) => api.degreeRepo.modify(degree, { title, moduleCodes }))
+      .then((degree) => api.degreeRepo.update(degree, { title, moduleCodes }))
       .then(flatten.degree)
   }
 }

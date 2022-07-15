@@ -20,9 +20,9 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
     api.degree.setBuildTarget(buildId)
   }, [])
 
-  const modify = async (title: string, moduleCodes: string[]) =>
+  const update = async (title: string, moduleCodes: string[]) =>
     api.degree
-      .modify(buildId, { title, moduleCodes })
+      .update(buildId, { title, moduleCodes })
       .then(() => props.setPage('main'))
 
   return (
@@ -43,7 +43,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         <SelectedModules modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green" onClick={() => modify(state.title[0], buildList)}>
+        <Button color="green" onClick={() => update(state.title[0], buildList)}>
           Save degree
         </Button>
       </div>
