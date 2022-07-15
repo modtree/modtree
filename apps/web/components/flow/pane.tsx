@@ -11,7 +11,7 @@ import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
-import { setGraphSelectedCodes, updateModuleNode } from '@/store/graph'
+import { setGraphSelectedCodes } from '@/store/graph'
 import { getCSS } from '@/utils/module-state'
 import { redrawGraph } from '@modtree/utils'
 import { api } from 'api'
@@ -86,19 +86,19 @@ export default function ModtreeFlow() {
    */
   const reactFlow = useReactFlow()
   useEffect(() => {
-    reactFlow.fitView()
+    reactFlow.fitView({ maxZoom: 1 })
   }, [nodes, edges])
 
   /**
    * called when user drops a module node. (after having dragged it)
    */
-  const onNodeDragStop = (_: MouseEvent, node: Node) => {
-    dispatch(updateModuleNode(node))
-    const newNodes = redrawGraph({
-      nodes,
-      edges,
-    }).nodes
-    setNodes(newNodes)
+  const onNodeDragStop = (_event: MouseEvent, _node: Node) => {
+    setNodes(
+      redrawGraph({
+        nodes,
+        edges,
+      }).nodes
+    )
   }
 
   return (

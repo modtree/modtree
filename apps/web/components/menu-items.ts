@@ -1,10 +1,16 @@
 import { MenuItem } from 'types'
 import store from '@/store/redux'
-import { showDebugModal, showUserProfile } from '@/store/modal'
+import {
+  setModalModule,
+  showDebugModal,
+  showModuleModal,
+  showUserProfile,
+} from '@/store/modal'
 import { removeModuleNode, setGraph } from '@/store/graph'
 import { api } from 'api'
 import { ModuleStatus } from '@modtree/types'
 import { updateUser } from '@/utils/rehydrate'
+import { trpcClient } from '@/utils/trpc'
 
 const dispatch = store.dispatch
 
@@ -25,7 +31,15 @@ const userDropdownMenu: MenuItem[] = [
 ]
 
 const flowNodeContextMenu: MenuItem[] = [
-  { text: 'More info', callback: (e) => api.module.openModuleModal(e.id) },
+  {
+    text: 'More info',
+    callback: (e) => {
+      dispatch(showModuleModal())
+      trpcClient
+        .query('module-full', e.id)
+        .then((module) => dispatch(setModalModule(module)))
+    },
+  },
   { text: 'Suggest modules', callback: () => alert('suggest modules') },
   {
     text: 'Mark as done',

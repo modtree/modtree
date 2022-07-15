@@ -8,18 +8,23 @@ import {
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { flatten } from '@/utils/tailwind'
-import { api } from 'api'
+import { setModalModule, showModuleModal } from '@/store/modal'
+import { trpcClient } from '@/utils/trpc'
 
 export function RootSearchBox() {
   /**
    * only changes upon clicking on the search result
    */
   const selectState = useState('')
+  const dispatch = useAppDispatch()
 
   const onSelect = (query: string) => {
     if (!query) return
     selectState[1](query)
-    api.module.openModuleModal(query)
+    dispatch(showModuleModal())
+    trpcClient
+      .query('module-full', query)
+      .then((module) => dispatch(setModalModule(module)))
   }
 
   return (
