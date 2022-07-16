@@ -1,4 +1,4 @@
-const testUserEmail = 'test@user.com'
+import { TEST_USER } from '../utils/constants'
 
 describe('authentication', () => {
   beforeEach(() => cy.visit('http://localhost:3000/'))
@@ -20,14 +20,14 @@ describe('authentication', () => {
     cy.get('a[href="/api/auth/login"]').click()
     cy.wait('@signInToModtree')
     // key in credentials
-    cy.get('[id="username"]').type(testUserEmail)
-    cy.get('[id="password"]').type('Test@1234')
+    cy.get('[id="username"]').type(TEST_USER.email)
+    cy.get('[id="password"]').type(TEST_USER.password)
     cy.get('button[type="submit"]').click()
     // reload because cypress and auth0 callbacks don't play nice
     cy.reload()
     // sign out
     cy.get('[id="modtree-user-circle"]').click()
-    cy.get('[data-cy="email"]').should('have.text', testUserEmail)
+    cy.get('[data-cy="email"]').should('have.text', TEST_USER.email)
     cy.get('a[href="/api/auth/logout"]').click()
     // ensure that sign out is successful
     cy.get('a[href="/api/auth/login"]').should('have.text', 'Sign in')

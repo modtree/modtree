@@ -1,8 +1,8 @@
+import { TEST_USER, FRONTEND_URL } from '../../utils/constants'
+
 // these are our presets upon initializing a new user
 let doneCount = 7
 let doingCount = 9
-
-const testUserEmail = 'test@user.com'
 
 function checkLengths() {
   cy.get('[data-cy="done-section"]')
@@ -20,7 +20,7 @@ describe('module nodes', () => {
    * Login
    */
   before(() => {
-    cy.visit('http://localhost:3000/')
+    cy.visit(FRONTEND_URL)
 
     cy.intercept('GET', '/api/auth/login').as('signInToModtree')
 
@@ -35,8 +35,8 @@ describe('module nodes', () => {
     cy.url().then((URL) => {
       if (!URL.includes('localhost')) {
         // key in credentials
-        cy.get('[id="username"]').type(testUserEmail)
-        cy.get('[id="password"]').type('Test@1234')
+        cy.get('[id="username"]').type(TEST_USER.email)
+        cy.get('[id="password"]').type(TEST_USER.password)
         cy.get('button[type="submit"]').click()
 
         // reload because cypress and auth0 callbacks don't play nice

@@ -1,6 +1,8 @@
+import { FRONTEND_URL } from '../../utils/constants'
+
 describe('module nodes', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/')
+    cy.visit(FRONTEND_URL)
     /** intercepts */
     cy.intercept('GET', '/api/auth/login').as('signInToModtree')
 

@@ -1,5 +1,7 @@
+import { FRONTEND_URL } from '../utils/constants'
+
 describe('search', () => {
-  beforeEach(() => cy.visit('http://localhost:3000/'))
+  beforeEach(() => cy.visit(FRONTEND_URL))
 
   it('should execute a search', () => {
     // intercept this particular API route and rename it to searchModules
