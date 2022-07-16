@@ -3,12 +3,7 @@ import { FRONTEND_URL } from '../../utils/constants'
 describe('module nodes', () => {
   beforeEach(() => {
     cy.visit(FRONTEND_URL)
-    /** intercepts */
-    cy.intercept('GET', '/api/auth/login').as('signInToModtree')
-
-    /** sign in */
-    cy.get('a[href="/api/auth/login"]').click()
-    cy.wait('@signInToModtree')
+    cy.login()
   })
 
   it('all checks', () => {

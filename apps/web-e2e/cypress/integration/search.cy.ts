@@ -4,9 +4,6 @@ describe('search', () => {
   beforeEach(() => cy.visit(FRONTEND_URL))
 
   it('should execute a search', () => {
-    // intercept this particular API route and rename it to searchModules
-    cy.intercept('GET', '/trpc/search/modules').as('searchModules')
-
     // type in the search query
     cy.get('[data-cy=root-search-box]')
       .type('CS1010S')
