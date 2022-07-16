@@ -2,9 +2,8 @@ import { Listbox } from '@headlessui/react'
 import { IDegree, UseState } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
-import { useEffect } from 'react'
-import { api } from 'api'
-import { useAppSelector } from '@/store/redux'
+import { useEffect, useState } from 'react'
+import { flatten as flat } from '@modtree/utils'
 
 export function DegreePicker(props: {
   degrees: IDegree[]
@@ -13,10 +12,27 @@ export function DegreePicker(props: {
   modulesDoingCodes: string[]
 }) {
   const [degree, setDegree] = props.select
-  const { buildList } = useAppSelector((state) => state.search)
+
+  const [remainingCodes, setRemainingCodes] = useState<string[]>([])
+
+  /**
+   * Filters away modulesDone and modulesDoing from degree.modules,
+   * and combines into a comma separated string of module codes.
+   */
+  async function getRemainingModuleCodes(degree: IDegree): Promise<string[]> {
+    return degree.modules
+      .map(flat.module)
+      .filter(
+        (m) =>
+          !props.modulesDoneCodes.includes(m) &&
+          !props.modulesDoingCodes.includes(m)
+      )
+  }
 
   useEffect(() => {
-    api.degree.setBuildTarget(degree.id)
+    getRemainingModuleCodes(degree).then((codes) => {
+      setRemainingCodes(codes)
+    })
   }, [degree])
 
   return (
@@ -55,7 +71,7 @@ export function DegreePicker(props: {
         <p>
           The following remaining degree modules will be placed in the graph:
         </p>
-        <p className="mb-0">{buildList.join(', ')}</p>
+        <p className="mb-0">{remainingCodes.join(', ')}</p>
       </div>
     </div>
   )
