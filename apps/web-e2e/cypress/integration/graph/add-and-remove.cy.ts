@@ -13,8 +13,9 @@ describe('add-and-remove', () => {
     /**
      * check that the edges are all correct
      */
-    cy.intercept('/user/*/get-full').as('getUser')
-    cy.wait('@getUser')
+    // getUser has completed
+    // Wait for store to load
+    cy.wait(5000)
     cy.window()
       .its('store')
       .invoke('getState')
@@ -62,6 +63,9 @@ describe('add-and-remove', () => {
         cy.get('[data-cy=search-result]').contains(title).click()
       })
       .then(() => {
+        // Wait for modal to load
+        cy.wait(5000)
+
         // Should have add to graph button
         cy.get('[data-cy=module-modal]')
           .contains('Add to graph')

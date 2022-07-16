@@ -49,7 +49,7 @@ Cypress.Commands.add('login', () => {
   })
 
   // 3. wait for user to load
-  cy.intercept('/user/*/get-full').as('getUser')
+  cy.intercept('/trpc/user/get-full**').as('getUser')
   cy.wait('@getUser')
 })
 
