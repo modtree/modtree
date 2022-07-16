@@ -49,6 +49,20 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       relations: this.relations,
     })
 
+  findOneFullById = async (id: string) =>
+    this.findOne({
+      where: { id },
+      relations: {
+        ...this.relations,
+        savedDegrees: {
+          modules: true,
+        },
+        mainDegree: {
+          modules: true,
+        },
+      },
+    })
+
   /**
    * Adds a User to DB
    *

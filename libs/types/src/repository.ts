@@ -186,6 +186,13 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    */
   findOneById(id: string): Promise<IUser>
   /**
+   * finds a user full by id
+   *
+   * @param id
+   * @returns user
+   */
+  findOneFullById(id: string): Promise<IUser>
+  /**
    * delete all users
    *
    * @returns delete result
