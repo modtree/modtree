@@ -16,6 +16,8 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
       login(): void
+      addGraphModule(moduleCode: string, title: string): void
+      removeGraphModule(moduleCode: string): void
     }
   }
 }
@@ -49,6 +51,30 @@ Cypress.Commands.add('login', () => {
   // 3. wait for user to load
   cy.intercept('/user/*/get-full').as('getUser')
   cy.wait('@getUser')
+})
+
+Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
+  cy.get('[data-cy=root-search-box]')
+    .clear()
+    .type(moduleCode)
+    .then(() => {
+      cy.get('[data-cy=search-result]').contains(title).click()
+    })
+    .then(() => {
+      cy.get('button').contains('Add to graph').click()
+    })
+})
+
+Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {
+  cy.get(`[data-cy=node-${moduleCode}]`)
+    .rightclick()
+    .then(() => {
+      // force a click, because sometimes the node is outside
+      // of the screen and cypress checks for that
+      cy.get('[data-cy=context-menu-item] > div > a')
+        .contains('Remove')
+        .click({ force: true })
+    })
 })
 
 //
