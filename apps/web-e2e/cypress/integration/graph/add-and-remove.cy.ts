@@ -1,5 +1,8 @@
 import { FRONTEND_URL } from '../../utils/constants'
 
+const code = 'MA2104'
+const title = 'Multivariable Calculus'
+
 describe('add-and-remove', () => {
   beforeEach(() => {
     cy.visit(FRONTEND_URL)
@@ -26,9 +29,46 @@ describe('add-and-remove', () => {
   })
 
   it('adds a module', () => {
-    cy.addGraphModule('MA2104', 'Multivariable Calculus')
+    cy.addGraphModule(code, title)
   })
+
+  it('cannot add the same module', () => {
+    cy.get('[data-cy=root-search-box]')
+      .clear()
+      .type(code)
+      .then(() => {
+        cy.get('[data-cy=search-result]').contains(title).click()
+      })
+      .then(() => {
+        // Should not have add to graph button
+        cy.get('[data-cy=module-modal]')
+          .contains('Add to graph')
+          .should('not.exist')
+
+        // Close modal
+        cy.get('[data-cy=module-modal-close-button]').click()
+      })
+  })
+
   it('removes a module', () => {
-    cy.removeGraphModule('MA2104')
+    cy.removeGraphModule(code)
+  })
+
+  it('can now add the same module', () => {
+    cy.get('[data-cy=root-search-box]')
+      .clear()
+      .type(code)
+      .then(() => {
+        cy.get('[data-cy=search-result]').contains(title).click()
+      })
+      .then(() => {
+        // Should have add to graph button
+        cy.get('[data-cy=module-modal]')
+          .contains('Add to graph')
+          .should('be.visible')
+
+        // Close modal
+        cy.get('[data-cy=module-modal-close-button]').click()
+      })
   })
 })

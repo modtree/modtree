@@ -73,7 +73,7 @@ export function ModuleDetails() {
       })
   }
   return (
-    <div>
+    <div data-cy="module-modal">
       <h1 className="text-modtree-400">{module.moduleCode}</h1>
       <h2>{module.title}</h2>
       <p className="subtitle mb-4">

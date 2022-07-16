@@ -14,6 +14,7 @@ export const CloseButton = (props: { close: () => void; bg?: string }) => {
         )}
         onClick={props.close}
         id="module-modal-close-button"
+        data-cy="module-modal-close-button"
       >
         <CloseIcon className="text-gray-600 h-5 w-5" />
       </button>
