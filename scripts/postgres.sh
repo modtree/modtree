@@ -4,7 +4,7 @@ source ../.env
 
 SOURCE=../libs/sql/snapshots/20220709.sql
 
-PROD=true
+PROD=false
 
 if [[ $PROD == true ]]; then
   USERNAME=$PRODUCTION_POSTGRES_USERNAME
