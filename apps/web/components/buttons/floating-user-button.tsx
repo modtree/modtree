@@ -57,7 +57,7 @@ const SignedInCircle = () => {
         </>
         <>
           <div>Email{dev && ' (postgres)'}</div>
-          <b>{email}</b>
+          <b data-cy="email">{email}</b>
         </>
       </Entries>
     </DropdownMenu>

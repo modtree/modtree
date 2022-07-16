@@ -34,6 +34,7 @@ function SearchResultList(props: { modules: IModule[] }) {
               active ? 'bg-modtree-300 text-white' : 'text-gray-900'
             )
           }
+          data-cy="search-result"
         >
           <SearchResult module={module} />
         </Combobox.Option>

@@ -65,6 +65,7 @@ const ContextMenuWrapper = (props: {
         'w-48 divide-y py-1 px-1 divide-gray-200 rounded-md bg-white',
         'shadow-md focus:outline-none overflow-hidden'
       )}
+      data-cy="context-menu-item"
     >
       {props.children}
     </Menu.Items>

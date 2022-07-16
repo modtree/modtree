@@ -30,6 +30,7 @@ export function RootSearchBox() {
         onSelect={onSelect}
         inputContainerClass="h-10"
         searchIcon
+        cypress="root-search-box"
       >
         <SearchResultContainer />
       </SearchContainer>

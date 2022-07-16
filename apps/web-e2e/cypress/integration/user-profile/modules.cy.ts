@@ -1,3 +1,5 @@
+import { FRONTEND_URL } from '../../utils/constants'
+
 // these are our presets upon initializing a new user
 let doneCount = 7
 let doingCount = 9
@@ -13,18 +15,14 @@ function checkLengths() {
     .should('eq', doingCount)
 }
 
-describe('module nodes', () => {
+describe('modules panel', () => {
+  /**
+   * Login
+   */
   beforeEach(() => {
-    cy.visit('http://localhost:3000/')
-    cy.intercept('GET', '/api/auth/login').as('signInToModtree')
+    cy.visit(FRONTEND_URL)
 
-    // sign in
-    cy.get('a[href="/api/auth/login"]').click()
-    cy.wait('@signInToModtree')
-
-    // getUser
-    cy.intercept('/user/*/get-full').as('getUser')
-    cy.wait('@getUser')
+    cy.login()
 
     // open modules panel
     cy.get('[id="modtree-user-circle"]').then((icon) => {
