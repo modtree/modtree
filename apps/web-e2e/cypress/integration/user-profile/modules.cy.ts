@@ -2,6 +2,8 @@
 let doneCount = 7
 let doingCount = 9
 
+const testUserEmail = 'test@user.com'
+
 function checkLengths() {
   cy.get('[data-cy="done-section"]')
     .children()
@@ -14,16 +16,40 @@ function checkLengths() {
 }
 
 describe('module nodes', () => {
-  beforeEach(() => {
+  /**
+   * Login
+   */
+  before(() => {
     cy.visit('http://localhost:3000/')
+
     cy.intercept('GET', '/api/auth/login').as('signInToModtree')
 
-    // sign in
+    // click the sign in button
     cy.get('a[href="/api/auth/login"]').click()
     cy.wait('@signInToModtree')
 
-    // getUser
-    cy.intercept('/user/*/get-full').as('getUser')
+    // If redirected away from localhost, then we are at the
+    // Auth0 login page. Then sign in with test user.
+    //
+    // Else, login data was saved from a previous session, so proceed.
+    cy.url().then((URL) => {
+      if (!URL.includes('localhost')) {
+        // key in credentials
+        cy.get('[id="username"]').type(testUserEmail)
+        cy.get('[id="password"]').type('Test@1234')
+        cy.get('button[type="submit"]').click()
+
+        // reload because cypress and auth0 callbacks don't play nice
+        cy.reload()
+      }
+    })
+  })
+
+  beforeEach(() => {
+    cy.reload()
+
+    // wait for getUser
+    cy.intercept('/trpc/user/*/get-full').as('getUser')
     cy.wait('@getUser')
 
     // open modules panel
