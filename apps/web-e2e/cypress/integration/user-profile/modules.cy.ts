@@ -15,11 +15,11 @@ function checkLengths() {
     .should('eq', doingCount)
 }
 
-describe('module nodes', () => {
+describe('modules panel', () => {
   /**
    * Login
    */
-  before(() => {
+  beforeEach(() => {
     cy.visit(FRONTEND_URL)
 
     cy.intercept('GET', '/api/auth/login').as('signInToModtree')
@@ -43,13 +43,9 @@ describe('module nodes', () => {
         cy.reload()
       }
     })
-  })
-
-  beforeEach(() => {
-    cy.reload()
 
     // wait for getUser
-    cy.intercept('/trpc/user/*/get-full').as('getUser')
+    cy.intercept('/user/*/get-full').as('getUser')
     cy.wait('@getUser')
 
     // open modules panel
