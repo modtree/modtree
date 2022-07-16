@@ -15,4 +15,5 @@ export function ModulesTabContent() {
   if (page === 'add-done') {
     return <AddDone setPage={setPage} />
   }
+  return <></>
 }

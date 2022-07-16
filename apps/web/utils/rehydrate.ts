@@ -4,8 +4,8 @@ import store from '@/store/redux'
 import { setUser } from '@/store/user'
 import { ModtreeApiResponse } from '@modtree/types'
 import { empty } from '@modtree/utils'
-import { api } from 'api'
 import { ModtreeUserProfile } from 'types'
+import { trpc } from './trpc'
 
 const redux = store.getState()
 const dispatch = store.dispatch
@@ -18,8 +18,10 @@ async function getUser(
   if (reduxLoaded) {
     return redux.user
   } else if (authZeroLoaded) {
-    return api.user
-      .getById(user.modtreeId)
+    const userId = user?.modtreeId
+    if (!userId) return empty.UserFull
+    return trpc
+      .query('user/get-full', userId)
       .then((user) => {
         dispatch(setUser(user))
         return user
@@ -35,20 +37,22 @@ async function getUser(
  */
 export function rehydrate(user: ModtreeUserProfile) {
   const userPromise = getUser(user)
-  userPromise.then((user) => {
-    if (redux.degree.id === '') {
-      const degree = user.mainDegree
-      if (!degree) return
-      dispatch(setDegree(degree))
-    }
-    if (redux.graph.id === '') {
-      const graphId = user.mainGraph
-      if (!graphId) return
-      api.graph.getById(graphId).then((g) => {
-        dispatch(setGraph(g))
-      })
-    }
-  })
+  userPromise
+    .then((user) => {
+      if (redux.degree.id === '') {
+        const degree = user.mainDegree
+        if (!degree) return
+        dispatch(setDegree(degree))
+      }
+      if (redux.graph.id === '') {
+        const graphId = user.mainGraph
+        if (!graphId) return
+        trpc.query('graph', graphId).then((g) => {
+          dispatch(setGraph(g))
+        })
+      }
+    })
+    .catch(() => console.debug('rehydrate failed'))
 }
 
 /**
@@ -56,7 +60,7 @@ export function rehydrate(user: ModtreeUserProfile) {
  */
 export async function updateUser() {
   const userId = store.getState().user.id
-  return api.user.getById(userId).then((user) => {
+  return trpc.query('user/get-full', userId).then((user) => {
     dispatch(setUser(user))
     return user
   })

@@ -11,4 +11,5 @@ export function GraphsTabContent() {
   if (page === 'add-new') {
     return <AddNew setPage={setPage} />
   }
+  return <></>
 }

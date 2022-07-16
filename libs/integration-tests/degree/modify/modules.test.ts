@@ -21,9 +21,9 @@ beforeAll(() =>
 )
 afterAll(() => teardown(db))
 
-async function modify(degree: Degree, props: InitDegreeProps) {
+async function update(degree: Degree, props: InitDegreeProps) {
   const { title, moduleCodes } = props
-  return Repo.Degree.modify(degree, { title, moduleCodes })
+  return Repo.Degree.update(degree, { title, moduleCodes })
 }
 
 it('correctly saves modules', async () => {
@@ -31,7 +31,7 @@ it('correctly saves modules', async () => {
     title: t.degree!.title,
     moduleCodes: ['MA1521', 'MA2001', 'ST2334'],
   }
-  await modify(t.degree!, props).then((degree) => {
+  await update(t.degree!, props).then((degree) => {
     const codes = degree.modules.map(flatten.module)
     expect(codes).toIncludeSameMembers(['MA1521', 'MA2001', 'ST2334'])
   })
@@ -42,7 +42,7 @@ it("doesn't add modules if all are invalid", async () => {
     title: t.degree!.title,
     moduleCodes: ['NOT_VALID'],
   }
-  await modify(t.degree!, props).then((degree) => {
+  await update(t.degree!, props).then((degree) => {
     const codes = degree.modules.map(flatten.module)
     // no change from previous test
     expect(codes).toIncludeSameMembers([])
@@ -54,7 +54,7 @@ it('handles mix of valid/invalid modules', async () => {
     title: t.degree!.title,
     moduleCodes: ['NOT_VALID', 'CS4269'],
   }
-  await modify(t.degree!, props).then((degree) => {
+  await update(t.degree!, props).then((degree) => {
     const codes = degree.modules.map(flatten.module)
     expect(codes).toIncludeSameMembers(['CS4269'])
   })

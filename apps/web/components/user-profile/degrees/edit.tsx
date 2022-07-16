@@ -3,39 +3,27 @@ import { SettingsSection } from '@/ui/settings/lists/base'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
-import { InitDegreeProps, SetState } from '@modtree/types'
+import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
-import { setBuildList } from '@/store/search'
 import { api } from 'api'
-import { updateUser } from '@/utils/rehydrate'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   const { buildList, buildTitle, buildId } = useAppSelector(
     (state) => state.search
   )
-  const state = {
-    title: useState<string>(buildTitle),
-  }
-  const dispatch = useAppDispatch()
+  const state = { title: useState<string>(buildTitle) }
+
   /* set build list */
   useEffect(() => {
-    api.degree.getById(buildId).then((degree) => {
-      dispatch(setBuildList(degree.modules))
-    })
+    api.degree.setBuildTarget(buildId)
   }, [])
 
-  async function modify(title: string, moduleCodes: string[]) {
-    const degreeProps: InitDegreeProps = {
-      title,
-      moduleCodes,
-    }
+  const update = async (title: string, moduleCodes: string[]) =>
     api.degree
-      .modify(buildId, degreeProps)
-      .then(() => updateUser())
+      .update(buildId, { title, moduleCodes })
       .then(() => props.setPage('main'))
-  }
 
   return (
     <div className="flex flex-col">
@@ -55,7 +43,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         <SelectedModules modules={buildList} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green" onClick={() => modify(state.title[0], buildList)}>
+        <Button color="green" onClick={() => update(state.title[0], buildList)}>
           Save degree
         </Button>
       </div>

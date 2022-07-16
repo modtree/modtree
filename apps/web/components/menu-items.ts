@@ -1,10 +1,9 @@
 import { MenuItem } from 'types'
 import store from '@/store/redux'
 import { showDebugModal, showUserProfile } from '@/store/modal'
-import { removeModuleNode, setGraph } from '@/store/graph'
-import { api } from 'api'
+import { removeModuleNode } from '@/store/graph'
 import { ModuleStatus } from '@modtree/types'
-import { updateUser } from '@/utils/rehydrate'
+import { api } from 'api'
 
 const dispatch = store.dispatch
 
@@ -17,7 +16,6 @@ const userDropdownMenu: MenuItem[] = [
     text: 'Debug',
     callback: () => dispatch(showDebugModal()),
   },
-  { text: 'Settings', callback: () => alert('open settings') },
   {
     text: 'Sign out',
     href: '/api/auth/logout',
@@ -25,41 +23,41 @@ const userDropdownMenu: MenuItem[] = [
 ]
 
 const flowNodeContextMenu: MenuItem[] = [
-  { text: 'More info', callback: (e) => api.module.openModuleModal(e.id) },
+  {
+    text: 'More info',
+    callback: (node) => (node ? api.module.openModuleModal(node.id) : null),
+  },
   { text: 'Suggest modules', callback: () => alert('suggest modules') },
   {
     text: 'Mark as done',
     callback: (e) => {
-      const state = store.getState()
-      const userId = state.user.id
-      const codes = state.user.modulesDone
-      const modules = [...codes, e.id]
-      api.user
-        .setModuleStatus(userId, modules, ModuleStatus.DONE)
-        .then(() => updateUser())
+      if (!e) return
+      const user = store.getState().user
+      api.user.setModuleStatus(
+        user.id,
+        [...user.modulesDone, e.id],
+        ModuleStatus.DONE
+      )
     },
   },
   {
     text: 'Mark as doing',
     callback: (e) => {
-      const state = store.getState()
-      const userId = state.user.id
-      const codes = state.user.modulesDoing
-      const modules = [...codes, e.id]
-      api.user
-        .setModuleStatus(userId, modules, ModuleStatus.DOING)
-        .then(() => updateUser())
+      if (!e) return
+      const user = store.getState().user
+      api.user.setModuleStatus(
+        user.id,
+        [...user.modulesDoing, e.id],
+        ModuleStatus.DOING
+      )
     },
   },
   {
     text: 'Remove',
     callback: async (e) => {
+      if (!e) return
       // update graph
-      const state = store.getState()
-      const mainGraph = state.graph
-      api.graph.toggle(mainGraph.id, e.id).then((g) => {
-        store.dispatch(setGraph(g))
-      })
+      api.graph.toggle(store.getState().graph.id, e.id)
       // remove node from frontend
       store.dispatch(removeModuleNode(e))
     },

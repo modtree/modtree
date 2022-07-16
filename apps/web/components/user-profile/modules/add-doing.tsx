@@ -6,18 +6,25 @@ import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDoing } from '@/store/user'
 import { SelectedModules } from './selected-modules'
-import { api } from 'api'
 import { useUser } from '@/utils/auth0'
+import { trpc } from '@/utils/trpc'
 
 export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const buildList = useAppSelector((state) => state.search.buildList)
   const { user } = useUser()
   function confirm() {
-    const codes = buildList
-    api.user.setModuleStatus(user.modtreeId, codes, ModuleStatus.DOING)
-    dispatch(updateModulesDoing(codes))
+    const moduleCodes = buildList
+    dispatch(updateModulesDoing(moduleCodes))
     props.setPage('main')
+    /** persist state */
+    const userId = user?.modtreeId
+    if (!userId) return
+    trpc.mutation('user/set-module-status', {
+      userId,
+      moduleCodes,
+      status: ModuleStatus.DOING,
+    })
   }
   return (
     <div className="flex flex-col">

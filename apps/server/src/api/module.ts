@@ -1,5 +1,4 @@
 import { Api } from '@modtree/repos'
-import { CustomReqParams } from '@modtree/types'
 import { Request } from 'express'
 import { Like } from 'typeorm'
 
@@ -27,11 +26,10 @@ export class ModuleApi {
    *
    * @param {Api} api
    */
-  static search =
-    (api: Api) => (req: CustomReqParams<{ searchQuery: string }>) => {
-      return api.moduleRepo.find({
-        where: { moduleCode: Like(`${req.params.searchQuery}%`) },
-        take: 10,
-      })
-    }
+  static search = (api: Api) => (req: Request) => {
+    return api.moduleRepo.find({
+      where: { moduleCode: Like(`${req.params.searchQuery}%`) },
+      take: 10,
+    })
+  }
 }

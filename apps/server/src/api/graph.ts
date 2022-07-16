@@ -1,17 +1,6 @@
 import { Api } from '@modtree/repos'
-import { CustomReqQuery } from '@modtree/types'
 import { emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
-
-type ListRequest = {
-  id?: string
-  authZeroId?: string
-  email?: string
-}
-
-type GraphIds = {
-  graphIds: string[] | string
-}
 
 export class GraphApi {
   /**
@@ -29,7 +18,7 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static get = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
+  static get = (api: Api) => async (req: Request) => {
     return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
   }
 
@@ -38,7 +27,7 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static getFull = (api: Api) => async (req: CustomReqQuery<ListRequest>) => {
+  static getFull = (api: Api) => async (req: Request) => {
     return api.graphRepo.findOneById(req.params.graphId).then(flatten.graph)
   }
 
@@ -47,11 +36,11 @@ export class GraphApi {
    *
    * @param {Api} api
    */
-  static list = (api: Api) => async (req: CustomReqQuery<GraphIds>) => {
+  static list = (api: Api) => async (req: Request) => {
     const graphIds = req.query.graphIds
     if (Array.isArray(graphIds)) {
-      return api.graphRepo.findByIds(graphIds)
-    } else if (graphIds.length > 0) {
+      return api.graphRepo.findByIds(graphIds as string[])
+    } else if (typeof graphIds === 'string' && graphIds.length > 0) {
       return api.graphRepo.findByIds([graphIds])
     } else {
       return []

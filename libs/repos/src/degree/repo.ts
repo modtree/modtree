@@ -64,7 +64,7 @@ export class DegreeRepository
    * @param {InitDegreeProps} props
    * @returns {Promise<Degree>}
    */
-  async modify(degree: Degree, props: InitDegreeProps): Promise<Degree> {
+  async update(degree: Degree, props: InitDegreeProps): Promise<Degree> {
     return this.moduleRepo.findByCodes(props.moduleCodes).then((modules) => {
       degree.title = props.title
       degree.modules = modules

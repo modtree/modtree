@@ -46,12 +46,12 @@ export const graph = createRouter()
   .mutation('toggle', {
     input: z.object({
       moduleCode: z.string().regex(validModuleRegex),
-      id: z.string().uuid(),
+      graphId: z.string().uuid(),
     }),
     async resolve(req) {
-      const { id, moduleCode } = req.input
+      const { graphId, moduleCode } = req.input
       return api.graphRepo
-        .findOneById(id)
+        .findOneById(graphId)
         .then((g) => api.graphRepo.toggleModule(g, moduleCode))
         .then(flatten.graph)
     },
@@ -62,14 +62,14 @@ export const graph = createRouter()
    */
   .mutation('update-frontend-props', {
     input: z.object({
-      id: z.string().uuid(),
+      graphId: z.string().uuid(),
       flowNodes: z.array(z.any()),
       flowEdges: z.array(z.any()),
     }),
     async resolve(req) {
-      const { id, flowNodes, flowEdges } = req.input
+      const { graphId, flowNodes, flowEdges } = req.input
       return api.graphRepo
-        .findOneById(id)
+        .findOneById(graphId)
         .then((g) =>
           api.graphRepo.updateFrontendProps(g, { flowNodes, flowEdges })
         )
@@ -82,13 +82,13 @@ export const graph = createRouter()
    */
   .mutation('update-flow-node', {
     input: z.object({
-      id: z.string().uuid(),
+      graphId: z.string().uuid(),
       flowNode: z.any(),
     }),
     async resolve(req) {
-      const { id, flowNode } = req.input
+      const { graphId, flowNode } = req.input
       return api.graphRepo
-        .findOneById(id)
+        .findOneById(graphId)
         .then((g) => api.graphRepo.updateFlowNode(g, flowNode))
         .then(flatten.graph)
     },
@@ -99,13 +99,13 @@ export const graph = createRouter()
    */
   .query('suggest-modules', {
     input: z.object({
-      id: z.string().uuid(),
+      graphId: z.string().uuid(),
       selectedCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     async resolve(req) {
-      const { id, selectedCodes } = req.input
+      const { graphId, selectedCodes } = req.input
       return api.graphRepo
-        .findOneById(id)
+        .findOneById(graphId)
         .then((g) => api.graphRepo.suggestModules(g, selectedCodes))
         .then((m) => m.map(flatten.module))
     },
@@ -118,13 +118,10 @@ export const graph = createRouter()
    * Returns a dictionary keyed on moduleCode.
    */
   .query('can-take-modules', {
-    input: z.object({
-      id: z.string().uuid(),
-    }),
+    input: z.string().uuid(),
     async resolve(req) {
-      const { id } = req.input
       return api.graphRepo
-        .findOneById(id)
+        .findOneById(req.input)
         .then((g) => api.graphRepo.canTakeModules(g))
     },
   })

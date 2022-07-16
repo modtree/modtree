@@ -1,11 +1,6 @@
 import { Api } from '@modtree/repos'
-import { CustomReqQuery } from '@modtree/types'
 import { emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
-
-type DegreeIds = {
-  degreeIds: string[] | string
-}
 
 export class DegreeApi {
   /**
@@ -41,11 +36,11 @@ export class DegreeApi {
    *
    * @param {Api} api
    */
-  static list = (api: Api) => async (req: CustomReqQuery<DegreeIds>) => {
+  static list = (api: Api) => async (req: Request) => {
     const degreeIds = req.query.degreeIds
     if (Array.isArray(degreeIds)) {
-      return api.degreeRepo.findByIds(degreeIds)
-    } else if (degreeIds.length > 0) {
+      return api.degreeRepo.findByIds(degreeIds as string[])
+    } else if (typeof degreeIds === 'string' && degreeIds.length > 0) {
       return api.degreeRepo.findByIds([degreeIds])
     } else {
       return []
@@ -65,16 +60,16 @@ export class DegreeApi {
   }
 
   /**
-   * modifies a Degree
+   * updates a Degree
    *
    * @param {Api} api
    */
-  static modify = (api: Api) => async (req: Request) => {
+  static update = (api: Api) => async (req: Request) => {
     const id = req.params.degreeId
     const { title, moduleCodes } = req.body
     return api.degreeRepo
       .findOneById(id)
-      .then((degree) => api.degreeRepo.modify(degree, { title, moduleCodes }))
+      .then((degree) => api.degreeRepo.update(degree, { title, moduleCodes }))
       .then(flatten.degree)
   }
 }

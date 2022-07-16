@@ -5,9 +5,9 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
 import { useUser } from '@/utils/auth0'
 import { inModulesPlaced } from '@/utils/graph'
-import { api } from 'api'
 import { GraphFlowNode } from '@modtree/types'
 import { redrawGraph } from '@modtree/utils'
+import { trpc } from '@/utils/trpc'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
@@ -48,11 +48,18 @@ export function ModuleDetails() {
     })
 
     // 3. toggle module in graph
-    api.graph
-      .toggle(graph.id, module.moduleCode)
+    trpc
+      .mutation('graph/toggle', {
+        graphId: graph.id,
+        moduleCode: module.moduleCode,
+      })
       .then(() =>
         // 4. update frontend props
-        api.graph.updateFrontendProps(graph.id, nodes, edges)
+        trpc.mutation('graph/update-frontend-props', {
+          graphId: graph.id,
+          flowNodes: nodes,
+          flowEdges: edges,
+        })
       )
       .then((g) => {
         setGraph(g)

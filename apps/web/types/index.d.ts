@@ -5,7 +5,6 @@ import type {
   Modify,
   IModuleCondensed,
   GraphFlowNode,
-  ModuleStatus,
 } from '@modtree/types'
 
 /**
@@ -39,7 +38,7 @@ export type UserMenuItem = {
 export type MenuItem = {
   text: string
   href?: string
-  callback?: (_: GraphFlowNode) => void
+  callback?: (_?: GraphFlowNode) => void
 }
 
 export type ButtonColor = 'red' | 'blue' | 'green' | 'gray'

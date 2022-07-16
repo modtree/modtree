@@ -42,17 +42,17 @@ export const degree = createRouter()
   /**
    * modifies a degree
    */
-  .mutation('modify', {
+  .mutation('update', {
     input: z.object({
-      id: z.string().uuid(),
+      degreeId: z.string().uuid(),
       title: z.string().min(1),
       moduleCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     async resolve(req) {
-      const { title, moduleCodes, id } = req.input
+      const { title, moduleCodes, degreeId } = req.input
       return api.degreeRepo
-        .findOneById(id)
-        .then((degree) => api.degreeRepo.modify(degree, { title, moduleCodes }))
+        .findOneById(degreeId)
+        .then((degree) => api.degreeRepo.update(degree, { title, moduleCodes }))
         .then(flatten.degree)
     },
   })

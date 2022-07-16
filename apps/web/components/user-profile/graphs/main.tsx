@@ -10,14 +10,14 @@ import { IDegree, ModtreeApiResponse } from '@modtree/types'
 import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
 import { GraphPicker } from '@/ui/search/graph/graph-picker'
-import { api } from 'api'
+import { trpc } from '@/utils/trpc'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
   const graphIds = useAppSelector((state) => state.user.savedGraphs)
   const hasGraphs = graphIds.length !== 0
-  const [graphs, setGraphs] = useState([])
+  const [graphs, setGraphs] = useState<ModtreeApiResponse.Graph[]>([])
 
   const degrees = useAppSelector((state) => state.user.savedDegrees)
 
@@ -29,19 +29,14 @@ export function Main(props: {
   }
 
   useEffect(() => {
-    const promises = graphIds.map((g) => api.graph.getById(g))
-    Promise.all(promises)
-      .then((graphs) => {
-        setGraphs(graphs)
-        return graphs
-      })
-      .then((graphs) => {
-        // mainGraph is different from gs
-        // mainGraph has an extra property selectedCodes
-        // removing that property is still not enough for React to check equality
-        const graph = graphs.filter((g) => g.id === mainGraph.id)
-        state.graph[1](graph[0])
-      })
+    trpc.query('graphs', graphIds).then((graphs) => {
+      setGraphs(graphs)
+      // mainGraph is different from gs
+      // mainGraph has an extra property selectedCodes
+      // removing that property is still not enough for React to check equality
+      const graph = graphs.find((g) => g.id === mainGraph.id)
+      if (graph) state.graph[1](graph)
+    })
   }, [])
 
   return (
@@ -53,7 +48,7 @@ export function Main(props: {
       </div>
       <SettingsSection
         title="Graphs"
-        addButtonText={hasGraphs && 'New graph'}
+        addButtonText={hasGraphs ? 'New graph' : ''}
         onAddClick={() => props.setPage('add-new')}
       >
         {hasGraphs ? (

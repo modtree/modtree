@@ -30,7 +30,7 @@ const correct = [
 
 test.each(correct)('$type', async ({ moduleCodes, expected }) => {
   await degreeRepo
-    .modify(degree, { title: 'test', moduleCodes })
+    .update(degree, { title: 'test', moduleCodes })
     .then((degree) => {
       const codes = degree.modules.map((m) => m.moduleCode)
       expect(codes).toIncludeSameMembers(expected)

@@ -7,8 +7,8 @@ import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { useAppSelector } from '@/store/redux'
 import { useUser } from '@/utils/auth0'
-import { api } from 'api'
 import { updateUser } from '@/utils/rehydrate'
+import { trpc } from '@/utils/trpc'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const degrees = useAppSelector((state) => state.user.savedDegrees)
@@ -23,9 +23,11 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   }
 
   async function saveGraph() {
+    const userId = user?.modtreeId
+    if (!userId) return
     const graphProps: InitGraphProps = {
       title: state.title[0],
-      userId: user.modtreeId,
+      userId,
       degreeId: state.degree[0].id,
     }
     // frontend validation
@@ -34,9 +36,14 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
       return
     }
     // send request
-    api.graph
-      .create(graphProps)
-      .then((graph) => api.user.insertGraph(user.modtreeId, graph.id))
+    trpc
+      .mutation('graph/create', graphProps)
+      .then((graph) =>
+        trpc.mutation('user/insert-graphs', {
+          userId,
+          graphIds: [graph.id],
+        })
+      )
       .then(() => updateUser())
       .then(() => props.setPage('main'))
   }
