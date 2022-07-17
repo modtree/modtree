@@ -295,6 +295,25 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
   }
 
   /**
+   * Removes a graph among saved graphs of a user.
+   *
+   * @param {User} user
+   * @param {string} graphId
+   * @returns {Promise<User>}
+   */
+  async removeGraph(user: User, graphId: string): Promise<User> {
+    // 1. find graph among user's savedGraphs
+    const filtered = user.savedGraphs.filter((graph) => graph.id !== graphId)
+    // 2. find graph among user's savedGraphs
+    if (filtered.length === user.savedGraphs.length) {
+      throw new Error('Graph not found in User')
+    }
+    // 3. update entity and save
+    user.savedGraphs = filtered
+    return this.save(user)
+  }
+
+  /**
    * Sets modulesDone/modulesDoing.
    *
    * @param {User} _user

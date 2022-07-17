@@ -11,6 +11,8 @@ import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
 import { GraphPicker } from '@/ui/search/graph/graph-picker'
 import { trpc } from '@/utils/trpc'
+import { useUser } from '@/utils/auth0'
+import { updateUser } from '@/utils/rehydrate'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
@@ -31,13 +33,13 @@ export function Main(props: {
   useEffect(() => {
     trpc.query('graphs', graphIds).then((graphs) => {
       setGraphs(graphs)
-      // mainGraph is different from gs
+      // mainGraph is different from graphs
       // mainGraph has an extra property selectedCodes
       // removing that property is still not enough for React to check equality
       const graph = graphs.find((g) => g.id === mainGraph.id)
       if (graph) state.graph[1](graph)
     })
-  }, [])
+  }, [graphIds])
 
   return (
     <>
@@ -54,7 +56,11 @@ export function Main(props: {
         {hasGraphs ? (
           <>
             <p>{text.graphListSection.summary}</p>
-            <GraphSection degrees={degrees} graphs={graphs} />
+            <GraphSection
+              degrees={degrees}
+              graphs={graphs}
+              mainGraph={mainGraph}
+            />
           </>
         ) : (
           // TODO this button should also link to add-new
@@ -71,8 +77,24 @@ export function Main(props: {
 function GraphSection(props: {
   degrees: IDegree[]
   graphs: ModtreeApiResponse.Graph[]
+  mainGraph: ModtreeApiResponse.Graph
 }) {
   const { degrees, graphs } = props
+
+  const { user } = useUser()
+
+  async function removeGraph(graphId: string) {
+    const userId = user?.modtreeId
+    if (userId) {
+      trpc
+        .mutation('user/remove-graph', {
+          userId,
+          graphId,
+        })
+        .then(() => updateUser())
+    }
+  }
+
   return (
     <div className="ui-rectangle flex flex-col overflow-hidden">
       <Row.Header>
@@ -86,11 +108,22 @@ function GraphSection(props: {
             <Row.Header>{lowercaseAndDash(d.title)}</Row.Header>
             {thisGraphs.length !== 0 ? (
               <>
-                {thisGraphs.map((g) => {
-                  return (
+                {thisGraphs.map((g) =>
+                  /**
+                   * Do not allow remove, if the graph is the main graph
+                   */
+                  props.mainGraph.id === g.id ? (
                     <Row.Graph key={g.id}>{getUniqueGraphTitle(g)}</Row.Graph>
+                  ) : (
+                    <Row.Graph
+                      key={g.id}
+                      deletable
+                      onDelete={() => removeGraph(g.id)}
+                    >
+                      {getUniqueGraphTitle(g)}
+                    </Row.Graph>
                   )
-                })}
+                )}
               </>
             ) : (
               <Row.Empty>This degree has no graphs.</Row.Empty>

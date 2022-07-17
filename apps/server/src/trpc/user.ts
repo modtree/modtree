@@ -133,8 +133,11 @@ export const user = createRouter()
       userId: z.string().uuid(),
       graphId: z.string().uuid(),
     }),
-    async resolve(_req) {
-      return 'NOT IMPLEMENTED YET'
+    async resolve(req) {
+      return api.userRepo
+        .findOneById(req.input.userId)
+        .then((user) => api.userRepo.removeGraph(user, req.input.graphId))
+        .then(flatten.user)
     },
   })
 

@@ -53,6 +53,14 @@ const flowNodeContextMenu: MenuItem[] = [
     },
   },
   {
+    text: 'Mark as not done',
+    callback: (e) => {
+      if (!e) return
+      const user = store.getState().user
+      api.user.setModuleStatus(user.id, [e.id], ModuleStatus.NOT_TAKEN)
+    },
+  },
+  {
     text: 'Remove',
     callback: async (e) => {
       if (!e) return

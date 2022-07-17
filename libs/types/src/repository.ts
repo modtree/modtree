@@ -319,6 +319,14 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   insertGraphs(user: IUser, graphIds: string[]): Promise<IUser>
+  /**
+   * removes a graph from a user's list of saved graphs
+   *
+   * @param user
+   * @param graphId
+   * @returns user
+   */
+  removeGraph(user: IUser, graphId: string): Promise<IUser>
 }
 
 /**
