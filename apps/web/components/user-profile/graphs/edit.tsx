@@ -5,12 +5,19 @@ import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { useAppSelector } from '@/store/redux'
+import { api } from 'api'
 import { flatten } from '@/utils/tailwind'
 
 export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
-  const { buildTitle, degreeTitle } = useAppSelector((state) => state.search)
+  const { buildTitle, buildId, degreeTitle } = useAppSelector(
+    (state) => state.search
+  )
   const state = {
     title: useState<string>(buildTitle),
+  }
+
+  const update = async (title: string) => {
+    api.graph.rename(buildId, title).then(() => props.setPage('main'))
   }
 
   return (
@@ -35,7 +42,9 @@ export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
         </div>
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green">Save graph</Button>
+        <Button color="green" onClick={() => update(state.title[0])}>
+          Save graph
+        </Button>
       </div>
     </div>
   )
