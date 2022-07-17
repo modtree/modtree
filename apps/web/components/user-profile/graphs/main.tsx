@@ -129,7 +129,17 @@ function GraphSection(props: {
                    * Do not allow remove, if the graph is the main graph
                    */
                   props.mainGraph.id === g.id ? (
-                    <Row.Graph key={g.id}>{getUniqueGraphTitle(g)}</Row.Graph>
+                    <Row.Graph
+                      key={g.id}
+                      onEdit={() => {
+                        dispatch(setBuildTitle(g.title))
+                        dispatch(setBuildId(g.id))
+                        dispatch(setDegreeTitle(g.degree.title))
+                        props.setPage('edit')
+                      }}
+                    >
+                      {getUniqueGraphTitle(g)}
+                    </Row.Graph>
                   ) : (
                     <Row.Graph
                       key={g.id}
