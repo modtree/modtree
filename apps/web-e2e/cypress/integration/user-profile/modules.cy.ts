@@ -40,6 +40,8 @@ describe('modules panel', () => {
     cy.get('[data-cy="modify-done"]').click()
     cy.get('[data-cy="add-done-search"]').type('LAC1201')
     cy.get('[id^=headlessui-combobox-option]').contains('Chinese 1').click()
+    // wait for module to be in list
+    cy.get('[data-cy="build-list"]').contains('Chinese 1')
     cy.get('button').contains('Save changes').click()
 
     doneCount++
@@ -51,6 +53,8 @@ describe('modules panel', () => {
     cy.get('[data-cy="modify-doing"]').click()
     cy.get('[data-cy="add-doing-search"]').type('LAC2201')
     cy.get('[id^=headlessui-combobox-option]').contains('Chinese 2').click()
+    // wait for module to be in list
+    cy.get('[data-cy="build-list"]').contains('Chinese 2')
     cy.get('button').contains('Save changes').click()
 
     doingCount++
