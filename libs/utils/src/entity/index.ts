@@ -38,23 +38,6 @@ export const flatten = {
   },
 
   /**
-   * flattens a user to response shape
-   *
-   * @param {User} user
-   * @returns {ModtreeApiResponse.User}
-   */
-  userFull(user: User): ModtreeApiResponse.UserFull {
-    return {
-      ...user,
-      modulesDoing: user.modulesDoing.map(flatten.module),
-      modulesDone: user.modulesDone.map(flatten.module),
-      savedGraphs: user.savedGraphs.map((g) => g.id),
-      // in case no graph yet
-      mainGraph: user.mainGraph ? user.mainGraph.id : '',
-    }
-  },
-
-  /**
    * flattens a graph to response shape
    *
    * @param {Graph} graph

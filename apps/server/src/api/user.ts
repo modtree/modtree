@@ -1,5 +1,5 @@
 import { Api } from '@modtree/repos'
-import { CustomReqBody, CustomReqQuery } from '@modtree/types'
+import { CustomReqQuery } from '@modtree/types'
 import { emptyInit, flatten } from '@modtree/utils'
 import { Request } from 'express'
 
@@ -75,7 +75,7 @@ export class UserApi {
           mainGraph: true,
         },
       })
-      .then(flatten.userFull)
+      .then(flatten.user)
   }
 
   /**
@@ -113,7 +113,7 @@ export class UserApi {
   static login = (api: Api) => async (req: Request) => {
     const authZeroId = req.params.authZeroId
     const { email } = req.body
-    return api.userLogin(authZeroId, email).then(flatten.userFull)
+    return api.userLogin(authZeroId, email).then(flatten.user)
   }
 
   /**

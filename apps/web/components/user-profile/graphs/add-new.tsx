@@ -1,8 +1,8 @@
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { Button } from '@/ui/buttons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
-import { IDegree, InitGraphProps, SetState } from '@modtree/types'
+import { InitGraphProps, ModtreeApiResponse, SetState } from '@modtree/types'
 import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { useAppSelector } from '@/store/redux'
@@ -11,24 +11,38 @@ import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
-  const degrees = useAppSelector((state) => state.user.savedDegrees)
-  const modulesDone = useAppSelector((state) => state.user.modulesDone)
-  const modulesDoing = useAppSelector((state) => state.user.modulesDoing)
+  // Get IDs
+  const degreeIds = useAppSelector((state) => state.user.savedDegrees)
+
+  // Load full degrees
+  const [degrees, setDegrees] = useState<ModtreeApiResponse.Degree[]>([])
+  const [loaded, setLoaded] = useState<boolean>(false)
+  useEffect(() => {
+    trpc.query('degrees', degreeIds).then((degrees) => {
+      setDegrees(degrees)
+      // actually set the degree
+      state.degree[1](degrees[0])
+      setLoaded(true)
+    })
+  }, [degreeIds])
 
   const { user } = useUser()
 
   const state = {
     title: useState<string>(''),
-    degree: useState<IDegree>(degrees[0]),
+    // actually undefined here
+    degree: useState<ModtreeApiResponse.Degree>(degrees[0]),
   }
 
   async function saveGraph() {
     const userId = user?.modtreeId
     if (!userId) return
+    const degreeId = state.degree[0].id
+    if (!degreeId) return
     const graphProps: InitGraphProps = {
       title: state.title[0],
       userId,
-      degreeId: state.degree[0].id,
+      degreeId,
     }
     // frontend validation
     if (graphProps.title === '') {
@@ -58,42 +72,17 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
       >
         <h6>Title</h6>
         <Input className="w-full mb-4" state={state.title} grayed />
-        <h6>Modules</h6>
-        <Modules
-          modulesDoneCodes={modulesDone}
-          modulesDoingCodes={modulesDoing}
-        />
         <h6>Degree</h6>
-        <DegreePicker
-          degrees={degrees}
-          select={state.degree}
-          modulesDoneCodes={modulesDone}
-          modulesDoingCodes={modulesDoing}
-        />
+        {loaded ? (
+          <DegreePicker degrees={degrees} select={state.degree} />
+        ) : (
+          <></>
+        )}
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={saveGraph}>
           Save graph
         </Button>
-      </div>
-    </div>
-  )
-}
-
-function Modules(props: {
-  modulesDoneCodes: string[]
-  modulesDoingCodes: string[]
-}) {
-  return (
-    <div className="mb-4">
-      <div className="bg-gray-200 p-2 rounded-xl flex-col space-y-2">
-        <p>The following modules will be placed in the graph:</p>
-        <p className="mb-0">
-          <b>Done:</b> {props.modulesDoneCodes.join(', ')}
-        </p>
-        <p className="mb-0">
-          <b>Doing:</b> {props.modulesDoingCodes.join(', ')}
-        </p>
       </div>
     </div>
   )

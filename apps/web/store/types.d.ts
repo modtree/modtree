@@ -8,7 +8,7 @@ import {
 import type { Pages, ContextMenuProps } from 'types'
 
 export type ReduxState = {
-  user: ModtreeApiResponse.UserFull
+  user: ModtreeApiResponse.User
   degree: ModtreeApiResponse.Degree
   graph: ModtreeApiResponse.Graph & {
     selectedCodes: string[]

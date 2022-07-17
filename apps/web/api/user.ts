@@ -11,7 +11,7 @@ export class UserApi extends BaseApi {
    * @param {string} userId
    * @returns {Promise<User>}
    */
-  async getById(userId: string): Promise<ModtreeApiResponse.UserFull> {
+  async getById(userId: string): Promise<ModtreeApiResponse.User> {
     return trpc.query('user/get-full', userId)
   }
 
@@ -25,7 +25,7 @@ export class UserApi extends BaseApi {
   async login(
     authZeroId: string,
     email: string
-  ): Promise<ModtreeApiResponse.UserFull> {
+  ): Promise<ModtreeApiResponse.User> {
     return trpc.mutation('user/login', { authZeroId, email }).then((user) => {
       this.dispatch(setUser(user))
       return user
@@ -95,5 +95,15 @@ export class UserApi extends BaseApi {
     graphId: string
   ): Promise<ModtreeApiResponse.User> {
     return trpc.mutation('user/insert-graphs', { userId, graphIds: [graphId] })
+  }
+
+  /**
+   * remove degree
+   */
+  async removeGraph(
+    userId: string,
+    graphId: string
+  ): Promise<ModtreeApiResponse.User> {
+    return trpc.mutation('user/remove-graph', { userId, graphId })
   }
 }

@@ -24,7 +24,7 @@ export function GraphPicker(props: {
       api.user.setMainGraph(userId, graph.id)
       dispatch(setMainGraph(graph))
     }
-  }, [graph])
+  }, [graph.id])
 
   return (
     <div className={flatten('ui-rectangle', 'shadow-none', 'h-8 w-64')}>

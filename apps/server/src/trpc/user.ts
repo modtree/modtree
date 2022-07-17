@@ -41,7 +41,7 @@ export const user = createRouter()
   .query('get-full', {
     input: z.string().uuid(),
     async resolve(req) {
-      return api.userRepo.findOneById(req.input).then(flatten.userFull)
+      return api.userRepo.findOneById(req.input).then(flatten.user)
     },
   })
 
@@ -175,6 +175,6 @@ export const user = createRouter()
     async resolve(req) {
       return api
         .userLogin(req.input.authZeroId, req.input.email)
-        .then(flatten.userFull)
+        .then(flatten.user)
     },
   })
