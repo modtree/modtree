@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { useAppSelector } from '@/store/redux'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { text } from 'text'
@@ -14,6 +14,7 @@ import { trpc } from '@/utils/trpc'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
 import { flatten } from '@/utils/tailwind'
+import { setBuildId, setBuildTitle, setDegreeTitle } from '@/store/search'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
@@ -76,6 +77,7 @@ export function Main(props: {
               graphs={graphs}
               mainGraph={mainGraph}
               userId={userId}
+              setPage={props.setPage}
             />
           </>
         ) : (
@@ -95,8 +97,10 @@ function GraphSection(props: {
   graphs: ModtreeApiResponse.Graph[]
   mainGraph: ModtreeApiResponse.Graph
   userId: string
+  setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
   const { degrees, graphs } = props
+  const dispatch = useAppDispatch()
 
   async function removeGraph(graphId: string) {
     trpc
@@ -131,6 +135,12 @@ function GraphSection(props: {
                       key={g.id}
                       deletable
                       onDelete={() => removeGraph(g.id)}
+                      onEdit={() => {
+                        dispatch(setBuildTitle(g.title))
+                        dispatch(setBuildId(g.id))
+                        dispatch(setDegreeTitle(g.degree.title))
+                        props.setPage('edit')
+                      }}
                     >
                       {getUniqueGraphTitle(g)}
                     </Row.Graph>

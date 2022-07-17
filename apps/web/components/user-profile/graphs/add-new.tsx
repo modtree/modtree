@@ -1,4 +1,3 @@
-import { SettingsSection } from '@/ui/settings/lists/base'
 import { Button } from '@/ui/buttons'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'

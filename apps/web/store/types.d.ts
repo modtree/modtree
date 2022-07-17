@@ -34,5 +34,6 @@ export type ReduxState = {
     searchResults: IModule[]
     module: IModule[]
     hasResults: boolean
+    degreeTitle: string
   }
 }
