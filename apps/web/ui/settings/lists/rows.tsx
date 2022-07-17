@@ -72,7 +72,7 @@ const GraphRow = (props: RowProps) => {
   return (
     <BaseRow {...rest} className="bg-white">
       <GraphIcon className="mr-2" />
-      <a>{children}</a>
+      {children}
     </BaseRow>
   )
 }
