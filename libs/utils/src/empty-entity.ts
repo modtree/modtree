@@ -45,22 +45,6 @@ const User: ModtreeApiResponse.User = {
   mainDegree: '',
 }
 
-const UserFull: ModtreeApiResponse.UserFull = {
-  id: '',
-  authZeroId: '',
-  displayName: '',
-  username: '',
-  modulesDone: [],
-  modulesDoing: [],
-  matriculationYear: 0,
-  graduationYear: 0,
-  graduationSemester: 0,
-  email: '',
-  savedDegrees: [],
-  savedGraphs: [],
-  mainGraph: '',
-}
-
 const Graph: ModtreeApiResponse.Graph = {
   title: '',
   id: '',
@@ -104,7 +88,6 @@ export const empty = {
   ModuleFull,
   ModuleCondensed,
   User,
-  UserFull,
   Graph,
   Degree,
   DegreeFull,
