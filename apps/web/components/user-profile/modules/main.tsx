@@ -7,28 +7,18 @@ import { Row } from '@/ui/settings/lists/rows'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
 import { useEffect } from 'react'
-import { trpc } from '@/utils/trpc'
-import { addModulesToCache } from '@/store/cache'
+import { api } from 'api'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user)
   const cache = useAppSelector((state) => state.cache)
 
-  const updateCache = (codes: string[]) => {
-    const existingCodes = Object.keys(cache.modules)
-    const codesToFetch = codes.filter((c) => !existingCodes.includes(c))
-    if (codesToFetch.length === 0) return
-    return trpc
-      .query('modules', codesToFetch)
-      .then((modules) => dispatch(addModulesToCache(modules)))
-  }
-
   /**
    * update the cache with required modules
    */
   useEffect(() => {
-    updateCache([...user.modulesDone, ...user.modulesDoing])
+    api.module.loadCodes([...user.modulesDone, ...user.modulesDoing])
   }, [user.modulesDone, user.modulesDoing])
 
   const hasModules = {
