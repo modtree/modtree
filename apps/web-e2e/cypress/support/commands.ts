@@ -49,8 +49,12 @@ Cypress.Commands.add('login', () => {
   })
 
   // 3. wait for user to load
-  cy.intercept('/trpc/user/get-full**').as('getUser')
-  cy.wait('@getUser')
+  cy.wait(2000)
+  /**
+   * Correct alternative getUser is unstable
+   */
+  // cy.intercept('/trpc/user/get-full**').as('getUser')
+  // cy.wait('@getUser')
 })
 
 Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
