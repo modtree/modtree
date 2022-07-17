@@ -125,3 +125,20 @@ export const graph = createRouter()
         .then((g) => api.graphRepo.canTakeModules(g))
     },
   })
+
+  /**
+   * finds a graph by its id and update title
+   */
+  .mutation('rename', {
+    input: z.object({
+      graphId: z.string().uuid(),
+      title: z.string(),
+    }),
+    async resolve(req) {
+      const { graphId, title } = req.input
+      return api.graphRepo
+        .findOneById(graphId)
+        .then((g) => api.graphRepo.rename(g, title))
+        .then(flatten.graph)
+    },
+  })
