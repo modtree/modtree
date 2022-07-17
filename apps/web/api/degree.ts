@@ -3,7 +3,7 @@ import { addToBuildList, setBuildList } from '@/store/search'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
 import { InitDegreeProps, ModtreeApiResponse } from '@modtree/types'
-
+import { api } from 'api'
 import { BaseApi } from './base-api'
 
 export class DegreeApi extends BaseApi {
@@ -34,10 +34,13 @@ export class DegreeApi extends BaseApi {
    * sets frontend current build target
    */
   async setBuildTarget(degreeId: string) {
-    return trpc.query('degree/get-full', degreeId).then((degree) => {
-      this.dispatch(addModulesToCache(degree.modules))
-      this.dispatch(setBuildList(degree.modules.map((m) => m.moduleCode)))
-    })
+    return trpc
+      .query('degree', degreeId)
+      .then((degree) => api.module.getByCodes(degree.modules))
+      .then((modules) => {
+        this.dispatch(addModulesToCache(modules))
+        this.dispatch(setBuildList(modules.map((m) => m.moduleCode)))
+      })
   }
 
   /**

@@ -1,5 +1,4 @@
 import {
-  IUser,
   IModule,
   IModuleCondensed,
   IModuleFull,
@@ -29,7 +28,7 @@ const DegreeFull: ModtreeApiResponse.DegreeFull = {
   title: '',
 }
 
-const User: IUser = {
+const User: ModtreeApiResponse.User = {
   id: '',
   authZeroId: '',
   displayName: '',
@@ -42,6 +41,8 @@ const User: IUser = {
   email: '',
   savedDegrees: [],
   savedGraphs: [],
+  mainGraph: '',
+  mainDegree: '',
 }
 
 const UserFull: ModtreeApiResponse.UserFull = {

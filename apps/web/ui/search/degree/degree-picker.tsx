@@ -1,13 +1,13 @@
 import { Listbox } from '@headlessui/react'
-import { IDegree, UseState } from '@modtree/types'
+import { ModtreeApiResponse, UseState } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 import { useEffect } from 'react'
 import { api } from 'api'
 
 export function DegreePicker(props: {
-  degrees: IDegree[]
-  select: UseState<IDegree>
+  degrees: ModtreeApiResponse.Degree[]
+  select: UseState<ModtreeApiResponse.Degree>
 }) {
   const [degree, setDegree] = props.select
 

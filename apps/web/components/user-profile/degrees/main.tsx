@@ -3,20 +3,31 @@ import { text } from 'text'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { Row } from '@/ui/settings/lists/rows'
 import { dashed } from '@/utils/array'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, setBuildId, setBuildTitle } from '@/store/search'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
+import { ModtreeApiResponse } from '@modtree/types'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Degrees']>>
 }) {
   const dispatch = useAppDispatch()
-  const degrees = useAppSelector((state) => state.user.savedDegrees)
-  const hasDegree = degrees.length !== 0
+
+  // Get IDs
+  const degreeIds = useAppSelector((state) => state.user.savedDegrees)
+  const hasDegree = degreeIds.length !== 0
   const { user } = useUser()
+
+  // Load full degrees
+  const [degrees, setDegrees] = useState<ModtreeApiResponse.Degree[]>([])
+  useEffect(() => {
+    trpc.query('degrees', degreeIds).then((degrees) => {
+      setDegrees(degrees)
+    })
+  }, [degreeIds])
 
   async function removeDegree(degreeId: string) {
     const userId = user?.modtreeId

@@ -12,7 +12,7 @@ export const user = createSlice({
     updateModulesDoing: (user, action: PayloadAction<string[]>) => {
       user.modulesDoing = action.payload
     },
-    setUser: (user, action: PayloadAction<ModtreeApiResponse.UserFull>) => {
+    setUser: (user, action: PayloadAction<ModtreeApiResponse.User>) => {
       Object.entries(action.payload).forEach(([key, value]) => {
         ;(user as any)[key] = value
       })

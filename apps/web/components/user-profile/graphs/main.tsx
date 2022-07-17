@@ -6,7 +6,7 @@ import { text } from 'text'
 import { Row } from '@/ui/settings/lists/rows'
 import { GraphIcon } from '@/ui/icons'
 import { EmptyBox } from '@/ui/settings/empty-box'
-import { IDegree, ModtreeApiResponse } from '@modtree/types'
+import { ModtreeApiResponse } from '@modtree/types'
 import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
 import { GraphPicker } from '@/ui/search/graph/graph-picker'
@@ -17,12 +17,21 @@ import { updateUser } from '@/utils/rehydrate'
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
+  // Get IDs
   const graphIds = useAppSelector((state) => state.user.savedGraphs)
+  const degreeIds = useAppSelector((state) => state.user.savedDegrees)
   const hasGraphs = graphIds.length !== 0
+
+  // Load full degrees
+  const [degrees, setDegrees] = useState<ModtreeApiResponse.Degree[]>([])
+  useEffect(() => {
+    trpc.query('degrees', degreeIds).then((degrees) => {
+      setDegrees(degrees)
+    })
+  }, [degreeIds])
+
+  // Load graphs
   const [graphs, setGraphs] = useState<ModtreeApiResponse.Graph[]>([])
-
-  const degrees = useAppSelector((state) => state.user.savedDegrees)
-
   // placeholder state
   // updated correctly in useEffect
   const mainGraph = useAppSelector((state) => state.graph)
@@ -75,7 +84,7 @@ export function Main(props: {
 }
 
 function GraphSection(props: {
-  degrees: IDegree[]
+  degrees: ModtreeApiResponse.Degree[]
   graphs: ModtreeApiResponse.Graph[]
   mainGraph: ModtreeApiResponse.Graph
 }) {

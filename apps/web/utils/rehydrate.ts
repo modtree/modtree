@@ -12,23 +12,23 @@ const dispatch = store.dispatch
 
 async function getUser(
   user: ModtreeUserProfile
-): Promise<ModtreeApiResponse.UserFull> {
-  const authZeroLoaded = user.modtreeId !== ''
-  const reduxLoaded = redux.user.id !== ''
+): Promise<ModtreeApiResponse.User> {
+  const authZeroLoaded = user.modtreeId && user.modtreeId !== ''
+  const reduxLoaded = redux.user.id && redux.user.id !== ''
   if (reduxLoaded) {
     return redux.user
   } else if (authZeroLoaded) {
     const userId = user?.modtreeId
-    if (!userId) return empty.UserFull
+    if (!userId) return empty.User
     return trpc
-      .query('user/get-full', userId)
+      .query('user', userId)
       .then((user) => {
         dispatch(setUser(user))
         return user
       })
-      .catch(() => empty.UserFull)
+      .catch(() => empty.User)
   } else {
-    return empty.UserFull
+    return empty.User
   }
 }
 
@@ -40,9 +40,11 @@ export function rehydrate(user: ModtreeUserProfile) {
   userPromise
     .then((user) => {
       if (redux.degree.id === '') {
-        const degree = user.mainDegree
-        if (!degree) return
-        dispatch(setDegree(degree))
+        const degreeId = user.mainDegree
+        if (!degreeId) return
+        trpc.query('degree', degreeId).then((d) => {
+          dispatch(setDegree(d))
+        })
       }
       if (redux.graph.id === '') {
         const graphId = user.mainGraph
