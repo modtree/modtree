@@ -96,4 +96,14 @@ export class UserApi extends BaseApi {
   ): Promise<ModtreeApiResponse.User> {
     return trpc.mutation('user/insert-graphs', { userId, graphIds: [graphId] })
   }
+
+  /**
+   * remove degree
+   */
+  async removeGraph(
+    userId: string,
+    graphId: string
+  ): Promise<ModtreeApiResponse.User> {
+    return trpc.mutation('user/remove-graph', { userId, graphId })
+  }
 }
