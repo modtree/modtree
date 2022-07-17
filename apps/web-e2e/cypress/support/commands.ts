@@ -66,6 +66,10 @@ Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
     })
     .then(() => {
       cy.get('button').contains('Add to graph').click()
+      /**
+       * wait for module to be added to graph
+       */
+      cy.wait(3000)
     })
 })
 
