@@ -13,6 +13,7 @@ import { GraphPicker } from '@/ui/search/graph/graph-picker'
 import { trpc } from '@/utils/trpc'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
+import { flatten } from '@/utils/tailwind'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
@@ -58,7 +59,9 @@ export function Main(props: {
       <h2>Default graph</h2>
       <p className="mb-4">Choose the default graph to display.</p>
       <div className="flex flex-row space-x-2 mb-4">
-        <GraphPicker graphs={graphs} select={state.graph} />
+        <div className={flatten('ui-rectangle', 'shadow-none', 'h-8 w-64')}>
+          <GraphPicker graphs={graphs} select={state.graph} />
+        </div>
       </div>
       <SettingsSection
         title="Graphs"
