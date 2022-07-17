@@ -22,6 +22,9 @@ export function Main(props: {
   const degreeIds = useAppSelector((state) => state.user.savedDegrees)
   const hasGraphs = graphIds.length !== 0
 
+  const { user } = useUser()
+  const userId = user?.modtreeId
+
   // Load full degrees
   const [degrees, setDegrees] = useState<ModtreeApiResponse.Degree[]>([])
   useEffect(() => {
@@ -62,13 +65,14 @@ export function Main(props: {
         addButtonText={hasGraphs ? 'New graph' : ''}
         onAddClick={() => props.setPage('add-new')}
       >
-        {hasGraphs ? (
+        {hasGraphs && userId ? (
           <>
             <p>{text.graphListSection.summary}</p>
             <GraphSection
               degrees={degrees}
               graphs={graphs}
               mainGraph={mainGraph}
+              userId={userId}
             />
           </>
         ) : (
@@ -87,21 +91,17 @@ function GraphSection(props: {
   degrees: ModtreeApiResponse.Degree[]
   graphs: ModtreeApiResponse.Graph[]
   mainGraph: ModtreeApiResponse.Graph
+  userId: string
 }) {
   const { degrees, graphs } = props
 
-  const { user } = useUser()
-
   async function removeGraph(graphId: string) {
-    const userId = user?.modtreeId
-    if (userId) {
-      trpc
-        .mutation('user/remove-graph', {
-          userId,
-          graphId,
-        })
-        .then(() => updateUser())
-    }
+    trpc
+      .mutation('user/remove-graph', {
+        userId: props.userId,
+        graphId,
+      })
+      .then(() => updateUser())
   }
 
   return (
