@@ -15,7 +15,7 @@ describe('add-and-remove', () => {
      */
     // getUser has completed
     // Wait for store to load
-    cy.wait(5000)
+    cy.wait(2000)
     cy.window()
       .its('store')
       .invoke('getState')
