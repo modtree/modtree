@@ -8,7 +8,7 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-import { TEST_USER } from '../utils/constants'
+import { FRONTEND_URL, TEST_USER } from '../utils/constants'
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
@@ -37,7 +37,7 @@ Cypress.Commands.add('login', () => {
   //
   // Else, login data was saved from a previous session, so proceed.
   cy.url().then((URL) => {
-    if (!URL.includes('localhost')) {
+    if (URL.includes('auth0')) {
       // key in credentials
       cy.get('[id="username"]').type(TEST_USER.email)
       cy.get('[id="password"]').type(TEST_USER.password)
@@ -58,18 +58,18 @@ Cypress.Commands.add('login', () => {
 })
 
 Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
+  cy.intercept('GET', '/trpc/*').as('getModule')
   cy.get('[data-cy=root-search-box]')
     .clear()
     .type(moduleCode)
     .then(() => {
       cy.get('[data-cy=search-result]').contains(title).click()
+      // wait for modal to load
+      cy.get('h1').contains(moduleCode)
     })
     .then(() => {
       cy.get('button').contains('Add to graph').click()
-      /**
-       * wait for module to be added to graph
-       */
-      cy.wait(3000)
+      cy.get(`[data-cy=node-${moduleCode}]`)
     })
 })
 

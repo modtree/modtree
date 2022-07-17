@@ -1,7 +1,7 @@
-import { TEST_USER } from '../utils/constants'
+import { FRONTEND_URL, TEST_USER } from '../utils/constants'
 
 describe('authentication', () => {
-  beforeEach(() => cy.visit('http://localhost:3000/'))
+  beforeEach(() => cy.visit(FRONTEND_URL))
 
   it('sign in and sign out', () => {
     /** intercepts */
@@ -11,7 +11,7 @@ describe('authentication', () => {
     /** just logout every time */
     cy.get('a[href="/api/auth/login"]').click()
     cy.wait('@signInToModtree')
-    cy.visit('/api/auth/logout')
+    cy.visit(FRONTEND_URL + '/api/auth/logout')
 
     /**
      * execute the real test
