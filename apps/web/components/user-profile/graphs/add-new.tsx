@@ -12,8 +12,6 @@ import { trpc } from '@/utils/trpc'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const degrees = useAppSelector((state) => state.user.savedDegrees)
-  const modulesDone = useAppSelector((state) => state.user.modulesDone)
-  const modulesDoing = useAppSelector((state) => state.user.modulesDoing)
 
   const { user } = useUser()
 
@@ -58,42 +56,13 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
       >
         <h6>Title</h6>
         <Input className="w-full mb-4" state={state.title} grayed />
-        <h6>Modules</h6>
-        <Modules
-          modulesDoneCodes={modulesDone}
-          modulesDoingCodes={modulesDoing}
-        />
         <h6>Degree</h6>
-        <DegreePicker
-          degrees={degrees}
-          select={state.degree}
-          modulesDoneCodes={modulesDone}
-          modulesDoingCodes={modulesDoing}
-        />
+        <DegreePicker degrees={degrees} select={state.degree} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={saveGraph}>
           Save graph
         </Button>
-      </div>
-    </div>
-  )
-}
-
-function Modules(props: {
-  modulesDoneCodes: string[]
-  modulesDoingCodes: string[]
-}) {
-  return (
-    <div className="mb-4">
-      <div className="bg-gray-200 p-2 rounded-xl flex-col space-y-2">
-        <p>The following modules will be placed in the graph:</p>
-        <p className="mb-0">
-          <b>Done:</b> {props.modulesDoneCodes.join(', ')}
-        </p>
-        <p className="mb-0">
-          <b>Doing:</b> {props.modulesDoingCodes.join(', ')}
-        </p>
       </div>
     </div>
   )

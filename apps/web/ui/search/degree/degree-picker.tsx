@@ -4,16 +4,12 @@ import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 import { useEffect } from 'react'
 import { api } from 'api'
-import { useAppSelector } from '@/store/redux'
 
 export function DegreePicker(props: {
   degrees: IDegree[]
   select: UseState<IDegree>
-  modulesDoneCodes: string[]
-  modulesDoingCodes: string[]
 }) {
   const [degree, setDegree] = props.select
-  const { buildList } = useAppSelector((state) => state.search)
 
   useEffect(() => {
     api.degree.setBuildTarget(degree.id)
@@ -50,12 +46,6 @@ export function DegreePicker(props: {
             ))}
           </Listbox.Options>
         </Listbox>
-      </div>
-      <div className="bg-gray-200 p-2 rounded-xl">
-        <p>
-          The following remaining degree modules will be placed in the graph:
-        </p>
-        <p className="mb-0">{buildList.join(', ')}</p>
       </div>
     </div>
   )
