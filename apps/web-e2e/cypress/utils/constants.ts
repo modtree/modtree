@@ -3,5 +3,10 @@ export const TEST_USER = {
   password: 'Test@1234',
 }
 
-//export const FRONTEND_URL = 'http://localhost:3000'
-export const FRONTEND_URL = 'https://modtree-dev.vercel.app'
+// Set frontend URL to test
+const url = {
+  dev: 'https://modtree-dev.vercel.app',
+  local: 'http://localhost:3000',
+  prod: 'https://modtree.vercel.app',
+}
+export const FRONTEND_URL = url.local
