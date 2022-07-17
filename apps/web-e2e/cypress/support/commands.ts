@@ -64,21 +64,12 @@ Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
     .type(moduleCode)
     .then(() => {
       cy.get('[data-cy=search-result]').contains(title).click()
-      /**
-       * wait for module full
-       */
-      cy.wait('@getModule')
-      /**
-       * wait for modal to load
-       */
-      cy.wait(2000)
+      // wait for modal to load
+      cy.get('h1').contains(moduleCode)
     })
     .then(() => {
       cy.get('button').contains('Add to graph').click()
-      /**
-       * wait for module to be added to graph
-       */
-      cy.wait(3000)
+      cy.get(`[data-cy=node-${moduleCode}]`)
     })
 })
 
