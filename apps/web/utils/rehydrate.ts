@@ -62,7 +62,7 @@ export function rehydrate(user: ModtreeUserProfile) {
  */
 export async function updateUser() {
   const userId = store.getState().user.id
-  return trpc.query('user/get-full', userId).then((user) => {
+  return trpc.query('user', userId).then((user) => {
     dispatch(setUser(user))
     return user
   })
