@@ -32,6 +32,18 @@ const correct = [
     done: ['B1000'],
     expected: false,
   },
+  {
+    type: 'and branch',
+    query: 'C2000',
+    done: ['B1000'],
+    expected: false,
+  },
+  {
+    type: 'or branch',
+    query: 'D2000',
+    done: ['B1000'],
+    expected: true,
+  },
 ]
 
 test.each(correct)('$type', async ({ query, done, expected }) => {
