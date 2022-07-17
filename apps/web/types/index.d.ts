@@ -93,7 +93,7 @@ export type DegreeSummary = {
 
 export type Pages = {
   Degrees: 'main' | 'add-new' | 'edit'
-  Graphs: 'main' | 'add-new'
+  Graphs: 'main' | 'add-new' | 'edit'
   Modules: 'main' | 'add-doing' | 'add-done'
   UserProfile:
     | 'public-profile'

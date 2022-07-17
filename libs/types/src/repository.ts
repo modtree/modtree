@@ -159,6 +159,14 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    */
   canTakeModules(graph: IGraph): Promise<CanTakeModuleMap>
   /**
+   * rename graph
+   *
+   * @param graph
+   * @param title
+   * @returns graph
+   */
+  rename(graph: IGraph, title: string): Promise<IGraph>
+  /**
    * finds graphs by ids
    *
    * @param id

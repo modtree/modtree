@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { useAppSelector } from '@/store/redux'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { SettingsSection } from '@/ui/settings/lists/base'
 import { text } from 'text'
@@ -13,6 +13,8 @@ import { GraphPicker } from '@/ui/search/graph/graph-picker'
 import { trpc } from '@/utils/trpc'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
+import { flatten } from '@/utils/tailwind'
+import { setBuildId, setBuildTitle, setDegreeTitle } from '@/store/search'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
@@ -58,7 +60,9 @@ export function Main(props: {
       <h2>Default graph</h2>
       <p className="mb-4">Choose the default graph to display.</p>
       <div className="flex flex-row space-x-2 mb-4">
-        <GraphPicker graphs={graphs} select={state.graph} />
+        <div className={flatten('ui-rectangle', 'shadow-none', 'h-8 w-64')}>
+          <GraphPicker graphs={graphs} select={state.graph} />
+        </div>
       </div>
       <SettingsSection
         title="Graphs"
@@ -73,6 +77,7 @@ export function Main(props: {
               graphs={graphs}
               mainGraph={mainGraph}
               userId={userId}
+              setPage={props.setPage}
             />
           </>
         ) : (
@@ -92,8 +97,10 @@ function GraphSection(props: {
   graphs: ModtreeApiResponse.Graph[]
   mainGraph: ModtreeApiResponse.Graph
   userId: string
+  setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
   const { degrees, graphs } = props
+  const dispatch = useAppDispatch()
 
   async function removeGraph(graphId: string) {
     trpc
@@ -122,12 +129,28 @@ function GraphSection(props: {
                    * Do not allow remove, if the graph is the main graph
                    */
                   props.mainGraph.id === g.id ? (
-                    <Row.Graph key={g.id}>{getUniqueGraphTitle(g)}</Row.Graph>
+                    <Row.Graph
+                      key={g.id}
+                      onEdit={() => {
+                        dispatch(setBuildTitle(g.title))
+                        dispatch(setBuildId(g.id))
+                        dispatch(setDegreeTitle(g.degree.title))
+                        props.setPage('edit')
+                      }}
+                    >
+                      {getUniqueGraphTitle(g)}
+                    </Row.Graph>
                   ) : (
                     <Row.Graph
                       key={g.id}
                       deletable
                       onDelete={() => removeGraph(g.id)}
+                      onEdit={() => {
+                        dispatch(setBuildTitle(g.title))
+                        dispatch(setBuildId(g.id))
+                        dispatch(setDegreeTitle(g.degree.title))
+                        props.setPage('edit')
+                      }}
                     >
                       {getUniqueGraphTitle(g)}
                     </Row.Graph>

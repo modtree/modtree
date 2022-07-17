@@ -317,4 +317,17 @@ export class GraphRepository
       return dict
     })
   }
+
+  /**
+   * Updates the title of the graph
+   * @param {Graph} graph
+   * @param {string} title
+   * @returns {Promise<Graph>}
+   */
+  async rename(graph: Graph, title: string): Promise<Graph> {
+    return this.save({
+      ...graph,
+      title,
+    })
+  }
 }

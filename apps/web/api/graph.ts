@@ -58,4 +58,14 @@ export class GraphApi extends BaseApi {
   async canTakeModules(graphId: string): Promise<CanTakeModuleMap> {
     return trpc.query('graph/can-take-modules', graphId)
   }
+
+  /**
+   * update title
+   */
+  async rename(
+    graphId: string,
+    title: string
+  ): Promise<ModtreeApiResponse.Graph> {
+    return trpc.mutation('graph/rename', { graphId, title })
+  }
 }

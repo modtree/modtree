@@ -12,6 +12,12 @@ export const search = createSlice({
     setBuildId: (state, action: PayloadAction<string>) => {
       state.buildId = action.payload
     },
+    /**
+     * Only for edit graph
+     */
+    setDegreeTitle: (state, action: PayloadAction<string>) => {
+      state.degreeTitle = action.payload
+    },
     setSearchedModule: (state, action: PayloadAction<IModule[]>) => {
       state.module = action.payload
       state.hasResults = action.payload.length > 0
@@ -51,5 +57,6 @@ export const {
   setBuildTitle,
   setBuildList,
   setBuildId,
+  setDegreeTitle,
 } = search.actions
 export default search.reducer

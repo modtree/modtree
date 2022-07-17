@@ -70,9 +70,9 @@ const DegreeRow = (props: RowProps) => {
 const GraphRow = (props: RowProps) => {
   const { children, ...rest } = props
   return (
-    <BaseRow {...rest} className="bg-white">
+    <BaseRow {...rest} editable className="bg-white">
       <GraphIcon className="mr-2" />
-      <a>{children}</a>
+      {children}
     </BaseRow>
   )
 }

@@ -33,5 +33,6 @@ export const baseInitialState: ReduxState = {
     searchResults: [],
     module: [],
     hasResults: false,
+    degreeTitle: '',
   },
 }
