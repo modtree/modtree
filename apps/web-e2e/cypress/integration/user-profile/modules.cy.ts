@@ -1,8 +1,22 @@
 import { FRONTEND_URL } from '../../utils/constants'
 
-// these are our presets upon initializing a new user
-let doneCount = 7
-let doingCount = 9
+let doneCount
+let doingCount
+
+function getInitialLengths() {
+  cy.getCy('done-section')
+    .children()
+    .its('length')
+    .then((n) => {
+      doneCount = n
+    })
+  cy.getCy('doing-section')
+    .children()
+    .its('length')
+    .then((n) => {
+      doingCount = n
+    })
+}
 
 function checkLengths() {
   cy.getCy('done-section').children().its('length').should('eq', doneCount)
@@ -23,10 +37,23 @@ describe('modules panel', () => {
       cy.contains('Your profile').click()
       cy.contains('Modules').click()
     })
+
+    // count current modules done and modules doing
+    // only do it once for initial load
+    if (!doneCount && !doingCount) {
+      getInitialLengths()
+    }
   })
 
-  it('Initial counts', () => {
-    checkLengths()
+  it('Does not contain LAC1201 and LAC2201', () => {
+    cy.get('[data-cy="done-module"]').each((el) => {
+      expect(el.text()).to.not.equal('LAC1201')
+      expect(el.text()).to.not.equal('LAC2201')
+    })
+    cy.get('[data-cy="doing-module"]').each((el) => {
+      expect(el.text()).to.not.equal('LAC1201')
+      expect(el.text()).to.not.equal('LAC2201')
+    })
   })
 
   it('Adds to modules done', () => {

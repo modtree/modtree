@@ -48,7 +48,9 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                   const module = cache.modules[code]
                   return (
                     <Row.Module key={dashed(code, index)}>
-                      <span className="font-semibold">{code}</span>
+                      <span className="font-semibold" data-cy="doing-module">
+                        {code}
+                      </span>
                       <span className="mx-1">/</span>
                       {module && module.title}
                     </Row.Module>
@@ -83,7 +85,9 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
                   const module = cache.modules[code]
                   return (
                     <Row.Module key={dashed(code, index)}>
-                      <span className="font-semibold">{code}</span>
+                      <span className="font-semibold" data-cy="done-module">
+                        {code}
+                      </span>
                       <span className="mx-1">/</span>
                       {module && module.title}
                     </Row.Module>
