@@ -24,7 +24,10 @@ export function RootSearchBox() {
   }
 
   return (
-    <div className="fixed top-3 left-3 w-72 z-10">
+    <div
+      className="fixed top-3 left-3 w-72 z-10"
+      data-onboarding="root-search-bar"
+    >
       <SearchContainer
         selected={selected}
         onSelect={onSelect}
