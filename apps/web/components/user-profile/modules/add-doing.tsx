@@ -37,7 +37,6 @@ export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
           <SettingsSearchBox cypress="add-doing-search" />
-          <Button>Add Module</Button>
         </div>
         <SelectedModules cypress="build-list" modules={buildList} />
       </SettingsSection>

@@ -29,7 +29,7 @@ export function Panel(props: ModalPanelProps) {
           // 'border border-blue-500',
           props.minHeight ? 'max-h-full' : 'h-full',
           'relative max-w-4xl rounded-2xl bg-white',
-          'py-6 text-left align-middle shadow-xl transition-all'
+          'py-6 align-middle shadow-xl transition-all'
         )}
       >
         {props.closeButton && (

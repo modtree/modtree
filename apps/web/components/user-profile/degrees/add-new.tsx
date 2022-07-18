@@ -88,7 +88,6 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
               <SettingsSearchBox />
             </div>
           </div>
-          <Button>Add Module</Button>
         </div>
         <SelectedModules modules={buildList} />
       </SettingsSection>

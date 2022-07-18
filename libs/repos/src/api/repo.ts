@@ -22,7 +22,10 @@ export class Api extends BaseApi {
    * @returns {Promise<User>}
    */
   async initializeUser(authZeroId: string, email: string): Promise<User> {
-    const c = initializeUserConfig
+    const c =
+      process.env['NODE_ENV'] === 'production'
+        ? initializeUserConfig.production
+        : initializeUserConfig.development
     const user = this.userRepo.initialize({
       authZeroId,
       email,

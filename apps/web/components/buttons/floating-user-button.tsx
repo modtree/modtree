@@ -55,10 +55,14 @@ const SignedInCircle = () => {
           <div>Signed in as{dev && ' (auth0)'}</div>
           <b>{user?.nickname}</b>
         </>
-        <>
-          <div>Email{dev && ' (postgres)'}</div>
-          <b data-cy="email">{email}</b>
-        </>
+        {dev ? (
+          <>
+            <div>Email (postgres)</div>
+            <b data-cy="email">{email}</b>
+          </>
+        ) : (
+          <></>
+        )}
       </Entries>
     </DropdownMenu>
   )
