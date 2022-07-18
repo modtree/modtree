@@ -45,7 +45,7 @@ describe('modules panel', () => {
     }
   })
 
-  it('Does not contain LAC1201 and LAC2201', () => {
+  it('User does not contain LAC1201 and LAC2201', () => {
     cy.get('[data-cy="done-module"]').each((el) => {
       expect(el.text()).to.not.equal('LAC1201')
       expect(el.text()).to.not.equal('LAC2201')
