@@ -5,6 +5,7 @@ import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit'
 
 type ModalProps = Omit<ModalBaseProps & ModalPanelProps, 'closeModal'> & {
   hideAction: ActionCreatorWithoutPayload
+  cypressCloseButton?: string
 }
 
 export default function Modal(props: ModalProps) {
@@ -17,6 +18,7 @@ export default function Modal(props: ModalProps) {
     className,
     children,
     minHeight,
+    cypressCloseButton,
   } = props
 
   const closeModal = () => dispatch(hideAction())
@@ -29,6 +31,7 @@ export default function Modal(props: ModalProps) {
         scrollable={scrollable}
         className={className}
         minHeight={minHeight}
+        cypressCloseButton={cypressCloseButton}
       >
         {children}
       </Panel>

@@ -10,6 +10,7 @@ export type ModalPanelProps = {
   className?: string
   closeModal: () => void
   minHeight?: boolean
+  cypressCloseButton?: string
 }
 
 export function Panel(props: ModalPanelProps) {
@@ -34,7 +35,10 @@ export function Panel(props: ModalPanelProps) {
       >
         {props.closeButton && (
           <div className="w-6 h-6 absolute right-6">
-            <CloseButton close={props.closeModal} />
+            <CloseButton
+              close={props.closeModal}
+              cypressCloseButton={props.cypressCloseButton}
+            />
           </div>
         )}
         <div
