@@ -1,7 +1,7 @@
 import { setGraph } from '@/store/graph'
 import { trpc } from '@/utils/trpc'
 import {
-  CanTakeModuleMap,
+  CanTakeModule,
   GraphFlowEdge,
   GraphFlowNode,
   InitGraphProps,
@@ -55,7 +55,7 @@ export class GraphApi extends BaseApi {
   /**
    * can take modules
    */
-  async canTakeModules(graphId: string): Promise<CanTakeModuleMap> {
+  async canTakeModules(graphId: string): Promise<CanTakeModule[]> {
     return trpc.query('graph/can-take-modules', graphId)
   }
 

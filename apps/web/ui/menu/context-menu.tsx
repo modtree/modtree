@@ -55,10 +55,7 @@ const ContextMenuWrapper = (props: {
   children: ReactElement[] | ReactElement
   static?: boolean
 }) => (
-  <Menu
-    as="div"
-    className="select-none text-right relative inline-block text-left"
-  >
+  <Menu as="div" className="select-none relative inline-block">
     <Menu.Items
       static
       className={flatten(

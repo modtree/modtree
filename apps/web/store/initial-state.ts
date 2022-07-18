@@ -9,7 +9,8 @@ export const baseInitialState: ReduxState = {
     selectedCodes: [],
   },
   modal: {
-    userProfilePage: 'public-profile',
+    showModuleStateGuide: true,
+    userProfilePage: 'graphs',
     contextMenuProps: {
       top: 0,
       left: 0,

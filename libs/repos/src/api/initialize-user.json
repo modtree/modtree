@@ -1,39 +1,51 @@
 {
-  "user": {
-    "modulesDone": [
-      "MA2001",
-      "MA1100",
-      "HSH1000",
-      "HSA1000",
-      "GEA1000",
-      "MA2101",
-      "MA3201"
-    ],
-    "modulesDoing": [
-      "IS1103",
-      "CS1010S",
-      "DTK1234",
-      "HS1401S",
-      "HSI1000",
-      "HSS1000",
-      "MA2002",
-      "MA2219",
-      "PC1432"
-    ]
+  "production": {
+    "user": {
+      "modulesDone": [],
+      "modulesDoing": []
+    },
+    "degree": {
+      "title": "Untitled",
+      "moduleCodes": []
+    }
   },
-  "degree": {
-    "title": "Computer Science",
-    "moduleCodes": [
-      "CS1231S",
-      "CS2030S",
-      "CS2040S",
-      "CS2100",
-      "CS2101",
-      "CS2103T",
-      "CS2106",
-      "CS2109S",
-      "CS3230",
-      "CS2309"
-    ]
+  "development": {
+    "user": {
+      "modulesDone": [
+        "MA2001",
+        "MA1100",
+        "HSH1000",
+        "HSA1000",
+        "GEA1000",
+        "MA2101",
+        "MA3201"
+      ],
+      "modulesDoing": [
+        "IS1103",
+        "CS1010S",
+        "DTK1234",
+        "HS1401S",
+        "HSI1000",
+        "HSS1000",
+        "MA2002",
+        "MA2219",
+        "PC1432"
+      ]
+    },
+    "degree": {
+      "title": "Computer Science",
+      "moduleCodes": [
+        "CS1231S",
+        "CS2030S",
+        "CS2040S",
+        "CS2100",
+        "CS2101",
+        "CS2103T",
+        "CS2106",
+        "CS2109S",
+        "CS3230",
+        "CS2309"
+      ]
+    }
   }
 }

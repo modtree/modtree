@@ -1,9 +1,8 @@
 import { Pages } from 'types'
-import { SettingsSection } from '@/ui/settings/lists/base'
+import { SettingsSection, Row } from '@/ui/settings'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
-import { Row } from '@/ui/settings/lists/rows'
 import { Button } from '@/ui/buttons'
 import { InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
@@ -89,7 +88,6 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
               <SettingsSearchBox />
             </div>
           </div>
-          <Button>Add Module</Button>
         </div>
         <SelectedModules modules={buildList} />
       </SettingsSection>

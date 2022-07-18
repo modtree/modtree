@@ -1,13 +1,11 @@
 import { MouseEvent, useEffect, useMemo } from 'react'
 import ReactFlow, {
-  Controls,
   Node,
   useNodesState,
   Background,
   useEdgesState,
   useReactFlow,
 } from 'react-flow-renderer'
-import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
@@ -16,6 +14,9 @@ import { getCSS } from '@/utils/module-state'
 import { redrawGraph } from '@modtree/utils'
 import { api } from 'api'
 import { trpc } from '@/utils/trpc'
+import { FlowControls } from './controls'
+import { ModuleNode } from './module-node'
+import { GraphFlowNode } from '@modtree/types'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -58,11 +59,9 @@ export default function ModtreeFlow() {
       Promise.all([
         api.user.getById(user.id),
         api.graph.canTakeModules(graph.id),
-      ])
-        .then(([user, canTake]) =>
-          getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake)
-        )
-        .then((nodes) => setNodes(nodes))
+      ]).then(([user, canTake]) =>
+        setNodes(getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake))
+      )
     }
   }, [graph.flowNodes, graph.id])
 
@@ -92,12 +91,19 @@ export default function ModtreeFlow() {
   /**
    * called when user drops a module node. (after having dragged it)
    */
-  const onNodeDragStop = (_event: MouseEvent, _node: Node) => {
+  const onNodeDragStop = (
+    _event: MouseEvent,
+    _droppedNode: Node,
+    droppedNodes: GraphFlowNode[]
+  ) => {
     setNodes(
       redrawGraph({
         nodes,
         edges,
-      }).nodes
+      }).nodes.map((node) => ({
+        ...node,
+        selected: droppedNodes.map((d) => d.id).includes(node.id),
+      }))
     )
   }
 
@@ -124,7 +130,7 @@ export default function ModtreeFlow() {
       maxZoom={2}
       deleteKeyCode={null}
     >
-      <Controls showInteractive={false} />
+      <FlowControls />
       <Background />
     </ReactFlow>
   )

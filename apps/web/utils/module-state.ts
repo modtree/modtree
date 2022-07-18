@@ -1,47 +1,15 @@
 import {
-  ModuleStateDict,
-  FrontendModuleState,
+  FlowNodeState as State,
   GraphFlowNode,
-  CanTakeModuleMap,
-  ModuleSources,
+  CanTakeModule,
 } from '@modtree/types'
 
 const cssMap = {
-  [FrontendModuleState.DONE]: { color: 'green', opacity: '50%' },
-  [FrontendModuleState.DOING]: { color: 'black', opacity: '100%' },
-  [FrontendModuleState.PLAN_CANNOT_TAKE]: { color: 'red', opacity: '100%' },
-  [FrontendModuleState.PLAN_CAN_TAKE]: { color: 'gray', opacity: '100%' },
-  [FrontendModuleState.SUGGESTED]: {
-    color: 'gray',
-    opacity: '50%',
-    border: 'dashed',
-  },
-}
-
-export function getModuleStates(
-  modules: ModuleSources,
-  canTake: CanTakeModuleMap
-): ModuleStateDict {
-  // Get required data
-  const { done, doing, planned } = modules
-
-  // Create states
-  // Assume that all modules are planned at first.
-  // If any modules are done/doing, they get updated later.
-  const states: ModuleStateDict = {}
-  planned.forEach((code) => {
-    states[code] = canTake[code]
-      ? FrontendModuleState.PLAN_CAN_TAKE
-      : FrontendModuleState.PLAN_CANNOT_TAKE
-  })
-  done.forEach((code) => {
-    states[code] = FrontendModuleState.DONE
-  })
-  doing.forEach((code) => {
-    states[code] = FrontendModuleState.DOING
-  })
-
-  return states
+  [State.DONE]: { moduleCode: 'text-emerald-500 opacity-80' },
+  [State.DOING]: { moduleCode: 'text-black opacity-100' },
+  [State.PLAN_CANNOT_TAKE]: { moduleCode: 'text-red-400 opacity-100' },
+  [State.PLAN_CAN_TAKE]: { moduleCode: 'text-gray-400 opacity-100' },
+  [State.SUGGESTED]: { moduleCode: 'text-gray-400 opacity-50' },
 }
 
 /**
@@ -53,21 +21,24 @@ export function getCSS(
   nodes: GraphFlowNode[],
   done: string[],
   doing: string[],
-  canTake: CanTakeModuleMap
+  canTake: CanTakeModule[]
 ) {
-  const modules: ModuleSources = {
-    done,
-    doing,
-    // get LATEST modules done and doing
-    planned: nodes
-      .map((n) => n.id)
-      .filter((m) => !done.includes(m) && !doing.includes(m)),
+  const getState = (moduleCode: string): State => {
+    // done/doing
+    if (done.includes(moduleCode)) return State.DONE
+    if (doing.includes(moduleCode)) return State.DOING
+    // planned
+    return canTake.find((m) => m.moduleCode === moduleCode)?.canTake
+      ? State.PLAN_CAN_TAKE
+      : State.PLAN_CANNOT_TAKE
   }
-
-  const states = getModuleStates(modules, canTake)
 
   return nodes.map((node) => ({
     ...node,
-    style: cssMap[states[node.id]],
+    state: getState(node.data.moduleCode),
+    data: {
+      ...node.data,
+      className: cssMap[getState(node.data.moduleCode)],
+    },
   }))
 }

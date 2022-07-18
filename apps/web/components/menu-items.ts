@@ -27,7 +27,7 @@ const flowNodeContextMenu: MenuItem[] = [
     text: 'More info',
     callback: (node) => (node ? api.module.openModuleModal(node.id) : null),
   },
-  { text: 'Suggest modules', callback: () => alert('suggest modules') },
+  // { text: 'Suggest modules', callback: () => alert('suggest modules') },
   {
     text: 'Mark as done',
     callback: (e) => {
@@ -73,8 +73,11 @@ const flowNodeContextMenu: MenuItem[] = [
 ]
 
 const flowPaneContextMenu: MenuItem[] = [
-  { text: 'Suggest modules', callback: () => alert('suggest modules') },
-  { text: 'Mark as done', callback: () => alert('marked as done') },
+  // { text: 'Suggest modules', callback: () => alert('suggest modules') },
+  {
+    text: 'Coming soon! (try right-clicking a node on the graph)',
+    callback: () => false,
+  },
 ]
 
 const getItems = (

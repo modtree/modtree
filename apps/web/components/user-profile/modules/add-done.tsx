@@ -1,5 +1,5 @@
 import { Pages } from 'types'
-import { SettingsSection } from '@/ui/settings/lists/base'
+import { SettingsSection } from '@/ui/settings'
 import { Button } from '@/ui/buttons'
 import { ModuleStatus, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
@@ -37,7 +37,6 @@ export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
           <SettingsSearchBox cypress="add-done-search" />
-          <Button>Add Module</Button>
         </div>
         <SelectedModules cypress="build-list" modules={buildList} />
       </SettingsSection>

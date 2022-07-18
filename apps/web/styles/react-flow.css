@@ -11,7 +11,7 @@
 }
 
 .react-flow__node.selected {
-  @apply border-4 border-orange-400;
+  @apply ring-4 ring-modtree-400/75;
 }
 
 .react-flow__attribution {

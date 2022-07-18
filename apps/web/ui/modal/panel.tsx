@@ -29,11 +29,13 @@ export function Panel(props: ModalPanelProps) {
           // 'border border-blue-500',
           props.minHeight ? 'max-h-full' : 'h-full',
           'relative max-w-4xl rounded-2xl bg-white',
-          'py-6 text-left align-middle shadow-xl transition-all'
+          'py-6 align-middle shadow-xl transition-all'
         )}
       >
         {props.closeButton && (
-          <CloseButton close={props.closeModal} bg="bg-white" />
+          <div className="w-6 h-6 absolute right-6">
+            <CloseButton close={props.closeModal} />
+          </div>
         )}
         <div
           className={flatten(

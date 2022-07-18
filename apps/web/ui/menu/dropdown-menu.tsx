@@ -12,8 +12,8 @@ export function DropdownMenu(props: {
 }) {
   const { TriggerButton } = props
   return (
-    <div className="select-none text-right">
-      <Menu as="div" className="relative inline-block text-left">
+    <div className="select-none">
+      <Menu as="div" className="relative inline-block">
         <div>
           <Menu.Button className="focus:outline-none rounded-full shadow-md">
             <TriggerButton />

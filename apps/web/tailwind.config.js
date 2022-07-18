@@ -4,6 +4,7 @@ module.exports = {
   content: [
     './apps/web/pages/**/*.{js,ts,jsx,tsx}',
     './apps/web/ui/**/*.{js,ts,jsx,tsx}',
+    './apps/web/utils/**/*.{js,ts,jsx,tsx}',
     './apps/web/components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {

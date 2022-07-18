@@ -14,7 +14,7 @@ export default function SidebarButton(props: {
     <div
       className={flatten(
         'h-8',
-        'text-left text-gray-600',
+        'text-gray-600',
         'rounded-md',
         'cursor-pointer',
         'hover:bg-gray-100 focus:outline-none',

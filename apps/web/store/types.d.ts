@@ -14,6 +14,7 @@ export type ReduxState = {
     selectedCodes: string[]
   }
   modal: {
+    showModuleStateGuide: boolean
     userProfilePage: Pages['UserProfile']
     showUserProfile: boolean
     showModuleModal: boolean

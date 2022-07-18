@@ -10,7 +10,7 @@ import {
   GraphFlowNode,
   InitGraphProps,
   ModuleState,
-  CanTakeModuleMap,
+  CanTakeModule,
 } from '@modtree/types'
 import {
   quickpop,
@@ -305,17 +305,15 @@ export class GraphRepository
    * @param {Graph} graph
    * @returns {Promise<CanTakeModuleMap>}
    */
-  async canTakeModules(graph: Graph): Promise<CanTakeModuleMap> {
+  async canTakeModules(graph: Graph): Promise<CanTakeModule[]> {
     const moduleCodes = graph.modulesPlaced.map(flatten.module)
-    return Promise.all(
-      moduleCodes.map((code) => this.canTakeModule(graph, code))
-    ).then((results) => {
-      let dict: CanTakeModuleMap = {}
-      moduleCodes.forEach((code, i) => {
-        dict[code] = results[i]
-      })
-      return dict
-    })
+    const canTakes = moduleCodes.map((code) => this.canTakeModule(graph, code))
+    return Promise.all(canTakes).then((canTakes) =>
+      moduleCodes.map((moduleCode, index) => ({
+        moduleCode,
+        canTake: canTakes[index],
+      }))
+    )
   }
 
   /**
