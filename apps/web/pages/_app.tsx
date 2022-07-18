@@ -1,6 +1,7 @@
 import '@/styles/globals.css'
 import '@/styles/react-flow.css'
 import '@/styles/html.css'
+import '@/styles/introjs.css'
 import { withTRPC } from '@trpc/next'
 import type { AppRouter } from '@modtree/server'
 import store from '@/store/redux'
