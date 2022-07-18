@@ -32,7 +32,7 @@ Cypress.Commands.add('login', () => {
   cy.get('a[href="/api/auth/login"]').click()
   cy.wait('@signInToModtree')
 
-  // 2. If redirected away from localhost, then we are at the
+  // 2. If redirected to Auth0, then we are at the
   // Auth0 login page. Then sign in with test user.
   //
   // Else, login data was saved from a previous session, so proceed.
