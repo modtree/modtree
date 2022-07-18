@@ -22,10 +22,11 @@ describe('modules panel', () => {
       icon.click()
       cy.contains('Your profile').click()
       cy.contains('Modules').click()
-
-      // preset count
-      checkLengths()
     })
+  })
+
+  it('Initial counts', () => {
+    checkLengths()
   })
 
   it('Adds to modules done', () => {
