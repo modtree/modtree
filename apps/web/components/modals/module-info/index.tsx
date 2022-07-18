@@ -12,6 +12,7 @@ export function ModuleInfoModal() {
       hideAction={hideModuleModal}
       closeButton
       minHeight
+      cypressCloseButton="module-modal-close-button"
     >
       <ModuleDetails />
     </Modal>

@@ -8,7 +8,7 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-import { FRONTEND_URL, TEST_USER } from '../utils/constants'
+import { TEST_USER } from '../utils/constants'
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
@@ -16,11 +16,24 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
       login(): void
+      loadModuleModal<E>(
+        moduleCode: string,
+        title: string
+      ): Chainable<JQuery<E>>
       addGraphModule(moduleCode: string, title: string): void
       removeGraphModule(moduleCode: string): void
+      /*
+       * The return type for this is the same as cy.get().
+       * This is a wrapper for cy.get().
+       */
+      getCy<E>(value: string): Chainable<JQuery<E>>
     }
   }
 }
+
+Cypress.Commands.add('getCy', (value: string) => {
+  return cy.get(`[data-cy=${value}]`)
+})
 
 /**
  * Click sign in button, and fill in Auth0 details if necessary.
@@ -32,7 +45,7 @@ Cypress.Commands.add('login', () => {
   cy.get('a[href="/api/auth/login"]').click()
   cy.wait('@signInToModtree')
 
-  // 2. If redirected away from localhost, then we are at the
+  // 2. If redirected to Auth0, then we are at the
   // Auth0 login page. Then sign in with test user.
   //
   // Else, login data was saved from a previous session, so proceed.
@@ -57,24 +70,27 @@ Cypress.Commands.add('login', () => {
   // cy.wait('@getUser')
 })
 
-Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
-  cy.intercept('GET', '/trpc/*').as('getModule')
-  cy.get('[data-cy=root-search-box]')
+Cypress.Commands.add('loadModuleModal', (moduleCode: string, title: string) => {
+  return cy
+    .getCy('root-search-box')
     .clear()
     .type(moduleCode)
     .then(() => {
-      cy.get('[data-cy=search-result]').contains(title).click()
+      cy.getCy('search-result').contains(title).click()
       // wait for modal to load
       cy.get('h1').contains(moduleCode)
     })
-    .then(() => {
-      cy.get('button').contains('Add to graph').click()
-      cy.get(`[data-cy=node-${moduleCode}]`)
-    })
+})
+
+Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
+  cy.loadModuleModal(moduleCode, title).then(() => {
+    cy.get('button').contains('Add to graph').click()
+    cy.getCy(`node-${moduleCode}`)
+  })
 })
 
 Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {
-  cy.get(`[data-cy=node-${moduleCode}]`)
+  cy.getCy(`node-${moduleCode}`)
     .rightclick()
     .then(() => {
       // force a click, because sometimes the node is outside

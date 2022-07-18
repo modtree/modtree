@@ -26,8 +26,8 @@ describe('authentication', () => {
     // reload because cypress and auth0 callbacks don't play nice
     cy.reload()
     // sign out
-    cy.get('[id="modtree-user-circle"]').click()
-    cy.get('[data-cy="email"]').should('have.text', TEST_USER.email)
+    cy.getCy('modtree-user-circle').click()
+    cy.getCy('email').should('have.text', TEST_USER.email)
     cy.get('a[href="/api/auth/logout"]').click()
     // ensure that sign out is successful
     cy.get('a[href="/api/auth/login"]').should('have.text', 'Sign in')
