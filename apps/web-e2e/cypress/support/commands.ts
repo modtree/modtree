@@ -8,7 +8,7 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-import { FRONTEND_URL, TEST_USER } from '../utils/constants'
+import { TEST_USER } from '../utils/constants'
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
