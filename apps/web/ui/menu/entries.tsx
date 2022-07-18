@@ -10,14 +10,14 @@ import { GraphFlowNode } from '@modtree/types'
  * always returns exactly one safe React Element
  */
 const Children = (props: {
-  elements?: ReactElement | ReactElement[]
+  elements?: ReactElement | (ReactElement | null)[]
 }): ReactElement => {
   const { elements } = props
   if (!elements) return <></>
   if (Array.isArray(elements)) {
     return (
       <>
-        {elements.map((child, index) => (
+        {elements.filter(Boolean).map((child, index) => (
           <Menu.Item key={dashed('item-child', index)}>
             <div className="px-4 py-3 text-gray-700">{child}</div>
           </Menu.Item>
@@ -30,7 +30,7 @@ const Children = (props: {
 
 export function Entries(props: {
   items: MenuItem[]
-  children?: ReactElement | ReactElement[]
+  children?: ReactElement | (ReactElement | null)[]
   roundedSelection?: boolean
   flowNode?: GraphFlowNode
 }) {

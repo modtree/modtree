@@ -4,10 +4,19 @@
     "title": "Getting Started",
     "hidden": true
   },
-  "core-concepts": "Core Concepts",
+  "core-concepts": {
+    "title": "Core Concepts",
+    "hidden": true
+  },
   "developer-guide": "Developer Guide",
   "changelog": "Changelog",
-  "troubleshooting": "Troubleshooting",
+  "troubleshooting": {
+    "title": "Troubleshooting",
+    "hidden": true
+  },
   "glossary": "Glossary",
-  "faq": "FAQ"
+  "faq": {
+    "title": "FAQ",
+    "hidden": true
+  }
 }
