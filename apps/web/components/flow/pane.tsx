@@ -16,6 +16,7 @@ import { api } from 'api'
 import { trpc } from '@/utils/trpc'
 import { FlowControls } from './controls'
 import { ModuleNode } from './module-node'
+import { GraphFlowNode } from '@modtree/types'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -58,11 +59,9 @@ export default function ModtreeFlow() {
       Promise.all([
         api.user.getById(user.id),
         api.graph.canTakeModules(graph.id),
-      ]).then(([user, canTake]) => {
-        const n = getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake)
-        // console.log('useEffect 1', n)
-        setNodes(n)
-      })
+      ]).then(([user, canTake]) =>
+        setNodes(getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake))
+      )
     }
   }, [graph.flowNodes, graph.id])
 
@@ -72,11 +71,9 @@ export default function ModtreeFlow() {
     const done = user.modulesDone
     const doing = user.modulesDoing
     if (graph.id) {
-      trpc.query('graph/can-take-modules', graph.id).then((canTake) => {
-        const n = getCSS(nodes, done, doing, canTake)
-        console.log('useEffect 2', canTake)
-        setNodes(n)
-      })
+      trpc
+        .query('graph/can-take-modules', graph.id)
+        .then((canTake) => setNodes(getCSS(nodes, done, doing, canTake)))
     }
   }, [user.modulesDone, user.modulesDoing])
 
@@ -94,12 +91,19 @@ export default function ModtreeFlow() {
   /**
    * called when user drops a module node. (after having dragged it)
    */
-  const onNodeDragStop = (_event: MouseEvent, _node: Node) => {
+  const onNodeDragStop = (
+    _event: MouseEvent,
+    _droppedNode: Node,
+    droppedNodes: GraphFlowNode[]
+  ) => {
     setNodes(
       redrawGraph({
         nodes,
         edges,
-      }).nodes
+      }).nodes.map((node) => ({
+        ...node,
+        selected: droppedNodes.map((d) => d.id).includes(node.id),
+      }))
     )
   }
 

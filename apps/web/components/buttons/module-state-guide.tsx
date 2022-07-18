@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { CloseButton } from '@/ui/buttons'
 import { flatten } from '@/utils/tailwind'
 
-export function FloatingActionButton() {
+export function ModuleStateGuide() {
   const show = useAppSelector((s) => s.modal.showModuleStateGuide)
   const dispatch = useAppDispatch()
   return show ? (
@@ -18,10 +18,10 @@ export function FloatingActionButton() {
               <CloseButton close={() => dispatch(hideModuleStateGuide())} />
             </div>
           </h5>
-          <li className="list-inside marker:text-green-500">Done</li>
+          <li className="list-inside marker:text-emerald-400">Done</li>
           <li className="list-inside marker:text-black">Currently doing</li>
-          <li className="list-inside marker:text-gray-500">Planned</li>
-          <li className="list-inside marker:text-red-500">
+          <li className="list-inside marker:text-gray-400">Planned</li>
+          <li className="list-inside marker:text-red-400">
             Pre-requisites not fulfilled
           </li>
         </div>
