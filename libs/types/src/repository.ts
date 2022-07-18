@@ -33,11 +33,9 @@ export type ModuleState = 'placed' | 'hidden' | 'new'
 /**
  * types for canTakeModules
  */
-export type CanTakeModuleMap = Record<string, boolean>
-export type ModuleSources = {
-  done: string[]
-  doing: string[]
-  planned: string[]
+export type CanTakeModule = {
+  moduleCode: string
+  canTake: boolean
 }
 
 export interface IBaseRepository<Entity> {
@@ -157,7 +155,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @param graph
    * @returns a boolean
    */
-  canTakeModules(graph: IGraph): Promise<CanTakeModuleMap>
+  canTakeModules(graph: IGraph): Promise<CanTakeModule[]>
   /**
    * rename graph
    *

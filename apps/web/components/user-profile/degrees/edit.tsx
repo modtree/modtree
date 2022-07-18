@@ -1,5 +1,5 @@
 import { Pages } from 'types'
-import { SettingsSection } from '@/ui/settings/lists/base'
+import { SettingsSection } from '@/ui/settings'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'

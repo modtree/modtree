@@ -80,7 +80,6 @@ export type ExtendedProps = Modify<HTML, ExtendedPropsPure>
 /**
  * settings panel data types
  */
-export type ModuleSimple = Pick<IModuleCondensed, 'title' | 'moduleCode'>
 export type DegreeGraphs = {
   degree: string
   graphs: string[]

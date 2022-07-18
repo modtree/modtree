@@ -1,34 +1,31 @@
+import { hideModuleStateGuide } from '@/store/modal'
+import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { CloseButton } from '@/ui/buttons'
 import { flatten } from '@/utils/tailwind'
-import { useState } from 'react'
-import { DegreeIcon } from '@/ui/icons'
 
 export function FloatingActionButton() {
-  const [showTooltip, setShowTooltip] = useState(false)
-  return (
+  const show = useAppSelector((s) => s.modal.showModuleStateGuide)
+  const dispatch = useAppDispatch()
+  return show ? (
     <div className="absolute right-10 bottom-10 select-none">
       <div className="flex flex-row">
-        <div className="flex flex-col justify-center">
-          {showTooltip ? (
-            <div className="text-white bg-gray-400 px-2 py-0.5 rounded-md mr-4 shadow-md">
-              Degree Builder
-            </div>
-          ) : null}
-        </div>
-        <button
-          className={flatten(
-            'flex centered w-12 h-12',
-            'bg-white rounded-full',
-            'hover:bg-gray-50 active:bg-gray-200 shadow-xl'
-          )}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-          onMouseDown={() => setShowTooltip(false)}
-          // TODO: re-enable this button after fixing search
-          // onClick={() => dispatch(showBuilder())}
+        <div
+          className={flatten('px-4 py-3', 'bg-white rounded-lg', 'shadow-xl')}
         >
-          <DegreeIcon px={24} className="text-gray-500" />
-        </button>
+          <h5 className="flex flex-row h-6 items-center">
+            <span className="flex-1 mb-0">Module state guide</span>
+            <div>
+              <CloseButton close={() => dispatch(hideModuleStateGuide())} />
+            </div>
+          </h5>
+          <li className="list-inside marker:text-green-500">Done</li>
+          <li className="list-inside marker:text-black">Currently doing</li>
+          <li className="list-inside marker:text-gray-500">Planned</li>
+          <li className="list-inside marker:text-red-500">
+            Pre-requisites not fulfilled
+          </li>
+        </div>
       </div>
     </div>
-  )
+  ) : null
 }

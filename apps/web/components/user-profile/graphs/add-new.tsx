@@ -8,7 +8,7 @@ import { useAppSelector } from '@/store/redux'
 import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
-import { SettingsSection } from '@/ui/settings/lists/base'
+import { SettingsSection } from '@/ui/settings'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   // Get IDs

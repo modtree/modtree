@@ -1,5 +1,5 @@
 import { Pages } from 'types'
-import { SettingsSection } from '@/ui/settings/lists/base'
+import { SettingsSection } from '@/ui/settings'
 import { Button } from '@/ui/buttons'
 import { ModuleStatus, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'

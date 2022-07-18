@@ -1,13 +1,11 @@
 import { MouseEvent, useEffect, useMemo } from 'react'
 import ReactFlow, {
-  Controls,
   Node,
   useNodesState,
   Background,
   useEdgesState,
   useReactFlow,
 } from 'react-flow-renderer'
-import { ModuleNode } from './module-node'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { hideContextMenu } from '@/store/modal'
@@ -16,6 +14,8 @@ import { getCSS } from '@/utils/module-state'
 import { redrawGraph } from '@modtree/utils'
 import { api } from 'api'
 import { trpc } from '@/utils/trpc'
+import { FlowControls } from './controls'
+import { ModuleNode } from './module-node'
 
 export default function ModtreeFlow() {
   const nodeTypes = useMemo(
@@ -58,11 +58,11 @@ export default function ModtreeFlow() {
       Promise.all([
         api.user.getById(user.id),
         api.graph.canTakeModules(graph.id),
-      ])
-        .then(([user, canTake]) =>
-          getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake)
-        )
-        .then((nodes) => setNodes(nodes))
+      ]).then(([user, canTake]) => {
+        const n = getCSS(newNodes, user.modulesDone, user.modulesDoing, canTake)
+        // console.log('useEffect 1', n)
+        setNodes(n)
+      })
     }
   }, [graph.flowNodes, graph.id])
 
@@ -72,9 +72,11 @@ export default function ModtreeFlow() {
     const done = user.modulesDone
     const doing = user.modulesDoing
     if (graph.id) {
-      trpc
-        .query('graph/can-take-modules', graph.id)
-        .then((canTake) => setNodes(getCSS(nodes, done, doing, canTake)))
+      trpc.query('graph/can-take-modules', graph.id).then((canTake) => {
+        const n = getCSS(nodes, done, doing, canTake)
+        console.log('useEffect 2', canTake)
+        setNodes(n)
+      })
     }
   }, [user.modulesDone, user.modulesDoing])
 
@@ -124,7 +126,7 @@ export default function ModtreeFlow() {
       maxZoom={2}
       deleteKeyCode={null}
     >
-      <Controls showInteractive={false} />
+      <FlowControls />
       <Background />
     </ReactFlow>
   )

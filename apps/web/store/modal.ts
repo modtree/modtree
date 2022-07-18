@@ -8,6 +8,12 @@ export const modal = createSlice({
   name: 'modal',
   initialState: baseInitialState.modal,
   reducers: {
+    hideModuleStateGuide: (state) => {
+      state.showModuleStateGuide = false
+    },
+    showModuleStateGuide: (state) => {
+      state.showModuleStateGuide = true
+    },
     hideUserProfile: (state) => {
       state.showUserProfile = false
     },
@@ -46,6 +52,8 @@ export const modal = createSlice({
 })
 
 export const {
+  showModuleStateGuide,
+  hideModuleStateGuide,
   showUserProfile,
   hideUserProfile,
   showModuleModal,

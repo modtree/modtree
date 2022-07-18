@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { removeFromBuildList } from '@/store/search'
 import { dashed } from '@/utils/array'
-import { Row } from '@/ui/settings/lists/rows'
+import { Row } from '@/ui/settings'
 
 export function SelectedModules(props: {
   modules: string[]

@@ -1,7 +1,6 @@
 import { Pages } from 'types'
 import { text } from 'text'
-import { SettingsSection } from '@/ui/settings/lists/base'
-import { Row } from '@/ui/settings/lists/rows'
+import { SettingsSection, Row } from '@/ui/settings'
 import { dashed } from '@/utils/array'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/redux'

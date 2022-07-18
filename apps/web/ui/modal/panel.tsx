@@ -33,7 +33,9 @@ export function Panel(props: ModalPanelProps) {
         )}
       >
         {props.closeButton && (
-          <CloseButton close={props.closeModal} bg="bg-white" />
+          <div className="w-6 h-6 absolute right-6">
+            <CloseButton close={props.closeModal} />
+          </div>
         )}
         <div
           className={flatten(
