@@ -6,13 +6,16 @@ const Steps = dynamic(() => import('intro.js-react').then((mod) => mod.Steps), {
   ssr: false,
 })
 
-export function Onboarding(props: { loggedIn: boolean }) {
+/**
+ * shorthand for document.querySelector
+ */
+function qs(selector: string) {
+  return document.querySelector(`[data-onboarding="${selector}"]`)
+}
+
+export function PreLogin(props: { loggedIn: boolean }) {
   const [enabled, setEnabled] = useState<boolean>(true)
   const [steps, setSteps] = useState<Step[]>([])
-
-  const options = {
-    disableInteraction: false,
-  }
 
   function onExit() {
     setEnabled(false)
@@ -26,26 +29,22 @@ export function Onboarding(props: { loggedIn: boolean }) {
     if (localStorage.getItem('pre-login-tutorial') === 'true') {
       setEnabled(false)
     }
-    /**
-     * Onboarding for users not logged in
-     */
     if (!props.loggedIn) {
+      /**
+       * Onboarding for users not logged in
+       */
       setSteps([
         {
           title: 'Welcome',
           intro: 'Welcome to <b>modtree</b>!',
         },
         {
-          element: document.querySelector(
-            '[data-onboarding="root-search-bar"]'
-          ),
+          element: qs('root-search-bar'),
           title: 'Search bar',
           intro: 'Type in the box to search for a module',
         },
         {
-          element: document.querySelector(
-            '[data-onboarding="top-right-button"]'
-          ),
+          element: qs('top-right-button'),
           title: 'Sign in',
           intro: 'Sign in to learn more!',
         },
@@ -54,12 +53,6 @@ export function Onboarding(props: { loggedIn: boolean }) {
   }, [])
 
   return (
-    <Steps
-      steps={steps}
-      initialStep={0}
-      onExit={onExit}
-      enabled={enabled}
-      options={options}
-    />
+    <Steps steps={steps} initialStep={0} onExit={onExit} enabled={enabled} />
   )
 }
