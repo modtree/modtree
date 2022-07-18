@@ -18,9 +18,18 @@ declare global {
       login(): void
       addGraphModule(moduleCode: string, title: string): void
       removeGraphModule(moduleCode: string): void
+      /*
+       * The return type for this is the same as cy.get().
+       * This is a wrapper for cy.get().
+       */
+      getCy<E>(value: string): Chainable<JQuery<E>>
     }
   }
 }
+
+Cypress.Commands.add('getCy', (value: string) => {
+  return cy.get(`[data-cy=${value}]`)
+})
 
 /**
  * Click sign in button, and fill in Auth0 details if necessary.
@@ -59,22 +68,22 @@ Cypress.Commands.add('login', () => {
 
 Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
   cy.intercept('GET', '/trpc/*').as('getModule')
-  cy.get('[data-cy=root-search-box]')
+  cy.getCy('root-search-box')
     .clear()
     .type(moduleCode)
     .then(() => {
-      cy.get('[data-cy=search-result]').contains(title).click()
+      cy.getCy('search-result').contains(title).click()
       // wait for modal to load
       cy.get('h1').contains(moduleCode)
     })
     .then(() => {
       cy.get('button').contains('Add to graph').click()
-      cy.get(`[data-cy=node-${moduleCode}]`)
+      cy.getCy(`node-${moduleCode}`)
     })
 })
 
 Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {
-  cy.get(`[data-cy=node-${moduleCode}]`)
+  cy.getCy(`node-${moduleCode}`)
     .rightclick()
     .then(() => {
       // force a click, because sometimes the node is outside

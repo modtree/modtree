@@ -34,20 +34,18 @@ describe('add-and-remove', () => {
   })
 
   it('cannot add the same module', () => {
-    cy.get('[data-cy=root-search-box]')
+    cy.getCy('root-search-box')
       .clear()
       .type(code)
       .then(() => {
-        cy.get('[data-cy=search-result]').contains(title).click()
+        cy.getCy('search-result').contains(title).click()
       })
       .then(() => {
         // Should not have add to graph button
-        cy.get('[data-cy=module-modal]')
-          .contains('Add to graph')
-          .should('not.exist')
+        cy.getCy('module-modal').contains('Add to graph').should('not.exist')
 
         // Close modal
-        cy.get('[data-cy=module-modal-close-button]').click()
+        cy.getCy('module-modal-close-button').click()
       })
   })
 
@@ -56,22 +54,20 @@ describe('add-and-remove', () => {
   })
 
   it('can now add the same module', () => {
-    cy.get('[data-cy=root-search-box]')
+    cy.getCy('root-search-box')
       .clear()
       .type(code)
       .then(() => {
-        cy.get('[data-cy=search-result]').contains(title).click()
+        cy.getCy('search-result').contains(title).click()
 
         // Wait for modal to load
         cy.get('h1').contains(code)
 
         // Should have add to graph button
-        cy.get('[data-cy=module-modal]')
-          .contains('Add to graph')
-          .should('be.visible')
+        cy.getCy('module-modal').contains('Add to graph').should('be.visible')
 
         // Close modal
-        cy.get('[data-cy=module-modal-close-button]').click()
+        cy.getCy('module-modal-close-button').click()
       })
   })
 })

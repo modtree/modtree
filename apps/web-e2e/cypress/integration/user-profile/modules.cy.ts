@@ -5,14 +5,8 @@ let doneCount = 7
 let doingCount = 9
 
 function checkLengths() {
-  cy.get('[data-cy="done-section"]')
-    .children()
-    .its('length')
-    .should('eq', doneCount)
-  cy.get('[data-cy="doing-section"]')
-    .children()
-    .its('length')
-    .should('eq', doingCount)
+  cy.getCy('done-section').children().its('length').should('eq', doneCount)
+  cy.getCy('doing-section').children().its('length').should('eq', doingCount)
 }
 
 describe('modules panel', () => {
@@ -21,7 +15,6 @@ describe('modules panel', () => {
    */
   beforeEach(() => {
     cy.visit(FRONTEND_URL)
-
     cy.login()
 
     // open modules panel
@@ -37,11 +30,11 @@ describe('modules panel', () => {
 
   it('Adds to modules done', () => {
     // add LAC1201 to modules done
-    cy.get('[data-cy="modify-done"]').click()
-    cy.get('[data-cy="add-done-search"]').type('LAC1201')
+    cy.getCy('modify-done').click()
+    cy.getCy('add-done-search').type('LAC1201')
     cy.get('[id^=headlessui-combobox-option]').contains('Chinese 1').click()
     // wait for module to be in list
-    cy.get('[data-cy="build-list"]').contains('Chinese 1')
+    cy.getCy('build-list').contains('Chinese 1')
     cy.get('button').contains('Save changes').click()
 
     doneCount++
@@ -50,11 +43,11 @@ describe('modules panel', () => {
 
   it('Adds to modules doing', () => {
     // add LAC2201 to modules doing
-    cy.get('[data-cy="modify-doing"]').click()
-    cy.get('[data-cy="add-doing-search"]').type('LAC2201')
+    cy.getCy('modify-doing').click()
+    cy.getCy('add-doing-search').type('LAC2201')
     cy.get('[id^=headlessui-combobox-option]').contains('Chinese 2').click()
     // wait for module to be in list
-    cy.get('[data-cy="build-list"]').contains('Chinese 2')
+    cy.getCy('build-list').contains('Chinese 2')
     cy.get('button').contains('Save changes').click()
 
     doingCount++
@@ -63,8 +56,8 @@ describe('modules panel', () => {
 
   it('Removes from modules done', () => {
     // remove last module from modules done (LAC1201)
-    cy.get('[data-cy="modify-done"]').click()
-    cy.get('[data-cy="build-list"]').should('be.visible')
+    cy.getCy('modify-done').click()
+    cy.getCy('build-list').should('be.visible')
     // get trash button of last module in list
     cy.get('[data-cy="build-list"] > div').last().find('button').click()
     cy.get('button').contains('Save changes').click()
@@ -75,8 +68,8 @@ describe('modules panel', () => {
 
   it('Removes from modules doing', () => {
     // remove last module from modules doing (LAC2201)
-    cy.get('[data-cy="modify-doing"]').click()
-    cy.get('[data-cy="build-list"]').should('be.visible')
+    cy.getCy('modify-doing').click()
+    cy.getCy('build-list').should('be.visible')
     // get trash button of last module in list
     cy.get('[data-cy="build-list"] > div').last().find('button').click()
     cy.get('button').contains('Save changes').click()
