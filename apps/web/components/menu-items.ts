@@ -11,7 +11,11 @@ const dispatch = store.dispatch
  * floating user button drop-down mneu items
  */
 const userDropdownMenu: MenuItem[] = [
-  { text: 'Your profile', callback: () => dispatch(showUserProfile()) },
+  {
+    text: 'Your profile',
+    callback: () => dispatch(showUserProfile()),
+    onboarding: 'profile',
+  },
   {
     text: 'Debug',
     callback: () => dispatch(showDebugModal()),

@@ -11,6 +11,7 @@ import { RootSearchBox } from '@/ui/search/module'
 import { rehydrate } from '@/utils/rehydrate'
 import { FloatingGraphTitle } from '@/components/graph-title'
 import { PreLogin } from '@/components/onboarding/pre-login'
+import { PostLogin } from '@/components/onboarding/post-login'
 
 export default function Modtree() {
   const { isLoading, user } = useUser()
@@ -43,8 +44,9 @@ export default function Modtree() {
         <>
           <ModtreeFlow />
           <RootSearchBox />
-          <PreLogin loggedIn={loggedIn} />
           <FullScreenOverlay>
+            <PreLogin loggedIn={loggedIn} />
+            <PostLogin loggedIn={loggedIn} />
             <FloatingGraphTitle />
             <FloatingUserButton />
             <ModuleStateGuide />

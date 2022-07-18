@@ -50,9 +50,12 @@ export function Entries(props: {
   return (
     <>
       <Children elements={props.children} />
-      <div className="py-2">
+      <div className="py-2" data-onboarding="meme">
         {props.items.map((menuItem, index) => (
-          <Menu.Item key={dashed(menuItem.text, index)}>
+          <Menu.Item
+            key={dashed(menuItem.text, index)}
+            data-onboarding={menuItem.onboarding}
+          >
             <a
               href={menuItem.href}
               onClick={() => onClick(menuItem)}

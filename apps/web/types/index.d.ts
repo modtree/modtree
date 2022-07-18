@@ -39,6 +39,7 @@ export type MenuItem = {
   text: string
   href?: string
   callback?: (_?: GraphFlowNode) => void
+  onboarding?: string
 }
 
 export type ButtonColor = 'red' | 'blue' | 'green' | 'gray'
