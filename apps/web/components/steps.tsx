@@ -14,7 +14,18 @@ export function Onboarding(props: { loggedIn: boolean }) {
     disableInteraction: false,
   }
 
+  function onExit() {
+    setEnabled(false)
+    localStorage.setItem('pre-login-tutorial', 'true')
+  }
+
   useEffect(() => {
+    /**
+     * If done pre-login tutorial
+     */
+    if (localStorage.getItem('pre-login-tutorial') === 'true') {
+      setEnabled(false)
+    }
     /**
      * Onboarding for users not logged in
      */
@@ -46,7 +57,7 @@ export function Onboarding(props: { loggedIn: boolean }) {
     <Steps
       steps={steps}
       initialStep={0}
-      onExit={() => setEnabled(false)}
+      onExit={onExit}
       enabled={enabled}
       options={options}
     />
