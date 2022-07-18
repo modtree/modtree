@@ -61,10 +61,9 @@ describe('add-and-remove', () => {
       .type(code)
       .then(() => {
         cy.get('[data-cy=search-result]').contains(title).click()
-      })
-      .then(() => {
+
         // Wait for modal to load
-        cy.wait(5000)
+        cy.get('h1').contains(code)
 
         // Should have add to graph button
         cy.get('[data-cy=module-modal]')
