@@ -18,7 +18,7 @@ describe('modules panel', () => {
     cy.login()
 
     // open modules panel
-    cy.get('[id="modtree-user-circle"]').then((icon) => {
+    cy.getCy('modtree-user-circle').then((icon) => {
       icon.click()
       cy.contains('Your profile').click()
       cy.contains('Modules').click()
