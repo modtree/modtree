@@ -16,6 +16,10 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
       login(): void
+      loadModuleModal<E>(
+        moduleCode: string,
+        title: string
+      ): Chainable<JQuery<E>>
       addGraphModule(moduleCode: string, title: string): void
       removeGraphModule(moduleCode: string): void
       /*
@@ -66,9 +70,9 @@ Cypress.Commands.add('login', () => {
   // cy.wait('@getUser')
 })
 
-Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
-  cy.intercept('GET', '/trpc/*').as('getModule')
-  cy.getCy('root-search-box')
+Cypress.Commands.add('loadModuleModal', (moduleCode: string, title: string) => {
+  return cy
+    .getCy('root-search-box')
     .clear()
     .type(moduleCode)
     .then(() => {
@@ -76,10 +80,13 @@ Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
       // wait for modal to load
       cy.get('h1').contains(moduleCode)
     })
-    .then(() => {
-      cy.get('button').contains('Add to graph').click()
-      cy.getCy(`node-${moduleCode}`)
-    })
+})
+
+Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
+  cy.loadModuleModal(moduleCode, title).then(() => {
+    cy.get('button').contains('Add to graph').click()
+    cy.getCy(`node-${moduleCode}`)
+  })
 })
 
 Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {

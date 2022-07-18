@@ -34,12 +34,7 @@ describe('add-and-remove', () => {
   })
 
   it('cannot add the same module', () => {
-    cy.getCy('root-search-box')
-      .clear()
-      .type(code)
-      .then(() => {
-        cy.getCy('search-result').contains(title).click()
-      })
+    cy.loadModuleModal(code, title)
       .then(() => {
         // Should not have add to graph button
         cy.getCy('module-modal').contains('Add to graph').should('not.exist')
@@ -54,15 +49,8 @@ describe('add-and-remove', () => {
   })
 
   it('can now add the same module', () => {
-    cy.getCy('root-search-box')
-      .clear()
-      .type(code)
+    cy.loadModuleModal(code, title)
       .then(() => {
-        cy.getCy('search-result').contains(title).click()
-
-        // Wait for modal to load
-        cy.get('h1').contains(code)
-
         // Should have add to graph button
         cy.getCy('module-modal').contains('Add to graph').should('be.visible')
 
