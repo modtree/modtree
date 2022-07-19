@@ -5,7 +5,7 @@ import { InitGraphProps, ModtreeApiResponse, SetState } from '@modtree/types'
 import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { useAppSelector } from '@/store/redux'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
 import { SettingsSection } from '@/ui/settings'
@@ -26,7 +26,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
     })
   }, [degreeIds])
 
-  const { user } = useUser()
+  const { user } = useSession()
 
   const state = {
     title: useState<string>(''),

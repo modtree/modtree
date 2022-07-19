@@ -178,3 +178,13 @@ export const user = createRouter()
         .then(flatten.user)
     },
   })
+
+  /**
+   * get a user by email
+   */
+  .query('get-by-email', {
+    input: z.string().email(),
+    async resolve({ input }) {
+      return api.userRepo.findOneByEmail(input).then(flatten.user)
+    },
+  })

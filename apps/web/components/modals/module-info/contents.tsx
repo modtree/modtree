@@ -3,7 +3,7 @@ import { setGraph, setFlow } from '@/store/graph'
 import { hideModuleModal } from '@/store/modal'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { inModulesPlaced } from '@/utils/graph'
 import { GraphFlowNode } from '@modtree/types'
 import { redrawGraph } from '@modtree/utils'
@@ -11,7 +11,7 @@ import { trpc } from '@/utils/trpc'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
-  const { user } = useUser()
+  const { user } = useSession()
   const dispatch = useAppDispatch()
 
   // to check if this module has been added

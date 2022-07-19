@@ -8,9 +8,9 @@ import { InitDegreeProps, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, removeFromBuildList } from '@/store/search'
-import { useUser } from '@/utils/auth0'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
+import { useSession } from '@/utils/auth'
 
 function SelectedModules(props: { modules: string[] }) {
   const dispatch = useAppDispatch()
@@ -41,7 +41,8 @@ function SelectedModules(props: { modules: string[] }) {
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   const dispatch = useAppDispatch()
-  const { user } = useUser()
+  const { user } = useSession()
+
   const state = {
     title: useState<string>(''),
   }

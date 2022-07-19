@@ -5,7 +5,7 @@ import { dashed } from '@/utils/array'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, setBuildId, setBuildTitle } from '@/store/search'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
 import { ModtreeApiResponse } from '@modtree/types'
@@ -18,7 +18,7 @@ export function Main(props: {
   // Get IDs
   const degreeIds = useAppSelector((state) => state.user.savedDegrees)
   const hasDegree = degreeIds.length !== 0
-  const { user } = useUser()
+  const { user } = useSession()
 
   // Load full degrees
   const [degrees, setDegrees] = useState<ModtreeApiResponse.Degree[]>([])

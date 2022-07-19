@@ -4,6 +4,8 @@ import { showDebugModal, showUserProfile } from '@/store/modal'
 import { removeModuleNode } from '@/store/graph'
 import { ModuleStatus } from '@modtree/types'
 import { api } from 'api'
+import { signOut } from 'next-auth/react'
+import { devEnv } from '@/utils/env'
 
 const dispatch = store.dispatch
 
@@ -18,9 +20,13 @@ const userDropdownMenu: MenuItem[] = [
   },
   {
     text: 'Sign out',
-    href: '/api/auth/logout',
+    callback: () => signOut(),
   },
-]
+].filter((item) => {
+  const debugList = ['Debug']
+  const isDebug = debugList.includes(item.text)
+  return devEnv || !isDebug
+})
 
 const flowNodeContextMenu: MenuItem[] = [
   {
@@ -80,22 +86,21 @@ const flowPaneContextMenu: MenuItem[] = [
   },
 ]
 
-const getItems = (
-  props: Record<string, MenuItem[]>
-): Record<string, MenuItem[]> => {
-  Object.entries(props).forEach(([menuType, menuItems]) => {
-    props[menuType] = menuItems.map((item) => {
-      if (!item.callback) {
-        return {
-          ...item,
-          callback: () => console.debug('Menu item has no effect.'),
-        }
-      }
-      return item
-    })
-  })
-  return props
-}
+const fillCallback = (items: MenuItem[]): MenuItem[] =>
+  items.map((item) => ({
+    ...item,
+    callback: item.callback
+      ? item.callback
+      : () => console.debug('Menu item has no effect.'),
+  }))
+
+type Menus = Record<string, MenuItem[]>
+
+const getItems = (menus: Menus): Menus =>
+  Object.entries(menus).reduce(
+    (acc, [type, items]) => ({ ...acc, [type]: fillCallback(items) }),
+    {}
+  )
 
 export const items = getItems({
   userDropdownMenu,
