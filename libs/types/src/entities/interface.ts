@@ -26,6 +26,7 @@ export type IBase = {
 }
 
 export type IUser = IBase & {
+  googleId: string
   authZeroId: string
   displayName: string
   username: string

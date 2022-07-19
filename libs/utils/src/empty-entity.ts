@@ -30,6 +30,7 @@ const DegreeFull: ModtreeApiResponse.DegreeFull = {
 
 const User: ModtreeApiResponse.User = {
   id: '',
+  googleId: '',
   authZeroId: '',
   displayName: '',
   username: '',

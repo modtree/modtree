@@ -4,7 +4,6 @@ import {
   Column,
   ManyToMany,
   JoinTable,
-  PrimaryColumn,
   ManyToOne,
 } from 'typeorm'
 import type { IDegree, IGraph, IModule, IUser } from './interface'
@@ -15,16 +14,19 @@ export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @PrimaryColumn('text', { default: '' })
+  @Column('varchar')
+  googleId: string
+
+  @Column('varchar')
   authZeroId: string
 
-  @Column('character varying')
+  @Column('varchar')
   displayName: string
 
-  @Column('character varying')
+  @Column('varchar')
   username: string
 
-  @Column('character varying')
+  @Column('varchar')
   email: string
 
   @ManyToMany('Module', 'user')
