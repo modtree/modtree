@@ -87,7 +87,10 @@ describe('modules panel', () => {
     cy.getCy('modify-done').click()
     cy.getCy('build-list').should('be.visible')
     // get trash button of last module in list
-    cy.get('[data-cy="build-list"] > div').last().find('button').click()
+    cy.get('[data-cy="build-list"] > div')
+      .last()
+      .find('[data-cy="TrashIcon"]')
+      .click()
     cy.get('button').contains('Save changes').click()
 
     doneCount--
@@ -99,7 +102,10 @@ describe('modules panel', () => {
     cy.getCy('modify-doing').click()
     cy.getCy('build-list').should('be.visible')
     // get trash button of last module in list
-    cy.get('[data-cy="build-list"] > div').last().find('button').click()
+    cy.get('[data-cy="build-list"] > div')
+      .last()
+      .find('[data-cy="TrashIcon"]')
+      .click()
     cy.get('button').contains('Save changes').click()
 
     doingCount--
