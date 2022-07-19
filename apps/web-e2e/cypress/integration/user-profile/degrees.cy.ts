@@ -99,6 +99,7 @@ describe('degrees panel', () => {
   })
 
   it('edit degree title', () => {
+    // Edit last degree
     cy.get('[data-cy="degrees-list"] > div')
       .last()
       .find('[data-cy="edit-button"]')
@@ -106,6 +107,25 @@ describe('degrees panel', () => {
 
     // Title
     cy.getCy('edit-degree-title').type(title)
+
+    // Check module count
+    checkModuleCount()
+
+    // Save degree
+    cy.get('button').contains('Save degree').click()
+
+    checkDegreeCount()
+  })
+
+  it('add module to degree', () => {
+    // Edit last degree
+    cy.get('[data-cy="degrees-list"] > div')
+      .last()
+      .find('[data-cy="edit-button"]')
+      .click()
+
+    // Add module
+    insertModule('EL1101E', 'The Nature of Language')
 
     // Check module count
     checkModuleCount()

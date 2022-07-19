@@ -42,7 +42,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         />
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
-          <SettingsSearchBox />
+          <SettingsSearchBox cypress="degree-modules-search" />
         </div>
         <SelectedModules modules={buildList} cypress="degree-modules-list" />
       </SettingsSection>
