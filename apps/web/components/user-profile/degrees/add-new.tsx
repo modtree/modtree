@@ -1,46 +1,16 @@
 import { Pages } from 'types'
-import { SettingsSection, Row } from '@/ui/settings'
+import { SettingsSection } from '@/ui/settings'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
-import { dashed } from '@/utils/array'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { clearBuildList, removeFromBuildList } from '@/store/search'
+import { clearBuildList } from '@/store/search'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
 import { useSession } from '@/utils/auth'
-
-function SelectedModules(props: { modules: string[]; cypress?: string }) {
-  const dispatch = useAppDispatch()
-  const cache = useAppSelector((state) => state.cache)
-  return (
-    <>
-      {props.modules.length !== 0 && (
-        <div
-          className="ui-rectangle flex flex-col overflow-hidden"
-          data-cy={props.cypress}
-        >
-          {props.modules.map((code, index) => {
-            const module = cache.modules[code]
-            return (
-              <Row.Module
-                key={dashed(code, index)}
-                deletable
-                onDelete={() => dispatch(removeFromBuildList(code))}
-              >
-                <span className="font-semibold">{code}</span>
-                <span className="mx-1">/</span>
-                {module && module.title}
-              </Row.Module>
-            )
-          })}
-        </div>
-      )}
-    </>
-  )
-}
+import { SelectedModules } from '../modules/selected-modules'
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   const dispatch = useAppDispatch()
@@ -97,7 +67,11 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
             </div>
           </div>
         </div>
-        <SelectedModules modules={buildList} cypress="degree-modules-list" />
+        <SelectedModules
+          modules={buildList}
+          cypress="degree-modules-list"
+          cypressModule="degree-module"
+        />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={saveDegree}>

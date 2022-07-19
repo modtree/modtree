@@ -8,15 +8,16 @@
 
 import { FRONTEND_URL } from '../../utils/constants'
 
-const title = 'Very Specific Degree Title'
+const title = 'Original Title'
+const newTitle = 'New Title'
 let degreeCount
-let moduleCount = 0
+let modules = []
 
 /**
  * Inserts a module into a degree
  */
 function insertModule(moduleCode: string, title: string) {
-  moduleCount++
+  modules.push(moduleCode)
   return cy
     .getCy('degree-modules-search')
     .clear()
@@ -48,13 +49,17 @@ function checkDegreeCount() {
 }
 
 /**
- * Check module count
+ * Check modules
  */
-function checkModuleCount() {
-  cy.getCy('degree-modules-list')
-    .children()
-    .its('length')
-    .should('eq', moduleCount)
+function checkModules() {
+  const arr = []
+  cy.getCy('degree-module')
+    .each((span) => {
+      arr.push(span.text())
+    })
+    .then(() => {
+      expect(arr).to.include.members(modules)
+    })
 }
 
 describe('degrees panel', () => {
@@ -65,7 +70,7 @@ describe('degrees panel', () => {
     cy.visit(FRONTEND_URL)
     cy.login()
 
-    // open modules panel
+    // open degrees panel
     cy.getCy('modtree-user-circle').then((icon) => {
       icon.click()
       cy.contains('Your profile').click()
@@ -87,8 +92,8 @@ describe('degrees panel', () => {
     insertModule('CS1010S', 'Programming Methodology')
     insertModule('MA2001', 'Linear Algebra I')
 
-    // Check module count
-    checkModuleCount()
+    // Check modules
+    checkModules()
 
     // Save degree
     cy.get('button').contains('Save degree').click()
@@ -106,10 +111,10 @@ describe('degrees panel', () => {
       .click()
 
     // Title
-    cy.getCy('edit-degree-title').type(title)
+    cy.getCy('edit-degree-title').clear().type(newTitle)
 
-    // Check module count
-    checkModuleCount()
+    // Check modules
+    checkModules()
 
     // Save degree
     cy.get('button').contains('Save degree').click()
@@ -127,8 +132,8 @@ describe('degrees panel', () => {
     // Add module
     insertModule('EL1101E', 'The Nature of Language')
 
-    // Check module count
-    checkModuleCount()
+    // Check modules
+    checkModules()
 
     // Save degree
     cy.get('button').contains('Save degree').click()
@@ -144,15 +149,15 @@ describe('degrees panel', () => {
       .click()
 
     // Remove last module
-    moduleCount--
+    modules.pop()
     cy.getCy('degree-modules-list')
       .children()
       .last()
       .find('[data-cy="delete-button"]')
       .click()
 
-    // Check module count
-    checkModuleCount()
+    // Check modules
+    checkModules()
 
     // Save degree
     cy.get('button').contains('Save degree').click()
