@@ -27,10 +27,7 @@ export default NextAuth({
     async session({ session, user, token }) {
       const email = session.user?.email || user.email || token.email || ''
       if (!email) return session
-      const databaseUser = await trpc.mutation('user/login', {
-        authZeroId: 'auth0|123456789012345678901234',
-        email,
-      })
+      const databaseUser = await trpc.query('user/get-by-email', email)
       session.user.modtreeId = databaseUser.id
       return session
     },
