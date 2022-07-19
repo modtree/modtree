@@ -93,7 +93,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         <div className="flex flex-row space-x-2 mb-4">
           <div className="w-64 flex">
             <div className="w-64 fixed">
-              <SettingsSearchBox cypress="add-degree-modules" />
+              <SettingsSearchBox cypress="degree-modules-search" />
             </div>
           </div>
         </div>

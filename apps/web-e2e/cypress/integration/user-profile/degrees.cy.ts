@@ -18,7 +18,7 @@ let moduleCount = 0
 function insertModule(moduleCode: string, title: string) {
   moduleCount++
   return cy
-    .getCy('add-degree-modules')
+    .getCy('degree-modules-search')
     .clear()
     .type(moduleCode)
     .then(() => {
