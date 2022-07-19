@@ -82,11 +82,24 @@ describe('degrees panel', () => {
     checkDegreeCount()
   })
 
+  it('edit degree title', () => {
+    cy.get('[data-cy="degrees-list"] > div')
+      .last()
+      .find('[data-cy="edit-button"]')
+      .click()
+    // Title
+    cy.getCy('edit-degree-title').type(title)
+    // Save degree
+    cy.get('button').contains('Save degree').click()
+
+    checkDegreeCount()
+  })
+
   it('remove degree', () => {
     // Click trash icon of the last degree
     cy.get('[data-cy="degrees-list"] > div')
       .last()
-      .find('[data-cy="TrashIcon"]')
+      .find('[data-cy=delete-button]')
       .click()
 
     // Wait for degree to be deleted

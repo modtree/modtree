@@ -34,7 +34,12 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
-        <Input className="w-full mb-4" state={state.title} grayed />
+        <Input
+          className="w-full mb-4"
+          state={state.title}
+          grayed
+          cypress="edit-degree-title"
+        />
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
           <SettingsSearchBox />

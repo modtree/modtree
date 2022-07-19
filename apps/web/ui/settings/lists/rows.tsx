@@ -32,12 +32,20 @@ export function BaseRow(props: RowProps) {
       <div className="flex-1">{children}</div>
       <div className="flex flex-row items-center space-x-2">
         {editable && (
-          <Button onClick={onEdit} className="text-sm px-3" color="gray">
+          <Button
+            data-cy="edit-button"
+            onClick={onEdit}
+            className="text-sm px-3"
+            color="gray"
+          >
             Edit
           </Button>
         )}
         {deletable && (
-          <DeleteButton onClick={onDelete ? onDelete : () => {}} />
+          <DeleteButton
+            cypress="delete-button"
+            onClick={onDelete ? onDelete : () => {}}
+          />
           // <Button onClick={onDelete} className="text-sm px-3" color="red">
           // Delete
           // </Button>

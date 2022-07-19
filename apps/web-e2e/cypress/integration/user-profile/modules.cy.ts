@@ -89,7 +89,7 @@ describe('modules panel', () => {
     // get trash button of last module in list
     cy.get('[data-cy="build-list"] > div')
       .last()
-      .find('[data-cy="TrashIcon"]')
+      .find('[data-cy="delete-button"]')
       .click()
     cy.get('button').contains('Save changes').click()
 
@@ -104,7 +104,7 @@ describe('modules panel', () => {
     // get trash button of last module in list
     cy.get('[data-cy="build-list"] > div')
       .last()
-      .find('[data-cy="TrashIcon"]')
+      .find('[data-cy="delete-button"]')
       .click()
     cy.get('button').contains('Save changes').click()
 
