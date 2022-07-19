@@ -136,6 +136,30 @@ describe('degrees panel', () => {
     checkDegreeCount()
   })
 
+  it('remove module from degree', () => {
+    // Edit last degree
+    cy.get('[data-cy="degrees-list"] > div')
+      .last()
+      .find('[data-cy="edit-button"]')
+      .click()
+
+    // Remove last module
+    moduleCount--
+    cy.getCy('degree-modules-list')
+      .children()
+      .last()
+      .find('[data-cy="delete-button"]')
+      .click()
+
+    // Check module count
+    checkModuleCount()
+
+    // Save degree
+    cy.get('button').contains('Save degree').click()
+
+    checkDegreeCount()
+  })
+
   it('remove degree', () => {
     // Click trash icon of the last degree
     cy.get('[data-cy="degrees-list"] > div')
