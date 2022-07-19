@@ -14,19 +14,19 @@ export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column('varchar')
+  @Column('varchar', { default: '' })
   googleId: string
 
-  @Column('varchar')
+  @Column('varchar', { default: '' })
   authZeroId: string
 
-  @Column('varchar')
+  @Column('varchar', { default: '' })
   displayName: string
 
-  @Column('varchar')
+  @Column('varchar', { default: '' })
   username: string
 
-  @Column('varchar')
+  @Column('varchar', { default: '' })
   email: string
 
   @ManyToMany('Module', 'user')
@@ -37,13 +37,13 @@ export class User implements IUser {
   @JoinTable()
   modulesDoing: IModule[]
 
-  @Column('integer')
+  @Column('integer', { default: 0 })
   matriculationYear: number
 
-  @Column('integer')
+  @Column('integer', { default: 0 })
   graduationYear: number
 
-  @Column('integer')
+  @Column('integer', { default: 0 })
   graduationSemester: number
 
   @ManyToMany('Degree', 'user')
