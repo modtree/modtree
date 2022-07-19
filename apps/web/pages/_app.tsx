@@ -9,6 +9,7 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { useEffect } from 'react'
 import { ReactFlowProvider } from 'react-flow-renderer'
 import { AppProps } from 'next/app'
+import { trpcClientUrl } from '@/utils/trpc'
 
 const ModtreeApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
@@ -34,9 +35,7 @@ const ModtreeApp = ({ Component, pageProps }: AppProps) => {
  * gives access to trpc react hooks
  */
 export default withTRPC<AppRouter>({
-  config() {
-    const envUrl = process.env.NEXT_PUBLIC_BACKEND
-    const url = envUrl ? envUrl + '/trpc' : 'http://localhost:8080/trpc'
-    return { url }
-  },
+  config: () => ({
+    url: trpcClientUrl,
+  }),
 })(ModtreeApp)
