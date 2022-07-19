@@ -132,9 +132,15 @@ export class Api extends BaseApi {
    */
   async frontendSetup() {
     const c = frontendSetupConfig
-    const user1 = this.setupUser(this.userRepo.create({ email: c.user1.email }))
-    const user2 = this.setupUser(this.userRepo.create({ email: c.user2.email }))
-    const user3 = this.setupUser(this.userRepo.create({ email: c.user3.email }))
+    const user1 = this.setupUser(
+      await this.userRepo.initialize2(c.user1.email, 'google', 'id1')
+    )
+    const user2 = this.setupUser(
+      await this.userRepo.initialize2(c.user2.email, 'google', 'id2')
+    )
+    const user3 = this.setupUser(
+      await this.userRepo.initialize2(c.user3.email, 'google', 'id3')
+    )
     const degree1 = user1.then((user) => {
       const degree = user.savedDegrees[0]
       degree.title = 'Data Analytics'
