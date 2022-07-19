@@ -1,4 +1,4 @@
-import { ModuleStatus } from '@modtree/types'
+import { ModuleStatus, SupportedProvider } from '@modtree/types'
 import { emptyInit, flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
@@ -175,6 +175,26 @@ export const user = createRouter()
     async resolve(req) {
       return api
         .userLogin(req.input.authZeroId, req.input.email)
+        .then(flatten.user)
+    },
+  })
+
+  /**
+   * user login
+   */
+  .mutation('login2', {
+    input: z.object({
+      provider: z.string(),
+      providerId: z.string().min(1),
+      email: z.string().email(),
+    }),
+    async resolve({ input }) {
+      return api
+        .userLogin2(
+          input.email,
+          input.provider as SupportedProvider,
+          input.providerId
+        )
         .then(flatten.user)
     },
   })

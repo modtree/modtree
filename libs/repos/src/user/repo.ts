@@ -9,6 +9,7 @@ import {
   IUserRepository,
   ModuleStatus,
   IDegreeRepository,
+  SupportedProvider,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
@@ -49,6 +50,12 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       relations: this.relations,
     })
 
+  findOneByGoogleId = async (googleId: string) =>
+    this.findOne({
+      where: { googleId },
+      relations: this.relations,
+    })
+
   /**
    * Adds a User to DB
    *
@@ -68,6 +75,29 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       })
       return this.save(user)
     })
+  }
+
+  /**
+   * Adds a User to DB
+   *
+   * @param {string} email
+   * @param {SupportedProvider} provider
+   * @param {string} providerId
+   * @returns {Promise<User>}
+   */
+  async initialize2(
+    email: string,
+    provider: SupportedProvider,
+    providerId: string
+  ): Promise<User> {
+    // TODO: support all providers
+    if (provider !== 'google') return this.create()
+    return this.save(
+      this.create({
+        email,
+        googleId: providerId,
+      })
+    )
   }
 
   /**

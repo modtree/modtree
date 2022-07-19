@@ -19,6 +19,7 @@ import {
 
 export type FindByKey<T> = (query: string) => Promise<T>
 export type Relations = Record<string, boolean>
+export type SupportedProvider = 'google' | 'modtree' | ''
 
 /**
  * types for module status
@@ -68,12 +69,14 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   initialize(props: InitGraphProps): Promise<IGraph>
+
   /**
    * delete all graphs
    *
    * @returns delete result
    */
   deleteAll(): Promise<DeleteResult>
+
   /**
    * finds a graph by id
    *
@@ -81,6 +84,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   findOneById(id: string): Promise<IGraph>
+
   /**
    * toggle the state of a module in a graph
    *
@@ -89,6 +93,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   toggleModule(graph: IGraph, moduleCode: string): Promise<IGraph>
+
   /**
    * finds a graph by user and degree id
    *
@@ -97,6 +102,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<IGraph>
+
   /**
    * lists graphs by user id and degree id
    *
@@ -108,6 +114,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
     userId: string,
     degreeId: string
   ): Promise<[IGraph[], number]>
+
   /**
    * preparatory function for getSuggestedModules
    *
@@ -118,6 +125,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
     graph: IGraph,
     modulesSelected: string[]
   ): Promise<[string[], string[], string[], string[]]>
+
   /**
    * suggest a list of modules to take next
    *
@@ -126,6 +134,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns modules
    */
   suggestModules(graph: IGraph, moduleCodes: string[]): Promise<IModule[]>
+
   /**
    * update frontend props of a graph
    *
@@ -134,6 +143,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   updateFrontendProps(graph: IGraph, props: GraphFrontendProps): Promise<IGraph>
+
   /**
    * updates one flow node of a graph
    *
@@ -142,6 +152,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   updateFlowNode(graph: IGraph, node: GraphFlowNode): Promise<IGraph>
+
   /**
    * checks if graph contains enough pre-reqs to take a module
    *
@@ -150,6 +161,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns boolean
    */
   canTakeModule(graph: IGraph, moduleCode: string): Promise<boolean>
+
   /**
    * multiple canTakeModule
    *
@@ -157,6 +169,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns a boolean
    */
   canTakeModules(graph: IGraph): Promise<CanTakeModule[]>
+
   /**
    * rename graph
    *
@@ -165,6 +178,7 @@ export interface IGraphRepository extends IBaseRepository<IGraph> {
    * @returns graph
    */
   rename(graph: IGraph, title: string): Promise<IGraph>
+
   /**
    * finds graphs by ids
    *
@@ -185,6 +199,21 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   initialize(props: InitUserProps): Promise<IUser>
+
+  /**
+   * initialize a new user and save it to the database
+   *
+   * @param email
+   * @param provider
+   * @param providerId
+   * @returns user
+   */
+  initialize2(
+    email: string,
+    provider: SupportedProvider,
+    providerId: string
+  ): Promise<IUser>
+
   /**
    * finds a user by id
    *
@@ -192,12 +221,14 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   findOneById(id: string): Promise<IUser>
+
   /**
    * delete all users
    *
    * @returns delete result
    */
   deleteAll(): Promise<DeleteResult>
+
   /**
    * checks if a user can take a module
    *
@@ -206,6 +237,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns boolean
    */
   canTakeModule(user: IUser, moduleCode: string): Promise<boolean>
+
   /**
    * finds a user by username
    *
@@ -213,6 +245,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   findOneByUsername(username: string): Promise<IUser>
+
   /**
    * finds a user by auth0 id
    *
@@ -220,6 +253,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   findOneByAuthZeroId(authZeroId: string): Promise<IUser>
+
   /**
    * finds a user by email
    *
@@ -227,6 +261,15 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   findOneByEmail(email: string): Promise<IUser>
+
+  /**
+   * finds a user by email
+   *
+   * @param googleId
+   * @returns user
+   */
+  findOneByGoogleId(googleId: string): Promise<IUser>
+
   /**
    * gets a user's eligible modules
    *
@@ -234,6 +277,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns modules
    */
   getEligibleModules(user: IUser): Promise<IModule[]>
+
   /**
    * get all the post-requisites of the user's done/doing modules
    *
@@ -241,6 +285,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns modules
    */
   getPostReqs(user: IUser): Promise<IModule[]>
+
   /**
    * get all the user's unlocked module after completing one particular module
    *
@@ -249,6 +294,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns module
    */
   getUnlockedModules(user: IUser, moduleCode: string): Promise<IModule[]>
+
   /**
    * checks if the user has taken a module
    *
@@ -257,6 +303,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns boolean
    */
   hasTakenModule(user: IUser, moduleCode: string): Promise<boolean>
+
   /**
    * filters a user's taken modules
    *
@@ -265,6 +312,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns module cdoes
    */
   filterTakenModules(user: IUser, moduleCodes: string[]): Promise<string[]>
+
   /**
    * sets a user's main degree
    *
@@ -273,6 +321,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   setMainDegree(user: IUser, degreeId: string): Promise<IUser>
+
   /**
    * inserts some degrees to a user's list of saved degrees
    *
@@ -281,6 +330,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   insertDegrees(user: IUser, degreeIds: string[]): Promise<IUser>
+
   /**
    * finds a degree within a user
    *
@@ -289,6 +339,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns degree
    */
   findDegree(user: IUser, degreeId: string): Promise<IDegree>
+
   /**
    * removes a degree from a user's list of saved degrees
    *
@@ -297,6 +348,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   removeDegree(user: IUser, degreeId: string): Promise<IUser>
+
   /**
    * sets the status of some modules of a user
    *
@@ -310,6 +362,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
     moduleCodes: string[],
     status: ModuleStatus
   ): Promise<IUser>
+
   /**
    * sets the main graph of the user
    *
@@ -318,6 +371,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   setMainGraph(user: IUser, graphId: string): Promise<IUser>
+
   /**
    * inserts some graphs to the user's list of saved graphs
    *
@@ -326,6 +380,7 @@ export interface IUserRepository extends IBaseRepository<IUser> {
    * @returns user
    */
   insertGraphs(user: IUser, graphIds: string[]): Promise<IUser>
+
   /**
    * removes a graph from a user's list of saved graphs
    *
@@ -347,6 +402,7 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
    * @returns degree
    */
   initialize(props: InitDegreeProps): Promise<IDegree>
+
   /**
    * finds a degree by id
    *
@@ -354,12 +410,14 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
    * @returns degree
    */
   findOneById(id: string): Promise<IDegree>
+
   /**
    * delete all degrees
    *
    * @returns delete result
    */
   deleteAll(): Promise<DeleteResult>
+
   /**
    * insert modules into a degree
    *
@@ -368,6 +426,7 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
    * @returns degree
    */
   insertModules(degree: IDegree, moduleCodes: string[]): Promise<IDegree>
+
   /**
    * modifies a degree
    *
@@ -376,6 +435,7 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
    * @returns degree
    */
   update(degree: IDegree, props: InitDegreeProps): Promise<IDegree>
+
   /**
    * finds a degree by title
    *
@@ -383,6 +443,7 @@ export interface IDegreeRepository extends IBaseRepository<IDegree> {
    * @returns degree
    */
   findOneByTitle(title: string): Promise<IDegree>
+
   /**
    * finds some degrees by ids
    *
@@ -403,6 +464,7 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
    * @returns module
    */
   initialize(props: InitModuleProps): Promise<IModule>
+
   /**
    * finds a module by id
    *
@@ -410,18 +472,21 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
    * @returns module
    */
   findOneById(id: string): Promise<IModule>
+
   /**
    * delete all modules
    *
    * @returns delete result
    */
   deleteAll(): Promise<DeleteResult>
+
   /**
    * lists all the module codes of modules in database
    *
    * @returns module codes
    */
   getCodes(): Promise<string[]>
+
   /**
    * finds one module by code
    *
@@ -429,6 +494,7 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
    * @returns module
    */
   findByCode(moduleCode: string): Promise<IModule>
+
   /**
    * finds some modules by codes
    *
@@ -436,6 +502,7 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
    * @returns module
    */
   findByCodes(moduleCodes: string[]): Promise<IModule[]>
+
   /**
    * checks if a module is take-able given the modules
    * that are already done/already doing
@@ -450,6 +517,7 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
     modulesDoing: string[],
     moduleCode: string
   ): Promise<boolean>
+
   /**
    * get a list of post-requisites
    *
@@ -457,6 +525,7 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
    * @returns module codes
    */
   getPostReqs(moduleCodes: string[]): Promise<string[]>
+
   /**
    * get a list of eligible modules
    *
@@ -470,6 +539,7 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
     modulesDoing: string[],
     modulesSelected: string[]
   ): Promise<string[]>
+
   /**
    * get a list of suggested modules
    *
@@ -485,6 +555,7 @@ export interface IModuleRepository extends IBaseRepository<IModule> {
     modulesSelected: string[],
     requiredModules: string[]
   ): Promise<string[]>
+
   /**
    * get a list of unlocked modules
    *
@@ -512,6 +583,7 @@ export interface IModuleCondensedRepository
    * @returns condensed module
    */
   initialize(props: InitModuleCondensedProps): Promise<IModuleCondensed>
+
   /**
    * finds a condensed module by id
    *
@@ -519,18 +591,21 @@ export interface IModuleCondensedRepository
    * @returns condensed module
    */
   findOneById(id: string): Promise<IModuleCondensed>
+
   /**
    * delete all condensed modules
    *
    * @returns delete result
    */
   deleteAll(): Promise<DeleteResult>
+
   /**
    * lists all the module codes of condensed modules in database
    *
    * @returns module codes
    */
   getCodes(): Promise<string[]>
+
   /**
    * finds some condensed modules by codes
    *
@@ -538,6 +613,7 @@ export interface IModuleCondensedRepository
    * @returns condensed modules
    */
   findByCodes(moduleCodes: string[]): Promise<IModuleCondensed[]>
+
   /**
    * finds one condensed module by code
    *
@@ -558,6 +634,7 @@ export interface IModuleFullRepository extends IBaseRepository<IModuleFull> {
    * @returns full module
    */
   findByCode(code: string): Promise<IModuleFull>
+
   /**
    * finds some full modules by codes
    *

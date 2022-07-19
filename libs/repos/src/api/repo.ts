@@ -1,9 +1,15 @@
 import { DataSource } from 'typeorm'
-import { User, Degree, Graph } from '@modtree/types'
+import { User, Degree, Graph, SupportedProvider } from '@modtree/types'
 import { BaseApi } from './base'
 import { emptyInit } from '@modtree/utils'
 import initializeUserConfig from './initialize-user.json'
 import frontendSetupConfig from './frontend-setup.json'
+
+/** read default config */
+const c =
+  process.env['NODE_ENV'] === 'production'
+    ? initializeUserConfig.production
+    : initializeUserConfig.development
 
 export class Api extends BaseApi {
   constructor(db: DataSource) {
@@ -22,10 +28,6 @@ export class Api extends BaseApi {
    * @returns {Promise<User>}
    */
   async initializeUser(authZeroId: string, email: string): Promise<User> {
-    const c =
-      process.env['NODE_ENV'] === 'production'
-        ? initializeUserConfig.production
-        : initializeUserConfig.development
     const user = this.userRepo.initialize({
       authZeroId,
       email,
@@ -55,6 +57,74 @@ export class Api extends BaseApi {
       }
     )
     return updatedUser
+  }
+
+  /**
+   * Setups up a functional User entity, with a default degree and a
+   * default graph.
+   *
+   * @param {User} user
+   * @returns {Promise<User>}
+   */
+  async setupUser(user: User): Promise<User> {
+    /** initialize degree */
+    const degree = this.degreeRepo.initialize({
+      ...emptyInit.Degree,
+      ...c.degree,
+    })
+
+    /** initialize graph */
+    const graph = degree.then((degree) =>
+      this.graphRepo.initialize({
+        ...emptyInit.Graph,
+        userId: user.id,
+        degreeId: degree.id,
+      })
+    )
+
+    /** write to the user and save */
+    const updateUser = Promise.all([degree, graph]).then(([degree, graph]) => {
+      /** add degree to the user */
+      user.savedDegrees = [...(user.savedDegrees || []), degree]
+      user.mainDegree = degree
+      /** add the graph to the user */
+      user.savedGraphs = [...(user.savedGraphs || []), graph]
+      user.mainGraph = graph
+      /** save and return the user */
+      return this.userRepo.save(user)
+    })
+
+    /** send it */
+    return updateUser
+  }
+
+  /**
+   * Handles a user logging in.
+   *
+   * If the user already exists in database, then return that
+   * user's data
+   *
+   * If not, then initialize a full user (empty degree, empty graph),
+   * and return that newly created user instead.
+   *
+   * @param {SupportedProvider} provider
+   * @param {string} providerId
+   * @param {string} email
+   */
+  async userLogin2(
+    email: string,
+    provider: SupportedProvider = '',
+    providerId: string = ''
+  ): Promise<User> {
+    // TODO: support all providers
+    if (provider !== 'google') return this.userRepo.create()
+    return this.userRepo
+      .findOneByGoogleId(providerId) // check if user exists first
+      .catch(() =>
+        this.userRepo
+          .initialize2(email, provider, providerId)
+          .then((user) => this.setupUser(user))
+      )
   }
 
   /**

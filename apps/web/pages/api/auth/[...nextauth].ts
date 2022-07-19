@@ -13,16 +13,18 @@ const secrets = {
 export default NextAuth({
   providers: [GoogleProvider(secrets.google)],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      const provider = account.provider
-      const providerId = user.id
-      const packet = { [provider]: providerId }
-      const databaseUser = await trpc.mutation('user/login', {
-        authZeroId: 'auth0|123456789012345678901234',
-        email: user.email || profile.email || '',
-      })
-      console.log(packet, databaseUser)
-      return true
+    async signIn({ user, account, profile }): Promise<boolean> {
+      return trpc
+        .mutation('user/login2', {
+          provider: account.provider,
+          providerId: user.id,
+          email: user.email || profile.email || '',
+        })
+        .then(() => true)
+        .catch(() => {
+          console.error('/api/auth/signIn: Failed to create user')
+          return false
+        })
     },
     async session({ session, user, token }) {
       const email = session.user?.email || user.email || token.email || ''
