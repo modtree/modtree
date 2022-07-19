@@ -2,7 +2,7 @@
 
 source ../.env
 
-SOURCE=../libs/sql/snapshots/20220709.sql
+SOURCE=../libs/sql/snapshots/latest.sql
 
 PROD=false
 
