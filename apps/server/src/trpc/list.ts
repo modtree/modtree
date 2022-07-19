@@ -32,14 +32,13 @@ export const list = createRouter()
   .query('users', {
     input: z.object({
       id: z.string().uuid().optional(),
-      authZeroId: z.string().length(30).optional(),
       email: z.string().email().optional(),
     }),
     async resolve(req) {
-      const { id, authZeroId, email } = req.input
+      const { id, email } = req.input
       return api.userRepo
         .find({
-          where: { id, authZeroId, email },
+          where: { id, email },
           relations: api.userRepo.relations,
         })
         .then((users) => users.map(flatten.user))

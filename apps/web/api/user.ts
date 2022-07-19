@@ -1,6 +1,5 @@
 import { BaseApi } from './base-api'
 import { ModtreeApiResponse, ModuleStatus } from '@modtree/types'
-import { setUser } from '@/store/user'
 import { trpc } from '@/utils/trpc'
 import { updateUser } from '@/utils/rehydrate'
 
@@ -13,23 +12,6 @@ export class UserApi extends BaseApi {
    */
   async getById(userId: string): Promise<ModtreeApiResponse.User> {
     return trpc.query('user/get-full', userId)
-  }
-
-  /**
-   * login to modtree database
-   *
-   * @param {string} authZeroId
-   * @param {string} email
-   * @returns {Promise<User>}
-   */
-  async login(
-    authZeroId: string,
-    email: string
-  ): Promise<ModtreeApiResponse.User> {
-    return trpc.mutation('user/login', { authZeroId, email }).then((user) => {
-      this.dispatch(setUser(user))
-      return user
-    })
   }
 
   /**

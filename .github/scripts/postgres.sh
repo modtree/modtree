@@ -18,4 +18,4 @@ createdb runner
 
 # fill the database with modules
 PGPASSWORD=runner psql -U runner \
-  runner < ./libs/sql/snapshots/mod3.sql
+  runner < ./libs/sql/snapshots/latest.sql

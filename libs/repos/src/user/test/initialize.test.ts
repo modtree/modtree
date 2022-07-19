@@ -8,7 +8,6 @@ jest.mock('../../base')
 jest.mock('../../module')
 
 const init = {
-  authZeroId: 'auth0|012345678901234567890123',
   displayName: 'Nguyen Vu Khang',
   username: 'nguyenvukhang',
   email: 'khang@modtree.com',
@@ -40,7 +39,6 @@ it('has correct modules', () => {
 
 it('preserves primitive data', () => {
   const correct = [
-    [user.authZeroId, init.authZeroId],
     [user.displayName, init.displayName],
     [user.username, init.username],
     [user.email, init.email],

@@ -22,7 +22,7 @@ const defaultConfig: DataSourceOptions = {
   migrations: [],
   host: 'localhost',
   database: 'mt_test',
-  restoreSource: '20220709.sql',
+  restoreSource: 'latest.sql',
   synchronize: false,
   migrationsRun: false,
 }

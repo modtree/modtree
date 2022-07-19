@@ -24,49 +24,6 @@ export class Api extends BaseApi {
   }
 
   /**
-   * Creates a functional User entity, with a default degree and a
-   * default graph.
-   *
-   * It only takes auth0 id and email, since those are the only two
-   * asked for at user sign-up
-   *
-   * @param {string} authZeroId
-   * @param {string} email
-   * @returns {Promise<User>}
-   */
-  async initializeUser(authZeroId: string, email: string): Promise<User> {
-    const user = this.userRepo.initialize({
-      authZeroId,
-      email,
-      ...c.user,
-    })
-    const degree = this.degreeRepo.initialize({
-      ...emptyInit.Degree,
-      ...c.degree,
-    })
-    const graph = Promise.all([user, degree]).then(([user, degree]) =>
-      this.graphRepo.initialize({
-        ...emptyInit.Graph,
-        userId: user.id,
-        degreeId: degree.id,
-      })
-    )
-    const updatedUser = Promise.all([user, degree, graph]).then(
-      ([user, degree, graph]) => {
-        /** add the degree to the user */
-        user.savedDegrees.push(degree)
-        user.mainDegree = degree
-        /** add the graph to the user */
-        user.savedGraphs.push(graph)
-        user.mainGraph = graph
-        /** save and return the user */
-        return this.userRepo.save(user)
-      }
-    )
-    return updatedUser
-  }
-
-  /**
    * Setups up a functional User entity, with a default degree and a
    * default graph.
    *
@@ -169,34 +126,21 @@ export class Api extends BaseApi {
   }
 
   /**
-   * Handles a user logging in.
-   *
-   * If the auth0 id already exists in database, then return that
-   * user's data
-   *
-   * If not, then initialize a full user (empty degree, empty graph),
-   * and return that newly created user instead.
-   *
-   * @param {string} authZeroId
-   * @param {string} email
-   * @returns {Promise<User>}
-   */
-  async userLogin(authZeroId: string, email: string): Promise<User> {
-    return this.userRepo.findOneByAuthZeroId(authZeroId).catch(() => {
-      return this.initializeUser(authZeroId, email)
-    })
-  }
-
-  /**
    * sets up database state for frontend testing
    * do run the postgres.sh script at root to restore the database to a
    * modules-only state first.
    */
   async frontendSetup() {
     const c = frontendSetupConfig
-    const user1 = this.initializeUser(c.user1.authZeroId, c.user1.email)
-    const user2 = this.initializeUser(c.user2.authZeroId, c.user2.email)
-    const user3 = this.initializeUser(c.user3.authZeroId, c.user3.email)
+    const user1 = this.setupUser(
+      await this.userRepo.initialize2(c.user1.email, 'google', 'id1')
+    )
+    const user2 = this.setupUser(
+      await this.userRepo.initialize2(c.user2.email, 'google', 'id2')
+    )
+    const user3 = this.setupUser(
+      await this.userRepo.initialize2(c.user3.email, 'google', 'id3')
+    )
     const degree1 = user1.then((user) => {
       const degree = user.savedDegrees[0]
       degree.title = 'Data Analytics'

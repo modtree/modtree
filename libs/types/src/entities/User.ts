@@ -24,9 +24,6 @@ export class User implements IUser {
   githubId: string
 
   @Column('varchar', { default: '' })
-  authZeroId: string
-
-  @Column('varchar', { default: '' })
   displayName: string
 
   @Column('varchar', { default: '' })

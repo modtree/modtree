@@ -9,18 +9,10 @@ export const user = createRouter()
    * create a user
    */
   .mutation('create', {
-    input: z.object({
-      authZeroId: z.string().length(30),
-      email: z.string().email(),
-    }),
-    async resolve(req) {
-      const { authZeroId, email } = req.input
+    input: z.string().email(),
+    async resolve({ input: email }) {
       return api.userRepo
-        .initialize({
-          ...emptyInit.User,
-          authZeroId,
-          email,
-        })
+        .initialize({ ...emptyInit.User, email })
         .then(flatten.user)
     },
   })
@@ -30,8 +22,8 @@ export const user = createRouter()
    */
   .query('delete', {
     input: z.string().uuid(),
-    async resolve(req) {
-      return api.userRepo.delete(req.input)
+    async resolve({ input: id }) {
+      return api.userRepo.delete(id)
     },
   })
 
@@ -40,8 +32,8 @@ export const user = createRouter()
    */
   .query('get-full', {
     input: z.string().uuid(),
-    async resolve(req) {
-      return api.userRepo.findOneById(req.input).then(flatten.user)
+    async resolve({ input: id }) {
+      return api.userRepo.findOneById(id).then(flatten.user)
     },
   })
 
@@ -160,21 +152,6 @@ export const user = createRouter()
             req.input.status
           )
         )
-        .then(flatten.user)
-    },
-  })
-
-  /**
-   * user login
-   */
-  .mutation('login', {
-    input: z.object({
-      authZeroId: z.string().length(30),
-      email: z.string().email(),
-    }),
-    async resolve(req) {
-      return api
-        .userLogin(req.input.authZeroId, req.input.email)
         .then(flatten.user)
     },
   })

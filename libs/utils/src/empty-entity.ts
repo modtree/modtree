@@ -33,7 +33,6 @@ const User: ModtreeApiResponse.User = {
   facebookId: '',
   githubId: '',
   googleId: '',
-  authZeroId: '',
   displayName: '',
   username: '',
   modulesDone: [],

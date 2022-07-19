@@ -42,12 +42,6 @@ export class UserRepository extends BaseRepo<User> {
       relations: this.relations,
     })
 
-  findOneByAuthZeroId = async (authZeroId: string) =>
-    this.findOne({
-      where: { authZeroId },
-      relations: this.relations,
-    })
-
   findOneByGoogleId = async (googleId: string) =>
     this.findOne({ where: { googleId }, relations: this.relations })
 
