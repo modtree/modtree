@@ -9,7 +9,7 @@ import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
 import { GraphPicker } from '@/ui/search/graph/graph-picker'
 import { trpc } from '@/utils/trpc'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { updateUser } from '@/utils/rehydrate'
 import { flatten } from '@/utils/tailwind'
 import { setBuildId, setBuildTitle, setDegreeTitle } from '@/store/search'
@@ -22,7 +22,7 @@ export function Main(props: {
   const degreeIds = useAppSelector((state) => state.user.savedDegrees)
   const hasGraphs = graphIds.length !== 0
 
-  const { user } = useUser()
+  const { user } = useSession()
   const userId = user?.modtreeId
 
   // Load full degrees

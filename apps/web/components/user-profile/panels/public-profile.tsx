@@ -1,13 +1,11 @@
-import { useUser } from '@/utils/auth0'
 import { useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 
 export function PublicProfileTabContent() {
-  const { user } = useUser()
   const state = {
-    name: useState<string>(user?.nickname || ''),
-    faculty: useState<string>('Computing'),
+    name: useState<string>('cool_username' || ''),
+    faculty: useState<string>('best_faculty'),
     bio: useState<string>(''),
   }
   return (

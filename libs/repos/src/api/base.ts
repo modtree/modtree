@@ -1,13 +1,5 @@
 import { DataSource } from 'typeorm'
 import {
-  IUserRepository,
-  IDegreeRepository,
-  IGraphRepository,
-  IModuleRepository,
-  IModuleCondensedRepository,
-  IModuleFullRepository,
-} from '@modtree/types'
-import {
   UserRepository,
   DegreeRepository,
   ModuleRepository,
@@ -18,12 +10,12 @@ import {
 
 export abstract class BaseApi {
   db: DataSource
-  degreeRepo: IDegreeRepository
-  userRepo: IUserRepository
-  graphRepo: IGraphRepository
-  moduleRepo: IModuleRepository
-  moduleFullRepo: IModuleFullRepository
-  moduleCondensedRepo: IModuleCondensedRepository
+  degreeRepo: DegreeRepository
+  userRepo: UserRepository
+  graphRepo: GraphRepository
+  moduleRepo: ModuleRepository
+  moduleFullRepo: ModuleFullRepository
+  moduleCondensedRepo: ModuleCondensedRepository
 
   constructor(db: DataSource) {
     this.db = db

@@ -5,7 +5,7 @@ import { flatten } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { setGraph as setMainGraph } from '@/store/graph'
 import { useEffect } from 'react'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { useAppDispatch } from '@/store/redux'
 import { isUUID } from '@/utils/string'
 import { api } from 'api'
@@ -14,7 +14,7 @@ export function GraphPicker(props: {
   graphs: ModtreeApiResponse.Graph[]
   select: UseState<ModtreeApiResponse.Graph>
 }) {
-  const { user } = useUser()
+  const { user } = useSession()
   const [graph, setGraph] = props.select
   const dispatch = useAppDispatch()
 

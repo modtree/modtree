@@ -4,11 +4,10 @@ import {
   Module,
   Degree,
   Graph,
-  IModuleRepository,
   InitUserProps,
-  IUserRepository,
   ModuleStatus,
-  IDegreeRepository,
+  AuthProvider,
+  supportedAuthProviders,
 } from '@modtree/types'
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
@@ -16,9 +15,9 @@ import { BaseRepo } from '../base'
 import defaultProps from './default.json'
 import { DegreeRepository } from '../degree'
 
-export class UserRepository extends BaseRepo<User> implements IUserRepository {
-  private moduleRepo: IModuleRepository
-  private degreeRepo: IDegreeRepository
+export class UserRepository extends BaseRepo<User> {
+  private moduleRepo: ModuleRepository
+  private degreeRepo: DegreeRepository
   private graphRepo: BaseRepo<Graph>
 
   constructor(db: DataSource) {
@@ -49,6 +48,44 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       relations: this.relations,
     })
 
+  findOneByGoogleId = async (googleId: string) =>
+    this.findOne({ where: { googleId }, relations: this.relations })
+
+  findOneByGithubId = async (githubId: string) =>
+    this.findOne({ where: { githubId }, relations: this.relations })
+
+  findOneByFacebookId = async (facebookId: string) =>
+    this.findOne({ where: { facebookId }, relations: this.relations })
+
+  /**
+   * throws an error on unsupported authentication provider
+   */
+  checkProvider(provider: string) {
+    /** check if provider is valid */
+    if (supportedAuthProviders.every((s) => s !== provider)) {
+      throw new Error('User Repo: unsupported provider')
+    }
+  }
+
+  /**
+   * Searches database with provider and id
+   *
+   * @param {string} provider
+   * @param {string} providerId
+   * @returns {Promise<User>} user
+   */
+  async findOneByProviderId(
+    provider: AuthProvider,
+    providerId: string
+  ): Promise<User> {
+    this.checkProvider(provider)
+    return {
+      google: this.findOneByGoogleId,
+      facebook: this.findOneByFacebookId,
+      github: this.findOneByGithubId,
+    }[provider as AuthProvider](providerId)
+  }
+
   /**
    * Adds a User to DB
    *
@@ -68,6 +105,46 @@ export class UserRepository extends BaseRepo<User> implements IUserRepository {
       })
       return this.save(user)
     })
+  }
+
+  /**
+   * Adds a User to DB
+   *
+   * @param {string} email
+   * @param {string} provider
+   * @param {string} providerId
+   * @returns {Promise<User>}
+   */
+  async initialize2(
+    email: string,
+    provider: string,
+    providerId: string
+  ): Promise<User> {
+    /** check if provider is valid */
+    this.checkProvider(provider)
+
+    /** if provider is valid, create the user and assign the id */
+    const user = this.create({ email })
+    this.setProviderId(user, provider, providerId)
+
+    /** save the user */
+    return this.save(user)
+  }
+
+  setProviderId(user: User, provider: string, providerId: string): User {
+    /** check if provider is valid */
+    if (supportedAuthProviders.every((s) => s !== provider)) {
+      throw new Error('User.init: unsupported provider')
+    }
+
+    /** assign the appropriate id */
+    ;({
+      google: () => (user.googleId = providerId),
+      facebook: () => (user.facebookId = providerId),
+      github: () => (user.githubId = providerId),
+    }[provider as AuthProvider]())
+
+    return user
   }
 
   /**

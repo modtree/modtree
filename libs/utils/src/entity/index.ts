@@ -26,10 +26,10 @@ export const flatten = {
   user(user: User): ModtreeApiResponse.User {
     return {
       ...user,
-      modulesDoing: user.modulesDoing.map(flatten.module),
-      modulesDone: user.modulesDone.map(flatten.module),
-      savedDegrees: user.savedDegrees.map((d) => d.id),
-      savedGraphs: user.savedGraphs.map((g) => g.id),
+      modulesDoing: (user.modulesDoing || []).map(flatten.module),
+      modulesDone: (user.modulesDone || []).map(flatten.module),
+      savedDegrees: (user.savedDegrees || []).map((d) => d.id),
+      savedGraphs: (user.savedGraphs || []).map((g) => g.id),
       // in case no degree yet
       mainDegree: user.mainDegree ? user.mainDegree.id : '',
       // in case no graph yet

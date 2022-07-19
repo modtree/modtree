@@ -1,8 +1,9 @@
-import { IBaseRepository, Relations, EntityTarget } from '@modtree/types'
+import { Relations, EntityTarget } from '@modtree/types'
 import {
   DataSource,
   DeepPartial,
   EntityManager,
+  EntityMetadata,
   FindManyOptions,
   FindOneOptions,
   In,
@@ -10,13 +11,12 @@ import {
 } from 'typeorm'
 import { getRelations } from './get-relations'
 
-export class BaseRepo<Entity extends { id: string }>
-  implements IBaseRepository<Entity>
-{
+export class BaseRepo<Entity extends { id: string }> {
   /** don't expose any organic TypeORM methods outside at all */
   private repo: Repository<Entity>
   private readonly manager: EntityManager
   readonly target: EntityTarget<Entity>
+  readonly metadata: EntityMetadata
 
   /** direct inheritance */
   count: Repository<Entity>['count']
@@ -35,6 +35,7 @@ export class BaseRepo<Entity extends { id: string }>
     this.repo = new Repository(target, db.manager)
     this.manager = db.manager
     this.target = target
+    this.metadata = this.repo.metadata
 
     /** direct inheritance */
     this.find = this.repo.find.bind(this.repo)

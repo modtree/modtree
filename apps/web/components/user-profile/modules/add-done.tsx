@@ -6,12 +6,12 @@ import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { updateModulesDone } from '@/store/user'
 import { SelectedModules } from './selected-modules'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { trpc } from '@/utils/trpc'
 
 export function AddDone(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
-  const { user } = useUser()
+  const { user } = useSession()
   const buildList = useAppSelector((state) => state.search.buildList)
   function confirm() {
     const moduleCodes = buildList

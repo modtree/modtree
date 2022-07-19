@@ -1,39 +1,42 @@
 import { ReactElement } from 'react'
 import { UserIcon } from '@/ui/icons'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { DropdownMenu, Entries } from '@/ui/menu'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { hideContextMenu } from '@/store/modal'
 import { items } from '@/components/menu-items'
 import { flatten } from '@/utils/tailwind'
-import Link from 'next/link'
+import { signIn } from 'next-auth/react'
+import { devEnv } from '@/utils/env'
 
 /**
  * user button when the user is signed out
  */
-const SignedOutRect = () => {
-  const className = flatten(
-    'px-4 py-2',
-    'inline-flex h-10 centered rounded-md bg-black bg-opacity-20',
-    'font-medium text-white hover:bg-opacity-30',
-    'hover:no-underline'
-  )
-  return (
-    <Link href="/api/auth/login" passHref>
-      <a className={className}>Sign in</a>
-    </Link>
-  )
-}
+const SignedOutRect = () => (
+  <button
+    onClick={() => signIn()}
+    className={flatten(
+      'px-4 py-2',
+      'inline-flex h-10 centered rounded-md bg-black bg-opacity-20',
+      'font-medium text-white hover:bg-opacity-30',
+      'hover:no-underline'
+    )}
+  >
+    Sign in
+  </button>
+)
 
 /**
  * user button when the user is signed in
+ * and its accompanying dropdown menu
  */
 const SignedInCircle = () => {
-  const { user } = useUser()
+  /** read state */
+  const { user } = useSession()
   const dispatch = useAppDispatch()
-  const dev = process.env['NODE_ENV'] === 'development'
   const email = useAppSelector((state) => state.user.email)
 
+  /** the button itself */
   const UserCircle = () => (
     <div
       id="modtree-user-circle"
@@ -45,18 +48,15 @@ const SignedInCircle = () => {
     </div>
   )
 
+  /** the area including the button and the dropdown menu */
   return (
     <DropdownMenu TriggerButton={UserCircle}>
-      <Entries
-        items={items.userDropdownMenu.filter(
-          (item) => dev || item.text !== 'Debug'
-        )}
-      >
+      <Entries items={items.userDropdownMenu}>
         <>
-          <div>Signed in as{dev && ' (auth0)'}</div>
-          <b>{user?.nickname}</b>
+          <div>Signed in as</div>
+          <b>{user?.email}</b>
         </>
-        {dev ? (
+        {devEnv ? (
           <>
             <div>Email (postgres)</div>
             <b data-cy="email">{email}</b>
@@ -70,18 +70,18 @@ const SignedInCircle = () => {
 /**
  * sends this entire operation to the top-right of the screen
  */
-const TopRight = (props: { children: ReactElement[] | ReactElement }) => {
-  return (
-    <div className="absolute right-3 top-3 select-none">{props.children}</div>
-  )
-}
+const TopRight = (props: { children: ReactElement[] | ReactElement }) => (
+  <div className="absolute right-3 top-3 select-none">{props.children}</div>
+)
 
 /**
  * hidden while loading, handles login state.
  */
 export function FloatingUserButton() {
-  const { user, isLoading } = useUser()
-  return !isLoading ? (
-    <TopRight>{user ? <SignedInCircle /> : <SignedOutRect />}</TopRight>
-  ) : null
+  const { status } = useSession()
+  return status === 'loading' ? null : (
+    <TopRight>
+      {status === 'authenticated' ? <SignedInCircle /> : <SignedOutRect />}
+    </TopRight>
+  )
 }

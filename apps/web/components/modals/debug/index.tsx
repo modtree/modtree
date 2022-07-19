@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/store/redux'
 import { hideDebugModal } from '@/store/modal'
-import { useUser } from '@/utils/auth0'
+import { useSession } from '@/utils/auth'
 import { ObjectLiteral } from 'typeorm'
 import Modal from '@/ui/modal'
 
@@ -15,7 +15,7 @@ const Content = (props: { children: ObjectLiteral }) => {
 }
 
 export function DebugModal() {
-  const { user } = useUser()
+  const { user } = useSession()
   /**
    * get entire redux store
    */
@@ -24,7 +24,7 @@ export function DebugModal() {
   const DebugModalContents = () => {
     return (
       <div className="mt-2">
-        <h2>useUser().user</h2>
+        <h2>user</h2>
         <Content>{user ? user : {}}</Content>
 
         <h2>Redux Graph State</h2>

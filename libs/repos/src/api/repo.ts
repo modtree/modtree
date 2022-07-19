@@ -1,9 +1,22 @@
-import { DataSource } from 'typeorm'
-import { User, Degree, Graph } from '@modtree/types'
-import { BaseApi } from './base'
+import {
+  AuthProvider,
+  Degree,
+  Graph,
+  supportedAuthProviders,
+  User,
+} from '@modtree/types'
 import { emptyInit } from '@modtree/utils'
-import initializeUserConfig from './initialize-user.json'
+import { DataSource } from 'typeorm'
+
+import { BaseApi } from './base'
 import frontendSetupConfig from './frontend-setup.json'
+import initializeUserConfig from './initialize-user.json'
+
+/** read default config */
+const c =
+  process.env['NODE_ENV'] === 'production'
+    ? initializeUserConfig.production
+    : initializeUserConfig.development
 
 export class Api extends BaseApi {
   constructor(db: DataSource) {
@@ -22,10 +35,6 @@ export class Api extends BaseApi {
    * @returns {Promise<User>}
    */
   async initializeUser(authZeroId: string, email: string): Promise<User> {
-    const c =
-      process.env['NODE_ENV'] === 'production'
-        ? initializeUserConfig.production
-        : initializeUserConfig.development
     const user = this.userRepo.initialize({
       authZeroId,
       email,
@@ -55,6 +64,108 @@ export class Api extends BaseApi {
       }
     )
     return updatedUser
+  }
+
+  /**
+   * Setups up a functional User entity, with a default degree and a
+   * default graph.
+   *
+   * @param {User} user
+   * @returns {Promise<User>}
+   */
+  async setupUser(user: User): Promise<User> {
+    /** initialize degree */
+    const degree = this.degreeRepo.initialize({
+      ...emptyInit.Degree,
+      ...c.degree,
+    })
+
+    /** initialize graph */
+    const graph = degree.then((degree) =>
+      this.graphRepo.initialize({
+        ...emptyInit.Graph,
+        userId: user.id,
+        degreeId: degree.id,
+      })
+    )
+
+    /** write to the user and save */
+    const updateUser = Promise.all([degree, graph]).then(([degree, graph]) => {
+      /** add degree to the user */
+      user.savedDegrees = [...(user.savedDegrees || []), degree]
+      user.mainDegree = degree
+      /** add the graph to the user */
+      user.savedGraphs = [...(user.savedGraphs || []), graph]
+      user.mainGraph = graph
+      /** save and return the user */
+      return this.userRepo.save(user)
+    })
+
+    /** send it */
+    return updateUser
+  }
+
+  /**
+   * Handles a user logging in.
+   *
+   * If the user already exists in database, then return that
+   * user's data
+   *
+   * If not, then initialize a full user (empty degree, empty graph),
+   * and return that newly created user instead.
+   *
+   * @param {string} provider
+   * @param {string} providerId
+   * @param {string} email
+   */
+  async userLogin2(
+    email: string,
+    provider: string,
+    providerId: string
+  ): Promise<User> {
+    const getByEmail = () =>
+      this.userRepo.findOneByEmail(email).then((user) => {
+        this.userRepo.setProviderId(user, provider, providerId)
+        return this.userRepo.save(user)
+      })
+    const getByProvider = () => {
+      /**
+       * note that this breaks even the catch, since it's not
+       * a rejected Promise but a synchronous throw.
+       */
+      if (supportedAuthProviders.every((s) => s !== provider)) {
+        throw new Error('User.find: unsupported provider')
+      }
+      return this.userRepo.findOneByProviderId(
+        provider as AuthProvider,
+        providerId
+      )
+    }
+    const initializeUser = async () => {
+      return this.userRepo
+        .initialize2(email, provider, providerId)
+        .then((user) => this.setupUser(user))
+    }
+
+    /**
+     * on user login, first try to get by email
+     * this prevents people from using different providers and ending up with
+     * two accounts of the same email.
+     */
+    return (
+      getByEmail()
+        /**
+         * If email not found, do an attempt to try to look for provider id.
+         * By right, this should fail if email is already not found, but maybe
+         * the user changed their provider-side email.
+         */
+        .catch(() => getByProvider())
+        /**
+         * If all fails, create a new user. The fact that userLogin is called
+         * means the user has successfully authenticated.
+         */
+        .catch(() => initializeUser())
+    )
   }
 
   /**
@@ -168,13 +279,6 @@ export class Api extends BaseApi {
       flowEdges: data.edges,
     })
 
-    return {
-      u1,
-      u2,
-      d1,
-      d2,
-      g1,
-      g2,
-    }
+    return { u1, u2, d1, d2, g1, g2 }
   }
 }

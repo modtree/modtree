@@ -28,10 +28,13 @@ export default function Loader(props: {
   )
 }
 
-export function HomeLoader() {
-  return (
-    <div className="flex items-center justify-center">
+export const HomeLoader = () => (
+  <div className="h-full flex items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Loader pingSize={50} logoSize={48} logoTranslateY={-1} />
+      <div className="text-neutral-500 font-medium translate-y-[-24px]">
+        modtree
+      </div>
     </div>
-  )
-}
+  </div>
+)

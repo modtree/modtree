@@ -4,7 +4,6 @@ import {
   Column,
   ManyToMany,
   JoinTable,
-  PrimaryColumn,
   ManyToOne,
 } from 'typeorm'
 import type { IDegree, IGraph, IModule, IUser } from './interface'
@@ -15,16 +14,25 @@ export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @PrimaryColumn('text', { default: '' })
+  @Column('varchar', { default: '' })
+  googleId: string
+
+  @Column('varchar', { default: '' })
+  facebookId: string
+
+  @Column('varchar', { default: '' })
+  githubId: string
+
+  @Column('varchar', { default: '' })
   authZeroId: string
 
-  @Column('character varying')
+  @Column('varchar', { default: '' })
   displayName: string
 
-  @Column('character varying')
+  @Column('varchar', { default: '' })
   username: string
 
-  @Column('character varying')
+  @Column('varchar', { default: '' })
   email: string
 
   @ManyToMany('Module', 'user')
@@ -35,13 +43,13 @@ export class User implements IUser {
   @JoinTable()
   modulesDoing: IModule[]
 
-  @Column('integer')
+  @Column('integer', { default: 0 })
   matriculationYear: number
 
-  @Column('integer')
+  @Column('integer', { default: 0 })
   graduationYear: number
 
-  @Column('integer')
+  @Column('integer', { default: 0 })
   graduationSemester: number
 
   @ManyToMany('Degree', 'user')

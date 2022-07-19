@@ -178,3 +178,29 @@ export const user = createRouter()
         .then(flatten.user)
     },
   })
+
+  /**
+   * user login
+   */
+  .mutation('login2', {
+    input: z.object({
+      provider: z.string(),
+      providerId: z.string().min(1),
+      email: z.string().email(),
+    }),
+    async resolve({ input }) {
+      return api
+        .userLogin2(input.email, input.provider, input.providerId)
+        .then(flatten.user)
+    },
+  })
+
+  /**
+   * get a user by email
+   */
+  .query('get-by-email', {
+    input: z.string().email(),
+    async resolve({ input }) {
+      return api.userRepo.findOneByEmail(input).then(flatten.user)
+    },
+  })
