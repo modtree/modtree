@@ -5,7 +5,7 @@
 
 [ -z $2 ] && echo "Please provide a dump target" && exit 1
 
-PGPASSWORD=$1 pg_dump -U $1 -h localhost -p $PORT > $2
+PGPASSWORD=$1 pg_dump --no-owner -U $1 -h localhost -p $PORT > $2
 
 # useful psql commands:
 #
