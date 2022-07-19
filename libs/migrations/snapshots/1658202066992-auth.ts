@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class googleId1658194885583 implements MigrationInterface {
-  name = 'googleId1658194885583'
+export class auth1658202066992 implements MigrationInterface {
+  name = 'auth1658202066992'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -70,6 +70,12 @@ export class googleId1658194885583 implements MigrationInterface {
     )
     await queryRunner.query(
       `ALTER TABLE "user" ADD "googleId" character varying NOT NULL DEFAULT ''`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "user" ADD "facebookId" character varying NOT NULL DEFAULT ''`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "user" ADD "githubId" character varying NOT NULL DEFAULT ''`
     )
     await queryRunner.query(
       `ALTER TABLE "user" DROP CONSTRAINT "PK_c41e0dcaba3a7db141aa2660aa4"`
@@ -184,6 +190,8 @@ export class googleId1658194885583 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "user" ADD CONSTRAINT "PK_c41e0dcaba3a7db141aa2660aa4" PRIMARY KEY ("id", "authZeroId")`
     )
+    await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "githubId"`)
+    await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "facebookId"`)
     await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "googleId"`)
     await queryRunner.query(
       `ALTER TABLE "user_saved_graphs_graph" ADD "userAuthZeroId" text NOT NULL`

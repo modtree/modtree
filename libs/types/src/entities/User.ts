@@ -18,6 +18,12 @@ export class User implements IUser {
   googleId: string
 
   @Column('varchar', { default: '' })
+  facebookId: string
+
+  @Column('varchar', { default: '' })
+  githubId: string
+
+  @Column('varchar', { default: '' })
   authZeroId: string
 
   @Column('varchar', { default: '' })

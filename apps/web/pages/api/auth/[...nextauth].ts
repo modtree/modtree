@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import FacebookProvider from 'next-auth/providers/facebook'
+import GithubProvider from 'next-auth/providers/github'
 import { trpc } from '@/utils/trpc'
 
 const secrets = {
@@ -8,10 +10,22 @@ const secrets = {
     clientId: process.env.GOOGLE_CLIENT_ID || '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
   },
+  facebook: {
+    clientId: process.env.FACEBOOK_CLIENT_ID || '',
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET || '',
+  },
+  github: {
+    clientId: process.env.GITHUB_CLIENT_ID || '',
+    clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
+  },
 }
 
 export default NextAuth({
-  providers: [GoogleProvider(secrets.google)],
+  providers: [
+    GoogleProvider(secrets.google),
+    FacebookProvider(secrets.facebook),
+    GithubProvider(secrets.github),
+  ],
   callbacks: {
     async signIn({ user, account, profile }): Promise<boolean> {
       return trpc
