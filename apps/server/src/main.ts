@@ -18,7 +18,7 @@ const config = {
 connect(config, async (db) => {
   /** api is only instantiated here */
   api = new Api(db)
-  const app = getApp(api)
+  const app = getApp()
   checkhealth(api)
   app.listen(process.env.PORT || 8080)
 })
