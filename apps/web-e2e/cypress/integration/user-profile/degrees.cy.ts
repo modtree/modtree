@@ -8,7 +8,7 @@
 
 import { FRONTEND_URL } from '../../utils/constants'
 
-const title = 'Original Title'
+const oldTitle = 'Original Title'
 const newTitle = 'New Title'
 let degreeCount
 let modules = []
@@ -53,13 +53,15 @@ function checkDegreeCount() {
  */
 function checkModules() {
   const arr = []
-  cy.getCy('degree-module').each((span) => {
-    arr.push(span.text())
-  }).then(() => {
-    // Exact array match
-    expect(arr).to.include.members(modules)
-    expect(modules).to.include.members(arr)
-  })
+  cy.getCy('degree-module')
+    .each((span) => {
+      arr.push(span.text())
+    })
+    .then(() => {
+      // Exact array match
+      expect(arr).to.include.members(modules)
+      expect(modules).to.include.members(arr)
+    })
 }
 
 describe('degrees panel', () => {
@@ -88,7 +90,7 @@ describe('degrees panel', () => {
     cy.getCy('add-degree-button').click()
 
     // Degree props
-    cy.getCy('add-degree-title').type(title)
+    cy.getCy('add-degree-title').type(oldTitle)
     insertModule('CS1010S', 'Programming Methodology')
     insertModule('MA2001', 'Linear Algebra I')
 
@@ -118,6 +120,11 @@ describe('degrees panel', () => {
 
     // Save degree
     cy.get('button').contains('Save degree').click()
+
+    // Check that title has changed
+    cy.getCy('degrees-list')
+    cy.contains(oldTitle).should('not.exist')
+    cy.contains(newTitle).should('be.visible')
 
     checkDegreeCount()
   })
@@ -173,8 +180,9 @@ describe('degrees panel', () => {
       .click()
 
     // Wait for degree to be deleted
-    // Waiting for title to disappear is not reliable enough
-    cy.wait(3000)
+    cy.getCy('degrees-list')
+    cy.contains(newTitle).should('not.exist')
+
     degreeCount--
     checkDegreeCount()
   })
