@@ -9,7 +9,11 @@ function getIcon(Icon: HeroIcon) {
     const iconSize = props.px ? `${props.px}px` : defaultSize
     const style = { height: iconSize, width: iconSize }
     return (
-      <Icon style={style} className={flatten('ui-icon', props.className)} />
+      <Icon
+        style={style}
+        className={flatten('ui-icon', props.className)}
+        data-cy={Icon.name}
+      />
     )
   }
   component.displayName = Icon.name

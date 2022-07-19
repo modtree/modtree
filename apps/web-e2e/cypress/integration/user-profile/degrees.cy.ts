@@ -8,7 +8,7 @@
 
 import { FRONTEND_URL } from '../../utils/constants'
 
-const title = 'Test Degree'
+const title = 'Very Specific Degree Title'
 let degreeCount
 
 /**
@@ -74,12 +74,25 @@ describe('degrees panel', () => {
     // Insert modules
     insertModule('CS1010S', 'Programming Methodology')
     insertModule('MA2001', 'Linear Algebra I')
-    insertModule('EL1101E', 'The Nature of Language')
     // Save degree
     cy.get('button').contains('Save degree').click()
 
     // Test that degree was added
     degreeCount++
+    checkDegreeCount()
+  })
+
+  it('remove degree', () => {
+    // Click trash icon of the last degree
+    cy.get('[data-cy="degrees-list"] > div')
+      .last()
+      .find('[data-cy="TrashIcon"]')
+      .click()
+
+    // Wait for degree to be deleted
+    // Waiting for title to disappear is not reliable enough
+    cy.wait(3000)
+    degreeCount--
     checkDegreeCount()
   })
 })
