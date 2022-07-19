@@ -10,7 +10,6 @@ import {
  * empty User init props
  */
 const User: InitUserProps = {
-  authZeroId: '',
   email: '',
 }
 

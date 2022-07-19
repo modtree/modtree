@@ -10,7 +10,6 @@ export type InitUserProps = {
    * required
    * (immediately available after signing up with auth0)
    */
-  authZeroId: string
   email: string
   /** optional */
   modulesDone?: string[]
