@@ -1,11 +1,3 @@
-/*
-- create new degree
-- rename degree
-- add module
-- remove module
-- remove degree
- */
-
 import { FRONTEND_URL } from '../../utils/constants'
 
 const oldTitle = 'Original Title'
