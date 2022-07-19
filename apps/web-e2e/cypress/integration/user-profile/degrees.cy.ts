@@ -53,13 +53,13 @@ function checkDegreeCount() {
  */
 function checkModules() {
   const arr = []
-  cy.getCy('degree-module')
-    .each((span) => {
-      arr.push(span.text())
-    })
-    .then(() => {
-      expect(arr).to.include.members(modules)
-    })
+  cy.getCy('degree-module').each((span) => {
+    arr.push(span.text())
+  }).then(() => {
+    // Exact array match
+    expect(arr).to.include.members(modules)
+    expect(modules).to.include.members(arr)
+  })
 }
 
 describe('degrees panel', () => {
