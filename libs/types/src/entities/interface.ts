@@ -29,7 +29,6 @@ export type IUser = IBase & {
   googleId: string
   facebookId: string
   githubId: string
-  authZeroId: string
   displayName: string
   username: string
   email: string
