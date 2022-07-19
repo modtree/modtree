@@ -1,4 +1,4 @@
-import { DeepPartial, DeleteResult, Repository } from 'typeorm'
+import { DeepPartial, DeleteResult, EntityMetadata, Repository } from 'typeorm'
 import {
   IGraph,
   IUser,
@@ -40,6 +40,7 @@ export type CanTakeModule = {
 
 export interface IBaseRepository<Entity> {
   relations: Relations
+  metadata: EntityMetadata
   /** direct inheritance */
   create: Repository<Entity>['create']
   save(e: DeepPartial<Entity>): Promise<Entity>
