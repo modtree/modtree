@@ -12,13 +12,16 @@ import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
 import { useSession } from '@/utils/auth'
 
-function SelectedModules(props: { modules: string[] }) {
+function SelectedModules(props: { modules: string[]; cypress?: string }) {
   const dispatch = useAppDispatch()
   const cache = useAppSelector((state) => state.cache)
   return (
     <>
       {props.modules.length !== 0 && (
-        <div className="ui-rectangle flex flex-col overflow-hidden">
+        <div
+          className="ui-rectangle flex flex-col overflow-hidden"
+          data-cy={props.cypress}
+        >
           {props.modules.map((code, index) => {
             const module = cache.modules[code]
             return (
@@ -80,16 +83,21 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
-        <Input className="w-full mb-4" state={state.title} grayed />
+        <Input
+          className="w-full mb-4"
+          state={state.title}
+          grayed
+          cypress="add-degree-title"
+        />
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
           <div className="w-64 flex">
             <div className="w-64 fixed">
-              <SettingsSearchBox />
+              <SettingsSearchBox cypress="add-degree-modules" />
             </div>
           </div>
         </div>
-        <SelectedModules modules={buildList} />
+        <SelectedModules modules={buildList} cypress="degree-modules-list" />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={saveDegree}>
