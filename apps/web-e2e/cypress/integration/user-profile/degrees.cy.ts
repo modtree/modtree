@@ -1,5 +1,3 @@
-import { FRONTEND_URL } from '../../utils/constants'
-
 const oldTitle = 'Original Title'
 const newTitle = 'New Title'
 let degreeCount
@@ -61,7 +59,6 @@ describe('degrees panel', () => {
    * Login
    */
   beforeEach(() => {
-    cy.visit(FRONTEND_URL)
     cy.login()
 
     // open degrees panel

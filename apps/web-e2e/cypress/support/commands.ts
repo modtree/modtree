@@ -8,7 +8,7 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-import { TEST_USER } from '../utils/constants'
+import { FRONTEND_URL, TEST_USER } from '../utils/constants'
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
@@ -39,6 +39,7 @@ Cypress.Commands.add('getCy', (value: string) => {
  * Click sign in button, and fill in Auth0 details if necessary.
  */
 Cypress.Commands.add('login', () => {
+  cy.visit(FRONTEND_URL)
   cy.intercept('GET', '/api/auth/login').as('signInToModtree')
 
   // 1. click the sign in button

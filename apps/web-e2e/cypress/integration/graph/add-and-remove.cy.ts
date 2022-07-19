@@ -1,11 +1,8 @@
-import { FRONTEND_URL } from '../../utils/constants'
-
 const code = 'MA2104'
 const title = 'Multivariable Calculus'
 
 describe('add-and-remove', () => {
   beforeEach(() => {
-    cy.visit(FRONTEND_URL)
     cy.login()
   })
 

@@ -1,5 +1,3 @@
-import { FRONTEND_URL } from '../../utils/constants'
-
 let doneCount
 let doingCount
 
@@ -28,7 +26,6 @@ describe('modules panel', () => {
    * Login
    */
   beforeEach(() => {
-    cy.visit(FRONTEND_URL)
     cy.login()
 
     // open modules panel
