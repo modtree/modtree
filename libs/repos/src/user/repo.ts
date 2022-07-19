@@ -58,6 +58,16 @@ export class UserRepository extends BaseRepo<User> {
     this.findOne({ where: { facebookId }, relations: this.relations })
 
   /**
+   * throws an error on unsupported authentication provider
+   */
+  checkProvider(provider: string) {
+    /** check if provider is valid */
+    if (supportedAuthProviders.every((s) => s !== provider)) {
+      throw new Error('User Repo: unsupported provider')
+    }
+  }
+
+  /**
    * Searches database with provider and id
    *
    * @param {string} provider
@@ -68,9 +78,7 @@ export class UserRepository extends BaseRepo<User> {
     provider: AuthProvider,
     providerId: string
   ): Promise<User> {
-    if (supportedAuthProviders.every((s) => s !== provider)) {
-      throw new Error('User.find: unsupported provider')
-    }
+    this.checkProvider(provider)
     return {
       google: this.findOneByGoogleId,
       facebook: this.findOneByFacebookId,
@@ -113,12 +121,21 @@ export class UserRepository extends BaseRepo<User> {
     providerId: string
   ): Promise<User> {
     /** check if provider is valid */
+    this.checkProvider(provider)
+
+    /** if provider is valid, create the user and assign the id */
+    const user = this.create({ email })
+    this.setProviderId(user, provider, providerId)
+
+    /** save the user */
+    return this.save(user)
+  }
+
+  setProviderId(user: User, provider: string, providerId: string): User {
+    /** check if provider is valid */
     if (supportedAuthProviders.every((s) => s !== provider)) {
       throw new Error('User.init: unsupported provider')
     }
-
-    /** if provider is valid, create the user */
-    const user = this.create({ email })
 
     /** assign the appropriate id */
     ;({
@@ -127,8 +144,7 @@ export class UserRepository extends BaseRepo<User> {
       github: () => (user.githubId = providerId),
     }[provider as AuthProvider]())
 
-    /** save the user */
-    return this.save(user)
+    return user
   }
 
   /**

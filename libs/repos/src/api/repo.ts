@@ -1,15 +1,16 @@
-import { DataSource } from 'typeorm'
 import {
-  User,
+  AuthProvider,
   Degree,
   Graph,
   supportedAuthProviders,
-  AuthProvider,
+  User,
 } from '@modtree/types'
-import { BaseApi } from './base'
 import { emptyInit } from '@modtree/utils'
-import initializeUserConfig from './initialize-user.json'
+import { DataSource } from 'typeorm'
+
+import { BaseApi } from './base'
 import frontendSetupConfig from './frontend-setup.json'
+import initializeUserConfig from './initialize-user.json'
 
 /** read default config */
 const c =
@@ -122,19 +123,49 @@ export class Api extends BaseApi {
     provider: string,
     providerId: string
   ): Promise<User> {
-    if (supportedAuthProviders.every((s) => s !== provider)) {
-      throw new Error('User.find: unsupported provider')
+    const getByEmail = () =>
+      this.userRepo.findOneByEmail(email).then((user) => {
+        this.userRepo.setProviderId(user, provider, providerId)
+        return this.userRepo.save(user)
+      })
+    const getByProvider = () => {
+      /**
+       * note that this breaks even the catch, since it's not
+       * a rejected Promise but a synchronous throw.
+       */
+      if (supportedAuthProviders.every((s) => s !== provider)) {
+        throw new Error('User.find: unsupported provider')
+      }
+      return this.userRepo.findOneByProviderId(
+        provider as AuthProvider,
+        providerId
+      )
     }
-    return this.userRepo
-      .findOneByEmail(email) // try by email first
-      .catch(() =>
-        this.userRepo.findOneByProviderId(provider as AuthProvider, providerId)
-      )
-      .catch(() =>
-        this.userRepo
-          .initialize2(email, provider, providerId)
-          .then((user) => this.setupUser(user))
-      )
+    const initializeUser = async () => {
+      return this.userRepo
+        .initialize2(email, provider, providerId)
+        .then((user) => this.setupUser(user))
+    }
+
+    /**
+     * on user login, first try to get by email
+     * this prevents people from using different providers and ending up with
+     * two accounts of the same email.
+     */
+    return (
+      getByEmail()
+        /**
+         * If email not found, do an attempt to try to look for provider id.
+         * By right, this should fail if email is already not found, but maybe
+         * the user changed their provider-side email.
+         */
+        .catch(() => getByProvider())
+        /**
+         * If all fails, create a new user. The fact that userLogin is called
+         * means the user has successfully authenticated.
+         */
+        .catch(() => initializeUser())
+    )
   }
 
   /**
@@ -248,13 +279,6 @@ export class Api extends BaseApi {
       flowEdges: data.edges,
     })
 
-    return {
-      u1,
-      u2,
-      d1,
-      d2,
-      g1,
-      g2,
-    }
+    return { u1, u2, d1, d2, g1, g2 }
   }
 }
