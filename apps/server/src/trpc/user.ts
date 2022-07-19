@@ -1,4 +1,4 @@
-import { ModuleStatus, SupportedProvider } from '@modtree/types'
+import { ModuleStatus } from '@modtree/types'
 import { emptyInit, flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
@@ -190,11 +190,7 @@ export const user = createRouter()
     }),
     async resolve({ input }) {
       return api
-        .userLogin2(
-          input.email,
-          input.provider as SupportedProvider,
-          input.providerId
-        )
+        .userLogin2(input.email, input.provider, input.providerId)
         .then(flatten.user)
     },
   })

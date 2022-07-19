@@ -1,5 +1,11 @@
 import { DataSource } from 'typeorm'
-import { User, Degree, Graph, SupportedProvider } from '@modtree/types'
+import {
+  User,
+  Degree,
+  Graph,
+  supportedAuthProviders,
+  AuthProvider,
+} from '@modtree/types'
 import { BaseApi } from './base'
 import { emptyInit } from '@modtree/utils'
 import initializeUserConfig from './initialize-user.json'
@@ -107,19 +113,23 @@ export class Api extends BaseApi {
    * If not, then initialize a full user (empty degree, empty graph),
    * and return that newly created user instead.
    *
-   * @param {SupportedProvider} provider
+   * @param {string} provider
    * @param {string} providerId
    * @param {string} email
    */
   async userLogin2(
     email: string,
-    provider: SupportedProvider = '',
-    providerId: string = ''
+    provider: string,
+    providerId: string
   ): Promise<User> {
-    // TODO: support all providers
-    if (provider !== 'google') return this.userRepo.create()
+    if (supportedAuthProviders.every((s) => s !== provider)) {
+      throw new Error('User.find: unsupported provider')
+    }
     return this.userRepo
-      .findOneByGoogleId(providerId) // check if user exists first
+      .findOneByEmail(email) // try by email first
+      .catch(() =>
+        this.userRepo.findOneByProviderId(provider as AuthProvider, providerId)
+      )
       .catch(() =>
         this.userRepo
           .initialize2(email, provider, providerId)

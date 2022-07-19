@@ -16,7 +16,6 @@ import {
  * imports custom matcher types
  */
 import './matcher-types'
-import { Repositories } from '@modtree/types'
 
 type SetupOptions = {
   initialize?: boolean
@@ -26,7 +25,14 @@ type SetupOptions = {
 /**
  * initialize with default db
  */
-let Repo: Repositories
+let Repo: {
+  Module: ModuleRepository
+  ModuleFull: ModuleFullRepository
+  ModuleCondensed: ModuleCondensedRepository
+  User: UserRepository
+  Degree: DegreeRepository
+  Graph: GraphRepository
+}
 let api: Api
 
 /**

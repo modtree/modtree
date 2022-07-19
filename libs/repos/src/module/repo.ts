@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import { Module, InitModuleProps, IModuleRepository } from '@modtree/types'
+import { Module, InitModuleProps } from '@modtree/types'
 import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
@@ -10,10 +10,7 @@ type Data = {
   origIdx: number
 }
 
-export class ModuleRepository
-  extends BaseRepo<Module>
-  implements IModuleRepository
-{
+export class ModuleRepository extends BaseRepo<Module> {
   // private repo: BaseRepo<Module>
   constructor(db: DataSource) {
     super(Module, db)

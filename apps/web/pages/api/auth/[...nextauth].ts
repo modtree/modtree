@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import GithubProvider from 'next-auth/providers/github'
 import { trpc } from '@/utils/trpc'
+import { log } from '@/utils/env'
 
 const secrets = {
   google: {
@@ -27,6 +28,9 @@ export default NextAuth({
     GithubProvider(secrets.github),
   ],
   callbacks: {
+    /**
+     * on user sign in
+     */
     async signIn({ user, account, profile }): Promise<boolean> {
       return trpc
         .mutation('user/login2', {
@@ -34,18 +38,40 @@ export default NextAuth({
           providerId: user.id,
           email: user.email || profile.email || '',
         })
-        .then(() => true)
+        .then((user) => {
+          log.ok('/api/auth: Successfully created new user', user)
+          return true
+        })
         .catch(() => {
-          console.error('/api/auth/signIn: Failed to create user')
+          log.err('/api/auth: Failed to create user')
           return false
         })
     },
+
+    /**
+     * on page load
+     */
     async session({ session, user, token }) {
-      const email = session.user?.email || user.email || token.email || ''
-      if (!email) return session
-      const databaseUser = await trpc.query('user/get-by-email', email)
-      session.user.modtreeId = databaseUser.id
-      return session
+      /**
+       * Currently, it seems that the only persisting id is the user's email.
+       */
+      const email = session.user.email || user.email || token.email || ''
+      if (!email) {
+        log.warn('/api/auth: No session found to refresh')
+        return session
+      }
+      return trpc
+        .query('user/get-by-email', email)
+        .then((user) => {
+          /** reload the user's id here */
+          session.user.modtreeId = user.id
+          log.ok('/api/auth: Successfully refreshed session')
+          return session
+        })
+        .catch(() => {
+          log.err('/api/auth: Failed to refresh session')
+          return session
+        })
     },
   },
 })

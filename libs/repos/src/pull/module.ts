@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { DataSource, Repository } from 'typeorm'
-import { IModuleCondensedRepository, NUSMods, Module } from '@modtree/types'
+import { NUSMods, Module } from '@modtree/types'
 import { nusmodsApi, flatten, client, log } from '@modtree/utils'
 import { ModuleCondensedRepository } from '../module-condensed'
 
 export class ModuleRepository extends Repository<Module> {
-  private moduleCondensedRepo: IModuleCondensedRepository
+  private moduleCondensedRepo: ModuleCondensedRepository
 
   constructor(db: DataSource) {
     super(Module, db.manager)

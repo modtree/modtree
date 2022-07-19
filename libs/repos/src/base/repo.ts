@@ -1,4 +1,4 @@
-import { IBaseRepository, Relations, EntityTarget } from '@modtree/types'
+import { Relations, EntityTarget } from '@modtree/types'
 import {
   DataSource,
   DeepPartial,
@@ -11,9 +11,7 @@ import {
 } from 'typeorm'
 import { getRelations } from './get-relations'
 
-export class BaseRepo<Entity extends { id: string }>
-  implements IBaseRepository<Entity>
-{
+export class BaseRepo<Entity extends { id: string }> {
   /** don't expose any organic TypeORM methods outside at all */
   private repo: Repository<Entity>
   private readonly manager: EntityManager

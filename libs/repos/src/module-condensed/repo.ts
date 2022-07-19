@@ -1,16 +1,9 @@
 import { DataSource, In } from 'typeorm'
-import {
-  ModuleCondensed,
-  IModuleCondensedRepository,
-  InitModuleCondensedProps,
-} from '@modtree/types'
+import { ModuleCondensed, InitModuleCondensedProps } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
-export class ModuleCondensedRepository
-  extends BaseRepo<ModuleCondensed>
-  implements IModuleCondensedRepository
-{
+export class ModuleCondensedRepository extends BaseRepo<ModuleCondensed> {
   constructor(db: DataSource) {
     super(ModuleCondensed, db)
   }

@@ -1,18 +1,10 @@
 import { DataSource } from 'typeorm'
-import {
-  Degree,
-  IDegreeRepository,
-  IModuleRepository,
-  InitDegreeProps,
-} from '@modtree/types'
+import { Degree, InitDegreeProps } from '@modtree/types'
 import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 
-export class DegreeRepository
-  extends BaseRepo<Degree>
-  implements IDegreeRepository
-{
-  private moduleRepo: IModuleRepository
+export class DegreeRepository extends BaseRepo<Degree> {
+  private moduleRepo: ModuleRepository
 
   constructor(db: DataSource) {
     super(Degree, db)

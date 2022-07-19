@@ -2,10 +2,6 @@ import { DataSource } from 'typeorm'
 import {
   Module,
   Graph,
-  IModuleRepository,
-  IUserRepository,
-  IDegreeRepository,
-  IGraphRepository,
   GraphFrontendProps,
   GraphFlowNode,
   InitGraphProps,
@@ -25,13 +21,10 @@ import { UserRepository } from '../user'
 import { DegreeRepository } from '../degree'
 import { getModules } from './get-modules'
 
-export class GraphRepository
-  extends BaseRepo<Graph>
-  implements IGraphRepository
-{
-  private moduleRepo: IModuleRepository
-  private degreeRepo: IDegreeRepository
-  private userRepo: IUserRepository
+export class GraphRepository extends BaseRepo<Graph> {
+  private moduleRepo: ModuleRepository
+  private degreeRepo: DegreeRepository
+  private userRepo: UserRepository
 
   constructor(db: DataSource) {
     super(Graph, db)
