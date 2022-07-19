@@ -1,2 +1,4 @@
 import { mod3To202207091657375809467 } from './1657375809467-mod3_to_20220709'
-export const migrations = [mod3To202207091657375809467]
+import { googleId1658194885583 } from './1658194885583-googleId'
+
+export const migrations = [mod3To202207091657375809467, googleId1658194885583]
