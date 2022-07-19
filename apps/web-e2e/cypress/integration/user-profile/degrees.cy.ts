@@ -10,11 +10,13 @@ import { FRONTEND_URL } from '../../utils/constants'
 
 const title = 'Very Specific Degree Title'
 let degreeCount
+let moduleCount = 0
 
 /**
  * Inserts a module into a degree
  */
 function insertModule(moduleCode: string, title: string) {
+  moduleCount++
   return cy
     .getCy('add-degree-modules')
     .clear()
@@ -45,6 +47,16 @@ function checkDegreeCount() {
   cy.getCy('degrees-list').children().its('length').should('eq', degreeCount)
 }
 
+/**
+ * Check module count
+ */
+function checkModuleCount() {
+  cy.getCy('degree-modules-list')
+    .children()
+    .its('length')
+    .should('eq', moduleCount)
+}
+
 describe('degrees panel', () => {
   /**
    * Login
@@ -69,11 +81,15 @@ describe('degrees panel', () => {
 
   it('create new degree', () => {
     cy.getCy('add-degree-button').click()
-    // Title
+
+    // Degree props
     cy.getCy('add-degree-title').type(title)
-    // Insert modules
     insertModule('CS1010S', 'Programming Methodology')
     insertModule('MA2001', 'Linear Algebra I')
+
+    // Check module count
+    checkModuleCount()
+
     // Save degree
     cy.get('button').contains('Save degree').click()
 
@@ -87,8 +103,13 @@ describe('degrees panel', () => {
       .last()
       .find('[data-cy="edit-button"]')
       .click()
+
     // Title
     cy.getCy('edit-degree-title').type(title)
+
+    // Check module count
+    checkModuleCount()
+
     // Save degree
     cy.get('button').contains('Save degree').click()
 

@@ -44,7 +44,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         <div className="flex flex-row space-x-2 mb-4">
           <SettingsSearchBox />
         </div>
-        <SelectedModules modules={buildList} />
+        <SelectedModules modules={buildList} cypress="degree-modules-list" />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={() => update(state.title[0], buildList)}>
