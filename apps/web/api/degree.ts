@@ -17,10 +17,16 @@ export class DegreeApi extends BaseApi {
   /**
    * sets modules
    */
-  async update(degreeId: string, props: InitDegreeProps): Promise<void> {
-    return trpc.mutation('degree/update', { degreeId, ...props }).then(() => {
-      updateUser()
-    })
+  async update(
+    degreeId: string,
+    title: string,
+    moduleCodes: string[]
+  ): Promise<void> {
+    return trpc
+      .mutation('degree/update', { degreeId, title, moduleCodes })
+      .then(() => {
+        updateUser()
+      })
   }
 
   /**

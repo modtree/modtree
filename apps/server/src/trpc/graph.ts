@@ -1,4 +1,4 @@
-import { emptyInit, flatten, validModuleRegex } from '@modtree/utils'
+import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
 import { createRouter } from './router'
@@ -9,13 +9,13 @@ export const graph = createRouter()
    */
   .mutation('create', {
     input: z.object({
-      title: z.string().min(1),
+      title: z.string().min(1).default('Untitled'),
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.graphRepo
-        .initialize({ ...emptyInit.Graph, ...req.input })
+        .initialize(input.title, input.userId, input.degreeId)
         .then(flatten.graph)
     },
   })
