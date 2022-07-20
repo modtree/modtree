@@ -93,6 +93,9 @@ describe('degrees panel', () => {
     // Save degree
     cy.get('button').contains('Save degree').click()
 
+    // Wait for degree to be added
+    cy.contains(oldTitle).should('be.visible')
+
     // Test that degree was added
     degreeCount++
     checkDegreeCount()
