@@ -1,13 +1,5 @@
-import {
-  AuthProvider,
-  Degree,
-  Graph,
-  supportedAuthProviders,
-  User,
-} from '@modtree/types'
-import { emptyInit } from '@modtree/utils'
+import { AuthProvider, supportedAuthProviders, User } from '@modtree/types'
 import { DataSource } from 'typeorm'
-
 import { BaseApi } from './base'
 import frontendSetupConfig from './frontend-setup.json'
 import initializeUserConfig from './initialize-user.json'
@@ -32,10 +24,10 @@ export class Api extends BaseApi {
    */
   async setupUser(user: User): Promise<User> {
     /** initialize degree */
-    const degree = this.degreeRepo.initialize({
-      ...emptyInit.Degree,
-      ...c.degree,
-    })
+    const degree = this.degreeRepo.initialize(
+      c.degree.title,
+      c.degree.moduleCodes
+    )
 
     /** initialize graph */
     const graph = degree.then((degree) =>

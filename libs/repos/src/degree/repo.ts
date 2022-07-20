@@ -23,15 +23,14 @@ export class DegreeRepository extends BaseRepo<Degree> {
   /**
    * Adds a Degree to DB
    *
-   * @param {InitDegreeProps} props
+   * @param {string} title
+   * @param {string[]} moduleCodes
    * @returns {Promise<Degree>}
    */
-  async initialize(props: InitDegreeProps): Promise<Degree> {
+  async initialize(title: string, moduleCodes: string[]): Promise<Degree> {
     return this.moduleRepo
-      .findByCodes(props.moduleCodes)
-      .then((modules) =>
-        this.save(this.create({ title: props.title, modules }))
-      )
+      .findByCodes(moduleCodes)
+      .then((modules) => this.save(this.create({ title, modules })))
   }
 
   /**

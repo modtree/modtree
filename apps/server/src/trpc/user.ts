@@ -1,5 +1,5 @@
 import { ModuleStatus } from '@modtree/types'
-import { emptyInit, flatten, validModuleRegex } from '@modtree/utils'
+import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
 import { createRouter } from './router'
@@ -11,9 +11,7 @@ export const user = createRouter()
   .mutation('create', {
     input: z.string().email(),
     async resolve({ input: email }) {
-      return api.userRepo
-        .initialize({ ...emptyInit.User, email })
-        .then(flatten.user)
+      return api.userRepo.initialize({ email }).then(flatten.user)
     },
   })
 
