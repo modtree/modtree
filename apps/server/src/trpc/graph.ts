@@ -25,8 +25,8 @@ export const graph = createRouter()
    */
   .query('get-full', {
     input: z.string().uuid(),
-    async resolve(req) {
-      return api.graphRepo.findOneById(req.input)
+    async resolve({ input }) {
+      return api.graphRepo.findOneById(input)
     },
   })
 
@@ -35,8 +35,8 @@ export const graph = createRouter()
    */
   .query('delete', {
     input: z.string().uuid(),
-    async resolve(req) {
-      return api.graphRepo.delete(req.input)
+    async resolve({ input }) {
+      return api.graphRepo.delete(input)
     },
   })
 
@@ -48,11 +48,10 @@ export const graph = createRouter()
       moduleCode: z.string().regex(validModuleRegex),
       graphId: z.string().uuid(),
     }),
-    async resolve(req) {
-      const { graphId, moduleCode } = req.input
+    async resolve({ input }) {
       return api.graphRepo
-        .findOneById(graphId)
-        .then((g) => api.graphRepo.toggleModule(g, moduleCode))
+        .findOneById(input.graphId)
+        .then((g) => api.graphRepo.toggleModule(g, input.moduleCode))
         .then(flatten.graph)
     },
   })
@@ -66,12 +65,14 @@ export const graph = createRouter()
       flowNodes: z.array(z.any()),
       flowEdges: z.array(z.any()),
     }),
-    async resolve(req) {
-      const { graphId, flowNodes, flowEdges } = req.input
+    async resolve({ input }) {
       return api.graphRepo
-        .findOneById(graphId)
+        .findOneById(input.graphId)
         .then((g) =>
-          api.graphRepo.updateFrontendProps(g, { flowNodes, flowEdges })
+          api.graphRepo.updateFrontendProps(g, {
+            flowNodes: input.flowNodes,
+            flowEdges: input.flowEdges,
+          })
         )
         .then(flatten.graph)
     },
@@ -85,11 +86,10 @@ export const graph = createRouter()
       graphId: z.string().uuid(),
       flowNode: z.any(),
     }),
-    async resolve(req) {
-      const { graphId, flowNode } = req.input
+    async resolve({ input }) {
       return api.graphRepo
-        .findOneById(graphId)
-        .then((g) => api.graphRepo.updateFlowNode(g, flowNode))
+        .findOneById(input.graphId)
+        .then((g) => api.graphRepo.updateFlowNode(g, input.flowNode))
         .then(flatten.graph)
     },
   })
@@ -102,11 +102,10 @@ export const graph = createRouter()
       graphId: z.string().uuid(),
       selectedCodes: z.array(z.string().regex(validModuleRegex)),
     }),
-    async resolve(req) {
-      const { graphId, selectedCodes } = req.input
+    async resolve({ input }) {
       return api.graphRepo
-        .findOneById(graphId)
-        .then((g) => api.graphRepo.suggestModules(g, selectedCodes))
+        .findOneById(input.graphId)
+        .then((g) => api.graphRepo.suggestModules(g, input.selectedCodes))
         .then((m) => m.map(flatten.module))
     },
   })
@@ -119,9 +118,9 @@ export const graph = createRouter()
    */
   .query('can-take-modules', {
     input: z.string().uuid(),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.graphRepo
-        .findOneById(req.input)
+        .findOneById(input)
         .then((g) => api.graphRepo.canTakeModules(g))
     },
   })
@@ -134,11 +133,10 @@ export const graph = createRouter()
       graphId: z.string().uuid(),
       title: z.string(),
     }),
-    async resolve(req) {
-      const { graphId, title } = req.input
+    async resolve({ input }) {
       return api.graphRepo
-        .findOneById(graphId)
-        .then((g) => api.graphRepo.rename(g, title))
+        .findOneById(input.graphId)
+        .then((g) => api.graphRepo.rename(g, input.title))
         .then(flatten.graph)
     },
   })

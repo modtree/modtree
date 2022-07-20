@@ -24,8 +24,8 @@ export const degree = createRouter()
    */
   .query('get-full', {
     input: z.string().uuid(),
-    async resolve(req) {
-      return api.degreeRepo.findOneById(req.input)
+    async resolve({ input }) {
+      return api.degreeRepo.findOneById(input)
     },
   })
 
@@ -34,8 +34,8 @@ export const degree = createRouter()
    */
   .query('delete', {
     input: z.string().uuid(),
-    async resolve(req) {
-      return api.degreeRepo.delete(req.input)
+    async resolve({ input }) {
+      return api.degreeRepo.delete(input)
     },
   })
 
@@ -48,11 +48,12 @@ export const degree = createRouter()
       title: z.string().min(1),
       moduleCodes: z.array(z.string().regex(validModuleRegex)),
     }),
-    async resolve(req) {
-      const { title, moduleCodes, degreeId } = req.input
+    async resolve({ input }) {
       return api.degreeRepo
-        .findOneById(degreeId)
-        .then((degree) => api.degreeRepo.update(degree, title, moduleCodes))
+        .findOneById(input.degreeId)
+        .then((degree) =>
+          api.degreeRepo.update(degree, input.title, input.moduleCodes)
+        )
         .then(flatten.degree)
     },
   })
