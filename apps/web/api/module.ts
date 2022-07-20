@@ -78,10 +78,10 @@ export class ModuleApi extends BaseApi {
    * @param {string} moduleCode
    */
   async openModuleModal(moduleCode: string) {
-    this.dispatch(showModuleModal())
-    return this.directGetByCode(moduleCode).then((module) =>
+    return this.directGetByCode(moduleCode).then((module) => {
       this.dispatch(setModalModule(module))
-    )
+      this.dispatch(showModuleModal())
+    })
   }
 
   /**

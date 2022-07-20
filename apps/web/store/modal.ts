@@ -28,6 +28,7 @@ export const modal = createSlice({
     },
     hideModuleModal: (state) => {
       state.showModuleModal = false
+      state.modalModule = baseInitialState.modal.modalModule
     },
     showModuleModal: (state) => {
       state.showModuleModal = true
