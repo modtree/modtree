@@ -7,11 +7,6 @@ jest.mock('../../../base')
 jest.mock('../../../module')
 jest.mock('../../../degree')
 
-const init = {
-  authZeroId: 'auth0|012345678901234567890123',
-  email: 'khang@modtree.com',
-}
-
 const fakeData = {
   degree: [{ id: 'a' }, { id: 'b' }],
 }
@@ -48,7 +43,7 @@ test.each(correct)('$type', async (props) => {
    * test prep: initialize degrees and user
    */
   const savedDegrees = degreeIds.map((id) => degreeRepo.create({ id }))
-  const user = await userRepo.initialize(init).then((user) =>
+  const user = await userRepo.initialize2('a@b', 'google', 'id').then((user) =>
     userRepo.save({
       ...user,
       savedDegrees,

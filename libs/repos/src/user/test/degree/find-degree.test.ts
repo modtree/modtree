@@ -6,11 +6,6 @@ import { Degree } from '@modtree/types'
 jest.mock('../../../base')
 jest.mock('../../../module')
 
-const init = {
-  authZeroId: 'auth0|012345678901234567890123',
-  email: 'khang@modtree.com',
-}
-
 const userRepo = new UserRepository(mocks.db)
 const degreeRepo = new DegreeRepository(mocks.db)
 
@@ -28,7 +23,7 @@ test.each(correct)('$type', async ({ degreeIds, query, expectedId, error }) => {
    */
   const savedDegrees = degreeIds.map((id) => degreeRepo.create({ id }))
   const user = await userRepo
-    .initialize(init)
+    .initialize2('khang@modtree.com', 'google', 'google-id')
     .then((user) => userRepo.save({ ...user, savedDegrees }))
   /**
    * the real test

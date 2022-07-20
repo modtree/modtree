@@ -4,7 +4,6 @@ import {
   Module,
   Degree,
   Graph,
-  InitUserProps,
   ModuleStatus,
   AuthProvider,
   supportedAuthProviders,
@@ -12,7 +11,6 @@ import {
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
 import { BaseRepo } from '../base'
-import defaultProps from './default.json'
 import { DegreeRepository } from '../degree'
 
 export class UserRepository extends BaseRepo<User> {
@@ -83,27 +81,6 @@ export class UserRepository extends BaseRepo<User> {
   /**
    * Adds a User to DB
    *
-   * @param {InitUserProps} props
-   * @returns {Promise<User>}
-   */
-  async initialize(props: InitUserProps): Promise<User> {
-    return Promise.all([
-      this.moduleRepo.findByCodes(props.modulesDone || []),
-      this.moduleRepo.findByCodes(props.modulesDoing || []),
-    ]).then(([modulesDone, modulesDoing]) => {
-      const user = this.create({
-        ...defaultProps,
-        ...props,
-        modulesDone,
-        modulesDoing,
-      })
-      return this.save(user)
-    })
-  }
-
-  /**
-   * Adds a User to DB
-   *
    * @param {string} email
    * @param {string} provider
    * @param {string} providerId
@@ -111,15 +88,17 @@ export class UserRepository extends BaseRepo<User> {
    */
   async initialize2(
     email: string,
-    provider: string,
-    providerId: string
+    provider?: string,
+    providerId?: string
   ): Promise<User> {
-    /** check if provider is valid */
-    this.checkProvider(provider)
-
-    /** if provider is valid, create the user and assign the id */
+    /** create an empty user first */
     const user = this.create({ email })
-    this.setProviderId(user, provider, providerId)
+
+    /** set provider if valid */
+    if (provider && providerId) {
+      this.checkProvider
+      this.setProviderId(user, provider, providerId)
+    }
 
     /** save the user */
     return this.save(user)

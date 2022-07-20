@@ -1,7 +1,7 @@
 import '@modtree/test-env/jest'
-
 import { UserRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
+import { ModuleStatus } from '@modtree/types'
 
 jest.mock('../../base')
 jest.mock('../../module')
@@ -19,11 +19,6 @@ const fakeData = {
     { moduleCode: 'BX2000', prereqTree: { or: ['AX1000', 'BX1000'] } },
     { moduleCode: 'CX2000', prereqTree: { and: ['AX1000', 'AX2000'] } },
   ],
-}
-
-const init = {
-  authZeroId: 'auth0|012345678901234567890123',
-  email: 'khang@modtree.com',
 }
 
 const userRepo = new UserRepository(mocks.getDb(fakeData))
@@ -56,11 +51,10 @@ const correct = [
 ]
 
 test.each(correct)('$type', async ({ done, doing, expected }) => {
-  const user = await userRepo.initialize({
-    ...init,
-    modulesDone: done,
-    modulesDoing: doing,
-  })
+  const user = await userRepo
+    .initialize2('khang@modtree.com')
+    .then((user) => userRepo.setModuleStatus(user, done, ModuleStatus.DONE))
+    .then((user) => userRepo.setModuleStatus(user, doing, ModuleStatus.DOING))
   await userRepo.getEligibleModules(user).then((modules) => {
     const codes = modules.map((m) => m.moduleCode)
     expect(codes).toIncludeSameMembers(expected)

@@ -1,21 +1,5 @@
 import { PrereqTree } from './nusmods'
 
-export type InitUserProps = {
-  /**
-   * required
-   * (immediately available after signing up with auth0)
-   */
-  email: string
-  /** optional */
-  modulesDone?: string[]
-  modulesDoing?: string[]
-  displayName?: string
-  username?: string
-  matriculationYear?: number
-  graduationYear?: number
-  graduationSemester?: number
-}
-
 export type InitGraphProps = {
   title: string
   userId: string

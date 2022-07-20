@@ -7,11 +7,6 @@ jest.mock('../../../base')
 jest.mock('../../../module')
 jest.mock('../../../graph')
 
-const init = {
-  authZeroId: 'auth0|012345678901234567890123',
-  email: 'khang@modtree.com',
-}
-
 const userRepo = new UserRepository(
   mocks.getDb({ graph: [{ id: 'a' }, { id: 'b' }] })
 )
@@ -29,7 +24,7 @@ test.each(correct)('$type', async ({ graphIds, insert, expected }) => {
    */
   const savedGraphs = graphIds.map((id) => graphRepo.create({ id }))
   const originalUser = await userRepo
-    .initialize(init)
+    .initialize2('a@b', 'google', 'id')
     .then((user) => userRepo.save({ ...user, savedGraphs }))
   /**
    * the real test

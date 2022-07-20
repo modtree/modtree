@@ -64,4 +64,11 @@ export class User implements IUser {
   @ManyToOne('Graph', 'user')
   @JoinTable()
   mainGraph?: IGraph
+
+  constructor() {
+    this.modulesDone = []
+    this.modulesDoing = []
+    this.savedDegrees = []
+    this.savedGraphs = []
+  }
 }

@@ -19,4 +19,8 @@ export class Degree implements IDegree {
 
   @Column('character varying')
   title: string
+
+  constructor() {
+    this.modules = []
+  }
 }
