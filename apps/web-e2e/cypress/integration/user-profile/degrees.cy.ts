@@ -58,11 +58,8 @@ describe('degrees panel', () => {
   /**
    * Login
    */
-  before(() => {
-    cy.login()
-  })
-
   beforeEach(() => {
+    cy.login()
     cy.reload()
 
     // open degrees panel
@@ -102,9 +99,10 @@ describe('degrees panel', () => {
   })
 
   it('edit degree title', () => {
-    // Edit last degree
-    cy.get('[data-cy="degrees-list"] > div')
-      .last()
+    // Edit degree
+    cy.contains(oldTitle)
+      .parent()
+      .parent()
       .find('[data-cy="edit-button"]')
       .click()
 
@@ -126,9 +124,10 @@ describe('degrees panel', () => {
   })
 
   it('add module to degree', () => {
-    // Edit last degree
-    cy.get('[data-cy="degrees-list"] > div')
-      .last()
+    // Edit degree
+    cy.contains(newTitle)
+      .parent()
+      .parent()
       .find('[data-cy="edit-button"]')
       .click()
 
@@ -145,9 +144,10 @@ describe('degrees panel', () => {
   })
 
   it('remove module from degree', () => {
-    // Edit last degree
-    cy.get('[data-cy="degrees-list"] > div')
-      .last()
+    // Edit degree
+    cy.contains(newTitle)
+      .parent()
+      .parent()
       .find('[data-cy="edit-button"]')
       .click()
 

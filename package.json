@@ -21,6 +21,8 @@
     "test:scan": "ts-node scripts/run-tests/scan.ts",
     "test:build": "yarn test:scan && node scripts/run-tests/build.js",
     "e2e": "nx e2e web-e2e --watch",
+    "e2e:prod": "nx e2e:prod web-e2e --watch",
+    "e2e:dev": "nx e2e:dev web-e2e --watch",
     "4 //": "............................................... migration",
     "mg": "bash scripts/migration/generate.sh",
     "mr": "bash scripts/migration/run.sh",

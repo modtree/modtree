@@ -1,7 +1,5 @@
-import { FRONTEND_URL } from '../utils/constants'
-
 describe('search', () => {
-  beforeEach(() => cy.visit(FRONTEND_URL))
+  beforeEach(() => cy.visit('/'))
 
   it('should execute a search', () => {
     // type in the search query
