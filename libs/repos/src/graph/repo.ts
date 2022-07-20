@@ -208,25 +208,6 @@ export class GraphRepository extends BaseRepo<Graph> {
   }
 
   /**
-   * Updates modules placed of a graph
-   *
-   * @param {Graph} graph
-   * @param {string} moduleCodes
-   * @returns {Promise<Graph>}
-   */
-  async updateModulesPlaced(
-    graph: Graph,
-    moduleCodes: string[]
-  ): Promise<Graph> {
-    return this.moduleRepo.findByCodes(moduleCodes).then((modules) =>
-      this.save({
-        ...graph,
-        modulesPlaced: modules,
-      })
-    )
-  }
-
-  /**
    * Updates a single flow node.
    * Expects a full flow node, to replace the current one.
    *
