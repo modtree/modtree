@@ -46,11 +46,15 @@ export function Main(props: {
         title="Degrees"
         addButtonText="Add degree"
         onAddClick={() => props.setPage('add-new')}
+        cypress="add-degree-button"
       >
         {hasDegree ? (
           <>
             <p>{text.degreeListSection.summary}</p>
-            <div className="ui-rectangle flex flex-col overflow-hidden">
+            <div
+              data-cy="degrees-list"
+              className="ui-rectangle flex flex-col overflow-hidden"
+            >
               {degrees.map((degree, index) => {
                 return (
                   <Row.Degree

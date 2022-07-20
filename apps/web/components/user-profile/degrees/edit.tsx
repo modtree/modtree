@@ -34,12 +34,21 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
-        <Input className="w-full mb-4" state={state.title} grayed />
+        <Input
+          className="w-full mb-4"
+          state={state.title}
+          grayed
+          cypress="edit-degree-title"
+        />
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">
-          <SettingsSearchBox />
+          <SettingsSearchBox cypress="degree-modules-search" />
         </div>
-        <SelectedModules modules={buildList} />
+        <SelectedModules
+          modules={buildList}
+          cypress="degree-modules-list"
+          cypressModule="degree-module"
+        />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={() => update(state.title[0], buildList)}>

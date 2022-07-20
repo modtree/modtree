@@ -8,7 +8,10 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-import { TEST_USER } from '../utils/constants'
+import { FRONTEND_URL } from '../utils/constants'
+
+// Indicate that this file is a module
+export {}
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
@@ -35,39 +38,51 @@ Cypress.Commands.add('getCy', (value: string) => {
   return cy.get(`[data-cy=${value}]`)
 })
 
-/**
- * Click sign in button, and fill in Auth0 details if necessary.
- */
 Cypress.Commands.add('login', () => {
-  cy.intercept('GET', '/api/auth/login').as('signInToModtree')
+  const username = Cypress.env('GOOGLE_USER')
+  const password = Cypress.env('GOOGLE_PW')
+  const cookieName = Cypress.env('COOKIE_NAME')
 
-  // 1. click the sign in button
-  cy.get('a[href="/api/auth/login"]').click()
-  cy.wait('@signInToModtree')
+  // Login page URL
+  const loginUrl = FRONTEND_URL + '/api/auth/signin'
+  // The selector for Google on our login page
+  const loginSelector = `form[action="${FRONTEND_URL}/api/auth/signin/google"]`
 
-  // 2. If redirected to Auth0, then we are at the
-  // Auth0 login page. Then sign in with test user.
-  //
-  // Else, login data was saved from a previous session, so proceed.
-  cy.url().then((URL) => {
-    if (URL.includes('auth0')) {
-      // key in credentials
-      cy.get('[id="username"]').type(TEST_USER.email)
-      cy.get('[id="password"]').type(TEST_USER.password)
-      cy.get('button[type="submit"]').click()
+  const socialLoginOptions = {
+    username,
+    password,
+    loginUrl,
+    headless: true,
+    logs: false,
+    isPopup: true,
+    loginSelector,
+    postLoginSelector: '#modtree-user-circle',
+  }
 
-      // reload because cypress and auth0 callbacks don't play nice
-      cy.reload()
-    }
-  })
+  cy.visit('/')
 
-  // 3. wait for user to load
-  cy.wait(2000)
-  /**
-   * Correct alternative getUser is unstable
-   */
-  // cy.intercept('/trpc/user/get-full**').as('getUser')
-  // cy.wait('@getUser')
+  return cy
+    .task('GoogleSocialLogin', socialLoginOptions)
+    .then(({ cookies }) => {
+      cy.clearCookies()
+
+      const cookie = cookies
+        .filter((cookie) => cookie.name === cookieName)
+        .pop()
+      if (cookie) {
+        cy.setCookie(cookie.name, cookie.value, {
+          domain: cookie.domain,
+          expiry: cookie.expires,
+          httpOnly: cookie.httpOnly,
+          path: cookie.path,
+          secure: cookie.secure,
+        })
+
+        Cypress.Cookies.defaults({
+          preserve: cookieName,
+        })
+      }
+    })
 })
 
 Cypress.Commands.add('loadModuleModal', (moduleCode: string, title: string) => {

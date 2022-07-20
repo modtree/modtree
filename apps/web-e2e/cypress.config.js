@@ -9,8 +9,9 @@ module.exports = defineConfig({
   screenshotsFolder: '../../dist/cypress/apps/web-e2e/screenshots',
   chromeWebSecurity: false,
   e2e: {
-    // setupNodeEvents(on, config) {},
+    //setupNodeEvents(on, config) {},
     specPattern: './cypress/integration/**/*.cy.{js,jsx,ts,tsx}',
     supportFile: './cypress/support/index.ts',
+    baseUrl: 'http://localhost:3000',
   },
 })

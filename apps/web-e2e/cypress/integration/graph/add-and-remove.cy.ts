@@ -1,12 +1,13 @@
-import { FRONTEND_URL } from '../../utils/constants'
-
 const code = 'MA2104'
 const title = 'Multivariable Calculus'
 
 describe('add-and-remove', () => {
-  beforeEach(() => {
-    cy.visit(FRONTEND_URL)
+  before(() => {
     cy.login()
+  })
+
+  beforeEach(() => {
+    cy.reload()
   })
 
   it('Graph does not contain MA2104', () => {

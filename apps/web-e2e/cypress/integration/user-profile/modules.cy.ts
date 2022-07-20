@@ -1,5 +1,3 @@
-import { FRONTEND_URL } from '../../utils/constants'
-
 let doneCount
 let doingCount
 
@@ -27,9 +25,12 @@ describe('modules panel', () => {
   /**
    * Login
    */
-  beforeEach(() => {
-    cy.visit(FRONTEND_URL)
+  before(() => {
     cy.login()
+  })
+
+  beforeEach(() => {
+    cy.reload()
 
     // open modules panel
     cy.getCy('modtree-user-circle').then((icon) => {
@@ -87,7 +88,10 @@ describe('modules panel', () => {
     cy.getCy('modify-done').click()
     cy.getCy('build-list').should('be.visible')
     // get trash button of last module in list
-    cy.get('[data-cy="build-list"] > div').last().find('button').click()
+    cy.get('[data-cy="build-list"] > div')
+      .last()
+      .find('[data-cy="delete-button"]')
+      .click()
     cy.get('button').contains('Save changes').click()
 
     doneCount--
@@ -99,7 +103,10 @@ describe('modules panel', () => {
     cy.getCy('modify-doing').click()
     cy.getCy('build-list').should('be.visible')
     // get trash button of last module in list
-    cy.get('[data-cy="build-list"] > div').last().find('button').click()
+    cy.get('[data-cy="build-list"] > div')
+      .last()
+      .find('[data-cy="delete-button"]')
+      .click()
     cy.get('button').contains('Save changes').click()
 
     doingCount--

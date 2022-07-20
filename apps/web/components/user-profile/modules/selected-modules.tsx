@@ -6,6 +6,7 @@ import { Row } from '@/ui/settings'
 export function SelectedModules(props: {
   modules: string[]
   cypress?: string
+  cypressModule?: string
 }) {
   const dispatch = useAppDispatch()
   const cache = useAppSelector((state) => state.cache)
@@ -24,7 +25,9 @@ export function SelectedModules(props: {
                 deletable
                 onDelete={() => dispatch(removeFromBuildList(code))}
               >
-                <span className="font-semibold">{code}</span>
+                <span data-cy={props.cypressModule} className="font-semibold">
+                  {code}
+                </span>
                 <span className="mx-1">/</span>
                 {module && module.title}
               </Row.Module>
