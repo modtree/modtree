@@ -8,6 +8,9 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
+// Indicate that this file is a module
+export {}
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
   namespace Cypress {
