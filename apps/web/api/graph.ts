@@ -4,7 +4,6 @@ import {
   CanTakeModule,
   GraphFlowEdge,
   GraphFlowNode,
-  InitGraphProps,
   ModtreeApiResponse,
 } from '@modtree/types'
 import { BaseApi } from './base-api'
@@ -48,8 +47,12 @@ export class GraphApi extends BaseApi {
   /**
    * create
    */
-  async create(props: InitGraphProps): Promise<ModtreeApiResponse.Graph> {
-    return trpc.mutation('graph/create', props)
+  async create(
+    title: string,
+    userId: string,
+    degreeId: string
+  ): Promise<ModtreeApiResponse.Graph> {
+    return trpc.mutation('graph/create', { title, userId, degreeId })
   }
 
   /**

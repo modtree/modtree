@@ -1,11 +1,5 @@
 import { PrereqTree } from './nusmods'
 
-export type InitGraphProps = {
-  title: string
-  userId: string
-  degreeId: string
-}
-
 export type InitModuleCondensedProps = {
   moduleCode: string
   title: string

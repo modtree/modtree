@@ -1,7 +1,7 @@
 import { Button } from '@/ui/buttons'
 import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
-import { InitGraphProps, ModtreeApiResponse, SetState } from '@modtree/types'
+import { ModtreeApiResponse, SetState } from '@modtree/types'
 import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { useAppSelector } from '@/store/redux'
@@ -39,7 +39,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
     if (!userId) return
     const degreeId = state.degree[0].id
     if (!degreeId) return
-    const graphProps: InitGraphProps = {
+    const graphProps = {
       title: state.title[0],
       userId,
       degreeId,
