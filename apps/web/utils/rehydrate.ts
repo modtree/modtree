@@ -2,59 +2,47 @@ import { setDegree } from '@/store/degree'
 import { setGraph } from '@/store/graph'
 import store from '@/store/redux'
 import { setUser } from '@/store/user'
-import { ModtreeApiResponse } from '@modtree/types'
-import { empty } from '@modtree/utils'
-import { ModtreeUserProfile } from 'types'
+import { Session } from 'next-auth'
 import { trpc } from './trpc'
 
-const redux = store.getState()
 const dispatch = store.dispatch
-
-async function getUser(
-  user: ModtreeUserProfile
-): Promise<ModtreeApiResponse.User> {
-  const authZeroLoaded = user.modtreeId && user.modtreeId !== ''
-  const reduxLoaded = redux.user.id && redux.user.id !== ''
-  if (reduxLoaded) {
-    return redux.user
-  } else if (authZeroLoaded) {
-    const userId = user?.modtreeId
-    if (!userId) return empty.User
-    return trpc
-      .query('user', userId)
-      .then((user) => {
-        dispatch(setUser(user))
-        return user
-      })
-      .catch(() => empty.User)
-  } else {
-    return empty.User
-  }
-}
 
 /**
  * Loads main degree/graph into store, if not yet loaded.
  */
-export function rehydrate(user: ModtreeUserProfile) {
-  const userPromise = getUser(user)
-  userPromise
-    .then((user) => {
-      if (redux.degree.id === '') {
-        const degreeId = user.mainDegree
-        if (!degreeId) return
-        trpc.query('degree', degreeId).then((d) => {
-          dispatch(setDegree(d))
-        })
-      }
-      if (redux.graph.id === '') {
-        const graphId = user.mainGraph
-        if (!graphId) return
-        trpc.query('graph', graphId).then((g) => {
-          dispatch(setGraph(g))
-        })
-      }
+export function rehydrate(user: Session['user']) {
+  if (!user.modtreeId) {
+    console.debug('User id empty. Rehydrate failed.')
+  }
+
+  /** rehydrate user */
+  const rUser = trpc.query('user', user.modtreeId).then((user) => {
+    dispatch(setUser(user))
+    return user
+  })
+
+  /** rehydrate degree */
+  const rDegree = rUser
+    .then((user) => trpc.query('degree', user.mainDegree))
+    .then((degree) => {
+      dispatch(setDegree(degree))
     })
-    .catch(() => console.debug('rehydrate failed'))
+
+  /** rehydrate graph */
+  const rGraph = rUser
+    .then((user) => trpc.query('graph', user.mainGraph))
+    .then((graph) => {
+      dispatch(setGraph(graph))
+    })
+
+  /** reporting */
+  Promise.all([rUser, rDegree, rGraph])
+    .then(() => {
+      console.debug('Successfully rehydrated user, degree, graph.')
+    })
+    .catch(() => {
+      console.debug('Failed to rehydrate user, degree, graph.')
+    })
 }
 
 /**
