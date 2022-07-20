@@ -76,7 +76,7 @@ beforeEach(() => jest.clearAllMocks())
 test.each(correct)(
   '$type',
   async ({ title, userId, degreeId, hidden, placed }) => {
-    await graphRepo.initialize({ title, userId, degreeId }).then((graph) => {
+    await graphRepo.initialize(title, userId, degreeId).then((graph) => {
       const { modulesPlaced, modulesHidden, user, degree } = graph
       /**
        * basic data

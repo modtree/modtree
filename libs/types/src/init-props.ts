@@ -1,10 +1,5 @@
 import { PrereqTree } from './nusmods'
 
-export type InitDegreeProps = {
-  moduleCodes: string[]
-  title: string
-}
-
 export type InitUserProps = {
   /**
    * required

@@ -52,7 +52,7 @@ export const degree = createRouter()
       const { title, moduleCodes, degreeId } = req.input
       return api.degreeRepo
         .findOneById(degreeId)
-        .then((degree) => api.degreeRepo.update(degree, { title, moduleCodes }))
+        .then((degree) => api.degreeRepo.update(degree, title, moduleCodes))
         .then(flatten.degree)
     },
   })
