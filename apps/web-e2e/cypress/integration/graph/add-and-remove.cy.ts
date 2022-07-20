@@ -2,8 +2,12 @@ const code = 'MA2104'
 const title = 'Multivariable Calculus'
 
 describe('add-and-remove', () => {
-  beforeEach(() => {
+  before(() => {
     cy.login()
+  })
+
+  beforeEach(() => {
+    cy.reload()
   })
 
   it('Graph does not contain MA2104', () => {

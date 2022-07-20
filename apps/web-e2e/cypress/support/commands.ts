@@ -8,8 +8,6 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-import { FRONTEND_URL, TEST_USER } from '../utils/constants'
-
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
   namespace Cypress {
@@ -17,7 +15,6 @@ declare global {
     interface Chainable {
       login(): void
       login2(): void
-      login3(): void
       loadModuleModal<E>(
         moduleCode: string,
         title: string
@@ -50,7 +47,7 @@ Cypress.Commands.add('login2', () => {
   Cypress.Cookies.preserveOnce('next-auth.session-token')
 })
 
-Cypress.Commands.add('login3', () => {
+Cypress.Commands.add('login', () => {
   const username = Cypress.env('GOOGLE_USER')
   const password = Cypress.env('GOOGLE_PW')
   const loginUrl = Cypress.env('SITE_NAME')
@@ -65,6 +62,8 @@ Cypress.Commands.add('login3', () => {
     loginSelector: `form[action="${Cypress.env('SITE_NAME')}/google"]`,
     postLoginSelector: '#modtree-user-circle',
   }
+
+  cy.visit('/')
 
   return cy
     .task('GoogleSocialLogin', socialLoginOptions)
@@ -88,42 +87,6 @@ Cypress.Commands.add('login3', () => {
         })
       }
     })
-})
-
-/**
- * Click sign in button, and fill in Auth0 details if necessary.
- */
-Cypress.Commands.add('login', () => {
-  cy.visit(FRONTEND_URL)
-  cy.intercept('GET', '/api/auth/login').as('signInToModtree')
-
-  // 1. click the sign in button
-  cy.get('a[href="/api/auth/login"]').click()
-  cy.wait('@signInToModtree')
-
-  // 2. If redirected to Auth0, then we are at the
-  // Auth0 login page. Then sign in with test user.
-  //
-  // Else, login data was saved from a previous session, so proceed.
-  cy.url().then((URL) => {
-    if (URL.includes('auth0')) {
-      // key in credentials
-      cy.get('[id="username"]').type(TEST_USER.email)
-      cy.get('[id="password"]').type(TEST_USER.password)
-      cy.get('button[type="submit"]').click()
-
-      // reload because cypress and auth0 callbacks don't play nice
-      cy.reload()
-    }
-  })
-
-  // 3. wait for user to load
-  cy.wait(2000)
-  /**
-   * Correct alternative getUser is unstable
-   */
-  // cy.intercept('/trpc/user/get-full**').as('getUser')
-  // cy.wait('@getUser')
 })
 
 Cypress.Commands.add('loadModuleModal', (moduleCode: string, title: string) => {

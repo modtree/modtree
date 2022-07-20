@@ -25,8 +25,12 @@ describe('modules panel', () => {
   /**
    * Login
    */
-  beforeEach(() => {
+  before(() => {
     cy.login()
+  })
+
+  beforeEach(() => {
+    cy.reload()
 
     // open modules panel
     cy.getCy('modtree-user-circle').then((icon) => {

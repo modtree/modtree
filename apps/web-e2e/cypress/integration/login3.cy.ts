@@ -1,7 +1,6 @@
 describe('Login page', () => {
   before(() => {
-    cy.visit('/')
-    cy.login3()
+    cy.login()
   })
 
   it('User is logged in', () => {

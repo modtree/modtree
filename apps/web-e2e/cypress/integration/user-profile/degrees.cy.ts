@@ -58,8 +58,12 @@ describe('degrees panel', () => {
   /**
    * Login
    */
-  beforeEach(() => {
+  before(() => {
     cy.login()
+  })
+
+  beforeEach(() => {
+    cy.reload()
 
     // open degrees panel
     cy.getCy('modtree-user-circle').then((icon) => {
