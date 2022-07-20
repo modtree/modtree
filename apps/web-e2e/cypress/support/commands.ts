@@ -8,6 +8,8 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
+import { FRONTEND_URL } from '../utils/constants'
+
 // Indicate that this file is a module
 export {}
 
@@ -39,8 +41,13 @@ Cypress.Commands.add('getCy', (value: string) => {
 Cypress.Commands.add('login', () => {
   const username = Cypress.env('GOOGLE_USER')
   const password = Cypress.env('GOOGLE_PW')
-  const loginUrl = Cypress.env('SITE_NAME')
   const cookieName = Cypress.env('COOKIE_NAME')
+
+  // Login page URL
+  const loginUrl = FRONTEND_URL + '/api/auth/signin'
+  // The selector for Google on our login page
+  const loginSelector = `form[action="${FRONTEND_URL}/api/auth/signin/google"]`
+
   const socialLoginOptions = {
     username,
     password,
@@ -48,7 +55,7 @@ Cypress.Commands.add('login', () => {
     headless: true,
     logs: false,
     isPopup: true,
-    loginSelector: `form[action="${Cypress.env('SITE_NAME')}/google"]`,
+    loginSelector,
     postLoginSelector: '#modtree-user-circle',
   }
 
