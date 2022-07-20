@@ -16,7 +16,7 @@ export const user = createRouter()
     }),
     async resolve({ input: { email, provider, providerId } }) {
       return api.userRepo
-        .initialize2(email, provider, providerId)
+        .initialize(email, provider, providerId)
         .then(flatten.user)
     },
   })
@@ -163,7 +163,7 @@ export const user = createRouter()
   /**
    * user login
    */
-  .mutation('login2', {
+  .mutation('login', {
     input: z.object({
       provider: z.string(),
       providerId: z.string().min(1),
@@ -171,7 +171,7 @@ export const user = createRouter()
     }),
     async resolve({ input }) {
       return api
-        .userLogin2(input.email, input.provider, input.providerId)
+        .userLogin(input.email, input.provider, input.providerId)
         .then(flatten.user)
     },
   })

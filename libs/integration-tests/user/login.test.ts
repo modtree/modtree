@@ -20,8 +20,8 @@ const expectUserCount = (n: number) =>
 /**
  * execute a user login and update the user variable
  */
-const loginAndPushUser = (...args: Parameters<Api['userLogin2']>) =>
-  api.userLogin2(...args).then((res) => {
+const loginAndPushUser = (...args: Parameters<Api['userLogin']>) =>
+  api.userLogin(...args).then((res) => {
     expect(res).toBeInstanceOf(User)
     user.push(res)
   })

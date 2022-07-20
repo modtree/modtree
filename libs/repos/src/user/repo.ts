@@ -86,7 +86,7 @@ export class UserRepository extends BaseRepo<User> {
    * @param {string} providerId
    * @returns {Promise<User>}
    */
-  async initialize2(
+  async initialize(
     email: string,
     provider?: string,
     providerId?: string

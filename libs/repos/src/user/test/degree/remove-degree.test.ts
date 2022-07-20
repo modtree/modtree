@@ -28,7 +28,7 @@ test.each(correct)('$type', async ({ degreeIds, remove, expected, error }) => {
    */
   const savedDegrees = degreeIds.map((id) => degreeRepo.create({ id }))
   const user = await userRepo
-    .initialize2('a@b')
+    .initialize('a@b')
     .then((user) => userRepo.save({ ...user, savedDegrees }))
   /** pre-check */
   expect(user.savedDegrees.map((d) => d.id)).toIncludeSameMembers(degreeIds)

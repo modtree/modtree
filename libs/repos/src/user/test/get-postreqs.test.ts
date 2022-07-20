@@ -52,7 +52,7 @@ const correct = [
 
 test.each(correct)('$type', async ({ done, doing, expected }) => {
   const user = await userRepo
-    .initialize2('khang@modtree.com')
+    .initialize('khang@modtree.com')
     .then((user) => userRepo.setModuleStatus(user, done, ModuleStatus.DONE))
     .then((user) => userRepo.setModuleStatus(user, doing, ModuleStatus.DOING))
   await userRepo.getPostReqs(user).then((modules) => {

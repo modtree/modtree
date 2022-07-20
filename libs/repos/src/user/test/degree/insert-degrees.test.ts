@@ -26,7 +26,7 @@ test.each(correct)('$type', async ({ degreeIds, insert, expected }) => {
    */
   const savedDegrees = degreeIds.map((id) => degreeRepo.create({ id }))
   const originalUser = await userRepo
-    .initialize2('a@b', 'google', 'id')
+    .initialize('a@b')
     .then((user) => userRepo.save({ ...user, savedDegrees }))
   /**
    * the real test

@@ -63,7 +63,7 @@ export class Api extends BaseApi {
    * @param {string} providerId
    * @param {string} email
    */
-  async userLogin2(
+  async userLogin(
     email: string,
     provider: string,
     providerId: string
@@ -88,7 +88,7 @@ export class Api extends BaseApi {
     }
     const initializeUser = async () => {
       return this.userRepo
-        .initialize2(email, provider, providerId)
+        .initialize(email, provider, providerId)
         .then((user) => this.setupUser(user))
     }
 
@@ -120,15 +120,9 @@ export class Api extends BaseApi {
    */
   async frontendSetup() {
     const c = frontendSetupConfig
-    const user1 = this.setupUser(
-      await this.userRepo.initialize2(c.user1.email, 'google', 'id1')
-    )
-    const user2 = this.setupUser(
-      await this.userRepo.initialize2(c.user2.email, 'google', 'id2')
-    )
-    const user3 = this.setupUser(
-      await this.userRepo.initialize2(c.user3.email, 'google', 'id3')
-    )
+    const user1 = this.setupUser(await this.userRepo.initialize(c.user1.email))
+    const user2 = this.setupUser(await this.userRepo.initialize(c.user2.email))
+    const user3 = this.setupUser(await this.userRepo.initialize(c.user3.email))
     const degree1 = user1.then((user) => {
       const degree = user.savedDegrees[0]
       degree.title = 'Data Analytics'

@@ -24,7 +24,7 @@ test.each(correct)('$type', async ({ graphIds, insert, expected }) => {
    */
   const savedGraphs = graphIds.map((id) => graphRepo.create({ id }))
   const originalUser = await userRepo
-    .initialize2('a@b', 'google', 'id')
+    .initialize('a@b')
     .then((user) => userRepo.save({ ...user, savedGraphs }))
   /**
    * the real test

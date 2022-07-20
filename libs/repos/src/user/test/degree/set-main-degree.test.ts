@@ -43,7 +43,7 @@ test.each(correct)('$type', async (props) => {
    * test prep: initialize degrees and user
    */
   const savedDegrees = degreeIds.map((id) => degreeRepo.create({ id }))
-  const user = await userRepo.initialize2('a@b', 'google', 'id').then((user) =>
+  const user = await userRepo.initialize('a@b').then((user) =>
     userRepo.save({
       ...user,
       savedDegrees,

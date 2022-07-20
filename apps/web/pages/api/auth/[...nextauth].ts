@@ -33,7 +33,7 @@ export default NextAuth({
      */
     async signIn({ user, account, profile }): Promise<boolean> {
       return trpc
-        .mutation('user/login2', {
+        .mutation('user/login', {
           provider: account.provider,
           providerId: user.id,
           email: user.email || profile.email || '',

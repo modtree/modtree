@@ -10,7 +10,7 @@ const userRepo = new UserRepository(mocks.db)
 let user: User
 
 it('returns a user', async () => {
-  await userRepo.initialize2('khang@modtree.com').then((res) => {
+  await userRepo.initialize('khang@modtree.com').then((res) => {
     expect(res).toBeInstanceOf(User)
     user = res
   })
