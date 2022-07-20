@@ -1,8 +1,3 @@
-export const TEST_USER = {
-  email: 'test@user.com',
-  password: 'Test@1234',
-}
-
 // Set frontend URL to test
 const url = {
   dev: 'https://modtree-dev.vercel.app',
