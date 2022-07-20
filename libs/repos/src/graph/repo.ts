@@ -67,32 +67,19 @@ export class GraphRepository extends BaseRepo<Graph> {
       ([edges, { modulesPlaced }]) =>
         getFlowNodes(modulesPlaced.map(nodify), edges)
     )
+
     /**
      * save the newly created graph
      */
-    return Promise.all([
-      props.title,
-      user,
-      degree,
-      modules,
-      flowEdges,
-      flowNodes,
-    ]).then(
-      ([
-        title,
-        user,
-        degree,
-        { modulesHidden, modulesPlaced },
-        flowEdges,
-        flowNodes,
-      ]) =>
+    return Promise.all([user, degree, modules, flowEdges, flowNodes]).then(
+      ([user, degree, modules, flowEdges, flowNodes]) =>
         this.save(
           this.create({
-            title,
+            title: props.title,
             user,
             degree,
-            modulesPlaced,
-            modulesHidden,
+            modulesPlaced: modules.modulesPlaced,
+            modulesHidden: modules.modulesHidden,
             flowNodes,
             flowEdges,
           })
