@@ -59,7 +59,7 @@ const flowNodeContextMenu: MenuItem[] = [
     },
   },
   {
-    text: 'Mark as not done',
+    text: 'Mark as planned',
     callback: (e) => {
       if (!e) return
       const user = store.getState().user

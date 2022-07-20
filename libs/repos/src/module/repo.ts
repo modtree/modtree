@@ -1,5 +1,5 @@
-import { DataSource, In } from 'typeorm'
-import { Module, InitModuleProps } from '@modtree/types'
+import { DataSource, DeepPartial, In } from 'typeorm'
+import { Module } from '@modtree/types'
 import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
@@ -22,11 +22,11 @@ export class ModuleRepository extends BaseRepo<Module> {
   /**
    * initialize a Module
    *
-   * @param {InitModuleProps} props
+   * @param {DeepPartial<Module>} ...args
    * @returns {Promise<Module>}
    */
-  async initialize(props: InitModuleProps): Promise<Module> {
-    return this.save(this.create(props))
+  async initialize(p: DeepPartial<Module>): Promise<Module> {
+    return this.save(this.create(p))
   }
 
   /**

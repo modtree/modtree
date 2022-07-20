@@ -1,10 +1,9 @@
-import { DataSource } from 'typeorm'
+import { DataSource, FindOneOptions } from 'typeorm'
 import {
   User,
   Module,
   Degree,
   Graph,
-  InitUserProps,
   ModuleStatus,
   AuthProvider,
   supportedAuthProviders,
@@ -12,13 +11,14 @@ import {
 import { flatten } from '@modtree/utils'
 import { ModuleRepository } from '../module'
 import { BaseRepo } from '../base'
-import defaultProps from './default.json'
 import { DegreeRepository } from '../degree'
 
 export class UserRepository extends BaseRepo<User> {
   private moduleRepo: ModuleRepository
   private degreeRepo: DegreeRepository
   private graphRepo: BaseRepo<Graph>
+  private loadedFindOne = async (args: FindOneOptions<User>['where']) =>
+    this.findOne({ relations: this.relations, where: args })
 
   constructor(db: DataSource) {
     super(User, db)
@@ -30,26 +30,12 @@ export class UserRepository extends BaseRepo<User> {
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
 
-  findOneByUsername = async (username: string) =>
-    this.findOne({
-      where: { username },
-      relations: this.relations,
-    })
-
-  findOneByEmail = async (email: string) =>
-    this.findOne({
-      where: { email },
-      relations: this.relations,
-    })
-
-  findOneByGoogleId = async (googleId: string) =>
-    this.findOne({ where: { googleId }, relations: this.relations })
-
-  findOneByGithubId = async (githubId: string) =>
-    this.findOne({ where: { githubId }, relations: this.relations })
-
-  findOneByFacebookId = async (facebookId: string) =>
-    this.findOne({ where: { facebookId }, relations: this.relations })
+  /** find one by key, with relations */
+  findOneByUsername = (s: string) => this.loadedFindOne({ username: s })
+  findOneByEmail = (s: string) => this.loadedFindOne({ email: s })
+  findOneByGoogleId = (s: string) => this.loadedFindOne({ googleId: s })
+  findOneByGithubId = (s: string) => this.loadedFindOne({ githubId: s })
+  findOneByFacebookId = (s: string) => this.loadedFindOne({ facebookId: s })
 
   /**
    * throws an error on unsupported authentication provider
@@ -64,7 +50,7 @@ export class UserRepository extends BaseRepo<User> {
   /**
    * Searches database with provider and id
    *
-   * @param {string} provider
+   * @param {AuthProvider} provider
    * @param {string} providerId
    * @returns {Promise<User>} user
    */
@@ -83,43 +69,30 @@ export class UserRepository extends BaseRepo<User> {
   /**
    * Adds a User to DB
    *
-   * @param {InitUserProps} props
-   * @returns {Promise<User>}
-   */
-  async initialize(props: InitUserProps): Promise<User> {
-    return Promise.all([
-      this.moduleRepo.findByCodes(props.modulesDone || []),
-      this.moduleRepo.findByCodes(props.modulesDoing || []),
-    ]).then(([modulesDone, modulesDoing]) => {
-      const user = this.create({
-        ...defaultProps,
-        ...props,
-        modulesDone,
-        modulesDoing,
-      })
-      return this.save(user)
-    })
-  }
-
-  /**
-   * Adds a User to DB
-   *
    * @param {string} email
    * @param {string} provider
    * @param {string} providerId
    * @returns {Promise<User>}
    */
-  async initialize2(
+  async initialize(
     email: string,
-    provider: string,
-    providerId: string
+    provider?: string,
+    providerId?: string
   ): Promise<User> {
-    /** check if provider is valid */
-    this.checkProvider(provider)
-
-    /** if provider is valid, create the user and assign the id */
+    /** create an empty user first */
     const user = this.create({ email })
-    this.setProviderId(user, provider, providerId)
+
+    /** set provider if valid */
+    if (provider && providerId) {
+      this.checkProvider
+      this.setProviderId(user, provider, providerId)
+    }
+
+    /** set default values */
+    user.savedGraphs = []
+    user.savedDegrees = []
+    user.modulesDone = []
+    user.modulesDoing = []
 
     /** save the user */
     return this.save(user)

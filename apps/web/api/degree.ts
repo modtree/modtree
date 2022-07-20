@@ -2,7 +2,7 @@ import { addModulesToCache } from '@/store/cache'
 import { addToBuildList, setBuildList } from '@/store/search'
 import { updateUser } from '@/utils/rehydrate'
 import { trpc } from '@/utils/trpc'
-import { InitDegreeProps, ModtreeApiResponse } from '@modtree/types'
+import { ModtreeApiResponse } from '@modtree/types'
 import { api } from 'api'
 import { BaseApi } from './base-api'
 
@@ -17,17 +17,26 @@ export class DegreeApi extends BaseApi {
   /**
    * sets modules
    */
-  async update(degreeId: string, props: InitDegreeProps): Promise<void> {
-    return trpc.mutation('degree/update', { degreeId, ...props }).then(() => {
-      updateUser()
-    })
+  async update(
+    degreeId: string,
+    title: string,
+    moduleCodes: string[]
+  ): Promise<void> {
+    return trpc
+      .mutation('degree/update', { degreeId, title, moduleCodes })
+      .then(() => {
+        updateUser()
+      })
   }
 
   /**
    * create
    */
-  async create(props: InitDegreeProps): Promise<ModtreeApiResponse.Degree> {
-    return trpc.mutation('degree/create', props)
+  async create(
+    title: string,
+    moduleCodes: string[]
+  ): Promise<ModtreeApiResponse.Degree> {
+    return trpc.mutation('degree/create', { title, moduleCodes })
   }
 
   /**

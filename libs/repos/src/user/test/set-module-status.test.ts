@@ -6,11 +6,6 @@ import { ModuleStatus } from '@modtree/types'
 jest.mock('../../base')
 jest.mock('../../module')
 
-const init = {
-  authZeroId: 'auth0|012345678901234567890123',
-  email: 'khang@modtree.com',
-}
-
 const userRepo = new UserRepository(mocks.db)
 
 const correct = [
@@ -63,11 +58,10 @@ const correct = [
 
 test.each(correct)('$type', async (props) => {
   const { done, doing, codes, expectedDone, expectedDoing, status } = props
-  const user = await userRepo.initialize({
-    ...init,
-    modulesDone: done,
-    modulesDoing: doing,
-  })
+  const user = await userRepo
+    .initialize('khang@modtree.com')
+    .then((user) => userRepo.setModuleStatus(user, done, ModuleStatus.DONE))
+    .then((user) => userRepo.setModuleStatus(user, doing, ModuleStatus.DOING))
   await userRepo.setModuleStatus(user, codes, status).then((user) => {
     const { modulesDone, modulesDoing } = {
       modulesDone: user.modulesDone.map((m) => m.moduleCode),

@@ -22,7 +22,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
 
   const update = async (title: string, moduleCodes: string[]) =>
     api.degree
-      .update(buildId, { title, moduleCodes })
+      .update(buildId, title, moduleCodes)
       .then(() => props.setPage('main'))
 
   return (

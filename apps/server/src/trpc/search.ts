@@ -9,18 +9,16 @@ export const search = createRouter()
    */
   .query('modules', {
     input: z.string(),
-    async resolve(req) {
-      if (!req.input) return []
+    async resolve({ input }) {
+      if (!input) return []
       return api.moduleCondensedRepo
         .find({
-          where: [{ moduleCode: Like(`${req.input.toUpperCase()}%`) }],
+          where: [{ moduleCode: Like(`${input.toUpperCase()}%`) }],
           take: 4,
         })
-        .then((r) => {
-          return Promise.all(
-            r.map((m) => api.moduleRepo.findByCode(m.moduleCode))
-          )
-        })
+        .then((r) =>
+          Promise.all(r.map((m) => api.moduleRepo.findByCode(m.moduleCode)))
+        )
     },
   })
 
@@ -29,13 +27,10 @@ export const search = createRouter()
    */
   .query('modules-condensed', {
     input: z.string(),
-    async resolve(req) {
-      if (!req.input) return []
+    async resolve({ input }) {
+      if (!input) return []
       return api.moduleCondensedRepo.find({
-        where: [
-          { moduleCode: Like(`${req.input.toUpperCase()}%`) },
-          // { title: Like(`${req.input}%`) },
-        ],
+        where: [{ moduleCode: Like(`${input.toUpperCase()}%`) }],
         take: 4,
       })
     },

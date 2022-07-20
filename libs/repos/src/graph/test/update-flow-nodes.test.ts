@@ -60,11 +60,7 @@ const correct = [
 test.each(correct)(
   '$type',
   async ({ userId, degreeId, node, expected, error }) => {
-    const graph = await graphRepo.initialize({
-      title: 'test',
-      userId,
-      degreeId,
-    })
+    const graph = await graphRepo.initialize('test', userId, degreeId)
     if (!error) {
       await graphRepo.updateFlowNode(graph, node).then((graph) => {
         expect(graph).toBeInstanceOf(Graph)

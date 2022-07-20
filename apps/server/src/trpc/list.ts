@@ -7,24 +7,24 @@ export const list = createRouter()
   /** list modules */
   .query('modules', {
     input: z.array(z.string().regex(validModuleRegex)),
-    async resolve(req) {
-      return api.moduleRepo.findByCodes(req.input)
+    async resolve({ input }) {
+      return api.moduleRepo.findByCodes(input)
     },
   })
 
   /** list condensed modules */
   .query('modules-condensed', {
     input: z.array(z.string().regex(validModuleRegex)),
-    async resolve(req) {
-      return api.moduleCondensedRepo.findByCodes(req.input)
+    async resolve({ input }) {
+      return api.moduleCondensedRepo.findByCodes(input)
     },
   })
 
   /** list full modules */
   .query('modules-full', {
     input: z.array(z.string().regex(validModuleRegex)),
-    async resolve(req) {
-      return api.moduleFullRepo.findByCodes(req.input)
+    async resolve({ input }) {
+      return api.moduleFullRepo.findByCodes(input)
     },
   })
 
@@ -34,11 +34,13 @@ export const list = createRouter()
       id: z.string().uuid().optional(),
       email: z.string().email().optional(),
     }),
-    async resolve(req) {
-      const { id, email } = req.input
+    async resolve({ input }) {
       return api.userRepo
         .find({
-          where: { id, email },
+          where: {
+            id: input.id,
+            email: input.email,
+          },
           relations: api.userRepo.relations,
         })
         .then((users) => users.map(flatten.user))
@@ -48,9 +50,9 @@ export const list = createRouter()
   /** list degrees */
   .query('degrees', {
     input: z.array(z.string().uuid()),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.degreeRepo
-        .findByIds(req.input)
+        .findByIds(input)
         .then((degrees) => degrees.map(flatten.degree))
     },
   })
@@ -58,9 +60,9 @@ export const list = createRouter()
   /** list graphs */
   .query('graphs', {
     input: z.array(z.string().uuid()),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.graphRepo
-        .findByIds(req.input)
+        .findByIds(input)
         .then((graphs) => graphs.map(flatten.graph))
     },
   })

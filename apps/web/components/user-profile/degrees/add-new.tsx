@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Input } from '@/ui/html'
 import { dashed } from '@/utils/array'
 import { Button } from '@/ui/buttons'
-import { InitDegreeProps, SetState } from '@modtree/types'
+import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, removeFromBuildList } from '@/store/search'
@@ -53,14 +53,13 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   }, [])
 
   async function saveDegree() {
-    const degreeProps: InitDegreeProps = {
-      title: state.title[0],
-      moduleCodes: buildList,
-    }
     const userId = user?.modtreeId
     if (userId) {
       trpc
-        .mutation('degree/create', degreeProps)
+        .mutation('degree/create', {
+          title: state.title[0],
+          moduleCodes: buildList,
+        })
         .then((degree) =>
           trpc.mutation('user/insert-degrees', {
             userId,

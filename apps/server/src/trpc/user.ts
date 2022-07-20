@@ -1,5 +1,5 @@
 import { ModuleStatus } from '@modtree/types'
-import { emptyInit, flatten, validModuleRegex } from '@modtree/utils'
+import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
 import { createRouter } from './router'
@@ -9,10 +9,14 @@ export const user = createRouter()
    * create a user
    */
   .mutation('create', {
-    input: z.string().email(),
-    async resolve({ input: email }) {
+    input: z.object({
+      email: z.string().email(),
+      provider: z.string().optional(),
+      providerId: z.string().optional(),
+    }),
+    async resolve({ input }) {
       return api.userRepo
-        .initialize({ ...emptyInit.User, email })
+        .initialize(input.email, input.provider, input.providerId)
         .then(flatten.user)
     },
   })
@@ -22,8 +26,8 @@ export const user = createRouter()
    */
   .query('delete', {
     input: z.string().uuid(),
-    async resolve({ input: id }) {
-      return api.userRepo.delete(id)
+    async resolve({ input }) {
+      return api.userRepo.delete(input)
     },
   })
 
@@ -32,8 +36,8 @@ export const user = createRouter()
    */
   .query('get-full', {
     input: z.string().uuid(),
-    async resolve({ input: id }) {
-      return api.userRepo.findOneById(id).then(flatten.user)
+    async resolve({ input }) {
+      return api.userRepo.findOneById(input).then(flatten.user)
     },
   })
 
@@ -45,10 +49,10 @@ export const user = createRouter()
       userId: z.string().uuid(),
       degreeIds: z.array(z.string().uuid()),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.userRepo
-        .findOneById(req.input.userId)
-        .then((user) => api.userRepo.insertDegrees(user, req.input.degreeIds))
+        .findOneById(input.userId)
+        .then((user) => api.userRepo.insertDegrees(user, input.degreeIds))
         .then(flatten.user)
     },
   })
@@ -61,10 +65,10 @@ export const user = createRouter()
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.userRepo
-        .findOneById(req.input.userId)
-        .then((user) => api.userRepo.setMainDegree(user, req.input.degreeId))
+        .findOneById(input.userId)
+        .then((user) => api.userRepo.setMainDegree(user, input.degreeId))
         .then(flatten.user)
     },
   })
@@ -77,10 +81,10 @@ export const user = createRouter()
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.userRepo
-        .findOneById(req.input.userId)
-        .then((user) => api.userRepo.removeDegree(user, req.input.degreeId))
+        .findOneById(input.userId)
+        .then((user) => api.userRepo.removeDegree(user, input.degreeId))
         .then(flatten.user)
     },
   })
@@ -93,10 +97,10 @@ export const user = createRouter()
       userId: z.string().uuid(),
       graphIds: z.array(z.string().uuid()),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.userRepo
-        .findOneById(req.input.userId)
-        .then((user) => api.userRepo.insertGraphs(user, req.input.graphIds))
+        .findOneById(input.userId)
+        .then((user) => api.userRepo.insertGraphs(user, input.graphIds))
         .then(flatten.user)
     },
   })
@@ -109,10 +113,10 @@ export const user = createRouter()
       userId: z.string().uuid(),
       graphId: z.string().uuid(),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.userRepo
-        .findOneById(req.input.userId)
-        .then((user) => api.userRepo.setMainGraph(user, req.input.graphId))
+        .findOneById(input.userId)
+        .then((user) => api.userRepo.setMainGraph(user, input.graphId))
         .then(flatten.user)
     },
   })
@@ -125,10 +129,10 @@ export const user = createRouter()
       userId: z.string().uuid(),
       graphId: z.string().uuid(),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.userRepo
-        .findOneById(req.input.userId)
-        .then((user) => api.userRepo.removeGraph(user, req.input.graphId))
+        .findOneById(input.userId)
+        .then((user) => api.userRepo.removeGraph(user, input.graphId))
         .then(flatten.user)
     },
   })
@@ -142,15 +146,11 @@ export const user = createRouter()
       moduleCodes: z.array(z.string().regex(validModuleRegex)),
       status: z.nativeEnum(ModuleStatus),
     }),
-    async resolve(req) {
+    async resolve({ input }) {
       return api.userRepo
-        .findOneById(req.input.userId)
+        .findOneById(input.userId)
         .then((user) =>
-          api.userRepo.setModuleStatus(
-            user,
-            req.input.moduleCodes,
-            req.input.status
-          )
+          api.userRepo.setModuleStatus(user, input.moduleCodes, input.status)
         )
         .then(flatten.user)
     },
@@ -159,7 +159,7 @@ export const user = createRouter()
   /**
    * user login
    */
-  .mutation('login2', {
+  .mutation('login', {
     input: z.object({
       provider: z.string(),
       providerId: z.string().min(1),
@@ -167,7 +167,7 @@ export const user = createRouter()
     }),
     async resolve({ input }) {
       return api
-        .userLogin2(input.email, input.provider, input.providerId)
+        .userLogin(input.email, input.provider, input.providerId)
         .then(flatten.user)
     },
   })

@@ -68,11 +68,7 @@ const correct = [
 test.each(correct)(
   '$type',
   async ({ userId, degreeId, expected, error, ...frontEndProps }) => {
-    const graph = await graphRepo.initialize({
-      title: 'test',
-      userId,
-      degreeId,
-    })
+    const graph = await graphRepo.initialize('test', userId, degreeId)
     await graphRepo.updateFrontendProps(graph, frontEndProps).then((graph) => {
       expect(graph).toBeInstanceOf(Graph)
       const { flowNodes } = graph

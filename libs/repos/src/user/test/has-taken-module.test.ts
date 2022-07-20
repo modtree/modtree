@@ -1,23 +1,22 @@
 import { UserRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
-import { User } from '@modtree/types'
+import { ModuleStatus, User } from '@modtree/types'
 import '@modtree/test-env/jest'
 
 jest.mock('../../base')
 jest.mock('../../module')
 
-const init = {
-  authZeroId: 'auth0|012345678901234567890123',
-  email: 'khang@modtree.com',
-  modulesDone: ['MA2001'],
-  modulesDoing: ['MA2219'],
-}
+const done = ['MA2001']
+const doing = ['MA2219']
 
 const userRepo = new UserRepository(mocks.db)
 let user: User
 
 beforeAll(async () => {
-  user = await userRepo.initialize(init)
+  user = await userRepo
+    .initialize('khang@modtree.com')
+    .then((user) => userRepo.setModuleStatus(user, done, ModuleStatus.DONE))
+    .then((user) => userRepo.setModuleStatus(user, doing, ModuleStatus.DOING))
 })
 
 const correct = [

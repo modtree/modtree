@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import { ModuleCondensed, InitModuleCondensedProps } from '@modtree/types'
+import { ModuleCondensed } from '@modtree/types'
 import { getModuleLevel, flatten } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
@@ -13,14 +13,19 @@ export class ModuleCondensedRepository extends BaseRepo<ModuleCondensed> {
   /**
    * initialize a Module Condensed
    *
-   * @param {InitModuleCondensedProps} props
+   * @param {string} title
+   * @param {string} moduleCode
    * @returns {Promise<ModuleCondensed>}
    */
-  async initialize(props: InitModuleCondensedProps): Promise<ModuleCondensed> {
+  async initialize(
+    title: string,
+    moduleCode: string
+  ): Promise<ModuleCondensed> {
     return this.save(
       this.create({
-        ...props,
-        moduleLevel: getModuleLevel(props.moduleCode),
+        title,
+        moduleCode,
+        moduleLevel: getModuleLevel(moduleCode),
       })
     )
   }
