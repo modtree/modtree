@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm'
+import { DataSource, FindOneOptions } from 'typeorm'
 import {
   User,
   Module,
@@ -17,6 +17,8 @@ export class UserRepository extends BaseRepo<User> {
   private moduleRepo: ModuleRepository
   private degreeRepo: DegreeRepository
   private graphRepo: BaseRepo<Graph>
+  private loadedFindOne = async (args: FindOneOptions<User>['where']) =>
+    this.findOne({ relations: this.relations, where: args })
 
   constructor(db: DataSource) {
     super(User, db)
@@ -28,26 +30,12 @@ export class UserRepository extends BaseRepo<User> {
   /** one-liners */
   deleteAll = () => this.createQueryBuilder().delete().execute()
 
-  findOneByUsername = async (username: string) =>
-    this.findOne({
-      where: { username },
-      relations: this.relations,
-    })
-
-  findOneByEmail = async (email: string) =>
-    this.findOne({
-      where: { email },
-      relations: this.relations,
-    })
-
-  findOneByGoogleId = async (googleId: string) =>
-    this.findOne({ where: { googleId }, relations: this.relations })
-
-  findOneByGithubId = async (githubId: string) =>
-    this.findOne({ where: { githubId }, relations: this.relations })
-
-  findOneByFacebookId = async (facebookId: string) =>
-    this.findOne({ where: { facebookId }, relations: this.relations })
+  /** find one by key, with relations */
+  findOneByUsername = (s: string) => this.loadedFindOne({ username: s })
+  findOneByEmail = (s: string) => this.loadedFindOne({ email: s })
+  findOneByGoogleId = (s: string) => this.loadedFindOne({ googleId: s })
+  findOneByGithubId = (s: string) => this.loadedFindOne({ githubId: s })
+  findOneByFacebookId = (s: string) => this.loadedFindOne({ facebookId: s })
 
   /**
    * throws an error on unsupported authentication provider
@@ -62,7 +50,7 @@ export class UserRepository extends BaseRepo<User> {
   /**
    * Searches database with provider and id
    *
-   * @param {string} provider
+   * @param {AuthProvider} provider
    * @param {string} providerId
    * @returns {Promise<User>} user
    */
