@@ -46,3 +46,6 @@ Thumbs.db
 .env.production
 admin.config.json
 test.command
+
+# cypress
+cypress.env.json
