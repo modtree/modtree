@@ -28,13 +28,18 @@ export function DebugModal() {
         <Content>{user ? user : {}}</Content>
 
         <h2>Redux Graph State</h2>
-        <Content>{redux.graph}</Content>
+        <Content>
+          {{
+            ...redux.modtree.graph,
+            flowNodes: redux.modtree.graph.flowNodes.map((n) => n.id),
+          }}
+        </Content>
 
         <h2>Redux User State</h2>
-        <Content>{redux.user}</Content>
+        <Content>{redux.modtree.user}</Content>
 
         <h2>Redux Degree State</h2>
-        <Content>{redux.degree}</Content>
+        <Content>{redux.modtree.degree}</Content>
 
         <h2>Redux Module Condensed Cache</h2>
         <Content>{redux.cache.modulesCondensed}</Content>

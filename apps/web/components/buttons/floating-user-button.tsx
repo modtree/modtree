@@ -34,7 +34,7 @@ const SignedInCircle = () => {
   /** read state */
   const { user } = useSession()
   const dispatch = useAppDispatch()
-  const email = useAppSelector((state) => state.user.email)
+  const email = useAppSelector((state) => state.modtree.user.email)
 
   /** the button itself */
   const UserCircle = () => (

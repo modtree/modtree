@@ -1,4 +1,4 @@
-import { ModtreeApiResponse } from '@modtree/types'
+import { ApiResponse } from '@modtree/types'
 import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 
 /** flattens TypeORM entities */
@@ -21,9 +21,9 @@ export const flatten = {
    * flattens a user to response shape
    *
    * @param {User} user
-   * @returns {ModtreeApiResponse.User}
+   * @returns {ApiResponse.User}
    */
-  user(user: User): ModtreeApiResponse.User {
+  user(user: User): ApiResponse.User {
     return {
       ...user,
       modulesDoing: (user.modulesDoing || []).map(flatten.module),
@@ -41,9 +41,9 @@ export const flatten = {
    * flattens a graph to response shape
    *
    * @param {Graph} graph
-   * @returns {ModtreeApiResponse.Graph}
+   * @returns {ApiResponse.Graph}
    */
-  graph(graph: Graph): ModtreeApiResponse.Graph {
+  graph(graph: Graph): ApiResponse.Graph {
     const degree = {
       title: graph.degree.title,
       id: graph.degree.id,
@@ -62,9 +62,9 @@ export const flatten = {
    * flattens a degree to response shape
    *
    * @param {Degree} degree
-   * @returns {ModtreeApiResponse.Degree}
+   * @returns {ApiResponse.Degree}
    */
-  degree(degree: Degree): ModtreeApiResponse.Degree {
+  degree(degree: Degree): ApiResponse.Degree {
     return { ...degree, modules: degree.modules.map(flatten.module) }
   },
 }

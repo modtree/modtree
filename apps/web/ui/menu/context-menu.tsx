@@ -1,12 +1,11 @@
 import { flatten } from '@/utils/tailwind'
 import { Menu } from '@headlessui/react'
 import { showContextMenu } from '@/store/modal'
-import { Dispatch } from 'redux'
 import type { ReactElement } from 'react'
 import type { MouseEvent } from 'react'
 import type { GraphFlowNode } from '@modtree/types'
 import type { ContextMenuProps, ContextMenuType } from 'types'
-import { useAppSelector } from '@/store/redux'
+import store, { useAppSelector } from '@/store/redux'
 import { dashed } from '@/utils/array'
 import { items } from '@/components/menu-items'
 import { MenuItem } from 'types'
@@ -21,13 +20,13 @@ import { Entries } from './entries'
  * the trigger to open context menus
  */
 export function onContextMenu(
-  dispatch: Dispatch,
   event: MouseEvent<Element, globalThis.MouseEvent>,
   menu: ContextMenuType,
   node?: GraphFlowNode // the flow node that was right-clicked
 ) {
   /** suppress the default right-click menu */
   event.preventDefault()
+  const dispatch = store.dispatch
   /** send redux signal to open the context menu */
   dispatch(
     showContextMenu({

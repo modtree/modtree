@@ -1,13 +1,9 @@
-import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
+import { GraphFlowNode, GraphFrontendProps } from '@modtree/types'
 import { getFlowEdges } from './get-edges'
 import { getFlowNodes } from './get-nodes'
 
-type NodesAndEdges = {
-  nodes: GraphFlowNode[]
-  edges: GraphFlowEdge[]
+export const dagreify = (nodes: GraphFlowNode[]): GraphFrontendProps => {
+  const flowEdges = getFlowEdges(nodes)
+  const flowNodes = getFlowNodes(nodes, flowEdges)
+  return { flowEdges, flowNodes }
 }
-
-export const redrawGraph = (props: NodesAndEdges): NodesAndEdges => ({
-  nodes: getFlowNodes(props.nodes, props.edges),
-  edges: getFlowEdges(props.nodes),
-})

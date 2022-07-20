@@ -1,47 +1,25 @@
 import { Pages } from 'types'
 import { SettingsSection } from '@/ui/settings'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { clearBuildList } from '@/store/search'
-import { updateUser } from '@/utils/rehydrate'
-import { trpc } from '@/utils/trpc'
-import { useSession } from '@/utils/auth'
 import { SelectedModules } from '../modules/selected-modules'
+import { clearBuildList } from '@/store/search'
+import { createAndSaveDegree } from '@/store/modtree-functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
+  /** hooks */
   const dispatch = useAppDispatch()
-  const { user } = useSession()
-
-  const state = {
-    title: useState<string>(''),
-  }
-
+  const [title, setTitle] = useState('')
   const buildList = useAppSelector((state) => state.search.buildList)
-  useEffect(() => {
-    dispatch(clearBuildList())
-  }, [])
 
   async function saveDegree() {
-    const userId = user?.modtreeId
-    if (userId) {
-      trpc
-        .mutation('degree/create', {
-          title: state.title[0],
-          moduleCodes: buildList,
-        })
-        .then((degree) =>
-          trpc.mutation('user/insert-degrees', {
-            userId,
-            degreeIds: [degree.id],
-          })
-        )
-        .then(() => updateUser())
-        .then(() => props.setPage('main'))
-    }
+    createAndSaveDegree(title, buildList)
+    props.setPage('main')
+    dispatch(clearBuildList())
   }
 
   return (
@@ -53,9 +31,10 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
+        <Input className="w-full mb-4" state={[title, setTitle]} grayed />
         <Input
           className="w-full mb-4"
-          state={state.title}
+          state={[title, setTitle]}
           grayed
           cypress="add-degree-title"
         />

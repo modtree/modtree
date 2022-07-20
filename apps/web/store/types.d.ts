@@ -3,15 +3,17 @@ import {
   IModule,
   IModuleCondensed,
   IModuleFull,
-  ModtreeApiResponse,
+  ApiResponse,
 } from '@modtree/types'
 import type { Pages, ContextMenuProps } from 'types'
 
 export type ReduxState = {
-  user: ModtreeApiResponse.User
-  degree: ModtreeApiResponse.Degree
-  graph: ModtreeApiResponse.Graph & {
-    selectedCodes: string[]
+  modtree: {
+    user: ApiResponse.User
+    degree: ApiResponse.Degree
+    graph: ApiResponse.Graph & {
+      selectedCodes: string[]
+    }
   }
   modal: {
     showModuleStateGuide: boolean

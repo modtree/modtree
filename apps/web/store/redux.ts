@@ -1,9 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import searchReducer from './search'
 import modalReducer from './modal'
-import graphReducer from './graph'
-import userReducer from './user'
-import degreeReducer from './degree'
+import modtreeReducer from './modtree'
 import cacheReducer from './cache'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
@@ -11,9 +9,7 @@ const store = configureStore({
   reducer: {
     search: searchReducer,
     modal: modalReducer,
-    graph: graphReducer,
-    user: userReducer,
-    degree: degreeReducer,
+    modtree: modtreeReducer,
     cache: cacheReducer,
   },
 })

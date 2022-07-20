@@ -1,11 +1,15 @@
-import { MenuItem } from 'types'
-import store from '@/store/redux'
 import { showDebugModal, showUserProfile } from '@/store/modal'
-import { removeModuleNode } from '@/store/graph'
-import { ModuleStatus } from '@modtree/types'
-import { api } from 'api'
-import { signOut } from 'next-auth/react'
+import { removeModuleNode } from '@/store/modtree'
+import {
+  markAsDoing,
+  markAsDone,
+  markAsPlanned,
+  openModuleModal,
+} from '@/store/modtree-functions'
+import store from '@/store/redux'
 import { devEnv } from '@/utils/env'
+import { signOut } from 'next-auth/react'
+import { MenuItem } from 'types'
 
 const dispatch = store.dispatch
 
@@ -13,65 +17,71 @@ const dispatch = store.dispatch
  * floating user button drop-down mneu items
  */
 const userDropdownMenu: MenuItem[] = [
-  { text: 'Your profile', callback: () => dispatch(showUserProfile()) },
+  {
+    text: 'Your profile',
+    show: true,
+    callback: () => dispatch(showUserProfile()),
+  },
   {
     text: 'Debug',
+    show: devEnv,
     callback: () => dispatch(showDebugModal()),
   },
   {
     text: 'Sign out',
+    show: true,
     callback: () => signOut(),
   },
-].filter((item) => {
-  const debugList = ['Debug']
-  const isDebug = debugList.includes(item.text)
-  return devEnv || !isDebug
-})
+]
 
 const flowNodeContextMenu: MenuItem[] = [
+  /**
+   * opens module modal on the current node
+   */
   {
     text: 'More info',
-    callback: (node) => (node ? api.module.openModuleModal(node.id) : null),
+    show: true,
+    callback: (node) => (node ? openModuleModal(node.data.moduleCode) : null),
   },
-  // { text: 'Suggest modules', callback: () => alert('suggest modules') },
+
+  /**
+   * mark current node as done
+   */
   {
     text: 'Mark as done',
-    callback: (e) => {
-      if (!e) return
-      const user = store.getState().user
-      api.user.setModuleStatus(
-        user.id,
-        [...user.modulesDone, e.id],
-        ModuleStatus.DONE
-      )
-    },
+    show: true,
+    callback: () => markAsDone(),
   },
+
+  /**
+   * mark current node as doing
+   */
   {
     text: 'Mark as doing',
-    callback: (e) => {
-      if (!e) return
-      const user = store.getState().user
-      api.user.setModuleStatus(
-        user.id,
-        [...user.modulesDoing, e.id],
-        ModuleStatus.DOING
-      )
-    },
+    show: true,
+    callback: () => markAsDoing(),
   },
+
+  /**
+   * mark current node as planned
+   * (neither done nor doing)
+   */
   {
     text: 'Mark as planned',
-    callback: (e) => {
-      if (!e) return
-      const user = store.getState().user
-      api.user.setModuleStatus(user.id, [e.id], ModuleStatus.NOT_TAKEN)
-    },
+    show: true,
+    callback: () => markAsPlanned(),
   },
+
+  /**
+   * remove current node from the graph
+   * TODO: disallow this action if the node is either done/doing
+   * to remove a node, it must be in the 'planned' state
+   */
   {
     text: 'Remove',
+    show: true,
     callback: async (e) => {
       if (!e) return
-      // update graph
-      api.graph.toggle(store.getState().graph.id, e.id)
       // remove node from frontend
       store.dispatch(removeModuleNode(e))
     },
@@ -79,9 +89,9 @@ const flowNodeContextMenu: MenuItem[] = [
 ]
 
 const flowPaneContextMenu: MenuItem[] = [
-  // { text: 'Suggest modules', callback: () => alert('suggest modules') },
   {
     text: 'Coming soon! (try right-clicking a node on the graph)',
+    show: true,
     callback: () => false,
   },
 ]

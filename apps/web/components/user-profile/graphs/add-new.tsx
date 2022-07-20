@@ -1,65 +1,26 @@
 import { Button } from '@/ui/buttons'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Input } from '@/ui/html'
-import { ModtreeApiResponse, SetState } from '@modtree/types'
+import { ApiResponse, SetState } from '@modtree/types'
 import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
-import { useAppSelector } from '@/store/redux'
-import { useSession } from '@/utils/auth'
-import { updateUser } from '@/utils/rehydrate'
-import { trpc } from '@/utils/trpc'
 import { SettingsSection } from '@/ui/settings'
+import { useAppSelector } from '@/store/redux'
+import { createAndSaveGraph } from '@/store/modtree-functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
-  // Get IDs
-  const degreeIds = useAppSelector((state) => state.user.savedDegrees)
-
-  // Load full degrees
-  const [degrees, setDegrees] = useState<ModtreeApiResponse.Degree[]>([])
-  const [loaded, setLoaded] = useState<boolean>(false)
-  useEffect(() => {
-    trpc.query('degrees', degreeIds).then((degrees) => {
-      setDegrees(degrees)
-      // actually set the degree
-      state.degree[1](degrees[0])
-      setLoaded(true)
-    })
-  }, [degreeIds])
-
-  const { user } = useSession()
-
-  const state = {
-    title: useState<string>(''),
-    // actually undefined here
-    degree: useState<ModtreeApiResponse.Degree>(degrees[0]),
-  }
+  const { degree: mainDegree } = useAppSelector((s) => s.modtree)
+  const [title, setTitle] = useState('')
+  const [degree, setDegree] = useState<ApiResponse.Degree>(mainDegree)
 
   async function saveGraph() {
-    const userId = user?.modtreeId
-    if (!userId) return
-    const degreeId = state.degree[0].id
-    if (!degreeId) return
-    const graphProps = {
-      title: state.title[0],
-      userId,
-      degreeId,
-    }
     // frontend validation
-    if (graphProps.title === '') {
+    if (title === '') {
       alert('Graph title should not be empty')
       return
     }
-    // send request
-    trpc
-      .mutation('graph/create', graphProps)
-      .then((graph) =>
-        trpc.mutation('user/insert-graphs', {
-          userId,
-          graphIds: [graph.id],
-        })
-      )
-      .then(() => updateUser())
-      .then(() => props.setPage('main'))
+    createAndSaveGraph(title, degree.id)
+    props.setPage('main')
   }
 
   return (
@@ -71,13 +32,9 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
-        <Input className="w-full mb-4" state={state.title} grayed />
+        <Input className="w-full mb-4" state={[title, setTitle]} grayed />
         <h6>Degree</h6>
-        {loaded ? (
-          <DegreePicker degrees={degrees} select={state.degree} />
-        ) : (
-          <></>
-        )}
+        <DegreePicker degreeState={[degree, setDegree]} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={saveGraph}>

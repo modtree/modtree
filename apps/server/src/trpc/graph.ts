@@ -95,6 +95,22 @@ export const graph = createRouter()
   })
 
   /**
+   * finds a graph by its id and updates its modules placed
+   */
+  .mutation('update-modules-placed', {
+    input: z.object({
+      graphId: z.string().uuid(),
+      moduleCodes: z.array(z.string().regex(validModuleRegex)),
+    }),
+    async resolve({ input }) {
+      return api.graphRepo
+        .findOneById(input.graphId)
+        .then((g) => api.graphRepo.updateModulesPlaced(g, input.moduleCodes))
+        .then(flatten.graph)
+    },
+  })
+
+  /**
    * finds a graph by its id and updates a flow node
    */
   .query('suggest-modules', {

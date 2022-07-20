@@ -1,42 +1,45 @@
-import { ModuleFull } from '@modtree/types'
+import { ApiResponse } from '@modtree/types'
 import type { ReduxState } from './types'
 
-export const baseInitialState: ReduxState = {
-  user: {
-    id: '',
-    username: '',
-    email: '',
-    displayName: '',
-    facebookId: '',
-    googleId: '',
-    githubId: '',
-    modulesDone: [],
-    modulesDoing: [],
-    savedDegrees: [],
-    savedGraphs: [],
-    mainDegree: '',
-    mainGraph: '',
-    matriculationYear: 0,
-    graduationYear: 0,
-    graduationSemester: 0,
-  },
-  degree: { id: '', title: '', modules: [] },
-  graph: {
+const user: ApiResponse.User = {
+  id: '',
+  username: '',
+  email: '',
+  displayName: '',
+  facebookId: '',
+  googleId: '',
+  githubId: '',
+  modulesDone: [],
+  modulesDoing: [],
+  savedDegrees: [],
+  savedGraphs: [],
+  mainDegree: '',
+  mainGraph: '',
+  matriculationYear: 0,
+  graduationYear: 0,
+  graduationSemester: 0,
+}
+
+const degree: ApiResponse.Degree = { id: '', title: '', modules: [] }
+
+const graph: ApiResponse.Graph = {
+  id: '',
+  title: '',
+  user: '',
+  degree: {
     id: '',
     title: '',
-    user: '',
-    degree: {
-      id: '',
-      title: '',
-    },
-    modulesHidden: [],
-    modulesPlaced: [],
-    flowEdges: [],
-    flowNodes: [],
-    selectedCodes: [],
   },
+  modulesHidden: [],
+  modulesPlaced: [],
+  flowEdges: [],
+  flowNodes: [],
+}
+
+export const baseInitialState: ReduxState = {
+  modtree: { user, degree, graph: { ...graph, selectedCodes: [] } },
   modal: {
-    showModuleStateGuide: true,
+    showModuleStateGuide: false,
     userProfilePage: 'graphs',
     contextMenuProps: {
       top: 0,
@@ -47,7 +50,25 @@ export const baseInitialState: ReduxState = {
     showContextMenu: false,
     showModuleModal: false,
     showDebugModal: false,
-    modalModule: new ModuleFull(),
+    modalModule: {
+      id: '',
+      acadYear: '',
+      moduleCode: '',
+      title: '',
+      description: '',
+      moduleCredit: '',
+      department: '',
+      faculty: '',
+      aliases: [],
+      attributes: {},
+      prerequisite: '',
+      corequisite: '',
+      preclusion: '',
+      fulfillRequirements: [],
+      semesterData: [],
+      prereqTree: '',
+      workload: '',
+    },
   },
   cache: {
     degrees: {},

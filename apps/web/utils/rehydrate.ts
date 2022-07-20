@@ -1,7 +1,6 @@
-import { setDegree } from '@/store/degree'
-import { setGraph } from '@/store/graph'
+import { setMainGraph, setMainDegree } from '@/store/modtree'
 import store from '@/store/redux'
-import { setUser } from '@/store/user'
+import { setUser } from '@/store/modtree'
 import { Session } from 'next-auth'
 import { trpc } from './trpc'
 
@@ -25,14 +24,14 @@ export function rehydrate(user: Session['user']) {
   const rDegree = rUser
     .then((user) => trpc.query('degree', user.mainDegree))
     .then((degree) => {
-      dispatch(setDegree(degree))
+      dispatch(setMainDegree(degree))
     })
 
   /** rehydrate graph */
   const rGraph = rUser
     .then((user) => trpc.query('graph', user.mainGraph))
     .then((graph) => {
-      dispatch(setGraph(graph))
+      dispatch(setMainGraph(graph))
     })
 
   /** reporting */
@@ -49,7 +48,7 @@ export function rehydrate(user: Session['user']) {
  * Fetch and update user with latest data.
  */
 export async function updateUser() {
-  const userId = store.getState().user.id
+  const userId = store.getState().modtree.user.id
   return trpc.query('user', userId).then((user) => {
     dispatch(setUser(user))
     return user

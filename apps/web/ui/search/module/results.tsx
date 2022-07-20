@@ -3,7 +3,7 @@ import { Combobox, Transition } from '@headlessui/react'
 import { useAppSelector } from '@/store/redux'
 import { flatten } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
-import { IModule, UseState } from '@modtree/types'
+import { IModule } from '@modtree/types'
 
 function SearchResult(props: { module: IModule }) {
   return (
