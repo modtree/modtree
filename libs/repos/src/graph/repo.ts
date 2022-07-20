@@ -4,7 +4,6 @@ import {
   Graph,
   GraphFrontendProps,
   GraphFlowNode,
-  InitGraphProps,
   ModuleState,
   CanTakeModule,
 } from '@modtree/types'
@@ -39,15 +38,21 @@ export class GraphRepository extends BaseRepo<Graph> {
   /**
    * Adds a Graph to DB
    *
-   * @param {InitGraphProps} props
+   * @param {string} title
+   * @param {string} userId
+   * @param {string} degreeId
    * @returns {Promise<Graph>}
    */
-  async initialize(props: InitGraphProps): Promise<Graph> {
+  async initialize(
+    title: string,
+    userId: string,
+    degreeId: string
+  ): Promise<Graph> {
     /**
      * fetch user and degree
      */
-    const user = this.userRepo.findOneById(props.userId)
-    const degree = this.degreeRepo.findOneById(props.degreeId)
+    const user = this.userRepo.findOneById(userId)
+    const degree = this.degreeRepo.findOneById(degreeId)
     /**
      * get all relavant modules, sorted into placed and hidden
      */
@@ -75,7 +80,7 @@ export class GraphRepository extends BaseRepo<Graph> {
       ([user, degree, modules, flowEdges, flowNodes]) =>
         this.save(
           this.create({
-            title: props.title,
+            title,
             user,
             degree,
             modulesPlaced: modules.modulesPlaced,
