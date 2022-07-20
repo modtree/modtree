@@ -10,6 +10,18 @@
         "devServerTarget": "web:serve:development"
       }
     },
+    "e2e:prod": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/web-e2e/prod-config.json"
+      }
+    },
+    "e2e:dev": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/web-e2e/dev-config.json"
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

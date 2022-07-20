@@ -16,20 +16,27 @@ function getInitialLengths() {
     })
 }
 
+/**
+ * Waits for modules to load
+ */
+function waitForLoad() {
+  cy.getCy('done-section')
+  cy.getCy('doing-section')
+}
+
+/**
+ * Checks for correct number of modules
+ */
 function checkLengths() {
   cy.getCy('done-section').children().its('length').should('eq', doneCount)
   cy.getCy('doing-section').children().its('length').should('eq', doingCount)
 }
 
 describe('modules panel', () => {
-  /**
-   * Login
-   */
-  before(() => {
-    cy.login()
-  })
-
   beforeEach(() => {
+    // Extra wait for increased stability
+    cy.wait(2000)
+    cy.login()
     cy.reload()
 
     // open modules panel
@@ -39,6 +46,7 @@ describe('modules panel', () => {
       cy.contains('Modules').click()
     })
 
+    waitForLoad()
     // count current modules done and modules doing
     // only do it once for initial load
     if (!doneCount && !doingCount) {
@@ -57,58 +65,72 @@ describe('modules panel', () => {
     })
   })
 
-  it('Adds to modules done', () => {
-    // add LAC1201 to modules done
+  it('Adds LAC1201 to modules done', () => {
+    // Wait for modules to load
     cy.getCy('modify-done').click()
+    cy.getCy('build-list').should('be.visible')
+
+    // Insert LAC1201
     cy.getCy('add-done-search').type('LAC1201')
     cy.get('[id^=headlessui-combobox-option]').contains('Chinese 1').click()
-    // wait for module to be in list
+
+    // Wait for module to be in list
     cy.getCy('build-list').contains('Chinese 1')
     cy.get('button').contains('Save changes').click()
 
+    waitForLoad()
     doneCount++
     checkLengths()
   })
 
-  it('Adds to modules doing', () => {
-    // add LAC2201 to modules doing
+  it('Adds LAC2201 to modules doing', () => {
+    // Wait for modules to load
     cy.getCy('modify-doing').click()
+    cy.getCy('build-list').should('be.visible')
+
+    // Insert LAC2201
     cy.getCy('add-doing-search').type('LAC2201')
     cy.get('[id^=headlessui-combobox-option]').contains('Chinese 2').click()
-    // wait for module to be in list
+
+    // Wait for module to be in list
     cy.getCy('build-list').contains('Chinese 2')
     cy.get('button').contains('Save changes').click()
 
+    waitForLoad()
     doingCount++
     checkLengths()
   })
 
-  it('Removes from modules done', () => {
-    // remove last module from modules done (LAC1201)
+  it('Removes LAC1201 from modules done', () => {
+    // Wait for modules to load
     cy.getCy('modify-done').click()
     cy.getCy('build-list').should('be.visible')
-    // get trash button of last module in list
+
+    // Delete last module
     cy.get('[data-cy="build-list"] > div')
       .last()
       .find('[data-cy="delete-button"]')
       .click()
     cy.get('button').contains('Save changes').click()
 
+    waitForLoad()
     doneCount--
     checkLengths()
   })
 
-  it('Removes from modules doing', () => {
-    // remove last module from modules doing (LAC2201)
+  it('Removes LAC2201 from modules doing', () => {
+    // Wait for modules to load
     cy.getCy('modify-doing').click()
     cy.getCy('build-list').should('be.visible')
-    // get trash button of last module in list
+
+    // Delete last module
     cy.get('[data-cy="build-list"] > div')
       .last()
       .find('[data-cy="delete-button"]')
       .click()
     cy.get('button').contains('Save changes').click()
 
+    waitForLoad()
     doingCount--
     checkLengths()
   })

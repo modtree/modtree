@@ -8,8 +8,6 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 
-import { FRONTEND_URL } from '../utils/constants'
-
 // Indicate that this file is a module
 export {}
 
@@ -41,12 +39,14 @@ Cypress.Commands.add('getCy', (value: string) => {
 Cypress.Commands.add('login', () => {
   const username = Cypress.env('GOOGLE_USER')
   const password = Cypress.env('GOOGLE_PW')
-  const cookieName = Cypress.env('COOKIE_NAME')
+  const COOKIE_NAME = Cypress.env('COOKIE_NAME')
+  const SECURE_COOKIE_NAME = Cypress.env('SECURE_COOKIE_NAME')
 
+  const BASE_URL = Cypress.config('baseUrl')
   // Login page URL
-  const loginUrl = FRONTEND_URL + '/api/auth/signin'
+  const loginUrl = BASE_URL + '/api/auth/signin'
   // The selector for Google on our login page
-  const loginSelector = `form[action="${FRONTEND_URL}/api/auth/signin/google"]`
+  const loginSelector = `form[action="${BASE_URL}/api/auth/signin/google"]`
 
   const socialLoginOptions = {
     username,
@@ -67,7 +67,10 @@ Cypress.Commands.add('login', () => {
       cy.clearCookies()
 
       const cookie = cookies
-        .filter((cookie) => cookie.name === cookieName)
+        .filter(
+          (cookie) =>
+            cookie.name === COOKIE_NAME || cookie.name === SECURE_COOKIE_NAME
+        )
         .pop()
       if (cookie) {
         cy.setCookie(cookie.name, cookie.value, {
@@ -79,7 +82,7 @@ Cypress.Commands.add('login', () => {
         })
 
         Cypress.Cookies.defaults({
-          preserve: cookieName,
+          preserve: [COOKIE_NAME, SECURE_COOKIE_NAME],
         })
       }
     })

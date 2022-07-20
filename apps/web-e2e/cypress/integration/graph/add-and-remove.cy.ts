@@ -2,11 +2,8 @@ const code = 'MA2104'
 const title = 'Multivariable Calculus'
 
 describe('add-and-remove', () => {
-  before(() => {
-    cy.login()
-  })
-
   beforeEach(() => {
+    cy.login()
     cy.reload()
   })
 
@@ -26,6 +23,7 @@ describe('add-and-remove', () => {
 
   it('adds a module', () => {
     cy.addGraphModule(code, title)
+    cy.contains(code).should('be.visible')
   })
 
   it('cannot add the same module', () => {
@@ -40,6 +38,7 @@ describe('add-and-remove', () => {
 
   it('removes a module', () => {
     cy.removeGraphModule(code)
+    cy.contains(code).should('not.exist')
   })
 
   it('can now add the same module', () => {
