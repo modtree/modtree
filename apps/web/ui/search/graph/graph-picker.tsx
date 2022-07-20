@@ -15,7 +15,9 @@ export function GraphPicker() {
     graph: { selectedCodes, ...graph },
     user,
   } = useAppSelector((s) => s.modtree)
-  const { data: graphs } = trpcReact.useQuery(['graphs', user.savedGraphs])
+  const { data: graphs } = trpcReact.useQuery(['graphs', user.savedGraphs], {
+    keepPreviousData: true,
+  })
   const [selectedGraph, setSelectedGraph] = useState(graph)
 
   /**
@@ -40,11 +42,11 @@ export function GraphPicker() {
     </Listbox.Button>
   )
 
-  return graphs ? (
+  return (
     <Listbox value={selectedGraph} onChange={onChange}>
       <ListBoxButton />
       <Listbox.Options className="shadow-lg rounded-md overflow-hidden z-10 relative bg-white">
-        {graphs.map((g) => (
+        {(graphs || []).map((g) => (
           <Listbox.Option key={g.id} value={g}>
             {({ active, selected }) => (
               <div
@@ -61,5 +63,5 @@ export function GraphPicker() {
         ))}
       </Listbox.Options>
     </Listbox>
-  ) : null
+  )
 }

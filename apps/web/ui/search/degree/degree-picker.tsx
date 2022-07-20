@@ -10,7 +10,9 @@ export function DegreePicker(props: {
 }) {
   const [degree, setDegree] = props.degreeState
   const { user } = useAppSelector((s) => s.modtree)
-  const { data: degrees } = trpcReact.useQuery(['degrees', user.savedDegrees])
+  const { data: degrees } = trpcReact.useQuery(['degrees', user.savedDegrees], {
+    keepPreviousData: true,
+  })
 
   /**
    * the thing you press to open the picker

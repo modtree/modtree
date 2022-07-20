@@ -15,7 +15,9 @@ export function Main(props: {
 
   // Get IDs
   const degreeIds = useAppSelector((s) => s.modtree.user.savedDegrees)
-  const { data: degrees } = trpcReact.useQuery(['degrees', degreeIds])
+  const { data: degrees } = trpcReact.useQuery(['degrees', degreeIds], {
+    keepPreviousData: true,
+  })
 
   return (
     <div className="mb-12">
@@ -25,14 +27,14 @@ export function Main(props: {
         onAddClick={() => props.setPage('add-new')}
         cypress="add-degree-button"
       >
-        {degrees ? (
+        {degreeIds.length > 0 ? (
           <>
             <p>{text.degreeListSection.summary}</p>
             <div
               data-cy="degrees-list"
               className="ui-rectangle flex flex-col overflow-hidden"
             >
-              {degrees.map((degree, index) => {
+              {(degrees || []).map((degree, index) => {
                 return (
                   <Row.Degree
                     key={dashed(degree.title, index)}
