@@ -6,7 +6,7 @@ import { Pages } from 'types'
 import { DegreePicker } from '@/ui/search/degree/degree-picker'
 import { SettingsSection } from '@/ui/settings'
 import { useAppSelector } from '@/store/redux'
-import { createAndSaveGraph } from '@/store/modtree-functions'
+import { createAndSaveGraph } from '@/store/functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const { degree: mainDegree } = useAppSelector((s) => s.modtree)

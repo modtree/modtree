@@ -11,7 +11,7 @@ import { GraphPicker } from '@/ui/search/graph/graph-picker'
 import { trpcReact } from '@/utils/trpc'
 import { setBuildId, setBuildTitle, setDegreeTitle } from '@/store/search'
 import { dashed } from '@/utils/array'
-import { removeGraph } from '@/store/modtree-functions'
+import { removeGraph } from '@/store/functions'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>

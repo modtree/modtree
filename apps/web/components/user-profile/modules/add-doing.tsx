@@ -5,7 +5,7 @@ import { ModuleStatus, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from './selected-modules'
-import { setModuleStatus } from '@/store/modtree-functions'
+import { setModuleStatus } from '@/store/functions'
 import { clearBuildList } from '@/store/search'
 
 export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {

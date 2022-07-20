@@ -6,7 +6,7 @@ import { dashed } from '@/utils/array'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
 import { useEffect } from 'react'
-import { updateModuleCache } from '@/store/modtree-functions'
+import { updateModuleCache } from '@/store/functions'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()

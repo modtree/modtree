@@ -5,7 +5,7 @@ import {
   markAsDone,
   markAsPlanned,
   openModuleModal,
-} from '@/store/modtree-functions'
+} from '@/store/functions'
 import store from '@/store/redux'
 import { devEnv } from '@/utils/env'
 import { signOut } from 'next-auth/react'

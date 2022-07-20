@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { clearBuildList, setBuildId, setBuildTitle } from '@/store/search'
 import { trpcReact } from '@/utils/trpc'
-import { removeDegree } from '@/store/modtree-functions'
+import { removeDegree } from '@/store/functions'
 
 export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Degrees']>>

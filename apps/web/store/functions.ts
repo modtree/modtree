@@ -1,7 +1,7 @@
 import { getCSS } from '@/utils/module-state'
 import { trpc } from '@/utils/trpc'
 import store from '@/store/redux'
-import { setNodesAndEdges, setUser, setUserSavedGraphs } from './modtree'
+import { setNodesAndEdges, setUser } from './modtree'
 import { ModuleStatus } from '@modtree/types'
 import { setModalModule, showModuleModal } from './modal'
 import { addModulesToCache } from './cache'
@@ -40,6 +40,12 @@ export function openModuleModal(query: string) {
     .then(() => dispatch(showModuleModal()))
 }
 
+/**
+ * sets some modules to a status
+ *
+ * @param {ModuleStatus} status
+ * @param {string[]} moduleCodes
+ */
 export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
   if (moduleCodes.length === 0) return
   const { user } = store.getState().modtree
@@ -60,6 +66,8 @@ export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
 /**
  * mark selected nodes with a status,
  * and get the updated user
+ *
+ * @param {ModuleStatus} status
  */
 function markSelectedAs(status: ModuleStatus) {
   const { selectedCodes } = store.getState().modtree.graph
@@ -73,6 +81,8 @@ export const markAsPlanned = () => markSelectedAs(ModuleStatus.NOT_TAKEN)
 
 /**
  * sends a query to database to update module cache
+ *
+ * @param {string[]} moduleCodes
  */
 export function updateModuleCache(moduleCodes: string[]) {
   const { cache } = store.getState()
@@ -110,6 +120,8 @@ export function createAndSaveDegree(title: string, moduleCodes: string[]) {
 
 /**
  * removes a degree from the user logged in
+ *
+ * @param {string} degreeId
  */
 export function removeDegree(degreeId: string) {
   const { user } = store.getState().modtree
@@ -125,6 +137,7 @@ export function removeDegree(degreeId: string) {
  * creates and saves a graph, assigning it to the user logged in
  *
  * @param {string} title
+ * @param {string} degreeId
  */
 export function createAndSaveGraph(title: string, degreeId: string) {
   const { user } = store.getState().modtree
@@ -141,6 +154,8 @@ export function createAndSaveGraph(title: string, degreeId: string) {
 
 /**
  * removes a graph from the user logged in
+ *
+ * @param {string} graphId
  */
 export function removeGraph(graphId: string) {
   const { user } = store.getState().modtree
@@ -154,6 +169,9 @@ export function removeGraph(graphId: string) {
 
 /**
  * renames a graph
+ *
+ * @param {string} graphId
+ * @param {string} title
  */
 export function renameGraph(graphId: string, title: string) {
   trpc.mutation('graph/rename', { graphId, title })
@@ -161,6 +179,7 @@ export function renameGraph(graphId: string, title: string) {
 
 /**
  * loads a degree by id into a degree builder
+ * @param {string} degreeId
  */
 export function setBuildTarget(degreeId: string) {
   trpc
@@ -172,6 +191,11 @@ export function setBuildTarget(degreeId: string) {
     })
 }
 
+/**
+ * adds a module to degree builder list by module code
+ *
+ * @param {string} moduleCode
+ */
 export function addModuleToBuildList(moduleCode: string) {
   trpc.query('module', moduleCode).then((module) => {
     dispatch(addModulesToCache([module]))
@@ -181,6 +205,10 @@ export function addModuleToBuildList(moduleCode: string) {
 
 /**
  * updates a degree in database and retrieves the updated user
+ *
+ * @param {string} degreeId
+ * @param {string} title
+ * @param {string[]} moduleCodes
  */
 export function updateDegree(
   degreeId: string,

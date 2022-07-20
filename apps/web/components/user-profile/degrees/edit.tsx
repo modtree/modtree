@@ -7,7 +7,7 @@ import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
-import { setBuildTarget, updateDegree } from '@/store/modtree-functions'
+import { setBuildTarget, updateDegree } from '@/store/functions'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   /** hooks */

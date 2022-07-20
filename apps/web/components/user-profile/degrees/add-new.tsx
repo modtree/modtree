@@ -8,7 +8,7 @@ import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
 import { clearBuildList } from '@/store/search'
-import { createAndSaveDegree } from '@/store/modtree-functions'
+import { createAndSaveDegree } from '@/store/functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   /** hooks */

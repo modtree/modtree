@@ -2,10 +2,7 @@ import { useState } from 'react'
 import { flatten } from '@/utils/tailwind'
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
-import {
-  addModuleToBuildList,
-  openModuleModal,
-} from '@/store/modtree-functions'
+import { addModuleToBuildList, openModuleModal } from '@/store/functions'
 
 export function RootSearchBox() {
   /**

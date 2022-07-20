@@ -6,7 +6,7 @@ import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { useAppSelector } from '@/store/redux'
 import { flatten } from '@/utils/tailwind'
-import { renameGraph } from '@/store/modtree-functions'
+import { renameGraph } from '@/store/functions'
 
 export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
   /** hooks */
