@@ -1,5 +1,5 @@
 import { DataSource, In } from 'typeorm'
-import { Module, InitModuleProps } from '@modtree/types'
+import { Module, NUSMods } from '@modtree/types'
 import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
 import { BaseRepo } from '../base'
 
@@ -22,11 +22,35 @@ export class ModuleRepository extends BaseRepo<Module> {
   /**
    * initialize a Module
    *
-   * @param {InitModuleProps} props
+   * @param {string} title
+   * @param {string} moduleCode
+   * @param {string} prerequisite
+   * @param {string} corequisite
+   * @param {string} preclusion
+   * @param {PrereqTree} prereqTree
+   * @param {string[]} fulfillRequirements
    * @returns {Promise<Module>}
    */
-  async initialize(props: InitModuleProps): Promise<Module> {
-    return this.save(this.create(props))
+  async initialize(
+    title: string,
+    moduleCode: string,
+    prerequisite: string,
+    corequisite: string,
+    preclusion: string,
+    prereqTree: NUSMods.PrereqTree,
+    fulfillRequirements: string[]
+  ): Promise<Module> {
+    return this.save(
+      this.create({
+        title,
+        moduleCode,
+        fulfillRequirements,
+        prerequisite,
+        prereqTree,
+        preclusion,
+        corequisite,
+      })
+    )
   }
 
   /**
