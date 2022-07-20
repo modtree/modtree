@@ -45,11 +45,4 @@ export class Graph implements IGraph {
 
   @Column('json', { default: [] })
   flowEdges: GraphFlowEdge[]
-
-  constructor() {
-    this.flowEdges = []
-    this.flowNodes = []
-    this.modulesHidden = []
-    this.modulesPlaced = []
-  }
 }
