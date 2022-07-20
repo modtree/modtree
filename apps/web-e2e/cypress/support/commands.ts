@@ -17,6 +17,7 @@ declare global {
     interface Chainable {
       login(): void
       login2(): void
+      login3(): void
       loadModuleModal<E>(
         moduleCode: string,
         title: string
@@ -47,6 +48,46 @@ Cypress.Commands.add('login2', () => {
   // We are unsure if this is true and if true, when it needs to be refreshed.
   cy.setCookie('next-auth.session-token', Cypress.env('TOKEN'), { log: false })
   Cypress.Cookies.preserveOnce('next-auth.session-token')
+})
+
+Cypress.Commands.add('login3', () => {
+  const username = Cypress.env('GOOGLE_USER')
+  const password = Cypress.env('GOOGLE_PW')
+  const loginUrl = Cypress.env('SITE_NAME')
+  const cookieName = Cypress.env('COOKIE_NAME')
+  const socialLoginOptions = {
+    username,
+    password,
+    loginUrl,
+    headless: true,
+    logs: false,
+    isPopup: true,
+    loginSelector: `form[action="${Cypress.env('SITE_NAME')}/google"]`,
+    postLoginSelector: '#modtree-user-circle',
+  }
+
+  return cy
+    .task('GoogleSocialLogin', socialLoginOptions)
+    .then(({ cookies }) => {
+      cy.clearCookies()
+
+      const cookie = cookies
+        .filter((cookie) => cookie.name === cookieName)
+        .pop()
+      if (cookie) {
+        cy.setCookie(cookie.name, cookie.value, {
+          domain: cookie.domain,
+          expiry: cookie.expires,
+          httpOnly: cookie.httpOnly,
+          path: cookie.path,
+          secure: cookie.secure,
+        })
+
+        Cypress.Cookies.defaults({
+          preserve: cookieName,
+        })
+      }
+    })
 })
 
 /**
