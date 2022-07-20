@@ -1,11 +1,38 @@
+import { ModuleFull } from '@modtree/types'
 import type { ReduxState } from './types'
-import { empty } from '@modtree/utils'
 
 export const baseInitialState: ReduxState = {
-  user: empty.User,
-  degree: empty.Degree,
+  user: {
+    id: '',
+    username: '',
+    email: '',
+    displayName: '',
+    facebookId: '',
+    googleId: '',
+    githubId: '',
+    modulesDone: [],
+    modulesDoing: [],
+    savedDegrees: [],
+    savedGraphs: [],
+    mainDegree: '',
+    mainGraph: '',
+    matriculationYear: 0,
+    graduationYear: 0,
+    graduationSemester: 0,
+  },
+  degree: { id: '', title: '', modules: [] },
   graph: {
-    ...empty.Graph,
+    id: '',
+    title: '',
+    user: '',
+    degree: {
+      id: '',
+      title: '',
+    },
+    modulesHidden: [],
+    modulesPlaced: [],
+    flowEdges: [],
+    flowNodes: [],
     selectedCodes: [],
   },
   modal: {
@@ -20,7 +47,7 @@ export const baseInitialState: ReduxState = {
     showContextMenu: false,
     showModuleModal: false,
     showDebugModal: false,
-    modalModule: empty.ModuleFull,
+    modalModule: new ModuleFull(),
   },
   cache: {
     degrees: {},
