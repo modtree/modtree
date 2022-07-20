@@ -9,9 +9,15 @@ export const user = createRouter()
    * create a user
    */
   .mutation('create', {
-    input: z.string().email(),
-    async resolve({ input: email }) {
-      return api.userRepo.initialize({ email }).then(flatten.user)
+    input: z.object({
+      email: z.string().email(),
+      provider: z.string().optional(),
+      providerId: z.string().optional(),
+    }),
+    async resolve({ input: { email, provider, providerId } }) {
+      return api.userRepo
+        .initialize2(email, provider, providerId)
+        .then(flatten.user)
     },
   })
 
