@@ -100,6 +100,12 @@ export class UserRepository extends BaseRepo<User> {
       this.setProviderId(user, provider, providerId)
     }
 
+    /** set default values */
+    user.savedGraphs = []
+    user.savedDegrees = []
+    user.modulesDone = []
+    user.modulesDoing = []
+
     /** save the user */
     return this.save(user)
   }
