@@ -10,10 +10,8 @@ import { setMainGraph } from '@/store/functions'
 
 export function GraphPicker() {
   /** hooks */
-  const {
-    graph: { selectedCodes, ...graph },
-    user,
-  } = useAppSelector((s) => s.modtree)
+  const user = useAppSelector((s) => s.modtree.user)
+  const graph = useAppSelector((s) => s.graph)
   const { data: graphs } = trpcReact.useQuery(['graphs', user.savedGraphs], {
     keepPreviousData: true,
   })

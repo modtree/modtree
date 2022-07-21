@@ -3,7 +3,7 @@ import { flatten } from 'utils'
 import { GraphPicker } from '@/ui/search/graph/graph-picker'
 
 export function FloatingGraphTitle() {
-  const mainGraph = useAppSelector((s) => s.modtree.graph)
+  const graph = useAppSelector((s) => s.graph)
 
   const className = flatten(
     // top center
@@ -11,7 +11,7 @@ export function FloatingGraphTitle() {
     'select-none bg-white shadow-md rounded-xl'
   )
 
-  return mainGraph && mainGraph.id !== '' ? (
+  return graph && graph.id !== '' ? (
     <div className={className}>
       <GraphPicker />
     </div>
