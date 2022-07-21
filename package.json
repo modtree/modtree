@@ -38,7 +38,6 @@
     "heroku-postbuild": "yarn build:server --prod"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.9.0",
     "@headlessui/react": "^1.6.4",
     "@heroicons/react": "1.0.5",
     "@nrwl/next": "14.2.4",
