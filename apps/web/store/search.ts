@@ -2,7 +2,7 @@ import { IModule } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 
-export const search = createSlice({
+export default createSlice({
   name: 'search',
   initialState: baseInitialState.search,
   reducers: {
@@ -47,17 +47,3 @@ export const search = createSlice({
     },
   },
 })
-
-export const {
-  setSearchedModule,
-  clearSearches,
-  clearBuildList,
-  addToBuildList,
-  removeFromBuildList,
-  setBuildTitle,
-  setBuildList,
-  setBuildId,
-  setDegreeTitle,
-} = search.actions
-export const r = search.actions
-export default search.reducer

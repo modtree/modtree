@@ -4,7 +4,7 @@ import { baseInitialState } from './initial-state'
 import { IModuleFull } from '@modtree/types'
 import type { ContextMenuProps } from 'types'
 
-export const modal = createSlice({
+export default createSlice({
   name: 'modal',
   initialState: baseInitialState.modal,
   reducers: {
@@ -51,20 +51,3 @@ export const modal = createSlice({
     },
   },
 })
-
-export const {
-  showModuleStateGuide,
-  hideModuleStateGuide,
-  showUserProfile,
-  hideUserProfile,
-  showModuleModal,
-  hideModuleModal,
-  setModalModule,
-  hideDebugModal,
-  showDebugModal,
-  hideContextMenu,
-  showContextMenu,
-  setUserProfilePage,
-} = modal.actions
-export const r = modal.actions
-export default modal.reducer

@@ -2,9 +2,6 @@ import { getCSS } from '@/utils/module-state'
 import { trpc } from '@/utils/trpc'
 import store, { r } from '@/store/redux'
 import { ApiResponse, ModuleStatus } from '@modtree/types'
-import { setModalModule, showModuleModal } from './modal'
-import { addModulesToCache } from './cache'
-import { addToBuildList, setBuildList } from './search'
 
 const dispatch = store.dispatch
 
@@ -35,8 +32,8 @@ export function redrawGraph() {
 export function openModuleModal(query: string) {
   trpc
     .query('module-full', query)
-    .then((module) => dispatch(setModalModule(module)))
-    .then(() => dispatch(showModuleModal()))
+    .then((module) => dispatch(r.setModalModule(module)))
+    .then(() => dispatch(r.showModuleModal()))
 }
 
 /**
@@ -89,7 +86,7 @@ export function updateModuleCache(moduleCodes: string[]) {
   /** send the http request */
   return trpc.query('modules', codesToFetch).then((modules) => {
     /** update the redux store */
-    dispatch(addModulesToCache(modules))
+    dispatch(r.addModulesToCache(modules))
   })
 }
 
@@ -180,8 +177,8 @@ export function setBuildTarget(degreeId: string) {
     .query('degree', degreeId)
     .then((degree) => trpc.query('modules', degree.modules))
     .then((modules) => {
-      dispatch(addModulesToCache(modules))
-      dispatch(setBuildList(modules.map((m) => m.moduleCode)))
+      dispatch(r.addModulesToCache(modules))
+      dispatch(r.setBuildList(modules.map((m) => m.moduleCode)))
     })
 }
 
@@ -192,8 +189,8 @@ export function setBuildTarget(degreeId: string) {
  */
 export function addModuleToBuildList(moduleCode: string) {
   trpc.query('module', moduleCode).then((module) => {
-    dispatch(addModulesToCache([module]))
-    dispatch(addToBuildList(moduleCode))
+    dispatch(r.addModulesToCache([module]))
+    dispatch(r.addToBuildList(moduleCode))
   })
 }
 

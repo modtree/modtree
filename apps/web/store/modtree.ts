@@ -27,7 +27,7 @@ function setFlow(state: any, nodes: GraphFlowNode[]) {
   })
 }
 
-export const modtreeStore = createSlice({
+export default createSlice({
   name: 'modtree',
   initialState: baseInitialState.modtree,
   reducers: {
@@ -121,17 +121,10 @@ export const modtreeStore = createSlice({
       const code = node.data.moduleCode
 
       /** add it to the graph */
-      modtreeStore.caseReducers.setNodesAndEdges(state, {
-        payload: state.graph.flowNodes.filter(
-          (n) => n.data.moduleCode !== code
-        ),
-        type: '',
-      })
+      setFlow(
+        state,
+        state.graph.flowNodes.filter((n) => n.data.moduleCode !== code)
+      )
     },
   },
 })
-
-export default {
-  reducer: modtreeStore.reducer,
-  actions: modtreeStore.actions,
-}
