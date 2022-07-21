@@ -33,9 +33,7 @@ export default function Method(props: MethodProps) {
         </div>
         <code className="break-all">{props.endpoint}</code>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 w-full gap-x-8">
-        <Left {...props} />
-      </div>
+      <Left {...props} />
     </>
   )
 }
