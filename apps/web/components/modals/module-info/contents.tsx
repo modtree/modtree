@@ -1,13 +1,12 @@
 import { Dot } from '@/ui/inline'
-import { setGraph, setFlow } from '@/store/graph'
 import { hideModuleModal } from '@/store/modal'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { Button } from '@/ui/buttons'
 import { useSession } from '@/utils/auth'
 import { inModulesPlaced } from '@/utils/graph'
-import { GraphFlowNode } from '@modtree/types'
-import { redrawGraph } from '@modtree/utils'
-import { trpc } from '@/utils/trpc'
+import { addModuleNode } from '@/store/modtree'
+import { nodify } from '@modtree/utils'
+import { devEnv } from '@/utils/env'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
@@ -16,62 +15,15 @@ export function ModuleDetails() {
 
   // to check if this module has been added
   // and to toggle node
-  const graph = useAppSelector((state) => state.graph)
+  const graph = useAppSelector((s) => s.modtree.graph)
 
   function handleAddButton() {
     // 1. hide module modal
     dispatch(hideModuleModal())
-
-    // 2. calculate new nodes and edges
-    const node: GraphFlowNode = {
-      id: module.moduleCode,
-      position: {
-        x: 0,
-        y: 0,
-      },
-      type: 'moduleNode',
-      data: {
-        // basically extract IModule from IFull
-        id: module.id,
-        moduleCode: module.moduleCode,
-        title: module.title,
-        prerequisite: module.prerequisite,
-        corequisite: module.corequisite,
-        preclusion: module.preclusion,
-        fulfillRequirements: module.fulfillRequirements,
-        prereqTree: module.prereqTree,
-      },
-    }
-    const { nodes, edges } = redrawGraph({
-      nodes: [...graph.flowNodes, node],
-      edges: graph.flowEdges,
-    })
-
-    // 3. toggle module in graph
-    trpc
-      .mutation('graph/toggle', {
-        graphId: graph.id,
-        moduleCode: module.moduleCode,
-      })
-      .then(() =>
-        // 4. update frontend props
-        trpc.mutation('graph/update-frontend-props', {
-          graphId: graph.id,
-          flowNodes: nodes,
-          flowEdges: edges,
-        })
-      )
-      .then((g) => {
-        setGraph(g)
-        // 5. Dispatch new nodes
-        dispatch(
-          setFlow({
-            flowNodes: nodes,
-            flowEdges: edges,
-          })
-        )
-      })
+    // 2. add module to graph
+    dispatch(addModuleNode(nodify(module)))
   }
+
   return (
     <div data-cy="module-modal">
       <h1 className="text-modtree-400">{module.moduleCode}</h1>
@@ -89,6 +41,9 @@ export function ModuleDetails() {
         <div className="flex flex-row-reverse">
           <Button onClick={handleAddButton}>Add to graph</Button>
         </div>
+      )}
+      {devEnv && (
+        <pre>{JSON.stringify(module.prereqTree || 'no pre-reqs', null, 2)}</pre>
       )}
     </div>
   )

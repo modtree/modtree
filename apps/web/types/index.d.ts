@@ -36,6 +36,7 @@ export type UserMenuItem = {
 }
 
 export type MenuItem = {
+  show: boolean
   text: string
   href?: string
   callback?: (_?: GraphFlowNode) => void

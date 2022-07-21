@@ -10,9 +10,12 @@ import { RootSearchBox } from '@/ui/search/module'
 import { rehydrate } from '@/utils/rehydrate'
 import { FloatingGraphTitle } from '@/components/graph-title'
 import { useSession } from '@/utils/auth'
+import { useAppDispatch } from '@/store/redux'
+import { hideContextMenu } from '@/store/modal'
 
 export default function Modtree() {
   const { user, status } = useSession()
+  const dispatch = useAppDispatch()
 
   /**
    * load current user, current graph, current degree
@@ -22,6 +25,13 @@ export default function Modtree() {
       rehydrate(user)
     }
   }, [status])
+
+  /**
+   * hide the context menu on a click anywhere
+   */
+  useEffect(() => {
+    document.addEventListener('click', () => dispatch(hideContextMenu()))
+  }, [])
 
   return (
     <div className="fixed inset-0 bg-gray-50">

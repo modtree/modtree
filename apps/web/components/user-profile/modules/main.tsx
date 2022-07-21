@@ -6,24 +6,25 @@ import { dashed } from '@/utils/array'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
 import { setBuildList } from '@/store/search'
 import { useEffect } from 'react'
-import { api } from 'api'
+import { updateModuleCache } from '@/store/functions'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.user)
+  const user = useAppSelector((state) => state.modtree.user)
   const cache = useAppSelector((state) => state.cache)
 
   /**
    * update the cache with required modules
    */
   useEffect(() => {
-    api.module.loadCodes([...user.modulesDone, ...user.modulesDoing])
+    updateModuleCache([...user.modulesDone, ...user.modulesDoing])
   }, [user.modulesDone, user.modulesDoing])
 
   const hasModules = {
     done: user.modulesDone.length !== 0,
     doing: user.modulesDoing.length !== 0,
   }
+
   return (
     <>
       <div className="mb-12">

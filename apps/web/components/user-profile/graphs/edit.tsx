@@ -5,19 +5,17 @@ import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { useAppSelector } from '@/store/redux'
-import { api } from 'api'
 import { flatten } from '@/utils/tailwind'
+import { renameGraph } from '@/store/functions'
 
 export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
-  const { buildTitle, buildId, degreeTitle } = useAppSelector(
-    (state) => state.search
-  )
-  const state = {
-    title: useState<string>(buildTitle),
-  }
+  /** hooks */
+  const { buildTitle, buildId, degreeTitle } = useAppSelector((s) => s.search)
+  const [title, setTitle] = useState(buildTitle)
 
   const update = async (title: string) => {
-    api.graph.rename(buildId, title).then(() => props.setPage('main'))
+    props.setPage('main')
+    renameGraph(buildId, title)
   }
 
   return (
@@ -29,7 +27,7 @@ export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
-        <Input className="w-full mb-4" state={state.title} grayed />
+        <Input className="w-full mb-4" state={[title, setTitle]} grayed />
         <h6>Degree</h6>
         <div
           className={flatten(
@@ -42,7 +40,7 @@ export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
         </div>
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green" onClick={() => update(state.title[0])}>
+        <Button color="green" onClick={() => update(title)}>
           Save graph
         </Button>
       </div>

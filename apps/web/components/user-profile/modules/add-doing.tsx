@@ -4,29 +4,22 @@ import { Button } from '@/ui/buttons'
 import { ModuleStatus, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { updateModulesDoing } from '@/store/user'
 import { SelectedModules } from './selected-modules'
-import { useSession } from '@/utils/auth'
-import { trpc } from '@/utils/trpc'
+import { setModuleStatus } from '@/store/functions'
+import { clearBuildList } from '@/store/search'
 
 export function AddDoing(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
   const buildList = useAppSelector((state) => state.search.buildList)
-  const { user } = useSession()
 
   function confirm() {
-    const moduleCodes = buildList
-    dispatch(updateModulesDoing(moduleCodes))
+    /** navigate back */
     props.setPage('main')
+    dispatch(clearBuildList())
     /** persist state */
-    const userId = user?.modtreeId
-    if (!userId) return
-    trpc.mutation('user/set-module-status', {
-      userId,
-      moduleCodes,
-      status: ModuleStatus.DOING,
-    })
+    setModuleStatus(ModuleStatus.DOING, buildList)
   }
+
   return (
     <div className="flex flex-col">
       <SettingsSection

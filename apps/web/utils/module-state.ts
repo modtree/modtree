@@ -22,7 +22,7 @@ export function getCSS(
   done: string[],
   doing: string[],
   canTake: CanTakeModule[]
-) {
+): GraphFlowNode[] {
   const getState = (moduleCode: string): State => {
     // done/doing
     if (done.includes(moduleCode)) return State.DONE
@@ -35,10 +35,6 @@ export function getCSS(
 
   return nodes.map((node) => ({
     ...node,
-    state: getState(node.data.moduleCode),
-    data: {
-      ...node.data,
-      className: cssMap[getState(node.data.moduleCode)],
-    },
+    data: { ...node.data, className: cssMap[getState(node.data.moduleCode)] },
   }))
 }

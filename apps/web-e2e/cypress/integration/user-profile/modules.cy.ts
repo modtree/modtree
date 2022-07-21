@@ -28,8 +28,8 @@ function waitForLoad() {
  * Checks for correct number of modules
  */
 function checkLengths() {
-  cy.getCy('done-section').children().its('length').should('eq', doneCount)
-  cy.getCy('doing-section').children().its('length').should('eq', doingCount)
+  cy.get('[data-cy="done-section"] > div').should('have.length', doneCount)
+  cy.get('[data-cy="doing-section"] > div').should('have.length', doingCount)
 }
 
 describe('modules panel', () => {

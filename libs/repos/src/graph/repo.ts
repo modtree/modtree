@@ -201,6 +201,7 @@ export class GraphRepository extends BaseRepo<Graph> {
   ): Promise<Graph> {
     return this.save({
       ...graph,
+      modulesPlaced: props.flowNodes.map((n) => n.data),
       flowEdges: props.flowEdges,
       flowNodes: props.flowNodes,
     })

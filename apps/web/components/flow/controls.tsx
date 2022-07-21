@@ -37,7 +37,7 @@ export function FlowControls() {
       <Button onClick={zoomOut}>
         <MinusIcon />
       </Button>
-      <Button onClick={fitView}>
+      <Button onClick={() => fitView({ maxZoom: 1 })}>
         <FitViewIcon />
       </Button>
     </div>

@@ -4,7 +4,7 @@ import { SearchIcon } from '@/ui/icons'
 import { trpcReact } from '@/utils/trpc'
 import { useAppDispatch } from '@/store/redux'
 import { setSearchedModule } from '@/store/search'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export function SearchInput(props: {
   inputClass?: string
@@ -16,13 +16,10 @@ export function SearchInput(props: {
   const [query, setQuery] = useState('')
   const dispatch = useAppDispatch()
 
-  const res = trpcReact.useQuery(['search/modules', query])
-
-  useEffect(() => {
-    if (res && res.data) {
-      dispatch(setSearchedModule(res.data || []))
-    }
-  }, [res])
+  trpcReact.useQuery(['search/modules', query], {
+    keepPreviousData: true,
+    onSuccess: (modules) => dispatch(setSearchedModule(modules)),
+  })
 
   return (
     <>

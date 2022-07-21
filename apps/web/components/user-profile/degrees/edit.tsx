@@ -7,23 +7,22 @@ import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
-import { api } from 'api'
+import { setBuildTarget, updateDegree } from '@/store/functions'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
-  const { buildList, buildTitle, buildId } = useAppSelector(
-    (state) => state.search
-  )
-  const state = { title: useState<string>(buildTitle) }
+  /** hooks */
+  const { buildList, buildTitle, buildId } = useAppSelector((s) => s.search)
+  const [title, setTitle] = useState(buildTitle)
 
   /* set build list */
   useEffect(() => {
-    api.degree.setBuildTarget(buildId)
+    setBuildTarget(buildId)
   }, [])
 
-  const update = async (title: string, moduleCodes: string[]) =>
-    api.degree
-      .update(buildId, title, moduleCodes)
-      .then(() => props.setPage('main'))
+  const update = (title: string, moduleCodes: string[]) => {
+    updateDegree(buildId, title, moduleCodes)
+    props.setPage('main')
+  }
 
   return (
     <div className="flex flex-col">
@@ -36,7 +35,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         <h6>Title</h6>
         <Input
           className="w-full mb-4"
-          state={state.title}
+          state={[title, setTitle]}
           grayed
           cypress="edit-degree-title"
         />
@@ -51,7 +50,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green" onClick={() => update(state.title[0], buildList)}>
+        <Button color="green" onClick={() => update(title, buildList)}>
           Save degree
         </Button>
       </div>

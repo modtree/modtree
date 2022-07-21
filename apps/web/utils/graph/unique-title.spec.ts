@@ -1,9 +1,13 @@
-import { ModtreeApiResponse } from '@modtree/types'
-import { empty } from '@modtree/utils'
+import { ApiResponse } from '@modtree/types'
 import { getUniqueGraphTitle } from '.'
 
-const graph: ModtreeApiResponse.Graph = {
-  ...empty.Graph,
+const graph: ApiResponse.Graph = {
+  id: '',
+  user: '',
+  modulesHidden: [],
+  modulesPlaced: [],
+  flowEdges: [],
+  flowNodes: [],
   title: 'my graph',
   degree: {
     id: '',

@@ -1,26 +1,19 @@
 import { useState } from 'react'
-import { useAppDispatch } from '@/store/redux'
 import { flatten } from '@/utils/tailwind'
-import { setModalModule, showModuleModal } from '@/store/modal'
-import { trpc } from '@/utils/trpc'
-import { api } from 'api'
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
+import { addModuleToBuildList, openModuleModal } from '@/store/functions'
 
 export function RootSearchBox() {
   /**
    * only changes upon clicking on the search result
    */
   const [selected, setSelected] = useState('')
-  const dispatch = useAppDispatch()
 
   const onSelect = (query: string) => {
     if (!query) return
     setSelected(query)
-    dispatch(showModuleModal())
-    trpc
-      .query('module-full', query)
-      .then((module) => dispatch(setModalModule(module)))
+    openModuleModal(query)
   }
 
   return (
@@ -47,7 +40,7 @@ export function SettingsSearchBox(props: { cypress?: string }) {
   const onSelect = (moduleCode: string) => {
     if (!moduleCode) return
     setSelected(moduleCode)
-    api.degree.addToBuildList(moduleCode)
+    addModuleToBuildList(moduleCode)
   }
 
   return (
