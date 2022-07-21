@@ -131,18 +131,7 @@ export const modtreeStore = createSlice({
   },
 })
 
-export const {
-  setGraphSelectedCodes,
-  addModuleNode,
-  applyNodeChanges,
-  setNodes,
-  setEdges,
-  setNodesAndEdges,
-  updateModulesDone,
-  updateModulesDoing,
-  setUser,
-  removeModuleNode,
-  setMainDegree,
-  setMainGraph,
-} = modtreeStore.actions
-export default modtreeStore.reducer
+export default {
+  reducer: modtreeStore.reducer,
+  actions: modtreeStore.actions,
+}

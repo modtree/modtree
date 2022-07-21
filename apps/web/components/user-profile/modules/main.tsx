@@ -3,8 +3,7 @@ import { SetState } from '@modtree/types'
 import { SettingsSection, Row } from '@/ui/settings'
 import { text } from 'text'
 import { dashed } from '@/utils/array'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { setBuildList } from '@/store/search'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { useEffect } from 'react'
 import { updateModuleCache } from '@/store/functions'
 
@@ -33,7 +32,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.doing ? 'gray' : 'green'}
           addButtonText={hasModules.doing ? 'Modify' : 'Add doing'}
           onAddClick={() => {
-            dispatch(setBuildList(user.modulesDoing))
+            dispatch(r.setBuildList(user.modulesDoing))
             props.setPage('add-doing')
           }}
           cypress="modify-doing"
@@ -70,7 +69,7 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           addButtonColor={hasModules.done ? 'gray' : 'green'}
           addButtonText={hasModules.done ? 'Modify' : 'Add done'}
           onAddClick={() => {
-            dispatch(setBuildList(user.modulesDone))
+            dispatch(r.setBuildList(user.modulesDone))
             props.setPage('add-done')
           }}
           cypress="modify-done"

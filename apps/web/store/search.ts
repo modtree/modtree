@@ -59,4 +59,5 @@ export const {
   setBuildId,
   setDegreeTitle,
 } = search.actions
+export const r = search.actions
 export default search.reducer

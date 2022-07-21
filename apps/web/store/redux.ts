@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import searchReducer from './search'
 import modalReducer from './modal'
-import modtreeReducer from './modtree'
+import modtree from './modtree'
 import cacheReducer from './cache'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
@@ -9,7 +9,7 @@ const store = configureStore({
   reducer: {
     search: searchReducer,
     modal: modalReducer,
-    modtree: modtreeReducer,
+    modtree: modtree.reducer,
     cache: cacheReducer,
   },
 })
@@ -23,3 +23,15 @@ export type AppDispatch = typeof store.dispatch
 
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+/** reducer namespacer */
+import { r as search } from './search'
+import { r as modal } from './modal'
+import { r as cache } from './cache'
+
+export const r = {
+  ...modtree.actions,
+  ...modal,
+  ...search,
+  ...cache,
+} as const

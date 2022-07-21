@@ -1,5 +1,4 @@
-import { setMainGraph, setMainDegree } from '@/store/modtree'
-import store from '@/store/redux'
+import store, { r } from '@/store/redux'
 import { setUser } from '@/store/modtree'
 import { Session } from 'next-auth'
 import { trpc } from './trpc'
@@ -24,14 +23,14 @@ export function rehydrate(user: Session['user']) {
   const rDegree = rUser
     .then((user) => trpc.query('degree', user.mainDegree))
     .then((degree) => {
-      dispatch(setMainDegree(degree))
+      dispatch(r.setMainDegree(degree))
     })
 
   /** rehydrate graph */
   const rGraph = rUser
     .then((user) => trpc.query('graph', user.mainGraph))
     .then((graph) => {
-      dispatch(setMainGraph(graph))
+      dispatch(r.setMainGraph(graph))
     })
 
   /** reporting */

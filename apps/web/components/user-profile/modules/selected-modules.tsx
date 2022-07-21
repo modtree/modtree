@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { removeFromBuildList } from '@/store/search'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings'
 
@@ -23,7 +22,7 @@ export function SelectedModules(props: {
               <Row.Module
                 key={dashed(code, index)}
                 deletable
-                onDelete={() => dispatch(removeFromBuildList(code))}
+                onDelete={() => dispatch(r.removeFromBuildList(code))}
               >
                 <span data-cy={props.cypressModule} className="font-semibold">
                   {code}

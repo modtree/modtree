@@ -1,5 +1,4 @@
-import { useAppSelector } from '@/store/redux'
-import { hideDebugModal } from '@/store/modal'
+import { useAppSelector, r } from '@/store/redux'
 import { useSession } from '@/utils/auth'
 import { ObjectLiteral } from 'typeorm'
 import Modal from '@/ui/modal'
@@ -53,7 +52,7 @@ export function DebugModal() {
   return (
     <Modal
       showState={redux.modal.showDebugModal}
-      hideAction={hideDebugModal}
+      hideAction={r.hideDebugModal}
       closeButton
       scrollable
     >

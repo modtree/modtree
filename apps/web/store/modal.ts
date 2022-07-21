@@ -66,4 +66,5 @@ export const {
   showContextMenu,
   setUserProfilePage,
 } = modal.actions
+export const r = modal.actions
 export default modal.reducer

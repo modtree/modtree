@@ -1,12 +1,10 @@
-import { showDebugModal, showUserProfile } from '@/store/modal'
-import { removeModuleNode } from '@/store/modtree'
 import {
   markAsDoing,
   markAsDone,
   markAsPlanned,
   openModuleModal,
 } from '@/store/functions'
-import store from '@/store/redux'
+import store, { r } from '@/store/redux'
 import { devEnv } from '@/utils/env'
 import { signOut } from 'next-auth/react'
 import { MenuItem } from 'types'
@@ -20,12 +18,12 @@ const userDropdownMenu: MenuItem[] = [
   {
     text: 'Your profile',
     show: true,
-    callback: () => dispatch(showUserProfile()),
+    callback: () => dispatch(r.showUserProfile()),
   },
   {
     text: 'Debug',
     show: devEnv,
-    callback: () => dispatch(showDebugModal()),
+    callback: () => dispatch(r.showDebugModal()),
   },
   {
     text: 'Sign out',
@@ -83,7 +81,7 @@ const flowNodeContextMenu: MenuItem[] = [
     callback: async (e) => {
       if (!e) return
       // remove node from frontend
-      store.dispatch(removeModuleNode(e))
+      store.dispatch(r.removeModuleNode(e))
     },
   },
 ]

@@ -2,8 +2,7 @@ import { ReactElement } from 'react'
 import { UserIcon } from '@/ui/icons'
 import { useSession } from '@/utils/auth'
 import { DropdownMenu, Entries } from '@/ui/menu'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { hideContextMenu } from '@/store/modal'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { items } from '@/components/menu-items'
 import { flatten } from '@/utils/tailwind'
 import { signIn } from 'next-auth/react'
@@ -42,7 +41,7 @@ const SignedInCircle = () => {
       id="modtree-user-circle"
       data-cy="modtree-user-circle"
       className="w-10 h-10 rounded-full modtree-gradient flex centered"
-      onClick={() => dispatch(hideContextMenu())}
+      onClick={() => dispatch(r.hideContextMenu())}
     >
       <UserIcon className="text-gray-50 h-5 w-5" />
     </div>

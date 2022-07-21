@@ -3,14 +3,13 @@ import { ApiResponse } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
-import { setMainGraph } from '@/store/modtree'
 import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useAppSelector } from '@/store/redux'
 import { trpcReact } from '@/utils/trpc'
+import { setMainGraph } from '@/store/functions'
 
 export function GraphPicker() {
   /** hooks */
-  const dispatch = useAppDispatch()
   const {
     graph: { selectedCodes, ...graph },
     user,
@@ -25,7 +24,7 @@ export function GraphPicker() {
    */
   const onChange = (graph: ApiResponse.Graph) => {
     setSelectedGraph(graph)
-    dispatch(setMainGraph(graph))
+    setMainGraph(graph)
   }
 
   /**

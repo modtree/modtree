@@ -1,11 +1,10 @@
 import { flatten } from '@/utils/tailwind'
 import { Menu } from '@headlessui/react'
-import { showContextMenu } from '@/store/modal'
 import type { ReactElement } from 'react'
 import type { MouseEvent } from 'react'
 import type { GraphFlowNode } from '@modtree/types'
 import type { ContextMenuProps, ContextMenuType } from 'types'
-import store, { useAppSelector } from '@/store/redux'
+import store, { useAppSelector, r } from '@/store/redux'
 import { dashed } from '@/utils/array'
 import { items } from '@/components/menu-items'
 import { MenuItem } from 'types'
@@ -29,7 +28,7 @@ export function onContextMenu(
   const dispatch = store.dispatch
   /** send redux signal to open the context menu */
   dispatch(
-    showContextMenu({
+    r.showContextMenu({
       /**
        * where on the screen to place the menu
        */

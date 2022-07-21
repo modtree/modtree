@@ -30,4 +30,5 @@ export const {
   addModulesToCache,
   addDegreeToCache,
 } = cache.actions
+export const r = cache.actions
 export default cache.reducer

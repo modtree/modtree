@@ -3,8 +3,7 @@ import { text } from 'text'
 import { SettingsSection, Row } from '@/ui/settings'
 import { dashed } from '@/utils/array'
 import { Dispatch, SetStateAction } from 'react'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { clearBuildList, setBuildId, setBuildTitle } from '@/store/search'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { trpcReact } from '@/utils/trpc'
 import { removeDegree } from '@/store/functions'
 
@@ -41,9 +40,9 @@ export function Main(props: {
                     deletable
                     onDelete={() => removeDegree(degree.id)}
                     onEdit={() => {
-                      dispatch(clearBuildList())
-                      dispatch(setBuildTitle(degree.title))
-                      dispatch(setBuildId(degree.id))
+                      dispatch(r.clearBuildList())
+                      dispatch(r.setBuildTitle(degree.title))
+                      dispatch(r.setBuildId(degree.id))
                       props.setPage('edit')
                     }}
                   >
