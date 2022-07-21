@@ -9,9 +9,8 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      api.initializeUser('auth0|6294dbffdc4dea0068d77f61', 'yes@yes.com')
-    )
+    .then(() => Repo.User.initialize('yes@yes.com', 'google', 'id1'))
+    .then((user) => api.setupUser(user))
     .then((user) => {
       t.user = user
       t.degree = user.savedDegrees[0]

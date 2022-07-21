@@ -1,5 +1,5 @@
 import { Degree } from '@modtree/types'
-import { setup, teardown, Repo, t } from '@modtree/test-env'
+import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 
@@ -9,21 +9,6 @@ const db = getSource(dbName)
 beforeAll(() => setup(db))
 afterAll(() => teardown(db))
 
-const props = {
-  moduleCodes: [
-    'CS1101S',
-    'CS1231S',
-    'CS2030S',
-    'CS2040S',
-    'CS2100',
-    'CS2103T',
-    'CS2106',
-    'CS2109S',
-    'CS3230',
-  ],
-  title: 'Test Degree',
-}
-
 it('initial count', async () => {
   await Repo.Degree.count().then((count) => {
     expect(count).toEqual(0)
@@ -31,7 +16,10 @@ it('initial count', async () => {
 })
 
 it('returns a degree', async () => {
-  await Repo.Degree.initialize(props).then((res) => {
+  await Repo.Degree.initialize(
+    init.degree1.title,
+    init.degree1.moduleCodes
+  ).then((res) => {
     expect(res).toBeInstanceOf(Degree)
     t.degree = res
   })
@@ -45,5 +33,5 @@ it('increments the count by 1', async () => {
 
 it('saves correct modules', async () => {
   const codes = t.degree!.modules.map(flatten.module)
-  expect(codes).toIncludeSameMembers(props.moduleCodes)
+  expect(codes).toIncludeSameMembers(init.degree1.moduleCodes)
 })
