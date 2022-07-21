@@ -1,18 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit'
-import searchReducer from './search'
-import modalReducer from './modal'
-import modtreeReducer from './modtree'
-import cacheReducer from './cache'
+import search from './search'
+import modal from './modal'
+import modtree from './modtree'
+import cache from './cache'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const store = configureStore({
   reducer: {
-    search: searchReducer,
-    modal: modalReducer,
-    modtree: modtreeReducer,
-    cache: cacheReducer,
+    search: search.reducer,
+    modal: modal.reducer,
+    modtree: modtree.reducer,
+    cache: cache.reducer,
   },
 })
+
+/** redux action namespacer */
+export const r = {
+  ...modtree.actions,
+  ...modal.actions,
+  ...search.actions,
+  ...cache.actions,
+} as const
 
 export default store
 

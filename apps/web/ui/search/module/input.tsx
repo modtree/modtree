@@ -2,8 +2,7 @@ import { flatten } from '@/utils/tailwind'
 import { Combobox } from '@headlessui/react'
 import { SearchIcon } from '@/ui/icons'
 import { trpcReact } from '@/utils/trpc'
-import { useAppDispatch } from '@/store/redux'
-import { setSearchedModule } from '@/store/search'
+import { useAppDispatch, r } from '@/store/redux'
 import { useState } from 'react'
 
 export function SearchInput(props: {
@@ -18,7 +17,7 @@ export function SearchInput(props: {
 
   trpcReact.useQuery(['search/modules', query], {
     keepPreviousData: true,
-    onSuccess: (modules) => dispatch(setSearchedModule(modules)),
+    onSuccess: (modules) => dispatch(r.setSearchedModule(modules)),
   })
 
   return (

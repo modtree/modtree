@@ -1,10 +1,8 @@
 import { Dot } from '@/ui/inline'
-import { hideModuleModal } from '@/store/modal'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { Button } from '@/ui/buttons'
 import { useSession } from '@/utils/auth'
 import { inModulesPlaced } from '@/utils/graph'
-import { addModuleNode } from '@/store/modtree'
 import { nodify } from '@modtree/utils'
 import { devEnv } from '@/utils/env'
 
@@ -19,9 +17,9 @@ export function ModuleDetails() {
 
   function handleAddButton() {
     // 1. hide module modal
-    dispatch(hideModuleModal())
+    dispatch(r.hideModuleModal())
     // 2. add module to graph
-    dispatch(addModuleNode(nodify(module)))
+    dispatch(r.addModuleNode(nodify(module)))
   }
 
   return (

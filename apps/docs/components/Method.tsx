@@ -1,5 +1,4 @@
 import ParameterList from './ParameterList'
-import Response from './Response'
 
 const Left = (props: MethodProps) => {
   const params: ParameterList = {

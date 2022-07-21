@@ -1,5 +1,4 @@
-import { hideModuleStateGuide } from '@/store/modal'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { CloseButton } from '@/ui/buttons'
 import { flatten } from '@/utils/tailwind'
 
@@ -15,7 +14,7 @@ export function ModuleStateGuide() {
           <h5 className="flex flex-row h-6 items-center">
             <span className="flex-1 mb-0">Module state guide</span>
             <div>
-              <CloseButton close={() => dispatch(hideModuleStateGuide())} />
+              <CloseButton close={() => dispatch(r.hideModuleStateGuide())} />
             </div>
           </h5>
           <li className="list-inside marker:text-emerald-400">Done</li>

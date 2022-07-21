@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, Fragment } from 'react'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { SettingsSection, Row, EmptyBox } from '@/ui/settings'
 import { text } from 'text'
@@ -9,7 +9,6 @@ import { lowercaseAndDash } from '@/utils/string'
 import { Pages } from 'types'
 import { GraphPicker } from '@/ui/search/graph/graph-picker'
 import { trpcReact } from '@/utils/trpc'
-import { setBuildId, setBuildTitle, setDegreeTitle } from '@/store/search'
 import { dashed } from '@/utils/array'
 import { removeGraph } from '@/store/functions'
 
@@ -93,9 +92,9 @@ function GraphSection(props: {
                     <Row.Graph
                       key={g.id}
                       onEdit={() => {
-                        dispatch(setBuildTitle(g.title))
-                        dispatch(setBuildId(g.id))
-                        dispatch(setDegreeTitle(g.degree.title))
+                        dispatch(r.setBuildTitle(g.title))
+                        dispatch(r.setBuildId(g.id))
+                        dispatch(r.setDegreeTitle(g.degree.title))
                         props.setPage('edit')
                       }}
                     >
@@ -107,9 +106,9 @@ function GraphSection(props: {
                       deletable
                       onDelete={() => removeGraph(g.id)}
                       onEdit={() => {
-                        dispatch(setBuildTitle(g.title))
-                        dispatch(setBuildId(g.id))
-                        dispatch(setDegreeTitle(g.degree.title))
+                        dispatch(r.setBuildTitle(g.title))
+                        dispatch(r.setBuildId(g.id))
+                        dispatch(r.setDegreeTitle(g.degree.title))
                         props.setPage('edit')
                       }}
                     >

@@ -7,30 +7,36 @@ import { ContextMenus } from '@/ui/menu/context-menu'
 import { ModuleInfoModal, DebugModal } from '@/components/modals'
 import { UserProfileModal } from '@/components/user-profile'
 import { RootSearchBox } from '@/ui/search/module'
-import { rehydrate } from '@/utils/rehydrate'
 import { FloatingGraphTitle } from '@/components/graph-title'
 import { useSession } from '@/utils/auth'
-import { useAppDispatch } from '@/store/redux'
-import { hideContextMenu } from '@/store/modal'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
+import { trpcReact } from '@/utils/trpc'
 
 export default function Modtree() {
   const { user, status } = useSession()
   const dispatch = useAppDispatch()
+  const state = useAppSelector((s) => s.modtree)
 
-  /**
-   * load current user, current graph, current degree
-   */
-  useEffect(() => {
-    if (status === 'authenticated' && user) {
-      rehydrate(user)
-    }
-  }, [status])
+  /** trpc hooks that will auto-refetch upon any change in request params */
+  const opts = { keepPreviousData: true, enabled: status === 'authenticated' }
+  trpcReact.useQuery(['user', user ? user.modtreeId : ''], {
+    onSuccess: (user) => dispatch(r.setUser(user)),
+    ...opts,
+  })
+  trpcReact.useQuery(['degree', state.user.mainDegree], {
+    onSuccess: (degree) => dispatch(r.setMainDegree(degree)),
+    ...opts,
+  })
+  trpcReact.useQuery(['graph', state.user.mainGraph], {
+    onSuccess: (graph) => dispatch(r.setMainGraph(graph)),
+    ...opts,
+  })
 
   /**
    * hide the context menu on a click anywhere
    */
   useEffect(() => {
-    document.addEventListener('click', () => dispatch(hideContextMenu()))
+    document.addEventListener('click', () => dispatch(r.hideContextMenu()))
   }, [])
 
   return (

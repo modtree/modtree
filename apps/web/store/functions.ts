@@ -1,11 +1,7 @@
 import { getCSS } from '@/utils/module-state'
 import { trpc } from '@/utils/trpc'
-import store from '@/store/redux'
-import { setNodesAndEdges, setUser } from './modtree'
-import { ModuleStatus } from '@modtree/types'
-import { setModalModule, showModuleModal } from './modal'
-import { addModulesToCache } from './cache'
-import { addToBuildList, setBuildList } from './search'
+import store, { r } from '@/store/redux'
+import { ApiResponse, ModuleStatus } from '@modtree/types'
 
 const dispatch = store.dispatch
 
@@ -27,7 +23,7 @@ export function redrawGraph() {
         canTake
       )
     })
-    .then((nodes) => dispatch(setNodesAndEdges(nodes)))
+    .then((nodes) => dispatch(r.setNodesAndEdges(nodes)))
 }
 
 /**
@@ -36,8 +32,8 @@ export function redrawGraph() {
 export function openModuleModal(query: string) {
   trpc
     .query('module-full', query)
-    .then((module) => dispatch(setModalModule(module)))
-    .then(() => dispatch(showModuleModal()))
+    .then((module) => dispatch(r.setModalModule(module)))
+    .then(() => dispatch(r.showModuleModal()))
 }
 
 /**
@@ -55,7 +51,7 @@ export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
       moduleCodes,
       status,
     })
-    .then((user) => dispatch(setUser(user)))
+    .then((user) => dispatch(r.setUser(user)))
     .then(() => redrawGraph())
 }
 /**
@@ -90,7 +86,7 @@ export function updateModuleCache(moduleCodes: string[]) {
   /** send the http request */
   return trpc.query('modules', codesToFetch).then((modules) => {
     /** update the redux store */
-    dispatch(addModulesToCache(modules))
+    dispatch(r.addModulesToCache(modules))
   })
 }
 
@@ -110,7 +106,7 @@ export function createAndSaveDegree(title: string, moduleCodes: string[]) {
         degreeIds: [degree.id],
       })
     )
-    .then((user) => dispatch(setUser(user)))
+    .then((user) => dispatch(r.setUser(user)))
 }
 
 /**
@@ -125,7 +121,7 @@ export function removeDegree(degreeId: string) {
       userId: user.id,
       degreeId,
     })
-    .then((user) => setUser(user))
+    .then((user) => dispatch(r.setUser(user)))
 }
 
 /**
@@ -144,7 +140,7 @@ export function createAndSaveGraph(title: string, degreeId: string) {
         graphIds: [graph.id],
       })
     )
-    .then((user) => dispatch(setUser(user)))
+    .then((user) => dispatch(r.setUser(user)))
 }
 
 /**
@@ -159,7 +155,7 @@ export function removeGraph(graphId: string) {
       userId: user.id,
       graphId,
     })
-    .then((user) => dispatch(setUser(user)))
+    .then((user) => dispatch(r.setUser(user)))
 }
 
 /**
@@ -181,8 +177,8 @@ export function setBuildTarget(degreeId: string) {
     .query('degree', degreeId)
     .then((degree) => trpc.query('modules', degree.modules))
     .then((modules) => {
-      dispatch(addModulesToCache(modules))
-      dispatch(setBuildList(modules.map((m) => m.moduleCode)))
+      dispatch(r.addModulesToCache(modules))
+      dispatch(r.setBuildList(modules.map((m) => m.moduleCode)))
     })
 }
 
@@ -193,8 +189,8 @@ export function setBuildTarget(degreeId: string) {
  */
 export function addModuleToBuildList(moduleCode: string) {
   trpc.query('module', moduleCode).then((module) => {
-    dispatch(addModulesToCache([module]))
-    dispatch(addToBuildList(moduleCode))
+    dispatch(r.addModulesToCache([module]))
+    dispatch(r.addToBuildList(moduleCode))
   })
 }
 
@@ -214,5 +210,20 @@ export function updateDegree(
   trpc
     .mutation('degree/update', { degreeId, title, moduleCodes })
     .then(() => trpc.query('user', user.id))
-    .then((user) => dispatch(setUser(user)))
+    .then((user) => dispatch(r.setUser(user)))
+}
+
+export function setMainGraph(graph: ApiResponse.Graph) {
+  const { user } = store.getState().modtree
+  trpc.mutation('user/set-main-graph', { userId: user.id, graphId: graph.id })
+  dispatch(r.setMainGraph(graph))
+}
+
+export function setMainDegree(degree: ApiResponse.Degree) {
+  const { user } = store.getState().modtree
+  trpc.mutation('user/set-main-degree', {
+    userId: user.id,
+    degreeId: degree.id,
+  })
+  dispatch(r.setMainDegree(degree))
 }

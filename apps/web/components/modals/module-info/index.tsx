@@ -1,5 +1,4 @@
-import { useAppSelector } from '@/store/redux'
-import { hideModuleModal } from '@/store/modal'
+import { useAppSelector, r } from '@/store/redux'
 import Modal from '@/ui/modal'
 import { ModuleDetails } from './contents'
 
@@ -9,7 +8,7 @@ export function ModuleInfoModal() {
   return (
     <Modal
       showState={showModuleModal}
-      hideAction={hideModuleModal}
+      hideAction={r.hideModuleModal}
       closeButton
       minHeight
       cypressCloseButton="module-modal-close-button"

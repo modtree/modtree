@@ -2,7 +2,7 @@ import { IDegree, IModule, IModuleCondensed } from '@modtree/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseInitialState } from './initial-state'
 
-export const cache = createSlice({
+export default createSlice({
   name: 'cache',
   initialState: baseInitialState.cache,
   reducers: {
@@ -24,10 +24,3 @@ export const cache = createSlice({
     },
   },
 })
-
-export const {
-  addModulesCondensedToCache,
-  addModulesToCache,
-  addDegreeToCache,
-} = cache.actions
-export default cache.reducer

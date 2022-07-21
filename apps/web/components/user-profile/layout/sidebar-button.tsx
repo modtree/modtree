@@ -1,5 +1,4 @@
-import { setUserProfilePage } from '@/store/modal'
-import { useAppDispatch } from '@/store/redux'
+import { useAppDispatch, r } from '@/store/redux'
 import { flatten } from '@/utils/tailwind'
 import { HeroIcon, Pages } from 'types'
 
@@ -23,7 +22,7 @@ export default function SidebarButton(props: {
         'select-none',
         props.selected ? 'bg-gray-100' : ''
       )}
-      onClick={() => dispatch(setUserProfilePage(props.pageId))}
+      onClick={() => dispatch(r.setUserProfilePage(props.pageId))}
     >
       <props.icon className="mx-2 text-gray-600" />
       {props.children}

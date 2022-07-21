@@ -5,9 +5,8 @@ import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
-import { clearBuildList } from '@/store/search'
 import { createAndSaveDegree } from '@/store/functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
@@ -19,7 +18,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   async function saveDegree() {
     createAndSaveDegree(title, buildList)
     props.setPage('main')
-    dispatch(clearBuildList())
+    dispatch(r.clearBuildList())
   }
 
   return (

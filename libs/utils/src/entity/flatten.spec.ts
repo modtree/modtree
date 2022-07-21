@@ -81,8 +81,8 @@ describe('User', () => {
     })
   })
 
-  test('errors on invalid', () => {
-    expect(() => flatten.user(new User())).toThrowError()
+  test('resilient enough on fresh user', () => {
+    expect(() => flatten.user(new User())).not.toThrowError()
   })
 })
 

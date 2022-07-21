@@ -34,6 +34,8 @@ cleanup() {
   rm -f test.command
 }; trap cleanup EXIT
 
-[ -f test.command ] \
-  && source test.command \
-  || printf "${_S_}No tests to run.\n\n${_N_}"
+if [ -f test.command ]; then
+  source test.command
+else
+  printf "${_S_}No tests to run.\n\n${_N_}"
+fi

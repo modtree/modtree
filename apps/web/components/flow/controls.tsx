@@ -2,8 +2,7 @@ import { useReactFlow } from 'react-flow-renderer'
 import { PlusIcon, MinusIcon, FitViewIcon } from '@/ui/svgs/flow'
 import { flatten } from '@/utils/tailwind'
 import { ReactElement } from 'react'
-import { useAppDispatch, useAppSelector } from '@/store/redux'
-import { showModuleStateGuide } from '@/store/modal'
+import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 
 const Button = (props: {
   className?: string
@@ -29,7 +28,7 @@ export function FlowControls() {
   return (
     <div className="react-flow__controls">
       {moduleStateGuide ? null : (
-        <Button onClick={() => dispatch(showModuleStateGuide())}>?</Button>
+        <Button onClick={() => dispatch(r.showModuleStateGuide())}>?</Button>
       )}
       <Button onClick={zoomIn}>
         <PlusIcon />
