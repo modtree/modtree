@@ -1,4 +1,4 @@
-import { setup, teardown, Repo, t } from '@modtree/test-env'
+import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { Degree } from '@modtree/types'
@@ -8,12 +8,7 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      Repo.Degree.initialize({
-        moduleCodes: [],
-        title: 'Test Degree',
-      })
-    )
+    .then(() => Repo.Degree.initialize(init.degree1.title, []))
     .then((degree) => {
       t.degree = degree
       t.combinedModuleCodes = degree.modules.map(flatten.module)

@@ -1,17 +1,16 @@
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { flatten, oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
+import { ModuleStatus } from '@modtree/types'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      Repo.User.initialize({
-        ...init.user1,
-        modulesDone: ['CS1101S'],
-      })
+    .then(() => Repo.User.initialize(init.user1.email))
+    .then((user) =>
+      Repo.User.setModuleStatus(user, ['CS1101S'], ModuleStatus.DONE)
     )
     .then((user) => {
       t.user = user

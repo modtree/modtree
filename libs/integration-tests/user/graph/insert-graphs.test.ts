@@ -10,17 +10,13 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
+        Repo.User.initialize(init.user1.email),
+        Repo.Degree.initialize(init.degree1.title, init.degree1.moduleCodes),
       ])
     )
     .then(([user, degree]) => {
       t.user = user
-      return Repo.Graph.initialize({
-        title: 'Test Graph',
-        userId: user.id,
-        degreeId: degree.id,
-      })
+      return Repo.Graph.initialize('Test Graph', user.id, degree.id)
     })
     .then((graph) => {
       t.graph = graph

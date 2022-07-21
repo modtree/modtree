@@ -1,7 +1,6 @@
 export * from './entities'
 export * as NUSMods from './nusmods'
 export * as ApiResponse from './api-response'
-export * from './controller'
 export * from './repository'
 export * from './typeorm'
 export * from './utils'

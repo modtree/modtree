@@ -13,24 +13,16 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
+        Repo.User.initialize(init.user1.email),
+        Repo.Degree.initialize(init.degree1.title, init.degree1.moduleCodes),
       ])
     )
     .then(([user, deg]) => {
       t.user = user
       t.degree = deg
       return Promise.all([
-        Repo.Graph.initialize({
-          title: 'Pull All',
-          userId: user.id,
-          degreeId: t.degree!.id,
-        }),
-        Repo.Graph.initialize({
-          title: 'Empty',
-          userId: user.id,
-          degreeId: t.degree!.id,
-        }),
+        Repo.Graph.initialize('Pull All', user.id, t.degree!.id),
+        Repo.Graph.initialize('Empty', user.id, t.degree!.id),
       ])
     })
     .then(([graph1, graph2]) => {

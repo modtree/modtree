@@ -1,14 +1,11 @@
 {
   "user1": {
-    "authZeroId": "auth0|012345678901234567890001",
     "email": "chandler@bing.com"
   },
   "user2": {
-    "authZeroId": "auth0|012345678901234567890002",
     "email": "joey@tribbiani.com"
   },
   "user3": {
-    "authZeroId": "auth0|012345678901234567890003",
     "email": "ross@geller.com"
   },
   "degree1": {

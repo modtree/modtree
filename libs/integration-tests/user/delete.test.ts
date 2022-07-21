@@ -1,5 +1,5 @@
 import { Degree } from '@modtree/types'
-import { setup, teardown, Repo, t, api } from '@modtree/test-env'
+import { setup, teardown, Repo, t, api, init } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
 import { EntityNotFoundError } from 'typeorm'
@@ -9,9 +9,8 @@ const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      api.initializeUser('auth0|6294dbffdc4dea0068d77f61', 'yes@yes.com')
-    )
+    .then(() => Repo.User.initialize(init.user1.email))
+    .then((user) => api.setupUser(user))
     .then((user) => {
       t.user = user
       t.degree = user.savedDegrees[0]

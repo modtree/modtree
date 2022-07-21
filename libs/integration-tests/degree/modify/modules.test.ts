@@ -17,7 +17,7 @@ beforeAll(() =>
 afterAll(() => teardown(db))
 
 async function update(degree: Degree, title: string, moduleCodes: string[]) {
-  return Repo.Degree.update(degree, { title, moduleCodes })
+  return Repo.Degree.update(degree, title, moduleCodes)
 }
 
 it('correctly saves modules', async () => {

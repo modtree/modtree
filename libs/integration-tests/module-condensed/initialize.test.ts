@@ -7,7 +7,6 @@ const dbName = oneUp(__filename)
 const db = getSource(dbName)
 let count: number
 const m = new ModuleCondensed()
-m.id = '58201858-5ce5-4ceb-8568-eecf55841b9f'
 m.title = 'Change-inator-inator'
 m.moduleCode = 'TST1000MD'
 
@@ -22,7 +21,7 @@ it('initial count', async () => {
 })
 
 it('returns a module', async () => {
-  await Repo.ModuleCondensed.initialize(m).then((res) => {
+  await Repo.ModuleCondensed.initialize(m.title, m.moduleCode).then((res) => {
     expect(res).toBeInstanceOf(ModuleCondensed)
     t.modulesCondensed = [res]
   })
