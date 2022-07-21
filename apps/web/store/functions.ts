@@ -49,15 +49,10 @@ export function openModuleModal(query: string) {
 export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
   if (moduleCodes.length === 0) return
   const { user } = store.getState().modtree
-  const existing = {
-    [ModuleStatus.DONE]: user.modulesDone,
-    [ModuleStatus.DOING]: user.modulesDoing,
-    [ModuleStatus.NOT_TAKEN]: [],
-  }[status]
   trpc
     .mutation('user/set-module-status', {
       userId: user.id,
-      moduleCodes: [...existing, ...moduleCodes],
+      moduleCodes,
       status,
     })
     .then((user) => dispatch(setUser(user)))
