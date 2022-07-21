@@ -13,7 +13,7 @@ export function ModuleDetails() {
 
   // to check if this module has been added
   // and to toggle node
-  const graph = useAppSelector((s) => s.modtree.graph)
+  const graph = useAppSelector((s) => s.graph)
 
   function handleAddButton() {
     // 1. hide module modal

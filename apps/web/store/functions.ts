@@ -12,7 +12,10 @@ const dispatch = store.dispatch
  * after calling this function, the frontend graph should be 100% correct.
  */
 export function redrawGraph() {
-  const { user, graph } = store.getState().modtree
+  const {
+    modtree: { user },
+    graph,
+  } = store.getState()
   trpc
     .query('graph/can-take-modules', user.mainGraph)
     .then((canTake) => {

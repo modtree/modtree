@@ -29,8 +29,8 @@ export function DebugModal() {
         <h2>Redux Graph State</h2>
         <Content>
           {{
-            ...redux.modtree.graph,
-            flowNodes: redux.modtree.graph.flowNodes.map((n) => n.id),
+            ...redux.graph,
+            flowNodes: redux.graph.flowNodes.map((n) => n.id),
           }}
         </Content>
 

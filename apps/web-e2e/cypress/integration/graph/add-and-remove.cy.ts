@@ -14,7 +14,7 @@ describe('add-and-remove', () => {
     cy.window()
       .its('store')
       .invoke('getState')
-      .its('modtree.graph.flowNodes')
+      .its('graph.flowNodes')
       .then((nodes) => {
         const moduleCodes = nodes.map((n) => n.id)
         expect(moduleCodes).to.not.contain('MA2104')
