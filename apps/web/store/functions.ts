@@ -54,6 +54,7 @@ export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
     .then((user) => dispatch(r.setUser(user)))
     .then(() => redrawGraph())
 }
+
 /**
  * mark selected nodes with a status,
  * and get the updated user
@@ -61,7 +62,11 @@ export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
  * @param {ModuleStatus} status
  */
 function markSelectedAs(status: ModuleStatus) {
-  const { selectedCodes } = store.getState().modtree.graph
+  const graph = store.getState().graph
+  const selectedCodes = graph.flowNodes
+    .filter((n) => n.selected)
+    .map((n) => n.data.moduleCode)
+
   setModuleStatus(status, selectedCodes)
 }
 
