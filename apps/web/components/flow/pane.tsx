@@ -13,7 +13,7 @@ export default function ModtreeFlow() {
   /** hooks */
   const reactFlow = useReactFlow()
   const dispatch = useAppDispatch()
-  const { flowNodes, flowEdges } = useAppSelector((s) => s.modtree.graph)
+  const { flowNodes, flowEdges } = useAppSelector((s) => s.graph)
 
   /** Fit view for ANY graph change */
   useEffect(() => reactFlow.fitView({ maxZoom: 1 }), [flowNodes, flowEdges])
@@ -46,9 +46,6 @@ export default function ModtreeFlow() {
       onNodeContextMenu={(e, node) => {
         onContextMenu(e, 'flowNodeContextMenu', node)
       }}
-      onSelectionChange={(e) =>
-        dispatch(r.setGraphSelectedCodes(e.nodes.map((n) => n.id)))
-      }
       /** pure configs */
       fitView={true}
       fitViewOptions={{ maxZoom: 1 }}

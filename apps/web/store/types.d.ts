@@ -1,4 +1,4 @@
-import {
+import type {
   IDegree,
   IModule,
   IModuleCondensed,
@@ -11,10 +11,8 @@ export type ReduxState = {
   modtree: {
     user: ApiResponse.User
     degree: ApiResponse.Degree
-    graph: ApiResponse.Graph & {
-      selectedCodes: string[]
-    }
   }
+  graph: ApiResponse.Graph
   modal: {
     showModuleStateGuide: boolean
     userProfilePage: Pages['UserProfile']

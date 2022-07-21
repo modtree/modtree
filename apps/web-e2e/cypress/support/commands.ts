@@ -37,8 +37,8 @@ Cypress.Commands.add('getCy', (value: string) => {
 })
 
 Cypress.Commands.add('login', () => {
-  const username = Cypress.env('GOOGLE_USER')
-  const password = Cypress.env('GOOGLE_PW')
+  const username = Cypress.env('GITHUB_USER')
+  const password = Cypress.env('GITHUB_PW')
   const COOKIE_NAME = Cypress.env('COOKIE_NAME')
   const SECURE_COOKIE_NAME = Cypress.env('SECURE_COOKIE_NAME')
 
@@ -46,7 +46,7 @@ Cypress.Commands.add('login', () => {
   // Login page URL
   const loginUrl = BASE_URL + '/api/auth/signin'
   // The selector for Google on our login page
-  const loginSelector = `form[action="${BASE_URL}/api/auth/signin/google"]`
+  const loginSelector = `form[action="${BASE_URL}/api/auth/signin/github"]`
 
   const socialLoginOptions = {
     username,
@@ -62,7 +62,7 @@ Cypress.Commands.add('login', () => {
   cy.visit('/')
 
   return cy
-    .task('GoogleSocialLogin', socialLoginOptions)
+    .task('GitHubSocialLogin', socialLoginOptions)
     .then(({ cookies }) => {
       cy.clearCookies()
 

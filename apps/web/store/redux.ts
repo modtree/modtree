@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import search from './search'
+import graph from './graph'
 import modal from './modal'
 import modtree from './modtree'
 import cache from './cache'
@@ -8,6 +9,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 const store = configureStore({
   reducer: {
     search: search.reducer,
+    graph: graph.reducer,
     modal: modal.reducer,
     modtree: modtree.reducer,
     cache: cache.reducer,
@@ -17,6 +19,7 @@ const store = configureStore({
 /** redux action namespacer */
 export const r = {
   ...modtree.actions,
+  ...graph.actions,
   ...modal.actions,
   ...search.actions,
   ...cache.actions,

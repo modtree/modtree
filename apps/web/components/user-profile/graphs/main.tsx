@@ -16,7 +16,8 @@ export function Main(props: {
   setPage: Dispatch<SetStateAction<Pages['Graphs']>>
 }) {
   /** hooks */
-  const { user, graph } = useAppSelector((s) => s.modtree)
+  const user = useAppSelector((s) => s.modtree.user)
+  const graph = useAppSelector((s) => s.graph)
   const { data: degrees } = trpcReact.useQuery(['degrees', user.savedDegrees], {
     keepPreviousData: true,
   })

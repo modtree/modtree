@@ -37,7 +37,8 @@ const graph: ApiResponse.Graph = {
 }
 
 export const baseInitialState: ReduxState = {
-  modtree: { user, degree, graph: { ...graph, selectedCodes: [] } },
+  modtree: { user, degree },
+  graph,
   modal: {
     showModuleStateGuide: false,
     userProfilePage: 'graphs',
