@@ -1,18 +1,19 @@
 import { setup, teardown, Repo, t, init } from '@modtree/test-env'
 import { oneUp } from '@modtree/utils'
 import { getSource } from '@modtree/typeorm-config'
+import { ModuleStatus } from '@modtree/types'
 
 const dbName = oneUp(__filename)
 const db = getSource(dbName)
 
 beforeAll(() =>
   setup(db)
-    .then(() =>
-      Repo.User.initialize({
-        ...init.user1,
-        modulesDone: ['MA2001'],
-        modulesDoing: ['MA2219'],
-      })
+    .then(() => Repo.User.initialize(init.user1.email))
+    .then((user) =>
+      Repo.User.setModuleStatus(user, ['MA2001'], ModuleStatus.DONE)
+    )
+    .then((user) =>
+      Repo.User.setModuleStatus(user, ['MA2219'], ModuleStatus.DOING)
     )
     .then((user) => {
       t.user = user

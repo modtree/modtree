@@ -31,6 +31,8 @@ export const init = {
 
   user1: {
     email: 'khang@modtree.com',
+    modulesDone: ['MA2001', 'MA1100'],
+    modulesDoing: ['MA2002', 'MA2219'],
   },
 
   user2: {

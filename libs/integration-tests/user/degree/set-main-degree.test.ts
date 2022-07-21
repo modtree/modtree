@@ -13,9 +13,9 @@ beforeAll(() =>
   setup(db)
     .then(() =>
       Promise.all([
-        Repo.User.initialize(init.user1),
-        Repo.Degree.initialize(init.degree1),
-        Repo.Degree.initialize(init.degree2),
+        Repo.User.initialize(init.user1.email),
+        Repo.Degree.initialize(init.degree1.title, init.degree1.moduleCodes),
+        Repo.Degree.initialize(init.degree2.title, init.degree2.moduleCodes),
       ])
     )
     .then(([user, deg1, deg2]) => {
