@@ -17,32 +17,20 @@ export default function Modtree() {
   const dispatch = useAppDispatch()
   const state = useAppSelector((s) => s.modtree)
 
+  /** trpc hooks that will auto-refetch upon any change in request params */
+  const opts = { keepPreviousData: true, enabled: status === 'authenticated' }
   trpcReact.useQuery(['user', user ? user.modtreeId : ''], {
-    keepPreviousData: true,
-    enabled: status === 'authenticated',
     onSuccess: (user) => dispatch(r.setUser(user)),
+    ...opts,
   })
-
   trpcReact.useQuery(['degree', state.user.mainDegree], {
-    keepPreviousData: true,
-    enabled: status === 'authenticated',
     onSuccess: (degree) => dispatch(r.setMainDegree(degree)),
+    ...opts,
   })
-
   trpcReact.useQuery(['graph', state.user.mainGraph], {
-    keepPreviousData: true,
-    enabled: status === 'authenticated',
     onSuccess: (graph) => dispatch(r.setMainGraph(graph)),
+    ...opts,
   })
-
-  /**
-   * load current user, current graph, current degree
-   */
-  useEffect(() => {
-    if (status === 'authenticated' && user) {
-      // rehydrate(user)
-    }
-  }, [status])
 
   /**
    * hide the context menu on a click anywhere
