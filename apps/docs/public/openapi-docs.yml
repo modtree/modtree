@@ -3,6 +3,8 @@ info:
   version: 1.0.0
   title: modtree API
   description: modtree uses tRPC with zod to make our APIs typesafe.
+tags:
+  - name: User
 components:
   schemas:
     User:
@@ -97,13 +99,44 @@ components:
 paths:
   '/user/{userId}':
     get:
+      tags:
+        - User
       description: Get user data by its id
       summary: Get a single user
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
         '200':
-          description: Object with user data.
+          description: Flattened user object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /user:
+    post:
+      tags:
+        - User
+      description: Creates a user after social authentication
+      summary: Create a user
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: provider
+          schema:
+            type: string
+          required: false
+        - in: path
+          name: providerId
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Flattened user object.
           content:
             application/json:
               schema:

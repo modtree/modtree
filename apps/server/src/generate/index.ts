@@ -28,9 +28,17 @@ const graphId = registry.registerParameter('graphId', base.graphId)
 const UserSchema = registry.register('User', entities.User)
 
 /**
+ * With OpenAPI
+ */
+const schema = {
+  User: UserSchema.openapi({ description: 'Flattened user object.' }),
+}
+
+/**
  * Register routes
  */
 registry.registerPath({
+  tags: ['User'],
   method: 'get',
   path: '/user/{userId}',
   description: 'Get user data by its id',
@@ -41,9 +49,27 @@ registry.registerPath({
   responses: {
     200: {
       mediaType: 'application/json',
-      schema: UserSchema.openapi({
-        description: 'Object with user data.',
-      }),
+      schema: schema.User,
+    },
+  },
+})
+registry.registerPath({
+  tags: ['User'],
+  method: 'post',
+  path: '/user',
+  description: 'Creates a user after social authentication',
+  summary: 'Create a user',
+  request: {
+    params: z.object({
+      email: z.string().email(),
+      provider: z.string().optional(),
+      providerId: z.string().optional(),
+    }),
+  },
+  responses: {
+    200: {
+      mediaType: 'application/json',
+      schema: schema.User,
     },
   },
 })
@@ -59,6 +85,7 @@ export function writeDocumentation() {
       title: 'modtree API',
       description: 'modtree uses tRPC with zod to make our APIs typesafe.',
     },
+    tags: [{ name: 'User' }],
   })
 
   // YAML equivalent
