@@ -16,12 +16,14 @@
   "dependencies": {
     "@heroicons/react": "1.0.5",
     "@react-aria/ssr": "3.1.2",
+    "@types/swagger-ui-react": "^4.11.0",
     "next": "^12.2.2",
     "nextra": "2.0.0-alpha.56",
     "nextra-theme-docs": "2.0.0-alpha.59",
     "prismjs": "^1.28.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "swagger-ui-react": "^4.13.0",
     "swr": "^1.3.0"
   },
   "devDependencies": {
