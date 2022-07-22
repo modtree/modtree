@@ -48,10 +48,11 @@ registry.registerPath({
   },
 })
 
-function getOpenApiDocumentation() {
+export function writeDocumentation() {
   const generator = new OpenAPIGenerator(registry.definitions)
 
-  return generator.generateDocument({
+  // OpenAPI JSON
+  const docs = generator.generateDocument({
     openapi: '3.0.0',
     info: {
       version: '1.0.0',
@@ -59,18 +60,15 @@ function getOpenApiDocumentation() {
       description: 'modtree uses tRPC with zod to make our APIs typesafe.',
     },
   })
-}
-
-function writeDocumentation() {
-  // OpenAPI JSON
-  const docs = getOpenApiDocumentation()
 
   // YAML equivalent
   const fileContent = yaml.stringify(docs)
 
-  fs.writeFileSync(`${__dirname}/openapi-docs.yml`, fileContent, {
+  const location = `${__dirname}/../../../apps/docs/public/openapi-docs.yml`
+
+  fs.writeFileSync(location, fileContent, {
     encoding: 'utf-8',
   })
-}
 
-writeDocumentation()
+  console.debug(`Written OpenAPI docs to ${location}.`)
+}

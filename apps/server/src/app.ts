@@ -2,6 +2,7 @@ import cors from 'cors'
 import express, { Request, Response, Express } from 'express'
 import { createExpressMiddleware as createMid } from '@trpc/server/adapters/express'
 import { appRouter } from './trpc'
+import { writeDocumentation } from './generate'
 
 const corsOpts = {
   origin: [
@@ -22,6 +23,10 @@ export function getApp(): Express {
   app.use(cors(corsOpts))
   app.use(express.json())
   app.use('/', createMid({ router: appRouter }))
+  /**
+   * run auto generate
+   */
+  writeDocumentation()
   /** register root route */
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
