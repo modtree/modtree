@@ -1,4 +1,5 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
+import { validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 
 extendZodWithOpenApi(z)
@@ -29,6 +30,9 @@ const base = {
       in: 'path',
     },
     example: UUID,
+  }),
+  moduleCode: z.string().regex(validModuleRegex).openapi({
+    example: 'CS1010S',
   }),
 }
 

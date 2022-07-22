@@ -35,12 +35,12 @@ components:
           type: array
           items:
             type: string
-            example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            example: CS1010S
         modulesDoing:
           type: array
           items:
             type: string
-            example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            example: CS1010S
         savedDegrees:
           type: array
           items:
@@ -74,6 +74,52 @@ components:
         - savedGraphs
         - mainDegree
         - mainGraph
+    Module:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        moduleCode:
+          type: string
+          example: CS1010S
+        title:
+          type: string
+        prerequisite:
+          type: string
+        corequisite:
+          type: string
+        preclusion:
+          type: string
+        fulfillRequirements:
+          type: array
+          items:
+            type: string
+            example: CS1010S
+        prereqTree:
+          anyOf:
+            - type: string
+            - type: object
+              properties:
+                and:
+                  type: array
+                  items:
+                    type: object
+                    properties: {}
+                or:
+                  type: array
+                  items:
+                    type: object
+                    properties: {}
+      required:
+        - id
+        - moduleCode
+        - title
+        - prerequisite
+        - corequisite
+        - preclusion
+        - fulfillRequirements
+        - prereqTree
   parameters:
     userId:
       in: path
