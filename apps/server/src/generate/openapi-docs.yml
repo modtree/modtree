@@ -1,10 +1,8 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: My API
-  description: This is the API
-servers:
-  - url: v1
+  title: modtree API
+  description: modtree uses tRPC with zod to make our APIs typesafe.
 components:
   schemas:
     User:
@@ -12,32 +10,97 @@ components:
       properties:
         id:
           type: string
-          example: '1212121'
-        name:
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        facebookId:
           type: string
-          example: John Doe
-        age:
+        googleId:
+          type: string
+        githubId:
+          type: string
+        displayName:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        matriculationYear:
           type: number
-          example: 42
+        graduationYear:
+          type: number
+        graduationSemester:
+          type: number
+        modulesDone:
+          type: array
+          items:
+            type: string
+            example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        modulesDoing:
+          type: array
+          items:
+            type: string
+            example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        savedDegrees:
+          type: array
+          items:
+            type: string
+            example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        savedGraphs:
+          type: array
+          items:
+            type: string
+            example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        mainDegree:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        mainGraph:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
       required:
         - id
-        - name
-        - age
+        - facebookId
+        - googleId
+        - githubId
+        - displayName
+        - username
+        - email
+        - matriculationYear
+        - graduationYear
+        - graduationSemester
+        - modulesDone
+        - modulesDoing
+        - savedDegrees
+        - savedGraphs
+        - mainDegree
+        - mainGraph
   parameters:
-    UserId:
+    userId:
       in: path
-      name: id
+      name: userId
       schema:
         type: string
-        example: '1212121'
+        example: 7e2e6a37-7924-4b86-a763-098894213b2f
+      required: true
+    degreeId:
+      in: path
+      name: degreeId
+      schema:
+        type: string
+        example: 7e2e6a37-7924-4b86-a763-098894213b2f
+      required: true
+    graphId:
+      in: path
+      name: graphId
+      schema:
+        type: string
+        example: 7e2e6a37-7924-4b86-a763-098894213b2f
       required: true
 paths:
-  '/users/{id}':
+  '/user/{userId}':
     get:
       description: Get user data by its id
       summary: Get a single user
       parameters:
-        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/userId'
       responses:
         '200':
           description: Object with user data.

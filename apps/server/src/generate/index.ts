@@ -1,11 +1,12 @@
 import {
+  extendZodWithOpenApi,
   OpenAPIGenerator,
   OpenAPIRegistry,
-  extendZodWithOpenApi,
 } from '@asteasolutions/zod-to-openapi'
 import { z } from 'zod'
 import * as yaml from 'yaml'
 import * as fs from 'fs'
+import base from '../schemas/base'
 
 /**
  * SETUP
@@ -14,44 +15,11 @@ extendZodWithOpenApi(z)
 const registry = new OpenAPIRegistry()
 
 /**
- * BASICS
+ * Init path params
  */
-const UUID = '7e2e6a37-7924-4b86-a763-098894213b2f'
-
-const id = z.string().openapi({
-  example: UUID,
-})
-
-const userId = registry.registerParameter(
-  'userId',
-  z.string().openapi({
-    param: {
-      name: 'userId',
-      in: 'path',
-    },
-    example: UUID,
-  })
-)
-const degreeId = registry.registerParameter(
-  'degreeId',
-  z.string().openapi({
-    param: {
-      name: 'degreeId',
-      in: 'path',
-    },
-    example: UUID,
-  })
-)
-const graphId = registry.registerParameter(
-  'graphId',
-  z.string().openapi({
-    param: {
-      name: 'graphId',
-      in: 'path',
-    },
-    example: UUID,
-  })
-)
+const userId = registry.registerParameter('userId', base.userId)
+const degreeId = registry.registerParameter('degreeId', base.degreeId)
+const graphId = registry.registerParameter('graphId', base.graphId)
 
 /**
  * SCHEMAS
@@ -60,7 +28,7 @@ const graphId = registry.registerParameter(
 const UserSchema = registry.register(
   'User',
   z.object({
-    id,
+    id: base.id,
     facebookId: z.string(),
     googleId: z.string(),
     githubId: z.string(),
@@ -70,12 +38,12 @@ const UserSchema = registry.register(
     matriculationYear: z.number(),
     graduationYear: z.number(),
     graduationSemester: z.number(),
-    modulesDone: z.array(id),
-    modulesDoing: z.array(id),
-    savedDegrees: z.array(id),
-    savedGraphs: z.array(id),
-    mainDegree: id,
-    mainGraph: id,
+    modulesDone: z.array(base.id),
+    modulesDoing: z.array(base.id),
+    savedDegrees: z.array(base.id),
+    savedGraphs: z.array(base.id),
+    mainDegree: base.id,
+    mainGraph: base.id,
   })
 )
 

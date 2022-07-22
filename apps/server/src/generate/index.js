@@ -4,55 +4,28 @@ var zod_to_openapi_1 = require('@asteasolutions/zod-to-openapi')
 var zod_1 = require('zod')
 var yaml = require('yaml')
 var fs = require('fs')
+var base_1 = require('../schemas/base')
 /**
  * SETUP
  */
 ;(0, zod_to_openapi_1.extendZodWithOpenApi)(zod_1.z)
 var registry = new zod_to_openapi_1.OpenAPIRegistry()
 /**
- * BASICS
+ * Init path params
  */
-var UUID = '7e2e6a37-7924-4b86-a763-098894213b2f'
-var id = zod_1.z.string().openapi({
-  example: UUID,
-})
-var userId = registry.registerParameter(
-  'userId',
-  zod_1.z.string().openapi({
-    param: {
-      name: 'userId',
-      in: 'path',
-    },
-    example: UUID,
-  })
-)
+var userId = registry.registerParameter('userId', base_1['default'].userId)
 var degreeId = registry.registerParameter(
   'degreeId',
-  zod_1.z.string().openapi({
-    param: {
-      name: 'degreeId',
-      in: 'path',
-    },
-    example: UUID,
-  })
+  base_1['default'].degreeId
 )
-var graphId = registry.registerParameter(
-  'graphId',
-  zod_1.z.string().openapi({
-    param: {
-      name: 'graphId',
-      in: 'path',
-    },
-    example: UUID,
-  })
-)
+var graphId = registry.registerParameter('graphId', base_1['default'].graphId)
 /**
  * SCHEMAS
  */
 var UserSchema = registry.register(
   'User',
   zod_1.z.object({
-    id: id,
+    id: base_1['default'].id,
     facebookId: zod_1.z.string(),
     googleId: zod_1.z.string(),
     githubId: zod_1.z.string(),
@@ -62,12 +35,12 @@ var UserSchema = registry.register(
     matriculationYear: zod_1.z.number(),
     graduationYear: zod_1.z.number(),
     graduationSemester: zod_1.z.number(),
-    modulesDone: zod_1.z.array(id),
-    modulesDoing: zod_1.z.array(id),
-    savedDegrees: zod_1.z.array(id),
-    savedGraphs: zod_1.z.array(id),
-    mainDegree: id,
-    mainGraph: id,
+    modulesDone: zod_1.z.array(base_1['default'].id),
+    modulesDoing: zod_1.z.array(base_1['default'].id),
+    savedDegrees: zod_1.z.array(base_1['default'].id),
+    savedGraphs: zod_1.z.array(base_1['default'].id),
+    mainDegree: base_1['default'].id,
+    mainGraph: base_1['default'].id,
   })
 )
 registry.registerPath({
@@ -103,12 +76,8 @@ function writeDocumentation() {
   var docs = getOpenApiDocumentation()
   // YAML equivalent
   var fileContent = yaml.stringify(docs)
-  fs.writeFileSync(
-    ''.concat(__dirname, '/../public/openapi-docs.yml'),
-    fileContent,
-    {
-      encoding: 'utf-8',
-    }
-  )
+  fs.writeFileSync(''.concat(__dirname, '/openapi-docs.yml'), fileContent, {
+    encoding: 'utf-8',
+  })
 }
 writeDocumentation()
