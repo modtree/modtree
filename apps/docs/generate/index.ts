@@ -104,10 +104,9 @@ function getOpenApiDocumentation() {
     openapi: '3.0.0',
     info: {
       version: '1.0.0',
-      title: 'My API',
-      description: 'This is the API',
+      title: 'modtree API',
+      description: 'modtree uses tRPC with zod to make our APIs typesafe.',
     },
-    servers: [{ url: 'v1' }],
   })
 }
 
