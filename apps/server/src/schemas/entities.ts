@@ -50,6 +50,27 @@ const entities = {
     moduleCode: base.moduleCode,
     title: z.string(),
   }),
+  ModuleFull: z.object({
+    id: base.id,
+    acadYear: z.string(),
+    moduleCode: base.moduleCode,
+    title: z.string(),
+    description: z.string(),
+    moduleCredit: z.string(),
+    department: z.string(),
+    faculty: z.string(),
+    aliases: z.array(base.moduleCode),
+    /** FIXME NUSModuleAttributes */
+    attributes: z.object({}),
+    prerequisite: z.string(),
+    corequisite: z.string(),
+    preclusion: z.string(),
+    fulfillRequirements: z.array(base.moduleCode),
+    /** FIXME SemesterData[] */
+    semesterData: z.array(z.object({})),
+    prereqTree,
+    workload: z.string().or(z.array(z.number())),
+  }),
 }
 
 export default entities
