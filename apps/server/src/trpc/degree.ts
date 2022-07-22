@@ -20,16 +20,6 @@ export const degree = createRouter()
   })
 
   /**
-   * get a full degree by id
-   */
-  .query('get-full', {
-    input: z.string().uuid(),
-    async resolve({ input }) {
-      return api.degreeRepo.findOneById(input)
-    },
-  })
-
-  /**
    * hard-delete a degree
    */
   .query('delete', {

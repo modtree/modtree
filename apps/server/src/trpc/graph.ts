@@ -21,16 +21,6 @@ export const graph = createRouter()
   })
 
   /**
-   * get a full graph by id
-   */
-  .query('get-full', {
-    input: z.string().uuid(),
-    async resolve({ input }) {
-      return api.graphRepo.findOneById(input)
-    },
-  })
-
-  /**
    * hard-delete a graph
    */
   .query('delete', {

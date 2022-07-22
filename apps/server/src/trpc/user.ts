@@ -32,16 +32,6 @@ export const user = createRouter()
   })
 
   /**
-   * get a full user
-   */
-  .query('get-full', {
-    input: z.string().uuid(),
-    async resolve({ input }) {
-      return api.userRepo.findOneById(input).then(flatten.user)
-    },
-  })
-
-  /**
    * insert degrees into user
    */
   .mutation('insert-degrees', {
