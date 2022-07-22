@@ -4,39 +4,79 @@ var zod_to_openapi_1 = require('@asteasolutions/zod-to-openapi')
 var zod_1 = require('zod')
 var yaml = require('yaml')
 var fs = require('fs')
+/**
+ * SETUP
+ */
 ;(0, zod_to_openapi_1.extendZodWithOpenApi)(zod_1.z)
 var registry = new zod_to_openapi_1.OpenAPIRegistry()
-var UserIdSchema = registry.registerParameter(
-  'UserId',
+/**
+ * BASICS
+ */
+var UUID = '7e2e6a37-7924-4b86-a763-098894213b2f'
+var id = zod_1.z.string().openapi({
+  example: UUID,
+})
+var userId = registry.registerParameter(
+  'userId',
   zod_1.z.string().openapi({
     param: {
-      name: 'id',
+      name: 'userId',
       in: 'path',
     },
-    example: '1212121',
+    example: UUID,
   })
 )
+var degreeId = registry.registerParameter(
+  'degreeId',
+  zod_1.z.string().openapi({
+    param: {
+      name: 'degreeId',
+      in: 'path',
+    },
+    example: UUID,
+  })
+)
+var graphId = registry.registerParameter(
+  'graphId',
+  zod_1.z.string().openapi({
+    param: {
+      name: 'graphId',
+      in: 'path',
+    },
+    example: UUID,
+  })
+)
+/**
+ * SCHEMAS
+ */
 var UserSchema = registry.register(
   'User',
   zod_1.z.object({
-    id: zod_1.z.string().openapi({
-      example: '1212121',
-    }),
-    name: zod_1.z.string().openapi({
-      example: 'John Doe',
-    }),
-    age: zod_1.z.number().openapi({
-      example: 42,
-    }),
+    id: id,
+    facebookId: zod_1.z.string(),
+    googleId: zod_1.z.string(),
+    githubId: zod_1.z.string(),
+    displayName: zod_1.z.string(),
+    username: zod_1.z.string(),
+    email: zod_1.z.string().email(),
+    matriculationYear: zod_1.z.number(),
+    graduationYear: zod_1.z.number(),
+    graduationSemester: zod_1.z.number(),
+    modulesDone: zod_1.z.array(id),
+    modulesDoing: zod_1.z.array(id),
+    savedDegrees: zod_1.z.array(id),
+    savedGraphs: zod_1.z.array(id),
+    mainDegree: id,
+    mainGraph: id,
   })
 )
 registry.registerPath({
   method: 'get',
-  path: '/users/{id}',
+  path: '/user/{userId}',
   description: 'Get user data by its id',
   summary: 'Get a single user',
   request: {
-    params: zod_1.z.object({ id: UserIdSchema }),
+    params: zod_1.z.object({ userId: userId }),
   },
   responses: {
     200: {
@@ -64,8 +104,12 @@ function writeDocumentation() {
   var docs = getOpenApiDocumentation()
   // YAML equivalent
   var fileContent = yaml.stringify(docs)
-  fs.writeFileSync(''.concat(__dirname, '/openapi-docs.yml'), fileContent, {
-    encoding: 'utf-8',
-  })
+  fs.writeFileSync(
+    ''.concat(__dirname, '/../public/openapi-docs.yml'),
+    fileContent,
+    {
+      encoding: 'utf-8',
+    }
+  )
 }
 writeDocumentation()
