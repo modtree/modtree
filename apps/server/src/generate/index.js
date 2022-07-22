@@ -5,13 +5,14 @@ var zod_1 = require('zod')
 var yaml = require('yaml')
 var fs = require('fs')
 var base_1 = require('../schemas/base')
+var entities_1 = require('../schemas/entities')
 /**
  * SETUP
  */
 ;(0, zod_to_openapi_1.extendZodWithOpenApi)(zod_1.z)
 var registry = new zod_to_openapi_1.OpenAPIRegistry()
 /**
- * Init path params
+ * Register path params
  */
 var userId = registry.registerParameter('userId', base_1['default'].userId)
 var degreeId = registry.registerParameter(
@@ -20,29 +21,9 @@ var degreeId = registry.registerParameter(
 )
 var graphId = registry.registerParameter('graphId', base_1['default'].graphId)
 /**
- * SCHEMAS
+ * Register schemas
  */
-var UserSchema = registry.register(
-  'User',
-  zod_1.z.object({
-    id: base_1['default'].id,
-    facebookId: zod_1.z.string(),
-    googleId: zod_1.z.string(),
-    githubId: zod_1.z.string(),
-    displayName: zod_1.z.string(),
-    username: zod_1.z.string(),
-    email: zod_1.z.string().email(),
-    matriculationYear: zod_1.z.number(),
-    graduationYear: zod_1.z.number(),
-    graduationSemester: zod_1.z.number(),
-    modulesDone: zod_1.z.array(base_1['default'].id),
-    modulesDoing: zod_1.z.array(base_1['default'].id),
-    savedDegrees: zod_1.z.array(base_1['default'].id),
-    savedGraphs: zod_1.z.array(base_1['default'].id),
-    mainDegree: base_1['default'].id,
-    mainGraph: base_1['default'].id,
-  })
-)
+var UserSchema = registry.register('User', entities_1['default'].User)
 registry.registerPath({
   method: 'get',
   path: '/user/{userId}',

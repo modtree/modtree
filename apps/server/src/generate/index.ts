@@ -7,6 +7,7 @@ import { z } from 'zod'
 import * as yaml from 'yaml'
 import * as fs from 'fs'
 import base from '../schemas/base'
+import entities from '../schemas/entities'
 
 /**
  * SETUP
@@ -15,38 +16,20 @@ extendZodWithOpenApi(z)
 const registry = new OpenAPIRegistry()
 
 /**
- * Init path params
+ * Register path params
  */
 const userId = registry.registerParameter('userId', base.userId)
 const degreeId = registry.registerParameter('degreeId', base.degreeId)
 const graphId = registry.registerParameter('graphId', base.graphId)
 
 /**
- * SCHEMAS
+ * Register schemas
  */
+const UserSchema = registry.register('User', entities.User)
 
-const UserSchema = registry.register(
-  'User',
-  z.object({
-    id: base.id,
-    facebookId: z.string(),
-    googleId: z.string(),
-    githubId: z.string(),
-    displayName: z.string(),
-    username: z.string(),
-    email: z.string().email(),
-    matriculationYear: z.number(),
-    graduationYear: z.number(),
-    graduationSemester: z.number(),
-    modulesDone: z.array(base.id),
-    modulesDoing: z.array(base.id),
-    savedDegrees: z.array(base.id),
-    savedGraphs: z.array(base.id),
-    mainDegree: base.id,
-    mainGraph: base.id,
-  })
-)
-
+/**
+ * Register routes
+ */
 registry.registerPath({
   method: 'get',
   path: '/user/{userId}',
