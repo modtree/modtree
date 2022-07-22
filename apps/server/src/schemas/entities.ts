@@ -1,5 +1,4 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
-import { NUSMods } from '@modtree/types'
 import { z } from 'zod'
 import base from './base'
 
@@ -17,6 +16,7 @@ const prereqTree = z.string().or(
 )
 
 const entities = {
+  /** FLATTENED */
   User: z.object({
     id: base.id,
     facebookId: z.string(),
@@ -70,6 +70,28 @@ const entities = {
     semesterData: z.array(z.object({})),
     prereqTree,
     workload: z.string().or(z.array(z.number())),
+  }),
+  /** FLATTENED */
+  Degree: z.object({
+    id: base.id,
+    title: z.string(),
+    modules: z.array(base.moduleCode),
+  }),
+  /** FLATTENED */
+  Graph: z.object({
+    id: base.id,
+    user: base.id,
+    degree: z.object({
+      id: base.id,
+      title: z.string(),
+    }),
+    title: z.string(),
+    modulesPlaced: z.array(base.moduleCode),
+    modulesHidden: z.array(base.moduleCode),
+    /** FIXME GraphFlowNode[] */
+    flowNodes: z.array(z.object({})),
+    /** FIXME GraphFlowEdge[] */
+    flowEdges: z.array(z.object({})),
   }),
 }
 

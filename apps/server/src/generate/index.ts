@@ -27,6 +27,13 @@ const graphId = registry.registerParameter('graphId', base.graphId)
  */
 const UserSchema = registry.register('User', entities.User)
 const ModuleSchema = registry.register('Module', entities.Module)
+const ModuleCondensedSchema = registry.register(
+  'ModuleCondensed',
+  entities.ModuleCondensed
+)
+const ModuleFullSchema = registry.register('ModuleFull', entities.ModuleFull)
+const DegreeSchema = registry.register('Degree', entities.Degree)
+const GraphSchema = registry.register('Graph', entities.Graph)
 
 /**
  * With OpenAPI descriptions

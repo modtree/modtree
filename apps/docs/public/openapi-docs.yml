@@ -121,6 +121,173 @@ components:
         - preclusion
         - fulfillRequirements
         - prereqTree
+    ModuleCondensed:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        moduleCode:
+          type: string
+          example: CS1010S
+        title:
+          type: string
+      required:
+        - id
+        - moduleCode
+        - title
+    ModuleFull:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        acadYear:
+          type: string
+        moduleCode:
+          type: string
+          example: CS1010S
+        title:
+          type: string
+        description:
+          type: string
+        moduleCredit:
+          type: string
+        department:
+          type: string
+        faculty:
+          type: string
+        aliases:
+          type: array
+          items:
+            type: string
+            example: CS1010S
+        attributes:
+          type: object
+          properties: {}
+        prerequisite:
+          type: string
+        corequisite:
+          type: string
+        preclusion:
+          type: string
+        fulfillRequirements:
+          type: array
+          items:
+            type: string
+            example: CS1010S
+        semesterData:
+          type: array
+          items:
+            type: object
+            properties: {}
+        prereqTree:
+          anyOf:
+            - type: string
+            - type: object
+              properties:
+                and:
+                  type: array
+                  items:
+                    type: object
+                    properties: {}
+                or:
+                  type: array
+                  items:
+                    type: object
+                    properties: {}
+        workload:
+          anyOf:
+            - type: string
+            - type: array
+              items:
+                type: number
+      required:
+        - id
+        - acadYear
+        - moduleCode
+        - title
+        - description
+        - moduleCredit
+        - department
+        - faculty
+        - aliases
+        - attributes
+        - prerequisite
+        - corequisite
+        - preclusion
+        - fulfillRequirements
+        - semesterData
+        - prereqTree
+        - workload
+    Degree:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        title:
+          type: string
+        modules:
+          type: array
+          items:
+            type: string
+            example: CS1010S
+      required:
+        - id
+        - title
+        - modules
+    Graph:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        user:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        degree:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            title:
+              type: string
+          required:
+            - id
+            - title
+        title:
+          type: string
+        modulesPlaced:
+          type: array
+          items:
+            type: string
+            example: CS1010S
+        modulesHidden:
+          type: array
+          items:
+            type: string
+            example: CS1010S
+        flowNodes:
+          type: array
+          items:
+            type: object
+            properties: {}
+        flowEdges:
+          type: array
+          items:
+            type: object
+            properties: {}
+      required:
+        - id
+        - user
+        - degree
+        - title
+        - modulesPlaced
+        - modulesHidden
+        - flowNodes
+        - flowEdges
   parameters:
     userId:
       in: path
