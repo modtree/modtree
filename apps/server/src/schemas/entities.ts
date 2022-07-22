@@ -28,8 +28,8 @@ const entities = {
     matriculationYear: z.number(),
     graduationYear: z.number(),
     graduationSemester: z.number(),
-    modulesDone: z.array(base.moduleCode),
-    modulesDoing: z.array(base.moduleCode),
+    modulesDone: base.moduleArray,
+    modulesDoing: base.moduleArray,
     savedDegrees: z.array(base.id),
     savedGraphs: z.array(base.id),
     mainDegree: base.id,
@@ -75,7 +75,7 @@ const entities = {
   Degree: z.object({
     id: base.id,
     title: z.string(),
-    modules: z.array(base.moduleCode),
+    modules: base.moduleArray,
   }),
   /** FLATTENED */
   Graph: z.object({
@@ -86,8 +86,8 @@ const entities = {
       title: z.string(),
     }),
     title: z.string(),
-    modulesPlaced: z.array(base.moduleCode),
-    modulesHidden: z.array(base.moduleCode),
+    modulesPlaced: base.moduleArray,
+    modulesHidden: base.moduleArray,
     /** FIXME GraphFlowNode[] */
     flowNodes: z.array(z.object({})),
     /** FIXME GraphFlowEdge[] */

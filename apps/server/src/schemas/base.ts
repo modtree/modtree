@@ -6,6 +6,8 @@ extendZodWithOpenApi(z)
 
 const UUID = '7e2e6a37-7924-4b86-a763-098894213b2f'
 
+const moduleCode = z.string().regex(validModuleRegex)
+
 const base = {
   id: z.string().openapi({
     example: UUID,
@@ -34,8 +36,11 @@ const base = {
     },
     example: UUID,
   }),
-  moduleCode: z.string().regex(validModuleRegex).openapi({
+  moduleCode: moduleCode.openapi({
     example: 'CS1010S',
+  }),
+  moduleArray: z.array(moduleCode).openapi({
+    example: ['MA2001', 'MA2002'],
   }),
 }
 

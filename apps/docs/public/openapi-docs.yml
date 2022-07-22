@@ -36,12 +36,14 @@ components:
           type: array
           items:
             type: string
-            example: CS1010S
+          example: &a1
+            - MA2001
+            - MA2002
         modulesDoing:
           type: array
           items:
             type: string
-            example: CS1010S
+          example: *a1
         savedDegrees:
           type: array
           items:
@@ -232,7 +234,7 @@ components:
           type: array
           items:
             type: string
-            example: CS1010S
+          example: *a1
       required:
         - id
         - title
@@ -263,12 +265,12 @@ components:
           type: array
           items:
             type: string
-            example: CS1010S
+          example: *a1
         modulesHidden:
           type: array
           items:
             type: string
-            example: CS1010S
+          example: *a1
         flowNodes:
           type: array
           items:
