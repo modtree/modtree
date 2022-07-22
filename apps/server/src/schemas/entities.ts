@@ -45,6 +45,11 @@ const entities = {
     fulfillRequirements: z.array(base.moduleCode),
     prereqTree,
   }),
+  ModuleCondensed: z.object({
+    id: base.id,
+    moduleCode: base.moduleCode,
+    title: z.string(),
+  }),
 }
 
 export default entities
