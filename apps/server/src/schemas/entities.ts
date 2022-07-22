@@ -24,7 +24,7 @@ const entities = {
     githubId: z.string(),
     displayName: z.string(),
     username: z.string(),
-    email: z.string().email(),
+    email: base.email,
     matriculationYear: z.number(),
     graduationYear: z.number(),
     graduationSemester: z.number(),

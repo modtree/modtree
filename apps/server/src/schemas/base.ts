@@ -10,6 +10,9 @@ const base = {
   id: z.string().openapi({
     example: UUID,
   }),
+  email: z.string().openapi({
+    example: 'user@gmail.com',
+  }),
   userId: z.string().openapi({
     param: {
       name: 'userId',

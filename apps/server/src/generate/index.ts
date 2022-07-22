@@ -29,7 +29,7 @@ const UserSchema = registry.register('User', entities.User)
 const ModuleSchema = registry.register('Module', entities.Module)
 
 /**
- * With OpenAPI
+ * With OpenAPI descriptions
  */
 const schema = {
   User: UserSchema.openapi({ description: 'Flattened user object.' }),
@@ -62,7 +62,7 @@ registry.registerPath({
   summary: 'Create a user',
   request: {
     params: z.object({
-      email: z.string().email(),
+      email: base.email,
       provider: z.string().optional(),
       providerId: z.string().optional(),
     }),

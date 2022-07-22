@@ -25,6 +25,7 @@ components:
           type: string
         email:
           type: string
+          example: user@gmail.com
         matriculationYear:
           type: number
         graduationYear:
@@ -169,6 +170,7 @@ paths:
           name: email
           schema:
             type: string
+            example: user@gmail.com
           required: true
         - in: path
           name: provider
