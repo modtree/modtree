@@ -76,7 +76,7 @@ function writeDocumentation() {
   // YAML equivalent
   const fileContent = yaml.stringify(docs)
 
-  fs.writeFileSync(`${__dirname}/openapi-docs.yml`, fileContent, {
+  fs.writeFileSync(`${__dirname}/../public/openapi-docs.yml`, fileContent, {
     encoding: 'utf-8',
   })
 }
