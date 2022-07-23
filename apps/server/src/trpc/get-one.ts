@@ -67,24 +67,60 @@ export const getOne = createRouter()
 
   /** get a degree by id */
   .query('degree', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Degree'],
+        method: 'GET',
+        path: '/degree/{degreeId}',
+        summary: 'Get a single degree',
+      },
+    },
+    input: z.object({
+      degreeId: base.id,
+    }),
+    output: entities.Degree,
     async resolve({ input }) {
-      return api.degreeRepo.findOneById(input).then(flatten.degree)
+      return api.degreeRepo.findOneById(input.degreeId).then(flatten.degree)
     },
   })
 
   /** get a user by id */
   .query('user', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'GET',
+        path: '/user/{userId}',
+        summary: 'Get a single user',
+      },
+    },
+    input: z.object({
+      userId: base.id,
+    }),
+    output: entities.User,
     async resolve({ input }) {
-      return api.userRepo.findOneById(input).then(flatten.user)
+      return api.userRepo.findOneById(input.userId).then(flatten.user)
     },
   })
 
   /** get a graph by id */
   .query('graph', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Graph'],
+        method: 'GET',
+        path: '/graph/{graphId}',
+        summary: 'Get a single graph',
+      },
+    },
+    input: z.object({
+      graphId: base.id,
+    }),
+    output: entities.Graph,
     async resolve({ input }) {
-      return api.graphRepo.findOneById(input).then(flatten.graph)
+      return api.graphRepo.findOneById(input.graphId).then(flatten.graph)
     },
   })

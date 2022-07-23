@@ -2,8 +2,8 @@ import { z } from 'zod'
 import { validModuleRegex } from '@modtree/utils'
 
 /**
- * prereqTree type
  * zod doesn't support recursive types
+ * as such, this type is technically incorrect
  */
 const prereqTree = z.string().or(
   z.object({
@@ -12,6 +12,14 @@ const prereqTree = z.string().or(
   })
 )
 
+/**
+ * due to zod-to-json-schema refStrategy not working,
+ * we can only use at most one of these "base" properties
+ * per entity.
+ *
+ * we also cannot have nested references for the same reason,
+ * e.g. z.array(base.id) is not allowed.
+ */
 const base = {
   moduleCode: z.string().regex(validModuleRegex),
   moduleCodeArray: z.array(z.string().regex(validModuleRegex)),
@@ -33,11 +41,11 @@ const entities = {
     graduationYear: z.number(),
     graduationSemester: z.number(),
     modulesDone: base.moduleCodeArray,
-    modulesDoing: base.moduleCodeArray,
+    modulesDoing: z.array(z.string().regex(validModuleRegex)),
     savedDegrees: base.idArray,
-    savedGraphs: base.idArray,
-    mainDegree: base.id,
-    mainGraph: base.id,
+    savedGraphs: z.array(z.string().uuid()),
+    mainDegree: z.string().uuid(),
+    mainGraph: z.string().uuid(),
   }),
   Module: z.object({
     id: base.id,
@@ -50,12 +58,12 @@ const entities = {
     prereqTree,
   }),
   ModuleCondensed: z.object({
-    id: base.id,
+    id: z.string().uuid(),
     moduleCode: base.moduleCode,
     title: z.string(),
   }),
   ModuleFull: z.object({
-    id: base.id,
+    id: z.string().uuid(),
     acadYear: z.string(),
     moduleCode: base.moduleCode,
     title: z.string(),
@@ -69,7 +77,7 @@ const entities = {
     prerequisite: z.string(),
     corequisite: z.string(),
     preclusion: z.string(),
-    fulfillRequirements: base.moduleCodeArray,
+    fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
     /** FIXME SemesterData[] */
     semesterData: z.array(z.object({})),
     prereqTree,
@@ -84,14 +92,14 @@ const entities = {
   /** FLATTENED */
   Graph: z.object({
     id: base.id,
-    user: base.id,
+    title: z.string(),
+    user: z.string().uuid(),
     degree: z.object({
-      id: base.id,
+      id: z.string().uuid(),
       title: z.string(),
     }),
-    title: z.string(),
     modulesPlaced: base.moduleCodeArray,
-    modulesHidden: base.moduleCodeArray,
+    modulesHidden: z.array(z.string().regex(validModuleRegex)),
     /** FIXME GraphFlowNode[] */
     flowNodes: z.array(z.object({})),
     /** FIXME GraphFlowEdge[] */
@@ -124,13 +132,13 @@ const deletedEntities = {
     mainGraph: entities.Graph,
   }),
   Degree: z.object({
-    id: base.id,
+    id: z.string().uuid(),
     title: z.string(),
     /** these don't work */
     modules: z.array(entities.Module),
   }),
   Graph: z.object({
-    id: base.id,
+    id: z.string().uuid(),
     title: z.string(),
     /** these don't work */
     user: entities.User,
