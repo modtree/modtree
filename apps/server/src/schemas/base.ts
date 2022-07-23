@@ -39,7 +39,7 @@ const base = {
   moduleCode: moduleCode.openapi({
     example: 'CS1010S',
   }),
-  moduleArray: z.array(moduleCode).openapi({
+  moduleCodeArray: z.array(moduleCode).openapi({
     example: ['MA2001', 'MA2002'],
   }),
 }

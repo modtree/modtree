@@ -7,7 +7,7 @@ import { z } from 'zod'
 import * as yaml from 'yaml'
 import * as fs from 'fs'
 import base from '../schemas/base'
-import entities from '../schemas/entities'
+import { entities, deletedEntities } from '../schemas/entities'
 
 /**
  * SETUP
@@ -34,6 +34,15 @@ const ModuleCondensedSchema = registry.register(
 const ModuleFullSchema = registry.register('ModuleFull', entities.ModuleFull)
 const DegreeSchema = registry.register('Degree', entities.Degree)
 const GraphSchema = registry.register('Graph', entities.Graph)
+const DeletedUserSchema = registry.register('DeletedUser', deletedEntities.User)
+const DeletedDegreeSchema = registry.register(
+  'DeletedDegree',
+  deletedEntities.Degree
+)
+const DeletedGraphSchema = registry.register(
+  'DeletedGraph',
+  deletedEntities.Graph
+)
 
 /**
  * With OpenAPI descriptions

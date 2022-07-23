@@ -28,8 +28,8 @@ const entities = {
     matriculationYear: z.number(),
     graduationYear: z.number(),
     graduationSemester: z.number(),
-    modulesDone: base.moduleArray,
-    modulesDoing: base.moduleArray,
+    modulesDone: base.moduleCodeArray,
+    modulesDoing: base.moduleCodeArray,
     savedDegrees: z.array(base.id),
     savedGraphs: z.array(base.id),
     mainDegree: base.id,
@@ -75,7 +75,7 @@ const entities = {
   Degree: z.object({
     id: base.id,
     title: z.string(),
-    modules: base.moduleArray,
+    modules: base.moduleCodeArray,
   }),
   /** FLATTENED */
   Graph: z.object({
@@ -86,8 +86,8 @@ const entities = {
       title: z.string(),
     }),
     title: z.string(),
-    modulesPlaced: base.moduleArray,
-    modulesHidden: base.moduleArray,
+    modulesPlaced: base.moduleCodeArray,
+    modulesHidden: base.moduleCodeArray,
     /** FIXME GraphFlowNode[] */
     flowNodes: z.array(z.object({})),
     /** FIXME GraphFlowEdge[] */
@@ -95,4 +95,46 @@ const entities = {
   }),
 }
 
-export default entities
+/**
+ * Remove ID and unflatten first layer of entities.
+ *
+ * FIXME check if the types are correct
+ */
+const deletedEntities = {
+  User: z.object({
+    facebookId: z.string(),
+    googleId: z.string(),
+    githubId: z.string(),
+    displayName: z.string(),
+    username: z.string(),
+    email: base.email,
+    matriculationYear: z.number(),
+    graduationYear: z.number(),
+    graduationSemester: z.number(),
+    modulesDone: z.array(entities.Module),
+    modulesDoing: z.array(entities.Module),
+    savedDegrees: z.array(entities.Degree),
+    savedGraphs: z.array(entities.Graph),
+    mainDegree: entities.Degree,
+    mainGraph: entities.Graph,
+  }),
+  Degree: z.object({
+    id: base.id,
+    title: z.string(),
+    modules: z.array(entities.Module),
+  }),
+  Graph: z.object({
+    id: base.id,
+    user: entities.User,
+    degree: entities.Degree,
+    title: z.string(),
+    modulesPlaced: z.array(entities.Module),
+    modulesHidden: z.array(entities.Module),
+    /** FIXME GraphFlowNode[] */
+    flowNodes: z.array(z.object({})),
+    /** FIXME GraphFlowEdge[] */
+    flowEdges: z.array(z.object({})),
+  }),
+}
+
+export { entities, deletedEntities }

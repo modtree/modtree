@@ -290,6 +290,548 @@ components:
         - modulesHidden
         - flowNodes
         - flowEdges
+    DeletedUser:
+      type: object
+      properties:
+        facebookId:
+          type: string
+        googleId:
+          type: string
+        githubId:
+          type: string
+        displayName:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+          example: user@gmail.com
+        matriculationYear:
+          type: number
+        graduationYear:
+          type: number
+        graduationSemester:
+          type: number
+        modulesDone:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              moduleCode:
+                type: string
+                example: CS1010S
+              title:
+                type: string
+              prerequisite:
+                type: string
+              corequisite:
+                type: string
+              preclusion:
+                type: string
+              fulfillRequirements:
+                type: array
+                items:
+                  type: string
+                  example: CS1010S
+              prereqTree:
+                anyOf:
+                  - type: string
+                  - type: object
+                    properties:
+                      and:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+                      or:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+            required:
+              - id
+              - moduleCode
+              - title
+              - prerequisite
+              - corequisite
+              - preclusion
+              - fulfillRequirements
+              - prereqTree
+        modulesDoing:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              moduleCode:
+                type: string
+                example: CS1010S
+              title:
+                type: string
+              prerequisite:
+                type: string
+              corequisite:
+                type: string
+              preclusion:
+                type: string
+              fulfillRequirements:
+                type: array
+                items:
+                  type: string
+                  example: CS1010S
+              prereqTree:
+                anyOf:
+                  - type: string
+                  - type: object
+                    properties:
+                      and:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+                      or:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+            required:
+              - id
+              - moduleCode
+              - title
+              - prerequisite
+              - corequisite
+              - preclusion
+              - fulfillRequirements
+              - prereqTree
+        savedDegrees:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              title:
+                type: string
+              modules:
+                type: array
+                items:
+                  type: string
+                example: *a1
+            required:
+              - id
+              - title
+              - modules
+        savedGraphs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              user:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              degree:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 7e2e6a37-7924-4b86-a763-098894213b2f
+                  title:
+                    type: string
+                required:
+                  - id
+                  - title
+              title:
+                type: string
+              modulesPlaced:
+                type: array
+                items:
+                  type: string
+                example: *a1
+              modulesHidden:
+                type: array
+                items:
+                  type: string
+                example: *a1
+              flowNodes:
+                type: array
+                items:
+                  type: object
+                  properties: {}
+              flowEdges:
+                type: array
+                items:
+                  type: object
+                  properties: {}
+            required:
+              - id
+              - user
+              - degree
+              - title
+              - modulesPlaced
+              - modulesHidden
+              - flowNodes
+              - flowEdges
+        mainDegree:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            title:
+              type: string
+            modules:
+              type: array
+              items:
+                type: string
+              example: *a1
+          required:
+            - id
+            - title
+            - modules
+        mainGraph:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            user:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            degree:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: 7e2e6a37-7924-4b86-a763-098894213b2f
+                title:
+                  type: string
+              required:
+                - id
+                - title
+            title:
+              type: string
+            modulesPlaced:
+              type: array
+              items:
+                type: string
+              example: *a1
+            modulesHidden:
+              type: array
+              items:
+                type: string
+              example: *a1
+            flowNodes:
+              type: array
+              items:
+                type: object
+                properties: {}
+            flowEdges:
+              type: array
+              items:
+                type: object
+                properties: {}
+          required:
+            - id
+            - user
+            - degree
+            - title
+            - modulesPlaced
+            - modulesHidden
+            - flowNodes
+            - flowEdges
+      required:
+        - facebookId
+        - googleId
+        - githubId
+        - displayName
+        - username
+        - email
+        - matriculationYear
+        - graduationYear
+        - graduationSemester
+        - modulesDone
+        - modulesDoing
+        - savedDegrees
+        - savedGraphs
+        - mainDegree
+        - mainGraph
+    DeletedDegree:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        title:
+          type: string
+        modules:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              moduleCode:
+                type: string
+                example: CS1010S
+              title:
+                type: string
+              prerequisite:
+                type: string
+              corequisite:
+                type: string
+              preclusion:
+                type: string
+              fulfillRequirements:
+                type: array
+                items:
+                  type: string
+                  example: CS1010S
+              prereqTree:
+                anyOf:
+                  - type: string
+                  - type: object
+                    properties:
+                      and:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+                      or:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+            required:
+              - id
+              - moduleCode
+              - title
+              - prerequisite
+              - corequisite
+              - preclusion
+              - fulfillRequirements
+              - prereqTree
+      required:
+        - id
+        - title
+        - modules
+    DeletedGraph:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 7e2e6a37-7924-4b86-a763-098894213b2f
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            facebookId:
+              type: string
+            googleId:
+              type: string
+            githubId:
+              type: string
+            displayName:
+              type: string
+            username:
+              type: string
+            email:
+              type: string
+              example: user@gmail.com
+            matriculationYear:
+              type: number
+            graduationYear:
+              type: number
+            graduationSemester:
+              type: number
+            modulesDone:
+              type: array
+              items:
+                type: string
+              example: *a1
+            modulesDoing:
+              type: array
+              items:
+                type: string
+              example: *a1
+            savedDegrees:
+              type: array
+              items:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            savedGraphs:
+              type: array
+              items:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            mainDegree:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            mainGraph:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+          required:
+            - id
+            - facebookId
+            - googleId
+            - githubId
+            - displayName
+            - username
+            - email
+            - matriculationYear
+            - graduationYear
+            - graduationSemester
+            - modulesDone
+            - modulesDoing
+            - savedDegrees
+            - savedGraphs
+            - mainDegree
+            - mainGraph
+        degree:
+          type: object
+          properties:
+            id:
+              type: string
+              example: 7e2e6a37-7924-4b86-a763-098894213b2f
+            title:
+              type: string
+            modules:
+              type: array
+              items:
+                type: string
+              example: *a1
+          required:
+            - id
+            - title
+            - modules
+        title:
+          type: string
+        modulesPlaced:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              moduleCode:
+                type: string
+                example: CS1010S
+              title:
+                type: string
+              prerequisite:
+                type: string
+              corequisite:
+                type: string
+              preclusion:
+                type: string
+              fulfillRequirements:
+                type: array
+                items:
+                  type: string
+                  example: CS1010S
+              prereqTree:
+                anyOf:
+                  - type: string
+                  - type: object
+                    properties:
+                      and:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+                      or:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+            required:
+              - id
+              - moduleCode
+              - title
+              - prerequisite
+              - corequisite
+              - preclusion
+              - fulfillRequirements
+              - prereqTree
+        modulesHidden:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: 7e2e6a37-7924-4b86-a763-098894213b2f
+              moduleCode:
+                type: string
+                example: CS1010S
+              title:
+                type: string
+              prerequisite:
+                type: string
+              corequisite:
+                type: string
+              preclusion:
+                type: string
+              fulfillRequirements:
+                type: array
+                items:
+                  type: string
+                  example: CS1010S
+              prereqTree:
+                anyOf:
+                  - type: string
+                  - type: object
+                    properties:
+                      and:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+                      or:
+                        type: array
+                        items:
+                          type: object
+                          properties: {}
+            required:
+              - id
+              - moduleCode
+              - title
+              - prerequisite
+              - corequisite
+              - preclusion
+              - fulfillRequirements
+              - prereqTree
+        flowNodes:
+          type: array
+          items:
+            type: object
+            properties: {}
+        flowEdges:
+          type: array
+          items:
+            type: object
+            properties: {}
+      required:
+        - id
+        - user
+        - degree
+        - title
+        - modulesPlaced
+        - modulesHidden
+        - flowNodes
+        - flowEdges
   parameters:
     userId:
       in: path
