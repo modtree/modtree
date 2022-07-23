@@ -196,7 +196,29 @@ paths:
                           pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                       attributes:
                         type: object
-                        properties: {}
+                        properties:
+                          year:
+                            type: boolean
+                          su:
+                            type: boolean
+                          grsu:
+                            type: boolean
+                          ssgf:
+                            type: boolean
+                          sfs:
+                            type: boolean
+                          lab:
+                            type: boolean
+                          ism:
+                            type: boolean
+                          urop:
+                            type: boolean
+                          fyp:
+                            type: boolean
+                          mpes1:
+                            type: boolean
+                          mpes2:
+                            type: boolean
                         additionalProperties: false
                       prerequisite:
                         type: string
@@ -213,7 +235,62 @@ paths:
                         type: array
                         items:
                           type: object
-                          properties: {}
+                          properties:
+                            semester:
+                              type: number
+                            rawLesson:
+                              type: object
+                              properties:
+                                classNo:
+                                  type: number
+                                dayText:
+                                  type: string
+                                endTime:
+                                  type: string
+                                lessonType:
+                                  type: string
+                                startTime:
+                                  type: string
+                                venue:
+                                  type: string
+                                weeks:
+                                  anyOf:
+                                    - type: number
+                                    - type: object
+                                      properties:
+                                        start:
+                                          type: number
+                                        end:
+                                          type: number
+                                        weekInterval:
+                                          type: number
+                                        weeks:
+                                          type: array
+                                          items:
+                                            type: number
+                                      required:
+                                        - start
+                                        - end
+                                      additionalProperties: false
+                                size:
+                                  type: number
+                              required:
+                                - classNo
+                                - dayText
+                                - endTime
+                                - lessonType
+                                - startTime
+                                - venue
+                                - weeks
+                                - size
+                              additionalProperties: false
+                            examDate:
+                              type: string
+                            examDuration:
+                              type: number
+                          required:
+                            - semester
+                            - rawLesson
                           additionalProperties: false
                       prereqTree:
                         anyOf:
@@ -484,13 +561,94 @@ paths:
                         type: array
                         items:
                           type: object
-                          properties: {}
+                          properties:
+                            id:
+                              type: string
+                            position:
+                              type: object
+                              properties:
+                                x:
+                                  type: number
+                                y:
+                                  type: number
+                              required:
+                                - x
+                                - y
+                              additionalProperties: false
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uuid
+                                moduleCode:
+                                  type: string
+                                  pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                title:
+                                  type: string
+                                prerequisite:
+                                  type: string
+                                corequisite:
+                                  type: string
+                                preclusion:
+                                  type: string
+                                fulfillRequirements:
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                prereqTree:
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items:
+                                            type: object
+                                            properties: {}
+                                            additionalProperties: false
+                                        or:
+                                          type: array
+                                          items:
+                                            type: object
+                                            properties: {}
+                                            additionalProperties: false
+                                      additionalProperties: false
+                              required:
+                                - id
+                                - moduleCode
+                                - title
+                                - prerequisite
+                                - corequisite
+                                - preclusion
+                                - fulfillRequirements
+                                - prereqTree
+                              additionalProperties: false
+                            className:
+                              type: string
+                            selected:
+                              type: boolean
+                          required:
+                            - id
+                            - position
+                            - data
                           additionalProperties: false
                       flowEdges:
                         type: array
                         items:
                           type: object
-                          properties: {}
+                          properties:
+                            id:
+                              type: string
+                            source:
+                              type: string
+                            target:
+                              type: string
+                          required:
+                            - id
+                            - source
+                            - target
                           additionalProperties: false
                     required:
                       - id

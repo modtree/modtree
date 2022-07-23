@@ -13,6 +13,44 @@ const prereqTree = z.string().or(
 )
 
 /**
+ * NUSMods types in zod
+ */
+const Attributes = z.object({
+  year: z.boolean().optional(),
+  su: z.boolean().optional(),
+  grsu: z.boolean().optional(),
+  ssgf: z.boolean().optional(),
+  sfs: z.boolean().optional(),
+  lab: z.boolean().optional(),
+  ism: z.boolean().optional(),
+  urop: z.boolean().optional(),
+  fyp: z.boolean().optional(),
+  mpes1: z.boolean().optional(),
+  mpes2: z.boolean().optional(),
+})
+const WeekRange = z.object({
+  start: z.number(),
+  end: z.number(),
+  weekInterval: z.number().optional(),
+  weeks: z.array(z.number()).optional(),
+})
+const SemesterData = z.object({
+  semester: z.number(),
+  rawLesson: z.object({
+    classNo: z.number(),
+    dayText: z.string(),
+    endTime: z.string(),
+    lessonType: z.string(),
+    startTime: z.string(),
+    venue: z.string(),
+    weeks: z.number().or(WeekRange),
+    size: z.number(),
+  }),
+  examDate: z.string().optional(),
+  examDuration: z.number().optional(),
+})
+
+/**
  * due to zod-to-json-schema refStrategy not working,
  * we can only use at most one of these "base" properties
  * per entity.
@@ -26,6 +64,17 @@ const base = {
   idArray: z.array(z.string().uuid()),
   id: z.string().uuid(),
 }
+
+const Module = z.object({
+  id: base.id,
+  moduleCode: base.moduleCode,
+  title: z.string(),
+  prerequisite: z.string(),
+  corequisite: z.string(),
+  preclusion: z.string(),
+  fulfillRequirements: base.moduleCodeArray,
+  prereqTree,
+})
 
 const entities = {
   /** FLATTENED */
@@ -47,16 +96,7 @@ const entities = {
     mainDegree: z.string().uuid(),
     mainGraph: z.string().uuid(),
   }),
-  Module: z.object({
-    id: base.id,
-    moduleCode: base.moduleCode,
-    title: z.string(),
-    prerequisite: z.string(),
-    corequisite: z.string(),
-    preclusion: z.string(),
-    fulfillRequirements: base.moduleCodeArray,
-    prereqTree,
-  }),
+  Module,
   ModuleCondensed: z.object({
     id: z.string().uuid(),
     moduleCode: base.moduleCode,
@@ -72,14 +112,12 @@ const entities = {
     department: z.string(),
     faculty: z.string(),
     aliases: base.moduleCodeArray,
-    /** FIXME NUSModuleAttributes */
-    attributes: z.object({}),
+    attributes: Attributes,
     prerequisite: z.string(),
     corequisite: z.string(),
     preclusion: z.string(),
     fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
-    /** FIXME SemesterData[] */
-    semesterData: z.array(z.object({})),
+    semesterData: z.array(SemesterData),
     prereqTree,
     workload: z.string().or(z.array(z.number())),
   }),
@@ -91,19 +129,36 @@ const entities = {
   }),
   /** FLATTENED */
   Graph: z.object({
-    id: base.id,
+    id: z.string().uuid(),
     title: z.string(),
     user: z.string().uuid(),
     degree: z.object({
       id: z.string().uuid(),
       title: z.string(),
     }),
-    modulesPlaced: base.moduleCodeArray,
+    modulesPlaced: z.array(z.string().regex(validModuleRegex)),
     modulesHidden: z.array(z.string().regex(validModuleRegex)),
-    /** FIXME GraphFlowNode[] */
-    flowNodes: z.array(z.object({})),
-    /** FIXME GraphFlowEdge[] */
-    flowEdges: z.array(z.object({})),
+    /** irrelevant optional props are left out */
+    flowNodes: z.array(
+      z.object({
+        id: z.string(),
+        position: z.object({
+          x: z.number(),
+          y: z.number(),
+        }),
+        data: Module,
+        className: z.string().optional(),
+        selected: z.boolean().optional(),
+      })
+    ),
+    /** irrelevant optional props are left out */
+    flowEdges: z.array(
+      z.object({
+        id: z.string(),
+        source: z.string(),
+        target: z.string(),
+      })
+    ),
   }),
 }
 
