@@ -467,11 +467,15 @@ paths:
                           type: string
                           format: uuid
                       mainDegree:
-                        type: string
-                        format: uuid
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
                       mainGraph:
-                        type: string
-                        format: uuid
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
                     required:
                       - id
                       - facebookId
@@ -489,6 +493,50 @@ paths:
                       - savedGraphs
                       - mainDegree
                       - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: '#/components/responses/error'
+    delete:
+      operationId: user/delete
+      summary: Delete a user
+      description: null
+      tags:
+        - User
+      security: null
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      raw: {}
+                      affected:
+                        anyOf:
+                          - type: number
+                          - enum:
+                              - 'null'
+                            nullable: true
                     additionalProperties: false
                 required:
                   - ok
@@ -796,6 +844,123 @@ paths:
                         - moduleCode
                         - title
                       additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: '#/components/responses/error'
+  /user:
+    post:
+      operationId: user/create
+      summary: Create a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                provider:
+                  type: string
+                providerId:
+                  type: string
+              required:
+                - email
+              additionalProperties: false
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
                 required:
                   - ok
                   - data

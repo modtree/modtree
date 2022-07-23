@@ -2,6 +2,7 @@ import { ModuleStatus } from '@modtree/types'
 import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
+import { base, entities } from '../schemas/entities'
 import { createRouter } from './router'
 
 export const user = createRouter()
@@ -9,11 +10,21 @@ export const user = createRouter()
    * create a user
    */
   .mutation('create', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'POST',
+        path: '/user',
+        summary: 'Create a user',
+      },
+    },
     input: z.object({
       email: z.string().email(),
       provider: z.string().optional(),
       providerId: z.string().optional(),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .initialize(input.email, input.provider, input.providerId)
@@ -25,9 +36,21 @@ export const user = createRouter()
    * hard-deletes a user by id
    */
   .query('delete', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'DELETE',
+        path: '/user/{userId}',
+        summary: 'Delete a user',
+      },
+    },
+    input: z.object({
+      userId: base.id,
+    }),
+    output: base.deleteResult,
     async resolve({ input }) {
-      return api.userRepo.delete(input)
+      return api.userRepo.delete(input.userId)
     },
   })
 

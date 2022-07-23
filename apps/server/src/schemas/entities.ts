@@ -63,6 +63,10 @@ const base = {
   moduleCodeArray: z.array(z.string().regex(validModuleRegex)),
   idArray: z.array(z.string().uuid()),
   id: z.string().uuid(),
+  deleteResult: z.object({
+    raw: z.any(),
+    affected: z.number().or(z.null()).optional(),
+  }),
 }
 
 const Module = z.object({
@@ -93,8 +97,9 @@ const entities = {
     modulesDoing: z.array(z.string().regex(validModuleRegex)),
     savedDegrees: base.idArray,
     savedGraphs: z.array(z.string().uuid()),
-    mainDegree: z.string().uuid(),
-    mainGraph: z.string().uuid(),
+    /** allow empty string for CREATE endpoint */
+    mainDegree: z.string().uuid().or(z.string()),
+    mainGraph: z.string().uuid().or(z.string()),
   }),
   Module,
   ModuleCondensed: z.object({
@@ -168,24 +173,6 @@ const entities = {
  * FIXME check if the types are correct
  */
 const deletedEntities = {
-  User: z.object({
-    facebookId: z.string(),
-    googleId: z.string(),
-    githubId: z.string(),
-    displayName: z.string(),
-    username: z.string(),
-    email: z.string().email(),
-    matriculationYear: z.number(),
-    graduationYear: z.number(),
-    graduationSemester: z.number(),
-    /** these don't work */
-    modulesDone: z.array(entities.Module),
-    modulesDoing: z.array(entities.Module),
-    savedDegrees: z.array(entities.Degree),
-    savedGraphs: z.array(entities.Graph),
-    mainDegree: entities.Degree,
-    mainGraph: entities.Graph,
-  }),
   Degree: z.object({
     id: z.string().uuid(),
     title: z.string(),
