@@ -12,6 +12,7 @@ const corsOpts = {
   origin: [
     'http://localhost:3000',
     'http://localhost:3001',
+    'https://modtree-docs.vercel.app',
     'https://modtree-dev.vercel.app',
     'https://modtree.vercel.app',
   ],
