@@ -6,9 +6,30 @@ import { api } from '../main'
 export const getOne = createRouter()
   /** get a module by id */
   .query('module', {
-    input: z.string().regex(validModuleRegex),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Module'],
+        method: 'GET',
+        path: '/module/{moduleCode}',
+        summary: 'Get a single module',
+      },
+    },
+    input: z.object({
+      moduleCode: z.string().regex(validModuleRegex),
+    }),
+    output: z.object({
+      id: z.string(),
+      moduleCode: z.string(),
+      title: z.string(),
+      prerequisite: z.string(),
+      corequisite: z.string(),
+      preclusion: z.string(),
+      fulfillRequirements: z.array(z.string()),
+      prereqTree: z.any(),
+    }),
     async resolve({ input }) {
-      return api.moduleRepo.findByCode(input)
+      return api.moduleRepo.findByCode(input.moduleCode)
     },
   })
 

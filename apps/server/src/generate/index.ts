@@ -8,6 +8,8 @@ import * as yaml from 'yaml'
 import * as fs from 'fs'
 import base from '../schemas/base'
 import { entities, deletedEntities } from '../schemas/entities'
+import { generateOpenApiDocument } from 'trpc-openapi'
+import { appRouter } from '../trpc'
 
 /**
  * SETUP

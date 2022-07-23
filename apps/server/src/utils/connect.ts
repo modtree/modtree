@@ -40,7 +40,8 @@ export function connect(config: Config, callback: RunServer) {
   console.debug(dataSource.options)
 
   /** each attempt to connect to database */
-  const attempt = () => dataSource.initialize().then(callback)
+  const attempt = () =>
+    dataSource.initialize().then(callback).catch(console.log)
 
   /** load the stack */
   let count = 1
