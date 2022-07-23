@@ -15,7 +15,7 @@ export const search = createRouter()
         tags: ['Module'],
         method: 'GET',
         path: '/search/modules/{search}',
-        summary: 'Get many modules condensed',
+        summary: 'Search modules based on a prefix',
       },
     },
     input: z.object({
@@ -45,7 +45,7 @@ export const search = createRouter()
         tags: ['Module'],
         method: 'GET',
         path: '/search/modules-condensed/{search}',
-        summary: 'Get many modules condensed',
+        summary: 'Search modules condensed based on a prefix',
       },
     },
     input: z.object({

@@ -805,7 +805,7 @@ paths:
   '/search/modules/{search}':
     get:
       operationId: search/modules
-      summary: Get many modules condensed
+      summary: Search modules based on a prefix
       description: null
       tags:
         - Module
@@ -890,7 +890,7 @@ paths:
   '/search/modules-condensed/{search}':
     get:
       operationId: search/modules-condensed
-      summary: Get many modules condensed
+      summary: Search modules condensed based on a prefix
       description: null
       tags:
         - Module
