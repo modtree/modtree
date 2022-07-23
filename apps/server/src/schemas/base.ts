@@ -37,6 +37,10 @@ const base = {
     example: UUID,
   }),
   moduleCode: moduleCode.openapi({
+    param: {
+      name: 'moduleCode',
+      in: 'path',
+    },
     example: 'CS1010S',
   }),
   moduleCodeArray: z.array(moduleCode).openapi({

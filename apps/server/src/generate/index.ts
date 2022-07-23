@@ -21,6 +21,7 @@ const registry = new OpenAPIRegistry()
 const userId = registry.registerParameter('userId', base.userId)
 const degreeId = registry.registerParameter('degreeId', base.degreeId)
 const graphId = registry.registerParameter('graphId', base.graphId)
+const moduleCode = registry.registerParameter('moduleCode', base.moduleCode)
 
 /**
  * Register schemas
@@ -49,11 +50,34 @@ const DeletedGraphSchema = registry.register(
  */
 const schema = {
   User: UserSchema.openapi({ description: 'Flattened user object.' }),
+  Module: ModuleSchema.openapi({
+    description: 'Contains relevant information for an NUS module.',
+  }),
+  ModuleCondensed: ModuleCondensedSchema.openapi({
+    description:
+      'Contains the minimal amount of information for an NUS module.',
+  }),
+  ModuleFull: ModuleFullSchema.openapi({
+    description: 'Contains all information for an NUS module.',
+  }),
+  Degree: DegreeSchema.openapi({ description: 'Flattened degree object.' }),
+  Graph: GraphSchema.openapi({ description: 'Flattened graph object.' }),
+  DeletedUser: DeletedUserSchema.openapi({
+    description: 'Deleted user object. Does not include ID.',
+  }),
+  DeletedDegree: DeletedDegreeSchema.openapi({
+    description: 'Deleted degree object. Does not include ID.',
+  }),
+  DeletedGraph: DeletedGraphSchema.openapi({
+    description: 'Deleted graph object. Does not include ID.',
+  }),
 }
 
 /**
  * Register routes
  */
+
+/** GET ONE */
 registry.registerPath({
   tags: ['User'],
   method: 'get',
@@ -70,6 +94,88 @@ registry.registerPath({
     },
   },
 })
+registry.registerPath({
+  tags: ['Degree'],
+  method: 'get',
+  path: '/degree/{degreeId}',
+  description: 'Get degree data by its id',
+  summary: 'Get a single degree',
+  request: {
+    params: z.object({ degreeId }),
+  },
+  responses: {
+    200: {
+      mediaType: 'application/json',
+      schema: schema.Degree,
+    },
+  },
+})
+registry.registerPath({
+  tags: ['Graph'],
+  method: 'get',
+  path: '/graph/{graphId}',
+  description: 'Get graph data by its id',
+  summary: 'Get a single graph',
+  request: {
+    params: z.object({ graphId }),
+  },
+  responses: {
+    200: {
+      mediaType: 'application/json',
+      schema: schema.Graph,
+    },
+  },
+})
+registry.registerPath({
+  tags: ['Module'],
+  method: 'get',
+  path: '/module/{moduleCode}',
+  description: 'Get module data by its code',
+  summary: 'Get a single module',
+  request: {
+    params: z.object({ moduleCode }),
+  },
+  responses: {
+    200: {
+      mediaType: 'application/json',
+      schema: schema.Module,
+    },
+  },
+})
+registry.registerPath({
+  tags: ['ModuleFull'],
+  method: 'get',
+  path: '/module-full/{moduleCode}',
+  description: 'Get module data by its code',
+  summary: 'Get a single module',
+  request: {
+    params: z.object({ moduleCode }),
+  },
+  responses: {
+    200: {
+      mediaType: 'application/json',
+      schema: schema.ModuleFull,
+    },
+  },
+})
+registry.registerPath({
+  tags: ['ModuleCondensed'],
+  method: 'get',
+  path: '/module-condensed/{moduleCode}',
+  description: 'Get module data by its code',
+  summary: 'Get a single module',
+  request: {
+    params: z.object({ moduleCode }),
+  },
+  responses: {
+    200: {
+      mediaType: 'application/json',
+      schema: schema.ModuleCondensed,
+    },
+  },
+})
+
+/** mutations */
 registry.registerPath({
   tags: ['User'],
   method: 'post',

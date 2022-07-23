@@ -854,6 +854,13 @@ components:
         type: string
         example: 7e2e6a37-7924-4b86-a763-098894213b2f
       required: true
+    moduleCode:
+      in: path
+      name: moduleCode
+      schema:
+        type: string
+        example: CS1010S
+      required: true
 paths:
   '/user/{userId}':
     get:
@@ -870,6 +877,81 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  '/degree/{degreeId}':
+    get:
+      tags:
+        - Degree
+      description: Get degree data by its id
+      summary: Get a single degree
+      parameters:
+        - $ref: '#/components/parameters/degreeId'
+      responses:
+        '200':
+          description: Flattened degree object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Degree'
+  '/graph/{graphId}':
+    get:
+      tags:
+        - Graph
+      description: Get graph data by its id
+      summary: Get a single graph
+      parameters:
+        - $ref: '#/components/parameters/graphId'
+      responses:
+        '200':
+          description: Flattened graph object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Graph'
+  '/module/{moduleCode}':
+    get:
+      tags:
+        - Module
+      description: Get module data by its code
+      summary: Get a single module
+      parameters:
+        - $ref: '#/components/parameters/moduleCode'
+      responses:
+        '200':
+          description: Contains relevant information for an NUS module.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Module'
+  '/module-full/{moduleCode}':
+    get:
+      tags:
+        - ModuleFull
+      description: Get module data by its code
+      summary: Get a single module
+      parameters:
+        - $ref: '#/components/parameters/moduleCode'
+      responses:
+        '200':
+          description: Contains all information for an NUS module.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleFull'
+  '/module-condensed/{moduleCode}':
+    get:
+      tags:
+        - ModuleCondensed
+      description: Get module data by its code
+      summary: Get a single module
+      parameters:
+        - $ref: '#/components/parameters/moduleCode'
+      responses:
+        '200':
+          description: Contains the minimal amount of information for an NUS module.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModuleCondensed'
   /user:
     post:
       tags:
