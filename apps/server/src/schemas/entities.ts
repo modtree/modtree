@@ -1,9 +1,6 @@
-import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
 import { z } from 'zod'
 import { validModuleRegex } from '@modtree/utils'
 import base from './base'
-
-extendZodWithOpenApi(z)
 
 /**
  * prereqTree type
@@ -15,8 +12,6 @@ const prereqTree = z.string().or(
     or: z.array(z.object({})).optional(),
   })
 )
-
-const moduleCode = z.string().regex(validModuleRegex)
 
 const entities = {
   /** FLATTENED */
@@ -40,7 +35,7 @@ const entities = {
   }),
   Module: z.object({
     id: base.id,
-    moduleCode,
+    moduleCode: z.string().regex(validModuleRegex),
     title: z.string(),
     prerequisite: z.string(),
     corequisite: z.string(),
