@@ -2,6 +2,7 @@ import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { createRouter } from './router'
 import { api } from '../main'
+import { entities } from '../schemas/entities'
 
 export const getOne = createRouter()
   /** get a module by id */
@@ -18,16 +19,7 @@ export const getOne = createRouter()
     input: z.object({
       moduleCode: z.string().regex(validModuleRegex),
     }),
-    output: z.object({
-      id: z.string(),
-      moduleCode: z.string(),
-      title: z.string(),
-      prerequisite: z.string(),
-      corequisite: z.string(),
-      preclusion: z.string(),
-      fulfillRequirements: z.array(z.string()),
-      prereqTree: z.any(),
-    }),
+    output: entities.Module,
     async resolve({ input }) {
       return api.moduleRepo.findByCode(input.moduleCode)
     },
