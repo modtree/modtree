@@ -167,32 +167,4 @@ const entities = {
   }),
 }
 
-/**
- * Remove ID and unflatten first layer of entities.
- *
- * FIXME check if the types are correct
- */
-const deletedEntities = {
-  Degree: z.object({
-    id: z.string().uuid(),
-    title: z.string(),
-    /** these don't work */
-    modules: z.array(entities.Module),
-  }),
-  Graph: z.object({
-    id: z.string().uuid(),
-    title: z.string(),
-    /** these don't work */
-    user: entities.User,
-    degree: entities.Degree,
-    modulesPlaced: z.array(entities.Module),
-    modulesHidden: z.array(entities.Module),
-    /** end */
-    /** FIXME GraphFlowNode[] */
-    flowNodes: z.array(z.object({})),
-    /** FIXME GraphFlowEdge[] */
-    flowEdges: z.array(z.object({})),
-  }),
-}
-
-export { base, entities, deletedEntities }
+export { base, entities }
