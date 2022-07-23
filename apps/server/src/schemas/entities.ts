@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import { validModuleRegex } from '@modtree/utils'
-import base from './base'
 
 /**
  * prereqTree type
@@ -13,6 +12,13 @@ const prereqTree = z.string().or(
   })
 )
 
+const base = {
+  moduleCode: z.string().regex(validModuleRegex),
+  moduleCodeArray: z.array(z.string().regex(validModuleRegex)),
+  idArray: z.array(z.string().uuid()),
+  id: z.string().uuid(),
+}
+
 const entities = {
   /** FLATTENED */
   User: z.object({
@@ -22,25 +28,25 @@ const entities = {
     githubId: z.string(),
     displayName: z.string(),
     username: z.string(),
-    email: base.email,
+    email: z.string().email(),
     matriculationYear: z.number(),
     graduationYear: z.number(),
     graduationSemester: z.number(),
     modulesDone: base.moduleCodeArray,
     modulesDoing: base.moduleCodeArray,
-    savedDegrees: z.array(base.id),
-    savedGraphs: z.array(base.id),
+    savedDegrees: base.idArray,
+    savedGraphs: base.idArray,
     mainDegree: base.id,
     mainGraph: base.id,
   }),
   Module: z.object({
     id: base.id,
-    moduleCode: z.string().regex(validModuleRegex),
+    moduleCode: base.moduleCode,
     title: z.string(),
     prerequisite: z.string(),
     corequisite: z.string(),
     preclusion: z.string(),
-    fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
+    fulfillRequirements: base.moduleCodeArray,
     prereqTree,
   }),
   ModuleCondensed: z.object({
@@ -57,13 +63,13 @@ const entities = {
     moduleCredit: z.string(),
     department: z.string(),
     faculty: z.string(),
-    aliases: z.array(base.moduleCode),
+    aliases: base.moduleCodeArray,
     /** FIXME NUSModuleAttributes */
     attributes: z.object({}),
     prerequisite: z.string(),
     corequisite: z.string(),
     preclusion: z.string(),
-    fulfillRequirements: z.array(base.moduleCode),
+    fulfillRequirements: base.moduleCodeArray,
     /** FIXME SemesterData[] */
     semesterData: z.array(z.object({})),
     prereqTree,
@@ -105,10 +111,11 @@ const deletedEntities = {
     githubId: z.string(),
     displayName: z.string(),
     username: z.string(),
-    email: base.email,
+    email: z.string().email(),
     matriculationYear: z.number(),
     graduationYear: z.number(),
     graduationSemester: z.number(),
+    /** these don't work */
     modulesDone: z.array(entities.Module),
     modulesDoing: z.array(entities.Module),
     savedDegrees: z.array(entities.Degree),
@@ -119,15 +126,18 @@ const deletedEntities = {
   Degree: z.object({
     id: base.id,
     title: z.string(),
+    /** these don't work */
     modules: z.array(entities.Module),
   }),
   Graph: z.object({
     id: base.id,
+    title: z.string(),
+    /** these don't work */
     user: entities.User,
     degree: entities.Degree,
-    title: z.string(),
     modulesPlaced: z.array(entities.Module),
     modulesHidden: z.array(entities.Module),
+    /** end */
     /** FIXME GraphFlowNode[] */
     flowNodes: z.array(z.object({})),
     /** FIXME GraphFlowEdge[] */
@@ -135,4 +145,4 @@ const deletedEntities = {
   }),
 }
 
-export { entities, deletedEntities }
+export { base, entities, deletedEntities }

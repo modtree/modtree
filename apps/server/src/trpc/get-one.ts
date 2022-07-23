@@ -1,8 +1,8 @@
-import { flatten, validModuleRegex } from '@modtree/utils'
+import { flatten } from '@modtree/utils'
 import { z } from 'zod'
 import { createRouter } from './router'
 import { api } from '../main'
-import { entities } from '../schemas/entities'
+import { base, entities } from '../schemas/entities'
 
 export const getOne = createRouter()
   /** get a module by id */
@@ -17,7 +17,7 @@ export const getOne = createRouter()
       },
     },
     input: z.object({
-      moduleCode: z.string().regex(validModuleRegex),
+      moduleCode: base.moduleCode,
     }),
     output: entities.Module,
     async resolve({ input }) {
@@ -27,17 +27,41 @@ export const getOne = createRouter()
 
   /** get a condensed module by id */
   .query('module-condensed', {
-    input: z.string().regex(validModuleRegex),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Module'],
+        method: 'GET',
+        path: '/module-condensed/{moduleCode}',
+        summary: 'Get a single module condensed',
+      },
+    },
+    input: z.object({
+      moduleCode: base.moduleCode,
+    }),
+    output: entities.ModuleCondensed,
     async resolve({ input }) {
-      return api.moduleCondensedRepo.findByCode(input)
+      return api.moduleCondensedRepo.findByCode(input.moduleCode)
     },
   })
 
   /** get a full module by id */
   .query('module-full', {
-    input: z.string().regex(validModuleRegex),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Module'],
+        method: 'GET',
+        path: '/module-full/{moduleCode}',
+        summary: 'Get a single module full',
+      },
+    },
+    input: z.object({
+      moduleCode: base.moduleCode,
+    }),
+    output: entities.ModuleFull,
     async resolve({ input }) {
-      return api.moduleFullRepo.findByCode(input)
+      return api.moduleFullRepo.findByCode(input.moduleCode)
     },
   })
 
