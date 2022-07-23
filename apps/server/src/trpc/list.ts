@@ -1,39 +1,86 @@
-import { flatten, validModuleRegex } from '@modtree/utils'
+import { flatten } from '@modtree/utils'
 import { z } from 'zod'
 import { createRouter } from './router'
 import { api } from '../main'
+import { base, entities } from '../schemas/entities'
 
 export const list = createRouter()
   /** list modules */
-  .query('modules', {
-    input: z.array(z.string().regex(validModuleRegex)),
+  .mutation('modules', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Module'],
+        method: 'POST',
+        path: '/modules',
+        summary: 'Get many modules',
+      },
+    },
+    input: z.object({
+      moduleCodes: base.moduleCodeArray,
+    }),
+    output: z.array(entities.Module),
     async resolve({ input }) {
-      return api.moduleRepo.findByCodes(input)
+      return api.moduleRepo.findByCodes(input.moduleCodes)
     },
   })
 
   /** list condensed modules */
-  .query('modules-condensed', {
-    input: z.array(z.string().regex(validModuleRegex)),
+  .mutation('modules-condensed', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Module'],
+        method: 'POST',
+        path: '/modules-condensed',
+        summary: 'Get many modules condensed',
+      },
+    },
+    input: z.object({
+      moduleCodes: base.moduleCodeArray,
+    }),
+    output: z.array(entities.ModuleCondensed),
     async resolve({ input }) {
-      return api.moduleCondensedRepo.findByCodes(input)
+      return api.moduleCondensedRepo.findByCodes(input.moduleCodes)
     },
   })
 
   /** list full modules */
-  .query('modules-full', {
-    input: z.array(z.string().regex(validModuleRegex)),
+  .mutation('modules-full', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Module'],
+        method: 'POST',
+        path: '/modules-full',
+        summary: 'Get many modules full',
+      },
+    },
+    input: z.object({
+      moduleCodes: base.moduleCodeArray,
+    }),
+    output: z.array(entities.ModuleFull),
     async resolve({ input }) {
-      return api.moduleFullRepo.findByCodes(input)
+      return api.moduleFullRepo.findByCodes(input.moduleCodes)
     },
   })
 
   /** list users */
-  .query('users', {
+  .mutation('users', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'POST',
+        path: '/users',
+        summary: 'Get many users',
+      },
+    },
     input: z.object({
-      id: z.string().uuid().optional(),
-      email: z.string().email().optional(),
+      id: z.string().uuid(),
+      email: z.string().email(),
     }),
+    output: z.array(entities.User),
     async resolve({ input }) {
       return api.userRepo
         .find({
@@ -48,21 +95,45 @@ export const list = createRouter()
   })
 
   /** list degrees */
-  .query('degrees', {
-    input: z.array(z.string().uuid()),
+  .mutation('degrees', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Degree'],
+        method: 'POST',
+        path: '/degrees',
+        summary: 'Get many degrees',
+      },
+    },
+    input: z.object({
+      degreeIds: base.idArray,
+    }),
+    output: z.array(entities.Degree),
     async resolve({ input }) {
       return api.degreeRepo
-        .findByIds(input)
+        .findByIds(input.degreeIds)
         .then((degrees) => degrees.map(flatten.degree))
     },
   })
 
   /** list graphs */
-  .query('graphs', {
-    input: z.array(z.string().uuid()),
+  .mutation('graphs', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Graph'],
+        method: 'POST',
+        path: '/graphs',
+        summary: 'Get many graphs',
+      },
+    },
+    input: z.object({
+      graphIds: base.idArray,
+    }),
+    output: z.array(entities.Graph),
     async resolve({ input }) {
       return api.graphRepo
-        .findByIds(input)
+        .findByIds(input.graphIds)
         .then((graphs) => graphs.map(flatten.graph))
     },
   })
