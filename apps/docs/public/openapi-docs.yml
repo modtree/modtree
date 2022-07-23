@@ -758,6 +758,50 @@ paths:
                 additionalProperties: false
         default:
           $ref: '#/components/responses/error'
+    delete:
+      operationId: graph/delete
+      summary: Delete a graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      parameters:
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      raw: {}
+                      affected:
+                        anyOf:
+                          - type: number
+                          - enum:
+                              - 'null'
+                            nullable: true
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: '#/components/responses/error'
   '/search/modules/{search}':
     get:
       operationId: search/modules
@@ -1068,6 +1112,190 @@ paths:
                       - savedGraphs
                       - mainDegree
                       - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: '#/components/responses/error'
+  /graph:
+    post:
+      operationId: graph/create
+      summary: Create a graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  default: Untitled
+                userId:
+                  type: string
+                  format: uuid
+                degreeId:
+                  type: string
+                  format: uuid
+              required:
+                - userId
+                - degreeId
+              additionalProperties: false
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type: string
+                      user:
+                        type: string
+                        format: uuid
+                      degree:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          title:
+                            type: string
+                        required:
+                          - id
+                          - title
+                        additionalProperties: false
+                      modulesPlaced:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesHidden:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      flowNodes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            position:
+                              type: object
+                              properties:
+                                x:
+                                  type: number
+                                y:
+                                  type: number
+                              required:
+                                - x
+                                - y
+                              additionalProperties: false
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uuid
+                                moduleCode:
+                                  type: string
+                                  pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                title:
+                                  type: string
+                                prerequisite:
+                                  type: string
+                                corequisite:
+                                  type: string
+                                preclusion:
+                                  type: string
+                                fulfillRequirements:
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                prereqTree:
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items:
+                                            type: object
+                                            properties: {}
+                                            additionalProperties: false
+                                        or:
+                                          type: array
+                                          items:
+                                            type: object
+                                            properties: {}
+                                            additionalProperties: false
+                                      additionalProperties: false
+                              required:
+                                - id
+                                - moduleCode
+                                - title
+                                - prerequisite
+                                - corequisite
+                                - preclusion
+                                - fulfillRequirements
+                                - prereqTree
+                              additionalProperties: false
+                            className:
+                              type: string
+                            selected:
+                              type: boolean
+                          required:
+                            - id
+                            - position
+                            - data
+                          additionalProperties: false
+                      flowEdges:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            source:
+                              type: string
+                            target:
+                              type: string
+                          required:
+                            - id
+                            - source
+                            - target
+                          additionalProperties: false
+                    required:
+                      - id
+                      - title
+                      - user
+                      - degree
+                      - modulesPlaced
+                      - modulesHidden
+                      - flowNodes
+                      - flowEdges
                     additionalProperties: false
                 required:
                   - ok

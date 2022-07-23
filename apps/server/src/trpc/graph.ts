@@ -1,6 +1,7 @@
 import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
+import { base, entities } from '../schemas/entities'
 import { createRouter } from './router'
 
 export const graph = createRouter()
@@ -8,11 +9,21 @@ export const graph = createRouter()
    * create and save a graph
    */
   .mutation('create', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Graph'],
+        method: 'POST',
+        path: '/graph',
+        summary: 'Create a graph',
+      },
+    },
     input: z.object({
       title: z.string().min(1).default('Untitled'),
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
     }),
+    output: entities.Graph,
     async resolve({ input }) {
       return api.graphRepo
         .initialize(input.title, input.userId, input.degreeId)
@@ -24,9 +35,21 @@ export const graph = createRouter()
    * hard-delete a graph
    */
   .query('delete', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Graph'],
+        method: 'DELETE',
+        path: '/graph/{graphId}',
+        summary: 'Delete a graph',
+      },
+    },
+    input: z.object({
+      graphId: base.id,
+    }),
+    output: base.deleteResult,
     async resolve({ input }) {
-      return api.graphRepo.delete(input)
+      return api.graphRepo.delete(input.graphId)
     },
   })
 
