@@ -11,6 +11,7 @@ import * as fs from 'fs'
 const corsOpts = {
   origin: [
     'http://localhost:3000',
+    'http://localhost:3001',
     'https://modtree-dev.vercel.app',
     'https://modtree.vercel.app',
   ],
@@ -42,7 +43,7 @@ function trpcDocumentation() {
   const openApiDocument = generateOpenApiDocument(appRouter, {
     title: 'tRPC OpenAPI',
     version: '1.0.0',
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'http://localhost:8080',
   })
 
   // YAML equivalent
