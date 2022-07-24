@@ -20,7 +20,7 @@ export const degree = createRouter()
     },
     input: z.object({
       title: z.string().min(1),
-      moduleCodes: base.moduleCodeArray,
+      moduleCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     output: entities.Degree,
     async resolve({ input }) {
@@ -44,7 +44,7 @@ export const degree = createRouter()
       },
     },
     input: z.object({
-      degreeId: base.id,
+      degreeId: z.string().uuid(),
     }),
     output: base.deleteResult,
     async resolve({ input }) {

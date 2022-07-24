@@ -45,14 +45,13 @@ export const graph = createRouter()
       },
     },
     input: z.object({
-      graphId: base.id,
+      graphId: z.string().uuid(),
     }),
     output: base.deleteResult,
     async resolve({ input }) {
       return api.graphRepo.delete(input.graphId)
     },
   })
-
 
   /**
    * suggest modules
@@ -71,8 +70,8 @@ export const graph = createRouter()
       },
     },
     input: z.object({
-      graphId: base.id,
-      selectedCodes: base.moduleCodeArray,
+      graphId: z.string().uuid(),
+      selectedCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     /* array of module codes */
     output: z.array(z.string().regex(validModuleRegex)),
@@ -102,11 +101,11 @@ export const graph = createRouter()
       },
     },
     input: z.object({
-      graphId: base.id,
+      graphId: z.string().uuid(),
     }),
     output: z.array(
       z.object({
-        moduleCode: base.moduleCode,
+        moduleCode: z.string().regex(validModuleRegex),
         canTake: z.boolean(),
       })
     ),
