@@ -64,12 +64,21 @@ export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
  * @param {ModuleStatus} status
  */
 function markSelectedAs(status: ModuleStatus) {
-  const graph = store.getState().graph
+  const {
+    graph,
+    modtree: { user },
+  } = store.getState()
   const selectedCodes = graph.flowNodes
     .filter((n) => n.selected)
     .map((n) => n.data.moduleCode)
 
-  setModuleStatus(status, selectedCodes)
+  const existing = {
+    [ModuleStatus.DONE]: user.modulesDone,
+    [ModuleStatus.DOING]: user.modulesDoing,
+    [ModuleStatus.NOT_TAKEN]: [],
+  }[status]
+
+  setModuleStatus(status, [...existing, ...selectedCodes])
 }
 
 /** for use on flow pane */
