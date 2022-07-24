@@ -30,7 +30,6 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
-        <Input className="w-full mb-4" state={[title, setTitle]} grayed />
         <Input
           className="w-full mb-4"
           state={[title, setTitle]}

@@ -46,7 +46,6 @@ export function openModuleModal(query: string) {
  * @param {string[]} moduleCodes
  */
 export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
-  if (moduleCodes.length === 0) return
   const { user } = store.getState().modtree
   trpc
     .mutation('user/set-module-status', {
@@ -219,12 +218,6 @@ export function updateDegree(
     .mutation('degree/update', { degreeId, title, moduleCodes })
     .then(() => trpc.query('user', user.id))
     .then((user) => dispatch(r.setUser(user)))
-}
-
-export function setMainGraph(graph: ApiResponse.Graph) {
-  const { user } = store.getState().modtree
-  trpc.mutation('user/set-main-graph', { userId: user.id, graphId: graph.id })
-  dispatch(r.setMainGraph(graph))
 }
 
 export function setMainDegree(degree: ApiResponse.Degree) {

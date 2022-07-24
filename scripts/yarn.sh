@@ -15,7 +15,10 @@ if [[ $USER == "khang" ]]; then
   DOT_ENV=$SRC/.env
   WEB_E2E=$SRC/cypress.env.json
 fi
-[[ $USER == "weiseng" ]] && DOT_ENV=$REPOS/orbital/env/.env
+if [[ $USER == "weiseng" ]]; then
+  DOT_ENV=$REPOS/orbital/env/.env
+  WEB_E2E=$REPOS/orbital/env/cypress.env.json
+fi
 
 env_start() {
   printf "\n${_S_}[installing .env files]${_N_}\n"

@@ -3,26 +3,37 @@ import { ApiResponse } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
-import { useState } from 'react'
-import { useAppSelector } from '@/store/redux'
+import { useAppSelector, r, useAppDispatch } from '@/store/redux'
 import { trpcReact } from '@/utils/trpc'
-import { setMainGraph } from '@/store/functions'
 
 export function GraphPicker() {
   /** hooks */
   const user = useAppSelector((s) => s.modtree.user)
   const graph = useAppSelector((s) => s.graph)
+  const dispatch = useAppDispatch()
+  const trpc = trpcReact.useContext()
   const { data: graphs } = trpcReact.useQuery(['graphs', user.savedGraphs], {
     keepPreviousData: true,
+    onSuccess: (graphs) => {
+      const match = graphs.find((g) => g.id === graph.id)
+      if (match) dispatch(r.setMainGraph(match))
+    },
   })
-  const [selectedGraph, setSelectedGraph] = useState(graph)
+  const setMain = trpcReact.useMutation(['user/set-main-graph'])
 
   /**
    * on selection change, update the displayed entry and set the main graph
    */
   const onChange = (graph: ApiResponse.Graph) => {
-    setSelectedGraph(graph)
-    setMainGraph(graph)
+    setMain.mutate(
+      { userId: user.id, graphId: graph.id },
+      {
+        onSuccess: () => {
+          trpc.invalidateQueries(['graphs'])
+        },
+      }
+    )
+    dispatch(r.setMainGraph(graph))
   }
 
   /**
@@ -30,9 +41,7 @@ export function GraphPicker() {
    */
   const ListBoxButton = () => (
     <Listbox.Button className="h-full w-full relative">
-      <span className="block truncate">
-        {getUniqueGraphTitle(selectedGraph)}
-      </span>
+      <span className="block truncate">{getUniqueGraphTitle(graph)}</span>
       <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
         <SelectorIcon className="h-5 w-5 text-gray-600" />
       </span>
@@ -40,7 +49,7 @@ export function GraphPicker() {
   )
 
   return (
-    <Listbox value={selectedGraph} onChange={onChange}>
+    <Listbox value={graph} onChange={onChange}>
       <ListBoxButton />
       <Listbox.Options className="shadow-lg rounded-md overflow-hidden z-10 relative bg-white">
         {(graphs || []).map((g) => (
@@ -52,7 +61,7 @@ export function GraphPicker() {
                   active ? 'bg-modtree-300 text-white' : 'text-gray-900'
                 )}
               >
-                {selected || selectedGraph.id === g.id ? <CheckIcon /> : null}{' '}
+                {selected || graph.id === g.id ? <CheckIcon /> : null}{' '}
                 {getUniqueGraphTitle(g)}
               </div>
             )}
