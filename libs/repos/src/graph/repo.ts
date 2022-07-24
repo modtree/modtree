@@ -144,7 +144,7 @@ export class GraphRepository extends BaseRepo<Graph> {
    * Returns true if graph contains sufficient pre-reqs for the module.
    *
    * @param {Graph} graph
-   * @returns {Promise<CanTakeModuleMap>}
+   * @returns {Promise<CanTakeModule[]>}
    */
   async canTakeModules(graph: Graph): Promise<CanTakeModule[]> {
     return Promise.all(

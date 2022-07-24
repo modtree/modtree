@@ -53,14 +53,29 @@ export const graph = createRouter()
     },
   })
 
+
   /**
-   * finds a graph by its id and updates a flow node
+   * suggest modules
+   *
+   * FIXME
+   * GET request only accepts string params in input properties
    */
-  .query('suggest-modules', {
+  .mutation('suggest-modules', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Graph'],
+        method: 'POST',
+        path: '/graph/{graphId}/suggest-modules',
+        summary: 'Suggest modules from selected nodes of a graph',
+      },
+    },
     input: z.object({
-      graphId: z.string().uuid(),
-      selectedCodes: z.array(z.string().regex(validModuleRegex)),
+      graphId: base.id,
+      selectedCodes: base.moduleCodeArray,
     }),
+    /* array of module codes */
+    output: z.array(z.string().regex(validModuleRegex)),
     async resolve({ input }) {
       return api.graphRepo
         .findOneById(input.graphId)
@@ -76,10 +91,28 @@ export const graph = createRouter()
    * Returns a dictionary keyed on moduleCode.
    */
   .query('can-take-modules', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Graph'],
+        method: 'GET',
+        path: '/graph/{graphId}/can-take-modules',
+        summary:
+          'For each module in the graph, checks if graph contains sufficient pre-reqs.',
+      },
+    },
+    input: z.object({
+      graphId: base.id,
+    }),
+    output: z.array(
+      z.object({
+        moduleCode: base.moduleCode,
+        canTake: z.boolean(),
+      })
+    ),
     async resolve({ input }) {
       return api.graphRepo
-        .findOneById(input)
+        .findOneById(input.graphId)
         .then((g) => api.graphRepo.canTakeModules(g))
     },
   })
@@ -88,10 +121,20 @@ export const graph = createRouter()
    * finds a graph by its id and update title
    */
   .mutation('rename', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Graph'],
+        method: 'PATCH',
+        path: '/graph/{graphId}',
+        summary: 'Rename a graph',
+      },
+    },
     input: z.object({
       graphId: z.string().uuid(),
       title: z.string(),
     }),
+    output: entities.Graph,
     async resolve({ input }) {
       return api.graphRepo
         .findOneById(input.graphId)
@@ -102,6 +145,7 @@ export const graph = createRouter()
 
   /**
    * updates a graph
+   * FIXME
    */
   .mutation('update', {
     input: z.object({
