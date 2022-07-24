@@ -6,16 +6,26 @@ import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { useAppSelector } from '@/store/redux'
 import { flatten } from '@/utils/tailwind'
-import { renameGraph } from '@/store/functions'
+import { trpcReact } from '@/utils/trpc'
 
 export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
   /** hooks */
   const { buildTitle, buildId, degreeTitle } = useAppSelector((s) => s.search)
   const [title, setTitle] = useState(buildTitle)
 
+  const trpc = trpcReact.useContext()
+  const rename = trpcReact.useMutation('graph/rename', {
+    onSuccess: () => {
+      trpc.invalidateQueries(['graphs'])
+    },
+  })
+
   const update = async (title: string) => {
     props.setPage('main')
-    renameGraph(buildId, title)
+    rename.mutate({
+      title,
+      graphId: buildId,
+    })
   }
 
   return (

@@ -3,7 +3,7 @@ import { ApiResponse } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
 import { flatten } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/store/redux'
 import { trpcReact } from '@/utils/trpc'
 import { setMainGraph } from '@/store/functions'
@@ -14,6 +14,13 @@ export function GraphPicker() {
   const graph = useAppSelector((s) => s.graph)
   const { data: graphs } = trpcReact.useQuery(['graphs', user.savedGraphs], {
     keepPreviousData: true,
+    onSuccess: (graphs) => {
+      const match = graphs.find((g) => g.id === selectedGraph.id)
+      if (match) {
+        // if found graph
+        setSelectedGraph(match)
+      }
+    },
   })
   const [selectedGraph, setSelectedGraph] = useState(graph)
 
