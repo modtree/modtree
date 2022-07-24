@@ -29,23 +29,25 @@ const Attributes = z.object({
   mpes2: z.boolean().optional(),
 })
 const WeekRange = z.object({
-  start: z.number(),
-  end: z.number(),
+  start: z.string(),
+  end: z.string(),
   weekInterval: z.number().optional(),
   weeks: z.array(z.number()).optional(),
 })
 const SemesterData = z.object({
   semester: z.number(),
-  rawLesson: z.object({
-    classNo: z.number(),
-    dayText: z.string(),
-    endTime: z.string(),
-    lessonType: z.string(),
-    startTime: z.string(),
-    venue: z.string(),
-    weeks: z.number().or(WeekRange),
-    size: z.number(),
-  }),
+  timetable: z.array(
+    z.object({
+      classNo: z.string(),
+      day: z.string(),
+      endTime: z.string(),
+      lessonType: z.string(),
+      startTime: z.string(),
+      venue: z.string(),
+      weeks: z.array(z.number()).or(WeekRange),
+      size: z.number(),
+    })
+  ),
   examDate: z.string().optional(),
   examDuration: z.number().optional(),
 })
