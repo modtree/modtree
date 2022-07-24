@@ -5,13 +5,13 @@ import { flatten } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { useAppSelector, r, useAppDispatch } from '@/store/redux'
 import { trpcReact } from '@/utils/trpc'
-import { setMainGraph } from '@/store/functions'
 
 export function GraphPicker() {
   /** hooks */
   const user = useAppSelector((s) => s.modtree.user)
   const graph = useAppSelector((s) => s.graph)
   const dispatch = useAppDispatch()
+  const trpc = trpcReact.useContext()
   const { data: graphs } = trpcReact.useQuery(['graphs', user.savedGraphs], {
     keepPreviousData: true,
     onSuccess: (graphs) => {
@@ -19,12 +19,21 @@ export function GraphPicker() {
       if (match) dispatch(r.setMainGraph(match))
     },
   })
+  const setMain = trpcReact.useMutation(['user/set-main-graph'])
 
   /**
    * on selection change, update the displayed entry and set the main graph
    */
   const onChange = (graph: ApiResponse.Graph) => {
-    setMainGraph(graph)
+    setMain.mutate(
+      { userId: user.id, graphId: graph.id },
+      {
+        onSuccess: () => {
+          trpc.invalidateQueries(['graphs'])
+        },
+      }
+    )
+    dispatch(r.setMainGraph(graph))
   }
 
   /**

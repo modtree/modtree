@@ -220,12 +220,6 @@ export function updateDegree(
     .then((user) => dispatch(r.setUser(user)))
 }
 
-export function setMainGraph(graph: ApiResponse.Graph) {
-  const { user } = store.getState().modtree
-  trpc.mutation('user/set-main-graph', { userId: user.id, graphId: graph.id })
-  dispatch(r.setMainGraph(graph))
-}
-
 export function setMainDegree(degree: ApiResponse.Degree) {
   const { user } = store.getState().modtree
   trpc.mutation('user/set-main-degree', {
