@@ -46,7 +46,6 @@ export function openModuleModal(query: string) {
  * @param {string[]} moduleCodes
  */
 export function setModuleStatus(status: ModuleStatus, moduleCodes: string[]) {
-  if (moduleCodes.length === 0) return
   const { user } = store.getState().modtree
   trpc
     .mutation('user/set-module-status', {
