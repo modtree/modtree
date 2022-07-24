@@ -1,5 +1,6 @@
 import cors from 'cors'
 import express, { Request, Response, Express } from 'express'
+import { createExpressMiddleware as createMid } from '@trpc/server/adapters/express'
 import { appRouter } from './trpc'
 import {
   createOpenApiExpressMiddleware,
@@ -28,7 +29,8 @@ export function getApp(): Express {
   const app = express()
   app.use(cors(corsOpts))
   app.use(express.json())
-  app.use('/', createOpenApiExpressMiddleware({ router: appRouter }))
+  app.use('/', createMid({ router: appRouter }))
+  app.use('/api', createOpenApiExpressMiddleware({ router: appRouter }))
   /**
    * run auto generate
    */
