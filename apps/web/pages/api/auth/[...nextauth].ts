@@ -70,7 +70,7 @@ export default NextAuth({
         return session
       }
       return trpc
-        .query('user/get-by-email', email)
+        .query('user/get-by-email', { email })
         .then((user) => {
           /** reload the user's id here */
           session.user.modtreeId = user.id
