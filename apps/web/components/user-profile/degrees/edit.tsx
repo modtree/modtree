@@ -19,6 +19,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   const updateHook = trpcReact.useMutation('degree/update', {
     onSuccess: () => {
       trpc.invalidateQueries(['graphs'])
+      trpc.invalidateQueries(['degrees'])
     },
   })
 
