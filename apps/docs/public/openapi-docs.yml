@@ -190,36 +190,39 @@ paths:
                       faculty:
                         type: string
                       aliases:
-                        type: array
-                        items:
-                          type: string
-                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        anyOf:
+                          - type: string
+                          - type: array
+                            items:
+                              type: string
                       attributes:
-                        type: object
-                        properties:
-                          year:
-                            type: boolean
-                          su:
-                            type: boolean
-                          grsu:
-                            type: boolean
-                          ssgf:
-                            type: boolean
-                          sfs:
-                            type: boolean
-                          lab:
-                            type: boolean
-                          ism:
-                            type: boolean
-                          urop:
-                            type: boolean
-                          fyp:
-                            type: boolean
-                          mpes1:
-                            type: boolean
-                          mpes2:
-                            type: boolean
-                        additionalProperties: false
+                        anyOf:
+                          - type: string
+                          - type: object
+                            properties:
+                              year:
+                                type: boolean
+                              su:
+                                type: boolean
+                              grsu:
+                                type: boolean
+                              ssgf:
+                                type: boolean
+                              sfs:
+                                type: boolean
+                              lab:
+                                type: boolean
+                              ism:
+                                type: boolean
+                              urop:
+                                type: boolean
+                              fyp:
+                                type: boolean
+                              mpes1:
+                                type: boolean
+                              mpes2:
+                                type: boolean
+                            additionalProperties: false
                       prerequisite:
                         type: string
                       corequisite:
@@ -227,10 +230,12 @@ paths:
                       preclusion:
                         type: string
                       fulfillRequirements:
-                        type: array
-                        items:
-                          type: string
-                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        anyOf:
+                          - type: string
+                          - type: array
+                            items:
+                              type: string
+                              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                       semesterData:
                         type: array
                         items:
@@ -329,7 +334,6 @@ paths:
                       - moduleCredit
                       - department
                       - faculty
-                      - aliases
                       - attributes
                       - prerequisite
                       - corequisite
@@ -1563,36 +1567,39 @@ paths:
                         faculty:
                           type: string
                         aliases:
-                          type: array
-                          items:
-                            type: string
-                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                          anyOf:
+                            - type: string
+                            - type: array
+                              items:
+                                type: string
                         attributes:
-                          type: object
-                          properties:
-                            year:
-                              type: boolean
-                            su:
-                              type: boolean
-                            grsu:
-                              type: boolean
-                            ssgf:
-                              type: boolean
-                            sfs:
-                              type: boolean
-                            lab:
-                              type: boolean
-                            ism:
-                              type: boolean
-                            urop:
-                              type: boolean
-                            fyp:
-                              type: boolean
-                            mpes1:
-                              type: boolean
-                            mpes2:
-                              type: boolean
-                          additionalProperties: false
+                          anyOf:
+                            - type: string
+                            - type: object
+                              properties:
+                                year:
+                                  type: boolean
+                                su:
+                                  type: boolean
+                                grsu:
+                                  type: boolean
+                                ssgf:
+                                  type: boolean
+                                sfs:
+                                  type: boolean
+                                lab:
+                                  type: boolean
+                                ism:
+                                  type: boolean
+                                urop:
+                                  type: boolean
+                                fyp:
+                                  type: boolean
+                                mpes1:
+                                  type: boolean
+                                mpes2:
+                                  type: boolean
+                              additionalProperties: false
                         prerequisite:
                           type: string
                         corequisite:
@@ -1600,10 +1607,12 @@ paths:
                         preclusion:
                           type: string
                         fulfillRequirements:
-                          type: array
-                          items:
-                            type: string
-                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                          anyOf:
+                            - type: string
+                            - type: array
+                              items:
+                                type: string
+                                pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                         semesterData:
                           type: array
                           items:
@@ -1702,7 +1711,6 @@ paths:
                         - moduleCredit
                         - department
                         - faculty
-                        - aliases
                         - attributes
                         - prerequisite
                         - corequisite

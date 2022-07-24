@@ -118,12 +118,17 @@ const entities = {
     moduleCredit: z.string(),
     department: z.string(),
     faculty: z.string(),
-    aliases: base.moduleCodeArray,
-    attributes: Attributes,
+    /* empty string */
+    aliases: z.string().or(z.array(z.string())).optional(),
+    /* empty string */
+    attributes: z.string().or(Attributes),
     prerequisite: z.string(),
     corequisite: z.string(),
     preclusion: z.string(),
-    fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
+    /* empty string */
+    fulfillRequirements: z
+      .string()
+      .or(z.array(z.string().regex(validModuleRegex))),
     semesterData: z.array(SemesterData),
     prereqTree,
     workload: z.string().or(z.array(z.number())),
