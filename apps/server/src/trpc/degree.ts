@@ -20,7 +20,7 @@ export const degree = createRouter()
     },
     input: z.object({
       title: z.string().min(1),
-      moduleCodes: z.array(z.string().regex(validModuleRegex)),
+      moduleCodes: base.moduleCodeArray,
     }),
     output: entities.Degree,
     async resolve({ input }) {
@@ -56,11 +56,21 @@ export const degree = createRouter()
    * modifies a degree
    */
   .mutation('update', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['Degree'],
+        method: 'PATCH',
+        path: '/degree/{degreeId}',
+        summary: 'Update a degree',
+      },
+    },
     input: z.object({
       degreeId: z.string().uuid(),
       title: z.string().min(1),
       moduleCodes: z.array(z.string().regex(validModuleRegex)),
     }),
+    output: entities.Degree,
     async resolve({ input }) {
       return api.degreeRepo
         .findOneById(input.degreeId)
