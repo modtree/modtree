@@ -7,21 +7,33 @@ import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppSelector } from '@/store/redux'
 import { SelectedModules } from '../modules/selected-modules'
-import { setBuildTarget, updateDegree } from '@/store/functions'
+import { setBuildTarget } from '@/store/functions'
+import { trpcReact } from '@/utils/trpc'
 
 export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
   /** hooks */
   const { buildList, buildTitle, buildId } = useAppSelector((s) => s.search)
   const [title, setTitle] = useState(buildTitle)
 
+  const trpc = trpcReact.useContext()
+  const updateHook = trpcReact.useMutation('degree/update', {
+    onSuccess: () => {
+      trpc.invalidateQueries(['graphs'])
+    },
+  })
+
   /* set build list */
   useEffect(() => {
     setBuildTarget(buildId)
   }, [])
 
-  const update = (title: string, moduleCodes: string[]) => {
-    updateDegree(buildId, title, moduleCodes)
+  const update = async () => {
     props.setPage('main')
+    updateHook.mutate({
+      degreeId: buildId,
+      title,
+      moduleCodes: buildList,
+    })
   }
 
   return (
@@ -50,7 +62,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green" onClick={() => update(title, buildList)}>
+        <Button color="green" onClick={update}>
           Save degree
         </Button>
       </div>
