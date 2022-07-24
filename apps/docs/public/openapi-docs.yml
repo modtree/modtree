@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: tRPC OpenAPI
+  title: modtree API
   description: null
   version: 1.0.0
 servers:

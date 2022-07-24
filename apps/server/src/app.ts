@@ -42,7 +42,7 @@ export function getApp(): Express {
 
 function trpcDocumentation() {
   const openApiDocument = generateOpenApiDocument(appRouter, {
-    title: 'tRPC OpenAPI',
+    title: 'modtree API',
     version: '1.0.0',
     baseUrl: 'http://localhost:8080',
   })
