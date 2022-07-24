@@ -58,10 +58,20 @@ export const user = createRouter()
    * insert degrees into user
    */
   .mutation('insert-degrees', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'PATCH',
+        path: '/user/{userId}/insert-degrees',
+        summary: 'Insert degrees into a user',
+      },
+    },
     input: z.object({
       userId: z.string().uuid(),
       degreeIds: z.array(z.string().uuid()),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .findOneById(input.userId)
@@ -74,10 +84,20 @@ export const user = createRouter()
    * set main degree of user
    */
   .mutation('set-main-degree', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'PATCH',
+        path: '/user/{userId}/set-main-degree',
+        summary: 'Set main degree of a user',
+      },
+    },
     input: z.object({
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .findOneById(input.userId)
@@ -90,10 +110,20 @@ export const user = createRouter()
    * remove degree from user
    */
   .mutation('remove-degree', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'PATCH',
+        path: '/user/{userId}/remove-degree',
+        summary: 'Removes a degree from a user',
+      },
+    },
     input: z.object({
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .findOneById(input.userId)
@@ -106,10 +136,20 @@ export const user = createRouter()
    * insert graphs into user
    */
   .mutation('insert-graphs', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'PATCH',
+        path: '/user/{userId}/insert-graphs',
+        summary: 'Insert graphs into a user',
+      },
+    },
     input: z.object({
       userId: z.string().uuid(),
       graphIds: z.array(z.string().uuid()),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .findOneById(input.userId)
@@ -122,10 +162,20 @@ export const user = createRouter()
    * set main graph of user
    */
   .mutation('set-main-graph', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'PATCH',
+        path: '/user/{userId}/set-main-graph',
+        summary: 'Set the main graph of a user',
+      },
+    },
     input: z.object({
       userId: z.string().uuid(),
       graphId: z.string().uuid(),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .findOneById(input.userId)
@@ -138,10 +188,20 @@ export const user = createRouter()
    * remove graph from user
    */
   .mutation('remove-graph', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'PATCH',
+        path: '/user/{userId}/remove-graph',
+        summary: 'Removes a graph from a user',
+      },
+    },
     input: z.object({
       userId: z.string().uuid(),
       graphId: z.string().uuid(),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .findOneById(input.userId)
@@ -154,11 +214,22 @@ export const user = createRouter()
    * sets module status of a user
    */
   .mutation('set-module-status', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'PATCH',
+        path: '/user/{userId}/set-module-status',
+        summary: 'Sets module status of a user',
+        description: 'Overwrites modulesDone or modulesDoing.',
+      },
+    },
     input: z.object({
       userId: z.string().uuid(),
       moduleCodes: z.array(z.string().regex(validModuleRegex)),
       status: z.nativeEnum(ModuleStatus),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
         .findOneById(input.userId)
@@ -173,11 +244,23 @@ export const user = createRouter()
    * user login
    */
   .mutation('login', {
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'POST',
+        path: '/user/login',
+        summary: 'User login',
+        description:
+          'Performs user login. If there is no associated user in the database, creates a user with an empty degree and empty graph.',
+      },
+    },
     input: z.object({
       provider: z.string(),
       providerId: z.string().min(1),
       email: z.string().email(),
     }),
+    output: entities.User,
     async resolve({ input }) {
       return api
         .userLogin(input.email, input.provider, input.providerId)
@@ -189,8 +272,20 @@ export const user = createRouter()
    * get a user by email
    */
   .query('get-by-email', {
-    input: z.string().email(),
+    meta: {
+      openapi: {
+        enabled: true,
+        tags: ['User'],
+        method: 'GET',
+        path: '/user/get-by-email',
+        summary: 'Gets a user by email',
+      },
+    },
+    input: z.object({
+      email: z.string().email(),
+    }),
+    output: entities.User,
     async resolve({ input }) {
-      return api.userRepo.findOneByEmail(input).then(flatten.user)
+      return api.userRepo.findOneByEmail(input.email).then(flatten.user)
     },
   })
