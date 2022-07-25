@@ -1,7 +1,7 @@
 ---
-title: 'Milestone 3: Extension'
+title: 'Milestone 3: Refinement'
 date: 2022/07/25
-description: 'Extension: bugs squashed, edge features developed, problems encountered, and user testing'
+description: 'Refinement: bugs squashed, edge features developed, problems encountered, and user testing'
 tag: milestone
 ---
 
@@ -22,7 +22,7 @@ import Image from '@/components/Image'
 
 <div className="flex justify-center mt-8">
 
-[Repository][repo] · [Documentation][docs] · [Proof of Concept][web]
+[Repository][repo] · [Documentation][docs] · [Website][web]
 
 </div>
 
@@ -416,9 +416,15 @@ We plan to let users contribute community pre-requisites to act as a bridge betw
 
 ## Testing
 
-### Database testing
+### Unit testing
 
-For database functions, we mock up a database with the minimum records needed for the test, then run the function and then assert a few key points.
+To aid with quicker development, we write fast-running unit tests that each test only the smallest possible piece of code. These tests assume that every other parts work, so we use mocks to lighten the test run.
+
+These tests run much faster than those that require a real database, since creating, populating, and finally dropping a database is very time-consuming compared to running pure JavaScript.
+
+### Integration testing
+
+For integration testing, we spin up a database with the minimum records needed for the test, then run the function and then assert a few key points.
 
 These tests are written with Jest and are per-project, meaning that if a project has been tested before, and no code has changed, it will not be tested again.
 
@@ -446,7 +452,7 @@ Overall, the common feedback was that users were satisfied with the features we 
 
 #### Login
 
-Click the sign in button at modtree.vercel.app. You can then choose between signing in with Google, Facebook, or Github.
+Go to [modtree.vercel.app][web]. Click the sign in button. You can then choose between signing in with Google, Facebook, or Github.
 
 You will be redirected to your chosen provider, and after you login, you will get redirected back to modtree.
 
