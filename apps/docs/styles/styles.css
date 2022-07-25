@@ -19,7 +19,7 @@ sub > p {
 .logo,
 .dark .logo {
   background-image: url('/banner-light-bg.svg');
-  @apply bg-auto bg-no-repeat h-14 w-64;
+  @apply bg-auto bg-no-repeat h-12 w-64;
 }
 
 .dark .logo {
