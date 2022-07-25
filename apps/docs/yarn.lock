@@ -9,7 +9,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@headlessui/react@^1.5.0":
+"@headlessui/react@^1.6.1":
   version "1.6.6"
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.6.6.tgz#3073c066b85535c9d28783da0a4d9288b5354d0c"
   integrity sha512-MFJtmj9Xh/hhBMhLccGbBoSk+sk61BlP6sJe4uQcVMtXZhCgGqd2GyIQzzmsdPdTEWGSF434CBi8mnhR6um46Q==
@@ -1957,12 +1957,12 @@ next@^12.2.2:
     "@next/swc-win32-ia32-msvc" "12.2.2"
     "@next/swc-win32-x64-msvc" "12.2.2"
 
-nextra-theme-docs@2.0.0-alpha.53:
-  version "2.0.0-alpha.53"
-  resolved "https://registry.yarnpkg.com/nextra-theme-docs/-/nextra-theme-docs-2.0.0-alpha.53.tgz#ba5cad5544a10afe91323f60acd2997d0ee5b910"
-  integrity sha512-ZmsuwjFecd49Lv3MgDJbfsLo1FRxjulJKm4fkccLD1BKPlJljDGmAo88fvgxwpXp60ttt7FqstQV4oLbTjGsDQ==
+nextra-theme-docs@2.0.0-alpha.59:
+  version "2.0.0-alpha.59"
+  resolved "https://registry.yarnpkg.com/nextra-theme-docs/-/nextra-theme-docs-2.0.0-alpha.59.tgz#47e4c9851868613f7f8602ee31f5a95da535686c"
+  integrity sha512-X5/YZAJaX/TDDBEaUoAdsZ3gjnanRv2Q+1wKwtHsEa8QCz8z5BjgFqcIIXf6A8NK6vtaYS7R1paFga+wpFhpCg==
   dependencies:
-    "@headlessui/react" "^1.5.0"
+    "@headlessui/react" "^1.6.1"
     "@mdx-js/react" "^2.1.0"
     "@reach/skip-nav" "^0.16.0"
     classnames "^2.2.6"
@@ -1976,10 +1976,10 @@ nextra-theme-docs@2.0.0-alpha.53:
     scroll-into-view-if-needed "^2.2.29"
     title "^3.4.2"
 
-nextra@2.0.0-alpha.50:
-  version "2.0.0-alpha.50"
-  resolved "https://registry.yarnpkg.com/nextra/-/nextra-2.0.0-alpha.50.tgz#7ca26f8dc41c72f8221b716e567f7d104ce9ad1d"
-  integrity sha512-j+hhaPYDFCsPasXDdNtuKE4+eMozcnHWazoJK3b6YE7aJ844sKWBuon2XCLYx91K6TdsSiBK7uakEDvMcVamrA==
+nextra@2.0.0-alpha.56:
+  version "2.0.0-alpha.56"
+  resolved "https://registry.yarnpkg.com/nextra/-/nextra-2.0.0-alpha.56.tgz#b6a1c889d0eda9650cce53c31bdce897f5458a0b"
+  integrity sha512-U6vFoUj4Oc+Px9WyNOUJWdta6j8B+dKtjbWvE1jCoz9wdAARtWxIZknIEMK62yt94zZeUjJg5KCzj1HBZc6UpQ==
   dependencies:
     "@mdx-js/mdx" "^2.1.0"
     "@napi-rs/simple-git" "^0.1.7"
