@@ -19,14 +19,26 @@ tool in order to:
 ## Project Layout
 
 ```
-├── .github/workflows   automated testing
-├── apps                front-end apps
-│  ├── docs             documentation website source
-│  └── web              main website source
-└── packages            project-wide shared resources
-   ├── database         backend functions
-   ├── entity           SQL entities
-   └── types            all TypeScript types
+├── .github/workflows     automated testing/deployments
+│
+├── apps                  user-facing apps
+│  ├── web                website (frontend)
+│  ├── server             API server (backend)
+│  └── docs               documentation website
+│
+├── libs                  shared resources
+│  ├── types              types, interfaces, and TypeORM entities
+│  ├── repos              backend functions (TypeORM Repositories)
+│  ├── utils              shared utilities
+│  ├── typeorm-config     TypeORM database connection configuration
+│  ├── test-env           common test setups (mostly Jest)
+│  ├── integration-tests  tests that require a running database
+│  ├── migrations         schema migration checker, generator, and runner
+│  └── sql                SQL commands piped through TypeScript
+│
+├── scripts               helper scripts
+├── docker                dockerfiles and scripts
+└── references            JSON exports of database views
 ```
 
 ## Setup
