@@ -56,9 +56,7 @@ export function DebugModal() {
       closeButton
       scrollable
     >
-      <h2 className="text-lg font-medium leading-6 text-gray-900 mb-4">
-        Debug
-      </h2>
+      <h2>Debug</h2>
       <DebugModalContents />
     </Modal>
   )
