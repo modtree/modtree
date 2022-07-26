@@ -114,11 +114,10 @@ export const graph = createRouter()
    */
   .mutation('update', {
     input: z.object({
-      graphId: z.string().uuid(),
-      nodes: z.array(z.any()),
+      graph: z.any(),
     }),
     async resolve({ input }) {
-      return api.graphRepo.update(input.graphId, input.nodes).then((res) => ({
+      return api.graphRepo.update(input.graph).then((res) => ({
         ...res,
         graph: flatten.graph(res.graph),
       }))
