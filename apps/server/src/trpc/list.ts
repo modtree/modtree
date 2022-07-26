@@ -3,25 +3,28 @@ import { z } from 'zod'
 import { createRouter } from './router'
 import { api } from '../main'
 import { base, entities } from '../schemas/entities'
+import { parseCommaSeparatedString } from '../utils/parse'
 
 export const list = createRouter()
   /** list modules */
-  .mutation('modules', {
+  .query('modules', {
     meta: {
       openapi: {
         enabled: true,
         tags: ['Module'],
-        method: 'POST',
+        method: 'GET',
         path: '/modules',
         summary: 'Get many modules',
       },
     },
     input: z.object({
-      moduleCodes: base.moduleCodeArray,
+      moduleCodes: z.string(),
     }),
     output: z.array(entities.Module),
     async resolve({ input }) {
-      return api.moduleRepo.findByCodes(input.moduleCodes)
+      /** parse string separately */
+      const moduleCodes = parseCommaSeparatedString(input.moduleCodes)
+      return api.moduleRepo.findByCodes(moduleCodes)
     },
   })
 
