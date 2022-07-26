@@ -1,1 +1,1 @@
-export type { AppRouter, trpcReactRouter } from './trpc'
+export type { AppRouter } from './trpc'

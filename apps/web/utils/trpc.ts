@@ -1,7 +1,7 @@
 import { createReactQueryHooks, createTRPCClient } from '@trpc/react'
-import type { trpcReactRouter, AppRouter } from '@modtree/server'
+import type { AppRouter } from '@modtree/server'
 
-export const trpcReact = createReactQueryHooks<trpcReactRouter>()
+export const trpcReact = createReactQueryHooks<AppRouter>()
 // => { useQuery: ..., useMutation: ...}
 
 const envUrl = process.env.NEXT_PUBLIC_BACKEND

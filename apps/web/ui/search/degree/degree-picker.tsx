@@ -11,7 +11,7 @@ export function DegreePicker(props: {
   const [degree, setDegree] = props.degreeState
   const { user } = useAppSelector((s) => s.modtree)
   const { data: degrees } = trpcReact.useQuery(
-    ['trpc/degrees', { degreeIds: user.savedDegrees.join(',') }],
+    ['degrees', { degreeIds: user.savedDegrees.join(',') }],
     {
       keepPreviousData: true,
     }

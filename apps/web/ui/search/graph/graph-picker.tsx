@@ -12,14 +12,14 @@ export function GraphPicker() {
   const graph = useAppSelector((s) => s.graph)
   const dispatch = useAppDispatch()
   const trpc = trpcReact.useContext()
-  const { data: graphs } = trpcReact.useQuery(['trpc/graphs', { graphIds: user.savedGraphs.join(',') }], {
+  const { data: graphs } = trpcReact.useQuery(['graphs', { graphIds: user.savedGraphs.join(',') }], {
     keepPreviousData: true,
     onSuccess: (graphs) => {
       const match = graphs.find((g) => g.id === graph.id)
       if (match) dispatch(r.setMainGraph(match))
     },
   })
-  const setMain = trpcReact.useMutation(['trpc/user/set-main-graph'])
+  const setMain = trpcReact.useMutation(['user/set-main-graph'])
 
   /**
    * on selection change, update the displayed entry and set the main graph
@@ -29,8 +29,8 @@ export function GraphPicker() {
       { userId: user.id, graphId: graph.id },
       {
         onSuccess: () => {
-          trpc.invalidateQueries(['trpc/graphs'])
-          trpc.invalidateQueries(['trpc/user'])
+          trpc.invalidateQueries(['graphs'])
+          trpc.invalidateQueries(['user'])
         },
       }
     )
