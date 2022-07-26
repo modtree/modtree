@@ -17,13 +17,16 @@ export function redrawGraph() {
     graph,
   } = store.getState()
   trpc
-    .query('graph/can-take-modules', user.mainGraph)
-    .then((canTake) => {
+    .mutation('graph/update', {
+      graphId: user.mainGraph,
+      nodes: graph.flowNodes,
+    })
+    .then((res) => {
       return getCSS(
         graph.flowNodes,
         user.modulesDone,
         user.modulesDoing,
-        canTake
+        res.canTakes
       )
     })
     .then((nodes) => dispatch(r.setNodesAndEdges(nodes)))

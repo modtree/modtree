@@ -41,22 +41,6 @@ export const graph = createRouter()
   })
 
   /**
-   * finds a graph by its id and toggles one module code
-   */
-  .mutation('toggle', {
-    input: z.object({
-      moduleCode: z.string().regex(validModuleRegex),
-      graphId: z.string().uuid(),
-    }),
-    async resolve({ input }) {
-      return api.graphRepo
-        .findOneById(input.graphId)
-        .then((g) => api.graphRepo.toggleModule(g, input.moduleCode))
-        .then(flatten.graph)
-    },
-  })
-
-  /**
    * finds a graph by its id and updates it with request props
    */
   .mutation('update-frontend-props', {
@@ -74,22 +58,6 @@ export const graph = createRouter()
             flowEdges: input.flowEdges,
           })
         )
-        .then(flatten.graph)
-    },
-  })
-
-  /**
-   * finds a graph by its id and updates a flow node
-   */
-  .mutation('update-flow-node', {
-    input: z.object({
-      graphId: z.string().uuid(),
-      flowNode: z.any(),
-    }),
-    async resolve({ input }) {
-      return api.graphRepo
-        .findOneById(input.graphId)
-        .then((g) => api.graphRepo.updateFlowNode(g, input.flowNode))
         .then(flatten.graph)
     },
   })
@@ -136,7 +104,23 @@ export const graph = createRouter()
     async resolve({ input }) {
       return api.graphRepo
         .findOneById(input.graphId)
-        .then((g) => api.graphRepo.rename(g, input.title))
+        .then((g) => api.graphRepo.save({ ...g, title: input.title }))
         .then(flatten.graph)
+    },
+  })
+
+  /**
+   * updates a graph
+   */
+  .mutation('update', {
+    input: z.object({
+      graphId: z.string().uuid(),
+      nodes: z.array(z.any()),
+    }),
+    async resolve({ input }) {
+      return api.graphRepo.update(input.graphId, input.nodes).then((res) => ({
+        ...res,
+        graph: flatten.graph(res.graph),
+      }))
     },
   })
