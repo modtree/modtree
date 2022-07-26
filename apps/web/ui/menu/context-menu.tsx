@@ -1,6 +1,6 @@
 import { flatten } from '@/utils/tailwind'
 import { Menu } from '@headlessui/react'
-import type { ReactElement } from 'react'
+import { ReactElement, useEffect, useRef, useState } from 'react'
 import type { MouseEvent } from 'react'
 import type { GraphFlowNode } from '@modtree/types'
 import type { ContextMenuProps, ContextMenuType } from 'types'
@@ -67,16 +67,46 @@ const ContextMenuWrapper = (props: {
   </Menu>
 )
 
+// function keepWithinViewport(
+//   contextMenuRef: RefObject<HTMLDivElement>,
+//   setOffset: SetState<[number, number]>
+// ) {
+//   if (contextMenuRef.current) {
+//     const rect = contextMenuRef.current.getBoundingClientRect()
+//     const offsetY = Math.min(window.innerHeight - rect.bottom, 0)
+//     const offsetX = Math.min(window.innerWidth - rect.right, 0)
+//     console.log('offset:', offsetX, offsetY, rect.bottom, rect.right)
+//     setOffset([offsetX, offsetY])
+//   }
+// }
+
 export function ContextMenu(props: {
   items: MenuItem[]
   contextMenuProps: ContextMenuProps
   show: boolean
 }) {
   const { top, left, flowNode } = props.contextMenuProps
+  const [offset, setOffset] = useState([0, 0])
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (ref.current) {
+      // console.log(ref.current.clientHeight)
+      const rect = ref.current.getBoundingClientRect()
+      const offsetY = Math.min(window.innerHeight - rect.bottom, 0)
+      const offsetX = Math.min(window.innerWidth - rect.right, 0)
+      setOffset([offsetX, offsetY])
+    }
+    if (!props.show) {
+      setOffset([0, 0])
+    }
+  }, [top, left, props.show])
+
   return props.show ? (
     <div
+      ref={ref}
       id="modtree-context-menu"
-      style={{ top, left }}
+      style={{ top: top + offset[1], left: left + offset[0] }}
       className="absolute z-20"
     >
       <ContextMenuWrapper>
