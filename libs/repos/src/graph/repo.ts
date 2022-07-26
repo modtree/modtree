@@ -5,6 +5,7 @@ import {
   GraphFrontendProps,
   CanTakeModule,
   GraphFlowNode,
+  ApiResponse,
 } from '@modtree/types'
 import { flatten, getFlowEdges, getFlowNodes, nodify } from '@modtree/utils'
 import { BaseRepo } from '../base'
@@ -187,17 +188,15 @@ export class GraphRepository extends BaseRepo<Graph> {
   /**
    * update graph and return enough information to replot frontend graph
    *
-   * @param {string} graphId
-   * @param {GraphFlowNode[]} nodes
+   * @param {ApiResponse.Graph} frontendGraph
    */
   async update(
-    graphId: string,
-    nodes: GraphFlowNode[]
+    frontendGraph: ApiResponse.Graph
   ): Promise<{ graph: Graph; canTakes: CanTakeModule[] }> {
     /** retrieve graph, update nodes and modules placed */
-    const graph = this.findOneById(graphId).then((graph) => {
-      graph.flowNodes = nodes
-      graph.modulesPlaced = nodes.map((n) => n.data)
+    const graph = this.findOneById(frontendGraph.id).then((graph) => {
+      graph.flowNodes = frontendGraph.flowNodes
+      graph.modulesPlaced = frontendGraph.flowNodes.map((n) => n.data)
       return this.save(graph)
     })
     /** calculate can-takes of the new graph */
