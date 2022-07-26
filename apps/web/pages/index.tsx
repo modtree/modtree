@@ -19,15 +19,15 @@ export default function Modtree() {
 
   /** trpc hooks that will auto-refetch upon any change in request params */
   const opts = { keepPreviousData: true, enabled: status === 'authenticated' }
-  trpcReact.useQuery(['user', { userId: user ? user.modtreeId : '' }], {
+  trpcReact.useQuery(['trpc/user', { userId: user ? user.modtreeId : '' }], {
     onSuccess: (user) => dispatch(r.setUser(user)),
     ...opts,
   })
-  trpcReact.useQuery(['degree', { degreeId: state.user.mainDegree }], {
+  trpcReact.useQuery(['trpc/degree', { degreeId: state.user.mainDegree }], {
     onSuccess: (degree) => dispatch(r.setMainDegree(degree)),
     ...opts,
   })
-  trpcReact.useQuery(['graph', { graphId: state.user.mainGraph }], {
+  trpcReact.useQuery(['trpc/graph', { graphId: state.user.mainGraph }], {
     onSuccess: (graph) => dispatch(r.setMainGraph(graph)),
     ...opts,
   })

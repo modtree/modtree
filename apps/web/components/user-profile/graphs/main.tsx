@@ -18,12 +18,18 @@ export function Main(props: {
   /** hooks */
   const user = useAppSelector((s) => s.modtree.user)
   const graph = useAppSelector((s) => s.graph)
-  const { data: degrees } = trpcReact.useQuery(['degrees', user.savedDegrees], {
-    keepPreviousData: true,
-  })
-  const { data: graphs } = trpcReact.useQuery(['graphs', user.savedGraphs], {
-    keepPreviousData: true,
-  })
+  const { data: degrees } = trpcReact.useQuery(
+    ['trpc/degrees', { degreeIds: user.savedDegrees.join(',') }],
+    {
+      keepPreviousData: true,
+    }
+  )
+  const { data: graphs } = trpcReact.useQuery(
+    ['trpc/graphs', { graphIds: user.savedGraphs.join(',') }],
+    {
+      keepPreviousData: true,
+    }
+  )
 
   return (
     <>

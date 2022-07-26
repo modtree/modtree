@@ -15,7 +15,7 @@ export function SearchInput(props: {
   const [query, setQuery] = useState('')
   const dispatch = useAppDispatch()
 
-  trpcReact.useQuery(['search/modules', { search: query }], {
+  trpcReact.useQuery(['trpc/search/modules', { search: query }], {
     keepPreviousData: true,
     onSuccess: (modules) => dispatch(r.setSearchedModule(modules)),
   })
