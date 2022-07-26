@@ -3,6 +3,7 @@ import {
   markAsDone,
   markAsPlanned,
   openModuleModal,
+  removeModuleNode,
 } from '@/store/functions'
 import store, { r } from '@/store/redux'
 import { devEnv } from '@/utils/env'
@@ -81,7 +82,7 @@ const flowNodeContextMenu: MenuItem[] = [
     callback: async (e) => {
       if (!e) return
       // remove node from frontend
-      store.dispatch(r.removeModuleNode(e))
+      removeModuleNode(e)
     },
   },
 ]
