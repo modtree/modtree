@@ -49,7 +49,6 @@ export const baseInitialState: ReduxState = {
       menu: 'none',
     },
     showUserProfile: false,
-    showContextMenu: false,
     showModuleModal: false,
     showDebugModal: false,
     modalModule: {

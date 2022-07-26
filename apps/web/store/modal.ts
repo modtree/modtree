@@ -42,9 +42,6 @@ export default createSlice({
     hideContextMenu: (state) => {
       state.contextMenuProps.menu = 'none'
     },
-    showContextMenu: (state, action: PayloadAction<ContextMenuProps>) => {
-      state.contextMenuProps = action.payload
-    },
     setContextMenu: (
       state,
       action: PayloadAction<Partial<ContextMenuProps>>

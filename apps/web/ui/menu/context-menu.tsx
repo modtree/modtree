@@ -28,7 +28,7 @@ export function onContextMenu(
   const dispatch = store.dispatch
   /** send redux signal to open the context menu */
   dispatch(
-    r.showContextMenu({
+    r.setContextMenu({
       /**
        * pre-viewport adjustment: opacity 0 is intended
        * upon render, the menu will be adjusted to be fully in the viewport
@@ -76,13 +76,17 @@ export function ContextMenu(props: {
   const ref = useRef<HTMLDivElement>(null)
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
+  /**
+   * keeps the context menu within the boundaries of the window
+   */
+  function keepInView() {
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect()
       const dy = Math.min(window.innerHeight - rect.bottom, 0)
       const dx = Math.min(window.innerWidth - rect.right, 0)
-      /** if no offset is required, and menu is already visible, do nothing **/
+      // if no offset is required, and menu is already visible, do nothing
       if (dy === 0 && dx === 0 && opacity === 1) return
+      // else, send the dispatch
       dispatch(
         r.setContextMenu({
           opacity: 1,
@@ -91,7 +95,9 @@ export function ContextMenu(props: {
         })
       )
     }
-  }, [top, left])
+  }
+  /** run keepInView every time new coordinates are dispatched */
+  useEffect(() => keepInView(), [top, left])
 
   return props.show ? (
     <div

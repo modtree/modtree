@@ -19,7 +19,6 @@ export type ReduxState = {
     showUserProfile: boolean
     showModuleModal: boolean
     showDebugModal: boolean
-    showContextMenu: boolean
     contextMenuProps: ContextMenuProps
     modalModule: IModuleFull
   }
