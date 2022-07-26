@@ -29,7 +29,7 @@ export function getApp(): Express {
   const app = express()
   app.use(cors(corsOpts))
   app.use(express.json())
-  app.use('/', createMid({ router: appRouter }))
+  app.use('/trpc', createMid({ router: appRouter }))
   app.use('/api', createOpenApiExpressMiddleware({ router: appRouter }))
   /**
    * run auto generate
@@ -46,7 +46,7 @@ function trpcDocumentation() {
   const openApiDocument = generateOpenApiDocument(appRouter, {
     title: 'modtree API',
     version: '1.0.0',
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'http://localhost:8080/api',
   })
 
   // YAML equivalent
