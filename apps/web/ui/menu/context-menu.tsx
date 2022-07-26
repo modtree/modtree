@@ -47,11 +47,10 @@ export function onContextMenu(
 }
 
 /**
- * just a wrapper for context menus
+ * just a style wrapper for context menus
  */
 const ContextMenuWrapper = (props: {
   children: ReactElement[] | ReactElement
-  static?: boolean
 }) => (
   <Menu as="div" className="select-none relative inline-block">
     <Menu.Items
@@ -101,10 +100,10 @@ export function ContextMenu(props: {
 
   return props.show ? (
     <div
-      ref={ref}
       id="modtree-context-menu"
-      style={{ top, left, opacity }}
       className="absolute z-20"
+      style={{ top, left, opacity }}
+      ref={ref}
     >
       <ContextMenuWrapper>
         <Entries items={props.items} roundedSelection flowNode={flowNode} />
@@ -113,6 +112,10 @@ export function ContextMenu(props: {
   ) : null
 }
 
+/**
+ * all the context menus of the project
+ * includes show/hide management of each menu
+ */
 export function ContextMenus() {
   /**
    * fetch redux state
