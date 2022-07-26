@@ -87,9 +87,13 @@ export type Pages = {
     | 'debug'
 }
 
-export type ContextMenuType = 'flowPaneContextMenu' | 'flowNodeContextMenu'
+export type ContextMenuType =
+  | 'flowPaneContextMenu'
+  | 'flowNodeContextMenu'
+  | 'none'
 
 export type ContextMenuProps = {
+  opacity: number
   top: number
   left: number
   menu: ContextMenuType

@@ -43,9 +43,10 @@ export const baseInitialState: ReduxState = {
     showModuleStateGuide: false,
     userProfilePage: 'graphs',
     contextMenuProps: {
+      opacity: 0,
       top: 0,
       left: 0,
-      menu: 'flowPaneContextMenu',
+      menu: 'none',
     },
     showUserProfile: false,
     showContextMenu: false,
