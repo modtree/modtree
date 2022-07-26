@@ -249,3 +249,15 @@ export function addModuleNode(node: GraphFlowNode) {
   dispatch(r.setNodes([...graph.flowNodes, node]))
   redrawGraph()
 }
+
+export function removeModuleNode(node: GraphFlowNode) {
+  if (!node) return
+  const graph = store.getState().graph
+
+  const newNodes = graph.flowNodes.filter((n) => n.id !== node.id)
+  if (newNodes.length === graph.flowNodes.length) return
+
+  /** add it to the graph */
+  dispatch(r.setNodes(newNodes))
+  redrawGraph()
+}
