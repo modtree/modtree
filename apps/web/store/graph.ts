@@ -61,20 +61,6 @@ export default createSlice({
     },
 
     /**
-     * add a module node to the graph, and re-positions the nodes
-     */
-    addModuleNode: (graph, action: P<GraphFlowNode>) => {
-      if (!action.payload) return
-      const node = action.payload
-
-      /** if the code is already in, do nothing. */
-      if (!graph.flowNodes.every((n) => n.id !== node.id)) return
-
-      /** add it to the graph */
-      setFlow(graph, [...graph.flowNodes, node])
-    },
-
-    /**
      * remove a module node from the graph
      */
     removeModuleNode: (graph, action: P<GraphFlowNode>) => {
