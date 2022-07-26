@@ -15,16 +15,15 @@ export const list = createRouter()
         method: 'GET',
         path: '/modules',
         summary: 'Get many modules',
+        description: 'Expects a comma separated string.',
       },
     },
     input: z.object({
-      moduleCodes: z.string(),
+      moduleCodes: z.string().transform(parseCommaSeparatedString),
     }),
     output: z.array(entities.Module),
     async resolve({ input }) {
-      /** parse string separately */
-      const moduleCodes = parseCommaSeparatedString(input.moduleCodes)
-      return api.moduleRepo.findByCodes(moduleCodes)
+      return api.moduleRepo.findByCodes(input.moduleCodes)
     },
   })
 

@@ -1059,7 +1059,7 @@ paths:
     get:
       operationId: modules
       summary: Get many modules
-      description: null
+      description: Expects a comma separated string.
       tags:
         - Module
       security: null
@@ -1131,60 +1131,6 @@ paths:
                         - preclusion
                         - fulfillRequirements
                         - prereqTree
-                      additionalProperties: false
-                required:
-                  - ok
-                  - data
-                additionalProperties: false
-        default:
-          $ref: "#/components/responses/error"
-  /modules-condensed:
-    get:
-      operationId: modules-condensed
-      summary: Get many modules condensed
-      description: null
-      tags:
-        - Module
-      security: null
-      parameters:
-        - name: moduleCodes
-          in: query
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
-              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
-          description: null
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    enum:
-                      - true
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uuid
-                        moduleCode:
-                          type: string
-                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
-                        title:
-                          type: string
-                      required:
-                        - id
-                        - moduleCode
-                        - title
                       additionalProperties: false
                 required:
                   - ok
@@ -1475,6 +1421,66 @@ paths:
                       required:
                         - moduleCode
                         - canTake
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /modules-condensed:
+    post:
+      operationId: modules-condensed
+      summary: Get many modules condensed
+      description: null
+      tags:
+        - Module
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                moduleCodes:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+              required:
+                - moduleCodes
+              additionalProperties: false
+      parameters: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        moduleCode:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        title:
+                          type: string
+                      required:
+                        - id
+                        - moduleCode
+                        - title
                       additionalProperties: false
                 required:
                   - ok

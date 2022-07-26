@@ -3,8 +3,6 @@
  * array ['CS1010', 'MA2001'].
  *
  * If any input checks fail, return empty array
- *
- * Can consider using zod's transform and refine instead
  */
 export function parseCommaSeparatedString(input: string) {
   /** input checking **/
