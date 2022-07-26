@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z, ZodType } from 'zod'
 import { validModuleRegex } from '@modtree/utils'
 
 /**
@@ -40,7 +40,14 @@ const SemesterData = z.object({
   examDate: z.string().optional(),
   examDuration: z.number().optional(),
 })
-const prereqTree = z.string().or(
+
+/**
+ * this type is referenced by prereqTree below
+ *
+ * required because zod-to-json-schema doesn't support YAML references
+ * correctly
+ */
+const prereqTree: ZodType = z.string().or(
   z.lazy(() =>
     z.object({
       and: z.array(prereqTree).optional(),
@@ -123,16 +130,14 @@ const entities = {
     department: z.string(),
     faculty: z.string(),
     /* empty string */
-    aliases: z.string().or(z.array(z.string())).optional(),
+    aliases: z.array(z.string().regex(validModuleRegex)),
     /* empty string */
     attributes: z.string().or(Attributes),
     prerequisite: z.string(),
     corequisite: z.string(),
     preclusion: z.string(),
     /* empty string */
-    fulfillRequirements: z
-      .string()
-      .or(z.array(z.string().regex(validModuleRegex))),
+    fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
     semesterData: z.array(SemesterData),
     prereqTree: z.string().or(
       z.lazy(() =>
