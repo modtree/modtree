@@ -52,12 +52,10 @@ paths:
                       preclusion:
                         type: string
                       fulfillRequirements:
-                        anyOf:
-                          - type: string
-                          - type: array
-                            items:
-                              type: string
-                              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                       prereqTree:
                         anyOf:
                           - type: string
@@ -66,11 +64,23 @@ paths:
                               and:
                                 type: array
                                 items:
-                                  $ref: "#/properties/data/properties/prereqTree"
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items:
+                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
+                                        or:
+                                          type: array
+                                          items:
+                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
+                                      additionalProperties: false
                               or:
                                 type: array
                                 items:
-                                  $ref: "#/properties/data/properties/prereqTree"
+                                  $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
                             additionalProperties: false
                     required:
                       - id
@@ -307,11 +317,23 @@ paths:
                               and:
                                 type: array
                                 items:
-                                  $ref: "#/properties/data/properties/prereqTree"
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items:
+                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
+                                        or:
+                                          type: array
+                                          items:
+                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
+                                      additionalProperties: false
                               or:
                                 type: array
                                 items:
-                                  $ref: "#/properties/data/properties/prereqTree"
+                                  $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
                             additionalProperties: false
                       workload:
                         anyOf:
@@ -757,12 +779,10 @@ paths:
                                 preclusion:
                                   type: string
                                 fulfillRequirements:
-                                  anyOf:
-                                    - type: string
-                                    - type: array
-                                      items:
-                                        type: string
-                                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                                 prereqTree:
                                   anyOf:
                                     - type: string
@@ -771,13 +791,29 @@ paths:
                                         and:
                                           type: array
                                           items:
-                                            $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                            anyOf:
+                                              - type: string
+                                              - type: object
+                                                properties:
+                                                  and:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                  or:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                additionalProperties: false
                                         or:
                                           type: array
                                           items:
                                             $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                              prereqTree/anyOf/1/properties/and\
+                                              /items"
                                       additionalProperties: false
                               required:
                                 - id
@@ -982,12 +1018,10 @@ paths:
                                 preclusion:
                                   type: string
                                 fulfillRequirements:
-                                  anyOf:
-                                    - type: string
-                                    - type: array
-                                      items:
-                                        type: string
-                                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                                 prereqTree:
                                   anyOf:
                                     - type: string
@@ -996,13 +1030,29 @@ paths:
                                         and:
                                           type: array
                                           items:
-                                            $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                            anyOf:
+                                              - type: string
+                                              - type: object
+                                                properties:
+                                                  and:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                  or:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                additionalProperties: false
                                         or:
                                           type: array
                                           items:
                                             $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                              prereqTree/anyOf/1/properties/and\
+                                              /items"
                                       additionalProperties: false
                               required:
                                 - id
@@ -1102,12 +1152,10 @@ paths:
                         preclusion:
                           type: string
                         fulfillRequirements:
-                          anyOf:
-                            - type: string
-                            - type: array
-                              items:
-                                type: string
-                                pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                         prereqTree:
                           anyOf:
                             - type: string
@@ -1116,11 +1164,26 @@ paths:
                                 and:
                                   type: array
                                   items:
-                                    $ref: "#/properties/data/items/properties/prereqTree"
+                                    anyOf:
+                                      - type: string
+                                      - type: object
+                                        properties:
+                                          and:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                          or:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                        additionalProperties: false
                                 or:
                                   type: array
                                   items:
-                                    $ref: "#/properties/data/items/properties/prereqTree"
+                                    $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                      ms"
                               additionalProperties: false
                       required:
                         - id
@@ -1359,11 +1422,26 @@ paths:
                                 and:
                                   type: array
                                   items:
-                                    $ref: "#/properties/data/items/properties/prereqTree"
+                                    anyOf:
+                                      - type: string
+                                      - type: object
+                                        properties:
+                                          and:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                          or:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                        additionalProperties: false
                                 or:
                                   type: array
                                   items:
-                                    $ref: "#/properties/data/items/properties/prereqTree"
+                                    $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                      ms"
                               additionalProperties: false
                         workload:
                           anyOf:
@@ -1662,12 +1740,10 @@ paths:
                                   preclusion:
                                     type: string
                                   fulfillRequirements:
-                                    anyOf:
-                                      - type: string
-                                      - type: array
-                                        items:
-                                          type: string
-                                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                    type: array
+                                    items:
+                                      type: string
+                                      pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                                   prereqTree:
                                     anyOf:
                                       - type: string
@@ -1676,13 +1752,31 @@ paths:
                                           and:
                                             type: array
                                             items:
-                                              $ref: "#/properties/data/items/properties/flowNodes/items/properties/data/prope\
-                                                rties/prereqTree"
+                                              anyOf:
+                                                - type: string
+                                                - type: object
+                                                  properties:
+                                                    and:
+                                                      type: array
+                                                      items:
+                                                        $ref: "#/properties/data/items/properties/flowNodes/items/properties/data/prope\
+                                                          rties/prereqTree/anyO\
+                                                          f/1/properties/and/it\
+                                                          ems"
+                                                    or:
+                                                      type: array
+                                                      items:
+                                                        $ref: "#/properties/data/items/properties/flowNodes/items/properties/data/prope\
+                                                          rties/prereqTree/anyO\
+                                                          f/1/properties/and/it\
+                                                          ems"
+                                                  additionalProperties: false
                                           or:
                                             type: array
                                             items:
                                               $ref: "#/properties/data/items/properties/flowNodes/items/properties/data/prope\
-                                                rties/prereqTree"
+                                                rties/prereqTree/anyOf/1/proper\
+                                                ties/and/items"
                                         additionalProperties: false
                                 required:
                                   - id
@@ -1782,12 +1876,10 @@ paths:
                         preclusion:
                           type: string
                         fulfillRequirements:
-                          anyOf:
-                            - type: string
-                            - type: array
-                              items:
-                                type: string
-                                pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                         prereqTree:
                           anyOf:
                             - type: string
@@ -1796,11 +1888,26 @@ paths:
                                 and:
                                   type: array
                                   items:
-                                    $ref: "#/properties/data/items/properties/prereqTree"
+                                    anyOf:
+                                      - type: string
+                                      - type: object
+                                        properties:
+                                          and:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                          or:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                        additionalProperties: false
                                 or:
                                   type: array
                                   items:
-                                    $ref: "#/properties/data/items/properties/prereqTree"
+                                    $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                      ms"
                               additionalProperties: false
                       required:
                         - id
@@ -3291,12 +3398,10 @@ paths:
                                 preclusion:
                                   type: string
                                 fulfillRequirements:
-                                  anyOf:
-                                    - type: string
-                                    - type: array
-                                      items:
-                                        type: string
-                                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                                 prereqTree:
                                   anyOf:
                                     - type: string
@@ -3305,13 +3410,29 @@ paths:
                                         and:
                                           type: array
                                           items:
-                                            $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                            anyOf:
+                                              - type: string
+                                              - type: object
+                                                properties:
+                                                  and:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                  or:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                additionalProperties: false
                                         or:
                                           type: array
                                           items:
                                             $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                              prereqTree/anyOf/1/properties/and\
+                                              /items"
                                       additionalProperties: false
                               required:
                                 - id
@@ -3474,12 +3595,10 @@ paths:
                                 preclusion:
                                   type: string
                                 fulfillRequirements:
-                                  anyOf:
-                                    - type: string
-                                    - type: array
-                                      items:
-                                        type: string
-                                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                                 prereqTree:
                                   anyOf:
                                     - type: string
@@ -3488,13 +3607,29 @@ paths:
                                         and:
                                           type: array
                                           items:
-                                            $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                            anyOf:
+                                              - type: string
+                                              - type: object
+                                                properties:
+                                                  and:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                  or:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                additionalProperties: false
                                         or:
                                           type: array
                                           items:
                                             $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                              prereqTree/anyOf/1/properties/and\
+                                              /items"
                                       additionalProperties: false
                               required:
                                 - id
@@ -3659,12 +3794,10 @@ paths:
                                 preclusion:
                                   type: string
                                 fulfillRequirements:
-                                  anyOf:
-                                    - type: string
-                                    - type: array
-                                      items:
-                                        type: string
-                                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                                 prereqTree:
                                   anyOf:
                                     - type: string
@@ -3673,13 +3806,29 @@ paths:
                                         and:
                                           type: array
                                           items:
-                                            $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                            anyOf:
+                                              - type: string
+                                              - type: object
+                                                properties:
+                                                  and:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                  or:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                additionalProperties: false
                                         or:
                                           type: array
                                           items:
                                             $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                              prereqTree/anyOf/1/properties/and\
+                                              /items"
                                       additionalProperties: false
                               required:
                                 - id
@@ -3838,12 +3987,10 @@ paths:
                                 preclusion:
                                   type: string
                                 fulfillRequirements:
-                                  anyOf:
-                                    - type: string
-                                    - type: array
-                                      items:
-                                        type: string
-                                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                                 prereqTree:
                                   anyOf:
                                     - type: string
@@ -3852,13 +3999,29 @@ paths:
                                         and:
                                           type: array
                                           items:
-                                            $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                            anyOf:
+                                              - type: string
+                                              - type: object
+                                                properties:
+                                                  and:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                  or:
+                                                    type: array
+                                                    items:
+                                                      $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
+                                                        prereqTree/anyOf/1/prop\
+                                                        erties/and/items"
+                                                additionalProperties: false
                                         or:
                                           type: array
                                           items:
                                             $ref: "#/properties/data/properties/flowNodes/items/properties/data/properties/\
-                                              prereqTree"
+                                              prereqTree/anyOf/1/properties/and\
+                                              /items"
                                       additionalProperties: false
                               required:
                                 - id

@@ -75,11 +75,15 @@ const Module = z.object({
   prerequisite: z.string(),
   corequisite: z.string(),
   preclusion: z.string(),
-  /* empty string */
-  fulfillRequirements: z
-    .string()
-    .or(z.array(z.string().regex(validModuleRegex))),
-  prereqTree,
+  fulfillRequirements: base.moduleCodeArray,
+  prereqTree: z.string().or(
+    z.lazy(() =>
+      z.object({
+        and: z.array(prereqTree).optional(),
+        or: z.array(prereqTree).optional(),
+      })
+    )
+  ),
 })
 
 const entities = {
@@ -130,7 +134,14 @@ const entities = {
       .string()
       .or(z.array(z.string().regex(validModuleRegex))),
     semesterData: z.array(SemesterData),
-    prereqTree,
+    prereqTree: z.string().or(
+      z.lazy(() =>
+        z.object({
+          and: z.array(prereqTree).optional(),
+          or: z.array(prereqTree).optional(),
+        })
+      )
+    ),
     workload: z.string().or(z.array(z.number())),
   }),
   /** FLATTENED */
