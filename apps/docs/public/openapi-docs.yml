@@ -182,12 +182,49 @@ paths:
                       id:
                         type: string
                         format: uuid
-                      acadYear:
-                        type: string
                       moduleCode:
                         type: string
                         pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                       title:
+                        type: string
+                      prerequisite:
+                        type: string
+                      corequisite:
+                        type: string
+                      preclusion:
+                        type: string
+                      fulfillRequirements:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      prereqTree:
+                        anyOf:
+                          - type: string
+                          - type: object
+                            properties:
+                              and:
+                                type: array
+                                items:
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items:
+                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
+                                        or:
+                                          type: array
+                                          items:
+                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
+                                      additionalProperties: false
+                              or:
+                                type: array
+                                items:
+                                  $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
+                            additionalProperties: false
+                      acadYear:
                         type: string
                       description:
                         type: string
@@ -230,17 +267,6 @@ paths:
                               mpes2:
                                 type: boolean
                             additionalProperties: false
-                      prerequisite:
-                        type: string
-                      corequisite:
-                        type: string
-                      preclusion:
-                        type: string
-                      fulfillRequirements:
-                        type: array
-                        items:
-                          type: string
-                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                       semesterData:
                         type: array
                         items:
@@ -306,32 +332,6 @@ paths:
                             - semester
                             - timetable
                           additionalProperties: false
-                      prereqTree:
-                        anyOf:
-                          - type: string
-                          - type: object
-                            properties:
-                              and:
-                                type: array
-                                items:
-                                  anyOf:
-                                    - type: string
-                                    - type: object
-                                      properties:
-                                        and:
-                                          type: array
-                                          items:
-                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
-                                        or:
-                                          type: array
-                                          items:
-                                            $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
-                                      additionalProperties: false
-                              or:
-                                type: array
-                                items:
-                                  $ref: "#/properties/data/properties/prereqTree/anyOf/1/properties/and/items"
-                            additionalProperties: false
                       workload:
                         anyOf:
                           - type: string
@@ -340,21 +340,21 @@ paths:
                               type: number
                     required:
                       - id
-                      - acadYear
                       - moduleCode
                       - title
+                      - prerequisite
+                      - corequisite
+                      - preclusion
+                      - fulfillRequirements
+                      - prereqTree
+                      - acadYear
                       - description
                       - moduleCredit
                       - department
                       - faculty
                       - aliases
                       - attributes
-                      - prerequisite
-                      - corequisite
-                      - preclusion
-                      - fulfillRequirements
                       - semesterData
-                      - prereqTree
                       - workload
                     additionalProperties: false
                 required:
@@ -1285,12 +1285,52 @@ paths:
                         id:
                           type: string
                           format: uuid
-                        acadYear:
-                          type: string
                         moduleCode:
                           type: string
                           pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                         title:
+                          type: string
+                        prerequisite:
+                          type: string
+                        corequisite:
+                          type: string
+                        preclusion:
+                          type: string
+                        fulfillRequirements:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        prereqTree:
+                          anyOf:
+                            - type: string
+                            - type: object
+                              properties:
+                                and:
+                                  type: array
+                                  items:
+                                    anyOf:
+                                      - type: string
+                                      - type: object
+                                        properties:
+                                          and:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                          or:
+                                            type: array
+                                            items:
+                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                                ms"
+                                        additionalProperties: false
+                                or:
+                                  type: array
+                                  items:
+                                    $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
+                                      ms"
+                              additionalProperties: false
+                        acadYear:
                           type: string
                         description:
                           type: string
@@ -1333,17 +1373,6 @@ paths:
                                 mpes2:
                                   type: boolean
                               additionalProperties: false
-                        prerequisite:
-                          type: string
-                        corequisite:
-                          type: string
-                        preclusion:
-                          type: string
-                        fulfillRequirements:
-                          type: array
-                          items:
-                            type: string
-                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
                         semesterData:
                           type: array
                           items:
@@ -1409,35 +1438,6 @@ paths:
                               - semester
                               - timetable
                             additionalProperties: false
-                        prereqTree:
-                          anyOf:
-                            - type: string
-                            - type: object
-                              properties:
-                                and:
-                                  type: array
-                                  items:
-                                    anyOf:
-                                      - type: string
-                                      - type: object
-                                        properties:
-                                          and:
-                                            type: array
-                                            items:
-                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
-                                                ms"
-                                          or:
-                                            type: array
-                                            items:
-                                              $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
-                                                ms"
-                                        additionalProperties: false
-                                or:
-                                  type: array
-                                  items:
-                                    $ref: "#/properties/data/items/properties/prereqTree/anyOf/1/properties/and/ite\
-                                      ms"
-                              additionalProperties: false
                         workload:
                           anyOf:
                             - type: string
@@ -1446,21 +1446,21 @@ paths:
                                 type: number
                       required:
                         - id
-                        - acadYear
                         - moduleCode
                         - title
+                        - prerequisite
+                        - corequisite
+                        - preclusion
+                        - fulfillRequirements
+                        - prereqTree
+                        - acadYear
                         - description
                         - moduleCredit
                         - department
                         - faculty
                         - aliases
                         - attributes
-                        - prerequisite
-                        - corequisite
-                        - preclusion
-                        - fulfillRequirements
                         - semesterData
-                        - prereqTree
                         - workload
                       additionalProperties: false
                 required:

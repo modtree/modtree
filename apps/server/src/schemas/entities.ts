@@ -120,11 +120,8 @@ const entities = {
     moduleCode: base.moduleCode,
     title: z.string(),
   }),
-  ModuleFull: z.object({
-    id: z.string().uuid(),
+  ModuleFull: Module.extend({
     acadYear: z.string(),
-    moduleCode: base.moduleCode,
-    title: z.string(),
     description: z.string(),
     moduleCredit: z.string(),
     department: z.string(),
@@ -133,20 +130,8 @@ const entities = {
     aliases: z.array(z.string().regex(validModuleRegex)),
     /* empty string */
     attributes: z.string().or(Attributes),
-    prerequisite: z.string(),
-    corequisite: z.string(),
-    preclusion: z.string(),
     /* empty string */
-    fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
     semesterData: z.array(SemesterData),
-    prereqTree: z.string().or(
-      z.lazy(() =>
-        z.object({
-          and: z.array(prereqTree).optional(),
-          or: z.array(prereqTree).optional(),
-        })
-      )
-    ),
     workload: z.string().or(z.array(z.number())),
   }),
   /** FLATTENED */
