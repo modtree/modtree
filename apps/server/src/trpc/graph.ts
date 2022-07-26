@@ -41,28 +41,6 @@ export const graph = createRouter()
   })
 
   /**
-   * finds a graph by its id and updates it with request props
-   */
-  .mutation('update-frontend-props', {
-    input: z.object({
-      graphId: z.string().uuid(),
-      flowNodes: z.array(z.any()),
-      flowEdges: z.array(z.any()),
-    }),
-    async resolve({ input }) {
-      return api.graphRepo
-        .findOneById(input.graphId)
-        .then((g) =>
-          api.graphRepo.updateFrontendProps(g, {
-            flowNodes: input.flowNodes,
-            flowEdges: input.flowEdges,
-          })
-        )
-        .then(flatten.graph)
-    },
-  })
-
-  /**
    * finds a graph by its id and updates a flow node
    */
   .query('suggest-modules', {

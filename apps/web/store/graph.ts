@@ -35,11 +35,6 @@ export default createSlice({
       const { flowNodes, flowEdges } = dagreify(action.payload)
       graph.flowNodes = flowNodes
       graph.flowEdges = flowEdges
-      trpc.mutation('graph/update-frontend-props', {
-        graphId: graph.id,
-        flowNodes,
-        flowEdges,
-      })
     },
 
     /** sets nodes */
