@@ -87,25 +87,6 @@ export class GraphRepository extends BaseRepo<Graph> {
   }
 
   /**
-   * Updates the frontend part of the Graph
-   * note that this method will NOT retrieve any relations.
-   * @param {Graph} graph
-   * @param {GraphFrontendProps} props
-   * @returns {Promise<Graph>}
-   */
-  async updateFrontendProps(
-    graph: Graph,
-    props: GraphFrontendProps
-  ): Promise<Graph> {
-    return this.save({
-      ...graph,
-      modulesPlaced: props.flowNodes.map((n) => n.data),
-      flowEdges: props.flowEdges,
-      flowNodes: props.flowNodes,
-    })
-  }
-
-  /**
    * extracts the parameters for suggestModules
    *
    * @param {Graph} graph
