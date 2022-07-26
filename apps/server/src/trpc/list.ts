@@ -28,18 +28,18 @@ export const list = createRouter()
   })
 
   /** list condensed modules */
-  .mutation('modules-condensed', {
+  .query('modules-condensed', {
     meta: {
       openapi: {
         enabled: true,
         tags: ['Module'],
-        method: 'POST',
+        method: 'GET',
         path: '/modules-condensed',
         summary: 'Get many modules condensed',
       },
     },
     input: z.object({
-      moduleCodes: base.moduleCodeArray,
+      moduleCodes: z.string().transform(parseCommaSeparatedString),
     }),
     output: z.array(entities.ModuleCondensed),
     async resolve({ input }) {
@@ -48,18 +48,18 @@ export const list = createRouter()
   })
 
   /** list full modules */
-  .mutation('modules-full', {
+  .query('modules-full', {
     meta: {
       openapi: {
         enabled: true,
         tags: ['Module'],
-        method: 'POST',
+        method: 'GET',
         path: '/modules-full',
         summary: 'Get many modules full',
       },
     },
     input: z.object({
-      moduleCodes: base.moduleCodeArray,
+      moduleCodes: z.string().transform(parseCommaSeparatedString),
     }),
     output: z.array(entities.ModuleFull),
     async resolve({ input }) {
@@ -68,12 +68,12 @@ export const list = createRouter()
   })
 
   /** list users */
-  .mutation('users', {
+  .query('users', {
     meta: {
       openapi: {
         enabled: true,
         tags: ['User'],
-        method: 'POST',
+        method: 'GET',
         path: '/users',
         summary: 'Get many users',
       },
@@ -97,18 +97,18 @@ export const list = createRouter()
   })
 
   /** list degrees */
-  .mutation('degrees', {
+  .query('degrees', {
     meta: {
       openapi: {
         enabled: true,
         tags: ['Degree'],
-        method: 'POST',
+        method: 'GET',
         path: '/degrees',
         summary: 'Get many degrees',
       },
     },
     input: z.object({
-      degreeIds: base.idArray,
+      degreeIds: z.string().transform(parseCommaSeparatedString),
     }),
     output: z.array(entities.Degree),
     async resolve({ input }) {
@@ -119,18 +119,18 @@ export const list = createRouter()
   })
 
   /** list graphs */
-  .mutation('graphs', {
+  .query('graphs', {
     meta: {
       openapi: {
         enabled: true,
         tags: ['Graph'],
-        method: 'POST',
+        method: 'GET',
         path: '/graphs',
         summary: 'Get many graphs',
       },
     },
     input: z.object({
-      graphIds: base.idArray,
+      graphIds: z.string().transform(parseCommaSeparatedString),
     }),
     output: z.array(entities.Graph),
     async resolve({ input }) {
