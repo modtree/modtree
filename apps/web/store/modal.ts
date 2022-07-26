@@ -40,11 +40,17 @@ export default createSlice({
       state.showDebugModal = true
     },
     hideContextMenu: (state) => {
-      state.showContextMenu = false
+      state.contextMenuProps.menu = 'none'
     },
-    showContextMenu: (state, action: PayloadAction<ContextMenuProps>) => {
-      state.showContextMenu = true
-      state.contextMenuProps = action.payload
+    setContextMenu: (
+      state,
+      action: PayloadAction<Partial<ContextMenuProps>>
+    ) => {
+      const fullProps: ContextMenuProps = {
+        ...state.contextMenuProps,
+        ...action.payload,
+      }
+      state.contextMenuProps = fullProps
     },
     setModalModule: (state, action: PayloadAction<IModuleFull>) => {
       state.modalModule = action.payload

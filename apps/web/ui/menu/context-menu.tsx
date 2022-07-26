@@ -1,10 +1,10 @@
 import { flatten } from '@/utils/tailwind'
 import { Menu } from '@headlessui/react'
-import type { ReactElement } from 'react'
+import { ReactElement, useEffect, useRef } from 'react'
 import type { MouseEvent } from 'react'
 import type { GraphFlowNode } from '@modtree/types'
 import type { ContextMenuProps, ContextMenuType } from 'types'
-import store, { useAppSelector, r } from '@/store/redux'
+import store, { useAppSelector, r, useAppDispatch } from '@/store/redux'
 import { dashed } from '@/utils/array'
 import { items } from '@/components/menu-items'
 import { MenuItem } from 'types'
@@ -28,30 +28,29 @@ export function onContextMenu(
   const dispatch = store.dispatch
   /** send redux signal to open the context menu */
   dispatch(
-    r.showContextMenu({
+    r.setContextMenu({
       /**
-       * where on the screen to place the menu
+       * pre-viewport adjustment: opacity 0 is intended
+       * upon render, the menu will be adjusted to be fully in the viewport
+       * and only then opacity will be set back to 1.
        */
+      opacity: 0,
+      /** where on the screen to place the menu */
       left: event.pageX,
       top: event.pageY,
-      /**
-       * which menu to open
-       */
+      /** which menu to open */
       menu,
-      /**
-       * data of the node that was right-clicked
-       */
+      /** data of the node that was right-clicked */
       flowNode: node,
     })
   )
 }
 
 /**
- * just a wrapper for context menus
+ * just a style wrapper for context menus
  */
 const ContextMenuWrapper = (props: {
   children: ReactElement[] | ReactElement
-  static?: boolean
 }) => (
   <Menu as="div" className="select-none relative inline-block">
     <Menu.Items
@@ -72,12 +71,39 @@ export function ContextMenu(props: {
   contextMenuProps: ContextMenuProps
   show: boolean
 }) {
-  const { top, left, flowNode } = props.contextMenuProps
+  const { top, left, flowNode, opacity } = props.contextMenuProps
+  const ref = useRef<HTMLDivElement>(null)
+  const dispatch = useAppDispatch()
+
+  /**
+   * keeps the context menu within the boundaries of the window
+   */
+  function keepInView() {
+    if (ref.current) {
+      const rect = ref.current.getBoundingClientRect()
+      const dy = Math.min(window.innerHeight - rect.bottom, 0)
+      const dx = Math.min(window.innerWidth - rect.right, 0)
+      // if no offset is required, and menu is already visible, do nothing
+      if (dy === 0 && dx === 0 && opacity === 1) return
+      // else, send the dispatch
+      dispatch(
+        r.setContextMenu({
+          opacity: 1,
+          top: top + dy,
+          left: left + dx,
+        })
+      )
+    }
+  }
+  /** run keepInView every time new coordinates are dispatched */
+  useEffect(() => keepInView(), [top, left])
+
   return props.show ? (
     <div
       id="modtree-context-menu"
-      style={{ top, left }}
       className="absolute z-20"
+      style={{ top, left, opacity }}
+      ref={ref}
     >
       <ContextMenuWrapper>
         <Entries items={props.items} roundedSelection flowNode={flowNode} />
@@ -86,16 +112,20 @@ export function ContextMenu(props: {
   ) : null
 }
 
+/**
+ * all the context menus of the project
+ * includes show/hide management of each menu
+ */
 export function ContextMenus() {
   /**
    * fetch redux state
    */
-  const { showContextMenu, contextMenuProps } = useAppSelector((s) => s.modal)
-  const selected = contextMenuProps.menu
+  const contextMenuProps = useAppSelector((s) => s.modal.contextMenuProps)
   const menus: ContextMenuType[] = [
     'flowNodeContextMenu',
     'flowPaneContextMenu',
   ]
+
   /**
    * render all the menus ahead of time, and only show the selected one
    */
@@ -104,7 +134,7 @@ export function ContextMenus() {
       {menus.map((menu, index) => (
         <ContextMenu
           key={dashed('modtree-context', menu, index)}
-          show={showContextMenu && selected === menu}
+          show={contextMenuProps.menu === menu}
           contextMenuProps={contextMenuProps}
           items={items[menu]}
         />
