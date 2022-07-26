@@ -2,17 +2,6 @@ import { z } from 'zod'
 import { validModuleRegex } from '@modtree/utils'
 
 /**
- * zod doesn't support recursive types
- * as such, this type is technically incorrect
- */
-const prereqTree = z.string().or(
-  z.object({
-    and: z.array(z.object({})).optional(),
-    or: z.array(z.object({})).optional(),
-  })
-)
-
-/**
  * NUSMods types in zod
  */
 const Attributes = z.object({
@@ -51,6 +40,14 @@ const SemesterData = z.object({
   examDate: z.string().optional(),
   examDuration: z.number().optional(),
 })
+const prereqTree = z.string().or(
+  z.lazy(() =>
+    z.object({
+      and: z.array(prereqTree).optional(),
+      or: z.array(prereqTree).optional(),
+    })
+  )
+)
 
 /**
  * due to zod-to-json-schema refStrategy not working,
@@ -78,7 +75,10 @@ const Module = z.object({
   prerequisite: z.string(),
   corequisite: z.string(),
   preclusion: z.string(),
-  fulfillRequirements: base.moduleCodeArray,
+  /* empty string */
+  fulfillRequirements: z
+    .string()
+    .or(z.array(z.string().regex(validModuleRegex))),
   prereqTree,
 })
 
