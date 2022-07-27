@@ -13,7 +13,6 @@ export const CloseButton = (props: {
       'focus:outline-none'
     )}
     onClick={props.close}
-    id="module-modal-close-button"
     data-cy={props.cypressCloseButton}
   >
     <CloseIcon className="text-gray-600 h-5 w-5" />

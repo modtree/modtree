@@ -34,7 +34,12 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         className="mb-8"
       >
         <h6>Title</h6>
-        <Input className="w-full mb-4" state={[title, setTitle]} grayed />
+        <Input
+          cypress="add-graph-title"
+          className="w-full mb-4"
+          state={[title, setTitle]}
+          grayed
+        />
         <h6>Degree</h6>
         <DegreePicker degreeState={[degree, setDegree]} />
       </SettingsSection>

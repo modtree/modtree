@@ -25,6 +25,10 @@ declare global {
       ): Chainable<JQuery<E>>
       addGraphModule(moduleCode: string, title: string): void
       removeGraphModule(moduleCode: string): void
+      openUserProfile<E>(
+        value: 'Degrees' | 'Graphs' | 'Modules'
+      ): Chainable<JQuery<E>>
+      closeUserProfile<E>(): Chainable<JQuery<E>>
       /*
        * The return type for this is the same as cy.get().
        * This is a wrapper for cy.get().
@@ -36,6 +40,19 @@ declare global {
 
 Cypress.Commands.add('getCy', (value: string) => {
   return cy.get(`[data-cy=${value}]`)
+})
+
+Cypress.Commands.add(
+  'openUserProfile',
+  (value: 'Degrees' | 'Graphs' | 'Modules') => {
+    cy.getCy('modtree-user-circle').click()
+    cy.contains('Your profile').click()
+    return cy.contains(value).click()
+  }
+)
+
+Cypress.Commands.add('closeUserProfile', () => {
+  return cy.get('body').click(0, 0)
 })
 
 Cypress.Commands.add('login', () => {
