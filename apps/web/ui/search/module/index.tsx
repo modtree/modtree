@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { SearchContainer } from './container'
 import { SearchResultContainer } from './results'
 import { addModuleToBuildList, openModuleModal } from '@/store/functions'
@@ -45,7 +45,7 @@ export function SettingsSearchBox(props: { cypress?: string }) {
 
   return (
     <div
-      className={flatten(
+      className={cc(
         // 'border border-red-500',
         'ui-rectangle',
         'shadow-none',
