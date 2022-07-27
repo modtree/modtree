@@ -152,10 +152,10 @@ describe('degrees panel', () => {
       .click()
 
     // Remove last module
-    modules.pop()
-    cy.getCy('degree-modules-list')
-      .children()
-      .last()
+    const lastModuleCode = modules.pop()
+    cy.contains(lastModuleCode)
+      .parent()
+      .parent()
       .find('[data-cy="delete-button"]')
       .click()
 
