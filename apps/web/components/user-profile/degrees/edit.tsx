@@ -57,7 +57,6 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
           <SettingsSearchBox cypress="degree-modules-search" />
         </div>
         <SelectedModules
-          modules={buildList}
           cypress="degree-modules-list"
           cypressModule="degree-module"
         />
