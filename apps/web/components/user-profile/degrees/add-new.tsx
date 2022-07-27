@@ -11,10 +11,12 @@ import { createAndSaveDegree } from '@/store/functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   /** hooks */
+  const [disabled, setDisabled] = useState(false)
   const [title, setTitle] = useState('')
   const buildList = useAppSelector((state) => state.search.buildList)
 
   async function saveDegree() {
+    setDisabled(true)
     props.setPage('main')
     createAndSaveDegree(title, buildList)
   }
@@ -48,7 +50,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
         />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green" onClick={saveDegree}>
+        <Button color="green" disabled={disabled} onClick={saveDegree}>
           Save degree
         </Button>
       </div>
