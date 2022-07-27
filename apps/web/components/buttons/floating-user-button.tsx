@@ -20,6 +20,7 @@ const SignedOutRect = () => (
       'font-medium text-white hover:bg-opacity-30',
       'hover:no-underline'
     )}
+    data-cy="sign-in-button"
   >
     Sign in
   </button>

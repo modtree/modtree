@@ -37,55 +37,12 @@ Cypress.Commands.add('getCy', (value: string) => {
 })
 
 Cypress.Commands.add('login', () => {
-  const username = Cypress.env('GITHUB_USER')
-  const password = Cypress.env('GITHUB_PW')
-  const COOKIE_NAME = Cypress.env('COOKIE_NAME')
-  const SECURE_COOKIE_NAME = Cypress.env('SECURE_COOKIE_NAME')
-
-  const BASE_URL = Cypress.config('baseUrl')
-  // Login page URL
-  const loginUrl = BASE_URL + '/api/auth/signin'
-  // The selector for Google on our login page
-  const loginSelector = `form[action="${BASE_URL}/api/auth/signin/github"]`
-
-  const socialLoginOptions = {
-    username,
-    password,
-    loginUrl,
-    headless: true,
-    logs: false,
-    isPopup: true,
-    loginSelector,
-    postLoginSelector: '#modtree-user-circle',
-  }
-
   cy.visit('/')
+  cy.getCy('sign-in-button').click()
+  cy.contains('Sign in with Credentials').click()
 
-  return cy
-    .task('GitHubSocialLogin', socialLoginOptions)
-    .then(({ cookies }) => {
-      cy.clearCookies()
-
-      const cookie = cookies
-        .filter(
-          (cookie) =>
-            cookie.name === COOKIE_NAME || cookie.name === SECURE_COOKIE_NAME
-        )
-        .pop()
-      if (cookie) {
-        cy.setCookie(cookie.name, cookie.value, {
-          domain: cookie.domain,
-          expiry: cookie.expires,
-          httpOnly: cookie.httpOnly,
-          path: cookie.path,
-          secure: cookie.secure,
-        })
-
-        Cypress.Cookies.defaults({
-          preserve: [COOKIE_NAME, SECURE_COOKIE_NAME],
-        })
-      }
-    })
+  // wait for login to complete
+  cy.getCy('modtree-user-circle')
 })
 
 Cypress.Commands.add('loadModuleModal', (moduleCode: string, title: string) => {
