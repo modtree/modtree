@@ -17,6 +17,8 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
       login(): void
+      loginCred(): void
+      loginSocial(): void
       loadModuleModal<E>(
         moduleCode: string,
         title: string
@@ -37,6 +39,30 @@ Cypress.Commands.add('getCy', (value: string) => {
 })
 
 Cypress.Commands.add('login', () => {
+  const isLocal = Cypress.config('baseUrl').includes('localhost')
+  if (isLocal) {
+    cy.loginCred()
+  } else {
+    cy.loginSocial()
+  }
+})
+
+/**
+ * Primary login method for local testing.
+ */
+Cypress.Commands.add('loginCred', () => {
+  cy.visit('/')
+  cy.getCy('sign-in-button').click()
+  cy.contains('Sign in with Credentials').click()
+
+  // wait for login to complete
+  cy.getCy('modtree-user-circle')
+})
+
+/**
+ * Slower, unstable login. But can be used to test dev/prod envs.
+ */
+Cypress.Commands.add('loginSocial', () => {
   const username = Cypress.env('GITHUB_USER')
   const password = Cypress.env('GITHUB_PW')
   const COOKIE_NAME = Cypress.env('COOKIE_NAME')
