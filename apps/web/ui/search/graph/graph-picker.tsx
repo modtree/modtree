@@ -30,6 +30,7 @@ export function GraphPicker() {
       {
         onSuccess: () => {
           trpc.invalidateQueries(['graphs'])
+          trpc.invalidateQueries(['user'])
         },
       }
     )
