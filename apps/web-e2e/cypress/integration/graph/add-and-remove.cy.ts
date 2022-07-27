@@ -1,7 +1,7 @@
-const code = 'MA2104'
-const title = 'Multivariable Calculus'
-
 describe('add-and-remove', () => {
+  const code = 'MA2104'
+  const title = 'Multivariable Calculus'
+
   beforeEach(() => {
     cy.login()
     cy.reload()

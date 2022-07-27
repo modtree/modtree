@@ -15,7 +15,6 @@ export const DeleteButton = (props: {
           'focus:outline-none'
         )}
         onClick={props.onClick}
-        id="module-modal-close-button"
         data-cy={props.cypress}
       >
         <DeleteIcon className="h-5 w-5 text-gray-500" />
