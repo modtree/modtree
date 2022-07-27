@@ -17,7 +17,12 @@ export const colorMap: Record<string, string> = {
 }
 
 export function Button(props: ButtonProps) {
-  const color = props.color || 'gray'
+  /* if not defined, then set to gray */
+  let color = props.color || 'gray'
+  /* if disabled, then overwrite any color */
+  if (props.disabled) {
+    color = 'gray'
+  }
   const { className, children, ...rest } = props
   return (
     <button className={cc(colorMap[color])} {...rest}>

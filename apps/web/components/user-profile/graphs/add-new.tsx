@@ -10,6 +10,7 @@ import { createAndSaveGraph } from '@/store/functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
   const { degree: mainDegree } = useAppSelector((s) => s.modtree)
+  const [disabled, setDisabled] = useState(false)
   const [title, setTitle] = useState('')
   const [degree, setDegree] = useState<ApiResponse.Degree>(mainDegree)
 
@@ -19,6 +20,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
       alert('Graph title should not be empty')
       return
     }
+    setDisabled(true)
     createAndSaveGraph(title, degree.id)
     props.setPage('main')
   }
@@ -37,7 +39,7 @@ export function AddNew(props: { setPage: SetState<Pages['Graphs']> }) {
         <DegreePicker degreeState={[degree, setDegree]} />
       </SettingsSection>
       <div className="flex flex-row-reverse">
-        <Button color="green" onClick={saveGraph}>
+        <Button color="green" disabled={disabled} onClick={saveGraph}>
           Save graph
         </Button>
       </div>
