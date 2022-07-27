@@ -25,10 +25,17 @@ declare global {
       ): Chainable<JQuery<E>>
       addGraphModule(moduleCode: string, title: string): void
       removeGraphModule(moduleCode: string): void
+
+      /** user profile modal open/close */
       openUserProfile<E>(
         value: 'Degrees' | 'Graphs' | 'Modules'
       ): Chainable<JQuery<E>>
       closeUserProfile<E>(): Chainable<JQuery<E>>
+
+      /** basic graph operations */
+      addGraph<E>(title: string): Chainable<JQuery<E>>
+      removeGraph<E>(title: string): Chainable<JQuery<E>>
+
       /*
        * The return type for this is the same as cy.get().
        * This is a wrapper for cy.get().
@@ -50,6 +57,23 @@ Cypress.Commands.add(
     return cy.contains(value).click()
   }
 )
+
+Cypress.Commands.add('addGraph', (title: string) => {
+  cy.openUserProfile('Graphs')
+  cy.get('button').contains('New graph').click()
+  cy.getCy('add-graph-title').clear().type(title)
+  cy.get('button').contains('Save graph').click()
+  return cy.closeUserProfile()
+})
+
+Cypress.Commands.add('removeGraph', (title: string) => {
+  cy.openUserProfile('Graphs')
+  cy.get('div')
+    .contains(title)
+    .parent()
+    .within(() => cy.getCy('delete-button').click())
+  return cy.closeUserProfile()
+})
 
 Cypress.Commands.add('closeUserProfile', () => {
   return cy.get('body').click(0, 0)

@@ -18,22 +18,11 @@ describe('add-and-remove', () => {
   })
 
   it('Add a new graph', () => {
-    cy.openUserProfile('Graphs')
-    cy.get('button').contains('New graph').click()
-    cy.getCy('add-graph-title').clear().type('test-graph')
-    cy.get('button').contains('Save graph').click()
-    cy.closeUserProfile()
+    cy.addGraph('test-graph')
   })
 
   it('Remove created graph', () => {
-    cy.openUserProfile('Graphs')
-    cy.get('div')
-      .contains('test-graph')
-      .parent()
-      .within(() => {
-        cy.getCy('delete-button').click()
-      })
-    cy.closeUserProfile()
+    cy.removeGraph('test-graph')
   })
 
   it('User has one graph again', () => {
