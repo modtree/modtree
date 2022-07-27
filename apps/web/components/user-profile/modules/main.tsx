@@ -9,8 +9,10 @@ import { updateModuleCache } from '@/store/functions'
 
 export function Main(props: { setPage: SetState<Pages['Modules']> }) {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.modtree.user)
-  const cache = useAppSelector((state) => state.cache)
+  const {
+    modtree: { user },
+    cache,
+  } = useAppSelector((state) => state)
 
   /**
    * update the cache with required modules
