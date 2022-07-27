@@ -1,12 +1,5 @@
 import { DataSource } from 'typeorm'
-import {
-  Module,
-  Graph,
-  GraphFrontendProps,
-  CanTakeModule,
-  GraphFlowNode,
-  ApiResponse,
-} from '@modtree/types'
+import { Module, Graph, CanTakeModule, ApiResponse } from '@modtree/types'
 import { flatten, getFlowEdges, getFlowNodes, nodify } from '@modtree/utils'
 import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
@@ -180,6 +173,22 @@ export class GraphRepository extends BaseRepo<Graph> {
       graph.modulesPlaced = frontendGraph.flowNodes.map((n) => n.data)
       return this.save(graph)
     })
+    /** calculate can-takes of the new graph */
+    const canTakes = graph.then((g) => this.canTakeModules(g))
+    return Promise.all([graph, canTakes]).then(([graph, canTakes]) => ({
+      graph,
+      canTakes,
+    }))
+  }
+
+  /**
+   * find a graph and fetch it with can takes to make it frontend-ready
+   */
+  async getFrontend(
+    graphId: string
+  ): Promise<{ graph: Graph; canTakes: CanTakeModule[] }> {
+    /** retrieve graph */
+    const graph = this.findOneById(graphId)
     /** calculate can-takes of the new graph */
     const canTakes = graph.then((g) => this.canTakeModules(g))
     return Promise.all([graph, canTakes]).then(([graph, canTakes]) => ({
