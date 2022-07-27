@@ -45,6 +45,14 @@ export default function ModtreeFlow() {
       onPaneContextMenu={(e) => onContextMenu(e, 'flowPaneContextMenu')}
       onNodeContextMenu={(e, node) => {
         onContextMenu(e, 'flowNodeContextMenu', node)
+        /** make the right-clicked node selected. */
+        const clearSelect = [
+          ...flowNodes
+            .filter((n) => n.id !== node.id)
+            .map((n) => ({ ...n, selected: false })),
+          { ...node, selected: true },
+        ]
+        dispatch(r.setNodes(clearSelect))
       }}
       /** pure configs */
       fitView={true}

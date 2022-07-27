@@ -46,8 +46,6 @@ export function getFlowNodes(
   })
   return nodes.map((node) => ({
     ...node,
-    // unselect nodes
-    selected: undefined,
     position: positions[node.id],
   }))
 }
