@@ -6,7 +6,7 @@ import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppSelector } from '@/store/redux'
-import { SelectedModules } from '../modules/selected-modules'
+import { BuildList } from '../build-list'
 import { createAndSaveDegree } from '@/store/functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
@@ -42,7 +42,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
             </div>
           </div>
         </div>
-        <SelectedModules
+        <BuildList
           cypress="degree-modules-list"
           cypressModule="degree-module"
         />
