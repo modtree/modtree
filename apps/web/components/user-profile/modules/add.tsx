@@ -4,7 +4,7 @@ import { Button } from '@/ui/buttons'
 import { ModuleStatus, SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppDispatch, useAppSelector, r } from '@/store/redux'
-import { SelectedModules } from './selected-modules'
+import { BuildList } from '../build-list'
 import { setModuleStatus } from '@/store/functions'
 
 export function Add(props: {
@@ -46,7 +46,7 @@ export function Add(props: {
       >
         <h6>Modules</h6>
         <div className="flex flex-row space-x-2 mb-4">{Search}</div>
-        <SelectedModules cypress="build-list" />
+        <BuildList cypress="build-list" />
       </SettingsSection>
       <div className="flex flex-row-reverse">
         <Button color="green" onClick={() => confirm()}>

@@ -2,10 +2,7 @@ import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { dashed } from '@/utils/array'
 import { Row } from '@/ui/settings'
 
-export function SelectedModules(props: {
-  cypress?: string
-  cypressModule?: string
-}) {
+export function BuildList(props: { cypress?: string; cypressModule?: string }) {
   const dispatch = useAppDispatch()
   const {
     cache,

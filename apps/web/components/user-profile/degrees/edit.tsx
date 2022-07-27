@@ -6,7 +6,7 @@ import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
 import { useAppSelector } from '@/store/redux'
-import { SelectedModules } from '../modules/selected-modules'
+import { BuildList } from '../build-list'
 import { setBuildTarget } from '@/store/functions'
 import { trpcReact } from '@/utils/trpc'
 
@@ -56,7 +56,7 @@ export function Edit(props: { setPage: SetState<Pages['Degrees']> }) {
         <div className="flex flex-row space-x-2 mb-4">
           <SettingsSearchBox cypress="degree-modules-search" />
         </div>
-        <SelectedModules
+        <BuildList
           cypress="degree-modules-list"
           cypressModule="degree-module"
         />
