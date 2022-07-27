@@ -6,7 +6,6 @@ import {
   applyNodeChanges as RFApplyNodeChanges,
   NodeChange,
 } from 'react-flow-renderer'
-import { trpc } from '@/utils/trpc'
 
 export default createSlice({
   name: 'graph',
