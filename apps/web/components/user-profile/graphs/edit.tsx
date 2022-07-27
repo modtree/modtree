@@ -5,7 +5,7 @@ import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { useAppSelector } from '@/store/redux'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { trpcReact } from '@/utils/trpc'
 
 export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
@@ -40,7 +40,7 @@ export function Edit(props: { setPage: SetState<Pages['Graphs']> }) {
         <Input className="w-full mb-4" state={[title, setTitle]} grayed />
         <h6>Degree</h6>
         <div
-          className={flatten(
+          className={cc(
             'ui-rectangle shadow-none h-8 w-64',
             'cursor-not-allowed select-none',
             'flex justify-center items-center'

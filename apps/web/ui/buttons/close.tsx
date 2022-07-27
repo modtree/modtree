@@ -1,4 +1,4 @@
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { CloseIcon } from '@/ui/icons'
 
 export const CloseButton = (props: {
@@ -6,7 +6,7 @@ export const CloseButton = (props: {
   cypressCloseButton?: string
 }) => (
   <button
-    className={flatten(
+    className={cc(
       'h-6 w-6 rounded-md',
       'hover:bg-gray-200 active:bg-gray-300',
       'flex flex-row centered',

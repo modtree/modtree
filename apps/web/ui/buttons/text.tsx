@@ -1,5 +1,5 @@
 import { ButtonProps } from 'types'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { PlusIcon } from '@/ui/icons'
 
 /**
@@ -20,7 +20,7 @@ export function Button(props: ButtonProps) {
   const color = props.color || 'gray'
   const { className, children, ...rest } = props
   return (
-    <button className={flatten(colorMap[color])} {...rest}>
+    <button className={cc(colorMap[color])} {...rest}>
       {children}
     </button>
   )

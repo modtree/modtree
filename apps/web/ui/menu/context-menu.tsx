@@ -1,4 +1,4 @@
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { Menu } from '@headlessui/react'
 import { ReactElement, useEffect, useRef } from 'react'
 import type { MouseEvent } from 'react'
@@ -55,7 +55,7 @@ const ContextMenuWrapper = (props: {
   <Menu as="div" className="select-none relative inline-block">
     <Menu.Items
       static
-      className={flatten(
+      className={cc(
         'w-48 divide-y py-1 px-1 divide-gray-200 rounded-md bg-white',
         'shadow-md focus:outline-none overflow-hidden'
       )}

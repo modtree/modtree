@@ -1,6 +1,6 @@
 import { useReactFlow } from 'react-flow-renderer'
 import { PlusIcon, MinusIcon, FitViewIcon } from '@/ui/svgs/flow'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { ReactElement } from 'react'
 import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 
@@ -10,7 +10,7 @@ const Button = (props: {
   children?: ReactElement | string
 }) => (
   <button
-    className={flatten(
+    className={cc(
       'react-flow__controls-button',
       'fill-gray-700 text-gray-700',
       props.className
