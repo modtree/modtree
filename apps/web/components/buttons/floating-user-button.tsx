@@ -4,7 +4,7 @@ import { useSession } from '@/utils/auth'
 import { DropdownMenu, Entries } from '@/ui/menu'
 import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { items } from '@/components/menu-items'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { signIn } from 'next-auth/react'
 import { devEnv } from '@/utils/env'
 
@@ -14,7 +14,7 @@ import { devEnv } from '@/utils/env'
 const SignedOutRect = () => (
   <button
     onClick={() => signIn()}
-    className={flatten(
+    className={cc(
       'px-4 py-2',
       'inline-flex h-10 centered rounded-md bg-black bg-opacity-20',
       'font-medium text-white hover:bg-opacity-30',

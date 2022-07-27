@@ -1,4 +1,4 @@
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { Combobox } from '@headlessui/react'
 import { SearchIcon } from '@/ui/icons'
 import { trpcReact } from '@/utils/trpc'
@@ -23,14 +23,14 @@ export function SearchInput(props: {
   return (
     <>
       <div
-        className={flatten(
+        className={cc(
           'flex flex-row',
           'rounded-lg bg-white shadow-md focus:outline-none',
           inputContainerClass
         )}
       >
         <Combobox.Input
-          className={flatten(
+          className={cc(
             'flex-1 bg-inherit border-none pl-3 focus:outline-none',
             inputClass
           )}

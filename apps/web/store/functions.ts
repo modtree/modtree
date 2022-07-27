@@ -1,7 +1,7 @@
 import { getCSS } from '@/utils/module-state'
 import { trpc } from '@/utils/trpc'
 import store, { r } from '@/store/redux'
-import { ApiResponse, ModuleStatus } from '@modtree/types'
+import { ApiResponse, GraphFlowNode, ModuleStatus } from '@modtree/types'
 
 const dispatch = store.dispatch
 
@@ -17,13 +17,13 @@ export function redrawGraph() {
     graph,
   } = store.getState()
   trpc
-    .query('graph/can-take-modules', user.mainGraph)
-    .then((canTake) => {
+    .mutation('graph/update', { graph })
+    .then((res) => {
       return getCSS(
         graph.flowNodes,
         user.modulesDone,
         user.modulesDoing,
-        canTake
+        res.canTakes
       )
     })
     .then((nodes) => dispatch(r.setNodesAndEdges(nodes)))
@@ -236,4 +236,28 @@ export function setMainDegree(degree: ApiResponse.Degree) {
     degreeId: degree.id,
   })
   dispatch(r.setMainDegree(degree))
+}
+
+export function addModuleNode(node: GraphFlowNode) {
+  if (!node) return
+  const graph = store.getState().graph
+
+  /** if the id is already in, do nothing. */
+  if (!graph.flowNodes.every((n) => n.id !== node.id)) return
+
+  /** add it to the graph */
+  dispatch(r.setNodes([...graph.flowNodes, node]))
+  redrawGraph()
+}
+
+export function removeModuleNode(node: GraphFlowNode) {
+  if (!node) return
+  const graph = store.getState().graph
+
+  const newNodes = graph.flowNodes.filter((n) => n.id !== node.id)
+  if (newNodes.length === graph.flowNodes.length) return
+
+  /** add it to the graph */
+  dispatch(r.setNodes(newNodes))
+  redrawGraph()
 }

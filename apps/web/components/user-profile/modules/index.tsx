@@ -1,19 +1,15 @@
 import { Pages } from 'types'
 import { Main } from './main'
-import { AddDone } from './add-done'
+import { Add } from './add'
 import { useState } from 'react'
-import { AddDoing } from './add-doing'
+import { ModuleStatus } from '@modtree/types'
 
 export function ModulesTabContent() {
   const [page, setPage] = useState<Pages['Modules']>('main')
-  if (page === 'main') {
-    return <Main setPage={setPage} />
-  }
-  if (page === 'add-doing') {
-    return <AddDoing setPage={setPage} />
-  }
-  if (page === 'add-done') {
-    return <AddDone setPage={setPage} />
-  }
-  return <></>
+  const component = {
+    main: <Main setPage={setPage} />,
+    'add-doing': <Add setPage={setPage} targetStatus={ModuleStatus.DOING} />,
+    'add-done': <Add setPage={setPage} targetStatus={ModuleStatus.DONE} />,
+  }[page]
+  return component || <></>
 }

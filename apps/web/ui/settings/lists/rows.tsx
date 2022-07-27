@@ -1,6 +1,6 @@
 import { DegreeIcon, GraphIcon, ModuleIcon } from '@/ui/icons'
 import { ExtendedProps } from 'types'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { Button, DeleteButton } from '@/ui/buttons'
 
 type RowProps = {
@@ -22,7 +22,7 @@ export function BaseRow(props: RowProps) {
   } = props
   return (
     <div
-      className={flatten(
+      className={cc(
         'border-b border-b-gray-300 last:border-none',
         'flex items-center px-4 h-14',
         className

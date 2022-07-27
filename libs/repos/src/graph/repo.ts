@@ -1,19 +1,6 @@
 import { DataSource } from 'typeorm'
-import {
-  Module,
-  Graph,
-  GraphFrontendProps,
-  GraphFlowNode,
-  ModuleState,
-  CanTakeModule,
-} from '@modtree/types'
-import {
-  quickpop,
-  flatten,
-  getFlowEdges,
-  getFlowNodes,
-  nodify,
-} from '@modtree/utils'
+import { Module, Graph, CanTakeModule, ApiResponse } from '@modtree/types'
+import { flatten, getFlowEdges, getFlowNodes, nodify } from '@modtree/utils'
 import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
@@ -93,139 +80,6 @@ export class GraphRepository extends BaseRepo<Graph> {
   }
 
   /**
-   * @param {string} userId
-   * @param {string} degreeId
-   * @returns {Promise<Graph>}
-   */
-  findOneByUserAndDegreeId(userId: string, degreeId: string): Promise<Graph> {
-    return this.findOne({
-      relations: this.relations,
-      where: {
-        user: {
-          id: userId,
-        },
-        degree: {
-          id: degreeId,
-        },
-      },
-    })
-  }
-
-  /**
-   * @param {string} userId
-   * @param {string} degreeId
-   * @returns {Promise<Graph>}
-   */
-  async findManyByUserAndDegreeId(
-    userId: string,
-    degreeId: string
-  ): Promise<[Graph[], number]> {
-    return this.findAndCount({
-      relations: this.relations,
-      where: {
-        user: {
-          id: userId,
-        },
-        degree: {
-          id: degreeId,
-        },
-      },
-    })
-  }
-
-  /**
-   * Toggle a Module's status between placed and hidden.
-   *
-   * @param {Graph} graph
-   * @param {string} moduleCode
-   * @returns {Promise<Graph>}
-   */
-  async toggleModule(graph: Graph, moduleCode: string): Promise<Graph> {
-    /**
-     * find the index of the given moduleCode to toggle
-     */
-    const index: Record<ModuleState, number> = {
-      placed: graph.modulesPlaced.map(flatten.module).indexOf(moduleCode),
-      hidden: graph.modulesHidden.map(flatten.module).indexOf(moduleCode),
-      new: -1,
-    }
-    /**
-     * @returns {ModuleState}
-     */
-    function getState(): ModuleState {
-      if (index.placed !== -1) return 'placed'
-      if (index.hidden !== -1) return 'hidden'
-      return 'new'
-    }
-    const state = getState()
-    /**
-     * toggles the modules between placed and hidden
-     * if the module is not found, append it to placed
-     *
-     * @param {Module[]} src
-     * @param {Module[]} dest
-     */
-    function toggle(src: Module[], dest: Module[]) {
-      dest.push(quickpop(src, index[state]))
-    }
-    if (state === 'placed') {
-      toggle(graph.modulesPlaced, graph.modulesHidden)
-      // remove from flowNodes and flowEdges
-      graph.flowNodes = graph.flowNodes.filter((n) => n.id !== moduleCode)
-      graph.flowEdges = graph.flowEdges.filter(
-        (n) => n.source !== moduleCode && n.target !== moduleCode
-      )
-      return this.save(graph)
-    }
-    if (state === 'hidden') {
-      toggle(graph.modulesHidden, graph.modulesPlaced)
-      return this.save(graph)
-    }
-
-    return this.moduleRepo.findByCode(moduleCode).then((module) => {
-      graph.modulesPlaced.push(module)
-      return this.save(graph)
-    })
-  }
-
-  /**
-   * Updates the frontend part of the Graph
-   * note that this method will NOT retrieve any relations.
-   * @param {Graph} graph
-   * @param {GraphFrontendProps} props
-   * @returns {Promise<Graph>}
-   */
-  async updateFrontendProps(
-    graph: Graph,
-    props: GraphFrontendProps
-  ): Promise<Graph> {
-    return this.save({
-      ...graph,
-      modulesPlaced: props.flowNodes.map((n) => n.data),
-      flowEdges: props.flowEdges,
-      flowNodes: props.flowNodes,
-    })
-  }
-
-  /**
-   * Updates a single flow node.
-   * Expects a full flow node, to replace the current one.
-   *
-   * @param {Graph} graph
-   * @param {GraphFlowNode} node
-   * @returns {Promise<Graph>}
-   */
-  async updateFlowNode(graph: Graph, node: GraphFlowNode): Promise<Graph> {
-    const nodeId = node.id
-    const index = graph.flowNodes.findIndex((n) => n.id == nodeId)
-    if (index === -1) {
-      throw new Error('Invalid flow node ID')
-    }
-    graph.flowNodes[index] = node
-    return this.save(graph)
-  }
-
-  /**
    * extracts the parameters for suggestModules
    *
    * @param {Graph} graph
@@ -278,11 +132,12 @@ export class GraphRepository extends BaseRepo<Graph> {
    * @returns {Promise<boolean>}
    */
   async canTakeModule(graph: Graph, moduleCode: string): Promise<boolean> {
-    // map to codes
-    const modulesPlacedCodes = graph.modulesPlaced.map(flatten.module)
-    // remove code of module to test
-    const filtered = modulesPlacedCodes.filter((m) => m !== moduleCode)
-    return this.moduleRepo.canTakeModule(filtered, [], moduleCode)
+    // assume that all existing nodes on the graph are done,
+    // except for the code being tested
+    const modulesDone = graph.flowNodes
+      .map((n) => n.data.moduleCode)
+      .filter((m) => m !== moduleCode)
+    return this.moduleRepo.canTakeModule(modulesDone, [], moduleCode)
   }
 
   /**
@@ -292,26 +147,53 @@ export class GraphRepository extends BaseRepo<Graph> {
    * @returns {Promise<CanTakeModuleMap>}
    */
   async canTakeModules(graph: Graph): Promise<CanTakeModule[]> {
-    const moduleCodes = graph.modulesPlaced.map(flatten.module)
-    const canTakes = moduleCodes.map((code) => this.canTakeModule(graph, code))
-    return Promise.all(canTakes).then((canTakes) =>
-      moduleCodes.map((moduleCode, index) => ({
-        moduleCode,
-        canTake: canTakes[index],
-      }))
+    return Promise.all(
+      graph.flowNodes
+        .map((n) => n.data.moduleCode)
+        .map((code) =>
+          this.canTakeModule(graph, code).then((can) => ({
+            moduleCode: code,
+            canTake: can,
+          }))
+        )
     )
   }
 
   /**
-   * Updates the title of the graph
-   * @param {Graph} graph
-   * @param {string} title
-   * @returns {Promise<Graph>}
+   * update graph and return enough information to replot frontend graph
+   *
+   * @param {ApiResponse.Graph} frontendGraph
    */
-  async rename(graph: Graph, title: string): Promise<Graph> {
-    return this.save({
-      ...graph,
-      title,
+  async update(
+    frontendGraph: ApiResponse.Graph
+  ): Promise<{ graph: Graph; canTakes: CanTakeModule[] }> {
+    /** retrieve graph, update nodes and modules placed */
+    const graph = this.findOneById(frontendGraph.id).then((graph) => {
+      graph.flowNodes = frontendGraph.flowNodes
+      graph.modulesPlaced = frontendGraph.flowNodes.map((n) => n.data)
+      return this.save(graph)
     })
+    /** calculate can-takes of the new graph */
+    const canTakes = graph.then((g) => this.canTakeModules(g))
+    return Promise.all([graph, canTakes]).then(([graph, canTakes]) => ({
+      graph,
+      canTakes,
+    }))
+  }
+
+  /**
+   * find a graph and fetch it with can takes to make it frontend-ready
+   */
+  async getFrontend(
+    graphId: string
+  ): Promise<{ graph: Graph; canTakes: CanTakeModule[] }> {
+    /** retrieve graph */
+    const graph = this.findOneById(graphId)
+    /** calculate can-takes of the new graph */
+    const canTakes = graph.then((g) => this.canTakeModules(g))
+    return Promise.all([graph, canTakes]).then(([graph, canTakes]) => ({
+      graph,
+      canTakes,
+    }))
   }
 }

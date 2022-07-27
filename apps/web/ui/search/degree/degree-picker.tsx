@@ -1,6 +1,6 @@
 import { Listbox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { ApiResponse, UseState } from '@modtree/types'
 import { useAppSelector } from '@/store/redux'
 import { trpcReact } from '@/utils/trpc'
@@ -35,7 +35,7 @@ export function DegreePicker(props: {
             <Listbox.Option key={d.id} value={d}>
               {({ active, selected }) => (
                 <div
-                  className={flatten(
+                  className={cc(
                     'h-8 cursor-pointer px-3 leading-8',
                     active ? 'bg-modtree-300 text-white' : 'text-gray-900'
                   )}

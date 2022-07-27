@@ -1,4 +1,4 @@
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { DeleteIcon } from '@/ui/icons'
 
 export const DeleteButton = (props: {
@@ -6,9 +6,9 @@ export const DeleteButton = (props: {
   cypress?: string
 }) => {
   return (
-    <div className={flatten('w-6 h-6 ui-rectangle')}>
+    <div className={cc('w-6 h-6 ui-rectangle')}>
       <button
-        className={flatten(
+        className={cc(
           'h-full w-full rounded-md',
           'hover:bg-gray-200 active:bg-gray-300',
           'flex flex-row centered',

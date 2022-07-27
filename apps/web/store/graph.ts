@@ -6,22 +6,6 @@ import {
   applyNodeChanges as RFApplyNodeChanges,
   NodeChange,
 } from 'react-flow-renderer'
-import { trpc } from '@/utils/trpc'
-import { ReduxState } from './types'
-
-/**
- * updates nodes and edges in both frontend and backend
- */
-function setFlow(graph: ReduxState['graph'], nodes: GraphFlowNode[]) {
-  const { flowNodes, flowEdges } = dagreify(nodes)
-  graph.flowNodes = flowNodes
-  graph.flowEdges = flowEdges
-  trpc.mutation('graph/update-frontend-props', {
-    graphId: graph.id,
-    flowNodes,
-    flowEdges,
-  })
-}
 
 export default createSlice({
   name: 'graph',
@@ -47,7 +31,9 @@ export default createSlice({
      * and updates persists the new state in database
      */
     setNodesAndEdges: (graph, action: P<GraphFlowNode[]>) => {
-      setFlow(graph, action.payload)
+      const { flowNodes, flowEdges } = dagreify(action.payload)
+      graph.flowNodes = flowNodes
+      graph.flowEdges = flowEdges
     },
 
     /** sets nodes */
@@ -58,31 +44,6 @@ export default createSlice({
     /** sets edges */
     setEdges: (graph, action: P<GraphFlowEdge[]>) => {
       graph.flowEdges = action.payload
-    },
-
-    /**
-     * add a module node to the graph, and re-positions the nodes
-     */
-    addModuleNode: (graph, action: P<GraphFlowNode>) => {
-      if (!action.payload) return
-      const node = action.payload
-
-      /** if the code is already in, do nothing. */
-      if (!graph.flowNodes.every((n) => n.id !== node.id)) return
-
-      /** add it to the graph */
-      setFlow(graph, [...graph.flowNodes, node])
-    },
-
-    /**
-     * remove a module node from the graph
-     */
-    removeModuleNode: (graph, action: P<GraphFlowNode>) => {
-      if (!action.payload) return
-      const newNodes = graph.flowNodes.filter((n) => n.id !== action.payload.id)
-
-      /** add it to the graph */
-      setFlow(graph, newNodes)
     },
   },
 })

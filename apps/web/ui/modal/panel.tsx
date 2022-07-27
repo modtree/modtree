@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, ReactElement } from 'react'
 import { CloseButton } from '@/ui/buttons'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 
 export type ModalPanelProps = {
   children: ReactElement[] | ReactElement
@@ -25,7 +25,7 @@ export function Panel(props: ModalPanelProps) {
       leaveTo="opacity-0 scale-95"
     >
       <Dialog.Panel
-        className={flatten(
+        className={cc(
           'w-full',
           // 'border border-blue-500',
           props.minHeight ? 'max-h-full' : 'h-full',
@@ -42,7 +42,7 @@ export function Panel(props: ModalPanelProps) {
           </div>
         )}
         <div
-          className={flatten(
+          className={cc(
             'h-full px-6',
             // 'border border-red-500',
             props.scrollable ? 'overflow-y-auto' : 'overflow-y-hidden',

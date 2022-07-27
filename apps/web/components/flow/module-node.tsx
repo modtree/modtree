@@ -1,11 +1,11 @@
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { IModuleCondensed } from '@modtree/types'
 import { Handle, Position } from 'react-flow-renderer'
 
 const Title = (props: { className: string; title: string }) => {
   return (
     <div
-      className={flatten(
+      className={cc(
         'text-sm font-medium',
         'tracking-custom text-center',
         'leading-5 text-gray-500',
@@ -19,9 +19,7 @@ const Title = (props: { className: string; title: string }) => {
 
 const ModuleCode = (props: { className: string; moduleCode: string }) => {
   return (
-    <div
-      className={flatten('text-2xl font-semibold text-center', props.className)}
-    >
+    <div className={cc('text-2xl font-semibold text-center', props.className)}>
       {props.moduleCode}
     </div>
   )

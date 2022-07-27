@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { useAppSelector } from '@/store/redux'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
 import { IModule } from '@modtree/types'
 
@@ -29,7 +29,7 @@ function SearchResultList(props: { modules: IModule[] }) {
           key={dashed(module.moduleCode, index)}
           value={module.moduleCode}
           className={({ active }) =>
-            flatten(
+            cc(
               'cursor-pointer select-none py-2 px-4',
               active ? 'bg-modtree-300 text-white' : 'text-gray-900'
             )
@@ -53,7 +53,7 @@ export function SearchResultContainer() {
       leaveTo="opacity-0"
     >
       <Combobox.Options
-        className={flatten(
+        className={cc(
           'w-full mt-1 max-h-60 overflow-auto rounded-md bg-white',
           'shadow-lg focus:outline-none'
         )}

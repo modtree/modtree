@@ -1,6 +1,6 @@
 import { HeroIcon } from 'types'
 import * as hero from '@heroicons/react/outline'
-import { flatten } from '../utils'
+import { cc } from '../utils'
 
 const defaultSize = '16px'
 
@@ -11,7 +11,7 @@ function getIcon(Icon: HeroIcon) {
     return (
       <Icon
         style={style}
-        className={flatten('ui-icon', props.className)}
+        className={cc('ui-icon', props.className)}
         data-cy={Icon.name}
       />
     )

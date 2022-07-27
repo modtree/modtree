@@ -1,7 +1,7 @@
 import { Menu } from '@headlessui/react'
 import { ReactElement } from 'react'
 import { MenuItem } from 'types'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { dashed } from '@/utils/array'
 import { GraphFlowNode } from '@modtree/types'
 
@@ -56,7 +56,7 @@ export function Entries(props: {
             <a
               href={menuItem.href}
               onClick={() => onClick(menuItem)}
-              className={flatten(
+              className={cc(
                 'hover:bg-modtree-400/80 hover:text-white',
                 'text-gray-700 flex w-full px-4 py-1.5',
                 'hover:no-underline',

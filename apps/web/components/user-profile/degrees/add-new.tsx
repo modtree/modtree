@@ -5,20 +5,18 @@ import { Input } from '@/ui/html'
 import { Button } from '@/ui/buttons'
 import { SetState } from '@modtree/types'
 import { SettingsSearchBox } from '@/ui/search/module'
-import { useAppDispatch, useAppSelector, r } from '@/store/redux'
-import { SelectedModules } from '../modules/selected-modules'
+import { useAppSelector } from '@/store/redux'
+import { BuildList } from '../build-list'
 import { createAndSaveDegree } from '@/store/functions'
 
 export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
   /** hooks */
-  const dispatch = useAppDispatch()
   const [title, setTitle] = useState('')
   const buildList = useAppSelector((state) => state.search.buildList)
 
   async function saveDegree() {
-    createAndSaveDegree(title, buildList)
     props.setPage('main')
-    dispatch(r.clearBuildList())
+    createAndSaveDegree(title, buildList)
   }
 
   return (
@@ -44,8 +42,7 @@ export function AddNew(props: { setPage: SetState<Pages['Degrees']> }) {
             </div>
           </div>
         </div>
-        <SelectedModules
-          modules={buildList}
+        <BuildList
           cypress="degree-modules-list"
           cypressModule="degree-module"
         />

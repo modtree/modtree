@@ -5,6 +5,7 @@ import { useSession } from '@/utils/auth'
 import { inModulesPlaced } from '@/utils/graph'
 import { nodify } from '@modtree/utils'
 import { devEnv } from '@/utils/env'
+import { addModuleNode } from '@/store/functions'
 
 export function ModuleDetails() {
   const module = useAppSelector((state) => state.modal.modalModule)
@@ -19,7 +20,7 @@ export function ModuleDetails() {
     // 1. hide module modal
     dispatch(r.hideModuleModal())
     // 2. add module to graph
-    dispatch(r.addModuleNode(nodify(module)))
+    addModuleNode(nodify(module))
   }
 
   return (

@@ -1,7 +1,7 @@
 import { Listbox } from '@headlessui/react'
 import { ApiResponse } from '@modtree/types'
 import { CheckIcon, SelectorIcon } from '@/ui/icons'
-import { flatten } from '@/utils/tailwind'
+import { cc } from '@/utils/tailwind'
 import { getUniqueGraphTitle } from '@/utils/graph'
 import { useAppSelector, r, useAppDispatch } from '@/store/redux'
 import { trpcReact } from '@/utils/trpc'
@@ -30,6 +30,7 @@ export function GraphPicker() {
       {
         onSuccess: () => {
           trpc.invalidateQueries(['graphs'])
+          trpc.invalidateQueries(['user'])
         },
       }
     )
@@ -56,7 +57,7 @@ export function GraphPicker() {
           <Listbox.Option key={g.id} value={g}>
             {({ active, selected }) => (
               <div
-                className={flatten(
+                className={cc(
                   'h-8 cursor-pointer px-3 leading-8',
                   active ? 'bg-modtree-300 text-white' : 'text-gray-900'
                 )}
