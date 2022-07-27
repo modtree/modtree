@@ -17,6 +17,7 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
       login(): void
+      login2(): void
       loadModuleModal<E>(
         moduleCode: string,
         title: string
@@ -36,6 +37,9 @@ Cypress.Commands.add('getCy', (value: string) => {
   return cy.get(`[data-cy=${value}]`)
 })
 
+/**
+ * Primary login method for local testing.
+ */
 Cypress.Commands.add('login', () => {
   cy.visit('/')
   cy.getCy('sign-in-button').click()
@@ -43,6 +47,63 @@ Cypress.Commands.add('login', () => {
 
   // wait for login to complete
   cy.getCy('modtree-user-circle')
+})
+
+/**
+ * Slower, unstable login. But can be used to test dev/prod envs.
+ * Rename login2 to login, and rename the other login to something else
+ * to use immediately.
+ */
+Cypress.Commands.add('login2', () => {
+  const username = Cypress.env('GITHUB_USER')
+  const password = Cypress.env('GITHUB_PW')
+  const COOKIE_NAME = Cypress.env('COOKIE_NAME')
+  const SECURE_COOKIE_NAME = Cypress.env('SECURE_COOKIE_NAME')
+
+  const BASE_URL = Cypress.config('baseUrl')
+  // Login page URL
+  const loginUrl = BASE_URL + '/api/auth/signin'
+  // The selector for Google on our login page
+  const loginSelector = `form[action="${BASE_URL}/api/auth/signin/github"]`
+
+  const socialLoginOptions = {
+    username,
+    password,
+    loginUrl,
+    headless: true,
+    logs: false,
+    isPopup: true,
+    loginSelector,
+    postLoginSelector: '#modtree-user-circle',
+  }
+
+  cy.visit('/')
+
+  return cy
+    .task('GitHubSocialLogin', socialLoginOptions)
+    .then(({ cookies }) => {
+      cy.clearCookies()
+
+      const cookie = cookies
+        .filter(
+          (cookie) =>
+            cookie.name === COOKIE_NAME || cookie.name === SECURE_COOKIE_NAME
+        )
+        .pop()
+      if (cookie) {
+        cy.setCookie(cookie.name, cookie.value, {
+          domain: cookie.domain,
+          expiry: cookie.expires,
+          httpOnly: cookie.httpOnly,
+          path: cookie.path,
+          secure: cookie.secure,
+        })
+
+        Cypress.Cookies.defaults({
+          preserve: [COOKIE_NAME, SECURE_COOKIE_NAME],
+        })
+      }
+    })
 })
 
 Cypress.Commands.add('loadModuleModal', (moduleCode: string, title: string) => {
