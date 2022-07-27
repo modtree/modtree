@@ -1,4 +1,9 @@
-export const supportedAuthProviders = ['google', 'github', 'facebook'] as const
+export const supportedAuthProviders = [
+  'google',
+  'github',
+  'facebook',
+  'credentials',
+] as const
 export type AuthProvider = typeof supportedAuthProviders[number]
 export type FindByKey<T> = (query: string) => Promise<T>
 export type Relations = Record<string, boolean>

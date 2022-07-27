@@ -63,6 +63,7 @@ export class UserRepository extends BaseRepo<User> {
       google: this.findOneByGoogleId,
       facebook: this.findOneByFacebookId,
       github: this.findOneByGithubId,
+      credentials: this.findOneById,
     }[provider as AuthProvider](providerId)
   }
 
@@ -109,6 +110,7 @@ export class UserRepository extends BaseRepo<User> {
       google: () => (user.googleId = providerId),
       facebook: () => (user.facebookId = providerId),
       github: () => (user.githubId = providerId),
+      credentials: () => {},
     }[provider as AuthProvider]())
 
     return user
