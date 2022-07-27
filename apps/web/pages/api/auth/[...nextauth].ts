@@ -3,8 +3,10 @@ import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
 import GithubProvider from 'next-auth/providers/github'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import { trpc } from '@/utils/trpc'
 import { log } from '@/utils/env'
+import { devEnv } from '@/utils/env'
 
 const secrets = {
   google: {
@@ -26,7 +28,14 @@ export default NextAuth({
     GoogleProvider(secrets.google),
     FacebookProvider(secrets.facebook),
     GithubProvider(secrets.github),
-  ],
+    CredentialsProvider({
+      credentials: {},
+      authorize: async () => ({
+        email: 'default@test.com',
+        id: 'test-provider-id',
+      }),
+    }),
+  ].filter((p) => devEnv || p.type !== 'credentials'),
   callbacks: {
     /**
      * on user sign in
