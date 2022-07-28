@@ -2,23 +2,13 @@ describe('add-and-remove', () => {
   const code = 'MA2104'
   const title = 'Multivariable Calculus'
 
-  beforeEach(() => {
-    cy.login()
-    cy.reload()
-  })
+  beforeEach(() => cy.login())
 
   it('Graph does not contain MA2104', () => {
-    // getUser has completed
-    // Wait for store to load
-    cy.wait(2000)
-    cy.window()
-      .its('store')
-      .invoke('getState')
-      .its('graph.flowNodes')
-      .then((nodes) => {
-        const moduleCodes = nodes.map((n) => n.id)
-        expect(moduleCodes).to.not.contain('MA2104')
-      })
+    cy.reduxGraph().then((graph) => {
+      const moduleCodes = graph.flowNodes.map((n) => n.id)
+      expect(moduleCodes).to.not.contain(code)
+    })
   })
 
   it('adds a module', () => {
@@ -27,7 +17,7 @@ describe('add-and-remove', () => {
   })
 
   it('cannot add the same module', () => {
-    cy.loadModuleModal(code, title).then(() => {
+    cy.openModuleModal(code, title).then(() => {
       // Should not have add to graph button
       cy.getCy('module-modal').contains('Add to graph').should('not.exist')
 
@@ -42,7 +32,7 @@ describe('add-and-remove', () => {
   })
 
   it('can now add the same module', () => {
-    cy.loadModuleModal(code, title).then(() => {
+    cy.openModuleModal(code, title).then(() => {
       // Should have add to graph button
       cy.getCy('module-modal').contains('Add to graph').should('be.visible')
 
