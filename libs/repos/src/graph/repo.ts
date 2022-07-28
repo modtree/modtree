@@ -50,14 +50,17 @@ export class GraphRepository extends BaseRepo<Graph> {
      *  get flow edges from relations
      */
     const flowEdges = modules.then(({ modulesPlaced }) =>
-      getFlowEdges(modulesPlaced.map(nodify))
+      getFlowEdges(modulesPlaced.map((m) => nodify(m, 'planned')))
     )
     /**
      *  get flow nodes from dagre
      */
     const flowNodes = Promise.all([flowEdges, modules]).then(
       ([edges, { modulesPlaced }]) =>
-        getFlowNodes(modulesPlaced.map(nodify), edges)
+        getFlowNodes(
+          modulesPlaced.map((m) => nodify(m, 'planned')),
+          edges
+        )
     )
 
     /**

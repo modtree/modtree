@@ -8,12 +8,12 @@ import dagre from 'dagre'
 
 const origin = { x: 0, y: 0 }
 
-export function nodify(module: IModule): GraphFlowNode {
+export function nodify(module: IModule, type: FlowNodeState): GraphFlowNode {
   return {
     id: module.moduleCode,
     position: origin,
     data: module,
-    type: 'done' as FlowNodeState,
+    type,
   }
 }
 
