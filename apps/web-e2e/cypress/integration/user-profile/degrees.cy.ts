@@ -44,6 +44,7 @@ function checkDegreeCount() {
 function checkModules() {
   const arr = []
   cy.getCy('degree-module')
+    .filter('span')
     .each((span) => {
       arr.push(span.text())
     })
