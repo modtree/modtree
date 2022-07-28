@@ -14,9 +14,12 @@ export function Main(props: {
 
   // Get IDs
   const degreeIds = useAppSelector((s) => s.modtree.user.savedDegrees)
-  const { data: degrees } = trpcReact.useQuery(['degrees', degreeIds], {
-    keepPreviousData: true,
-  })
+  const { data: degrees } = trpcReact.useQuery(
+    ['degrees', { degreeIds: degreeIds.join(',') }],
+    {
+      keepPreviousData: true,
+    }
+  )
 
   return (
     <div className="mb-12">

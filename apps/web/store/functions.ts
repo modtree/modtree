@@ -34,7 +34,7 @@ export function redrawGraph() {
  */
 export function openModuleModal(query: string) {
   trpc
-    .query('module-full', query)
+    .query('module-full', { moduleCode: query })
     .then((module) => dispatch(r.setModalModule(module)))
     .then(() => dispatch(r.showModuleModal()))
 }
@@ -100,10 +100,12 @@ export function updateModuleCache(moduleCodes: string[]) {
   if (codesToFetch.length === 0) return
 
   /** send the http request */
-  return trpc.query('modules', codesToFetch).then((modules) => {
-    /** update the redux store */
-    dispatch(r.addModulesToCache(modules))
-  })
+  return trpc
+    .query('modules', { moduleCodes: codesToFetch.join(',') })
+    .then((modules) => {
+      /** update the redux store */
+      dispatch(r.addModulesToCache(modules))
+    })
 }
 
 /**
@@ -190,8 +192,10 @@ export function renameGraph(graphId: string, title: string) {
  */
 export function setBuildTarget(degreeId: string) {
   trpc
-    .query('degree', degreeId)
-    .then((degree) => trpc.query('modules', degree.modules))
+    .query('degree', { degreeId })
+    .then((degree) =>
+      trpc.query('modules', { moduleCodes: degree.modules.join(',') })
+    )
     .then((modules) => {
       dispatch(r.addModulesToCache(modules))
       dispatch(r.setBuildList(modules.map((m) => m.moduleCode)))
@@ -204,7 +208,7 @@ export function setBuildTarget(degreeId: string) {
  * @param {string} moduleCode
  */
 export function addModuleToBuildList(moduleCode: string) {
-  trpc.query('module', moduleCode).then((module) => {
+  trpc.query('module', { moduleCode }).then((module) => {
     dispatch(r.addModulesToCache([module]))
     dispatch(r.addToBuildList(moduleCode))
   })
@@ -225,7 +229,7 @@ export function updateDegree(
   const { user } = store.getState().modtree
   trpc
     .mutation('degree/update', { degreeId, title, moduleCodes })
-    .then(() => trpc.query('user', user.id))
+    .then(() => trpc.query('user', { userId: user.id }))
     .then((user) => dispatch(r.setUser(user)))
 }
 
