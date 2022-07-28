@@ -1,5 +1,6 @@
 import { z, ZodType } from 'zod'
 import { validModuleRegex } from '@modtree/utils'
+import { NUSMods as NM } from '@modtree/types'
 
 /**
  * NUSMods types in zod
@@ -57,7 +58,7 @@ const NUSMods: ZodNUSMods = {
 /**
  * this zod type is declared on its own as it references itself
  */
-const prereqTree: ZodType = z.string().or(
+const prereqTree: ZodType<NM.PrereqTree> = z.string().or(
   z.lazy(() =>
     z.object({
       and: z.array(prereqTree).optional(),
