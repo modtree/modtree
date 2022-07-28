@@ -5,7 +5,7 @@ import { api } from '../main'
 import { base, entities } from '../schemas/entities'
 
 export const getOne = createRouter()
-  /** get a module by id */
+  /** get a module by code */
   .query('module', {
     meta: {
       openapi: {
@@ -25,7 +25,7 @@ export const getOne = createRouter()
     },
   })
 
-  /** get a condensed module by id */
+  /** get a condensed module by code */
   .query('module-condensed', {
     meta: {
       openapi: {
@@ -45,7 +45,7 @@ export const getOne = createRouter()
     },
   })
 
-  /** get a full module by id */
+  /** get a full module by code */
   .query('module-full', {
     meta: {
       openapi: {

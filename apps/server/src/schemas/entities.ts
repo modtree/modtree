@@ -126,7 +126,6 @@ const entities = {
     moduleCredit: z.string(),
     department: z.string(),
     faculty: z.string(),
-    /* empty string */
     aliases: z.array(z.string().regex(validModuleRegex)),
     /* empty string */
     attributes: z.string().or(Attributes),
