@@ -263,3 +263,8 @@ export function removeModuleNode(node: GraphFlowNode) {
   dispatch(r.setNodes(newNodes))
   redrawGraph()
 }
+
+export function resetUser() {
+  const userId = store.getState().modtree.user.id
+  trpc.mutation('user/reset', userId)
+}

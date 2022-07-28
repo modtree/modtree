@@ -11,7 +11,7 @@ function assertGraphCount(n: number) {
     })
 }
 
-describe('add-and-remove', () => {
+describe('new graph', () => {
   beforeEach(() => {
     cy.intercept('GET', /.*graph.*/).as('getGraph')
     cy.login()

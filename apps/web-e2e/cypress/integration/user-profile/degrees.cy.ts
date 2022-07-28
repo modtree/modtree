@@ -1,7 +1,7 @@
 const oldTitle = 'Original Title'
 const newTitle = 'New Title'
-let degreeCount
 let modules = []
+import { validModuleRegex } from '../../../../../libs/utils/src/string'
 
 /**
  * Inserts a module into a degree
@@ -20,22 +20,10 @@ function insertModule(moduleCode: string, title: string) {
 }
 
 /**
- * Gets initial degree count
- */
-function getInitialCounts() {
-  cy.getCy('degrees-list')
-    .children()
-    .its('length')
-    .then((n) => {
-      degreeCount = n
-    })
-}
-
-/**
  * Check degree count
  */
-function checkDegreeCount() {
-  cy.getCy('degrees-list').children().its('length').should('eq', degreeCount)
+function checkDegreeCount(n: number) {
+  cy.getCy('degrees-list').children().its('length').should('eq', n)
 }
 
 /**
@@ -46,7 +34,8 @@ function checkModules() {
   cy.getCy('degree-module')
     .filter('span')
     .each((span) => {
-      arr.push(span.text())
+      const text = span.text()
+      if (text.match(validModuleRegex)) arr.push(span.text())
     })
     .then(() => {
       // Exact array match
@@ -64,20 +53,12 @@ describe('degrees panel', () => {
     cy.reload()
 
     // open degrees panel
-    cy.getCy('modtree-user-circle').then((icon) => {
-      icon.click()
-      cy.contains('Your profile').click()
-      cy.contains('Degrees').click()
-
-      // count current degrees
-      // only do for initial load
-      if (!degreeCount) {
-        getInitialCounts()
-      }
-    })
+    cy.getCy('modtree-user-circle').click()
+    cy.contains('Your profile').click()
+    cy.contains('Degrees').click()
   })
 
-  it('create new degree', () => {
+  it.only('create new degree', () => {
     cy.getCy('add-degree-button').click()
 
     // Degree props
@@ -94,9 +75,7 @@ describe('degrees panel', () => {
     // Wait for degree to be added
     cy.contains(oldTitle).should('be.visible')
 
-    // Test that degree was added
-    degreeCount++
-    checkDegreeCount()
+    checkDegreeCount(1)
   })
 
   it('edit degree title', () => {
@@ -121,7 +100,7 @@ describe('degrees panel', () => {
     cy.contains(oldTitle).should('not.exist')
     cy.contains(newTitle).should('be.visible')
 
-    checkDegreeCount()
+    checkDegreeCount(1)
   })
 
   it('add module to degree', () => {
@@ -141,7 +120,7 @@ describe('degrees panel', () => {
     // Save degree
     cy.get('button').contains('Save degree').click()
 
-    checkDegreeCount()
+    checkDegreeCount(1)
   })
 
   it('remove module from degree', () => {
@@ -166,7 +145,7 @@ describe('degrees panel', () => {
     // Save degree
     cy.get('button').contains('Save degree').click()
 
-    checkDegreeCount()
+    checkDegreeCount(1)
   })
 
   it('remove degree', () => {
@@ -180,7 +159,6 @@ describe('degrees panel', () => {
     cy.getCy('degrees-list')
     cy.contains(newTitle).should('not.exist')
 
-    degreeCount--
-    checkDegreeCount()
+    checkDegreeCount(0)
   })
 })

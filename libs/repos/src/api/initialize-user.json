@@ -7,6 +7,9 @@
     "degree": {
       "title": "Untitled",
       "moduleCodes": []
+    },
+    "graph": {
+      "title": "Untitled"
     }
   },
   "development": {
@@ -46,6 +49,9 @@
         "CS3230",
         "CS2309"
       ]
+    },
+    "graph": {
+      "title": "Untitled"
     }
   }
 }

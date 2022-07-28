@@ -4,6 +4,7 @@ import {
   markAsPlanned,
   openModuleModal,
   removeModuleNode,
+  resetUser,
 } from '@/store/functions'
 import store, { r } from '@/store/redux'
 import { devEnv } from '@/utils/env'
@@ -25,6 +26,11 @@ const userDropdownMenu: MenuItem[] = [
     text: 'Debug',
     show: devEnv,
     callback: () => dispatch(r.showDebugModal()),
+  },
+  {
+    text: 'Reset',
+    show: devEnv,
+    callback: () => resetUser(),
   },
   {
     text: 'Sign out',
