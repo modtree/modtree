@@ -30,7 +30,7 @@ declare global {
 
       /** user profile modal open/close */
       openUserProfile<E>(
-        value: 'Degrees' | 'Graphs' | 'Modules'
+        value: 'Degrees' | 'Graphs' | 'Modules' | 'Account'
       ): Chainable<JQuery<E>>
       closeUserProfile<E>(): Chainable<JQuery<E>>
 
@@ -141,6 +141,11 @@ Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {
         .contains('Remove')
         .click({ force: true })
     })
+})
+
+Cypress.Commands.add('resetUser', () => {
+  cy.openUserProfile('Account')
+  cy.get('button').contains('Reset account').click()
 })
 
 // -- This is a parent command --

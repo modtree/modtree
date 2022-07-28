@@ -1,0 +1,47 @@
+[
+  {
+    "file": "cypress/integration/login.cy.ts",
+    "runs": [
+      {
+        "gitHash": "5ebf9d4ca34c",
+        "timestamp": 1559017383351,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/search.cy.ts",
+    "runs": [
+      {
+        "gitHash": "127299395e4a",
+        "timestamp": 1659022529213,
+        "pass": true
+      },
+      {
+        "gitHash": "16fd82c98777",
+        "timestamp": 1659017383351,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/cypress-utils/redux.cy.ts",
+    "runs": [
+      {
+        "gitHash": "d937a7fd73a2",
+        "timestamp": 1659023050181,
+        "pass": true
+      },
+      {
+        "gitHash": "ef038134aab0",
+        "timestamp": 1659022433285,
+        "pass": true
+      },
+      {
+        "gitHash": "d4c6ba37758f",
+        "timestamp": 1659022336085,
+        "pass": true
+      }
+    ]
+  }
+]

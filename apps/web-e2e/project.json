@@ -10,6 +10,13 @@
         "devServerTarget": "web:serve:development"
       }
     },
+    "e2e:nw": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/web-e2e/cypress.config.js",
+        "devServerTarget": ""
+      }
+    },
     "e2e:prod": {
       "executor": "@nrwl/cypress:cypress",
       "options": {

@@ -1,0 +1,62 @@
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
+import { getAllFiles, getCommitTime } from '../utils'
+import { green, yellow, red, gray, Chalk } from 'chalk'
+import type { Run, TestData } from './types'
+
+/**
+ * possible states of a test
+ *
+ * changing the order of this enum definition will change the order
+ * in which the tests are displayed.
+ */
+enum State {
+  PASS,
+  PASS_OLD,
+  NORES, // no result
+  FAIL,
+}
+
+/** pretty printer */
+const p = (c: Chalk, i: string) => (s: string) => console.log(c(` ${i}`, s))
+const log = {
+  [State.PASS]: p(green, '✓'),
+  [State.PASS_OLD]: p(gray, '✓'),
+  [State.NORES]: p(yellow, '*'),
+  [State.FAIL]: p(red, '✗'),
+}
+
+/** set paths, gather data */
+const rootDir = resolve(__dirname, '../../..')
+const e2eDir = resolve(rootDir, 'apps/web-e2e')
+const filepath = resolve(e2eDir, 'results.json')
+const json: TestData[] = JSON.parse(readFileSync(filepath, 'utf8'))
+const cypressTests = getAllFiles(e2eDir).filter((f) => f.endsWith('cy.ts'))
+
+/** derive state of test from data */
+const byLatestFirst = (a: Run, b: Run) => (a.timestamp < b.timestamp ? 1 : -1)
+const latestRun = (runs: Run[]) => runs.sort(byLatestFirst)[0]
+const getState = (data: TestData | undefined, baseTime: number): State => {
+  // if no data is found, assign the no-result state
+  if (!data) return State.NORES
+  // else, look for the result of the latest run
+  const latest = latestRun(data.runs)
+  if (latest.timestamp < baseTime && latest.pass) return State.PASS_OLD
+  return latest.pass ? State.PASS : State.FAIL
+}
+
+/** process all the tests and print them */
+const main = (baseTime: number) =>
+  cypressTests
+    .map((file) => {
+      const data = json.find((t) => t.file === file)
+      const state = getState(data, baseTime)
+      return { state, print: () => log[state](file) }
+    })
+    // sort according to the same order as the enum above
+    .sort((a, b) => (a.state > b.state ? 1 : -1))
+    // print out the results
+    .forEach((f) => f.print())
+
+const baseTime = getCommitTime('origin/main')
+main(baseTime)
