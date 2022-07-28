@@ -34,15 +34,11 @@ describe('add-and-remove', () => {
 
   it('Add CS1231 to graph', () => {
     cy.addGraphModule('CS1231', 'Discrete Structures')
-    // TODO: really start using node types for states so this isn't so clutch
-    cy.getCy('node-CS1231').should('have.css', 'color', 'rgb(75, 85, 99)')
+    cy.getCy('node-CS1231-planned').should('exist')
   })
 
-  it('Remove CS1231 from graph', () => {
+  it('Teardown', () => {
     cy.removeGraphModule('CS1231')
-  })
-
-  it('Remove created graph', () => {
     cy.removeGraph('test-graph')
     assertGraphCount(1)
   })

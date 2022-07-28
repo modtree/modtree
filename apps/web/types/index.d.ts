@@ -100,6 +100,7 @@ export type ContextMenuProps = {
 }
 
 export type ModuleNodeProps = {
+  type?: string
   data: IModuleCondensed & {
     className?: { moduleCode?: string; title?: string }
   }

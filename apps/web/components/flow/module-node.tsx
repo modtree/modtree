@@ -38,7 +38,7 @@ export function ModuleNode(props: ModuleNodeProps) {
         'flex flex-col justify-center',
         'shadow-md rounded-md'
       )}
-      data-cy={`node-${moduleCode}`}
+      data-cy={`node-${moduleCode}-${props.type}`}
     >
       <Handle type="target" position={Position.Left} />
       <Handle type="source" position={Position.Right} />

@@ -46,7 +46,7 @@ declare global {
 }
 
 Cypress.Commands.add('getCy', (value: string) => {
-  return cy.get(`[data-cy=${value}]`)
+  return cy.get(`[data-cy*="${value}"]`)
 })
 
 Cypress.Commands.add(

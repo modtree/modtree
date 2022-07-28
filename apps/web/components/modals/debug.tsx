@@ -30,7 +30,7 @@ export function DebugModal() {
         <Content>
           {{
             ...redux.graph,
-            flowNodes: redux.graph.flowNodes.map((n) => n.id),
+            flowNodes: redux.graph.flowNodes.map((n) => [n.id, n.type]),
           }}
         </Content>
 
