@@ -20,6 +20,7 @@ export default createSlice({
     setMainGraph: (graph, action: P<ApiResponse.Graph>) => {
       const g = action.payload
       graph.id = g.id
+      graph.user = g.user
       graph.title = g.title
       graph.degree = g.degree
       graph.flowNodes = g.flowNodes

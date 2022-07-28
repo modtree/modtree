@@ -131,13 +131,20 @@ export const graph = createRouter()
 
   /**
    * updates a graph
-   * FIXME
    */
   .mutation('update', {
     input: z.object({
-      graph: z.any(),
+      graph: entities.Graph,
     }),
-    output: z.any(),
+    output: z.object({
+      graph: entities.Graph,
+      canTakes: z.array(
+        z.object({
+          moduleCode: z.string(),
+          canTake: z.boolean(),
+        })
+      ),
+    }),
     async resolve({ input }) {
       return api.graphRepo.update(input.graph).then((res) => ({
         ...res,
