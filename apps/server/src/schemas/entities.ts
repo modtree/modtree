@@ -162,6 +162,7 @@ const entities = {
             y: z.number(),
           }),
           data: Module,
+          type: z.string().optional(),
           className: z.string().optional(),
           selected: z.boolean().optional(),
         })
