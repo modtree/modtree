@@ -33,13 +33,12 @@ export function Main(props: {
 
   return (
     <>
-      <h2>Default graph</h2>
-      <p className="mb-4">Choose the default graph to display.</p>
-      <div className="flex flex-row space-x-2 mb-4">
-        <div className="ui-rectangle shadow-none h-8 w-64">
+      <SettingsSection title="Default graph">
+        <p className="mb-4">Choose the default graph to display.</p>
+        <div className="ui-rectangle shadow-none h-8 w-64 mb-8">
           <GraphPicker />
         </div>
-      </div>
+      </SettingsSection>
       <SettingsSection
         title="Graphs"
         addButtonText={user.savedGraphs.length > 0 ? 'New graph' : ''}

@@ -3,6 +3,7 @@ import { ModulesTabContent } from './modules'
 import { GraphsTabContent } from './graphs'
 import { SidebarCategoryProps } from 'types'
 import { DegreeIcon, GraphIcon, ModuleIcon } from '@/ui/icons'
+import { AccountTabContent } from './account'
 
 export const contents: SidebarCategoryProps[] = [
   {
@@ -25,6 +26,17 @@ export const contents: SidebarCategoryProps[] = [
         title: 'Degrees',
         content: <DegreesTabContent />,
         icon: DegreeIcon,
+      },
+    ],
+  },
+  {
+    category: 'Settings',
+    entries: [
+      {
+        pageId: 'account',
+        title: 'Account',
+        content: <AccountTabContent />,
+        icon: GraphIcon,
       },
     ],
   },

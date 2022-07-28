@@ -37,6 +37,9 @@ declare global {
       /** basic graph operations */
       addGraph<E>(title: string): Chainable<JQuery<E>>
       removeGraph<E>(title: string): Chainable<JQuery<E>>
+
+      /** user operations */
+      resetUser(): void
     }
   }
 }
