@@ -18,6 +18,7 @@ declare global {
     interface Chainable {
       /** general utilities */
       getCy<E>(value: string): Chainable<JQuery<E>>
+      findCy<E>(value: string): Chainable<JQuery<E>>
 
       /** module */
       openModuleModal<E>(
@@ -47,6 +48,14 @@ declare global {
 Cypress.Commands.add('getCy', (s: string) => cy.get(`[data-cy*="${s}"]`))
 
 /**
+ * cy.find() but with data-cy
+ * similar idea to getCy
+ */
+Cypress.Commands.add('findCy', { prevSubject: true }, (s: any, q: string) =>
+  s.find(`[data-cy*="${q}"]`)
+)
+
+/**
  * opens user profile to the specified page
  *
  * @param {'Degrees' | 'Graphs' | 'Modules'} page
@@ -56,7 +65,11 @@ Cypress.Commands.add(
   (page: 'Degrees' | 'Graphs' | 'Modules') => {
     cy.getCy('modtree-user-circle').click()
     cy.contains('Your profile').click()
-    return cy.contains(page).click()
+    cy.contains(page).click()
+    if (page === 'Modules') {
+      cy.getCy('done-section')
+      cy.getCy('doing-section')
+    }
   }
 )
 
