@@ -1,10 +1,16 @@
-import { z } from 'zod'
+import { z, ZodType } from 'zod'
 import { validModuleRegex } from '@modtree/utils'
 
 /**
  * NUSMods types in zod
  */
-const NUSMods = {
+type ZodNUSMods = {
+  Attributes: ZodType
+  WeekRange: ZodType
+  SemesterData: ZodType
+}
+
+const NUSMods: ZodNUSMods = {
   Attributes: z
     .object({
       year: z.boolean(),
@@ -48,7 +54,7 @@ const NUSMods = {
   }),
 }
 
-const prereqTree = z.string().or(
+const prereqTree: ZodType = z.string().or(
   z.lazy(() =>
     z.object({
       and: z.array(prereqTree).optional(),
