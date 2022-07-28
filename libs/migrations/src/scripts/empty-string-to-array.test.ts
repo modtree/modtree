@@ -1,12 +1,12 @@
 /**
- * this test acts as a script that makes all fulfillRequirements into an array
+ * this test acts as a script that makes all aliases into an array
  */
 
-import { db } from '@modtree/typeorm-config'
+import { db, env } from '@modtree/typeorm-config'
 import { Api } from '@modtree/repos'
 import { IModule } from '@modtree/types'
 import { DataSource, DataSourceOptions } from 'typeorm'
-import { env } from 'libs/typeorm-config/src/env'
+import { z } from 'zod'
 
 const { ssl, ...rest } = env.development
 const opts: DataSourceOptions = {
@@ -26,25 +26,32 @@ const getApi = connect.then((db) => new Api(db))
 const main = getApi.then(async (api) => {
   let count = 0
   let stringCount = 0
-  const moduleRepo = api.moduleRepo
+  const moduleRepo = api.moduleFullRepo
   const getModules = moduleRepo.find()
   const saves: Promise<IModule>[] = []
   const getSaves = getModules.then((modules) => {
-    modules.forEach((module) => {
-      const f = module.fulfillRequirements as any
-      const isString = typeof f === 'string'
-      const isBlank = f === ''
-      const isArray = Array.isArray(f)
-      if (!isArray && isString && isBlank) {
-        module.fulfillRequirements = []
-        // saves.push(moduleRepo.save(module))
-        count += 1
-      }
-      if (isString) {
-        stringCount += 1
-      }
+    modules.forEach((m) => {
+      const r1 = z.array(z.string()).safeParse(m.aliases)
+      const r2 = z.array(z.string()).safeParse(m.fulfillRequirements)
+      expect(r1).toEqual(expect.objectContaining({ success: true }))
+      expect(r2).toEqual(expect.objectContaining({ success: true }))
     })
-    console.log('module.fulfillRequirements')
+    ;['aliases', 'fulfillRequirements'].forEach((key) => {
+      modules.forEach((module: any) => {
+        const f = module[key] as any
+        const isString = typeof f === 'string'
+        const isBlank = f === ''
+        const isArray = Array.isArray(f)
+        if (!isArray && isString && isBlank) {
+          module[key] = []
+          // saves.push(moduleRepo.save(module))
+          count += 1
+        }
+        if (isString) {
+          stringCount += 1
+        }
+      })
+    })
     console.log('modified count:', count)
     console.log('string count:', stringCount)
   })

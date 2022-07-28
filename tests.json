@@ -30,7 +30,8 @@
     "pull": "repo:pull",
     "mc": "repo:module-condensed",
     "mf": "repo:module-full",
-    "int": "integration-tests"
+    "int": "integration-tests",
+    "mig": "migrations"
   },
   "groups": {
     "core": {

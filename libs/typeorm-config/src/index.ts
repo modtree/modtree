@@ -13,6 +13,8 @@ import {
 import { resolve } from 'path'
 import { env } from './env'
 
+export { env }
+
 const defaultConfig: DataSourceOptions = {
   type: 'postgres',
   rootDir: resolve(__dirname, '../../..'),
