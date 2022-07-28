@@ -6,9 +6,9 @@ import { NUSMods as NM } from '@modtree/types'
  * NUSMods types in zod
  */
 type ZodNUSMods = {
-  Attributes: ZodType
-  WeekRange: ZodType
-  SemesterData: ZodType
+  Attributes: ZodType<NM.NUSModuleAttributes>
+  WeekRange: ZodType<NM.WeekRange>
+  SemesterData: ZodType<NM.SemesterData>
 }
 
 const NUSMods: ZodNUSMods = {
