@@ -15,26 +15,6 @@
     ]
   },
   {
-    "file": "cypress/integration/cypress-utils/redux.cy.ts",
-    "runs": [
-      {
-        "gitHash": "d937a7fd73a2",
-        "timestamp": 1659023050181,
-        "pass": true
-      },
-      {
-        "gitHash": "ef038134aab0",
-        "timestamp": 1659022433285,
-        "pass": true
-      },
-      {
-        "gitHash": "d4c6ba37758f",
-        "timestamp": 1659022336085,
-        "pass": true
-      }
-    ]
-  },
-  {
     "file": "cypress/integration/graph/add-and-remove.cy.ts",
     "runs": [
       {
@@ -86,6 +66,31 @@
         "gitHash": "e94c91bae074",
         "timestamp": 1659023535904,
         "pass": false
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/cypress-utils/redux.cy.ts",
+    "runs": [
+      {
+        "gitHash": "6b6a036fcccc",
+        "timestamp": 1659025636489,
+        "pass": true
+      },
+      {
+        "gitHash": "d937a7fd73a2",
+        "timestamp": 1659023050181,
+        "pass": true
+      },
+      {
+        "gitHash": "ef038134aab0",
+        "timestamp": 1659022433285,
+        "pass": true
+      },
+      {
+        "gitHash": "d4c6ba37758f",
+        "timestamp": 1659022336085,
+        "pass": true
       }
     ]
   }

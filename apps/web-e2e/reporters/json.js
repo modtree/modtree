@@ -642,6 +642,7 @@ PERFORMANCE OF THIS SOFTWARE.
       const utils_1 = __nccwpck_require__(816)
       const filepath = 'results.json'
       const log = console.log
+      const historyLength = 50
       function endOfTest(runner) {
         const gitHash = (0, utils_1.getCurrentHash)()
         if (gitHash === '') return
@@ -668,7 +669,7 @@ PERFORMANCE OF THIS SOFTWARE.
           },
           ...fileData.runs,
         ]
-        if (fileData.runs.length > 3) fileData.runs.pop()
+        if (fileData.runs.length > historyLength) fileData.runs.pop()
         /**
          * push the file's data back into the json data
          */
@@ -745,8 +746,14 @@ PERFORMANCE OF THIS SOFTWARE.
       'use strict'
 
       Object.defineProperty(exports, '__esModule', { value: true })
-      exports.getCurrentHash = exports.getCommitTime = void 0
+      exports.isAncestor =
+        exports.getCurrentHash =
+        exports.getCommitTime =
+          void 0
       const child_process_1 = __nccwpck_require__(81)
+      /**
+       * gets stdout of a shell command
+       */
       function getStdout(cmd, args = []) {
         return (
           (0, child_process_1.spawnSync)(cmd, args, {
@@ -756,6 +763,9 @@ PERFORMANCE OF THIS SOFTWARE.
       }
       /**
        * extract epoch time (in milliseconds) from a commit id or a reference
+       *
+       * @param {string} commitId
+       * @returns {number} epoch time
        */
       function getCommitTime(commitId) {
         const output = getStdout('git', [
@@ -769,12 +779,33 @@ PERFORMANCE OF THIS SOFTWARE.
       exports.getCommitTime = getCommitTime
       /**
        * get current git hash, specifically of HEAD
+       *
+       * @returns {string}
        */
       function getCurrentHash() {
         const output = getStdout('git', ['rev-parse', 'HEAD'])
         return output.slice(0, 12)
       }
       exports.getCurrentHash = getCurrentHash
+      /**
+       * checks if a commit hash is ancestor of another
+       *
+       * @param {string} ancestor
+       * @param {string} child
+       * @returns {boolean}
+       */
+      function isAncestor(ancestor, child) {
+        return (
+          (0, child_process_1.spawnSync)(
+            'git',
+            ['merge-base', '--is-ancestor', ancestor, child],
+            {
+              encoding: 'utf8',
+            }
+          ).status === 0
+        )
+      }
+      exports.isAncestor = isAncestor
 
       /***/
     },

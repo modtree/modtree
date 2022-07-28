@@ -1,6 +1,14 @@
 const { spawnSync } = require('child_process')
 
-const sha = spawnSync('git', ['rev-parse', 'HEAD'], {
-  encoding: 'utf8',
-}).output[1].trimEnd()
-console.log(sha.slice(0, 12))
+const current = '1a394a0d'
+const ancestor = '1a5e2ea6'
+const not = 'b7cbf26e'
+const correct = false
+const sha = spawnSync(
+  'git',
+  ['merge-base', '--is-ancestor', correct ? ancestor : not, current],
+  {
+    encoding: 'utf8',
+  }
+).status
+console.log(sha)

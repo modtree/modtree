@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
-import { getAllFiles, getCommitTime } from '../utils'
-import { green, yellow, red, gray, Chalk } from 'chalk'
+import { getAllFiles, isAncestor } from '../utils'
+import { green, red, gray, Chalk } from 'chalk'
 import type { Run, TestData } from './types'
 
 /**
@@ -12,7 +12,6 @@ import type { Run, TestData } from './types'
  */
 enum State {
   PASS,
-  PASS_OLD,
   NORES, // no result
   FAIL,
 }
@@ -21,8 +20,7 @@ enum State {
 const p = (c: Chalk, i: string) => (s: string) => console.log(c(` ${i}`, s))
 const log = {
   [State.PASS]: p(green, '✓'),
-  [State.PASS_OLD]: p(gray, '✓'),
-  [State.NORES]: p(yellow, '*'),
+  [State.NORES]: p(gray, '*'),
   [State.FAIL]: p(red, '✗'),
 }
 
@@ -36,21 +34,26 @@ const cypressTests = getAllFiles(e2eDir).filter((f) => f.endsWith('cy.ts'))
 /** derive state of test from data */
 const byLatestFirst = (a: Run, b: Run) => (a.timestamp < b.timestamp ? 1 : -1)
 const latestRun = (runs: Run[]) => runs.sort(byLatestFirst)[0]
-const getState = (data: TestData | undefined, baseTime: number): State => {
+const getState = (data: TestData | undefined): State => {
   // if no data is found, assign the no-result state
   if (!data) return State.NORES
   // else, look for the result of the latest run
-  const latest = latestRun(data.runs)
-  if (latest.timestamp < baseTime && latest.pass) return State.PASS_OLD
+  const latest = latestRun(
+    data.runs.filter(
+      (r) =>
+        isAncestor(r.gitHash, 'HEAD') && isAncestor('origin/main', r.gitHash)
+    )
+  )
+  if (!latest) return State.NORES
   return latest.pass ? State.PASS : State.FAIL
 }
 
 /** process all the tests and print them */
-const main = (baseTime: number) =>
+const main = () =>
   cypressTests
     .map((file) => {
       const data = json.find((t) => t.file === file)
-      const state = getState(data, baseTime)
+      const state = getState(data)
       return { state, print: () => log[state](file) }
     })
     // sort according to the same order as the enum above
@@ -58,5 +61,4 @@ const main = (baseTime: number) =>
     // print out the results
     .forEach((f) => f.print())
 
-const baseTime = getCommitTime('origin/main')
-main(baseTime)
+main()
