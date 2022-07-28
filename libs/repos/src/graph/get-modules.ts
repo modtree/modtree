@@ -41,7 +41,7 @@ function modulify(moduleCodeSet: Set<string>, cache: Module[]): Module[] {
  *
  * @param {User} user
  * @param {Degree} degree
- * @returns {Promise<[Module[], Module[]]>}
+ * @returns {Promise<Result>}
  */
 export async function getModules(user: User, degree: Degree): Promise<Result> {
   const moduleCache = loadModules(user, degree)

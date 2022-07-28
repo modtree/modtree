@@ -1,15 +1,12 @@
-import { MouseEvent, useEffect, useMemo } from 'react'
+import { MouseEvent, useEffect } from 'react'
 import ReactFlow, { Node, Background, useReactFlow } from 'react-flow-renderer'
 import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { onContextMenu } from '@/ui/menu/context-menu'
 import { FlowControls } from './controls'
-import { ModuleNode } from './module-node'
 import { GraphFlowNode } from '@modtree/types'
+import { moduleNodes } from './nodes'
 
 export default function ModtreeFlow() {
-  /** TODO: use node types to set state */
-  const nodeTypes = useMemo(() => ({ moduleNode: ModuleNode }), [])
-
   /** hooks */
   const reactFlow = useReactFlow()
   const dispatch = useAppDispatch()
@@ -38,7 +35,7 @@ export default function ModtreeFlow() {
     <ReactFlow
       nodes={flowNodes}
       edges={flowEdges}
-      nodeTypes={nodeTypes}
+      nodeTypes={moduleNodes}
       /** hooks */
       onNodesChange={(chg) => dispatch(r.applyNodeChanges(chg))}
       onNodeDragStop={onNodeDragStop}

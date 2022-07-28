@@ -1,17 +1,7 @@
 import { GraphFlowEdge, GraphFlowNode, Module } from '@modtree/types'
 export * from './get-edges'
 import dagre from 'dagre'
-
-const origin = { x: 0, y: 0 }
-
-export function nodify(module: Module): GraphFlowNode {
-  return {
-    id: module.moduleCode,
-    position: origin,
-    data: module,
-    type: 'moduleNode',
-  }
-}
+import { nodify } from '@modtree/utils'
 
 export function getFlowNodes(
   modules: Module[],
@@ -33,5 +23,5 @@ export function getFlowNodes(
   /** compute the layout */
   dagre.layout(g)
 
-  return modules.map(nodify)
+  return modules.map((m) => nodify(m, 'planned'))
 }

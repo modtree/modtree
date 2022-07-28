@@ -20,7 +20,7 @@ export function ModuleDetails() {
     // 1. hide module modal
     dispatch(r.hideModuleModal())
     // 2. add module to graph
-    addModuleNode(nodify(module))
+    addModuleNode(nodify(module, 'planned'))
   }
 
   return (

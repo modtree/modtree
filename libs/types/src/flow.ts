@@ -13,13 +13,9 @@ export type FlowEdgeCondensed = {
   target: string
 }
 
-/**
- * For module styling
- */
-export enum FlowNodeState {
-  DONE = 'done',
-  DOING = 'doing',
-  PLAN_CAN_TAKE = 'plan can take',
-  PLAN_CANNOT_TAKE = 'plan cannot take',
-  SUGGESTED = 'suggested',
-}
+export type FlowNodeState =
+  | 'done'
+  | 'doing'
+  | 'planned'
+  | 'cannotTake'
+  | 'suggested'
