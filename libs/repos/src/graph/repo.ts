@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm'
 import { Module, Graph, CanTakeModule, ApiResponse } from '@modtree/types'
-import { flatten, getFlowEdges, getFlowNodes, nodify } from '@modtree/utils'
+import { flatten, nodify } from '@modtree/utils'
 import { BaseRepo } from '../base'
 import { ModuleRepository } from '../module'
 import { UserRepository } from '../user'
@@ -47,27 +47,17 @@ export class GraphRepository extends BaseRepo<Graph> {
       return getModules(user, degree)
     })
     /**
-     *  get flow edges from relations
-     */
-    const flowEdges = modules.then(({ modulesPlaced }) =>
-      getFlowEdges(modulesPlaced.map((m) => nodify(m, 'planned')))
-    )
-    /**
      *  get flow nodes from dagre
      */
-    const flowNodes = Promise.all([flowEdges, modules]).then(
-      ([edges, { modulesPlaced }]) =>
-        getFlowNodes(
-          modulesPlaced.map((m) => nodify(m, 'planned')),
-          edges
-        )
+    const flowNodes = modules.then(({ modulesPlaced }) =>
+      modulesPlaced.map((m) => nodify(m, 'planned'))
     )
 
     /**
      * save the newly created graph
      */
-    return Promise.all([user, degree, modules, flowEdges, flowNodes]).then(
-      ([user, degree, modules, flowEdges, flowNodes]) =>
+    return Promise.all([user, degree, modules, flowNodes]).then(
+      ([user, degree, modules, flowNodes]) =>
         this.save(
           this.create({
             title,
@@ -76,7 +66,7 @@ export class GraphRepository extends BaseRepo<Graph> {
             modulesPlaced: modules.modulesPlaced,
             modulesHidden: modules.modulesHidden,
             flowNodes,
-            flowEdges,
+            flowEdges: [],
           })
         )
     )
