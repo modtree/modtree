@@ -21,7 +21,7 @@ export function getApp(): Express {
   const app = express()
   app.use(cors(corsOpts))
   app.use(express.json())
-  app.use('/', createMid({ router: appRouter }))
+  app.use('/trpc', createMid({ router: appRouter }))
   /** register root route */
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
