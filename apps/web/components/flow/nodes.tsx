@@ -18,23 +18,24 @@ const nodes: NodeDef[] = [
   { type: 'suggested', moduleCode: 'text-gray-400 opacity-50' },
 ]
 
-function coloredNode(className: {
-  title?: string
+function coloredNode(
+  type: FlowNodeState,
+  title?: string,
   moduleCode?: string
-}): ComponentType<NodeProps> {
-  return (props: ModuleNodeProps) => {
-    const final = { ...props, data: { ...props.data, className } }
+): ComponentType<NodeProps> {
+  const node = (props: ModuleNodeProps) => {
+    const data = { ...props.data, className: { title, moduleCode } }
+    const final = { ...props, data }
     return <ModuleNode {...final} />
   }
+  node.displayName = `node-${type}`
+  return node
 }
 
 export const moduleNodes = nodes.reduce(
   (acc, node) => ({
     ...acc,
-    [node.type]: coloredNode({
-      title: node.title,
-      moduleCode: node.moduleCode,
-    }),
+    [node.type]: coloredNode(node.type, node.title, node.moduleCode),
   }),
   {} as NodeTypes
 )
