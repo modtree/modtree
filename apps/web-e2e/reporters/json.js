@@ -746,7 +746,8 @@ PERFORMANCE OF THIS SOFTWARE.
       'use strict'
 
       Object.defineProperty(exports, '__esModule', { value: true })
-      exports.isAncestor =
+      exports.hasUncommittedChanges =
+        exports.isAncestor =
         exports.getCurrentHash =
         exports.getCommitTime =
           void 0
@@ -806,6 +807,28 @@ PERFORMANCE OF THIS SOFTWARE.
         )
       }
       exports.isAncestor = isAncestor
+      /**
+       * checks if there are uncommitted changes
+       *
+       * @returns {boolean}
+       */
+      function hasUncommittedChanges() {
+        const output = (0, child_process_1.spawnSync)(
+          'git',
+          ['status', '--porcelain'],
+          {
+            encoding: 'utf8',
+          }
+        ).output[1]
+        return (
+          (
+            (output === null || output === void 0
+              ? void 0
+              : output.match(/\n/)) || []
+          ).length === 0
+        )
+      }
+      exports.hasUncommittedChanges = hasUncommittedChanges
 
       /***/
     },

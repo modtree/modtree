@@ -46,3 +46,15 @@ export function isAncestor(ancestor: string, child: string): boolean {
     }).status === 0
   )
 }
+
+/**
+ * checks if there are uncommitted changes
+ *
+ * @returns {boolean}
+ */
+export function hasUncommittedChanges(): boolean {
+  const output = spawnSync('git', ['status', '--porcelain'], {
+    encoding: 'utf8',
+  }).output[1]
+  return (output?.match(/\n/) || []).length === 0
+}

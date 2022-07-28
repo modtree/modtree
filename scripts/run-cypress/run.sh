@@ -10,6 +10,11 @@ _P_='\033[0;35m' # Purple
 _C_='\033[0;36m' # Cyan
 _S_='\033[0;37m' # Soft (Gray)
 
+GIT_STATUS=$(git status --porcelain)
+[[ $GIT_STATUS ]] \
+  && printf "\n${_C_}Please commit all changes before running tests.${_N_}\n\n" \
+  && exit 1
+
 SPEC_DIR=apps/web-e2e/cypress/integration
 
 # this script requires fd and fzf
@@ -21,5 +26,5 @@ if [ $TARGET ]; then
     --skip-nx-cache \
     --spec $TARGET
 else
-  printf "\n${_Y_}No test selected.${_N_}\n\n"
+  printf "\n${_C_}No test selected.${_N_}\n\n"
 fi
