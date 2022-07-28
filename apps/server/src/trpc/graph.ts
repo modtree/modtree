@@ -2,6 +2,7 @@ import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
 import { deleteResult, entities } from '../schemas/entities'
+import { parseCommaSeparatedString } from '../utils/parse'
 import { createRouter } from './router'
 
 export const graph = createRouter()
@@ -51,21 +52,18 @@ export const graph = createRouter()
 
   /**
    * suggest modules
-   *
-   * FIXME
-   * GET request only accepts string params in input properties
    */
-  .mutation('suggest-modules', {
+  .query('suggest-modules', {
     meta: {
       openapi: {
         enabled: true,
-        method: 'POST',
+        method: 'GET',
         path: '/graph/{graphId}/suggest-modules',
       },
     },
     input: z.object({
       graphId: z.string().uuid(),
-      selectedCodes: z.array(z.string().regex(validModuleRegex)),
+      selectedCodes: z.string().transform(parseCommaSeparatedString),
     }),
     /* array of module codes */
     output: z.array(z.string().regex(validModuleRegex)),
