@@ -13,18 +13,18 @@ export const search = createRouter()
       openapi: {
         enabled: true,
         method: 'GET',
-        path: '/search/modules/{search}',
+        path: '/search/modules/{query}',
       },
     },
     input: z.object({
-      search: z.string(),
+      query: z.string(),
     }),
     output: z.array(entities.Module),
     async resolve({ input }) {
       if (!input) return []
       return api.moduleCondensedRepo
         .find({
-          where: [{ moduleCode: Like(`${input.search.toUpperCase()}%`) }],
+          where: [{ moduleCode: Like(`${input.query.toUpperCase()}%`) }],
           take: 4,
         })
         .then((r) =>
@@ -41,17 +41,17 @@ export const search = createRouter()
       openapi: {
         enabled: true,
         method: 'GET',
-        path: '/search/modules-condensed/{search}',
+        path: '/search/modules-condensed/{query}',
       },
     },
     input: z.object({
-      search: z.string(),
+      query: z.string(),
     }),
     output: z.array(entities.ModuleCondensed),
     async resolve({ input }) {
       if (!input) return []
       return api.moduleCondensedRepo.find({
-        where: [{ moduleCode: Like(`${input.search.toUpperCase()}%`) }],
+        where: [{ moduleCode: Like(`${input.query.toUpperCase()}%`) }],
         take: 4,
       })
     },
