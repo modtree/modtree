@@ -1,15 +1,5 @@
 [
   {
-    "file": "cypress/integration/login.cy.ts",
-    "runs": [
-      {
-        "gitHash": "5ebf9d4ca34c",
-        "timestamp": 1559017383351,
-        "pass": true
-      }
-    ]
-  },
-  {
     "file": "cypress/integration/search.cy.ts",
     "runs": [
       {
@@ -41,6 +31,61 @@
         "gitHash": "d4c6ba37758f",
         "timestamp": 1659022336085,
         "pass": true
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/graph/add-and-remove.cy.ts",
+    "runs": [
+      {
+        "gitHash": "410deb791151",
+        "timestamp": 1659023334001,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/login.cy.ts",
+    "runs": [
+      {
+        "gitHash": "e94c91bae074",
+        "timestamp": 1659023370400,
+        "pass": true
+      },
+      {
+        "gitHash": "5ebf9d4ca34c",
+        "timestamp": 1559017383351,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/user-profile/modules.cy.ts",
+    "runs": [
+      {
+        "gitHash": "e94c91bae074",
+        "timestamp": 1659023413711,
+        "pass": true
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/graph/new-graph.cy.ts",
+    "runs": [
+      {
+        "gitHash": "e94c91bae074",
+        "timestamp": 1659023460288,
+        "pass": false
+      }
+    ]
+  },
+  {
+    "file": "cypress/integration/user-profile/degrees.cy.ts",
+    "runs": [
+      {
+        "gitHash": "e94c91bae074",
+        "timestamp": 1659023535904,
+        "pass": false
       }
     ]
   }

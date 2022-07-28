@@ -16,6 +16,10 @@ SPEC_DIR=apps/web-e2e/cypress/integration
 
 TARGET=$(fd --full-path $SPEC_DIR -t f | fzf)
 
-yarn nx run web-e2e:e2e:nw \
-  --skip-nx-cache \
-  --spec $TARGET
+if [ $TARGET ]; then
+  yarn nx run web-e2e:e2e:nw \
+    --skip-nx-cache \
+    --spec $TARGET
+else
+  printf "\n${_Y_}No test selected.${_N_}\n\n"
+fi
