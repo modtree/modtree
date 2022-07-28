@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
-import { getAllFiles, isAncestor } from '../utils'
+import { getAllFiles, getHash, isAncestor } from '../utils'
 import { green, red, gray, Chalk } from 'chalk'
 import type { Run, TestData } from './types'
 
@@ -39,9 +39,15 @@ const getState = (data: TestData | undefined): State => {
   if (!data) return State.NORES
   // else, look for the result of the latest run
   const latest = latestRun(
-    data.runs.filter(
-      (r) =>
-        isAncestor(r.gitHash, 'HEAD') && isAncestor('origin/main', r.gitHash)
+    data.runs.filter((r) =>
+      [
+        // test hash is ancestor of current commit
+        isAncestor(r.gitHash, 'HEAD'),
+        // test hash is descendant of origin/main
+        isAncestor('origin/main', r.gitHash),
+        // test hash is not origin/main itself
+        getHash('origin/main') !== getHash(r.gitHash),
+      ].every(Boolean)
     )
   )
   if (!latest) return State.NORES

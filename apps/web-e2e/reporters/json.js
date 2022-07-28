@@ -748,6 +748,7 @@ PERFORMANCE OF THIS SOFTWARE.
       Object.defineProperty(exports, '__esModule', { value: true })
       exports.hasUncommittedChanges =
         exports.isAncestor =
+        exports.getHash =
         exports.getCurrentHash =
         exports.getCommitTime =
           void 0
@@ -788,6 +789,17 @@ PERFORMANCE OF THIS SOFTWARE.
         return output.slice(0, 12)
       }
       exports.getCurrentHash = getCurrentHash
+      /**
+       * get git hash
+       *
+       * @param {string} ref
+       * @returns {string}
+       */
+      function getHash(ref) {
+        const output = getStdout('git', ['rev-parse', ref])
+        return output.slice(0, 12)
+      }
+      exports.getHash = getHash
       /**
        * checks if a commit hash is ancestor of another
        *

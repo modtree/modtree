@@ -33,6 +33,17 @@ export function getCurrentHash(): string {
 }
 
 /**
+ * get git hash
+ *
+ * @param {string} ref
+ * @returns {string}
+ */
+export function getHash(ref: string): string {
+  const output = getStdout('git', ['rev-parse', ref])
+  return output.slice(0, 12)
+}
+
+/**
  * checks if a commit hash is ancestor of another
  *
  * @param {string} ancestor
