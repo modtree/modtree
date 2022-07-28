@@ -22,6 +22,11 @@ const correct = [
     expected: ['sample'],
   },
   {
+    type: 'trailing comma',
+    input: 'MA2001,',
+    expected: ['MA2001', ''],
+  },
+  {
     type: 'undefined input',
     expected: [],
   },
@@ -29,5 +34,5 @@ const correct = [
 
 test.each(correct)('$type', (props) => {
   const { input, expected } = props
-  expect(parseCommaSeparatedString(input)).toStrictEqual(expected)
+  expect(parseCommaSeparatedString(input as string)).toStrictEqual(expected)
 })
