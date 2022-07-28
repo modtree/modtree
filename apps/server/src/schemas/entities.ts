@@ -54,6 +54,9 @@ const NUSMods: ZodNUSMods = {
   }),
 }
 
+/**
+ * this zod type is declared on its own as it references itself
+ */
 const prereqTree: ZodType = z.string().or(
   z.lazy(() =>
     z.object({
@@ -68,44 +71,54 @@ const deleteResult = z.object({
   affected: z.number().or(z.null()).optional(),
 })
 
-const Module = z.object({
-  id: z.string().uuid(),
-  moduleCode: z.string().regex(validModuleRegex),
-  title: z.string(),
-  prerequisite: z.string(),
-  corequisite: z.string(),
-  preclusion: z.string(),
-  fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
-  prereqTree,
-})
-
-const entities = {
-  /** FLATTENED */
-  User: z.object({
-    id: z.string().uuid(),
-    facebookId: z.string(),
-    googleId: z.string(),
-    githubId: z.string(),
-    displayName: z.string(),
-    username: z.string(),
-    email: z.string().email(),
-    matriculationYear: z.number(),
-    graduationYear: z.number(),
-    graduationSemester: z.number(),
-    modulesDone: z.array(z.string().regex(validModuleRegex)),
-    modulesDoing: z.array(z.string().regex(validModuleRegex)),
-    savedDegrees: z.array(z.string().uuid()),
-    savedGraphs: z.array(z.string().uuid()),
-    /** allow empty string for CREATE endpoint */
-    mainDegree: z.string().uuid().or(z.string()),
-    mainGraph: z.string().uuid().or(z.string()),
-  }),
-  Module,
-  ModuleCondensed: z.object({
+const Module = z
+  .object({
     id: z.string().uuid(),
     moduleCode: z.string().regex(validModuleRegex),
     title: z.string(),
-  }),
+    prerequisite: z.string(),
+    corequisite: z.string(),
+    preclusion: z.string(),
+    fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
+    prereqTree,
+  })
+  .strict()
+
+/**
+ * all entities are strict, so if extra properties are passed,
+ * then the endpoint throws an error.
+ */
+const entities = {
+  /** FLATTENED */
+  User: z
+    .object({
+      id: z.string().uuid(),
+      facebookId: z.string(),
+      googleId: z.string(),
+      githubId: z.string(),
+      displayName: z.string(),
+      username: z.string(),
+      email: z.string().email(),
+      matriculationYear: z.number(),
+      graduationYear: z.number(),
+      graduationSemester: z.number(),
+      modulesDone: z.array(z.string().regex(validModuleRegex)),
+      modulesDoing: z.array(z.string().regex(validModuleRegex)),
+      savedDegrees: z.array(z.string().uuid()),
+      savedGraphs: z.array(z.string().uuid()),
+      /** allow empty string for CREATE endpoint */
+      mainDegree: z.string().uuid().or(z.string()),
+      mainGraph: z.string().uuid().or(z.string()),
+    })
+    .strict(),
+  Module,
+  ModuleCondensed: z
+    .object({
+      id: z.string().uuid(),
+      moduleCode: z.string().regex(validModuleRegex),
+      title: z.string(),
+    })
+    .strict(),
   ModuleFull: Module.extend({
     acadYear: z.string(),
     description: z.string(),
@@ -120,44 +133,48 @@ const entities = {
     workload: z.string().or(z.array(z.number())),
   }),
   /** FLATTENED */
-  Degree: z.object({
-    id: z.string().uuid(),
-    title: z.string(),
-    modules: z.array(z.string().regex(validModuleRegex)),
-  }),
-  /** FLATTENED */
-  Graph: z.object({
-    id: z.string().uuid(),
-    title: z.string(),
-    user: z.string().uuid(),
-    degree: z.object({
+  Degree: z
+    .object({
       id: z.string().uuid(),
       title: z.string(),
-    }),
-    modulesPlaced: z.array(z.string().regex(validModuleRegex)),
-    modulesHidden: z.array(z.string().regex(validModuleRegex)),
-    /** irrelevant optional props are left out */
-    flowNodes: z.array(
-      z.object({
-        id: z.string(),
-        position: z.object({
-          x: z.number(),
-          y: z.number(),
-        }),
-        data: Module,
-        className: z.string().optional(),
-        selected: z.boolean().optional(),
-      })
-    ),
-    /** irrelevant optional props are left out */
-    flowEdges: z.array(
-      z.object({
-        id: z.string(),
-        source: z.string(),
-        target: z.string(),
-      })
-    ),
-  }),
+      modules: z.array(z.string().regex(validModuleRegex)),
+    })
+    .strict(),
+  /** FLATTENED */
+  Graph: z
+    .object({
+      id: z.string().uuid(),
+      title: z.string(),
+      user: z.string().uuid(),
+      degree: z.object({
+        id: z.string().uuid(),
+        title: z.string(),
+      }),
+      modulesPlaced: z.array(z.string().regex(validModuleRegex)),
+      modulesHidden: z.array(z.string().regex(validModuleRegex)),
+      /** irrelevant optional props are left out */
+      flowNodes: z.array(
+        z.object({
+          id: z.string(),
+          position: z.object({
+            x: z.number(),
+            y: z.number(),
+          }),
+          data: Module,
+          className: z.string().optional(),
+          selected: z.boolean().optional(),
+        })
+      ),
+      /** irrelevant optional props are left out */
+      flowEdges: z.array(
+        z.object({
+          id: z.string(),
+          source: z.string(),
+          target: z.string(),
+        })
+      ),
+    })
+    .strict(),
 }
 
 export { deleteResult, entities }
