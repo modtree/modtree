@@ -46,15 +46,16 @@ const NUSMods = {
     examDate: z.string().optional(),
     examDuration: z.number().optional(),
   }),
-  PrereqTree: z.string().or(
-    z.lazy(() =>
-      z.object({
-        and: z.array(NUSMods.prereqTree).optional(),
-        or: z.array(NUSMods.prereqTree).optional(),
-      })
-    )
-  ),
 }
+
+const prereqTree = z.string().or(
+  z.lazy(() =>
+    z.object({
+      and: z.array(prereqTree).optional(),
+      or: z.array(prereqTree).optional(),
+    })
+  )
+)
 
 const deleteResult = z.object({
   raw: z.any(),
@@ -69,7 +70,7 @@ const Module = z.object({
   corequisite: z.string(),
   preclusion: z.string(),
   fulfillRequirements: z.array(z.string().regex(validModuleRegex)),
-  prereqTree: NUSMods.PrereqTree,
+  prereqTree,
 })
 
 const entities = {
