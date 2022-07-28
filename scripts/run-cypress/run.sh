@@ -10,11 +10,14 @@ _P_='\033[0;35m' # Purple
 _C_='\033[0;36m' # Cyan
 _S_='\033[0;37m' # Soft (Gray)
 
-GIT_STATUS=$(git status --porcelain --ignored=matching 'pps/web-e2e/results.json')
+RUN=true
+while IFS= read -r line; do
+  [[ $line != *'apps/web-e2e/results.json' ]] && RUN=false
+done < <(git status --porcelain)
 
-[[ $GIT_STATUS ]] \
-  && printf "\n${_C_}Please commit all changes before running tests.${_N_}\n\n" \
-  && exit 1
+[[ "$RUN" == false ]] &&
+  printf "\n${_C_}Please commit all changes before running tests.${_N_}\n\n" &&
+  exit 1
 
 SPEC_DIR=apps/web-e2e/cypress/integration
 
@@ -23,9 +26,7 @@ SPEC_DIR=apps/web-e2e/cypress/integration
 TARGET=$(fd --full-path $SPEC_DIR -t f | fzf)
 
 if [ $TARGET ]; then
-  yarn nx run web-e2e:e2e:nw \
-    --skip-nx-cache \
-    --spec $TARGET
+  yarn nx e2e web-e2e --skip-nx-cache --spec $TARGET
 else
   printf "\n${_C_}No test selected.${_N_}\n\n"
 fi
