@@ -1,6 +1,6 @@
 import { writeFileSync, readFileSync } from 'fs'
 import { getCurrentHash } from '../utils'
-import type { Runner } from 'mocha'
+import type { Runner } from './types'
 import type { TestData, Run } from './types'
 
 const filepath = 'results.json'
