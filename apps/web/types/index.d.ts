@@ -1,5 +1,10 @@
 import type { ButtonHTMLAttributes, ReactElement, ComponentProps } from 'react'
-import type { UseState, Modify, GraphFlowNode } from '@modtree/types'
+import type {
+  UseState,
+  Modify,
+  GraphFlowNode,
+  IModuleCondensed,
+} from '@modtree/types'
 
 /**
  * for frontend-specific types.
@@ -92,4 +97,10 @@ export type ContextMenuProps = {
   left: number
   menu: ContextMenuType
   flowNode?: GraphFlowNode
+}
+
+export type ModuleNodeProps = {
+  data: IModuleCondensed & {
+    className?: { moduleCode?: string; title?: string }
+  }
 }

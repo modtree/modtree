@@ -1,4 +1,9 @@
-import { GraphFlowEdge, GraphFlowNode, IModule } from '@modtree/types'
+import {
+  FlowNodeState,
+  GraphFlowEdge,
+  GraphFlowNode,
+  IModule,
+} from '@modtree/types'
 import dagre from 'dagre'
 
 const origin = { x: 0, y: 0 }
@@ -8,7 +13,7 @@ export function nodify(module: IModule): GraphFlowNode {
     id: module.moduleCode,
     position: origin,
     data: module,
-    type: 'moduleNode',
+    type: 'done' as FlowNodeState,
   }
 }
 
