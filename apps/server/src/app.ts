@@ -3,6 +3,7 @@ import express, { Request, Response, Express } from 'express'
 import { createExpressMiddleware as createMid } from '@trpc/server/adapters/express'
 import { appRouter } from './trpc'
 import { createOpenApiExpressMiddleware } from '@modtree/trpc-openapi'
+import { generateDocs } from './docs'
 
 const corsOpts = {
   origin: [
@@ -26,6 +27,8 @@ export function getApp(): Express {
   app.use('/trpc', createMid({ router: appRouter }))
   /** for OpenAPI support */
   app.use('/api', createOpenApiExpressMiddleware({ router: appRouter }))
+  /** write OpenAPI docs */
+  generateDocs(appRouter)
   /** register root route */
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
