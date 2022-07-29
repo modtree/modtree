@@ -150,15 +150,35 @@ Cypress.Commands.add('resetUser', () => {
   cy.wait('@resetUser')
   cy.closeUserProfile()
   cy.reload()
-  // base checks that user is reset
   cy.reduxState().then(({ graph, modtree: { user, degree } }) => {
-    expect(user.savedDegrees).to.have.length(1)
-    expect(user.savedGraphs).to.have.length(1)
-    expect(graph.flowEdges).to.have.length(0)
-    expect(user.modulesDone).to.have.length(0)
-    expect(user.modulesDoing).to.have.length(0)
-    expect(graph.id).to.equal(user.savedGraphs[0])
-    expect(degree.id).to.equal(user.savedDegrees[0])
+    // base checks that user is reset
+    it('user has 1 saved degree', () => {
+      expect(user.savedDegrees).to.have.length(1)
+    })
+
+    it('user has 1 saved graph', () => {
+      expect(user.savedGraphs).to.have.length(1)
+    })
+
+    it('graph has no nodes', () => {
+      expect(graph.flowEdges).to.have.length(0)
+    })
+
+    it('user has no modules done', () => {
+      expect(user.modulesDone).to.have.length(0)
+    })
+
+    it('user has no modules doing', () => {
+      expect(user.modulesDoing).to.have.length(0)
+    })
+
+    it('graph id matches saved', () => {
+      expect(graph.id).to.equal(user.savedGraphs[0])
+    })
+
+    it('degree id matches saved', () => {
+      expect(degree.id).to.equal(user.savedDegrees[0])
+    })
   })
 })
 
