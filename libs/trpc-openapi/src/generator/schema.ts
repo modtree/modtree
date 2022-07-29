@@ -12,7 +12,18 @@ import {
 const zodSchemaToOpenApiSchemaObject = (
   zodSchema: z.ZodType
 ): OpenAPIV3.SchemaObject => {
-  return zodToJsonSchema(zodSchema, { target: 'openApi3' })
+  /**
+   * MODTREE WAS HERE
+   *
+   * disable refStrategy because trpc-openapi does not support
+   * recursive types in docs due to its implementation
+   *
+   * trpc-openapi#37
+   */
+  return zodToJsonSchema(zodSchema, {
+    target: 'openApi3',
+    $refStrategy: 'none',
+  })
 }
 
 export const getParameterObjects = (
