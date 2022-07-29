@@ -136,10 +136,11 @@ export const graph = createRouter()
       openapi: {
         enabled: true,
         method: 'PATCH',
-        path: '/graph/{graphId}',
+        path: '/graph/{graphId}/update',
       },
     },
     input: z.object({
+      graphId: z.string().uuid(),
       graph: entities.Graph,
     }),
     output: z.object({
@@ -152,9 +153,12 @@ export const graph = createRouter()
       ),
     }),
     async resolve({ input }) {
-      return api.graphRepo.update(input.graph).then((res) => ({
-        ...res,
-        graph: flatten.graph(res.graph),
-      }))
+      return api.graphRepo
+        .findOneById(input.graphId)
+        .then((g) => api.graphRepo.update(g, input.graph))
+        .then((res) => ({
+          ...res,
+          graph: flatten.graph(res.graph),
+        }))
     },
   })

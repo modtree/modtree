@@ -17,7 +17,7 @@ export function redrawGraph() {
     graph,
   } = store.getState()
   trpc
-    .mutation('graph/update', { graph })
+    .mutation('graph/update', { graphId: graph.id, graph })
     .then((res) => {
       return getCSS(
         graph.flowNodes,
