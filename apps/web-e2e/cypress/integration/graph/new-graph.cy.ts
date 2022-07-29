@@ -1,21 +1,12 @@
 function assertGraphCount(n: number) {
   /** wait for the first node to load */
-  cy.get('.react-flow__pane')
-  cy.wait('@getGraph')
-  cy.window()
-    .its('store')
-    .invoke('getState')
-    .its('modtree.user.savedGraphs')
-    .then((graphs) => {
-      expect(graphs).to.have.length(n)
-    })
+  cy.reduxUser().then((user) => {
+    expect(user.savedGraphs).to.have.length(n)
+  })
 }
 
-describe('add-and-remove', () => {
-  beforeEach(() => {
-    cy.intercept('GET', /.*graph.*/).as('getGraph')
-    cy.login()
-  })
+describe('new graph', () => {
+  before(() => cy.login({ reset: true }))
 
   it('Add a new graph', () => {
     assertGraphCount(1)

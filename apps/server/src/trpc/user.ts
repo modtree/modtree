@@ -264,3 +264,16 @@ export const user = createRouter()
       return api.userRepo.findOneByEmail(input.email).then(flatten.user)
     },
   })
+
+  /**
+   * get a user by email
+   */
+  .mutation('reset', {
+    input: z.string().uuid(),
+    async resolve({ input }) {
+      return api.userRepo
+        .findOneById(input)
+        .then((u) => api.resetUser(u))
+        .then(flatten.user)
+    },
+  })

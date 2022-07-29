@@ -18,6 +18,7 @@ declare global {
     interface Chainable {
       /** general utilities */
       getCy<E>(value: string): Chainable<JQuery<E>>
+      findCy<E>(value: string): Chainable<JQuery<E>>
 
       /** module */
       openModuleModal<E>(
@@ -29,13 +30,16 @@ declare global {
 
       /** user profile modal open/close */
       openUserProfile<E>(
-        value: 'Degrees' | 'Graphs' | 'Modules'
+        value: 'Degrees' | 'Graphs' | 'Modules' | 'Account'
       ): Chainable<JQuery<E>>
       closeUserProfile<E>(): Chainable<JQuery<E>>
 
       /** basic graph operations */
       addGraph<E>(title: string): Chainable<JQuery<E>>
       removeGraph<E>(title: string): Chainable<JQuery<E>>
+
+      /** user operations */
+      resetUser(): void
     }
   }
 }
@@ -47,6 +51,14 @@ declare global {
 Cypress.Commands.add('getCy', (s: string) => cy.get(`[data-cy*="${s}"]`))
 
 /**
+ * cy.find() but with data-cy
+ * similar idea to getCy
+ */
+Cypress.Commands.add('findCy', { prevSubject: true }, (s: any, q: string) =>
+  s.find(`[data-cy*="${q}"]`)
+)
+
+/**
  * opens user profile to the specified page
  *
  * @param {'Degrees' | 'Graphs' | 'Modules'} page
@@ -56,7 +68,11 @@ Cypress.Commands.add(
   (page: 'Degrees' | 'Graphs' | 'Modules') => {
     cy.getCy('modtree-user-circle').click()
     cy.contains('Your profile').click()
-    return cy.contains(page).click()
+    cy.contains(page).click()
+    if (page === 'Modules') {
+      cy.getCy('done-section')
+      cy.getCy('doing-section')
+    }
   }
 )
 
@@ -125,6 +141,45 @@ Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {
         .contains('Remove')
         .click({ force: true })
     })
+})
+
+Cypress.Commands.add('resetUser', () => {
+  cy.intercept(/reset/).as('resetUser')
+  cy.openUserProfile('Account')
+  cy.get('button').contains('Reset account').click()
+  cy.wait('@resetUser')
+  cy.closeUserProfile()
+  cy.reload()
+  cy.reduxState().then(({ graph, modtree: { user, degree } }) => {
+    // base checks that user is reset
+    it('user has 1 saved degree', () => {
+      expect(user.savedDegrees).to.have.length(1)
+    })
+
+    it('user has 1 saved graph', () => {
+      expect(user.savedGraphs).to.have.length(1)
+    })
+
+    it('graph has no nodes', () => {
+      expect(graph.flowEdges).to.have.length(0)
+    })
+
+    it('user has no modules done', () => {
+      expect(user.modulesDone).to.have.length(0)
+    })
+
+    it('user has no modules doing', () => {
+      expect(user.modulesDoing).to.have.length(0)
+    })
+
+    it('graph id matches saved', () => {
+      expect(graph.id).to.equal(user.savedGraphs[0])
+    })
+
+    it('degree id matches saved', () => {
+      expect(degree.id).to.equal(user.savedDegrees[0])
+    })
+  })
 })
 
 // -- This is a parent command --

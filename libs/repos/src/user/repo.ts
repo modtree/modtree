@@ -400,4 +400,13 @@ export class UserRepository extends BaseRepo<User> {
       return this.save(user)
     })
   }
+
+  /**
+   * resets a user
+   */
+  async reset(user: User) {
+    const { email, id } = user
+    const fresh = this.create({ email, id })
+    return this.save(fresh)
+  }
 }

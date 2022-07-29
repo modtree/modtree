@@ -6,7 +6,7 @@ declare global {
   namespace Cypress {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
-      login(): void
+      login(props?: { reset?: boolean }): void
       loginCred(): void
       loginSocial(): void
     }
@@ -17,12 +17,15 @@ declare global {
  * logs the user in.
  * meant to be used in the before() call
  */
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (props?: { reset?: boolean }) => {
   const isLocal = Cypress.config('baseUrl').includes('localhost')
   if (isLocal) {
     cy.loginCred()
   } else {
     cy.loginSocial()
+  }
+  if (props && props.reset) {
+    cy.resetUser()
   }
 })
 
@@ -30,6 +33,7 @@ Cypress.Commands.add('login', () => {
  * Primary login method for local testing.
  */
 Cypress.Commands.add('loginCred', () => {
+  cy.intercept(/api\/auth\/session/).as('session')
   // on the home page, click on the sign in button
   cy.visit('/')
   cy.getCy('sign-in-button').click()
@@ -38,7 +42,8 @@ Cypress.Commands.add('loginCred', () => {
   cy.contains('Sign in with Credentials').click()
 
   // wait for login to complete
-  cy.getCy('modtree-user-circle')
+  cy.wait('@session')
+  cy.reduxState()
 })
 
 /**

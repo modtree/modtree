@@ -16,8 +16,13 @@ export class Api extends BaseApi {
   }
 
   /**
-   * Setups up a functional User entity, with a default degree and a
-   * default graph.
+   * Sets up up a functional User entity,
+   * with a default degree and a default graph.
+   *
+   * can also be used to reset a user to a state with:
+   * - one graph
+   * - one degree
+   * - no modules done/doing
    *
    * @param {User} user
    * @returns {Promise<User>}
@@ -31,17 +36,20 @@ export class Api extends BaseApi {
 
     /** initialize graph */
     const graph = degree.then((degree) =>
-      this.graphRepo.initialize('Untitled', user.id, degree.id)
+      this.graphRepo.initialize(c.graph.title, user.id, degree.id)
     )
 
     /** write to the user and save */
     const updateUser = Promise.all([degree, graph]).then(([degree, graph]) => {
       /** add degree to the user */
-      user.savedDegrees = [...(user.savedDegrees || []), degree]
+      user.savedDegrees = [degree]
       user.mainDegree = degree
       /** add the graph to the user */
-      user.savedGraphs = [...(user.savedGraphs || []), graph]
+      user.savedGraphs = [graph]
       user.mainGraph = graph
+      /** clear modules done/doing */
+      user.modulesDone = []
+      user.modulesDoing = []
       /** save and return the user */
       return this.userRepo.save(user)
     })
@@ -49,6 +57,7 @@ export class Api extends BaseApi {
     /** send it */
     return updateUser
   }
+  resetUser = this.setupUser
 
   /**
    * Handles a user logging in.

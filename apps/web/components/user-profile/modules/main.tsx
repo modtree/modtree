@@ -39,30 +39,29 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           }}
           cypress="modify-doing"
         >
-          {hasModules.doing ? (
-            <>
-              <p>{text.moduleListSection.doing.summary}</p>
-              <div
-                data-cy="doing-section"
-                className="ui-rectangle flex flex-col overflow-hidden"
-              >
-                {user.modulesDoing.map((code, index) => {
-                  const module = cache.modules[code]
-                  return (
-                    <Row.Module key={dashed(code, index)}>
-                      <span className="font-semibold" data-cy="doing-module">
-                        {code}
-                      </span>
-                      <span className="mx-1">/</span>
-                      {module && module.title}
-                    </Row.Module>
-                  )
-                })}
-              </div>
-            </>
-          ) : (
-            <p>{text.moduleListSection.doing.emptySummary}</p>
-          )}
+          <div data-cy="doing-section">
+            {hasModules.doing ? (
+              <>
+                <p>{text.moduleListSection.doing.summary}</p>
+                <div className="ui-rectangle flex flex-col overflow-hidden">
+                  {user.modulesDoing.map((code, index) => {
+                    const module = cache.modules[code]
+                    return (
+                      <Row.Module key={dashed(code, index)}>
+                        <span className="font-semibold" data-cy="doing-module">
+                          {code}
+                        </span>
+                        <span className="mx-1">/</span>
+                        {module && module.title}
+                      </Row.Module>
+                    )
+                  })}
+                </div>
+              </>
+            ) : (
+              <p>{text.moduleListSection.doing.emptySummary}</p>
+            )}
+          </div>
         </SettingsSection>
       </div>
       <div className="mb-12">
@@ -76,30 +75,29 @@ export function Main(props: { setPage: SetState<Pages['Modules']> }) {
           }}
           cypress="modify-done"
         >
-          {hasModules.done ? (
-            <>
-              <p>{text.moduleListSection.done.summary}</p>
-              <div
-                data-cy="done-section"
-                className="ui-rectangle flex flex-col overflow-hidden"
-              >
-                {user.modulesDone.map((code, index) => {
-                  const module = cache.modules[code]
-                  return (
-                    <Row.Module key={dashed(code, index)}>
-                      <span className="font-semibold" data-cy="done-module">
-                        {code}
-                      </span>
-                      <span className="mx-1">/</span>
-                      {module && module.title}
-                    </Row.Module>
-                  )
-                })}
-              </div>
-            </>
-          ) : (
-            <p>{text.moduleListSection.done.emptySummary}</p>
-          )}
+          <div data-cy="done-section">
+            {hasModules.done ? (
+              <>
+                <p>{text.moduleListSection.done.summary}</p>
+                <div className="ui-rectangle flex flex-col overflow-hidden">
+                  {user.modulesDone.map((code, index) => {
+                    const module = cache.modules[code]
+                    return (
+                      <Row.Module key={dashed(code, index)}>
+                        <span className="font-semibold" data-cy="done-module">
+                          {code}
+                        </span>
+                        <span className="mx-1">/</span>
+                        {module && module.title}
+                      </Row.Module>
+                    )
+                  })}
+                </div>
+              </>
+            ) : (
+              <p>{text.moduleListSection.done.emptySummary}</p>
+            )}
+          </div>
         </SettingsSection>
       </div>
     </>

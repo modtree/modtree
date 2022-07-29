@@ -81,9 +81,10 @@ export type DegreeSummary = {
 
 export type Pages = {
   Degrees: 'main' | 'add-new' | 'edit'
+  Account: 'main'
   Graphs: 'main' | 'add-new' | 'edit'
   Modules: 'main' | 'add-doing' | 'add-done'
-  UserProfile: 'graphs' | 'modules' | 'degrees'
+  UserProfile: 'graphs' | 'modules' | 'degrees' | 'account'
 }
 
 export type ContextMenuType =

@@ -1,8 +1,9 @@
 const { defineConfig } = require('cypress')
 
-module.exports = defineConfig({
+const config = defineConfig({
   fileServerFolder: '.',
   fixturesFolder: './cypress/fixtures',
+  reporter: 'reporters/json.js',
   modifyObstructiveCode: false,
   video: false,
   videosFolder: '../../dist/cypress/apps/web-e2e/videos',
@@ -14,3 +15,5 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:3000',
   },
 })
+
+module.exports = config

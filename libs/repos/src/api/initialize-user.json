@@ -7,6 +7,9 @@
     "degree": {
       "title": "Untitled",
       "moduleCodes": []
+    },
+    "graph": {
+      "title": "Untitled"
     }
   },
   "development": {
@@ -32,6 +35,15 @@
         "PC1432"
       ]
     },
+    "degree": {
+      "title": "Computer Science",
+      "moduleCodes": []
+    },
+    "graph": {
+      "title": "Untitled"
+    }
+  },
+  "archive": {
     "degree": {
       "title": "Computer Science",
       "moduleCodes": [
