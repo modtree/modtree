@@ -7,36 +7,43 @@ const log = {
   fail: (...a: any) => console.log(red('fail', ...a)),
 }
 
-const sender = fork('reporters/sender', [], {
-  detached: true,
-})
+/**
+ * fork a sender process that will handle async operations
+ * (path given here is relative to the cypress project, in
+ * this case is apps/web-e2e)
+ *
+ * because of this relative declaration, this file is only
+ * meant to be ran automatically by cypress.
+ *
+ * running this file by node standalone will throw and error
+ * for resolving the path of the forked process.
+ */
 
-// core logic
+const sender = fork('reporters/sender', [], { detached: true })
+
 export const main = (runner: Runner) => {
-  // start forked process for sender
-  // path given here is relative to apps/web-e2e
-
   // package data to send to sender
   const send = (action: Packet['action']) =>
     sender.send({
       action,
       data: { stats: runner.stats, file: runner.suite.file },
     })
+
   // send data to postgres
   runner.once('end', () => send('end'))
   runner.once('start', () => send('start'))
+
   // intermittent stuff
   runner.on('pass', (t) => log.pass(t.fullTitle()))
   runner.on('fail', (t, err) => log.fail(t.fullTitle(), '→', err.message))
-
-  // upon the reporter script (this script) exiting,
-  // disconnect the sender to allow it to gracefully exit too
 }
 
+/**
+ * upon the reporter script (this script) exiting,
+ * disconnect the sender to allow it to gracefully exit too
+ */
 process.on('exit', () => {
-  if (sender && sender.connected) {
-    sender.disconnect()
-  }
+  if (sender.connected) sender.disconnect()
 })
 
 /**

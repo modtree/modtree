@@ -4,8 +4,7 @@
 
 import 'dotenv/config'
 import { migrationSource } from './config'
-import { Api } from '@modtree/repos'
-import { QueryFailedError, Repository } from 'typeorm'
+import { EntityTarget, QueryFailedError, Repository } from 'typeorm'
 import chalk from 'chalk'
 
 const log = console.debug
@@ -15,19 +14,16 @@ log(chalk.gray('Starting test-connect...'))
 const q = {
   // then
   t:
-    (message: string) =>
-    <T>(e: T) => {
+    <T>(message: string) =>
+    (e: T) => {
       log(chalk.green(' ✓ ' + message))
       return e
     },
   // catch
-  c:
-    (message: string) =>
-    <T>(e: T) => {
-      log(chalk.red(' ✗ ' + message))
-      log(e)
-      return e
-    },
+  c: (message: string) => () => {
+    log(chalk.red(' ✗ ' + message))
+    throw new Error(message)
+  },
 }
 
 /**
@@ -41,17 +37,10 @@ const connect = migrationSource
 /**
  * instantiate API, and get repositories as an array
  */
+const entities = migrationSource.options.entities as EntityTarget<any>[]
 const getRepos: Promise<Repository<any>[]> = connect
   .then((db) => {
-    const api = new Api(db)
-    return [
-      api.moduleRepo,
-      api.moduleCondensedRepo,
-      api.moduleFullRepo,
-      api.userRepo,
-      api.degreeRepo,
-      api.graphRepo,
-    ]
+    return entities.map((e) => new Repository(e, db.manager))
   })
   .then(q.t('instantiate repos'))
   .catch(q.c('cannot instantiate repos'))

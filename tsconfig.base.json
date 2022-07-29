@@ -20,6 +20,7 @@
     "baseUrl": ".",
     "paths": {
       "@modtree/repos": ["libs/repos/src/index.ts"],
+      "@modtree/cy-reporter": ["libs/cy-reporter/src/index.ts"],
       "@modtree/trpc-openapi": ["libs/trpc-openapi/src/index.ts"],
       "@modtree/server/app": ["apps/server/src/app"],
       "@modtree/sql": ["libs/sql/src/index.ts"],
