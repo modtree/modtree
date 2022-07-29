@@ -12,6 +12,8 @@ export const list = createRouter()
         enabled: true,
         method: 'GET',
         path: '/modules',
+        tags: ['Modules'],
+        summary: 'Get many modules',
       },
     },
     input: z.object({
@@ -30,6 +32,8 @@ export const list = createRouter()
         enabled: true,
         method: 'GET',
         path: '/modules-condensed',
+        tags: ['Modules'],
+        summary: 'Get many modules condensed',
       },
     },
     input: z.object({
@@ -48,6 +52,8 @@ export const list = createRouter()
         enabled: true,
         method: 'GET',
         path: '/modules-full',
+        tags: ['Modules'],
+        summary: 'Get many modules full',
       },
     },
     input: z.object({
@@ -66,6 +72,8 @@ export const list = createRouter()
         enabled: true,
         method: 'GET',
         path: '/users',
+        tags: ['Users'],
+        summary: 'Get many users',
       },
     },
     input: z.object({
@@ -93,6 +101,8 @@ export const list = createRouter()
         enabled: true,
         method: 'GET',
         path: '/degrees',
+        tags: ['Degrees'],
+        summary: 'Get many degrees',
       },
     },
     input: z.object({
@@ -113,6 +123,8 @@ export const list = createRouter()
         enabled: true,
         method: 'GET',
         path: '/graphs',
+        tags: ['Graphs'],
+        summary: 'Get many graphs',
       },
     },
     input: z.object({

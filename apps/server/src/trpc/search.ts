@@ -14,6 +14,8 @@ export const search = createRouter()
         enabled: true,
         method: 'GET',
         path: '/search/modules/{query}',
+        tags: ['Module'],
+        summary: 'Search modules based on a prefix',
       },
     },
     input: z.object({
@@ -42,6 +44,8 @@ export const search = createRouter()
         enabled: true,
         method: 'GET',
         path: '/search/modules-condensed/{query}',
+        tags: ['Module'],
+        summary: 'Search modules condensed based on a prefix',
       },
     },
     input: z.object({

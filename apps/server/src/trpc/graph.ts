@@ -14,6 +14,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'POST',
         path: '/graph',
+        tags: ['Graph'],
+        summary: 'Create a graph',
       },
     },
     input: z.object({
@@ -38,6 +40,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'DELETE',
         path: '/graph/{graphId}',
+        tags: ['Graph'],
+        summary: 'Delete a graph',
       },
     },
     input: z.object({
@@ -58,6 +62,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'GET',
         path: '/graph/{graphId}/suggest-modules',
+        tags: ['Graph'],
+        summary: 'Suggest modules from selected nodes of a graph',
       },
     },
     input: z.object({
@@ -86,6 +92,9 @@ export const graph = createRouter()
         enabled: true,
         method: 'GET',
         path: '/graph/{graphId}/can-take-modules',
+        tags: ['Graph'],
+        summary:
+          'For each module in the graph, checks if graph contains sufficient pre-reqs.',
       },
     },
     input: z.object({
@@ -113,6 +122,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/graph/{graphId}/rename',
+        tags: ['Graph'],
+        summary: 'Rename a graph',
       },
     },
     input: z.object({
@@ -137,6 +148,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/graph/{graphId}/update',
+        tags: ['Graph'],
+        summary: 'Update a graph',
       },
     },
     input: z.object({

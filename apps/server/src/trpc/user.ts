@@ -15,6 +15,8 @@ export const user = createRouter()
         enabled: true,
         method: 'POST',
         path: '/user',
+        tags: ['User'],
+        summary: 'Create a user',
       },
     },
     input: z.object({
@@ -39,6 +41,8 @@ export const user = createRouter()
         enabled: true,
         method: 'DELETE',
         path: '/user/{userId}',
+        tags: ['User'],
+        summary: 'Delete a user',
       },
     },
     input: z.object({
@@ -59,6 +63,8 @@ export const user = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/user/{userId}/insert-degrees',
+        tags: ['User'],
+        summary: 'Insert degrees into a user',
       },
     },
     input: z.object({
@@ -83,6 +89,8 @@ export const user = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/user/{userId}/set-main-degree',
+        tags: ['User'],
+        summary: 'Set main degree of a user',
       },
     },
     input: z.object({
@@ -107,6 +115,8 @@ export const user = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/user/{userId}/remove-degree',
+        tags: ['User'],
+        summary: 'Removes a degree from a user',
       },
     },
     input: z.object({
@@ -131,6 +141,8 @@ export const user = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/user/{userId}/insert-graphs',
+        tags: ['User'],
+        summary: 'Insert graphs into a user',
       },
     },
     input: z.object({
@@ -155,6 +167,8 @@ export const user = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/user/{userId}/set-main-graph',
+        tags: ['User'],
+        summary: 'Set the main graph of a user',
       },
     },
     input: z.object({
@@ -179,6 +193,8 @@ export const user = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/user/{userId}/remove-graph',
+        tags: ['User'],
+        summary: 'Removes a graph from a user',
       },
     },
     input: z.object({
@@ -203,6 +219,9 @@ export const user = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/user/{userId}/set-module-status',
+        tags: ['User'],
+        summary: 'Sets module status of a user',
+        description: 'Overwrites modulesDone or modulesDoing.',
       },
     },
     input: z.object({
@@ -230,6 +249,10 @@ export const user = createRouter()
         enabled: true,
         method: 'POST',
         path: '/user/login',
+        tags: ['User'],
+        summary: 'User login',
+        description:
+          'Performs user login. If there is no associated user in the database, creates a user with an empty degree and empty graph.',
       },
     },
     input: z.object({
@@ -254,6 +277,8 @@ export const user = createRouter()
         enabled: true,
         method: 'GET',
         path: '/user/get-by-email',
+        tags: ['User'],
+        summary: 'Gets a user by email',
       },
     },
     input: z.object({
