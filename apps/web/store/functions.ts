@@ -266,5 +266,5 @@ export function removeModuleNode(node: GraphFlowNode) {
 
 export function resetUser() {
   const userId = store.getState().modtree.user.id
-  trpc.mutation('user/reset', userId)
+  trpc.mutation('user/reset', { userId })
 }
