@@ -101,7 +101,7 @@ export function updateModuleCache(moduleCodes: string[]) {
 
   /** send the http request */
   return trpc
-    .query('modules', { moduleCodes: codesToFetch.join(',') })
+    .query('modules', { moduleCodes: codesToFetch })
     .then((modules) => {
       /** update the redux store */
       dispatch(r.addModulesToCache(modules))
@@ -193,9 +193,7 @@ export function renameGraph(graphId: string, title: string) {
 export function setBuildTarget(degreeId: string) {
   trpc
     .query('degree', { degreeId })
-    .then((degree) =>
-      trpc.query('modules', { moduleCodes: degree.modules.join(',') })
-    )
+    .then((degree) => trpc.query('modules', { moduleCodes: degree.modules }))
     .then((modules) => {
       dispatch(r.addModulesToCache(modules))
       dispatch(r.setBuildList(modules.map((m) => m.moduleCode)))

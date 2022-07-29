@@ -1,9 +1,8 @@
-import { flatten } from '@modtree/utils'
+import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { createRouter } from './router'
 import { api } from '../main'
 import { entities } from '../schemas/entities'
-import { parseCommaSeparatedString } from '../utils/parse'
 
 export const list = createRouter()
   /** list modules */
@@ -16,7 +15,7 @@ export const list = createRouter()
       },
     },
     input: z.object({
-      moduleCodes: z.string().transform(parseCommaSeparatedString),
+      moduleCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     output: z.array(entities.Module),
     async resolve({ input }) {
@@ -34,7 +33,7 @@ export const list = createRouter()
       },
     },
     input: z.object({
-      moduleCodes: z.string().transform(parseCommaSeparatedString),
+      moduleCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     output: z.array(entities.ModuleCondensed),
     async resolve({ input }) {
@@ -52,7 +51,7 @@ export const list = createRouter()
       },
     },
     input: z.object({
-      moduleCodes: z.string().transform(parseCommaSeparatedString),
+      moduleCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     output: z.array(entities.ModuleFull),
     async resolve({ input }) {
@@ -97,7 +96,7 @@ export const list = createRouter()
       },
     },
     input: z.object({
-      degreeIds: z.string().transform(parseCommaSeparatedString),
+      degreeIds: z.array(z.string().uuid()),
     }),
     output: z.array(entities.Degree),
     async resolve({ input }) {
@@ -117,7 +116,7 @@ export const list = createRouter()
       },
     },
     input: z.object({
-      graphIds: z.string().transform(parseCommaSeparatedString),
+      graphIds: z.array(z.string().uuid()),
     }),
     output: z.array(entities.Graph),
     async resolve({ input }) {

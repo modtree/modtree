@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "repos": "libs/repos",
+    "trpc-openapi": "libs/trpc-openapi",
     "server": "apps/server",
     "sql": "libs/sql",
     "test-env": "libs/test-env",

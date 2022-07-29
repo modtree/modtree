@@ -2,7 +2,6 @@ import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
 import { deleteResult, entities } from '../schemas/entities'
-import { parseCommaSeparatedString } from '../utils/parse'
 import { createRouter } from './router'
 
 export const graph = createRouter()
@@ -63,7 +62,7 @@ export const graph = createRouter()
     },
     input: z.object({
       graphId: z.string().uuid(),
-      selectedCodes: z.string().transform(parseCommaSeparatedString),
+      selectedCodes: z.array(z.string().regex(validModuleRegex)),
     }),
     /* array of module codes */
     output: z.array(z.string().regex(validModuleRegex)),
