@@ -4,7 +4,7 @@ info:
   description: null
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/trpc
+  - url: http://localhost:8080/api
 paths:
   "/module/{moduleCode}":
     get:

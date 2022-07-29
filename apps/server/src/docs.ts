@@ -7,7 +7,7 @@ export function generateDocs(appRouter: AppRouter) {
   const openApiDocument = generateOpenApiDocument(appRouter, {
     title: 'modtree API',
     version: '1.0.0',
-    baseUrl: process.env.NEXT_PUBLIC_BACKEND || 'http://localhost:8080/trpc',
+    baseUrl: process.env.SWAGGER_PUBLIC_BACKEND || 'http://localhost:8080/api',
   })
 
   // YAML equivalent
