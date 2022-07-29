@@ -1,8 +1,8 @@
 import { setup, Repo, teardown } from '@modtree/test-env'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 
-beforeAll(() => setup(db, { restore: false }))
-afterAll(() => teardown(db))
+beforeAll(() => setup(testDb, { restore: false }))
+afterAll(() => teardown(testDb))
 
 async function canTakeModule(done: string[], doing: string[], query: string) {
   return Repo.Module.canTakeModule(done, doing, query)

@@ -1,19 +1,19 @@
 import { setup, Repo, teardown } from '@modtree/test-env'
 import { flatten, validModuleCode } from '@modtree/utils'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 import { Module } from '@modtree/types'
 
 const notInDb = new Set<string>()
 let modules: Module[]
 
 beforeAll(() =>
-  setup(db, { restore: false })
+  setup(testDb, { restore: false })
     .then(() => Repo.Module.find())
     .then((res) => {
       modules = res.filter((m) => typeof m.prereqTree === 'string')
     })
 )
-afterAll(() => teardown(db))
+afterAll(() => teardown(testDb))
 
 describe('module.prereqTree', () => {
   test('key exists', () => {

@@ -1,36 +1,65 @@
 #!/usr/bin/env bash
 
-# Reset
-_N_='\033[0m'    # Reset
-_R_='\033[0;31m' # Red
-_G_='\033[0;32m' # Green
-_Y_='\033[0;33m' # Yellow
-_B_='\033[0;34m' # Blue
-_P_='\033[0;35m' # Purple
-_C_='\033[0;36m' # Cyan
-_S_='\033[0;37m' # Soft (Gray)
+# this script requires fd and fzf
 
+source scripts/colors.sh
+PROJECT=apps/web-e2e
+SPEC_DIR=cypress/integration
+CONFIG=cypress.config.js
 RUN=true
+pushd $PROJECT
+
+cyan() {
+  printf "\n${_C_}${1}${_N_}\n\n"
+}
+
+FORCE=false
+ALL=false
+handle_arguments() {
+  while [[ $# -gt 0 ]]; do
+    case $1 in
+    -f | --force)
+      FORCE=true
+      shift
+      ;;
+    -a | --all)
+      ALL=true
+      shift
+      ;;
+    -* | --*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    esac
+  done
+}
+handle_arguments $@
+
+# ensure a clean git status
 while IFS= read -r line; do
   [[ $line != *'apps/web-e2e/results.json' ]] && RUN=false
 done < <(git status --porcelain)
 
-[[ "$RUN" == false ]] &&
-  printf "\n${_C_}Please commit all changes before running tests.${_N_}\n\n" &&
-  exit 1
+# warn user
+[[ $RUN == false && $FORCE == false ]] &&
+  cyan 'Please commit all changes before running tests.' && exit 1
 
-SPEC_DIR=apps/web-e2e/cypress/integration
-
-# this script requires fd and fzf
-
-if [[ $1 = '--all' ]]; then
-  yarn nx e2e web-e2e --skip-nx-cache
+# run all tests if specified so
+if [[ $ALL == true ]]; then
+  yarn cypress run -P $PROJECT -C $CONFIG
   exit
 fi
-TARGET=$(fd --full-path $SPEC_DIR -t f | fzf)
 
+# use fzf to pick out a test to run
+TARGET=$(fd -t f -g '*.cy.ts' $SPEC_DIR | fzf)
+
+# run the test if something is selected
 if [ $TARGET ]; then
-  yarn nx e2e web-e2e --skip-nx-cache --spec $TARGET
+  yarn cypress run -P $PROJECT -C $CONFIG --spec $PROJECT/$TARGET
 else
-  printf "\n${_C_}No test selected.${_N_}\n\n"
+  cyan 'No test selected.'
 fi

@@ -2,26 +2,14 @@
  * this test acts as a script that makes all aliases into an array
  */
 
-import { db, env } from '@modtree/typeorm-config'
+import { source } from '@modtree/typeorm-config'
 import { Api } from '@modtree/repos'
 import { IModule } from '@modtree/types'
-import { DataSource, DataSourceOptions } from 'typeorm'
 import { z } from 'zod'
 
-const { ssl, ...rest } = env.development
-const opts: DataSourceOptions = {
-  type: 'postgres',
-}
-
-Object.assign(opts, db.options)
-Object.assign(opts, rest)
-Object.assign(opts, { synchronize: false })
-
-const noSync = new DataSource(opts)
-console.log(noSync.options)
-const connect = noSync.initialize()
-
-const getApi = connect.then((db) => new Api(db))
+const db = source.development
+const connect = db.initialize()
+const getApi = connect.then((testDb) => new Api(testDb))
 
 const main = getApi.then(async (api) => {
   let count = 0
@@ -59,8 +47,8 @@ const main = getApi.then(async (api) => {
 })
 
 const end = main.finally(() => {
-  if (noSync.isInitialized) {
-    return noSync.destroy()
+  if (db.isInitialized) {
+    return db.destroy()
   }
   return
 })

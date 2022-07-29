@@ -1,19 +1,19 @@
 import { setup, Repo, teardown } from '@modtree/test-env'
 import { flatten, getNestedCodes } from '@modtree/utils'
 import { Module } from '@modtree/types'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 
 let modules: Module[]
 const notInDb = new Set<string>()
 
 beforeAll(() =>
-  setup(db, { restore: false })
+  setup(testDb, { restore: false })
     .then(() => Repo.Module.find())
     .then((res) => {
       modules = res.filter((m) => typeof m.prereqTree !== 'string')
     })
 )
-afterAll(() => teardown(db))
+afterAll(() => teardown(testDb))
 
 it('is not an array', () => {
   modules.forEach((m) => {

@@ -1,7 +1,7 @@
 import { setup, Repo, teardown } from '@modtree/test-env'
 import { flatten } from '@modtree/utils'
 import { Module, ModuleCondensed } from '@modtree/types'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 
 const count = {
   modules: 0,
@@ -11,7 +11,7 @@ let modules: Module[]
 let condensed: ModuleCondensed[]
 
 beforeAll(() =>
-  setup(db, { restore: false }).then(() =>
+  setup(testDb, { restore: false }).then(() =>
     Promise.all([
       Repo.ModuleCondensed.findAndCount(),
       Repo.Module.findAndCount(),
@@ -23,7 +23,7 @@ beforeAll(() =>
     })
   )
 )
-afterAll(() => teardown(db))
+afterAll(() => teardown(testDb))
 
 test('has at least 6000 modules', () => {
   expect(count.modules).toBeGreaterThan(6000)

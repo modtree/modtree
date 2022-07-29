@@ -1,0 +1,27 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/cy-reporter/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
+        "outputPath": "dist/libs/cy-reporter",
+        "main": "libs/cy-reporter/src/index.ts",
+        "tsConfig": "libs/cy-reporter/tsconfig.lib.json",
+        "assets": ["libs/cy-reporter/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/cy-reporter/**/*.ts"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["!test-env"]
+}

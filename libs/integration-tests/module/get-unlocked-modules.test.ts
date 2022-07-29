@@ -1,8 +1,8 @@
 import { setup, Repo, t, teardown } from '@modtree/test-env'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 
-beforeAll(() => setup(db))
-afterAll(() => teardown(db))
+beforeAll(() => setup(testDb))
+afterAll(() => teardown(testDb))
 
 async function getUnlockedModules(
   done: string[],

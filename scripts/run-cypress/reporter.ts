@@ -1,7 +1,8 @@
+import { fork } from 'child_process'
 import { writeFileSync, readFileSync } from 'fs'
 import { getCurrentHash } from '../utils'
-import type { Runner } from './types'
-import type { TestData, Run } from './types'
+import type { Runner } from 'mocha'
+import type { TestData, Run, Packet } from './types'
 
 const filepath = 'results.json'
 const log = console.log
@@ -50,19 +51,37 @@ function endOfTest(runner: Runner) {
   }
 }
 
+// start forked process for sender
+const sender = fork('reporters/sender', [], { detached: true })
+
+// core logic
+const main = (runner: Runner) => {
+  // package data to send to sender
+  const send = (action: Packet['action']) =>
+    sender.send({
+      action,
+      data: { stats: runner.stats, file: runner.suite.file },
+    })
+  // send data to postgres
+  runner.once('end', () => send('end'))
+  runner.once('start', () => send('start'))
+}
+
+/**
+ * the reporter class
+ * the constructor is called upon the execution of a reported test
+ */
 class Reporter {
   constructor(runner: Runner) {
-    runner
-      .once('start', () => log('start'))
-      .once('end', () => {
-        endOfTest(runner)
-        const stats = runner.stats
-        if (!stats) return
-        log(`end: ${stats.passes}/${stats.passes + stats.failures} ok`)
-      })
-      .on('pass', (t) => log(`pass: ${t.fullTitle()}`))
-      .on('fail', (t, err) => log(`fail: ${t.fullTitle()} → ${err.message}`))
+    main(runner)
+    // intermittent stuff
+    runner.on('pass', (t) => log('pass:', t.fullTitle()))
+    runner.on('fail', (t, err) => log('fail:', t.fullTitle(), '→', err.message))
   }
 }
+
+// upon the reporter script (this script) exiting,
+// disconnect the sender to allow it to gracefully exit too
+process.on('exit', () => sender.disconnect())
 
 module.exports = Reporter

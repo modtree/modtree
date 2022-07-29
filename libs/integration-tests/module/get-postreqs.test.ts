@@ -1,9 +1,9 @@
 import { setup, t, Repo, teardown } from '@modtree/test-env'
 import { unique } from '@modtree/utils'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 
-beforeAll(() => setup(db, { restore: false }))
-afterAll(() => teardown(db))
+beforeAll(() => setup(testDb, { restore: false }))
+afterAll(() => teardown(testDb))
 
 describe('single query', () => {
   it('returns an array', async () => {
