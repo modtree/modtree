@@ -75,10 +75,10 @@ export const graph = createRouter()
   })
 
   /**
-   * For a single module, return true if graph contains enough pre-reqs
-   * to take it.
+   * Generate canTakes for the graph.
    *
-   * Returns a dictionary keyed on moduleCode.
+   * For a single module, canTake is true when graph contains
+   * enough pre-reqs to take it.
    */
   .query('can-take-modules', {
     meta: {
