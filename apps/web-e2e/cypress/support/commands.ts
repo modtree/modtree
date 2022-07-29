@@ -150,6 +150,16 @@ Cypress.Commands.add('resetUser', () => {
   cy.wait('@resetUser')
   cy.closeUserProfile()
   cy.reload()
+  // base checks that user is reset
+  cy.reduxState().then(({ graph, modtree: { user, degree } }) => {
+    expect(user.savedDegrees).to.have.length(1)
+    expect(user.savedGraphs).to.have.length(1)
+    expect(graph.flowEdges).to.have.length(0)
+    expect(user.modulesDone).to.have.length(0)
+    expect(user.modulesDoing).to.have.length(0)
+    expect(graph.id).to.equal(user.savedGraphs[0])
+    expect(degree.id).to.equal(user.savedDegrees[0])
+  })
 })
 
 // -- This is a parent command --
