@@ -132,6 +132,13 @@ export const graph = createRouter()
    * updates a graph
    */
   .mutation('update', {
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'PATCH',
+        path: '/graph/{graphId}',
+      },
+    },
     input: z.object({
       graph: entities.Graph,
     }),
