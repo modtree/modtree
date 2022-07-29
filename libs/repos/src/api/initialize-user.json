@@ -37,6 +37,15 @@
     },
     "degree": {
       "title": "Computer Science",
+      "moduleCodes": []
+    },
+    "graph": {
+      "title": "Untitled"
+    }
+  },
+  "archive": {
+    "degree": {
+      "title": "Computer Science",
       "moduleCodes": [
         "CS1231S",
         "CS2030S",
@@ -49,9 +58,6 @@
         "CS3230",
         "CS2309"
       ]
-    },
-    "graph": {
-      "title": "Untitled"
     }
   }
 }
