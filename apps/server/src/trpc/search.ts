@@ -1,6 +1,7 @@
 import { Like } from 'typeorm'
 import { z } from 'zod'
 import { api } from '../main'
+import { entities } from '../schemas/entities'
 import { createRouter } from './router'
 
 export const search = createRouter()
@@ -8,12 +9,22 @@ export const search = createRouter()
    * search for modules
    */
   .query('modules', {
-    input: z.string(),
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'GET',
+        path: '/search/modules/{query}',
+      },
+    },
+    input: z.object({
+      query: z.string(),
+    }),
+    output: z.array(entities.Module),
     async resolve({ input }) {
       if (!input) return []
       return api.moduleCondensedRepo
         .find({
-          where: [{ moduleCode: Like(`${input.toUpperCase()}%`) }],
+          where: [{ moduleCode: Like(`${input.query.toUpperCase()}%`) }],
           take: 4,
         })
         .then((r) =>
@@ -26,11 +37,21 @@ export const search = createRouter()
    * search for modules condensed
    */
   .query('modules-condensed', {
-    input: z.string(),
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'GET',
+        path: '/search/modules-condensed/{query}',
+      },
+    },
+    input: z.object({
+      query: z.string(),
+    }),
+    output: z.array(entities.ModuleCondensed),
     async resolve({ input }) {
       if (!input) return []
       return api.moduleCondensedRepo.find({
-        where: [{ moduleCode: Like(`${input.toUpperCase()}%`) }],
+        where: [{ moduleCode: Like(`${input.query.toUpperCase()}%`) }],
         take: 4,
       })
     },

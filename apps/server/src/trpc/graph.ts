@@ -1,6 +1,7 @@
 import { flatten, validModuleRegex } from '@modtree/utils'
 import { z } from 'zod'
 import { api } from '../main'
+import { deleteResult, entities } from '../schemas/entities'
 import { createRouter } from './router'
 
 export const graph = createRouter()
@@ -8,11 +9,19 @@ export const graph = createRouter()
    * create and save a graph
    */
   .mutation('create', {
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'POST',
+        path: '/graph',
+      },
+    },
     input: z.object({
       title: z.string().min(1).default('Untitled'),
       userId: z.string().uuid(),
       degreeId: z.string().uuid(),
     }),
+    output: entities.Graph,
     async resolve({ input }) {
       return api.graphRepo
         .initialize(input.title, input.userId, input.degreeId)
@@ -21,33 +30,42 @@ export const graph = createRouter()
   })
 
   /**
-   * get a full graph by id
-   */
-  .query('get-full', {
-    input: z.string().uuid(),
-    async resolve({ input }) {
-      return api.graphRepo.findOneById(input)
-    },
-  })
-
-  /**
    * hard-delete a graph
    */
   .query('delete', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'DELETE',
+        path: '/graph/{graphId}',
+      },
+    },
+    input: z.object({
+      graphId: z.string().uuid(),
+    }),
+    output: deleteResult,
     async resolve({ input }) {
-      return api.graphRepo.delete(input)
+      return api.graphRepo.delete(input.graphId)
     },
   })
 
   /**
-   * finds a graph by its id and updates a flow node
+   * suggest modules
    */
   .query('suggest-modules', {
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'GET',
+        path: '/graph/{graphId}/suggest-modules',
+      },
+    },
     input: z.object({
       graphId: z.string().uuid(),
       selectedCodes: z.array(z.string().regex(validModuleRegex)),
     }),
+    /* array of module codes */
+    output: z.array(z.string().regex(validModuleRegex)),
     async resolve({ input }) {
       return api.graphRepo
         .findOneById(input.graphId)
@@ -63,10 +81,25 @@ export const graph = createRouter()
    * Returns a dictionary keyed on moduleCode.
    */
   .query('can-take-modules', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'GET',
+        path: '/graph/{graphId}/can-take-modules',
+      },
+    },
+    input: z.object({
+      graphId: z.string().uuid(),
+    }),
+    output: z.array(
+      z.object({
+        moduleCode: z.string().regex(validModuleRegex),
+        canTake: z.boolean(),
+      })
+    ),
     async resolve({ input }) {
       return api.graphRepo
-        .findOneById(input)
+        .findOneById(input.graphId)
         .then((g) => api.graphRepo.canTakeModules(g))
     },
   })
@@ -75,10 +108,18 @@ export const graph = createRouter()
    * finds a graph by its id and update title
    */
   .mutation('rename', {
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'PATCH',
+        path: '/graph/{graphId}',
+      },
+    },
     input: z.object({
       graphId: z.string().uuid(),
       title: z.string(),
     }),
+    output: entities.Graph,
     async resolve({ input }) {
       return api.graphRepo
         .findOneById(input.graphId)
@@ -92,7 +133,16 @@ export const graph = createRouter()
    */
   .mutation('update', {
     input: z.object({
-      graph: z.any(),
+      graph: entities.Graph,
+    }),
+    output: z.object({
+      graph: entities.Graph,
+      canTakes: z.array(
+        z.object({
+          moduleCode: z.string(),
+          canTake: z.boolean(),
+        })
+      ),
     }),
     async resolve({ input }) {
       return api.graphRepo.update(input.graph).then((res) => ({

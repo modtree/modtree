@@ -20,7 +20,19 @@ export function ModuleDetails() {
     // 1. hide module modal
     dispatch(r.hideModuleModal())
     // 2. add module to graph
-    addModuleNode(nodify(module, 'planned'))
+    const data = {
+      // basically extract IModule from IFull
+      id: module.id,
+      moduleCode: module.moduleCode,
+      title: module.title,
+      prerequisite: module.prerequisite,
+      corequisite: module.corequisite,
+      preclusion: module.preclusion,
+      fulfillRequirements: module.fulfillRequirements,
+      prereqTree: module.prereqTree,
+    }
+    /** typescript not getting the type right here */
+    addModuleNode(nodify(data, 'planned'))
   }
 
   return (
