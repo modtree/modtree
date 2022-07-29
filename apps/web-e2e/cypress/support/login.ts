@@ -6,7 +6,7 @@ declare global {
   namespace Cypress {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
-      login(): void
+      login(props?: { reset?: boolean }): void
       loginCred(): void
       loginSocial(): void
     }
@@ -17,12 +17,15 @@ declare global {
  * logs the user in.
  * meant to be used in the before() call
  */
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (props?: { reset?: boolean }) => {
   const isLocal = Cypress.config('baseUrl').includes('localhost')
   if (isLocal) {
     cy.loginCred()
   } else {
     cy.loginSocial()
+  }
+  if (props && props.reset) {
+    cy.resetUser()
   }
 })
 

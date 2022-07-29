@@ -149,6 +149,7 @@ Cypress.Commands.add('resetUser', () => {
   cy.get('button').contains('Reset account').click()
   cy.wait('@resetUser')
   cy.closeUserProfile()
+  cy.reload()
 })
 
 // -- This is a parent command --
