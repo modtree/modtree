@@ -2,10 +2,8 @@ import { TRPCError } from '@trpc/server'
 import { OpenAPIV3 } from 'openapi-types'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
-
 import {
   instanceofZodType,
-  instanceofZodTypeLikeString,
   instanceofZodTypeLikeVoid,
   instanceofZodTypeObject,
   instanceofZodTypeOptional,

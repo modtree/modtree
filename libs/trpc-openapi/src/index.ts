@@ -1,14 +1,14 @@
 import {
-  CreateOpenApiExpressMiddlewareOptions,
-  CreateOpenApiHttpHandlerOptions,
-  CreateOpenApiNextHandlerOptions,
   createOpenApiExpressMiddleware,
+  CreateOpenApiExpressMiddlewareOptions,
   createOpenApiHttpHandler,
+  CreateOpenApiHttpHandlerOptions,
   createOpenApiNextHandler,
+  CreateOpenApiNextHandlerOptions,
 } from './adapters'
 import {
-  GenerateOpenApiDocumentOptions,
   generateOpenApiDocument,
+  GenerateOpenApiDocumentOptions,
   openApiVersion,
 } from './generator'
 import {
@@ -21,15 +21,10 @@ import {
 } from './types'
 import { ZodTypeLikeString, ZodTypeLikeVoid } from './utils/zod'
 
-export {
+export type {
   CreateOpenApiExpressMiddlewareOptions,
-  CreateOpenApiHttpHandlerOptions,
   CreateOpenApiNextHandlerOptions,
-  createOpenApiExpressMiddleware,
-  createOpenApiHttpHandler,
-  createOpenApiNextHandler,
-  openApiVersion,
-  generateOpenApiDocument,
+  CreateOpenApiHttpHandlerOptions,
   GenerateOpenApiDocumentOptions,
   OpenApiRouter,
   OpenApiMeta,
@@ -39,4 +34,12 @@ export {
   OpenApiErrorResponse,
   ZodTypeLikeString,
   ZodTypeLikeVoid,
+}
+
+export {
+  createOpenApiExpressMiddleware,
+  createOpenApiHttpHandler,
+  createOpenApiNextHandler,
+  openApiVersion,
+  generateOpenApiDocument,
 }
