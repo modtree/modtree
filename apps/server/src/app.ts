@@ -2,7 +2,7 @@ import cors from 'cors'
 import express, { Request, Response, Express } from 'express'
 import { createExpressMiddleware as createMid } from '@trpc/server/adapters/express'
 import { appRouter } from './trpc'
-import { createOpenApiExpressMiddleware } from 'trpc-openapi'
+import { createOpenApiExpressMiddleware } from '@modtree/trpc-openapi'
 
 const corsOpts = {
   origin: [

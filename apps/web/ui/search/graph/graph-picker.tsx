@@ -13,7 +13,7 @@ export function GraphPicker() {
   const dispatch = useAppDispatch()
   const trpc = trpcReact.useContext()
   const { data: graphs } = trpcReact.useQuery(
-    ['graphs', { graphIds: user.savedGraphs.join(',') }],
+    ['graphs', { graphIds: user.savedGraphs }],
     {
       keepPreviousData: true,
       onSuccess: (graphs) => {
