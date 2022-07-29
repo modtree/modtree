@@ -299,6 +299,8 @@ export const user = createRouter()
         enabled: true,
         method: 'POST',
         path: '/user/{userId}/reset',
+        tags: ['User'],
+        summary: 'Reset a user',
       },
     },
     input: z.object({

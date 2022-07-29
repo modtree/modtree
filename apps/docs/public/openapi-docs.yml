@@ -3037,9 +3037,10 @@ paths:
   "/user/{userId}/reset":
     post:
       operationId: user/reset
-      summary: null
+      summary: Reset a user
       description: null
-      tags: null
+      tags:
+        - User
       security: null
       requestBody:
         required: true
