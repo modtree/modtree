@@ -30,6 +30,7 @@ Cypress.Commands.add('login', () => {
  * Primary login method for local testing.
  */
 Cypress.Commands.add('loginCred', () => {
+  cy.intercept(/api\/auth\/session/).as('session')
   // on the home page, click on the sign in button
   cy.visit('/')
   cy.getCy('sign-in-button').click()
@@ -38,7 +39,8 @@ Cypress.Commands.add('loginCred', () => {
   cy.contains('Sign in with Credentials').click()
 
   // wait for login to complete
-  cy.getCy('modtree-user-circle')
+  cy.wait('@session')
+  cy.reduxLoaded()
 })
 
 /**

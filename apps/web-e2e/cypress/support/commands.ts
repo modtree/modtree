@@ -144,8 +144,11 @@ Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {
 })
 
 Cypress.Commands.add('resetUser', () => {
+  cy.intercept(/reset/).as('resetUser')
   cy.openUserProfile('Account')
   cy.get('button').contains('Reset account').click()
+  cy.wait('@resetUser')
+  cy.closeUserProfile()
 })
 
 // -- This is a parent command --

@@ -4,6 +4,9 @@ import type { ReduxState } from '../../../web/store/types'
 // Indicate that this file is a module
 export {}
 
+// for local use only
+const uuid = z.string().uuid()
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare global {
   namespace Cypress {
@@ -12,6 +15,7 @@ declare global {
       reduxGraph(): Chainable<ReduxState['graph']>
       reduxDegree(): Chainable<ReduxState['modtree']['degree']>
       reduxUser(): Chainable<ReduxState['modtree']['user']>
+      reduxLoaded(): Chainable<void>
     }
   }
 }
@@ -26,7 +30,7 @@ Cypress.Commands.add('reduxGraph', () => {
   return getState()
     .should((state) => {
       /** wait for graph id to become a valid uuid */
-      const parsed = z.string().uuid().safeParse(state.graph.id)
+      const parsed = uuid.safeParse(state.graph.id)
       expect(parsed).to.have.nested.include({ success: true })
     })
     .its('graph')
@@ -39,7 +43,7 @@ Cypress.Commands.add('reduxUser', () => {
   return getState()
     .should((state) => {
       /** wait for graph id to become a valid uuid */
-      const parsed = z.string().uuid().safeParse(state.modtree.user.id)
+      const parsed = uuid.safeParse(state.modtree.user.id)
       expect(parsed).to.have.nested.include({ success: true })
     })
     .its('modtree.user')
@@ -52,8 +56,21 @@ Cypress.Commands.add('reduxDegree', () => {
   return getState()
     .should((state) => {
       /** wait for graph id to become a valid uuid */
-      const parsed = z.string().uuid().safeParse(state.modtree.degree.id)
+      const parsed = uuid.safeParse(state.modtree.degree.id)
       expect(parsed).to.have.nested.include({ success: true })
     })
     .its('modtree.degree')
+})
+
+/**
+ * waits for the redux state to load
+ */
+Cypress.Commands.add('reduxLoaded', () => {
+  return getState().should((state: ReduxState) => {
+    const ids = [state.graph.id, state.modtree.user.id, state.modtree.degree.id]
+    ids.forEach((id) =>
+      // expect this array to be an array of uuids
+      expect(uuid.safeParse(id)).to.have.nested.include({ success: true })
+    )
+  })
 })
