@@ -112,7 +112,7 @@ export const graph = createRouter()
       openapi: {
         enabled: true,
         method: 'PATCH',
-        path: '/graph/{graphId}',
+        path: '/graph/{graphId}/rename',
       },
     },
     input: z.object({
