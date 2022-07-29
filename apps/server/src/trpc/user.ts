@@ -269,10 +269,20 @@ export const user = createRouter()
    * get a user by email
    */
   .mutation('reset', {
-    input: z.string().uuid(),
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'POST',
+        path: '/user/{userId}/reset',
+      },
+    },
+    input: z.object({
+      userId: z.string().uuid(),
+    }),
+    output: entities.User,
     async resolve({ input }) {
       return api.userRepo
-        .findOneById(input)
+        .findOneById(input.userId)
         .then((u) => api.resetUser(u))
         .then(flatten.user)
     },
