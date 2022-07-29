@@ -1,12 +1,19 @@
-import 'dotenv/config'
+import './env'
 import { cyan } from 'chalk'
 import { Packet } from './types'
 import { source } from '@modtree/typeorm-config'
 
-console.log(source.development.options)
+const db = source.development
+console.log(db.options)
+
+// const init = db.initialize()
 
 process.on('message', (packet: Packet) => {
   console.log('---> sender received message:', packet)
+  // init.then(() => {
+  //   const r = new Repository(CypressRun, db.manager)
+  //   r.find().then(console.log)
+  // })
 })
 
 process.on('disconnect', () => {

@@ -20,7 +20,7 @@
     "cy": "bash scripts/run-cypress/run.sh",
     "1cy:build": "bash libs/cy-reporter/build.sh",
     "cy:build": "node libs/cy-reporter/webpack.js --build",
-    "cy:dev": "node libs/cy-reporter/dev.js --watch",
+    "cy:dev": "node libs/cy-reporter/dev.js",
     "cy:db": "node dist/scripts/run-cypress/db.js",
     "cy:ls": "node dist/scripts/run-cypress/list.js",
     "────────────────────────────────────────────────── testing ": [],

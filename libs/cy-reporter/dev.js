@@ -14,6 +14,7 @@ compiler.watch({ aggregateTimeout: 300 }, (_err, stats) => {
   if (stats.hasErrors()) {
     console.log(stats.toString())
   }
+  console.log('rebuild cy-reporter', new Date().toLocaleString())
 })
 
 /**
@@ -22,7 +23,6 @@ compiler.watch({ aggregateTimeout: 300 }, (_err, stats) => {
  */
 const outDir = 'apps/web-e2e/reporters'
 nodemon({
-  script: path.resolve(rootDir, outDir, 'json.js'),
   watch: path.resolve(rootDir, outDir),
 })
 
