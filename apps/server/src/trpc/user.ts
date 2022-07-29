@@ -266,7 +266,7 @@ export const user = createRouter()
   })
 
   /**
-   * get a user by email
+   * reset a user
    */
   .mutation('reset', {
     meta: {
