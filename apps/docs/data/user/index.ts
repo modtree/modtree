@@ -1,7 +1,0 @@
-export * from './get'
-export * from './list'
-export * from './create'
-export * from './insert-degrees'
-export * from './get-full'
-export * from './delete'
-export * from './login'
