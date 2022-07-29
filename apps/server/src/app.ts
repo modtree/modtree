@@ -27,8 +27,13 @@ export function getApp(): Express {
   app.use('/trpc', createMid({ router: appRouter }))
   /** for OpenAPI support */
   app.use('/api', createOpenApiExpressMiddleware({ router: appRouter }))
-  /** write OpenAPI docs */
-  generateDocs(appRouter)
+
+  /** write OpenAPI docs only if ENV is set to rebuild */
+  const rebuild = process.env.REBUILD_YAML_DOCS === 'rebuild'
+  if (rebuild) {
+    generateDocs(appRouter)
+  }
+
   /** register root route */
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
