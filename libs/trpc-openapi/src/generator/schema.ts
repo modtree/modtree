@@ -5,6 +5,7 @@ import zodToJsonSchema from 'zod-to-json-schema'
 
 import {
   instanceofZodType,
+  instanceofZodTypeLikeString,
   instanceofZodTypeLikeVoid,
   instanceofZodTypeObject,
   instanceofZodTypeOptional,
@@ -71,7 +72,7 @@ export const getParameterObjects = (
       //   throw new TRPCError({
       //     message: `Input parser key: "${shapeKey}" must be ZodString`,
       //     code: 'INTERNAL_SERVER_ERROR',
-      //   })
+      //   });
       // }
 
       if (instanceofZodTypeOptional(shapeSchema)) {

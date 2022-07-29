@@ -27,10 +27,8 @@ export const getQuery = (
       if (typeof value === 'string') {
         query[key] = value
       } else if (Array.isArray(value)) {
-        console.log('node-http/input.ts', value)
         if (typeof value[0] === 'string') {
           // MODTREE WAS HERE
-          // query[key] = value[0]
           query[key] = value as any
         }
       }
