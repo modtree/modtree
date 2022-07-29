@@ -23,7 +23,7 @@ SPEC_DIR=apps/web-e2e/cypress/integration
 
 # this script requires fd and fzf
 
-if [ $1 = '--all' ]; then
+if [[ $1 = '--all' ]]; then
   yarn nx e2e web-e2e --skip-nx-cache
   exit
 fi
