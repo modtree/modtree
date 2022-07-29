@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { ReduxState } from '../../../web/store/types'
+import type { ReduxState as R } from '../../../web/store/types'
 
 // Indicate that this file is a module
 export {}
@@ -12,11 +12,12 @@ declare global {
   namespace Cypress {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Chainable {
-      reduxGraph(): Chainable<ReduxState['graph']>
-      reduxDegree(): Chainable<ReduxState['modtree']['degree']>
-      reduxUser(): Chainable<ReduxState['modtree']['user']>
-      reduxLoaded(): Chainable<void>
+      reduxGraph(): Chainable<R['graph']>
+      reduxDegree(): Chainable<R['modtree']['degree']>
+      reduxUser(): Chainable<R['modtree']['user']>
+      reduxState(): Chainable<R>
     }
+    type ReduxState = R
   }
 }
 
@@ -65,8 +66,8 @@ Cypress.Commands.add('reduxDegree', () => {
 /**
  * waits for the redux state to load
  */
-Cypress.Commands.add('reduxLoaded', () => {
-  return getState().should((state: ReduxState) => {
+Cypress.Commands.add('reduxState', () => {
+  return getState().should((state: R) => {
     const ids = [state.graph.id, state.modtree.user.id, state.modtree.degree.id]
     ids.forEach((id) =>
       // expect this array to be an array of uuids

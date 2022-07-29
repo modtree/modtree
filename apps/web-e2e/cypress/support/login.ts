@@ -40,7 +40,7 @@ Cypress.Commands.add('loginCred', () => {
 
   // wait for login to complete
   cy.wait('@session')
-  cy.reduxLoaded()
+  cy.reduxState()
 })
 
 /**
