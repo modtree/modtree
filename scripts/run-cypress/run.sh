@@ -50,7 +50,9 @@ done < <(git status --porcelain)
 
 # run all tests if specified so
 if [[ $ALL == true ]]; then
-  yarn cypress run -P $PROJECT -C $CONFIG
+  yarn cypress run --quiet \
+    --project $PROJECT \
+    --config-file $CONFIG
   exit
 fi
 
