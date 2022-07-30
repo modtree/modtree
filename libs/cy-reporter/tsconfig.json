@@ -2,16 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "strict": true,
-    "module": "commonjs"
+    "outDir": "../../dist",
+    "module": "commonjs",
+    "types": ["node"]
   },
   "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+  "include": ["**/*.ts"],
+  "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]
 }
