@@ -1,11 +1,11 @@
 import './env'
-import { getAllFiles } from '@modtree/utils'
 import { init, db } from './data-source'
 import { In, Repository } from 'typeorm'
 import { CypressRun } from './entity'
 import { green, red, gray, Chalk } from 'chalk'
 import { ancestryPath } from './git'
 import { resolve } from 'path'
+import { getAllFiles } from './files'
 
 /**
  * possible states of a test
