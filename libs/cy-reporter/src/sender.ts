@@ -7,6 +7,8 @@ import { getCurrentHash } from './git'
 import { log, debugLog } from './log'
 import { EventEmitter } from 'events'
 
+const useProd = true
+
 /**
  * mini mutex
  *
@@ -32,8 +34,11 @@ import { EventEmitter } from 'events'
 const bus = new EventEmitter()
 let lock = false
 
-// only use the CypressRun entity here
-const db = new DataSource({ ...config.development, entities: [CypressRun] })
+const db = new DataSource({
+  ...(useProd ? config.production : config.development),
+  // only use the CypressRun entity here
+  entities: [CypressRun],
+})
 
 // initialize database and repo
 const dbInit = db.initialize()
