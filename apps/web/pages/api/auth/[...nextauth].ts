@@ -42,7 +42,7 @@ export default NextAuth({
      */
     async signIn({ user, account, profile }): Promise<boolean> {
       return trpc
-        .mutation('user/login', {
+        .mutation('login', {
           provider: account.provider,
           providerId: user.id,
           email: user.email || profile.email || '',
