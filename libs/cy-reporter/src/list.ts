@@ -1,29 +1,11 @@
 import './env'
+import { getAllFiles } from '@modtree/utils'
 import { init, db } from './data-source'
-import { Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 import { CypressRun } from './entity'
 import { green, red, gray, Chalk } from 'chalk'
-import { getHash, isAncestor } from './git'
-
-/**
- * only consider commits that are:
- *  1. ancestors of current commit (HEAD)
- *  2. are descendants of origin/main
- *  3. are not the same commit as origin/main
- *
- * @param {string} gitHash
- * @returns {boolean}
- */
-const validCommit = (gitHash: string): boolean => {
-  return [
-    // test hash is ancestor of current commit
-    isAncestor(gitHash, 'HEAD'),
-    // test hash is descendant of origin/main
-    isAncestor('origin/main', gitHash),
-    // test hash is not origin/main itself
-    getHash('origin/main') !== getHash(gitHash),
-  ].every(Boolean)
-}
+import { ancestryPath } from './git'
+import { resolve } from 'path'
 
 /**
  * possible states of a test
@@ -38,17 +20,44 @@ enum State {
 }
 
 /** pretty printer */
-const p = (c: Chalk, i: string) => (s: string) => console.log(c(` ${i}`, s))
-const log = {
+const p =
+  (c: Chalk, i: string) =>
+  (hash: string, ...s: any) =>
+    console.log(gray(` ${hash}`), c(`${i}`), c(...s))
+
+const print = {
   [State.PASS]: p(green, '✓'),
   [State.NORES]: p(gray, '*'),
   [State.FAIL]: p(red, '✗'),
 }
 
 const main = async (repo: Repository<CypressRun>) => {
-  return repo.find().then((res) => {
-    console.log(res, res.length)
-  })
+  const files = getAllFiles(resolve(__dirname, '..')).filter((f) =>
+    f.endsWith('.cy.ts')
+  )
+  const validCommits = ancestryPath('origin/main', 'HEAD')
+  return repo
+    .findBy({ gitHash: In(validCommits), file: In(files) })
+    .then((res) => {
+      files
+        .map((file) => {
+          let [state, shortHash] = [State.NORES, '        ']
+          const data = res.filter((r) => r.file === file)
+          // modify the state and shortHash if data is found
+          if (data.length > 0) {
+            const latest = data.sort((a, b) => b.timestamp - a.timestamp)[0]
+            shortHash = latest.gitHash.slice(0, 8)
+            state = latest.pass ? State.PASS : State.FAIL
+          }
+          // return the state for sorting later
+          // return the printer to execute after sorting
+          return { state, print: () => print[state](shortHash, file) }
+        })
+        // sort by state
+        .sort((a, b) => a.state - b.state)
+        // print
+        .forEach((t) => t.print())
+    })
 }
 
 // run main under an initialized connection
