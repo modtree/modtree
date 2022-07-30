@@ -6,6 +6,7 @@
 source scripts/colors.sh
 source scripts/cypress/check-git.sh
 source scripts/cypress/handle-args.sh
+source scripts/cypress/ensure-built.sh
 
 PROJECT=apps/web-e2e
 SPEC_DIR=cypress/integration
