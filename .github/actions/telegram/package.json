@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "ncc build src/index.ts",
+    "build": "ncc build --minify src/index.ts",
     "test": "ts-node src/test.ts"
   },
   "author": "Nguyen Vu Khang",
