@@ -23,6 +23,11 @@
     "file": "cypress/integration/cypress-utils/login.cy.ts",
     "runs": [
       {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164451208,
+        "pass": true
+      },
+      {
         "gitHash": "972262b7968a",
         "timestamp": 1659063165419,
         "pass": true
@@ -37,6 +42,11 @@
   {
     "file": "cypress/integration/cypress-utils/redux.cy.ts",
     "runs": [
+      {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164463232,
+        "pass": true
+      },
       {
         "gitHash": "972262b7968a",
         "timestamp": 1659063176265,
@@ -73,6 +83,11 @@
     "file": "cypress/integration/cypress-utils/starting-user-state.cy.ts",
     "runs": [
       {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164476801,
+        "pass": true
+      },
+      {
         "gitHash": "972262b7968a",
         "timestamp": 1659063190363,
         "pass": true
@@ -82,6 +97,11 @@
   {
     "file": "cypress/integration/graph/add-and-remove.cy.ts",
     "runs": [
+      {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164499723,
+        "pass": true
+      },
       {
         "gitHash": "972262b7968a",
         "timestamp": 1659063213818,
@@ -103,6 +123,11 @@
     "file": "cypress/integration/graph/new-graph.cy.ts",
     "runs": [
       {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164518443,
+        "pass": true
+      },
+      {
         "gitHash": "972262b7968a",
         "timestamp": 1659063232853,
         "pass": true
@@ -122,6 +147,11 @@
   {
     "file": "cypress/integration/search.cy.ts",
     "runs": [
+      {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164527846,
+        "pass": true
+      },
       {
         "gitHash": "972262b7968a",
         "timestamp": 1659063241798,
@@ -148,6 +178,11 @@
     "file": "cypress/integration/user-profile/degrees.cy.ts",
     "runs": [
       {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164548015,
+        "pass": false
+      },
+      {
         "gitHash": "972262b7968a",
         "timestamp": 1659063261886,
         "pass": false
@@ -167,6 +202,11 @@
   {
     "file": "cypress/integration/user-profile/modules.cy.ts",
     "runs": [
+      {
+        "gitHash": "f75d6a832ed9",
+        "timestamp": 1659164413391,
+        "pass": true
+      },
       {
         "gitHash": "972262b7968a",
         "timestamp": 1659063298959,
