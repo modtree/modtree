@@ -62,7 +62,7 @@ const handleTestEnd = (packet: Packet) => {
     return
   }
 
-  return init.then(async (repo) => {
+  init.then(async (repo) => {
     const timestamp = Math.round(new Date(end).getTime() / 1000)
     const pass = packet.data.stats.failures === 0
     const run = repo.create({ file, timestamp, gitHash, pass })
@@ -74,10 +74,15 @@ const handleTestEnd = (packet: Packet) => {
 }
 
 process.on('message', (packet: Packet) => {
-  if (['start', 'end'].includes(packet.action)) {
-    log.cyan(`test ${packet.action}:`, packet.data.file)
+  // handle end of test (push data)
+  if (packet.action === 'end') {
+    handleTestEnd(packet)
   }
-  if (packet.action === 'end') handleTestEnd(packet)
+  // quick log
+  ;({
+    start: () => log.start(packet.data.file),
+    end: () => log.end(packet.data.file),
+  }[packet.action]())
 })
 
 /**
@@ -85,16 +90,20 @@ process.on('message', (packet: Packet) => {
  */
 process.on('disconnect', () => {
   debugLog.cyan('Cypress reporter has disconnected.')
-  log.cyan('Cypress sender is wrapping up...')
+  debugLog.cyan('Cypress sender is wrapping up...')
   // execute after settling queue
   const settleQueue = () =>
     Promise.allSettled(queue).then((results) => {
-      const total = results.length
-      const fulfilled = results.filter(
-        (res) => res.status === 'fulfilled'
-      ).length
-      log.cyan('total tests ran:', total)
-      log.cyan('tests recorded: ', fulfilled)
+      let [fulfilled, passed] = [0, 0]
+      results.forEach((res) => {
+        if (res.status === 'fulfilled') {
+          fulfilled += 1
+          passed += res.value.pass ? 1 : 0
+        }
+      })
+      debugLog.gray('total tests ran:   ', results.length)
+      debugLog.gray('tests recorded:    ', fulfilled)
+      log.normal('\nresult:', passed, '/', results.length, 'passed\n')
       return db.isInitialized ? db.destroy() : null
     })
   // wait for lock to be gone

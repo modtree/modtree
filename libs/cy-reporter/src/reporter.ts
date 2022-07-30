@@ -1,11 +1,6 @@
 import type { Packet, Runner } from './types'
 import { fork } from 'child_process'
-import { green, red } from 'chalk'
-
-const log = {
-  pass: (...a: any) => console.log(green('pass', ...a)),
-  fail: (...a: any) => console.log(red('fail', ...a)),
-}
+import { log } from './log'
 
 /**
  * fork a sender process that will handle async operations
