@@ -72,6 +72,11 @@ export function hasUncommittedChanges(): boolean {
 
 /**
  * get list of all hashes between two commits
+ * note that the returned array doesn't include the ancestor commit
+ *
+ * @param {string} ancestor
+ * @param {string} descendant
+ * @returns {string[]} commits excluding ancestor including descendant
  */
 export function ancestryPath(ancestor: string, descendant: string): string[] {
   const output = spawnSync(
@@ -81,7 +86,5 @@ export function ancestryPath(ancestor: string, descendant: string): string[] {
       encoding: 'utf8',
     }
   ).output[1]
-  if (!output) return []
-  const list = output.trimEnd().split('\n')
-  return list
+  return output ? output.trimEnd().split('\n') : []
 }
