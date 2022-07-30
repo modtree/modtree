@@ -31,7 +31,7 @@ export function getApp(): Express {
   app.use('/api', createOpenApiExpressMiddleware({ router: appRouter }))
 
   /** write OpenAPI docs only if ENV is set to rebuild */
-  const rebuild = process.env.REBUILD_YAML_DOCS === 'rebuild'
+  const rebuild = process.env.REBUILD_OPENAPI_DOCS === 'rebuild'
   if (rebuild) {
     generateDocs(appRouter)
   }
