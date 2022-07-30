@@ -20,7 +20,6 @@
     "cy": "bash scripts/cypress/main.sh",
     "cy:build": "node libs/cy-reporter/webpack.js --build",
     "cy:dev": "node libs/cy-reporter/dev.js",
-    "cy:ls": "node apps/web-e2e/reporters/list.js",
     "────────────────────────────────────────────────── testing ": [],
     "test": "bash scripts/run-tests/run.sh",
     "test:dev": "yarn test:build && yarn test",

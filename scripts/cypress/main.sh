@@ -45,19 +45,21 @@ handle_arguments $@
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 [ $2 ] && cyan "Only one positional arg is supported." && exit 1
 
-# check that git status is clean
-# => no uncommitted changes
-ensure_clean_git_status
-
 # after checking for clean git status, handle the rest of arguments
 handle_positional_args() {
   case $1 in
-  run)
+  r | run)
+    # check that git status is clean
+    ensure_clean_git_status
+    # if git status is clean, then execute runs
     if [[ $ALL == true ]]; then
       run_all
     else
       fzf_and_run
     fi
+    ;;
+  ls | list)
+    node reporters/list.js
     ;;
   *)
     cyan "Unknown positional argument."
