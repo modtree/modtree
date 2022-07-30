@@ -155,17 +155,17 @@ export class GraphRepository extends BaseRepo<Graph> {
   /**
    * update graph and return enough information to replot frontend graph
    *
+   * @param {Graph} backendGraph
    * @param {ApiResponse.Graph} frontendGraph
    */
   async update(
+    backendGraph: Graph,
     frontendGraph: ApiResponse.Graph
   ): Promise<{ graph: Graph; canTakes: CanTakeModule[] }> {
-    /** retrieve graph, update nodes and modules placed */
-    const graph = this.findOneById(frontendGraph.id).then((graph) => {
-      graph.flowNodes = frontendGraph.flowNodes
-      graph.modulesPlaced = frontendGraph.flowNodes.map((n) => n.data)
-      return this.save(graph)
-    })
+    /** update nodes and modules placed */
+    backendGraph.flowNodes = frontendGraph.flowNodes
+    backendGraph.modulesPlaced = frontendGraph.flowNodes.map((n) => n.data)
+    const graph = this.save(backendGraph)
     /** calculate can-takes of the new graph */
     const canTakes = graph.then((g) => this.canTakeModules(g))
     return Promise.all([graph, canTakes]).then(([graph, canTakes]) => ({

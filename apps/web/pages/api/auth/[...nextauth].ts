@@ -42,7 +42,7 @@ export default NextAuth({
      */
     async signIn({ user, account, profile }): Promise<boolean> {
       return trpc
-        .mutation('user/login', {
+        .mutation('login', {
           provider: account.provider,
           providerId: user.id,
           email: user.email || profile.email || '',
@@ -70,7 +70,7 @@ export default NextAuth({
         return session
       }
       return trpc
-        .query('user/get-by-email', { email })
+        .query('user-by-email', { email })
         .then((user) => {
           /** reload the user's id here */
           session.user.modtreeId = user.id

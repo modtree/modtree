@@ -12,6 +12,8 @@ export const getOne = createRouter()
         enabled: true,
         method: 'GET',
         path: '/module/{moduleCode}',
+        tags: ['Module'],
+        summary: 'Get a single module',
       },
     },
     input: z.object({
@@ -30,6 +32,8 @@ export const getOne = createRouter()
         enabled: true,
         method: 'GET',
         path: '/module-condensed/{moduleCode}',
+        tags: ['Module'],
+        summary: 'Get a single module condensed',
       },
     },
     input: z.object({
@@ -48,6 +52,8 @@ export const getOne = createRouter()
         enabled: true,
         method: 'GET',
         path: '/module-full/{moduleCode}',
+        tags: ['Module'],
+        summary: 'Get a single module full',
       },
     },
     input: z.object({
@@ -66,6 +72,8 @@ export const getOne = createRouter()
         enabled: true,
         method: 'GET',
         path: '/degree/{degreeId}',
+        tags: ['Degree'],
+        summary: 'Get a single degree',
       },
     },
     input: z.object({
@@ -84,6 +92,8 @@ export const getOne = createRouter()
         enabled: true,
         method: 'GET',
         path: '/user/{userId}',
+        tags: ['User'],
+        summary: 'Get a single user',
       },
     },
     input: z.object({
@@ -95,6 +105,26 @@ export const getOne = createRouter()
     },
   })
 
+  /** get a user by email */
+  .query('user-by-email', {
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'GET',
+        path: '/user-by-email',
+        tags: ['User'],
+        summary: 'Gets a user by email',
+      },
+    },
+    input: z.object({
+      email: z.string().email(),
+    }),
+    output: entities.User,
+    async resolve({ input }) {
+      return api.userRepo.findOneByEmail(input.email).then(flatten.user)
+    },
+  })
+
   /** get a graph by id */
   .query('graph', {
     meta: {
@@ -102,6 +132,8 @@ export const getOne = createRouter()
         enabled: true,
         method: 'GET',
         path: '/graph/{graphId}',
+        tags: ['Graph'],
+        summary: 'Get a single graph',
       },
     },
     input: z.object({

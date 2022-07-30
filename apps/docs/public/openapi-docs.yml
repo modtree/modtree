@@ -1,0 +1,3881 @@
+openapi: 3.0.3
+info:
+  title: modtree API
+  description: null
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+paths:
+  "/module/{moduleCode}":
+    get:
+      operationId: module
+      summary: Get a single module
+      description: null
+      tags:
+        - Module
+      security: null
+      parameters:
+        - name: moduleCode
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      moduleCode:
+                        type: string
+                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      title:
+                        type: string
+                      prerequisite:
+                        type: string
+                      corequisite:
+                        type: string
+                      preclusion:
+                        type: string
+                      fulfillRequirements:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      prereqTree:
+                        anyOf:
+                          - type: string
+                          - type: object
+                            properties:
+                              and:
+                                type: array
+                                items: {}
+                              or:
+                                type: array
+                                items: {}
+                            additionalProperties: false
+                    required:
+                      - id
+                      - moduleCode
+                      - title
+                      - prerequisite
+                      - corequisite
+                      - preclusion
+                      - fulfillRequirements
+                      - prereqTree
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/module-condensed/{moduleCode}":
+    get:
+      operationId: module-condensed
+      summary: Get a single module condensed
+      description: null
+      tags:
+        - Module
+      security: null
+      parameters:
+        - name: moduleCode
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      moduleCode:
+                        type: string
+                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      title:
+                        type: string
+                    required:
+                      - id
+                      - moduleCode
+                      - title
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/module-full/{moduleCode}":
+    get:
+      operationId: module-full
+      summary: Get a single module full
+      description: null
+      tags:
+        - Module
+      security: null
+      parameters:
+        - name: moduleCode
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      moduleCode:
+                        type: string
+                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      title:
+                        type: string
+                      prerequisite:
+                        type: string
+                      corequisite:
+                        type: string
+                      preclusion:
+                        type: string
+                      fulfillRequirements:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      prereqTree:
+                        anyOf:
+                          - type: string
+                          - type: object
+                            properties:
+                              and:
+                                type: array
+                                items: {}
+                              or:
+                                type: array
+                                items: {}
+                            additionalProperties: false
+                      acadYear:
+                        type: string
+                      description:
+                        type: string
+                      moduleCredit:
+                        type: string
+                      department:
+                        type: string
+                      faculty:
+                        type: string
+                      aliases:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      attributes:
+                        anyOf:
+                          - type: string
+                          - type: object
+                            properties:
+                              year:
+                                type: boolean
+                              su:
+                                type: boolean
+                              grsu:
+                                type: boolean
+                              ssgf:
+                                type: boolean
+                              sfs:
+                                type: boolean
+                              lab:
+                                type: boolean
+                              ism:
+                                type: boolean
+                              urop:
+                                type: boolean
+                              fyp:
+                                type: boolean
+                              mpes1:
+                                type: boolean
+                              mpes2:
+                                type: boolean
+                            additionalProperties: false
+                      semesterData:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            semester:
+                              type: number
+                            timetable:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  classNo:
+                                    type: string
+                                  day:
+                                    type: string
+                                  endTime:
+                                    type: string
+                                  lessonType:
+                                    type: string
+                                  startTime:
+                                    type: string
+                                  venue:
+                                    type: string
+                                  weeks:
+                                    anyOf:
+                                      - type: array
+                                        items:
+                                          type: number
+                                      - type: object
+                                        properties:
+                                          start:
+                                            type: string
+                                          end:
+                                            type: string
+                                          weekInterval:
+                                            type: number
+                                          weeks:
+                                            type: array
+                                            items:
+                                              type: number
+                                        required:
+                                          - start
+                                          - end
+                                        additionalProperties: false
+                                  size:
+                                    type: number
+                                required:
+                                  - classNo
+                                  - day
+                                  - endTime
+                                  - lessonType
+                                  - startTime
+                                  - venue
+                                  - weeks
+                                  - size
+                                additionalProperties: false
+                            examDate:
+                              type: string
+                            examDuration:
+                              type: number
+                          required:
+                            - semester
+                            - timetable
+                          additionalProperties: false
+                      workload:
+                        anyOf:
+                          - type: string
+                          - type: array
+                            items:
+                              type: number
+                    required:
+                      - id
+                      - moduleCode
+                      - title
+                      - prerequisite
+                      - corequisite
+                      - preclusion
+                      - fulfillRequirements
+                      - prereqTree
+                      - acadYear
+                      - description
+                      - moduleCredit
+                      - department
+                      - faculty
+                      - aliases
+                      - attributes
+                      - semesterData
+                      - workload
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/degree/{degreeId}":
+    get:
+      operationId: degree
+      summary: Get a single degree
+      description: null
+      tags:
+        - Degree
+      security: null
+      parameters:
+        - name: degreeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type: string
+                      modules:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                    required:
+                      - id
+                      - title
+                      - modules
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+    delete:
+      operationId: degree/delete
+      summary: Delete a degree
+      description: null
+      tags:
+        - Degree
+      security: null
+      parameters:
+        - name: degreeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      raw: {}
+                      affected:
+                        anyOf:
+                          - type: number
+                          - enum:
+                              - "null"
+                            nullable: true
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+    patch:
+      operationId: degree/update
+      summary: Update a degree
+      description: null
+      tags:
+        - Degree
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                moduleCodes:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+              required:
+                - title
+                - moduleCodes
+              additionalProperties: false
+      parameters:
+        - name: degreeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type: string
+                      modules:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                    required:
+                      - id
+                      - title
+                      - modules
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}":
+    get:
+      operationId: user
+      summary: Get a single user
+      description: null
+      tags:
+        - User
+      security: null
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+    delete:
+      operationId: user/delete
+      summary: Delete a user
+      description: null
+      tags:
+        - User
+      security: null
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      raw: {}
+                      affected:
+                        anyOf:
+                          - type: number
+                          - enum:
+                              - "null"
+                            nullable: true
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /user-by-email:
+    get:
+      operationId: user-by-email
+      summary: Gets a user by email
+      description: null
+      tags:
+        - User
+      security: null
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/graph/{graphId}":
+    get:
+      operationId: graph
+      summary: Get a single graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      parameters:
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type: string
+                      user:
+                        type: string
+                        format: uuid
+                      degree:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          title:
+                            type: string
+                        required:
+                          - id
+                          - title
+                        additionalProperties: false
+                      modulesPlaced:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesHidden:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      flowNodes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            position:
+                              type: object
+                              properties:
+                                x:
+                                  type: number
+                                y:
+                                  type: number
+                              required:
+                                - x
+                                - y
+                              additionalProperties: false
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uuid
+                                moduleCode:
+                                  type: string
+                                  pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                title:
+                                  type: string
+                                prerequisite:
+                                  type: string
+                                corequisite:
+                                  type: string
+                                preclusion:
+                                  type: string
+                                fulfillRequirements:
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                prereqTree:
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items: {}
+                                        or:
+                                          type: array
+                                          items: {}
+                                      additionalProperties: false
+                              required:
+                                - id
+                                - moduleCode
+                                - title
+                                - prerequisite
+                                - corequisite
+                                - preclusion
+                                - fulfillRequirements
+                                - prereqTree
+                              additionalProperties: false
+                            type:
+                              type: string
+                            className:
+                              type: string
+                            selected:
+                              type: boolean
+                          required:
+                            - id
+                            - position
+                            - data
+                          additionalProperties: false
+                      flowEdges:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            source:
+                              type: string
+                            target:
+                              type: string
+                          required:
+                            - id
+                            - source
+                            - target
+                          additionalProperties: false
+                    required:
+                      - id
+                      - title
+                      - user
+                      - degree
+                      - modulesPlaced
+                      - modulesHidden
+                      - flowNodes
+                      - flowEdges
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+    delete:
+      operationId: graph/delete
+      summary: Delete a graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      parameters:
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      raw: {}
+                      affected:
+                        anyOf:
+                          - type: number
+                          - enum:
+                              - "null"
+                            nullable: true
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /modules:
+    get:
+      operationId: modules
+      summary: Get many modules
+      description: null
+      tags:
+        - Modules
+      security: null
+      parameters:
+        - name: moduleCodes
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        moduleCode:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        title:
+                          type: string
+                        prerequisite:
+                          type: string
+                        corequisite:
+                          type: string
+                        preclusion:
+                          type: string
+                        fulfillRequirements:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        prereqTree:
+                          anyOf:
+                            - type: string
+                            - type: object
+                              properties:
+                                and:
+                                  type: array
+                                  items: {}
+                                or:
+                                  type: array
+                                  items: {}
+                              additionalProperties: false
+                      required:
+                        - id
+                        - moduleCode
+                        - title
+                        - prerequisite
+                        - corequisite
+                        - preclusion
+                        - fulfillRequirements
+                        - prereqTree
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /modules-condensed:
+    get:
+      operationId: modules-condensed
+      summary: Get many modules condensed
+      description: null
+      tags:
+        - Modules
+      security: null
+      parameters:
+        - name: moduleCodes
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        moduleCode:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        title:
+                          type: string
+                      required:
+                        - id
+                        - moduleCode
+                        - title
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /modules-full:
+    get:
+      operationId: modules-full
+      summary: Get many modules full
+      description: null
+      tags:
+        - Modules
+      security: null
+      parameters:
+        - name: moduleCodes
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        moduleCode:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        title:
+                          type: string
+                        prerequisite:
+                          type: string
+                        corequisite:
+                          type: string
+                        preclusion:
+                          type: string
+                        fulfillRequirements:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        prereqTree:
+                          anyOf:
+                            - type: string
+                            - type: object
+                              properties:
+                                and:
+                                  type: array
+                                  items: {}
+                                or:
+                                  type: array
+                                  items: {}
+                              additionalProperties: false
+                        acadYear:
+                          type: string
+                        description:
+                          type: string
+                        moduleCredit:
+                          type: string
+                        department:
+                          type: string
+                        faculty:
+                          type: string
+                        aliases:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        attributes:
+                          anyOf:
+                            - type: string
+                            - type: object
+                              properties:
+                                year:
+                                  type: boolean
+                                su:
+                                  type: boolean
+                                grsu:
+                                  type: boolean
+                                ssgf:
+                                  type: boolean
+                                sfs:
+                                  type: boolean
+                                lab:
+                                  type: boolean
+                                ism:
+                                  type: boolean
+                                urop:
+                                  type: boolean
+                                fyp:
+                                  type: boolean
+                                mpes1:
+                                  type: boolean
+                                mpes2:
+                                  type: boolean
+                              additionalProperties: false
+                        semesterData:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              semester:
+                                type: number
+                              timetable:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    classNo:
+                                      type: string
+                                    day:
+                                      type: string
+                                    endTime:
+                                      type: string
+                                    lessonType:
+                                      type: string
+                                    startTime:
+                                      type: string
+                                    venue:
+                                      type: string
+                                    weeks:
+                                      anyOf:
+                                        - type: array
+                                          items:
+                                            type: number
+                                        - type: object
+                                          properties:
+                                            start:
+                                              type: string
+                                            end:
+                                              type: string
+                                            weekInterval:
+                                              type: number
+                                            weeks:
+                                              type: array
+                                              items:
+                                                type: number
+                                          required:
+                                            - start
+                                            - end
+                                          additionalProperties: false
+                                    size:
+                                      type: number
+                                  required:
+                                    - classNo
+                                    - day
+                                    - endTime
+                                    - lessonType
+                                    - startTime
+                                    - venue
+                                    - weeks
+                                    - size
+                                  additionalProperties: false
+                              examDate:
+                                type: string
+                              examDuration:
+                                type: number
+                            required:
+                              - semester
+                              - timetable
+                            additionalProperties: false
+                        workload:
+                          anyOf:
+                            - type: string
+                            - type: array
+                              items:
+                                type: number
+                      required:
+                        - id
+                        - moduleCode
+                        - title
+                        - prerequisite
+                        - corequisite
+                        - preclusion
+                        - fulfillRequirements
+                        - prereqTree
+                        - acadYear
+                        - description
+                        - moduleCredit
+                        - department
+                        - faculty
+                        - aliases
+                        - attributes
+                        - semesterData
+                        - workload
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /users:
+    get:
+      operationId: users
+      summary: Get many users
+      description: null
+      tags:
+        - Users
+      security: null
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        facebookId:
+                          type: string
+                        googleId:
+                          type: string
+                        githubId:
+                          type: string
+                        displayName:
+                          type: string
+                        username:
+                          type: string
+                        email:
+                          type: string
+                          format: email
+                        matriculationYear:
+                          type: number
+                        graduationYear:
+                          type: number
+                        graduationSemester:
+                          type: number
+                        modulesDone:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        modulesDoing:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        savedDegrees:
+                          type: array
+                          items:
+                            type: string
+                            format: uuid
+                        savedGraphs:
+                          type: array
+                          items:
+                            type: string
+                            format: uuid
+                        mainDegree:
+                          anyOf:
+                            - type: string
+                              format: uuid
+                            - type: string
+                        mainGraph:
+                          anyOf:
+                            - type: string
+                              format: uuid
+                            - type: string
+                      required:
+                        - id
+                        - facebookId
+                        - googleId
+                        - githubId
+                        - displayName
+                        - username
+                        - email
+                        - matriculationYear
+                        - graduationYear
+                        - graduationSemester
+                        - modulesDone
+                        - modulesDoing
+                        - savedDegrees
+                        - savedGraphs
+                        - mainDegree
+                        - mainGraph
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /degrees:
+    get:
+      operationId: degrees
+      summary: Get many degrees
+      description: null
+      tags:
+        - Degrees
+      security: null
+      parameters:
+        - name: degreeIds
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        title:
+                          type: string
+                        modules:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      required:
+                        - id
+                        - title
+                        - modules
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /graphs:
+    get:
+      operationId: graphs
+      summary: Get many graphs
+      description: null
+      tags:
+        - Graphs
+      security: null
+      parameters:
+        - name: graphIds
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        title:
+                          type: string
+                        user:
+                          type: string
+                          format: uuid
+                        degree:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            title:
+                              type: string
+                          required:
+                            - id
+                            - title
+                          additionalProperties: false
+                        modulesPlaced:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        modulesHidden:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        flowNodes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              position:
+                                type: object
+                                properties:
+                                  x:
+                                    type: number
+                                  y:
+                                    type: number
+                                required:
+                                  - x
+                                  - y
+                                additionalProperties: false
+                              data:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                    format: uuid
+                                  moduleCode:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  title:
+                                    type: string
+                                  prerequisite:
+                                    type: string
+                                  corequisite:
+                                    type: string
+                                  preclusion:
+                                    type: string
+                                  fulfillRequirements:
+                                    type: array
+                                    items:
+                                      type: string
+                                      pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                  prereqTree:
+                                    anyOf:
+                                      - type: string
+                                      - type: object
+                                        properties:
+                                          and:
+                                            type: array
+                                            items: {}
+                                          or:
+                                            type: array
+                                            items: {}
+                                        additionalProperties: false
+                                required:
+                                  - id
+                                  - moduleCode
+                                  - title
+                                  - prerequisite
+                                  - corequisite
+                                  - preclusion
+                                  - fulfillRequirements
+                                  - prereqTree
+                                additionalProperties: false
+                              type:
+                                type: string
+                              className:
+                                type: string
+                              selected:
+                                type: boolean
+                            required:
+                              - id
+                              - position
+                              - data
+                            additionalProperties: false
+                        flowEdges:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              source:
+                                type: string
+                              target:
+                                type: string
+                            required:
+                              - id
+                              - source
+                              - target
+                            additionalProperties: false
+                      required:
+                        - id
+                        - title
+                        - user
+                        - degree
+                        - modulesPlaced
+                        - modulesHidden
+                        - flowNodes
+                        - flowEdges
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/search/modules/{query}":
+    get:
+      operationId: search/modules
+      summary: Search modules based on a prefix
+      description: null
+      tags:
+        - Module
+      security: null
+      parameters:
+        - name: query
+          in: path
+          required: true
+          schema:
+            type: string
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        moduleCode:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        title:
+                          type: string
+                        prerequisite:
+                          type: string
+                        corequisite:
+                          type: string
+                        preclusion:
+                          type: string
+                        fulfillRequirements:
+                          type: array
+                          items:
+                            type: string
+                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        prereqTree:
+                          anyOf:
+                            - type: string
+                            - type: object
+                              properties:
+                                and:
+                                  type: array
+                                  items: {}
+                                or:
+                                  type: array
+                                  items: {}
+                              additionalProperties: false
+                      required:
+                        - id
+                        - moduleCode
+                        - title
+                        - prerequisite
+                        - corequisite
+                        - preclusion
+                        - fulfillRequirements
+                        - prereqTree
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/search/modules-condensed/{query}":
+    get:
+      operationId: search/modules-condensed
+      summary: Search modules condensed based on a prefix
+      description: null
+      tags:
+        - Module
+      security: null
+      parameters:
+        - name: query
+          in: path
+          required: true
+          schema:
+            type: string
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        moduleCode:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        title:
+                          type: string
+                      required:
+                        - id
+                        - moduleCode
+                        - title
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/graph/{graphId}/suggest-modules":
+    get:
+      operationId: graph/suggest-modules
+      summary: Suggest modules from selected nodes of a graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      parameters:
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+        - name: selectedCodes
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: string
+                      pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/graph/{graphId}/can-take-modules":
+    get:
+      operationId: graph/can-take-modules
+      summary: For each module in the graph, checks if graph contains sufficient
+        pre-reqs.
+      description: null
+      tags:
+        - Graph
+      security: null
+      parameters:
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        moduleCode:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        canTake:
+                          type: boolean
+                      required:
+                        - moduleCode
+                        - canTake
+                      additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /login:
+    post:
+      operationId: login
+      summary: User login
+      description: Performs user login. If there is no associated user in the
+        database, creates a user with an empty degree and empty graph.
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                provider:
+                  type: string
+                providerId:
+                  type: string
+                  minLength: 1
+                email:
+                  type: string
+                  format: email
+              required:
+                - provider
+                - providerId
+                - email
+              additionalProperties: false
+      parameters: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /degree:
+    post:
+      operationId: degree/create
+      summary: Create a degree
+      description: null
+      tags:
+        - Degree
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                moduleCodes:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+              required:
+                - title
+                - moduleCodes
+              additionalProperties: false
+      parameters: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type: string
+                      modules:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                    required:
+                      - id
+                      - title
+                      - modules
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /user:
+    post:
+      operationId: user/create
+      summary: Create a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                provider:
+                  type: string
+                providerId:
+                  type: string
+              required:
+                - email
+              additionalProperties: false
+      parameters: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/insert-degrees":
+    patch:
+      operationId: user/insert-degrees
+      summary: Insert degrees into a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                degreeIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+                - degreeIds
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/set-main-degree":
+    patch:
+      operationId: user/set-main-degree
+      summary: Set main degree of a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                degreeId:
+                  type: string
+                  format: uuid
+              required:
+                - degreeId
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/remove-degree":
+    patch:
+      operationId: user/remove-degree
+      summary: Removes a degree from a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                degreeId:
+                  type: string
+                  format: uuid
+              required:
+                - degreeId
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/insert-graphs":
+    patch:
+      operationId: user/insert-graphs
+      summary: Insert graphs into a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                graphIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+                - graphIds
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/set-main-graph":
+    patch:
+      operationId: user/set-main-graph
+      summary: Set the main graph of a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                graphId:
+                  type: string
+                  format: uuid
+              required:
+                - graphId
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/remove-graph":
+    patch:
+      operationId: user/remove-graph
+      summary: Removes a graph from a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                graphId:
+                  type: string
+                  format: uuid
+              required:
+                - graphId
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/set-module-status":
+    patch:
+      operationId: user/set-module-status
+      summary: Sets module status of a user
+      description: Overwrites modulesDone or modulesDoing.
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                moduleCodes:
+                  type: array
+                  items:
+                    type: string
+                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                status:
+                  type: string
+                  enum:
+                    - notTaken
+                    - done
+                    - doing
+              required:
+                - moduleCodes
+                - status
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/user/{userId}/reset":
+    post:
+      operationId: user/reset
+      summary: Reset a user
+      description: null
+      tags:
+        - User
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: {}
+              additionalProperties: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  /graph:
+    post:
+      operationId: graph/create
+      summary: Create a graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  minLength: 1
+                  default: Untitled
+                userId:
+                  type: string
+                  format: uuid
+                degreeId:
+                  type: string
+                  format: uuid
+              required:
+                - userId
+                - degreeId
+              additionalProperties: false
+      parameters: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type: string
+                      user:
+                        type: string
+                        format: uuid
+                      degree:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          title:
+                            type: string
+                        required:
+                          - id
+                          - title
+                        additionalProperties: false
+                      modulesPlaced:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesHidden:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      flowNodes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            position:
+                              type: object
+                              properties:
+                                x:
+                                  type: number
+                                y:
+                                  type: number
+                              required:
+                                - x
+                                - y
+                              additionalProperties: false
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uuid
+                                moduleCode:
+                                  type: string
+                                  pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                title:
+                                  type: string
+                                prerequisite:
+                                  type: string
+                                corequisite:
+                                  type: string
+                                preclusion:
+                                  type: string
+                                fulfillRequirements:
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                prereqTree:
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items: {}
+                                        or:
+                                          type: array
+                                          items: {}
+                                      additionalProperties: false
+                              required:
+                                - id
+                                - moduleCode
+                                - title
+                                - prerequisite
+                                - corequisite
+                                - preclusion
+                                - fulfillRequirements
+                                - prereqTree
+                              additionalProperties: false
+                            type:
+                              type: string
+                            className:
+                              type: string
+                            selected:
+                              type: boolean
+                          required:
+                            - id
+                            - position
+                            - data
+                          additionalProperties: false
+                      flowEdges:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            source:
+                              type: string
+                            target:
+                              type: string
+                          required:
+                            - id
+                            - source
+                            - target
+                          additionalProperties: false
+                    required:
+                      - id
+                      - title
+                      - user
+                      - degree
+                      - modulesPlaced
+                      - modulesHidden
+                      - flowNodes
+                      - flowEdges
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/graph/{graphId}/rename":
+    patch:
+      operationId: graph/rename
+      summary: Rename a graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+              required:
+                - title
+              additionalProperties: false
+      parameters:
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      title:
+                        type: string
+                      user:
+                        type: string
+                        format: uuid
+                      degree:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          title:
+                            type: string
+                        required:
+                          - id
+                          - title
+                        additionalProperties: false
+                      modulesPlaced:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesHidden:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      flowNodes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            position:
+                              type: object
+                              properties:
+                                x:
+                                  type: number
+                                y:
+                                  type: number
+                              required:
+                                - x
+                                - y
+                              additionalProperties: false
+                            data:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  format: uuid
+                                moduleCode:
+                                  type: string
+                                  pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                title:
+                                  type: string
+                                prerequisite:
+                                  type: string
+                                corequisite:
+                                  type: string
+                                preclusion:
+                                  type: string
+                                fulfillRequirements:
+                                  type: array
+                                  items:
+                                    type: string
+                                    pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                prereqTree:
+                                  anyOf:
+                                    - type: string
+                                    - type: object
+                                      properties:
+                                        and:
+                                          type: array
+                                          items: {}
+                                        or:
+                                          type: array
+                                          items: {}
+                                      additionalProperties: false
+                              required:
+                                - id
+                                - moduleCode
+                                - title
+                                - prerequisite
+                                - corequisite
+                                - preclusion
+                                - fulfillRequirements
+                                - prereqTree
+                              additionalProperties: false
+                            type:
+                              type: string
+                            className:
+                              type: string
+                            selected:
+                              type: boolean
+                          required:
+                            - id
+                            - position
+                            - data
+                          additionalProperties: false
+                      flowEdges:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            source:
+                              type: string
+                            target:
+                              type: string
+                          required:
+                            - id
+                            - source
+                            - target
+                          additionalProperties: false
+                    required:
+                      - id
+                      - title
+                      - user
+                      - degree
+                      - modulesPlaced
+                      - modulesHidden
+                      - flowNodes
+                      - flowEdges
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+  "/graph/{graphId}/update":
+    patch:
+      operationId: graph/update
+      summary: Update a graph
+      description: null
+      tags:
+        - Graph
+      security: null
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                graph:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    title:
+                      type: string
+                    user:
+                      type: string
+                      format: uuid
+                    degree:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        title:
+                          type: string
+                      required:
+                        - id
+                        - title
+                      additionalProperties: false
+                    modulesPlaced:
+                      type: array
+                      items:
+                        type: string
+                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                    modulesHidden:
+                      type: array
+                      items:
+                        type: string
+                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                    flowNodes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          position:
+                            type: object
+                            properties:
+                              x:
+                                type: number
+                              y:
+                                type: number
+                            required:
+                              - x
+                              - y
+                            additionalProperties: false
+                          data:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                              moduleCode:
+                                type: string
+                                pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                              title:
+                                type: string
+                              prerequisite:
+                                type: string
+                              corequisite:
+                                type: string
+                              preclusion:
+                                type: string
+                              fulfillRequirements:
+                                type: array
+                                items:
+                                  type: string
+                                  pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                              prereqTree:
+                                anyOf:
+                                  - type: string
+                                  - type: object
+                                    properties:
+                                      and:
+                                        type: array
+                                        items: {}
+                                      or:
+                                        type: array
+                                        items: {}
+                                    additionalProperties: false
+                            required:
+                              - id
+                              - moduleCode
+                              - title
+                              - prerequisite
+                              - corequisite
+                              - preclusion
+                              - fulfillRequirements
+                              - prereqTree
+                            additionalProperties: false
+                          type:
+                            type: string
+                          className:
+                            type: string
+                          selected:
+                            type: boolean
+                        required:
+                          - id
+                          - position
+                          - data
+                        additionalProperties: false
+                    flowEdges:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          source:
+                            type: string
+                          target:
+                            type: string
+                        required:
+                          - id
+                          - source
+                          - target
+                        additionalProperties: false
+                  required:
+                    - id
+                    - title
+                    - user
+                    - degree
+                    - modulesPlaced
+                    - modulesHidden
+                    - flowNodes
+                    - flowEdges
+                  additionalProperties: false
+              required:
+                - graph
+              additionalProperties: false
+      parameters:
+        - name: graphId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      graph:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          title:
+                            type: string
+                          user:
+                            type: string
+                            format: uuid
+                          degree:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                format: uuid
+                              title:
+                                type: string
+                            required:
+                              - id
+                              - title
+                            additionalProperties: false
+                          modulesPlaced:
+                            type: array
+                            items:
+                              type: string
+                              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                          modulesHidden:
+                            type: array
+                            items:
+                              type: string
+                              pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                          flowNodes:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                position:
+                                  type: object
+                                  properties:
+                                    x:
+                                      type: number
+                                    y:
+                                      type: number
+                                  required:
+                                    - x
+                                    - y
+                                  additionalProperties: false
+                                data:
+                                  type: object
+                                  properties:
+                                    id:
+                                      type: string
+                                      format: uuid
+                                    moduleCode:
+                                      type: string
+                                      pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                    title:
+                                      type: string
+                                    prerequisite:
+                                      type: string
+                                    corequisite:
+                                      type: string
+                                    preclusion:
+                                      type: string
+                                    fulfillRequirements:
+                                      type: array
+                                      items:
+                                        type: string
+                                        pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                                    prereqTree:
+                                      anyOf:
+                                        - type: string
+                                        - type: object
+                                          properties:
+                                            and:
+                                              type: array
+                                              items: {}
+                                            or:
+                                              type: array
+                                              items: {}
+                                          additionalProperties: false
+                                  required:
+                                    - id
+                                    - moduleCode
+                                    - title
+                                    - prerequisite
+                                    - corequisite
+                                    - preclusion
+                                    - fulfillRequirements
+                                    - prereqTree
+                                  additionalProperties: false
+                                type:
+                                  type: string
+                                className:
+                                  type: string
+                                selected:
+                                  type: boolean
+                              required:
+                                - id
+                                - position
+                                - data
+                              additionalProperties: false
+                          flowEdges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                source:
+                                  type: string
+                                target:
+                                  type: string
+                              required:
+                                - id
+                                - source
+                                - target
+                              additionalProperties: false
+                        required:
+                          - id
+                          - title
+                          - user
+                          - degree
+                          - modulesPlaced
+                          - modulesHidden
+                          - flowNodes
+                          - flowEdges
+                        additionalProperties: false
+                      canTakes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            moduleCode:
+                              type: string
+                            canTake:
+                              type: boolean
+                          required:
+                            - moduleCode
+                            - canTake
+                          additionalProperties: false
+                    required:
+                      - graph
+                      - canTakes
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
+components:
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+  responses:
+    error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                enum:
+                  - false
+              error:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: string
+                  issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                      required:
+                        - message
+                      additionalProperties: false
+                required:
+                  - message
+                  - code
+                additionalProperties: false
+            required:
+              - ok
+              - error
+            additionalProperties: false
+tags: null
+externalDocs: null

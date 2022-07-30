@@ -10,6 +10,6 @@
     }
   },
   "docs": "Docs",
-  "reference": "API",
+  "swagger": "API",
   "blog": "Blog"
 }

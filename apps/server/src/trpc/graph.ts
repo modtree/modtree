@@ -14,6 +14,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'POST',
         path: '/graph',
+        tags: ['Graph'],
+        summary: 'Create a graph',
       },
     },
     input: z.object({
@@ -38,6 +40,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'DELETE',
         path: '/graph/{graphId}',
+        tags: ['Graph'],
+        summary: 'Delete a graph',
       },
     },
     input: z.object({
@@ -58,6 +62,8 @@ export const graph = createRouter()
         enabled: true,
         method: 'GET',
         path: '/graph/{graphId}/suggest-modules',
+        tags: ['Graph'],
+        summary: 'Suggest modules from selected nodes of a graph',
       },
     },
     input: z.object({
@@ -75,10 +81,10 @@ export const graph = createRouter()
   })
 
   /**
-   * For a single module, return true if graph contains enough pre-reqs
-   * to take it.
+   * Generate canTakes for the graph.
    *
-   * Returns a dictionary keyed on moduleCode.
+   * For a single module, canTake is true when graph contains
+   * enough pre-reqs to take it.
    */
   .query('can-take-modules', {
     meta: {
@@ -86,6 +92,9 @@ export const graph = createRouter()
         enabled: true,
         method: 'GET',
         path: '/graph/{graphId}/can-take-modules',
+        tags: ['Graph'],
+        summary:
+          'For each module in the graph, checks if graph contains sufficient pre-reqs.',
       },
     },
     input: z.object({
@@ -112,7 +121,9 @@ export const graph = createRouter()
       openapi: {
         enabled: true,
         method: 'PATCH',
-        path: '/graph/{graphId}',
+        path: '/graph/{graphId}/rename',
+        tags: ['Graph'],
+        summary: 'Rename a graph',
       },
     },
     input: z.object({
@@ -132,7 +143,17 @@ export const graph = createRouter()
    * updates a graph
    */
   .mutation('update', {
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'PATCH',
+        path: '/graph/{graphId}/update',
+        tags: ['Graph'],
+        summary: 'Update a graph',
+      },
+    },
     input: z.object({
+      graphId: z.string().uuid(),
       graph: entities.Graph,
     }),
     output: z.object({
@@ -145,9 +166,12 @@ export const graph = createRouter()
       ),
     }),
     async resolve({ input }) {
-      return api.graphRepo.update(input.graph).then((res) => ({
-        ...res,
-        graph: flatten.graph(res.graph),
-      }))
+      return api.graphRepo
+        .findOneById(input.graphId)
+        .then((g) => api.graphRepo.update(g, input.graph))
+        .then((res) => ({
+          ...res,
+          graph: flatten.graph(res.graph),
+        }))
     },
   })

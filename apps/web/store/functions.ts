@@ -17,7 +17,7 @@ export function redrawGraph() {
     graph,
   } = store.getState()
   trpc
-    .mutation('graph/update', { graph })
+    .mutation('graph/update', { graphId: graph.id, graph })
     .then((res) => {
       return getCSS(
         graph.flowNodes,
@@ -266,5 +266,5 @@ export function removeModuleNode(node: GraphFlowNode) {
 
 export function resetUser() {
   const userId = store.getState().modtree.user.id
-  trpc.mutation('user/reset', userId)
+  trpc.mutation('user/reset', { userId })
 }

@@ -14,6 +14,8 @@ export const degree = createRouter()
         enabled: true,
         method: 'POST',
         path: '/degree',
+        tags: ['Degree'],
+        summary: 'Create a degree',
       },
     },
     input: z.object({
@@ -37,6 +39,8 @@ export const degree = createRouter()
         enabled: true,
         method: 'DELETE',
         path: '/degree/{degreeId}',
+        tags: ['Degree'],
+        summary: 'Delete a degree',
       },
     },
     input: z.object({
@@ -57,6 +61,8 @@ export const degree = createRouter()
         enabled: true,
         method: 'PATCH',
         path: '/degree/{degreeId}',
+        tags: ['Degree'],
+        summary: 'Update a degree',
       },
     },
     input: z.object({
