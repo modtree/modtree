@@ -4,6 +4,11 @@
 /coverage
 *.mdx
 /references
+*.yml
+
+# cypress reporters
 apps/web-e2e/reporters/*.js
 !apps/web-e2e/reporters/cypress.js
-*.yml
+
+# github telegram build output
+.github/actions/telegram/dist
