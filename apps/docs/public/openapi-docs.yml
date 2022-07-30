@@ -652,6 +652,113 @@ paths:
                 additionalProperties: false
         default:
           $ref: "#/components/responses/error"
+  /user-by-email:
+    get:
+      operationId: user-by-email
+      summary: Gets a user by email
+      description: null
+      tags:
+        - User
+      security: null
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+          description: null
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum:
+                      - true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      facebookId:
+                        type: string
+                      googleId:
+                        type: string
+                      githubId:
+                        type: string
+                      displayName:
+                        type: string
+                      username:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                      matriculationYear:
+                        type: number
+                      graduationYear:
+                        type: number
+                      graduationSemester:
+                        type: number
+                      modulesDone:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      modulesDoing:
+                        type: array
+                        items:
+                          type: string
+                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      savedDegrees:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      savedGraphs:
+                        type: array
+                        items:
+                          type: string
+                          format: uuid
+                      mainDegree:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                      mainGraph:
+                        anyOf:
+                          - type: string
+                            format: uuid
+                          - type: string
+                    required:
+                      - id
+                      - facebookId
+                      - googleId
+                      - githubId
+                      - displayName
+                      - username
+                      - email
+                      - matriculationYear
+                      - graduationYear
+                      - graduationSemester
+                      - modulesDone
+                      - modulesDoing
+                      - savedDegrees
+                      - savedGraphs
+                      - mainDegree
+                      - mainGraph
+                    additionalProperties: false
+                required:
+                  - ok
+                  - data
+                additionalProperties: false
+        default:
+          $ref: "#/components/responses/error"
   "/graph/{graphId}":
     get:
       operationId: graph
@@ -1669,113 +1776,6 @@ paths:
                         - moduleCode
                         - title
                       additionalProperties: false
-                required:
-                  - ok
-                  - data
-                additionalProperties: false
-        default:
-          $ref: "#/components/responses/error"
-  /user/get-by-email:
-    get:
-      operationId: user/get-by-email
-      summary: Gets a user by email
-      description: null
-      tags:
-        - User
-      security: null
-      parameters:
-        - name: email
-          in: query
-          required: true
-          schema:
-            type: string
-            format: email
-          description: null
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    enum:
-                      - true
-                  data:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        format: uuid
-                      facebookId:
-                        type: string
-                      googleId:
-                        type: string
-                      githubId:
-                        type: string
-                      displayName:
-                        type: string
-                      username:
-                        type: string
-                      email:
-                        type: string
-                        format: email
-                      matriculationYear:
-                        type: number
-                      graduationYear:
-                        type: number
-                      graduationSemester:
-                        type: number
-                      modulesDone:
-                        type: array
-                        items:
-                          type: string
-                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
-                      modulesDoing:
-                        type: array
-                        items:
-                          type: string
-                          pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
-                      savedDegrees:
-                        type: array
-                        items:
-                          type: string
-                          format: uuid
-                      savedGraphs:
-                        type: array
-                        items:
-                          type: string
-                          format: uuid
-                      mainDegree:
-                        anyOf:
-                          - type: string
-                            format: uuid
-                          - type: string
-                      mainGraph:
-                        anyOf:
-                          - type: string
-                            format: uuid
-                          - type: string
-                    required:
-                      - id
-                      - facebookId
-                      - googleId
-                      - githubId
-                      - displayName
-                      - username
-                      - email
-                      - matriculationYear
-                      - graduationYear
-                      - graduationSemester
-                      - modulesDone
-                      - modulesDoing
-                      - savedDegrees
-                      - savedGraphs
-                      - mainDegree
-                      - mainGraph
-                    additionalProperties: false
                 required:
                   - ok
                   - data

@@ -105,6 +105,26 @@ export const getOne = createRouter()
     },
   })
 
+  /** get a user by email */
+  .query('user-by-email', {
+    meta: {
+      openapi: {
+        enabled: true,
+        method: 'GET',
+        path: '/user-by-email',
+        tags: ['User'],
+        summary: 'Gets a user by email',
+      },
+    },
+    input: z.object({
+      email: z.string().email(),
+    }),
+    output: entities.User,
+    async resolve({ input }) {
+      return api.userRepo.findOneByEmail(input.email).then(flatten.user)
+    },
+  })
+
   /** get a graph by id */
   .query('graph', {
     meta: {
