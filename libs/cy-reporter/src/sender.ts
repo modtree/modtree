@@ -7,7 +7,7 @@ import { getCurrentHash } from './git'
 import { log, debugLog } from './log'
 import { EventEmitter } from 'events'
 
-const useProd = true
+const useProd = false
 
 /**
  * mini mutex
@@ -43,7 +43,7 @@ const db = new DataSource({
 // initialize database and repo
 const dbInit = db.initialize()
 const repo = dbInit.then(() => new Repository(CypressRun, db.manager))
-const init = Promise.all([repo, dbInit]).then(([repo]) => repo)
+export const init = Promise.all([repo, dbInit]).then(([repo]) => repo)
 
 // write queue
 const queue: Promise<CypressRun>[] = []

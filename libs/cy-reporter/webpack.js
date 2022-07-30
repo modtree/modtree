@@ -15,6 +15,7 @@ const outDir = path.resolve(rootDir, 'apps/web-e2e/reporters')
 const d = (r) => path.resolve(__dirname, r)
 const entry = {
   json: d('src/json.ts'),
+  list: d('src/list.ts'),
   sender: d('src/sender.ts'),
 }
 const tsconfig = path.resolve(__dirname, 'tsconfig.lib.json')
