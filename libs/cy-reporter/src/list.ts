@@ -32,9 +32,8 @@ const print = {
 }
 
 const main = async (repo: Repository<CypressRun>) => {
-  const files = getAllFiles(resolve(__dirname, '..')).filter((f) =>
-    f.endsWith('.cy.ts')
-  )
+  const specRoot = resolve(__dirname, '../../..', 'apps/web-e2e')
+  const files = getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts'))
   const validCommits = ancestryPath('origin/main', 'HEAD')
   return repo
     .findBy({ gitHash: In(validCommits), file: In(files) })
