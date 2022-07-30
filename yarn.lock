@@ -3046,6 +3046,13 @@
   dependencies:
     "@types/superagent" "*"
 
+"@types/swagger-ui-react@^4.11.0":
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/@types/swagger-ui-react/-/swagger-ui-react-4.11.0.tgz#3ac84bc8e2f6e57b9ff4533ec31934f697e1a2c4"
+  integrity sha512-WPMR+GWbLd7zvY/uOTGzGzP44zK2rIZSnU00+pDR2YANnEV6/qj0kqYfdSY1Vk6qdvI7dR0Tx8JEMgUUrUQDjw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/unist@*":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.6.tgz#250a7b16c3b91f672a24552ec64678eeb1d3a08d"
