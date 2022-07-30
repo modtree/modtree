@@ -18,7 +18,6 @@ const log = {
  * running this file by node standalone will throw and error
  * for resolving the path of the forked process.
  */
-
 const sender = fork('reporters/sender', [], { detached: true })
 
 export const main = (runner: Runner) => {

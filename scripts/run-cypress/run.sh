@@ -59,7 +59,10 @@ TARGET=$(fd -t f -g '*.cy.ts' $SPEC_DIR | fzf)
 
 # run the test if something is selected
 if [ $TARGET ]; then
-  yarn cypress run -P $PROJECT -C $CONFIG --spec $PROJECT/$TARGET
+  yarn cypress run --quiet \
+    --project $PROJECT \
+    --config-file $CONFIG \
+    --spec $PROJECT/$TARGET
 else
   cyan 'No test selected.'
 fi
