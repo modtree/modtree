@@ -1,9 +1,10 @@
 import { Api } from '@modtree/repos'
-import { db } from '@modtree/typeorm-config'
+import { source } from '@modtree/typeorm-config'
 import { getApp } from './app'
 import { checkhealth } from './utils/check-health'
 import { connect } from './utils/connect'
 
+const db = source[process.env['NODE_ENV']]
 /**
  * this exact instance of Api will be used in trpc routes
  */

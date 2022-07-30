@@ -1,8 +1,8 @@
 import { setup, Repo, t, teardown } from '@modtree/test-env'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 
-beforeAll(() => setup(db, { restore: false }))
-afterAll(() => teardown(db))
+beforeAll(() => setup(testDb, { restore: false }))
+afterAll(() => teardown(testDb))
 
 export async function suggest(
   done: string[],

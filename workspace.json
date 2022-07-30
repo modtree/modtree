@@ -10,7 +10,6 @@
     "typeorm-config": "libs/typeorm-config",
     "types": "libs/types",
     "utils": "libs/utils",
-    "web": "apps/web",
-    "web-e2e": "apps/web-e2e"
+    "web": "apps/web"
   }
 }

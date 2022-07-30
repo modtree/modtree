@@ -31,7 +31,6 @@ export type ConfigsFromEnv = {
 
 export type DataSourceOptions = {
   type: SupportedDatabases
-  rootDir: string
   entities: Function[]
   migrations: any[]
   migrationsRun: boolean

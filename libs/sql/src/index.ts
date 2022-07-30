@@ -2,15 +2,20 @@ import { join } from 'path'
 import { Client } from 'pg'
 import { config } from '@modtree/typeorm-config'
 import { exec } from '@modtree/utils'
-import { ShellResponse, DataSourceOptions } from '@modtree/types'
+import { ShellResponse } from '@modtree/types'
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
+
+/**
+ * this file is mostly used in test environments
+ */
 
 /* eslint no-useless-escape: 0 */
 // some piped shell commands below require seemingly useless escapes
 
 const noDatabaseConfig = {
-  host: config.host,
-  user: config.username,
-  password: config.password,
+  host: config.test.host,
+  user: config.test.username,
+  password: config.test.password,
 }
 
 const connectionConfig = (database: string) => ({
@@ -19,7 +24,7 @@ const connectionConfig = (database: string) => ({
 })
 
 const getSqlCommand = (
-  config: DataSourceOptions,
+  config: PostgresConnectionOptions,
   cmd: string,
   args: string[]
 ) => {
@@ -36,7 +41,6 @@ class Sql {
   clientGenerator: (database: string) => Client
   private dropCmd = 'dropdb'
   private createCmd = 'createdb'
-  private dumpCmd = 'pg_dump'
 
   /** instantiate a new Sql class */
   constructor() {
@@ -78,7 +82,7 @@ class Sql {
    * @param {string} database
    */
   async dropDatabase(database: string): Promise<ShellResponse> {
-    const command = getSqlCommand(config, this.dropCmd, [database])
+    const command = getSqlCommand(config.test, this.dropCmd, [database])
     return exec(command)
   }
 
@@ -88,7 +92,7 @@ class Sql {
    * @param {string} database
    */
   async createDatabase(database: string): Promise<ShellResponse> {
-    const command = getSqlCommand(config, this.createCmd, [database])
+    const command = getSqlCommand(config.test, this.createCmd, [database])
     return exec(command)
   }
 
@@ -98,7 +102,7 @@ class Sql {
    * @param {string} database
    */
   async hasDatabase(database: string): Promise<Boolean> {
-    const command = getSqlCommand(config, 'psql', ['-lqt', database])
+    const command = getSqlCommand(config.test, 'psql', ['-lqt', database])
     return exec(command).then((res) => res.stdout.includes(database))
   }
 
@@ -123,23 +127,12 @@ class Sql {
   async restoreFromFile(database: string, filename: string) {
     await this.clearDatabase(database)
     const sourceFile = join(__dirname, '..', 'snapshots', filename)
-    const command = getSqlCommand(config, 'psql', [database, '<', sourceFile])
+    const command = getSqlCommand(config.test, 'psql', [
+      database,
+      '<',
+      sourceFile,
+    ])
     await exec(command)
-  }
-
-  /**
-   * dump a database snapshot to an .sql file
-   *
-   * @param {string} database
-   */
-  async dump(database: string) {
-    const filename = 'default-dump'
-    const withExt = filename.concat('.sql')
-    const file = join(config.rootDir, '.sql', withExt)
-    const u = config.username ? `-u ${config.username}` : ''
-    const p = config.password ? `-p\"${config.password}\"` : ''
-    const cmd = `${this.dumpCmd} ${u} ${p} ${database} > ${file}`
-    await exec(cmd)
   }
 }
 

@@ -5,4 +5,5 @@
 *.mdx
 /references
 apps/web-e2e/reporters/*.js
+!apps/web-e2e/reporters/cypress.js
 *.yml

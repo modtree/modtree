@@ -8,11 +8,20 @@ import {
   Graph,
   ModuleFull,
 } from '@modtree/types'
+import { CypressRun } from '@modtree/cy-reporter'
 import { migrations } from '../snapshots'
 
 const p = process.env
 const base = {
-  entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
+  entities: [
+    ModuleCondensed,
+    Module,
+    User,
+    Degree,
+    Graph,
+    ModuleFull,
+    CypressRun,
+  ],
   migrations,
   synchronize: false,
   migrationsRun: false,

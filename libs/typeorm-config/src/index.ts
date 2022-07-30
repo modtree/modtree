@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import { DataSource } from 'typeorm'
+import type { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 import {
   ModuleCondensed,
   Module,
@@ -7,75 +8,63 @@ import {
   Degree,
   Graph,
   ModuleFull,
-  DataSourceOptions,
-  ConfigFromEnv,
 } from '@modtree/types'
-import { resolve } from 'path'
-import { env } from './env'
 
-export { env }
+type NodeEnv = 'test' | 'development' | 'production'
 
-const defaultConfig: DataSourceOptions = {
-  type: 'postgres',
-  rootDir: resolve(__dirname, '../../..'),
+const p = process.env
+const base = {
   entities: [ModuleCondensed, Module, User, Degree, Graph, ModuleFull],
-  username: '',
-  password: '',
-  migrations: [],
-  host: 'localhost',
-  database: 'mt_test',
-  restoreSource: 'latest.sql',
   synchronize: false,
   migrationsRun: false,
+  migrations: [],
 }
 
-function getConfigFromEnv(): ConfigFromEnv {
-  const nodeEnv = process.env['NODE_ENV']
-  switch (nodeEnv) {
-    case 'production':
-      return env.production
-    case 'development':
-      return env.development
-    case 'test':
-      return env.test
-    default:
-      return env.empty
-  }
+const env = {
+  test: {
+    port: parseInt(p.TEST_POSTGRES_PORT || '5432'),
+    host: p.TEST_POSTGRES_HOST,
+    username: p.TEST_POSTGRES_USERNAME,
+    password: p.TEST_POSTGRES_PASSWORD,
+    database: p.TEST_POSTGRES_DATABASE,
+    ...base,
+  },
+  development: {
+    port: parseInt(p.DEVELOPMENT_POSTGRES_PORT || '5432'),
+    host: p.DEVELOPMENT_POSTGRES_HOST,
+    username: p.DEVELOPMENT_POSTGRES_USERNAME,
+    password: p.DEVELOPMENT_POSTGRES_PASSWORD,
+    database: p.DEVELOPMENT_POSTGRES_DATABASE,
+    ...base,
+  },
+  production: {
+    port: parseInt(p.PRODUCTION_POSTGRES_PORT || '5432'),
+    host: p.PRODUCTION_POSTGRES_HOST,
+    username: p.PRODUCTION_POSTGRES_USERNAME,
+    password: p.PRODUCTION_POSTGRES_PASSWORD,
+    database: p.PRODUCTION_POSTGRES_DATABASE,
+    ...base,
+  },
 }
 
 /**
- * generate a config based on the database type
- *
- * @returns {DataSourceOptions}
+ * exported for test-env and sql
  */
-function getConfig(): DataSourceOptions {
-  const base = defaultConfig
-  const { ssl, ...direct } = getConfigFromEnv()
-  /**
-   * `direct` is directly assignable to base, since it has all the right keys
-   */
-  Object.assign(base, direct)
-  /**
-   * ssl requires more processing
-   */
-  if (ssl) {
-    base.extra = {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    }
-  }
-  /**
-   * always synchronize for tests
-   */
-  if (process.env['NODE_ENV'] === 'test') {
-    base.synchronize = true
-  }
-  return base
+export const config: Record<NodeEnv, PostgresConnectionOptions> = {
+  test: { type: 'postgres', ...env.test, synchronize: true },
+  development: { type: 'postgres', ...env.development },
+  production: {
+    type: 'postgres',
+    ...env.production,
+    extra: { ssl: { rejectUnauthorized: false } },
+  },
 }
 
-export const config = getConfig()
-export const db = new DataSource(config)
+export const source = {
+  test: new DataSource(config.test),
+  development: new DataSource(config.development),
+  production: new DataSource(config.production),
+}
 
 /**
  * custom source creator (mostly used in tests to isolate databases)
@@ -84,7 +73,6 @@ export const db = new DataSource(config)
  * @returns {DataSource}
  */
 export const getSource = (database: string): DataSource =>
-  new DataSource({
-    ...config,
-    database,
-  })
+  new DataSource({ ...config.test, database })
+
+export const testDb = source.test

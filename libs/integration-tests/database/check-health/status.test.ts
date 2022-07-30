@@ -2,24 +2,13 @@
  * this test acts as a script that makes all aliases into an array
  */
 
-import { db, env } from '@modtree/typeorm-config'
+import { source } from '@modtree/typeorm-config'
 import { Api } from '@modtree/repos'
-import { DataSource, DataSourceOptions } from 'typeorm'
 
 jest.setTimeout(600000)
 test.skip('end', async () => {
-  const { ssl, ...rest } = env.development
-  const opts: DataSourceOptions = {
-    type: 'postgres',
-  }
-
-  Object.assign(opts, db.options)
-  Object.assign(opts, rest)
-  Object.assign(opts, { synchronize: false })
-
-  const noSync = new DataSource(opts)
-  console.log(noSync.options)
-  const connect = noSync.initialize()
+  const db = source.development
+  const connect = db.initialize()
 
   const getApi = connect.then((db) => new Api(db))
 
@@ -41,7 +30,7 @@ test.skip('end', async () => {
   })
 
   const end = main.finally(() => {
-    return noSync.isInitialized ? noSync.destroy() : null
+    return db.isInitialized ? db.destroy() : null
   })
 
   await end

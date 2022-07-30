@@ -1,5 +1,0 @@
-{
-  "extends": "./cypress.config.js",
-  "baseUrl": "https://modtree-dev.vercel.app",
-  "defaultCommandTimeout": 10000
-}

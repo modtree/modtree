@@ -1,6 +1,5 @@
 import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 import { sql } from '@modtree/sql'
-import { config } from '@modtree/typeorm-config'
 import { DataSource } from 'typeorm'
 import {
   DegreeRepository,
@@ -16,6 +15,7 @@ import {
  * imports custom matcher types
  */
 import './matcher-types'
+import path from 'path'
 
 type SetupOptions = {
   initialize?: boolean
@@ -65,10 +65,7 @@ export async function setup(
     })
   if (db.options.database === undefined) return
   if (opts.restore) {
-    await sql.restoreFromFile(
-      db.options.database.toString(),
-      config.restoreSource
-    )
+    await sql.restoreFromFile(db.options.database.toString(), 'latest.sql')
   }
   // by default, initialize a new connection
   if (!opts) {

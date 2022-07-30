@@ -1,15 +1,15 @@
 import { Degree, Graph, Module, ModuleCondensed, User } from '@modtree/types'
 import { Repo, setup, teardown } from '@modtree/test-env'
-import { db } from '@modtree/typeorm-config'
+import { testDb } from '@modtree/typeorm-config'
 
-beforeAll(() => setup(db, { restore: false }))
-afterAll(() => teardown(db))
+beforeAll(() => setup(testDb, { restore: false }))
+afterAll(() => teardown(testDb))
 
 const entities = [User, Degree, Graph, Module, ModuleCondensed]
 
 entities.forEach((entity) => {
   test(`${entity.name} has metadata`, () => {
-    expect(db.hasMetadata(entity)).toBe(true)
+    expect(testDb.hasMetadata(entity)).toBe(true)
   })
 })
 
