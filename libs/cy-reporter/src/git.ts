@@ -40,8 +40,7 @@ export function getCurrentHash(length?: number): string {
  * @returns {string}
  */
 export function getHash(ref: string): string {
-  const output = getStdout('git', ['rev-parse', ref])
-  return output.slice(0, 12)
+  return getStdout('git', ['rev-parse', ref])
 }
 
 /**
@@ -69,4 +68,20 @@ export function hasUncommittedChanges(): boolean {
     encoding: 'utf8',
   }).output[1]
   return (output?.match(/\n/) || []).length === 0
+}
+
+/**
+ * get list of all hashes between two commits
+ */
+export function ancestryPath(ancestor: string, descendant: string): string[] {
+  const output = spawnSync(
+    'git',
+    ['rev-list', '--ancestry-path', `${ancestor}..${descendant}`],
+    {
+      encoding: 'utf8',
+    }
+  ).output[1]
+  if (!output) return []
+  const list = output.trimEnd().split('\n')
+  return list
 }
