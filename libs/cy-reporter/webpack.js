@@ -10,8 +10,8 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
  * configuration paths
  */
 const rootDir = path.resolve(__dirname, '../..')
-// const outDir = path.resolve(rootDir, 'dist/libs/cy-reporter')
-const outDir = path.resolve(rootDir, 'apps/web-e2e/reporters')
+const outDir = path.resolve(rootDir, 'dist/libs/cy-reporter')
+// const outDir = path.resolve(rootDir, 'apps/web-e2e/reporters')
 const d = (r) => path.resolve(__dirname, r)
 const entry = {
   json: d('src/json.ts'),
@@ -71,6 +71,7 @@ const compiler = webpack({
     }),
   ],
   resolve: {
+    roots: [rootDir],
     extensions: ['.tsx', '.ts', '.js'],
     /**
      * this is what allows custom paths such as `@modtree/utils`

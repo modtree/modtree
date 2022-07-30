@@ -3,8 +3,9 @@ import { Packet } from './types'
 import { init, db } from './data-source'
 import { CypressRun } from './entity'
 import { getCurrentHash } from './git'
-import { log, debugLog } from './log'
+import { log } from './log'
 import { EventEmitter } from 'events'
+import { basename } from 'path'
 
 /**
  * mini mutex
@@ -53,7 +54,8 @@ const handleTestEnd = (packet: Packet) => {
     return
   }
 
-  init.then(async (repo) => {
+  // push to the write queue
+  init.then((repo) => {
     const timestamp = Math.round(new Date(end).getTime() / 1000)
     const pass = packet.data.stats.failures === 0
     const run = repo.create({ file, timestamp, gitHash, pass })
@@ -80,8 +82,6 @@ process.on('message', (packet: Packet) => {
  * triggered upon the parent of this fork disconnecting
  */
 process.on('disconnect', () => {
-  debugLog.cyan('Cypress reporter has disconnected.')
-  debugLog.cyan('Cypress sender is wrapping up...')
   // execute after settling queue
   const settleQueue = () =>
     Promise.allSettled(queue).then((results) => {
@@ -92,9 +92,8 @@ process.on('disconnect', () => {
           passed += res.value.pass ? 1 : 0
         }
       })
-      debugLog.gray('total tests ran:   ', results.length)
-      debugLog.gray('tests recorded:    ', fulfilled)
-      log.normal('\nresult:', passed, '/', results.length, 'passed\n')
+      const psf = 'passed / saved / total: '
+      log.normal(psf, passed, '/', fulfilled, '/', results.length, '\n')
       return db.isInitialized ? db.destroy() : null
     })
   // wait for lock to be gone
@@ -110,16 +109,11 @@ process.on('disconnect', () => {
  * triggered on this script exiting, including forcefully with SIGINT (ctrl C)
  */
 process.on('exit', () => {
-  log.cyan('Cypress sender has left the building.')
+  const thisScript = basename(__dirname) + '/' + basename(__filename)
+  log.normal(thisScript, 'has left the building.')
   // shut down the database
-  const ok = () => debugLog.green('Database connection is shut down.')
   const no = () => log.red('Database connection is still running.')
   if (db.isInitialized) {
-    return db
-      .destroy()
-      .then(() => ok())
-      .catch(() => no())
-  } else {
-    ok()
+    return db.destroy().catch(() => no())
   }
 })

@@ -1550,29 +1550,6 @@
     webpack "^4 || ^5"
     webpack-node-externals "^3.0.0"
 
-"@nrwl/cypress@^14.3.5":
-  version "14.4.1"
-  resolved "https://registry.yarnpkg.com/@nrwl/cypress/-/cypress-14.4.1.tgz#15119f7445300bfa7c83ac91443a882586207b19"
-  integrity sha512-VmhQX6EUq+I3ceOG2iWr3EOoI0F6chMWRMxDkadQd6wQ+DzYaa6xudjCs/WXGAIrwzxWBye1swyNM3ZpTs16dQ==
-  dependencies:
-    "@babel/core" "^7.0.1"
-    "@babel/preset-env" "^7.0.0"
-    "@cypress/webpack-preprocessor" "^5.9.1"
-    "@nrwl/devkit" "14.4.1"
-    "@nrwl/linter" "14.4.1"
-    "@nrwl/workspace" "14.4.1"
-    babel-loader "^8.0.2"
-    chalk "4.1.0"
-    enhanced-resolve "^5.8.3"
-    fork-ts-checker-webpack-plugin "6.2.10"
-    rxjs "^6.5.4"
-    ts-loader "^9.2.6"
-    tsconfig-paths "^3.9.0"
-    tsconfig-paths-webpack-plugin "3.5.2"
-    tslib "^2.3.0"
-    webpack "^4 || ^5"
-    webpack-node-externals "^3.0.0"
-
 "@nrwl/devkit@14.2.2":
   version "14.2.2"
   resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-14.2.2.tgz#c81b83d224276c825edcb9a0e333b4e3915a26e3"
@@ -4902,10 +4879,10 @@ cypress-social-logins@^1.14.0:
     otplib "^12.0.1"
     puppeteer "^2.1.1"
 
-cypress@9.7.0:
-  version "9.7.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.7.0.tgz#bf55b2afd481f7a113ef5604aa8b693564b5e744"
-  integrity sha512-+1EE1nuuuwIt/N1KXRR2iWHU+OiIt7H28jJDyyI4tiUftId/DrXYEwoDa5+kH2pki1zxnA0r6HrUGHV5eLbF5Q==
+cypress@^10.3.1:
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-10.3.1.tgz#7fab4ef43481c05a9a17ebe9a0ec860e15b95a19"
+  integrity sha512-As9HrExjAgpgjCnbiQCuPdw5sWKx5HUJcK2EOKziu642akwufr/GUeqL5UnCPYXTyyibvEdWT/pSC2qnGW/e5w==
   dependencies:
     "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
