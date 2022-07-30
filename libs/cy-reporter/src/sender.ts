@@ -1,13 +1,10 @@
 import './env'
 import { Packet } from './types'
-import { config } from '@modtree/typeorm-config'
-import { DataSource, Repository } from 'typeorm'
+import { init, db } from './data-source'
 import { CypressRun } from './entity'
 import { getCurrentHash } from './git'
 import { log, debugLog } from './log'
 import { EventEmitter } from 'events'
-
-const useProd = false
 
 /**
  * mini mutex
@@ -33,17 +30,6 @@ const useProd = false
  */
 const bus = new EventEmitter()
 let lock = false
-
-const db = new DataSource({
-  ...(useProd ? config.production : config.development),
-  // only use the CypressRun entity here
-  entities: [CypressRun],
-})
-
-// initialize database and repo
-const dbInit = db.initialize()
-const repo = dbInit.then(() => new Repository(CypressRun, db.manager))
-export const init = Promise.all([repo, dbInit]).then(([repo]) => repo)
 
 // write queue
 const queue: Promise<CypressRun>[] = []
