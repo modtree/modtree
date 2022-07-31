@@ -28,3 +28,9 @@ test('all routes have a test', () => {
     expect(fileRoutes).toContainEqual({ path, method })
   })
 })
+
+test('no extra tests exist', () => {
+  fileRoutes.forEach(({ path, method }) => {
+    expect(ROUTES).toContainEqual({ path, method })
+  })
+})
