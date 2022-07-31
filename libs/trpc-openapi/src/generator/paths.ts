@@ -51,8 +51,14 @@ export const getOpenApiPathsObject = (
             description,
             tags: tags ?? (tag ? [tag] : undefined),
             security: protect ? [{ Authorization: [] }] : undefined,
-            parameters: getParameterObjects(inputParser, pathParameters, 'all'),
-            responses: getResponsesObject(outputParser),
+            parameters: getParameterObjects(
+              inputParser,
+              pathParameters,
+              'all',
+              path,
+              httpMethod
+            ),
+            responses: getResponsesObject(outputParser, path, httpMethod),
           },
         }
       } catch (error: any) {
@@ -95,13 +101,20 @@ export const getOpenApiPathsObject = (
             description,
             tags: tags ?? (tag ? [tag] : undefined),
             security: protect ? [{ Authorization: [] }] : undefined,
-            requestBody: getRequestBodyObject(inputParser, pathParameters),
+            requestBody: getRequestBodyObject(
+              inputParser,
+              pathParameters,
+              path,
+              httpMethod
+            ),
             parameters: getParameterObjects(
               inputParser,
               pathParameters,
-              'path'
+              'path',
+              path,
+              httpMethod
             ),
-            responses: getResponsesObject(outputParser),
+            responses: getResponsesObject(outputParser, path, httpMethod),
           },
         }
       } catch (error: any) {
