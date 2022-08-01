@@ -9,7 +9,7 @@ it('create a user', async () => {
   })
 })
 
-it('returns 200', async () => {
+it('reset a user', async () => {
   return postman.post(`/user/${userId}/reset`).then((res) => {
     expect(res.status).toBe(200)
   })

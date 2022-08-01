@@ -1,6 +1,6 @@
 import { init, postman } from '../../../utils'
 
-it('returns 200', async () => {
+it('create a degree', async () => {
   return postman.post('/degree', init.Degree).then((res) => {
     expect(res.status).toBe(200)
   })

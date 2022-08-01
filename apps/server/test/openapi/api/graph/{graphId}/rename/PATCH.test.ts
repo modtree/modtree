@@ -22,7 +22,7 @@ it('create a graph', async () => {
     })
 })
 
-it('returns 200', async () => {
+it('rename a graph', async () => {
   return postman
     .patch(`/graph/${graphId}/rename`, { title: 'New Title' })
     .then((res) => {

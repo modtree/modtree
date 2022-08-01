@@ -14,7 +14,7 @@ it('create a degree and user', async () => {
   })
 })
 
-it('returns 200', async () => {
+it('create a graph', async () => {
   return postman
     .post('/graph', {
       ...init.Graph,

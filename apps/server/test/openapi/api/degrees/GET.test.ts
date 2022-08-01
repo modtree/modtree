@@ -9,7 +9,7 @@ it('create a degree', async () => {
   })
 })
 
-it('returns 200', async () => {
+it('get many degrees', async () => {
   return postman.get('/degrees', { degreeIds: [degreeId] }).then((res) => {
     expect(res.status).toBe(200)
   })

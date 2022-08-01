@@ -22,7 +22,7 @@ it('create a graph', async () => {
     })
 })
 
-it('returns 200', async () => {
+it('get a graph', async () => {
   return postman.get(`/graph/${graphId}`).then((res) => {
     expect(res.status).toBe(200)
   })

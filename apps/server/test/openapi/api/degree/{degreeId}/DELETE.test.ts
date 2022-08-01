@@ -9,7 +9,7 @@ it('create a degree', async () => {
   })
 })
 
-it('returns 200', async () => {
+it('delete a degree', async () => {
   return postman.delete(`/degree/${degreeId}`).then((res) => {
     expect(res.status).toBe(200)
   })

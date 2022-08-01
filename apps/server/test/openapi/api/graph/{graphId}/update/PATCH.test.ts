@@ -22,7 +22,7 @@ it('create a graph', async () => {
     })
 })
 
-it('return 200', async () => {
+it('update a graph', async () => {
   return (
     postman
       /** get the graph */

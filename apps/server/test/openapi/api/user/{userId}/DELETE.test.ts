@@ -9,7 +9,7 @@ it('create a user', async () => {
   })
 })
 
-it('returns 200', async () => {
+it('delete a user', async () => {
   return postman.delete(`/user/${userId}`).then((res) => {
     expect(res.status).toBe(200)
   })

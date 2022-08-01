@@ -9,7 +9,7 @@ it('create a degree', async () => {
   })
 })
 
-it('returns 200', async () => {
+it('update a degree', async () => {
   return postman
     .patch(`/degree/${degreeId}`, {
       title: 'New Title',

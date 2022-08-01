@@ -22,7 +22,7 @@ it('create a graph', async () => {
     })
 })
 
-it('adds CS1010 to graph', async () => {
+it('add CS1010 to graph', async () => {
   return (
     postman
       /** get the graph */
@@ -41,7 +41,7 @@ it('adds CS1010 to graph', async () => {
   )
 })
 
-it('returns 200', async () => {
+it('suggest modules', async () => {
   return postman
     .get(`/graph/${graphId}/suggest-modules`, { selectedCodes: ['CS1010'] })
     .then((res) => {

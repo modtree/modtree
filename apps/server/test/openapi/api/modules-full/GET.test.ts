@@ -1,6 +1,6 @@
 import { postman } from '../../../utils'
 
-it('returns 200', async () => {
+it('get many modules full', async () => {
   return postman
     .get('/modules-full', { moduleCodes: ['CS1010'] })
     .then((res) => {

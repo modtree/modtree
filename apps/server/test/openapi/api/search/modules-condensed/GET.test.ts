@@ -1,6 +1,6 @@
 import { postman } from '../../../../utils'
 
-it('returns 200', async () => {
+it('search modules condensed', async () => {
   return postman
     .get('/search/modules-condensed', { query: 'CS1010' })
     .then((res) => {

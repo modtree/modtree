@@ -22,7 +22,7 @@ it('create a graph', async () => {
     })
 })
 
-it('returns 200', async () => {
+it('delete a graph', async () => {
   return postman.delete(`/graph/${graphId}`).then((res) => {
     expect(res.status).toBe(200)
   })

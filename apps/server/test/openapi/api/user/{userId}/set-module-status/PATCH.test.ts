@@ -10,7 +10,7 @@ it('create a user', async () => {
   })
 })
 
-it('returns 200', async () => {
+it('set module status', async () => {
   return postman
     .patch(`/user/${userId}/set-module-status`, {
       moduleCodes: ['CS1010'],
