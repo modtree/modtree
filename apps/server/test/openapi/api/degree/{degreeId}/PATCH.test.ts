@@ -12,7 +12,7 @@ it('create a degree', async () => {
 it('returns 200', async () => {
   return postman
     .patch(`/degree/${degreeId}`, {
-      title: 'New Degree',
+      title: 'New Title',
       moduleCodes: ['EL1101E'],
     })
     .then((res) => {
