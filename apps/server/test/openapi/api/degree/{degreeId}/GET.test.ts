@@ -1,12 +1,9 @@
-import { postman } from '../../../../utils'
+import { init, postman } from '../../../../utils'
 
 let degreeId: string
 
 it('create a degree', async () => {
-  const res = await postman.post('/degree', {
-    title: 'Test Degree',
-    moduleCodes: ['CS1010', 'MA2001'],
-  })
+  const res = await postman.post('/degree', init.Degree)
   expect(res.status).toBe(200)
   /**
    * first .data is regular res.data

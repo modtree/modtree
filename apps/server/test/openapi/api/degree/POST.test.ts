@@ -1,9 +1,6 @@
-import { postman } from '../../../utils'
+import { init, postman } from '../../../utils'
 
 it('returns 200', async () => {
-  const res = await postman.post('/degree', {
-    title: 'Test Degree',
-    moduleCodes: ['CS1010', 'MA2001'],
-  })
+  const res = await postman.post('/degree', init.Degree)
   expect(res.status).toBe(200)
 })
