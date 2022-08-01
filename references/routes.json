@@ -53,11 +53,11 @@
   },
   {
     "method": "GET",
-    "path": "/search/modules/{query}"
+    "path": "/search/modules"
   },
   {
     "method": "GET",
-    "path": "/search/modules-condensed/{query}"
+    "path": "/search/modules-condensed"
   },
   {
     "method": "DELETE",

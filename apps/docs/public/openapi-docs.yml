@@ -1690,7 +1690,7 @@ paths:
                 additionalProperties: false
         default:
           $ref: "#/components/responses/error"
-  "/search/modules/{query}":
+  /search/modules:
     get:
       operationId: search/modules
       summary: Search modules based on a prefix
@@ -1700,7 +1700,7 @@ paths:
       security: null
       parameters:
         - name: query
-          in: path
+          in: query
           required: true
           schema:
             type: string
@@ -1749,15 +1749,15 @@ paths:
                                 and:
                                   type: array
                                   items:
-                                    $ref: "#/paths/~1search~1modules~1{query}/get/responses/200/content/application\
-                                      ~1json/schema/properties/data/items/prope\
-                                      rties/prereqTree"
+                                    $ref: "#/paths/~1search~1modules/get/responses/200/content/application~1json/sc\
+                                      hema/properties/data/items/properties/pre\
+                                      reqTree"
                                 or:
                                   type: array
                                   items:
-                                    $ref: "#/paths/~1search~1modules~1{query}/get/responses/200/content/application\
-                                      ~1json/schema/properties/data/items/prope\
-                                      rties/prereqTree"
+                                    $ref: "#/paths/~1search~1modules/get/responses/200/content/application~1json/sc\
+                                      hema/properties/data/items/properties/pre\
+                                      reqTree"
                               additionalProperties: false
                       required:
                         - id
@@ -1775,7 +1775,7 @@ paths:
                 additionalProperties: false
         default:
           $ref: "#/components/responses/error"
-  "/search/modules-condensed/{query}":
+  /search/modules-condensed:
     get:
       operationId: search/modules-condensed
       summary: Search modules condensed based on a prefix
@@ -1785,7 +1785,7 @@ paths:
       security: null
       parameters:
         - name: query
-          in: path
+          in: query
           required: true
           schema:
             type: string
