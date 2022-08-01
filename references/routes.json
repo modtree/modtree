@@ -41,10 +41,6 @@
   },
   {
     "method": "GET",
-    "path": "/users"
-  },
-  {
-    "method": "GET",
     "path": "/degrees"
   },
   {
