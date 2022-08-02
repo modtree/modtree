@@ -1,6 +1,11 @@
 import path from 'path'
 import fs from 'fs'
 import { green, red, cyan, bgGreen, bgRed, bgWhite, gray } from 'chalk'
+import axios from 'axios'
+
+export const client = axios.create({
+  baseURL: 'http://localhost:8081',
+})
 
 export const log = {
   pass: (...a: any) => console.log(bgGreen.black(' PASS '), green(' ✓'), ...a),

@@ -2,10 +2,9 @@ import './env'
 import { Packet } from './types'
 import { CypressRun } from './entity'
 import { getCurrentHash } from './git'
-import { log } from './utils'
+import { log, client } from './utils'
 import { EventEmitter } from 'events'
 import { basename } from 'path'
-import { client } from './client'
 
 /**
  * mini mutex

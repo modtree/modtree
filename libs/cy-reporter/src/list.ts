@@ -2,8 +2,7 @@ import './env'
 import { green, red, gray, Chalk } from 'chalk'
 import { ancestryPath } from './git'
 import { resolve } from 'path'
-import { getAllFiles } from './utils'
-import { client } from './client'
+import { getAllFiles, client } from './utils'
 
 /**
  * possible states of a test
