@@ -1,11 +1,7 @@
-import './env'
-import { init, db } from './data-source'
+import '../env'
 import { In, Repository } from 'typeorm'
-import { CypressRun } from './entity'
+import { CypressRun } from '../entity'
 import { green, red, gray, Chalk } from 'chalk'
-import { ancestryPath } from './git'
-import { resolve } from 'path'
-import { getAllFiles } from './files'
 
 /**
  * possible states of a test
@@ -31,13 +27,13 @@ const print = {
   [State.FAIL]: p(red, '✗'),
 }
 
-const main = async (repo: Repository<CypressRun>) => {
-  const specRoot = resolve(__dirname, '../../..', 'apps/web-e2e')
-  const files = getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts'))
-  const validCommits = ancestryPath('origin/main', 'HEAD')
-  return repo
-    .findBy({ gitHash: In(validCommits), file: In(files) })
-    .then((res) => {
+export const list = async (
+  repo: Repository<CypressRun>,
+  files: string[],
+  commits: string[]
+) => {
+  return repo.findBy({ gitHash: In(commits), file: In(files) }).then((res) => {
+    return (
       files
         .map((file) => {
           let [state, shortHash] = [State.NORES, '        ']
@@ -50,14 +46,15 @@ const main = async (repo: Repository<CypressRun>) => {
           }
           // return the state for sorting later
           // return the printer to execute after sorting
-          return { state, print: () => print[state](shortHash, file) }
+          return {
+            state,
+            print: () => print[state](shortHash, file),
+            file,
+            shortHash,
+          }
         })
         // sort by state
         .sort((a, b) => a.state - b.state)
-        // print
-        .forEach((t) => t.print())
-    })
+    )
+  })
 }
-
-// run main under an initialized connection
-init.then((repo) => main(repo)).then(() => db.destroy())
