@@ -19,6 +19,7 @@
     "────────────────────────────────────────────────── cypress ": [],
     "cy": "bash scripts/cypress/main.sh",
     "cy:dev": "node libs/cy-reporter/webpack.js --watch",
+    "cy:server": "nodemon dist/libs/cy-reporter/server.js",
     "cy:build": "node libs/cy-reporter/webpack.js --build",
     "────────────────────────────────────────────────── testing ": [],
     "test": "bash scripts/run-tests/run.sh",
