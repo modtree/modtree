@@ -6,6 +6,7 @@ import { green, red, gray, Chalk } from 'chalk'
 import { ancestryPath } from './git'
 import { resolve } from 'path'
 import { getAllFiles } from './files'
+import { client } from './client'
 
 /**
  * possible states of a test
@@ -60,4 +61,16 @@ const main = async (repo: Repository<CypressRun>) => {
 }
 
 // run main under an initialized connection
-init.then((repo) => main(repo)).then(() => db.destroy())
+// init.then((repo) => main(repo)).then(() => db.destroy())
+
+const main2 = () => {
+  const specRoot = resolve(__dirname, '../../..', 'apps/web-e2e')
+  const params = {
+    files: getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts')),
+    commits: ancestryPath('origin/main', 'HEAD'),
+  }
+  client.get('/list', { params }).then((res) => {
+    console.log('server response:', res.data)
+  })
+}
+main2()

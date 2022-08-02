@@ -12,6 +12,12 @@ export function getApp(): Express {
   app.use(cors({ origin: '*' }))
   app.use(express.json())
 
+  app.get('/list', (req: Request, res: Response) => {
+    res.send({
+      'received params': req.query,
+    })
+  })
+
   /** register root route */
   app.get('/', (_req: Request, res: Response) => {
     res.status(200).send('modtree server is running')
