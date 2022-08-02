@@ -10,26 +10,54 @@ import {
 } from '../utils/zod'
 
 const zodSchemaToOpenApiSchemaObject = (
-  zodSchema: z.ZodType
+  zodSchema: z.ZodType,
+  path?: string,
+  method?: string
 ): OpenAPIV3.SchemaObject => {
   /**
    * MODTREE WAS HERE
-   *
-   * disable refStrategy because trpc-openapi does not support
-   * recursive types in docs due to its implementation
-   *
-   * trpc-openapi#37
+   * if path and method specified, use modtree YAML base path from root
    */
-  return zodToJsonSchema(zodSchema, {
-    target: 'openApi3',
-    $refStrategy: 'none',
-  })
+  if (path && method) {
+    // NOTE: ~1 is how you represent /
+    const statusCode = '200'
+    const mimeType = 'application~1json'
+    path = path.replace(/\//g, '~1')
+
+    /**
+     * full YAML path prefix from root
+     * comma separated array, where each element is one nested layer in YAML
+     */
+    const basePath: string[] = [
+      '#',
+      'paths',
+      path,
+      method,
+      'responses',
+      statusCode,
+      'content',
+      mimeType,
+      'schema',
+    ]
+
+    /** use patched base path */
+    return zodToJsonSchema(zodSchema, {
+      target: 'openApi3',
+      basePath,
+    })
+  } else {
+    /** else use trpc-openapi defaults */
+    return zodToJsonSchema(zodSchema, { target: 'openApi3' })
+  }
 }
 
 export const getParameterObjects = (
   schema: unknown,
   pathParameters: string[],
-  inType: 'all' | 'path' | 'query'
+  inType: 'all' | 'path' | 'query',
+  /** MODTREE WAS HERE **/
+  path: string,
+  httpMethod: string
 ): OpenAPIV3.ParameterObject[] | undefined => {
   if (!instanceofZodType(schema)) {
     throw new TRPCError({
@@ -94,8 +122,11 @@ export const getParameterObjects = (
         shapeSchema = shapeSchema.unwrap()
       }
 
-      const { description, ...schema } =
-        zodSchemaToOpenApiSchemaObject(shapeSchema)
+      const { description, ...schema } = zodSchemaToOpenApiSchemaObject(
+        shapeSchema,
+        path,
+        httpMethod
+      )
 
       return {
         name: shapeKey,
@@ -109,7 +140,9 @@ export const getParameterObjects = (
 
 export const getRequestBodyObject = (
   schema: unknown,
-  pathParameters: string[]
+  pathParameters: string[],
+  path: string,
+  httpMethod: string
 ): OpenAPIV3.RequestBodyObject | undefined => {
   if (!instanceofZodType(schema)) {
     throw new TRPCError({
@@ -165,7 +198,9 @@ export const errorResponseObject = {
 }
 
 export const getResponsesObject = (
-  schema: unknown
+  schema: unknown,
+  path: string,
+  httpMethod: string
 ): OpenAPIV3.ResponsesObject => {
   if (!instanceofZodType(schema)) {
     throw new TRPCError({
@@ -182,7 +217,9 @@ export const getResponsesObject = (
           z.object({
             ok: z.literal(true),
             data: schema,
-          })
+          }),
+          path,
+          httpMethod
         ),
       },
     },
