@@ -63,10 +63,16 @@ paths:
                             properties:
                               and:
                                 type: array
-                                items: {}
+                                items:
+                                  $ref: "#/paths/~1module~1{moduleCode}/get/responses/200/content/application~1js\
+                                    on/schema/properties/data/properties/prereq\
+                                    Tree"
                               or:
                                 type: array
-                                items: {}
+                                items:
+                                  $ref: "#/paths/~1module~1{moduleCode}/get/responses/200/content/application~1js\
+                                    on/schema/properties/data/properties/prereq\
+                                    Tree"
                             additionalProperties: false
                     required:
                       - id
@@ -191,10 +197,16 @@ paths:
                             properties:
                               and:
                                 type: array
-                                items: {}
+                                items:
+                                  $ref: "#/paths/~1module-full~1{moduleCode}/get/responses/200/content/applicatio\
+                                    n~1json/schema/properties/data/properties/p\
+                                    rereqTree"
                               or:
                                 type: array
-                                items: {}
+                                items:
+                                  $ref: "#/paths/~1module-full~1{moduleCode}/get/responses/200/content/applicatio\
+                                    n~1json/schema/properties/data/properties/p\
+                                    rereqTree"
                             additionalProperties: false
                       acadYear:
                         type: string
@@ -867,10 +879,18 @@ paths:
                                       properties:
                                         and:
                                           type: array
-                                          items: {}
+                                          items:
+                                            $ref: "#/paths/~1graph~1{graphId}/get/responses/200/content/application~1json/s\
+                                              chema/properties/data/properties/\
+                                              flowNodes/items/properties/data/p\
+                                              roperties/prereqTree"
                                         or:
                                           type: array
-                                          items: {}
+                                          items:
+                                            $ref: "#/paths/~1graph~1{graphId}/get/responses/200/content/application~1json/s\
+                                              chema/properties/data/properties/\
+                                              flowNodes/items/properties/data/p\
+                                              roperties/prereqTree"
                                       additionalProperties: false
                               required:
                                 - id
@@ -1030,10 +1050,14 @@ paths:
                               properties:
                                 and:
                                   type: array
-                                  items: {}
+                                  items:
+                                    $ref: "#/paths/~1modules/get/responses/200/content/application~1json/schema/pro\
+                                      perties/data/items/properties/prereqTree"
                                 or:
                                   type: array
-                                  items: {}
+                                  items:
+                                    $ref: "#/paths/~1modules/get/responses/200/content/application~1json/schema/pro\
+                                      perties/data/items/properties/prereqTree"
                               additionalProperties: false
                       required:
                         - id
@@ -1166,10 +1190,16 @@ paths:
                               properties:
                                 and:
                                   type: array
-                                  items: {}
+                                  items:
+                                    $ref: "#/paths/~1modules-full/get/responses/200/content/application~1json/schem\
+                                      a/properties/data/items/properties/prereq\
+                                      Tree"
                                 or:
                                   type: array
-                                  items: {}
+                                  items:
+                                    $ref: "#/paths/~1modules-full/get/responses/200/content/application~1json/schem\
+                                      a/properties/data/items/properties/prereq\
+                                      Tree"
                               additionalProperties: false
                         acadYear:
                           type: string
@@ -1594,10 +1624,18 @@ paths:
                                         properties:
                                           and:
                                             type: array
-                                            items: {}
+                                            items:
+                                              $ref: "#/paths/~1graphs/get/responses/200/content/application~1json/schema/prop\
+                                                erties/data/items/properties/fl\
+                                                owNodes/items/properties/data/p\
+                                                roperties/prereqTree"
                                           or:
                                             type: array
-                                            items: {}
+                                            items:
+                                              $ref: "#/paths/~1graphs/get/responses/200/content/application~1json/schema/prop\
+                                                erties/data/items/properties/fl\
+                                                owNodes/items/properties/data/p\
+                                                roperties/prereqTree"
                                         additionalProperties: false
                                 required:
                                   - id
@@ -1710,10 +1748,16 @@ paths:
                               properties:
                                 and:
                                   type: array
-                                  items: {}
+                                  items:
+                                    $ref: "#/paths/~1search~1modules~1{query}/get/responses/200/content/application\
+                                      ~1json/schema/properties/data/items/prope\
+                                      rties/prereqTree"
                                 or:
                                   type: array
-                                  items: {}
+                                  items:
+                                    $ref: "#/paths/~1search~1modules~1{query}/get/responses/200/content/application\
+                                      ~1json/schema/properties/data/items/prope\
+                                      rties/prereqTree"
                               additionalProperties: false
                       required:
                         - id
@@ -3271,10 +3315,18 @@ paths:
                                       properties:
                                         and:
                                           type: array
-                                          items: {}
+                                          items:
+                                            $ref: "#/paths/~1graph/post/responses/200/content/application~1json/schema/prop\
+                                              erties/data/properties/flowNodes/\
+                                              items/properties/data/properties/\
+                                              prereqTree"
                                         or:
                                           type: array
-                                          items: {}
+                                          items:
+                                            $ref: "#/paths/~1graph/post/responses/200/content/application~1json/schema/prop\
+                                              erties/data/properties/flowNodes/\
+                                              items/properties/data/properties/\
+                                              prereqTree"
                                       additionalProperties: false
                               required:
                                 - id
@@ -3449,10 +3501,18 @@ paths:
                                       properties:
                                         and:
                                           type: array
-                                          items: {}
+                                          items:
+                                            $ref: "#/paths/~1graph~1{graphId}~1rename/patch/responses/200/content/applicati\
+                                              on~1json/schema/properties/data/p\
+                                              roperties/flowNodes/items/propert\
+                                              ies/data/properties/prereqTree"
                                         or:
                                           type: array
-                                          items: {}
+                                          items:
+                                            $ref: "#/paths/~1graph~1{graphId}~1rename/patch/responses/200/content/applicati\
+                                              on~1json/schema/properties/data/p\
+                                              roperties/flowNodes/items/propert\
+                                              ies/data/properties/prereqTree"
                                       additionalProperties: false
                               required:
                                 - id
@@ -3602,10 +3662,14 @@ paths:
                                     properties:
                                       and:
                                         type: array
-                                        items: {}
+                                        items:
+                                          $ref: "#/properties/graph/properties/flowNodes/items/properties/data/properties\
+                                            /prereqTree"
                                       or:
                                         type: array
-                                        items: {}
+                                        items:
+                                          $ref: "#/properties/graph/properties/flowNodes/items/properties/data/properties\
+                                            /prereqTree"
                                     additionalProperties: false
                             required:
                               - id
@@ -3760,10 +3824,20 @@ paths:
                                           properties:
                                             and:
                                               type: array
-                                              items: {}
+                                              items:
+                                                $ref: "#/paths/~1graph~1{graphId}~1update/patch/responses/200/content/applicati\
+                                                  on~1json/schema/properties/da\
+                                                  ta/properties/graph/propertie\
+                                                  s/flowNodes/items/properties/\
+                                                  data/properties/prereqTree"
                                             or:
                                               type: array
-                                              items: {}
+                                              items:
+                                                $ref: "#/paths/~1graph~1{graphId}~1update/patch/responses/200/content/applicati\
+                                                  on~1json/schema/properties/da\
+                                                  ta/properties/graph/propertie\
+                                                  s/flowNodes/items/properties/\
+                                                  data/properties/prereqTree"
                                           additionalProperties: false
                                   required:
                                     - id
