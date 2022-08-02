@@ -19,7 +19,7 @@ export function getApp(): Express {
     const files = req.query.files as string[]
     const commits = req.query.commits as string[]
     // ORM call
-    list(repo, files, commits).then((r) => res.send(r))
+    list(repo, files || [], commits || []).then((r) => res.send(r))
   })
 
   app.post('/create', (req: Request, res: Response) => {
@@ -27,7 +27,11 @@ export function getApp(): Express {
     const file = req.body.file as string
     const timestamp = req.body.timestamp as number
     const gitHash = req.body.gitHash as string
-    const pass = req.body.pass as boolean
+    const pass = req.body.pass === true
+    if (!file || !timestamp || !gitHash) {
+      res.status(400)
+      return
+    }
     // ORM call
     repo
       .save(repo.create({ file, timestamp, gitHash, pass }))
