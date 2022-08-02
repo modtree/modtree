@@ -6,6 +6,7 @@ on:
       - main
       - d/docs
       - d/dev
+      - d/cy
 
 jobs:
   server-dev:
@@ -19,6 +20,19 @@ jobs:
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: 'modtree-dev' #Must be unique in Heroku
+          heroku_email: 'brew4k@gmail.com'
+
+  cy-reporter:
+    if: |
+      github.ref_name == 'd/cy' ||
+      github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'modtree-cy-reporter' #Must be unique in Heroku
           heroku_email: 'brew4k@gmail.com'
 
   web-dev:
