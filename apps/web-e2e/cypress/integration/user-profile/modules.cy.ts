@@ -22,6 +22,13 @@ function deleteModuleFromSettings(moduleCode: string) {
 }
 
 describe('modules panel', () => {
+  /** Reset user */
+  before(() => {
+    cy.login({ reset: true })
+    cy.logout()
+  })
+
+  /** Login */
   beforeEach(() => {
     cy.login()
     cy.reduxUser()
