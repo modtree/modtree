@@ -4,7 +4,7 @@ import { green, red, cyan, bgGreen, bgRed, bgWhite, gray } from 'chalk'
 import axios from 'axios'
 
 export const client = axios.create({
-  baseURL: 'http://localhost:8081',
+  baseURL: process.env['CYPRESS_REPORTER_URL'],
 })
 
 export const log = {
