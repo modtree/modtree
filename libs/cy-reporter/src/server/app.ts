@@ -15,9 +15,23 @@ export function getApp(): Express {
   app.use(express.json())
 
   app.get('/list', (req: Request, res: Response) => {
+    // read request
     const files = req.query.files as string[]
     const commits = req.query.commits as string[]
-    list(repo, files, commits).then((result) => res.send(result))
+    // ORM call
+    list(repo, files, commits).then((r) => res.send(r))
+  })
+
+  app.post('/create', (req: Request, res: Response) => {
+    // read request
+    const file = req.body.file as string
+    const timestamp = req.body.timestamp as number
+    const gitHash = req.body.gitHash as string
+    const pass = req.body.pass as boolean
+    // ORM call
+    repo
+      .save(repo.create({ file, timestamp, gitHash, pass }))
+      .then((r) => res.send(r))
   })
 
   /** register root route */

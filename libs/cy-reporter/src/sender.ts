@@ -6,6 +6,7 @@ import { getCurrentHash } from './git'
 import { log } from './log'
 import { EventEmitter } from 'events'
 import { basename } from 'path'
+import { client } from './client'
 
 /**
  * mini mutex
@@ -54,16 +55,19 @@ const handleTestEnd = (packet: Packet) => {
     return
   }
 
-  // push to the write queue
-  init.then((repo) => {
-    const timestamp = Math.round(new Date(end).getTime() / 1000)
-    const pass = packet.data.stats.failures === 0
-    const run = repo.create({ file, timestamp, gitHash, pass })
-    queue.push(repo.save(run))
-    // unlock the queue
-    lock = false
-    bus.emit('unlocked')
-  })
+  // add to write queue
+  queue.push(
+    client.post('/create', {
+      file,
+      gitHash,
+      timestamp: Math.round(new Date(end).getTime() / 1000),
+      pass: packet.data.stats.failures === 0,
+    })
+  )
+
+  // release the lock
+  lock = false
+  bus.emit('unlocked')
 }
 
 process.on('message', (packet: Packet) => {
