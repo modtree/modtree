@@ -35,20 +35,14 @@ const print = {
   [State.FAIL]: p(red, '✗'),
 }
 
-// run main under an initialized connection
-// init.then((repo) => main(repo)).then(() => db.destroy())
-
 const main2 = () => {
   const specRoot = resolve(__dirname, '../../..', 'apps/web-e2e')
   const params = {
     files: getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts')),
     commits: ancestryPath('origin/main', 'HEAD'),
   }
-  client.get('/list', { params }).then((res) => {
-    const results: Result[] = res.data
-    results.forEach((res) => {
-      print[res.state](res.shortHash, res.file)
-    })
-  })
+  client
+    .get<Result[]>('/list', { params })
+    .then((res) => res.data.forEach((r) => print[r.state](r.shortHash, r.file)))
 }
 main2()

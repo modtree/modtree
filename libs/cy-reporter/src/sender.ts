@@ -1,6 +1,5 @@
 import './env'
 import { Packet } from './types'
-import { init, db } from './data-source'
 import { CypressRun } from './entity'
 import { getCurrentHash } from './git'
 import { log } from './utils'
@@ -89,16 +88,15 @@ process.on('disconnect', () => {
   // execute after settling queue
   const settleQueue = () =>
     Promise.allSettled(queue).then((results) => {
-      let [fulfilled, passed] = [0, 0]
+      let [saved, passed] = [0, 0]
       results.forEach((res) => {
         if (res.status === 'fulfilled') {
-          fulfilled += 1
+          saved += 1
           passed += res.value.pass ? 1 : 0
         }
       })
-      const psf = 'passed / saved / total: '
-      log.normal(psf, passed, '/', fulfilled, '/', results.length, '\n')
-      return db.isInitialized ? db.destroy() : null
+      const pst = 'passed / saved / total: '
+      log.normal(pst, passed, '/', saved, '/', results.length, '\n')
     })
   // wait for lock to be gone
   if (lock) {
@@ -115,9 +113,4 @@ process.on('disconnect', () => {
 process.on('exit', () => {
   const thisScript = basename(__dirname) + '/' + basename(__filename)
   log.normal(thisScript, 'has left the building.')
-  // shut down the database
-  const no = () => log.red('Database connection is still running.')
-  if (db.isInitialized) {
-    return db.destroy().catch(() => no())
-  }
 })
