@@ -23,6 +23,7 @@ const compiler = webpack({
     json: resolve(__dirname, 'src/json.ts'),
     list: resolve(__dirname, 'src/list.ts'),
     sender: resolve(__dirname, 'src/sender.ts'),
+    server: resolve(__dirname, 'src/server/main.ts'),
   },
   module: {
     rules: [{ test: /\.ts$/, use: 'ts-loader', exclude: /node_modules/ }],
