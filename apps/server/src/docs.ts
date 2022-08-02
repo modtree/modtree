@@ -6,7 +6,11 @@ export function generateDocs(appRouter: AppRouter) {
   const openApiDocument = generateOpenApiDocument(appRouter, {
     title: 'modtree API',
     version: '1.0.0',
-    baseUrl: process.env.SWAGGER_PUBLIC_BACKEND || 'http://localhost:8080/api',
+    /**
+     * To reduce duplication, we only have 1 exported docs.
+     * The baseUrl is updated in the docs environment.
+     */
+    baseUrl: 'http://localhost:8080/api',
   })
 
   // JSON equivalent

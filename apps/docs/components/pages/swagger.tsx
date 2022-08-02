@@ -11,10 +11,12 @@ export default function Swagger() {
    */
   const supportedMethods = ['get']
 
-  return (
-    <SwaggerUI
-      spec={docs}
-      supportedSubmitMethods={supportedMethods}
-    />
-  )
+  /**
+   * update the base url
+   */
+  docs.servers[0] = {
+    url: process.env.SWAGGER_PUBLIC_BACKEND,
+  }
+
+  return <SwaggerUI spec={docs} supportedSubmitMethods={supportedMethods} />
 }
