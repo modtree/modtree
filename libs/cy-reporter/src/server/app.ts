@@ -17,11 +17,7 @@ export function getApp(): Express {
   app.get('/list', (req: Request, res: Response) => {
     const files = req.query.files as string[]
     const commits = req.query.commits as string[]
-    list(repo, files, commits).then((result) => {
-      res.send({
-        result,
-      })
-    })
+    list(repo, files, commits).then((result) => res.send(result))
   })
 
   /** register root route */
