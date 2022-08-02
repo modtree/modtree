@@ -1,3 +1,5 @@
+import path from 'path'
+import fs from 'fs'
 import { green, red, cyan, bgGreen, bgRed, bgWhite, gray } from 'chalk'
 
 export const log = {
@@ -11,4 +13,27 @@ export const log = {
   red: (...a: any) => console.log(red(...a)),
   gray: (...a: any) => console.log(gray(...a)),
   normal: (...a: any) => console.log(...a),
+}
+
+/**
+ * gets all files recursively under the root provided
+ */
+export const getAllFiles = (root: string, ignore: string[] = []) => {
+  const allFiles: string[] = []
+  const ls = (cwd: string) => {
+    fs.readdirSync(cwd)
+      .filter((x) => !ignore.includes(x))
+      .forEach((file) => {
+        const filepath = path.resolve(cwd, file)
+        if (fs.lstatSync(filepath).isDirectory()) {
+          ls(path.resolve(cwd, file))
+        } else {
+          allFiles.push(filepath)
+        }
+      })
+  }
+  ls(root)
+  return allFiles
+    .map((path) => path.replace(root + '/', ''))
+    .filter((entry) => entry !== '')
 }

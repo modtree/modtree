@@ -1,10 +1,8 @@
 import './env'
-import { In, Repository } from 'typeorm'
-import { CypressRun } from './entity'
 import { green, red, gray, Chalk } from 'chalk'
 import { ancestryPath } from './git'
 import { resolve } from 'path'
-import { getAllFiles } from './files'
+import { getAllFiles } from './utils'
 import { client } from './client'
 
 /**
