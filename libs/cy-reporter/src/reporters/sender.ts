@@ -1,10 +1,10 @@
-import './env'
-import { Packet } from './types'
-import { CypressRun } from './entity'
-import { getCurrentHash } from './git'
-import { log, client } from './utils'
+import '../env'
+import { CypressRun } from '../entity'
+import { getCurrentHash } from '../git'
+import { log, client } from '../utils'
 import { EventEmitter } from 'events'
 import { basename } from 'path'
+import type { Packet } from '../types'
 
 /**
  * mini mutex
