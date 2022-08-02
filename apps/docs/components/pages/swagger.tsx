@@ -15,7 +15,7 @@ export default function Swagger() {
    * update the base url
    */
   docs.servers[0] = {
-    url: process.env.SWAGGER_PUBLIC_BACKEND,
+    url: process.env.NEXT_PUBLIC_SWAGGER,
   }
 
   return <SwaggerUI spec={docs} supportedSubmitMethods={supportedMethods} />
