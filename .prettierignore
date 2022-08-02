@@ -4,7 +4,7 @@
 /coverage
 *.mdx
 /references
-*.yml
+openapi-docs.json
 
 # cypress reporters
 apps/web-e2e/reporters/*.js
