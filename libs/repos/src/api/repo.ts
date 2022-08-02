@@ -28,6 +28,14 @@ export class Api extends BaseApi {
    * @returns {Promise<User>}
    */
   async setupUser(user: User): Promise<User> {
+    /**
+     * first clear modules done/doing
+     * as graph depends on this
+     */
+    user.modulesDone = []
+    user.modulesDoing = []
+    const savedUser = this.userRepo.save(user)
+
     /** initialize degree */
     const degree = this.degreeRepo.initialize(
       c.degree.title,
@@ -35,7 +43,7 @@ export class Api extends BaseApi {
     )
 
     /** initialize graph */
-    const graph = degree.then((degree) =>
+    const graph = Promise.all([savedUser, degree]).then(([user, degree]) =>
       this.graphRepo.initialize(c.graph.title, user.id, degree.id)
     )
 
@@ -47,9 +55,6 @@ export class Api extends BaseApi {
       /** add the graph to the user */
       user.savedGraphs = [graph]
       user.mainGraph = graph
-      /** clear modules done/doing */
-      user.modulesDone = []
-      user.modulesDoing = []
       /** save and return the user */
       return this.userRepo.save(user)
     })
