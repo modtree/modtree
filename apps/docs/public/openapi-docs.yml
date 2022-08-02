@@ -127,11 +127,14 @@ paths:
                       moduleCode:
                         type: string
                         pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                      moduleLevel:
+                        type: number
                       title:
                         type: string
                     required:
                       - id
                       - moduleCode
+                      - moduleLevel
                       - title
                     additionalProperties: false
                 required:
@@ -1116,11 +1119,14 @@ paths:
                         moduleCode:
                           type: string
                           pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        moduleLevel:
+                          type: number
                         title:
                           type: string
                       required:
                         - id
                         - moduleCode
+                        - moduleLevel
                         - title
                       additionalProperties: false
                 required:
@@ -1333,122 +1339,6 @@ paths:
                         - attributes
                         - semesterData
                         - workload
-                      additionalProperties: false
-                required:
-                  - ok
-                  - data
-                additionalProperties: false
-        default:
-          $ref: "#/components/responses/error"
-  /users:
-    get:
-      operationId: users
-      summary: Get many users
-      description: null
-      tags:
-        - Users
-      security: null
-      parameters:
-        - name: id
-          in: query
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: null
-        - name: email
-          in: query
-          required: true
-          schema:
-            type: string
-            format: email
-          description: null
-      responses:
-        "200":
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                    enum:
-                      - true
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          format: uuid
-                        facebookId:
-                          type: string
-                        googleId:
-                          type: string
-                        githubId:
-                          type: string
-                        displayName:
-                          type: string
-                        username:
-                          type: string
-                        email:
-                          type: string
-                          format: email
-                        matriculationYear:
-                          type: number
-                        graduationYear:
-                          type: number
-                        graduationSemester:
-                          type: number
-                        modulesDone:
-                          type: array
-                          items:
-                            type: string
-                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
-                        modulesDoing:
-                          type: array
-                          items:
-                            type: string
-                            pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
-                        savedDegrees:
-                          type: array
-                          items:
-                            type: string
-                            format: uuid
-                        savedGraphs:
-                          type: array
-                          items:
-                            type: string
-                            format: uuid
-                        mainDegree:
-                          anyOf:
-                            - type: string
-                              format: uuid
-                            - type: string
-                        mainGraph:
-                          anyOf:
-                            - type: string
-                              format: uuid
-                            - type: string
-                      required:
-                        - id
-                        - facebookId
-                        - googleId
-                        - githubId
-                        - displayName
-                        - username
-                        - email
-                        - matriculationYear
-                        - graduationYear
-                        - graduationSemester
-                        - modulesDone
-                        - modulesDoing
-                        - savedDegrees
-                        - savedGraphs
-                        - mainDegree
-                        - mainGraph
                       additionalProperties: false
                 required:
                   - ok
@@ -1690,7 +1580,7 @@ paths:
                 additionalProperties: false
         default:
           $ref: "#/components/responses/error"
-  "/search/modules/{query}":
+  /search/modules:
     get:
       operationId: search/modules
       summary: Search modules based on a prefix
@@ -1700,7 +1590,7 @@ paths:
       security: null
       parameters:
         - name: query
-          in: path
+          in: query
           required: true
           schema:
             type: string
@@ -1749,15 +1639,15 @@ paths:
                                 and:
                                   type: array
                                   items:
-                                    $ref: "#/paths/~1search~1modules~1{query}/get/responses/200/content/application\
-                                      ~1json/schema/properties/data/items/prope\
-                                      rties/prereqTree"
+                                    $ref: "#/paths/~1search~1modules/get/responses/200/content/application~1json/sc\
+                                      hema/properties/data/items/properties/pre\
+                                      reqTree"
                                 or:
                                   type: array
                                   items:
-                                    $ref: "#/paths/~1search~1modules~1{query}/get/responses/200/content/application\
-                                      ~1json/schema/properties/data/items/prope\
-                                      rties/prereqTree"
+                                    $ref: "#/paths/~1search~1modules/get/responses/200/content/application~1json/sc\
+                                      hema/properties/data/items/properties/pre\
+                                      reqTree"
                               additionalProperties: false
                       required:
                         - id
@@ -1775,7 +1665,7 @@ paths:
                 additionalProperties: false
         default:
           $ref: "#/components/responses/error"
-  "/search/modules-condensed/{query}":
+  /search/modules-condensed:
     get:
       operationId: search/modules-condensed
       summary: Search modules condensed based on a prefix
@@ -1785,7 +1675,7 @@ paths:
       security: null
       parameters:
         - name: query
-          in: path
+          in: query
           required: true
           schema:
             type: string
@@ -1813,11 +1703,14 @@ paths:
                         moduleCode:
                           type: string
                           pattern: ^[A-Z]{2,4}[0-9]{4}[A-Z]{0,5}[0-9]{0,2}$
+                        moduleLevel:
+                          type: number
                         title:
                           type: string
                       required:
                         - id
                         - moduleCode
+                        - moduleLevel
                         - title
                       additionalProperties: false
                 required:

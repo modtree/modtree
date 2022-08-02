@@ -13,7 +13,7 @@ export const search = createRouter()
       openapi: {
         enabled: true,
         method: 'GET',
-        path: '/search/modules/{query}',
+        path: '/search/modules',
         tags: ['Module'],
         summary: 'Search modules based on a prefix',
       },
@@ -43,7 +43,7 @@ export const search = createRouter()
       openapi: {
         enabled: true,
         method: 'GET',
-        path: '/search/modules-condensed/{query}',
+        path: '/search/modules-condensed',
         tags: ['Module'],
         summary: 'Search modules condensed based on a prefix',
       },

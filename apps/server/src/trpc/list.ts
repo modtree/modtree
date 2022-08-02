@@ -65,35 +65,6 @@ export const list = createRouter()
     },
   })
 
-  /** list users */
-  .query('users', {
-    meta: {
-      openapi: {
-        enabled: true,
-        method: 'GET',
-        path: '/users',
-        tags: ['Users'],
-        summary: 'Get many users',
-      },
-    },
-    input: z.object({
-      id: z.string().uuid(),
-      email: z.string().email(),
-    }),
-    output: z.array(entities.User),
-    async resolve({ input }) {
-      return api.userRepo
-        .find({
-          where: {
-            id: input.id,
-            email: input.email,
-          },
-          relations: api.userRepo.relations,
-        })
-        .then((users) => users.map(flatten.user))
-    },
-  })
-
   /** list degrees */
   .query('degrees', {
     meta: {

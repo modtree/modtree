@@ -117,6 +117,7 @@ const entities = {
     .object({
       id: z.string().uuid(),
       moduleCode: z.string().regex(validModuleRegex),
+      moduleLevel: z.number(),
       title: z.string(),
     })
     .strict(),
