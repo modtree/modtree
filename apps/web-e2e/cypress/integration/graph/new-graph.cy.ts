@@ -6,14 +6,14 @@ function assertGraphCount(n: number) {
 }
 
 describe('new graph', () => {
-  before(() => cy.login({ reset: true }))
-
-  it('Add a new graph', () => {
-    assertGraphCount(1)
-    cy.addGraph('test-graph')
+  before(() => {
+    cy.login({ reset: true })
+    cy.logout()
   })
 
-  it('Add CS1231 to modules done', () => {
+  beforeEach(() => cy.login())
+
+  it('Add CS1231 to modules doing', () => {
     cy.openUserProfile('Modules')
     cy.getCy('modify-doing').click()
     cy.getCy('add-doing-search').clear().type('CS1231')
@@ -25,12 +25,11 @@ describe('new graph', () => {
 
   it('Add CS1231 to graph', () => {
     cy.addGraphModule('CS1231', 'Discrete Structures')
-    cy.getCy('node-CS1231-planned').should('exist')
+    cy.getCy('node-CS1231-doing').should('exist')
   })
 
   it('Teardown', () => {
     cy.removeGraphModule('CS1231')
-    cy.removeGraph('test-graph')
     assertGraphCount(1)
   })
 })
