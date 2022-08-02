@@ -1,8 +1,8 @@
 {
   "name": "@modtree/cy-reporter",
-  "version": "0.0.1",
+  "version": "0.0.2-alpha1",
   "type": "commonjs",
-  "dependencies": {
-    "@modtree/typeorm-config": "*"
+  "scripts": {
+    "push": "npm publish --access public"
   }
 }
