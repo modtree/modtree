@@ -1,7 +1,8 @@
 {
   "name": "@modtree/cy-reporter",
-  "version": "0.0.2-alpha1",
+  "version": "0.0.2-alpha2",
   "type": "commonjs",
+  "main": "dist/server.js",
   "scripts": {
     "push": "npm publish --access public"
   }
