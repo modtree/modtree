@@ -49,7 +49,7 @@ const main2 = () => {
   client.get('/list', { params }).then((res) => {
     const results: Result[] = res.data
     results.forEach((res) => {
-      console.log(res.file)
+      print[res.state](res.shortHash, res.file)
     })
   })
 }
