@@ -17,9 +17,3 @@ fi
 if [[ $1 == 'Dockerfile.yarn' ]]; then
   docker build -f $1 -t modtree/yarn${TAG} ../
 fi
-
-if [[ $1 == 'Dockerfile.cy-reporter' ]]; then
-  cp ../dist/libs/cy-reporter/server.js ../server.js
-  docker build -f $1 -t modtree/cy-reporter${TAG} ../
-  rm ../server.js
-fi

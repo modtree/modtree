@@ -45,7 +45,8 @@ const compiler = webpack({
  * runs
  */
 const args = process.argv.slice(2)
-const showErrors = (s) => (s.hasErrors() ? console.log(s.toString()) : null)
+const showErrors = (s) =>
+  console.log(s.hasErrors() ? s.toString() : 'Build succeeded.')
 
 /**
  * run the build once

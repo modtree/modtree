@@ -21,6 +21,7 @@
     "cy:dev": "node libs/cy-reporter/webpack.js --watch",
     "cy:server": "nodemon dist/libs/cy-reporter/server.js",
     "cy:build": "node libs/cy-reporter/webpack.js --build",
+    "cy:docker": "node docker/cy-reporter/build.js",
     "────────────────────────────────────────────────── testing ": [],
     "test": "bash scripts/run-tests/run.sh",
     "test:dev": "yarn test:build && yarn test",
