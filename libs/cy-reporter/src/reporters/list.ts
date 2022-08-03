@@ -3,24 +3,13 @@ import { green, red, gray, Chalk } from 'chalk'
 import { resolve } from 'path'
 import { ancestryPath } from '../git'
 import { getAllFiles, client } from '../utils'
+import type { Result, State } from '../types'
 
 /**
- * possible states of a test
- *
  * changing the order of this enum definition will change the order
  * in which the tests are displayed.
  */
-enum State {
-  PASS,
-  NORES, // no result
-  FAIL,
-}
-
-type Result = {
-  state: State
-  file: string
-  shortHash: string
-}
+const order: State[] = ['pass', 'nores', 'fail']
 
 /** pretty printer */
 const p =
@@ -28,20 +17,21 @@ const p =
   (hash: string, ...s: any) =>
     console.log(gray(` ${hash}`), c(`${i}`), c(...s))
 
-const print = {
-  [State.PASS]: p(green, '✓'),
-  [State.NORES]: p(gray, '*'),
-  [State.FAIL]: p(red, '✗'),
+const print: Record<State, any> = {
+  pass: p(green, '✓'),
+  nores: p(gray, '*'),
+  fail: p(red, '✗'),
 }
 
-const main2 = () => {
-  const specRoot = resolve(__dirname, '../../..', 'apps/web-e2e')
-  const params = {
-    files: getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts')),
-    commits: ancestryPath('origin/main', 'HEAD'),
-  }
-  client
-    .get<Result[]>('/list', { params })
-    .then((res) => res.data.forEach((r) => print[r.state](r.shortHash, r.file)))
+const specRoot = resolve(__dirname, '../../..', 'apps/web-e2e')
+const params = {
+  files: getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts')),
+  commits: ancestryPath('origin/main', 'HEAD'),
 }
-main2()
+client
+  .get<Result[]>('/list', { params })
+  .then((res) =>
+    res.data
+      .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
+      .forEach((r) => print[r.state](r.shortHash, r.file))
+  )

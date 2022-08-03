@@ -17,6 +17,14 @@ export type Packet = {
   }
 }
 
+type State = 'pass' | 'fail' | 'nores'
+
+type Result = {
+  state: State
+  file: string
+  shortHash: string
+}
+
 interface RunnerConstants {
   readonly EVENT_RUN_BEGIN: 'start'
   readonly EVENT_RUN_END: 'end'
