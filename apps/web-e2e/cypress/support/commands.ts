@@ -161,6 +161,10 @@ Cypress.Commands.add('resetUser', () => {
     })
 
     it('graph has no nodes', () => {
+      expect(graph.flowNodes).to.have.length(0)
+    })
+
+    it('graph has no edges', () => {
       expect(graph.flowEdges).to.have.length(0)
     })
 

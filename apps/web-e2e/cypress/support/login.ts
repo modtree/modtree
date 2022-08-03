@@ -9,9 +9,19 @@ declare global {
       login(props?: { reset?: boolean }): void
       loginCred(): void
       loginSocial(): void
+      logout(): void
     }
   }
 }
+
+/**
+ * logs the user out
+ */
+Cypress.Commands.add('logout', () => {
+  cy.reload()
+  cy.getCy('modtree-user-circle').click()
+  cy.contains('Sign out').click()
+})
 
 /**
  * logs the user in.

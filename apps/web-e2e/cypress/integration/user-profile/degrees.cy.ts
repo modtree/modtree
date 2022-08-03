@@ -45,20 +45,22 @@ function checkModules() {
 }
 
 describe('degrees panel', () => {
-  /**
-   * Login
-   */
-  beforeEach(() => {
-    cy.login()
-    cy.reload()
-
-    // open degrees panel
-    cy.getCy('modtree-user-circle').click()
-    cy.contains('Your profile').click()
-    cy.contains('Degrees').click()
+  /** Reset user */
+  before(() => {
+    cy.login({ reset: true })
+    cy.logout()
   })
 
-  it.only('create new degree', () => {
+  /** Login */
+  beforeEach(() => {
+    cy.login()
+    cy.reduxUser()
+
+    // open modules panel
+    cy.openUserProfile('Degrees')
+  })
+
+  it('create new degree', () => {
     cy.getCy('add-degree-button').click()
 
     // Degree props
@@ -75,7 +77,7 @@ describe('degrees panel', () => {
     // Wait for degree to be added
     cy.contains(oldTitle).should('be.visible')
 
-    checkDegreeCount(1)
+    checkDegreeCount(2)
   })
 
   it('edit degree title', () => {
@@ -100,7 +102,7 @@ describe('degrees panel', () => {
     cy.contains(oldTitle).should('not.exist')
     cy.contains(newTitle).should('be.visible')
 
-    checkDegreeCount(1)
+    checkDegreeCount(2)
   })
 
   it('add module to degree', () => {
@@ -120,7 +122,7 @@ describe('degrees panel', () => {
     // Save degree
     cy.get('button').contains('Save degree').click()
 
-    checkDegreeCount(1)
+    checkDegreeCount(2)
   })
 
   it('remove module from degree', () => {
@@ -145,20 +147,21 @@ describe('degrees panel', () => {
     // Save degree
     cy.get('button').contains('Save degree').click()
 
-    checkDegreeCount(1)
+    checkDegreeCount(2)
   })
 
   it('remove degree', () => {
-    // Click trash icon of the last degree
-    cy.get('[data-cy="degrees-list"] > div')
-      .last()
-      .find('[data-cy=delete-button]')
+    // Remove degree
+    cy.contains(newTitle)
+      .parent()
+      .parent()
+      .find('[data-cy="delete-button"]')
       .click()
 
     // Wait for degree to be deleted
     cy.getCy('degrees-list')
     cy.contains(newTitle).should('not.exist')
 
-    checkDegreeCount(0)
+    checkDegreeCount(1)
   })
 })
