@@ -5,7 +5,7 @@ function assertGraphCount(n: number) {
   })
 }
 
-describe('update module state', () => {
+describe('done state', () => {
   before(() => {
     cy.login({ reset: true })
     cy.logout()
@@ -13,24 +13,19 @@ describe('update module state', () => {
 
   beforeEach(() => cy.login())
 
-  it('Add CS1231 to graph', () => {
-    cy.addGraphModule('CS1231', 'Discrete Structures')
-    cy.getCy('node-CS1231-cannotTake').should('exist')
-  })
-
-  it('Add CS1231 to modules doing', () => {
+  it('Add CS1231 to modules done', () => {
     cy.openUserProfile('Modules')
-    cy.getCy('modify-doing').click()
-    cy.getCy('add-doing-search').clear().type('CS1231')
+    cy.getCy('modify-done').click()
+    cy.getCy('add-done-search').clear().type('CS1231')
     cy.getCy('search-result').contains('CS1231').click()
     cy.getCy('build-list').should('contain.text', 'CS1231')
     cy.get('button').contains('Save changes').click()
     cy.closeUserProfile()
   })
 
-  it("CS1231's type should be doing", () => {
-    cy.getCy('node-CS1231-cannotTake').should('not.exist')
-    cy.getCy('node-CS1231-doing').should('exist')
+  it('Add CS1231 to graph', () => {
+    cy.addGraphModule('CS1231', 'Discrete Structures')
+    cy.getCy('node-CS1231-done').should('exist')
   })
 
   it('Teardown', () => {
