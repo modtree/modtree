@@ -1,6 +1,6 @@
-import type { Packet, Runner } from './types'
+import type { Packet, Runner } from '../types'
 import { fork } from 'child_process'
-import { log } from './log'
+import { log } from '../utils'
 
 /**
  * fork a sender process that will handle async operations
@@ -49,3 +49,5 @@ export class Reporter {
     main(runner)
   }
 }
+
+module.exports = Reporter

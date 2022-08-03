@@ -20,9 +20,15 @@ const compiler = webpack({
   target: 'node',
   mode: 'development',
   entry: {
-    json: resolve(__dirname, 'src/json.ts'),
-    list: resolve(__dirname, 'src/list.ts'),
-    sender: resolve(__dirname, 'src/sender.ts'),
+    json: resolve(__dirname, 'src/reporters/json.ts'),
+    list: resolve(__dirname, 'src/reporters/list.ts'),
+    sender: resolve(__dirname, 'src/reporters/sender.ts'),
+    server: resolve(__dirname, 'src/server/main.ts'),
+  },
+  output: {
+    filename: '[name].js',
+    libraryTarget: 'commonjs-module',
+    path: outDir,
   },
   module: {
     rules: [{ test: /\.ts$/, use: 'ts-loader', exclude: /node_modules/ }],
@@ -32,11 +38,6 @@ const compiler = webpack({
     roots: [rootDir],
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [new TsconfigPathsPlugin({ configFile: tsconfig })],
-  },
-  output: {
-    filename: '[name].js',
-    libraryTarget: 'commonjs-module',
-    path: outDir,
   },
 })
 
