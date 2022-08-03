@@ -5,7 +5,7 @@ function assertGraphCount(n: number) {
   })
 }
 
-describe('new graph', () => {
+describe('doing state', () => {
   before(() => {
     cy.login({ reset: true })
     cy.logout()

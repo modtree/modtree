@@ -1,5 +1,4 @@
 import { cc } from '@/utils/tailwind'
-import { IModuleCondensed } from '@modtree/types'
 import { Handle, Position } from 'react-flow-renderer'
 import { ModuleNodeProps } from 'types'
 

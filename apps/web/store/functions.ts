@@ -27,6 +27,11 @@ export function redrawGraph() {
       )
     })
     .then((nodes) => dispatch(r.setNodesAndEdges(nodes)))
+    .then(() => {
+      /** update new colors to backend */
+      const newGraph = store.getState().graph
+      trpc.mutation('graph/update', { graphId: graph.id, graph: newGraph })
+    })
 }
 
 /**
