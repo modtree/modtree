@@ -20,6 +20,6 @@ connect(config, async (db) => {
   repo = new Repository(CypressRun, db.manager)
   const app = getApp()
   const port = process.env.PORT || config.port
-  console.log('cy-reporter: proxy server @ port', port)
+  console.log('cy-reporter: proxy server started @ port', port)
   app.listen(port)
 })

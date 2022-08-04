@@ -23,6 +23,16 @@ const log = {
   },
 }
 
+function inspectDataSource(dataSource: DataSource, verbose = false) {
+  if (verbose) {
+    console.debug('Initializing connection to database...')
+    console.debug(dataSource.options)
+  } else {
+    const db = dataSource.options.database
+    console.debug(`cy-reporter: init connection to [${db}]`)
+  }
+}
+
 /**
  * database connection retry manager, essentially
  *
@@ -34,8 +44,7 @@ export function connect(config: Config, callback: RunServer) {
   const { dataSource, maxRetries, intervalInMilliseconds } = config
 
   /** debug */
-  console.debug('Initializing connection to database...')
-  console.debug(dataSource.options)
+  inspectDataSource(dataSource, false)
 
   /** each attempt to connect to database */
   const attempt = () => dataSource.initialize().then(callback)
