@@ -4,6 +4,7 @@ import { resolve } from 'path'
 import { ancestryPath } from '../git'
 import { getAllFiles, client } from '../utils'
 import type { Result, State } from '../types'
+import { log } from '../utils'
 
 /**
  * changing the order of this enum definition will change the order
@@ -34,4 +35,5 @@ client.get<Result[]>('/list', { params }).then((res) => {
     .forEach((r) => {
       print[r.state](r.shortHash, r.file)
     })
+  log.gray(`(results from ${client.defaults.baseURL})`)
 })
