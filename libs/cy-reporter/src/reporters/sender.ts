@@ -111,5 +111,5 @@ process.on('disconnect', () => {
  */
 process.on('exit', () => {
   const thisScript = basename(__dirname) + '/' + basename(__filename)
-  log.normal(thisScript, 'has left the building.')
+  log.gray(thisScript, 'has left the building.')
 })

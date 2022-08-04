@@ -1,4 +1,6 @@
 const { basename } = require('path')
+const { gray } = require('chalk')
+
 /**
  * honestly no idea why but this particular file cannot be written in TypeScript
  * then compiled with webpack to js.
@@ -21,7 +23,8 @@ const cypressConfig = {
 }
 
 /**
- * read the one and only argument
+ * read the one and only argument,
+ * which will be the spec file to run
  */
 const args = process.argv.slice(2)
 const thisScript = basename(__dirname) + '/' + basename(__filename)
@@ -45,5 +48,5 @@ cypress.run(cypressConfig).then(() => {
 })
 
 process.on('exit', () => {
-  console.log(thisScript, 'has left the building.')
+  console.log(gray(thisScript, 'has left the building.'))
 })
