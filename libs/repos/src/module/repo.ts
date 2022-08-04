@@ -1,6 +1,12 @@
 import { DataSource, DeepPartial, In } from 'typeorm'
 import { Module } from '@modtree/types'
-import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
+import {
+  flatten,
+  unique,
+  hasTakenModule,
+  checkTree,
+  validModuleCode,
+} from '@modtree/utils'
 import { BaseRepo } from '../base'
 
 type Data = {
@@ -34,6 +40,7 @@ export class ModuleRepository extends BaseRepo<Module> {
    * @returns {Promise<T>}
    */
   findByCode(moduleCode: string): Promise<Module> {
+    if (!validModuleCode(moduleCode)) throw new Error('Invalid module code')
     return this.findOne({ where: { moduleCode } })
   }
 
