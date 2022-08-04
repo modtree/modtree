@@ -1,6 +1,12 @@
 import { DataSource, DeepPartial, In } from 'typeorm'
 import { Module } from '@modtree/types'
-import { flatten, unique, hasTakenModule, checkTree } from '@modtree/utils'
+import {
+  flatten,
+  unique,
+  hasTakenModule,
+  checkTree,
+  validModuleCode,
+} from '@modtree/utils'
 import { BaseRepo } from '../base'
 
 type Data = {

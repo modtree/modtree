@@ -2,7 +2,7 @@ import { Dot } from '@/ui/inline'
 import { useAppDispatch, useAppSelector, r } from '@/store/redux'
 import { Button } from '@/ui/buttons'
 import { useSession } from '@/utils/auth'
-import { inModulesPlaced } from '@/utils/graph'
+import { inFlowNodes } from '@/utils/graph'
 import { nodify } from '@modtree/utils'
 import { devEnv } from '@/utils/env'
 import { addModuleNode } from '@/store/functions'
@@ -48,7 +48,7 @@ export function ModuleDetails() {
       </p>
       <hr />
       <p className="mb-6">{module.description}</p>
-      {user && !inModulesPlaced(graph, module.moduleCode) && (
+      {user && !inFlowNodes(graph, module.moduleCode) && (
         <div className="flex flex-row-reverse">
           <Button onClick={handleAddButton}>Add to graph</Button>
         </div>

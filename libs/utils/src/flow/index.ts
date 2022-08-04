@@ -1,3 +1,3 @@
 export * from './redraw'
-export * from './get-edges'
-export * from './get-nodes'
+export * from './edges'
+export * from './nodes'
