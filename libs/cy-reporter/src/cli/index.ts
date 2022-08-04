@@ -2,7 +2,8 @@ import path from 'path'
 import { helpText } from './help'
 import { opts } from './parse-args'
 import { fork, spawn } from 'child_process'
-import { green } from 'chalk'
+import { isStatusClean } from '../git'
+import { log } from '../utils'
 
 // paths
 const rootDir = path.resolve(__dirname, '../../..')
@@ -13,11 +14,6 @@ const dir = {
   reporters: path.resolve(e2eDir, 'reporters'),
   spec: path.resolve(e2eDir, 'cypress/integration'),
   dist: path.resolve(rootDir, 'dist/libs/cy-reporter'),
-}
-
-// files
-const f = {
-  config: path.resolve(dir.e2e, 'cypress.config.js'),
 }
 
 // dist
@@ -36,8 +32,15 @@ if (opts.list) {
   fork(exe.list, { stdio: 'inherit' })
 }
 
+// beyond this point, runs are involved
+// so we need to check for a clean git status
+if (!isStatusClean()) {
+  log.warn('Warning: git status is not clean.')
+  if (!opts.force) process.exit(1)
+}
+
 if (opts.run && opts.all) {
-  console.log(green('Running all tests'))
+  log.green('Running all tests')
   fork(exe.cypress, ['--all'])
 }
 
@@ -65,27 +68,7 @@ if (opts.run && !opts.all) {
   fzf.stdout.setEncoding('utf8')
   fzf.stdout.on('data', (data: string) => {
     const target = data.trim()
-    console.log(green('Running test:', target))
+    log.green('Running test:', target)
     fork(exe.cypress, [path.resolve(dir.spec, target)])
   })
 }
-
-// handle flag switches
-// handle flags with argument
-// handle positional arguments
-
-// const argMap = [
-//   {
-//     flag: '-f',
-//     next: (arg) => (opts.force = arg),
-//   },
-// ]
-
-// handle_flag_args() {
-//     -f | --force)
-//     -a | --all)
-//     -af | -fa)
-//
-//   r | run)
-//   ra | run-all)
-//   ls | list)
