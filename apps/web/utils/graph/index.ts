@@ -11,8 +11,8 @@ export function getUniqueGraphTitle(graph: ApiResponse.Graph) {
 }
 
 /**
- * Returns true if module in modulesPlaced.
+ * Returns true if module in flow nodes.
  */
-export function inModulesPlaced(graph: ApiResponse.Graph, moduleCode: string) {
+export function inFlowNodes(graph: ApiResponse.Graph, moduleCode: string) {
   return graph.flowNodes.map((n) => n.data.moduleCode).includes(moduleCode)
 }
