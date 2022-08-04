@@ -19,7 +19,10 @@ const showErrors = (s) => {
  * run the build once
  */
 if (args.includes('--build')) {
-  compiler.run((_, stats) => showErrors(stats))
+  compiler.run((_, stats) => {
+    showErrors(stats)
+    process.exit(stats.hasErrors() ? 1 : 0)
+  })
 }
 
 /**

@@ -32,9 +32,8 @@ if (opts.list) {
   fork(exe.list, { stdio: 'inherit' })
 }
 
-// beyond this point, runs are involved
-// so we need to check for a clean git status
-if (!isStatusClean()) {
+// check for a clean git status before running
+if (opts.run && !isStatusClean()) {
   log.warn('Warning: git status is not clean.')
   if (!opts.force) process.exit(1)
 }
