@@ -16,12 +16,10 @@ const log = {
     console.debug(`Connecting to database, attempt #${n}`)
   },
   end(db: DataSource) {
-    console.debug(
-      db.isInitialized
-        ? chalk.green(`Successful connection to [${db.options.database}]`)
-        : chalk.red('Failed to connect to database')
-    )
-    console.debug('Retry manager has left the building.')
+    const output = db.isInitialized
+      ? chalk.green(`Successful connection to [${db.options.database}]`)
+      : chalk.red('Failed to connect to database')
+    console.debug(output, chalk.gray('Retry manager out.'))
   },
 }
 

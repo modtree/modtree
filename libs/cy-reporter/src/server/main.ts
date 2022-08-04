@@ -13,11 +13,13 @@ const config = {
   dataSource: db,
   maxRetries: 15,
   intervalInMilliseconds: 3000,
+  port: 8081,
 }
 
 connect(config, async (db) => {
   repo = new Repository(CypressRun, db.manager)
   const app = getApp()
-  console.log('server/main: server started listening')
-  app.listen(process.env.PORT || 8081)
+  const port = process.env.PORT || config.port
+  console.log('cy-reporter: proxy server @ port', port)
+  app.listen(port)
 })

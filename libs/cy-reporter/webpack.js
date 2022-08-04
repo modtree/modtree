@@ -67,17 +67,12 @@ if (args.includes('--watch')) {
   })
 
   // start a node server running the cy-reporter proxy
-  nodemon({
-    script: resolve(rootDir, 'dist/libs/cy-reporter/server.js'),
-    watch: resolve(rootDir, 'dist/libs/cy-reporter'),
-  })
+  nodemon({ script: resolve(outDir, 'server.js'), watch: resolve(outDir) })
 
-  /**
-   * Breakdown for future debugging.
-   */
+  // Breakdown for future debugging.
   nodemon
     .on('quit', () => process.exit())
     .on('restart', (files) => {
-      console.log('cy-reporter server restarted due to: ', files)
+      console.log('nodemon/cy-reporter refreshed due to: ', files)
     })
 }
