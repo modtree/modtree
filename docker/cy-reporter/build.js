@@ -2,6 +2,7 @@ require('dotenv/config')
 const path = require('path')
 const fs = require('fs')
 const { fork, spawnSync } = require('child_process')
+const { green } = require('chalk')
 
 // paths
 const rootDir = path.resolve(__dirname, '../..')
@@ -21,11 +22,14 @@ const f = {
   dockerfile: path.resolve(__dirname, 'Dockerfile'),
 }
 
+const start = (...a) => console.log(green('starting:', ...a))
+
 /**
  * Publish the release on heroku.
  * This requires the image to be already pushed to heroku's container registry.
  */
 function herokuRelease() {
+  start('herokuRelease')
   spawnSync('heroku', ['container:release', 'web', '--app', herokuProject], {
     stdio: 'inherit',
     env: { ...process.env, HEROKU_API_KEY: process.env['HEROKU_API_KEY'] },
@@ -36,6 +40,7 @@ function herokuRelease() {
  * Push the built image to the remote registry
  */
 function pushImage() {
+  start('pushImage')
   spawnSync('docker', ['push', herokuImage], { stdio: 'inherit' })
 }
 
@@ -43,6 +48,7 @@ function pushImage() {
  * Authenticate with docker into heroku's container registry
  */
 function dockerLogin() {
+  start('dockerLogin')
   const pass = process.env['HEROKU_API_KEY']
   spawnSync('docker', ['login', '-u', '_', '-p', pass, herokuRegistry], {
     stdio: 'inherit',
@@ -50,6 +56,7 @@ function dockerLogin() {
 }
 
 function tagImage() {
+  start('tagImage')
   spawnSync('docker', ['tag', `${image}:latest`, herokuImage], {
     stdio: 'inherit',
   })
@@ -57,6 +64,7 @@ function tagImage() {
 
 // build the docker image of the server
 function buildImage() {
+  start('buildImage')
   spawnSync('docker', ['build', '-t', image, '--file', f.dockerfile, tmpDir], {
     stdio: 'inherit',
   })
@@ -64,6 +72,7 @@ function buildImage() {
 
 // run the webpack build
 function buildNode() {
+  start('buildNode')
   const p = fork(f.dev, ['--build'], { stdio: 'inherit' })
   p.on('close', (code) => {
     if (code !== 0) throw new Error('build failed')
