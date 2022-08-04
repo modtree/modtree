@@ -1,4 +1,5 @@
 import path from 'path'
+import { helpText } from './help'
 import { opts } from './parse-args'
 
 // paths
@@ -15,6 +16,7 @@ const f = {
 }
 
 console.log(opts)
+console.log(helpText)
 
 // handle flag switches
 // handle flags with argument
