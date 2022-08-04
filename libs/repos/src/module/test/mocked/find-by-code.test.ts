@@ -2,8 +2,8 @@ import { ModuleRepository } from '@modtree/repos'
 import { mocks } from '@modtree/test-env'
 import '@modtree/test-env/jest'
 
-jest.mock('../../base')
-jest.mock('../../module')
+jest.mock('../../../base')
+jest.mock('../../../module')
 
 const fakeData = {
   module: [{ moduleCode: 'CS1010' }],
