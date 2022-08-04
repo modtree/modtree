@@ -19,8 +19,7 @@ export function createFlowEdge(source: string, target: string): GraphFlowEdge {
  * returns a list of all direct sources/children/pre-requisite
  * of a graph node
  */
-
-function getDirectSources(node: GraphFlowNode): string[] {
+export function getDirectSources(node: GraphFlowNode): string[] {
   const pre = node.data.prereqTree
 
   /** handle string prereqTrees */
