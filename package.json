@@ -9,7 +9,7 @@
     "dev:web": "yarn serve:web",
     "dev:docs": "bash scripts/docs/serve.sh",
     "build:docs": "bash scripts/docs/build.sh",
-    "dev": "sh scripts/serve.sh",
+    "dev": "node scripts/serve.js",
     "build:server": "node apps/server/webpack.js --build",
     "start:server": "node dist/apps/server/bundle.js",
     "all:server": "yarn build:server && yarn start:server",

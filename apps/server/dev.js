@@ -29,13 +29,7 @@ nodemon({
  * Breakdown for future debugging.
  */
 nodemon
-  .on('start', function () {
-    console.log('App has started')
-  })
-  .on('quit', function () {
-    console.log('App has quit')
-    process.exit()
-  })
-  .on('restart', function (files) {
-    console.log('App restarted due to: ', files)
+  .on('quit', () => process.exit())
+  .on('restart', (files) => {
+    console.log('modtree server restarted due to: ', files)
   })
