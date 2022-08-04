@@ -40,7 +40,6 @@ export class ModuleRepository extends BaseRepo<Module> {
    * @returns {Promise<T>}
    */
   findByCode(moduleCode: string): Promise<Module> {
-    if (!validModuleCode(moduleCode)) throw new Error('Invalid module code')
     return this.findOne({ where: { moduleCode } })
   }
 

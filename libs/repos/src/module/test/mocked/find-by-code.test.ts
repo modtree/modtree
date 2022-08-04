@@ -17,6 +17,7 @@ it('single code', async () => {
 })
 
 it('invalid code', async () => {
+  /** This is the mocked error. */
   expect(moduleRepo.findByCode('invalid_code')).rejects.toThrow(
     Error('Invalid module code')
   )
