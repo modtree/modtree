@@ -28,10 +28,11 @@ const params = {
   files: getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts')),
   commits: ancestryPath('origin/main', 'HEAD'),
 }
-client
-  .get<Result[]>('/list', { params })
-  .then((res) =>
-    res.data
-      .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
-      .forEach((r) => print[r.state](r.shortHash, r.file))
-  )
+client.get<Result[]>('/list', { params }).then((res) =>
+  res.data
+    .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
+    .forEach((r) => {
+      console.log('----', r.state)
+      print[r.state](r.shortHash, r.file)
+    })
+)

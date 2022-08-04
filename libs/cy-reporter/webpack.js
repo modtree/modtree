@@ -5,6 +5,7 @@
 const webpack = require('webpack')
 const { resolve } = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const nodemon = require('nodemon')
 
 /**
  * configuration paths
@@ -64,4 +65,19 @@ if (args.includes('--watch')) {
     showErrors(stats)
     console.log('built cy-reporter at', new Date().toLocaleString())
   })
+
+  // start a node server running the cy-reporter proxy
+  nodemon({
+    script: resolve(rootDir, 'dist/libs/cy-reporter/server.js'),
+    watch: resolve(rootDir, 'dist/libs/cy-reporter'),
+  })
+
+  /**
+   * Breakdown for future debugging.
+   */
+  nodemon
+    .on('quit', () => process.exit())
+    .on('restart', (files) => {
+      console.log('cy-reporter server restarted due to: ', files)
+    })
 }

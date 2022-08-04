@@ -1,16 +1,16 @@
-import type { Parser } from './types'
+import type { Parser, Options } from './types'
 
 /**
- * this file takes in command line arguments and returns an object containing
- * all the options set with the arguments.
+ * options of the cy-reporter cli, settable by cli arguments
  */
 
 // default options
-const opts = {
+const opts: Options = {
   force: false,
   all: false,
   run: false,
   list: false,
+  help: false,
 }
 
 const parsers: Parser[] = [
@@ -19,6 +19,11 @@ const parsers: Parser[] = [
     arg: ['-f', '--force'],
     type: 'boolean',
     callback: () => (opts.force = true),
+  },
+  {
+    arg: ['-h', '--help'],
+    type: 'boolean',
+    callback: () => (opts.help = true),
   },
   {
     arg: ['-a', '--all'],
