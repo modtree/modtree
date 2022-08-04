@@ -1,4 +1,4 @@
-import { ApiResponse } from '@modtree/types'
+import { ApiResponse, empty } from '@modtree/types'
 import { inFlowNodes } from '.'
 
 const graph: ApiResponse.Graph = {
@@ -10,20 +10,10 @@ const graph: ApiResponse.Graph = {
   flowNodes: [
     /** fake flowNode */
     {
-      id: '',
-      position: {
-        x: 0,
-        y: 0,
-      },
+      ...empty.FlowNode,
       data: {
-        id: '',
+        ...empty.Module,
         moduleCode: 'CS1010',
-        title: '',
-        prerequisite: '',
-        corequisite: '',
-        preclusion: '',
-        fulfillRequirements: [],
-        prereqTree: '',
       },
     },
   ],
