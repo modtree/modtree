@@ -52,6 +52,7 @@ const parsers: Parser[] = [
 ]
 
 const args = process.argv.slice(2)
+if (args.length === 0) opts.help = true
 for (let i = 0; i < args.length; i++) {
   const parser = parsers.find((p) => p.arg.includes(args[i]))
 
