@@ -40,3 +40,12 @@ export function ancestryPath(ancestor: string, descendant: string): string[] {
   ).output[1]
   return output ? output.trimEnd().split('\n') : []
 }
+
+/**
+ * checks if the current git status is clean
+ *
+ * @returns {boolean}
+ */
+export function isStatusClean(): boolean {
+  return getStdout('git', ['status', '--porcelain']) === ''
+}

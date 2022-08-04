@@ -1,6 +1,7 @@
 import path from 'path'
 import { helpText } from './help'
 import { opts } from './parse-args'
+import { isStatusClean } from '../git'
 
 // paths
 const rootDir = path.resolve(__dirname, '../..')
@@ -17,6 +18,7 @@ const f = {
 
 console.log(opts)
 console.log(helpText)
+console.log(isStatusClean())
 
 // handle flag switches
 // handle flags with argument
