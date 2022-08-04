@@ -7,7 +7,7 @@ import { GraphFlowEdge, GraphFlowNode } from '@modtree/types'
  * @param {string} target
  * @returns {GraphFlowEdge}
  */
-function createFlowEdge(source: string, target: string): GraphFlowEdge {
+export function createFlowEdge(source: string, target: string): GraphFlowEdge {
   return {
     id: source + '-' + target,
     source,
