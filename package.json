@@ -17,7 +17,7 @@
     "up": "cd docker && ./up db",
     "down": "cd docker && ./down all",
     "────────────────────────────────────────────────── cypress ": [],
-    "cy": "sh libs/cy-reporter/entry.sh",
+    "cy": "node libs/cy-reporter/entry.js",
     "cy:dev": "node libs/cy-reporter/dev.js --watch",
     "cy:build": "node libs/cy-reporter/dev.js --build",
     "cy:docker": "node docker/cy-reporter/build.js",
