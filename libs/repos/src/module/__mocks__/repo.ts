@@ -19,4 +19,8 @@ export class ModuleRepository extends Original {
     if (!validModuleCode(code)) throw new Error('Invalid module code')
     return this.findModuleByCode(code)
   }
+
+  override async getCodes(): Promise<string[]> {
+    return this.fakeData.modules.map((m) => m.moduleCode)
+  }
 }
