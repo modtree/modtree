@@ -2,7 +2,7 @@ import { Api } from '@modtree/repos'
 import { source } from '@modtree/typeorm-config'
 import { getApp } from './app'
 import { checkhealth } from './utils/check-health'
-import { connect } from './utils/connect'
+import { connect } from '@modtree/connect'
 
 const db = source[process.env['NODE_ENV']]
 /**

@@ -40,7 +40,7 @@ export function getApp(): Express {
 
   /** register root route */
   app.get('/', (_req: Request, res: Response) => {
-    res.status(200).send('modtree server is running')
+    res.status(200).send('cy-reporter server is running')
   })
   return app
 }

@@ -1,5 +1,5 @@
 import { getApp } from './app'
-import { connect } from './connect'
+import { connect } from '@modtree/connect'
 import { db } from '../data-source'
 import { Repository } from 'typeorm'
 import { CypressRun } from '../entity'

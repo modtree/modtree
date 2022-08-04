@@ -3,7 +3,7 @@ import { config } from '@modtree/typeorm-config'
 import { DataSource, Repository } from 'typeorm'
 import { CypressRun } from './entity'
 
-const useProd = true
+const useProd = process.env['CYPRESS_REPORTER_URL']?.includes('localhost')
 
 export const db = new DataSource({
   ...(useProd ? config.production : config.development),
