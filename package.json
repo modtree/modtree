@@ -19,7 +19,7 @@
     "────────────────────────────────────────────────── cypress ": [],
     "cy": "node libs/cy-reporter/main.js",
     "cy:cli": "node dist/libs/cy-reporter/cli.js",
-    "cy:dev": "node libs/cy-reporter/webpack.js --watch",
+    "cy:dev": "node libs/cy-reporter/dev.js --watch",
     "cy:server": "nodemon dist/libs/cy-reporter/server.js",
     "cy:build": "node libs/cy-reporter/webpack.js --build",
     "cy:docker": "node docker/cy-reporter/build.js",

@@ -5,7 +5,6 @@
 const webpack = require('webpack')
 const { resolve } = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
-const nodemon = require('nodemon')
 
 /**
  * configuration paths
@@ -43,36 +42,4 @@ const compiler = webpack({
   },
 })
 
-/**
- * runs
- */
-const args = process.argv.slice(2)
-const showErrors = (s) =>
-  console.log(s.hasErrors() ? s.toString() : 'Build succeeded.')
-
-/**
- * run the build once
- */
-if (args.includes('--build')) {
-  compiler.run((_, stats) => showErrors(stats))
-}
-
-/**
- * run the build and watch for changes
- */
-if (args.includes('--watch')) {
-  compiler.watch({ aggregateTimeout: 300 }, (_, stats) => {
-    showErrors(stats)
-    console.log('built cy-reporter at', new Date().toLocaleString())
-  })
-
-  // start a node server running the cy-reporter proxy
-  nodemon({ script: resolve(outDir, 'server.js'), watch: resolve(outDir) })
-
-  // Breakdown for future debugging.
-  nodemon
-    .on('quit', () => process.exit())
-    .on('restart', (files) => {
-      console.log('nodemon/cy-reporter refreshed due to: ', files)
-    })
-}
+module.exports = compiler
