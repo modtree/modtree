@@ -6,11 +6,13 @@ on:
       - main
       - d/docs
       - d/dev
+      - d/cy
 
 jobs:
   cy-reporter:
     if: |
       github.ref_name == 'd/dev' ||
+      github.ref_name == 'd/cy' ||
       github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
