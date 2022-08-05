@@ -6,8 +6,25 @@ on:
       - main
       - d/docs
       - d/dev
+      - d/cy
 
 jobs:
+  cy-reporter:
+    if: |
+      github.ref_name == 'd/dev' ||
+      github.ref_name == 'd/cy' ||
+      github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
+      - run: yarn --frozen-lockfile
+        continue-on-error: true
+      - run: yarn cy:docker
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
   server-dev:
     if: |
       github.ref_name == 'd/dev' ||
@@ -54,7 +71,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DOCS_PROJECT_ID }} #Required
 
   telegram:
-    needs: [docs, web-dev, server-dev]
+    needs: [docs, web-dev, server-dev, cy-reporter]
     if: always()
     runs-on: ubuntu-latest
     steps:

@@ -1,4 +1,4 @@
-
+export const helpText = `
 modtree Cypress runner
 
 USAGE: yarn cy [COMMMAND] [OPTIONS]
@@ -13,4 +13,4 @@ COMMAND:
 OPTIONS
       -a, --all     run all tests (ls --all is not supported)
       -f, --force   run tests without checking for a clean git status
-.
+`
