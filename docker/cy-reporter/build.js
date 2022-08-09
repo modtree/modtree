@@ -81,7 +81,12 @@ function buildNode() {
     tagImage()
     dockerLogin()
     pushImage()
-    herokuRelease()
+    if (!process.arch.startsWith('arm')) {
+      // only release on non-arm systems
+      herokuRelease()
+    } else {
+      console.log(yellow('Currently on ARM architecture; not releasing.'))
+    }
   })
 }
 
