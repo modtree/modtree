@@ -3,9 +3,33 @@ const path = require('path')
 const fs = require('fs')
 const { fork, spawnSync } = require('child_process')
 const { green, yellow } = require('chalk')
+const { z } = require('zod')
 
-function build(config) {
-  const imageName = `registry.heroku.com/${config.herokuProject}/web`
+/**
+ * without typescript, this helps to enforce the shape of
+ * the config object taken in
+ */
+const configSchema = z.object({
+  rootDir: z.string(),
+  tmpDir: z.string(),
+  herokuProject: z.string(),
+  build: z.object({
+    module: z.string(),
+    args: z.array(z.string()),
+    output: z.string(),
+  }),
+  dockerfile: z.string(),
+})
+
+function build(_config) {
+  const parsed = configSchema.safeParse(_config)
+  if (!parsed.success) {
+    console.error('Config schema:', parsed.error.issues)
+    return
+  }
+  const config = parsed.data
+  const image = `registry.heroku.com/${config.herokuProject}/web`
+
   /**
    * spawnSync but wrapped with default stuff
    *
@@ -40,7 +64,7 @@ function build(config) {
    */
   function pushImage() {
     start('pushImage')
-    shell('docker', ['push', imageName])
+    shell('docker', ['push', image])
   }
 
   /**
@@ -58,7 +82,7 @@ function build(config) {
    */
   function tagImage(imageId) {
     start('tagImage')
-    shell('docker', ['tag', imageId, imageName])
+    shell('docker', ['tag', imageId, image])
   }
 
   /**
@@ -66,19 +90,53 @@ function build(config) {
    * returns the id of the build
    */
   function buildImage() {
-    start('buildImage')
     const idFile = path.resolve(config.tmpDir, 'id')
+    start('buildImage')
     shell('docker', [
       'build',
       '--iidfile',
       idFile,
       '-t',
-      imageName,
+      image,
       '--file',
       config.dockerfile,
       config.tmpDir,
     ])
     return fs.readFileSync(idFile, { encoding: 'utf8' }).split(':')[1]
+  }
+
+  /**
+   * Since /dist is docker-ignored, we have to manually copy files
+   * out of there into the tmpDir so that this builder script can
+   * see it
+   */
+  function loadDockerContext() {
+    fs.copyFileSync(
+      config.build.output,
+      path.resolve(config.tmpDir, path.basename(config.build.output))
+    )
+  }
+
+  /**
+   * everything docker-related
+   *  - load required executables
+   *  - build the image
+   *  - tag the image
+   *  - login to the remote registry
+   *  - push the image
+   *  - release
+   */
+  function dockerize() {
+    loadDockerContext()
+    tagImage(buildImage())
+    dockerLogin()
+    pushImage()
+    // only release on non-arm systems
+    if (!process.arch.startsWith('arm')) {
+      herokuRelease()
+    } else {
+      console.log(yellow('Currently on ARM architecture; not releasing.'))
+    }
   }
 
   /**
@@ -89,19 +147,7 @@ function build(config) {
     const p = fork(config.build.module, config.build.args, { stdio: 'inherit' })
     p.on('close', (code) => {
       if (code !== 0) throw new Error('build failed')
-      fs.copyFileSync(
-        config.build.output,
-        path.resolve(config.tmpDir, path.basename(config.build.output))
-      )
-      tagImage(buildImage())
-      dockerLogin()
-      pushImage()
-      // only release on non-arm systems
-      if (!process.arch.startsWith('arm')) {
-        herokuRelease()
-      } else {
-        console.log(yellow('Currently on ARM architecture; not releasing.'))
-      }
+      dockerize()
     })
   }
 
