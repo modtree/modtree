@@ -3,6 +3,11 @@ import path from 'path'
 import fs from 'fs'
 import { fork, spawnSync } from 'child_process'
 import { green, yellow } from 'chalk'
+import { opts } from './opts'
+
+console.log(opts)
+
+process.exit(0)
 
 // paths
 const rootDir = path.resolve(__dirname, '../..')
