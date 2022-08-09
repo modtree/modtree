@@ -2,6 +2,8 @@ const webpack = require('webpack')
 const isProd = process.env.NODE_ENV === 'production'
 const distDir = isProd ? undefined : '../../dist/apps/web'
 
+console.log('NEXT.JS IS USING PRODUCTION?', isProd)
+
 module.exports = {
   distDir,
   reactStrictMode: true,
