@@ -128,14 +128,14 @@ function build(_config) {
   function dockerize() {
     loadDockerContext()
     tagImage(buildImage())
+    // only release on non-arm systems
+    if (process.arch.startsWith('arm')) {
+      console.log(yellow('Currently on ARM architecture; not releasing.'))
+      return
+    }
     dockerLogin()
     pushImage()
-    // only release on non-arm systems
-    if (!process.arch.startsWith('arm')) {
-      herokuRelease()
-    } else {
-      console.log(yellow('Currently on ARM architecture; not releasing.'))
-    }
+    herokuRelease()
   }
 
   /**
