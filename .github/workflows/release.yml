@@ -6,14 +6,11 @@ on:
 
 jobs:
   server-prod:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: 'modtree' #Must be unique in Heroku
-          heroku_email: 'brew4k@gmail.com'
+    uses: ./.github/workflows/deploy-heroku-container.yml
+    with:
+      build_command: yarn docker:server --prod
+    secrets:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   web-prod:
     runs-on: ubuntu-latest
