@@ -1,46 +1,13 @@
 const nodemon = require('nodemon')
 const { resolve } = require('path')
-const { gray } = require('chalk')
+const Runner = require('../../scripts/webpack/dev')
 const compiler = require('./webpack')
 
-/**
- * runs
- */
-const args = process.argv.slice(2)
-const showErrors = (s) => {
-  if (s.hasErrors()) {
-    console.log(s.toString())
-  } else {
-    console.log(gray('webpack: build succeeded.'), new Date().toLocaleString())
-  }
-}
+const runner = new Runner(compiler, resolve(compiler.outputPath, 'server.js'))
 
-/**
- * run the build once
- */
-if (args.includes('--build')) {
-  compiler.run((_, stats) => {
-    showErrors(stats)
-    process.exit(stats.hasErrors() ? 1 : 0)
-  })
-}
-
-/**
- * run the build and watch for changes
- */
-if (args.includes('--watch')) {
-  compiler.watch({ aggregateTimeout: 300 }, (_, stats) => showErrors(stats))
-
-  // start a node server running the cy-reporter proxy
-  nodemon({
-    script: resolve(compiler.outputPath, 'server.js'),
-    watch: resolve(compiler.outputPath),
-  })
-
-  // Breakdown for future debugging.
-  nodemon
-    .on('quit', () => process.exit())
-    .on('restart', (files) => {
-      console.log('nodemon/cy-reporter refreshed due to: ', files)
-    })
+const hasArg = (a) => process.argv.slice(2).includes(a)
+if (hasArg('--build')) {
+  runner.build()
+} else if (hasArg('--watch')) {
+  runner.watch()
 }
