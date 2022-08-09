@@ -4,106 +4,120 @@ const fs = require('fs')
 const { fork, spawnSync } = require('child_process')
 const { green, yellow } = require('chalk')
 
-// paths
-const rootDir = path.resolve(__dirname, '../..')
-const tmpDir = path.resolve(__dirname, 'tmp')
-const root = (file) => path.resolve(rootDir, file)
+function build(config) {
+  const imageName = `registry.heroku.com/${config.herokuProject}/web`
+  /**
+   * spawnSync but wrapped with default stuff
+   *
+   * @param {string} cmd
+   * @param {string[]} args
+   */
+  function shell(cmd, args = []) {
+    return spawnSync(cmd, args, {
+      stdio: 'inherit',
+      env: { ...process.env, HEROKU_API_KEY: process.env['HEROKU_API_KEY'] },
+    })
+  }
 
-// heroku
-const image = 'modtree/cy-reporter'
-const herokuProject = 'modtree-cy-reporter'
-const herokuRegistry = 'registry.heroku.com'
-const herokuImage = `${herokuRegistry}/${herokuProject}/web`
+  /**
+   * send a green message to stdout
+   */
+  function start(...a) {
+    console.log(green('starting:', ...a))
+  }
 
-// files
-const f = {
-  dev: root('libs/cy-reporter/dev.js'),
-  buildOutput: root('dist/libs/cy-reporter/server.js'),
-  dockerfile: path.resolve(__dirname, 'Dockerfile'),
-}
+  /**
+   * Publish the release on heroku.
+   * This requires the image to be already pushed to heroku's container registry.
+   */
+  function herokuRelease() {
+    start('herokuRelease')
+    shell('heroku', ['container:release', 'web', '--app', config.herokuProject])
+  }
 
-const start = (...a) => console.log(green('starting:', ...a))
+  /**
+   * Push the built image to the remote registry
+   */
+  function pushImage() {
+    start('pushImage')
+    shell('docker', ['push', imageName])
+  }
 
-/**
- * Publish the release on heroku.
- * This requires the image to be already pushed to heroku's container registry.
- */
-function herokuRelease() {
-  start('herokuRelease')
-  spawnSync('heroku', ['container:release', 'web', '--app', herokuProject], {
-    stdio: 'inherit',
-    env: { ...process.env, HEROKU_API_KEY: process.env['HEROKU_API_KEY'] },
-  })
-}
+  /**
+   * Authenticate with docker into heroku's container registry
+   */
+  function dockerLogin() {
+    start('dockerLogin')
+    const pass = process.env['HEROKU_API_KEY'] || ''
+    shell('docker', ['login', '-u', '_', '-p', pass, 'registry.heroku.com'])
+  }
 
-/**
- * Push the built image to the remote registry
- */
-function pushImage() {
-  start('pushImage')
-  spawnSync('docker', ['push', herokuImage], { stdio: 'inherit' })
-}
+  /**
+   * tag the image with the heroku project name
+   * before pushing to registry.heroku.com
+   */
+  function tagImage(imageId) {
+    start('tagImage')
+    shell('docker', ['tag', imageId, imageName])
+  }
 
-/**
- * Authenticate with docker into heroku's container registry
- */
-function dockerLogin() {
-  start('dockerLogin')
-  const pass = process.env['HEROKU_API_KEY']
-  spawnSync('docker', ['login', '-u', '_', '-p', pass, herokuRegistry], {
-    stdio: 'inherit',
-  })
-}
+  /**
+   * build the docker image of the server
+   * returns the id of the build
+   */
+  function buildImage() {
+    start('buildImage')
+    const idFile = path.resolve(config.tmpDir, 'id')
+    shell('docker', [
+      'build',
+      '--iidfile',
+      idFile,
+      '-t',
+      imageName,
+      '--file',
+      config.dockerfile,
+      config.tmpDir,
+    ])
+    return fs.readFileSync(idFile, { encoding: 'utf8' }).split(':')[1]
+  }
 
-function tagImage(imageId) {
-  start('tagImage')
-  spawnSync('docker', ['tag', imageId, herokuImage], {
-    stdio: 'inherit',
-  })
-}
-
-// build the docker image of the server
-function buildImage() {
-  start('buildImage')
-  const idFile = path.resolve(tmpDir, 'id')
-  spawnSync(
-    'docker',
-    ['build', '--iidfile', idFile, '-t', image, '--file', f.dockerfile, tmpDir],
-    { stdio: 'inherit' }
-  )
-  return fs.readFileSync(idFile, { encoding: 'utf8' }).split(':')[1]
-}
-
-// run the webpack build
-function buildNode() {
-  start('buildNode')
-  const p = fork(f.dev, ['--build'], { stdio: 'inherit' })
-  p.on('close', (code) => {
-    if (code !== 0) throw new Error('build failed')
-    fs.copyFileSync(f.buildOutput, path.resolve(tmpDir, 'server.js'))
-    const imageId = buildImage()
-    tagImage(imageId)
-    dockerLogin()
-    pushImage()
-    if (!process.arch.startsWith('arm')) {
+  /**
+   * run the webpack build
+   */
+  function buildNode() {
+    start('buildNode')
+    const p = fork(config.build.module, config.build.args, { stdio: 'inherit' })
+    p.on('close', (code) => {
+      if (code !== 0) throw new Error('build failed')
+      fs.copyFileSync(
+        config.build.output,
+        path.resolve(config.tmpDir, path.basename(config.build.output))
+      )
+      tagImage(buildImage())
+      dockerLogin()
+      pushImage()
       // only release on non-arm systems
-      herokuRelease()
-    } else {
-      console.log(yellow('Currently on ARM architecture; not releasing.'))
-    }
-  })
+      if (!process.arch.startsWith('arm')) {
+        herokuRelease()
+      } else {
+        console.log(yellow('Currently on ARM architecture; not releasing.'))
+      }
+    })
+  }
+
+  // exit cleanup catch
+  const cleanup = () => fs.rmdirSync(config.tmpDir, { recursive: true })
+  process.on('SIGINT', cleanup)
+  process.on('exit', cleanup)
+
+  // remove old build output
+  fs.rmSync(config.build.output, { force: true })
+
+  // create a tmp directory for js build outputs
+  fs.mkdirSync(config.tmpDir, { recursive: true })
+
+  // start the build
+  buildNode()
 }
 
-// exit cleanup catch
-const cleanup = () => fs.rmdirSync(tmpDir, { recursive: true })
-process.on('SIGINT', cleanup)
-process.on('exit', cleanup)
-
-// remove old build output
-fs.rmSync(f.buildOutput, { force: true })
-
-// create a tmp directory for js build outputs
-fs.mkdirSync(tmpDir, { recursive: true })
-
-// start the build
-buildNode()
+module.exports = build
