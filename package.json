@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "───────────────────────────────────────────────────── core ": [],
-    "dev:web": "yarn serve:web",
+    "dev:web": "yarn next dev apps/web",
     "dev:server": "node apps/server/dev.js --watch",
     "build:server": "node apps/server/dev.js --build",
     "dev": "node scripts/serve.js",
@@ -34,7 +34,6 @@
     "mr": "bash scripts/migration/run.sh",
     "tc": "bash scripts/migration/test-connect.sh",
     "────────────────────────────────────────────── nx remnants ": [],
-    "serve:web": "nx serve web",
     "build": "nx run-many --all --target=build --parallel=4",
     "lint": "nx run-many --all --target=lint --parallel=4",
     "─────────────────────────────────────────────── automation ": [],
