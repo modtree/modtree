@@ -4,23 +4,23 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "────────────────────────────────────────────────────── dev ": [],
-    "dev:server": "node apps/server/dev.js --watch",
+    "───────────────────────────────────────────────────── core ": [],
     "dev:web": "yarn serve:web",
+    "dev:server": "node apps/server/dev.js --watch",
+    "build:server": "node apps/server/dev.js --build",
+    "dev": "node scripts/serve.js",
     "dev:docs": "bash scripts/docs/serve.sh",
     "build:docs": "bash scripts/docs/build.sh",
-    "dev": "node scripts/serve.js",
-    "build:server": "node apps/server/webpack.js --build",
-    "start:server": "node dist/apps/server/bundle.js",
-    "all:server": "yarn build:server && yarn start:server",
+    "build:scripts": "node libs/scripts/dev.js --build",
     "─────────────────────────────────────────────────── docker ": [],
-    "up": "cd docker && ./up db",
-    "down": "cd docker && ./down all",
+    "up": "cd docker && docker compose --profile db up --detach",
+    "down": "cd docker && docker compose --profile all down",
+    "docker:cy-reporter": "node docker/cy-reporter/build.js",
+    "docker:server": "node docker/server/build.js",
     "────────────────────────────────────────────────── cypress ": [],
     "cy": "node libs/cy-reporter/entry.js",
     "cy:dev": "node libs/cy-reporter/dev.js --watch",
     "cy:build": "node libs/cy-reporter/dev.js --build",
-    "cy:docker": "node docker/cy-reporter/build.js",
     "────────────────────────────────────────────────── testing ": [],
     "test": "bash scripts/run-tests/run.sh",
     "test:dev": "yarn test:build && yarn test",
@@ -40,8 +40,7 @@
     "─────────────────────────────────────────────── automation ": [],
     "version": "auto-changelog -p && git add --all",
     "i": "bash scripts/yarn.sh inverse || exit 0",
-    "prepare": "bash scripts/yarn.sh setup || exit 0",
-    "heroku-postbuild": "yarn build:server --prod"
+    "prepare": "bash scripts/yarn.sh setup || exit 0"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.4",
@@ -138,5 +137,11 @@
   },
   "resolutions": {
     "@types/react": "17.0.37"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "always"
   }
 }

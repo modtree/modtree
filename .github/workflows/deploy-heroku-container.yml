@@ -1,0 +1,24 @@
+name: Deploy Container to Heroku
+
+on:
+  workflow_call:
+    inputs:
+      build_command:
+        required: true
+        type: string
+    secrets:
+      HEROKU_API_KEY:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
+      - run: yarn --frozen-lockfile
+        continue-on-error: true
+      - run: ${{ inputs.build_command }}
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

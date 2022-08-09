@@ -13,6 +13,7 @@ const config = {
   dataSource: db,
   maxRetries: 15,
   intervalInMilliseconds: 3000,
+  name: 'cy-reporter',
   port: 8081,
 }
 

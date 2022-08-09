@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-[ $1 ] && P=$1
-
-COMPOSE_PROFILES=$P \
-  docker compose \
-  up \
-  --detach

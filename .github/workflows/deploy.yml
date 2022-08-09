@@ -7,36 +7,30 @@ on:
       - d/docs
       - d/dev
       - d/cy
+      - d/srv
 
 jobs:
   cy-reporter:
     if: |
-      github.ref_name == 'd/dev' ||
       github.ref_name == 'd/cy' ||
+      github.ref_name == 'd/dev' ||
       github.ref_name == 'main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: bahmutov/npm-install@v1.6.0
-        continue-on-error: true
-      - run: yarn --frozen-lockfile
-        continue-on-error: true
-      - run: yarn cy:docker
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+    uses: ./.github/workflows/deploy-heroku-container.yml
+    with:
+      build_command: yarn docker:cy-reporter
+    secrets:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   server-dev:
     if: |
+      github.ref_name == 'd/srv' ||
       github.ref_name == 'd/dev' ||
       github.ref_name == 'main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: 'modtree-dev' #Must be unique in Heroku
-          heroku_email: 'brew4k@gmail.com'
+    uses: ./.github/workflows/deploy-heroku-container.yml
+    with:
+      build_command: yarn docker:server
+    secrets:
+      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
   web-dev:
     if: |

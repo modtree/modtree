@@ -1,6 +1,20 @@
 import { generateOpenApiDocument } from '@modtree/trpc-openapi'
 import * as fs from 'fs'
+import { basename, dirname, join } from 'path'
 import { AppRouter } from './trpc'
+
+/**
+ * checks if file exists, then writes to it
+ */
+function safeWrite(file: string, contents: string) {
+  if (fs.existsSync(dirname(file))) {
+    fs.writeFileSync(file, contents, { encoding: 'utf-8' })
+    const short = join(dirname(file), basename(file))
+    console.debug(`Updated ${short}.`)
+  } else {
+    console.debug(`Warning: tried to write to ${file} but it does not exist.`)
+  }
+}
 
 export function generateDocs(appRouter: AppRouter) {
   const openApiDocument = generateOpenApiDocument(appRouter, {
@@ -14,15 +28,9 @@ export function generateDocs(appRouter: AppRouter) {
   })
 
   // JSON equivalent
-  const fileContent = JSON.stringify(openApiDocument, null, 2)
-
-  const location = `${__dirname}/../../../apps/docs/public/openapi-docs.json`
-
-  fs.writeFileSync(location, fileContent, {
-    encoding: 'utf-8',
-  })
-
-  console.debug(`Written OpenAPI docs to ${location}.`)
+  const contents = JSON.stringify(openApiDocument, null, 2)
+  const filepath = `${__dirname}/../../../apps/docs/public/openapi-docs.json`
+  safeWrite(filepath, contents)
 }
 
 export function generateRoutes(appRouter: AppRouter) {
@@ -38,11 +46,7 @@ export function generateRoutes(appRouter: AppRouter) {
   const mutations = Object.values(appRouter._def.mutations).map(parseRoute)
   const routes = [...queries, ...mutations]
 
-  const fileContent = JSON.stringify(routes, null, 2)
-  const location = `${__dirname}/../../../references/routes.json`
-
-  fs.writeFileSync(location, fileContent, {
-    encoding: 'utf-8',
-  })
-  console.debug('Updated references/routes.json.')
+  const contents = JSON.stringify(routes, null, 2)
+  const filepath = `${__dirname}/../../../references/routes.json`
+  safeWrite(filepath, contents)
 }

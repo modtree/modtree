@@ -15,7 +15,7 @@ export function connect(config: Config, callback: RunServer) {
   const { dataSource, maxRetries, intervalInMilliseconds } = config
 
   /** debug */
-  inspectDataSource(dataSource, false)
+  inspectDataSource(dataSource, config.name, false)
 
   /** each attempt to connect to database */
   const attempt = () =>

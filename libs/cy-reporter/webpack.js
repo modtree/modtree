@@ -19,6 +19,10 @@ const tsconfig = resolve(__dirname, 'tsconfig.json')
 const compiler = webpack({
   target: 'node',
   mode: 'development',
+  optimization: {
+    minimize: false,
+    nodeEnv: false,
+  },
   entry: {
     cli: resolve(__dirname, 'src/cli'),
     json: resolve(__dirname, 'src/reporters/json.ts'),

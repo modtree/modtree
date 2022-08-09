@@ -4,7 +4,8 @@ import { getApp } from './app'
 import { checkhealth } from './utils/check-health'
 import { connect } from '@modtree/connect'
 
-const db = source[process.env['NODE_ENV']]
+const nodeEnv = process.env['NODE_ENV'] || 'development'
+const db = source[nodeEnv]
 /**
  * this exact instance of Api will be used in trpc routes
  */
@@ -14,6 +15,7 @@ const config = {
   dataSource: db,
   maxRetries: 15,
   intervalInMilliseconds: 3000,
+  name: 'server',
 }
 
 connect(config, async (db) => {
