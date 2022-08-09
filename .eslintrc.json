@@ -4,21 +4,7 @@
     {
       "plugins": ["jsdoc"],
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "no-unused-vars": ["error", { "argsIgnorePattern": "^_$" }],
-          "error",
-          {
-            "enforceBuildableLibDependency": true,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
-              }
-            ]
-          }
-        ]
-      }
+      "rules": { "no-unused-vars": ["error", { "argsIgnorePattern": "^_$" }] }
     },
     {
       "files": ["*.ts", "*.tsx"],
