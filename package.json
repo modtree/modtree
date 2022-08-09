@@ -139,5 +139,11 @@
   },
   "resolutions": {
     "@types/react": "17.0.37"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "always"
   }
 }
