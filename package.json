@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "────────────────────────────────────────────────────── dev ": [],
+    "───────────────────────────────────────────────────── core ": [],
     "dev:web": "yarn serve:web",
     "dev:server": "node apps/server/dev.js --watch",
     "build:server": "node apps/server/dev.js --build",
@@ -15,11 +15,12 @@
     "─────────────────────────────────────────────────── docker ": [],
     "up": "cd docker && docker compose --profile db up --detach",
     "down": "cd docker && docker compose --profile all down",
+    "docker:cy-reporter": "node docker/cy-reporter/build.js",
+    "docker:server": "node docker/server/build.js",
     "────────────────────────────────────────────────── cypress ": [],
     "cy": "node libs/cy-reporter/entry.js",
     "cy:dev": "node libs/cy-reporter/dev.js --watch",
     "cy:build": "node libs/cy-reporter/dev.js --build",
-    "cy:docker": "node docker/cy-reporter/build.js",
     "────────────────────────────────────────────────── testing ": [],
     "test": "bash scripts/run-tests/run.sh",
     "test:dev": "yarn test:build && yarn test",
@@ -39,8 +40,7 @@
     "─────────────────────────────────────────────── automation ": [],
     "version": "auto-changelog -p && git add --all",
     "i": "bash scripts/yarn.sh inverse || exit 0",
-    "prepare": "bash scripts/yarn.sh setup || exit 0",
-    "heroku-postbuild": "yarn build:server --prod"
+    "prepare": "bash scripts/yarn.sh setup || exit 0"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.4",

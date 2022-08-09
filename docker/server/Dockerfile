@@ -1,5 +1,5 @@
 FROM node:16-alpine
 
-COPY server.js .
+COPY bundle.js .
 
-CMD ["node", "server.js"]
+CMD ["node", "bundle.js"]
