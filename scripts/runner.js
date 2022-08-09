@@ -47,9 +47,11 @@ class Runner {
   watch() {
     this.#compiler.watch({ aggregateTimeout: 300 }, (_, s) => showErrors(s))
     nodemon({ script: this.#script, watch: this.#compiler.outputPath })
-    nodemon.on('restart', () => {
-      console.log(magenta('nodemon restarted', date()))
-    })
+    nodemon
+      .on('quit', () => process.exit())
+      .on('restart', () => {
+        console.log(magenta('nodemon restarted', date()))
+      })
   }
 
   /**

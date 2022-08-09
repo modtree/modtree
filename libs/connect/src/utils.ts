@@ -4,10 +4,12 @@ import type { DataSource } from 'typeorm'
  * for debugging the data source used
  *
  * @param {DataSource} dataSource
+ * @param {string} name
  * @param {boolean} verbose
  */
 export function inspectDataSource(
   dataSource: DataSource,
+  name: string,
   verbose: boolean = false
 ) {
   if (verbose) {
@@ -15,6 +17,6 @@ export function inspectDataSource(
     console.log(dataSource.options)
   } else {
     const db = dataSource.options.database
-    console.log(`cy-reporter: init connection to [${db}]`)
+    console.log(`${name}: init connection to [${db}]`)
   }
 }
