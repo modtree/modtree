@@ -8,7 +8,7 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": [],
+      "parser": "@typescript-eslint/parser",
       "rules": {}
     },
     {
