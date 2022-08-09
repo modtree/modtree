@@ -28,7 +28,7 @@
     "test:dev": "yarn test:build && yarn test",
     "test:scan": "ts-node scripts/run-tests/scan.ts",
     "test:build": "yarn test:scan && node scripts/run-tests/build.js",
-    "e2e": "node scripts/cypress.js",
+    "e2e": "node scripts/cypress/open.js",
     "──────────────────────────────────────────────── migration ": [],
     "mg": "bash scripts/migration/generate.sh",
     "mr": "bash scripts/migration/run.sh",
