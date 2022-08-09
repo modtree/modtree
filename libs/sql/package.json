@@ -1,10 +1,5 @@
 {
   "name": "@modtree/sql",
   "version": "0.0.1",
-  "type": "commonjs",
-  "dependencies": {
-    "@modtree/typeorm-config": "*",
-    "@modtree/utils": "*",
-    "@modtree/types": "*"
-  }
+  "type": "commonjs"
 }

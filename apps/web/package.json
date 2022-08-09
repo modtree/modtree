@@ -4,10 +4,6 @@
   "license": "MIT",
   "author": "modtree",
   "description": "modtree frontend with Next.js and React Flow",
-  "dependencies": {
-    "@modtree/types": "*",
-    "@modtree/utils": "*"
-  },
   "browser": {
     "child_process": false
   }
