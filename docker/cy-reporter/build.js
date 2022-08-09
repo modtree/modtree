@@ -2,7 +2,7 @@ require('dotenv/config')
 const path = require('path')
 const fs = require('fs')
 const { fork, spawnSync } = require('child_process')
-const { green } = require('chalk')
+const { green, yellow } = require('chalk')
 
 // paths
 const rootDir = path.resolve(__dirname, '../..')
@@ -55,9 +55,9 @@ function dockerLogin() {
   })
 }
 
-function tagImage() {
+function tagImage(imageId) {
   start('tagImage')
-  spawnSync('docker', ['tag', `${image}:latest`, herokuImage], {
+  spawnSync('docker', ['tag', imageId, herokuImage], {
     stdio: 'inherit',
   })
 }
@@ -65,9 +65,13 @@ function tagImage() {
 // build the docker image of the server
 function buildImage() {
   start('buildImage')
-  spawnSync('docker', ['build', '-t', image, '--file', f.dockerfile, tmpDir], {
-    stdio: 'inherit',
-  })
+  const idFile = path.resolve(tmpDir, 'id')
+  spawnSync(
+    'docker',
+    ['build', '--iidfile', idFile, '-t', image, '--file', f.dockerfile, tmpDir],
+    { stdio: 'inherit' }
+  )
+  return fs.readFileSync(idFile, { encoding: 'utf8' }).split(':')[1]
 }
 
 // run the webpack build
@@ -77,8 +81,8 @@ function buildNode() {
   p.on('close', (code) => {
     if (code !== 0) throw new Error('build failed')
     fs.copyFileSync(f.buildOutput, path.resolve(tmpDir, 'server.js'))
-    buildImage()
-    tagImage()
+    const imageId = buildImage()
+    tagImage(imageId)
     dockerLogin()
     pushImage()
     if (!process.arch.startsWith('arm')) {

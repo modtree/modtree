@@ -12,7 +12,7 @@ export let repo: Repository<CypressRun>
 const config = {
   dataSource: db,
   maxRetries: 15,
-  intervalInMilliseconds: 3000,
+  intervalInMilliseconds: 2999,
   port: 8081,
 }
 
