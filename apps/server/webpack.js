@@ -33,7 +33,7 @@ const compiler = webpack({
     extensions: ['.tsx', '.ts', '.js'],
     plugins: [new TsconfigPathsPlugin({ configFile: tsconfig })],
   },
-  optimization: opts.prod ? { minimize: false } : undefined,
+  optimization: { nodeEnv: false, minimize: false },
 })
 
 module.exports = compiler
