@@ -4,7 +4,7 @@
   },
   "build": {
     "command": "yarn build",
-    "args": ["--skip-nx-cache"]
+    "args": []
   },
   "test": {
     "projects": [
