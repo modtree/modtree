@@ -19,7 +19,7 @@ const dir = {
 // dist
 const exe = {
   list: path.resolve(dir.dist, 'list.js'),
-  cypress: path.resolve(dir.reporters, 'cypress.js'),
+  cypress: path.resolve(rootDir, 'scripts/cypress/run.js'),
 }
 
 if (opts.help) {

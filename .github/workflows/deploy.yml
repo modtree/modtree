@@ -8,6 +8,7 @@ on:
       - d/dev
       - d/cy
       - d/srv
+      - d/web
 
 jobs:
   cy-reporter:
@@ -35,6 +36,7 @@ jobs:
   web-dev:
     if: |
       github.ref_name == 'd/dev' ||
+      github.ref_name == 'd/web' ||
       github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:

@@ -4,10 +4,7 @@
   },
   "build": {
     "command": "yarn build",
-    "args": {
-      "ci": [],
-      "no_cache": ["--skip-nx-cache"]
-    }
+    "args": []
   },
   "test": {
     "projects": [
@@ -25,9 +22,6 @@
     ],
     "dont-run": [],
     "command": "yarn test",
-    "args": {
-      "ci": ["--coverage", "--runInBand"],
-      "no_cache": ["--coverage", "--runInBand"]
-    }
+    "args": ["--coverage", "--runInBand"]
   }
 }

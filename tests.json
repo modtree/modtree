@@ -3,6 +3,7 @@
     "docs": "apps/docs/jest.config.ts",
     "server": "apps/server/jest.config.ts",
     "web": "apps/web/jest.config.ts",
+    "connect": "libs/connect/jest.config.ts",
     "integration-tests": "libs/integration-tests/jest.config.ts",
     "migrations": "libs/migrations/jest.config.ts",
     "repo:api": "libs/repos/src/api/jest.config.ts",
@@ -15,6 +16,7 @@
     "repo:pull": "libs/repos/src/pull/jest.config.ts",
     "repo:user": "libs/repos/src/user/jest.config.ts",
     "sql": "libs/sql/jest.config.ts",
+    "template_project": "libs/template_project/jest.config.ts",
     "test-env": "libs/test-env/jest.config.ts",
     "trpc-openapi": "libs/trpc-openapi/jest.config.ts",
     "typeorm-config": "libs/typeorm-config/jest.config.ts",
@@ -36,12 +38,25 @@
   },
   "groups": {
     "core": {
-      "tests": ["module", "degree", "user", "graph"]
+      "tests": [
+        "module",
+        "degree",
+        "user",
+        "graph"
+      ]
     },
     "init": {
-      "tests": ["module", "degree", "user", "graph", "integration-tests"],
+      "tests": [
+        "module",
+        "degree",
+        "user",
+        "graph",
+        "integration-tests"
+      ],
       "pattern": "initialize",
-      "args": ["--runInBand"]
+      "args": [
+        "--runInBand"
+      ]
     }
   }
 }

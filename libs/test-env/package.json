@@ -1,10 +1,5 @@
 {
   "name": "@modtree/test-env",
   "version": "0.0.1",
-  "type": "commonjs",
-  "dependencies": {
-    "@modtree/sql": "*",
-    "@modtree/utils": "*",
-    "@modtree/types": "*"
-  }
+  "type": "commonjs"
 }
