@@ -114,6 +114,12 @@ export function handleArgs(
         .map(({ name, alias }) => (alias ? { name, alias } : { name })),
       '\n'
     )
+    // Print groups
+    console.debug(
+      chalk.cyan('or from these groups:'),
+      groups.map((group) => ({ name: group.name, tests: group.tests })),
+      '\n'
+    )
     process.exit(0)
   } else {
     console.debug({
