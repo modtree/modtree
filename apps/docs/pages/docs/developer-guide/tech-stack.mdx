@@ -1,135 +1,149 @@
-import { Tabs, Tab } from '@/components/Tabs.tsx'
-
 # Modtree's tech stack
 
-For context, here's the list of key technologies that Modtree uses,
-listed from the most abstract to the most visually concrete.
+For context, here's the list of key technologies that Modtree uses, listed from
+the most abstract to the most visually concrete.
 
 [TypeScript](#typescript)
-&middot; [Nx](#nx)
 &middot; [PostgreSQL](#postgresql)
 &middot; [TypeORM](#typeorm)
+&middot; [Webpack](#webpack)
 &middot; [Jest](#jest)
 &middot; [Express](#express)
-&middot; [Auth0](#auth0)
+&middot; [tRPC](#trpc)
 &middot; [GitHub Actions](#github-actions)
+&middot; [Redux](#redux)
 &middot; [React](#react)
 &middot; [Next](#next)
 &middot; [React Flow](#react-flow)
 &middot; [Tailwind CSS](#tailwind-css)
+&middot; [NextAuth.js](#next-auth)
 
 ## Building
 
 ### TypeScript
 
-TypeScript is _the_ programming language of Modtree. We find that
-types help to communicate a large part of what each function and data
-structure is trying to accomplish.
+TypeScript is _the_ programming language of Modtree. We find that types help to
+communicate a large part of what each function and data structure is trying to
+accomplish.
 
-Apart from having static types, it is also useful that the entire tech
-stack can be written in this language, so sharing code is highly
-feasible.
+Apart from having static types, it is also useful that the entire tech stack can
+be written in this language, so sharing code is highly feasible.
 
-### Nx
+### Webpack
 
-Nx is a build system for projects, and allows us to never have to
-build the same code twice. If it decides that a section of code hasn't
-changed, it will not build/lint/test it again, and instead pull from
-a cache and re-display that output.
+Webpack lets us bundle a large amount of code into just one executable
+JavaScript file, allowing for a minimal production runtime file.
 
-It also support remote-caching, something that our CI takes advantages
-of for speed improvements.
+### GitHub Actions
 
-As of Milestone 1, we were using Turborepo instead of Nx, but its
-remote caching was unreliable, so we didn't get much benefit from it.
-Furthermore, with Turborepo, there was a `node_modules` directory
-under each of our sub-project. Nx, on the other hand, has only one
-`node_modules` from which every project reads from, allowing us to
-standardize even the version of each dependency across the whole
-project.
-
-Nx also provides a graph visualizer that lets us see which sub-project
-depends on which other sub-projects. This is useful in quickly
-detecting project-level circular dependency. In fact, Nx throws an
-error before building if it detects a circular dependency.
+Modtree's CI/CD runner, which automatically tests code on every push, and
+deploys our services on every merge to the main branch.
 
 ## Database
 
 ### PostgreSQL
 
-Postgres is our one and only database type (for now). We tried MySQL
-but ditched it because of the simple pragmatic reason that we couldn't
-find free online hosts which offer a reasonable amount of storage
-space.
+Postgres is our one and only database type (for now). We tried MySQL but ditched
+it because of the simple pragmatic reason that we couldn't find free online
+hosts which offer a reasonable amount of storage space.
 
-In the longer term, we'd like to explore graph databases to handle
-our module dependency relations. Graph relation functions written in
-SQL will likely never be as natural as those written in GraphQL, so
-extending such functions will probably be easier with GraphQL.
+In the longer term, we'd like to explore graph databases to handle our module
+dependency relations. Graph relation functions written in SQL will likely never
+be as natural as those written in GraphQL, so extending such functions will
+probably be easier with GraphQL.
 
 ### TypeORM
 
-To make our SQL queries integrate well with TypeScript, we use
-TypeORM. It allows us to write SQL queries directly in TypeScript, and
-also plays nice with TypeScript's types and interfaces.
+TypeORM is a object-relational mapping (ORM) tool. It provides us with an
+object-oriented abstraction for the database, facilitating development.
+
+TypeORM also has the flexibility to allow us to write SQL queries directly in
+TypeScript, and also plays nice with TypeScript’s types and interfaces.
 
 ## Backend
 
-### Jest
-
-the testing framework of choice. Together with Supertest, we test
-every piece of code we write to have confidence in our current state.
-
 ### Express
 
-Our server functions and API endpoints are handled by Express. Express
-provides us with route matching and parsing capabilities so we don’t
-have to worrying about implementing it.
+Our server functions and API endpoints are handled by Express. Express provides
+us with route matching and parsing capabilities so we don’t have to worrying
+about implementing it.
 
-### Auth0
+### tRPC
 
-Auth0 handles authentication for us, and also provides a very clean
-frontend to do so. However, its service to integrate with a database
-is a paid one, so we opted for a more detached approach. Auth0 only
-handles our user metadata, and nothing else. User data such as modules
-taken and degrees planned are still hosted on our database. These
-separate user entities are linked by Auth0’s user id.
+tRPC helps us to statically type APIs. We are thus able to share types between
+our client (frontend) and server, so that we are confident in using our API
+correctly. Given that our project’s main language is TypeScript, this is a very
+useful addition to our application.
 
-### GitHub Actions
+### NextAuth.js
 
-Modtree's CI/CD runner, which automatically tests code on every push,
-and deploys our services on every merge to the main branch.
+With NextAuth.js, users can now authenticate using social logins. We currently
+support Google, Github, and Facebook.
+
+Since our target audience is NUS undergraduates or incoming undergraduates, they
+are likely to own one of the abovementioned social accounts. By having social
+logins, we reduce the barrier of entry for using our app, encouraging users to
+sign up as it is hassle-free.
 
 ## Frontend
 
 ### React
 
-This is the core language that all our frontend is based on.
-Specifically, we write with the intended style of React 17, with hooks
-instead of classes. So instead of having classes that extend a base
-React Component, our frontend components are Functional Components
-whose states are managed with hooks such as useState and useEffect.
+This is the core language that all our frontend is based on. Specifically, we
+write with the intended style of React 17, with hooks instead of classes. So
+instead of having classes that extend a base React Component, our frontend
+components are Functional Components whose states are managed with hooks such as
+useState and useEffect.
 
 ### Next.js
 
-Of course, we had the choice to use pure React.js, but we opted to use
-it on top of Next.js because of its extra routing capabilities.
-Through these routes we use their API functionality to manage
-authentication and centralize our backend calls.
+Of course, we had the choice to use pure React.js, but we opted to use it on top
+of Next.js because of its extra routing capabilities. Through these routes we
+use their API functionality to manage authentication and centralize our backend
+calls.
 
 ### React Flow
 
-This is the library that is responsible for displaying nodes and edges
-that represent modules and their requirements. React Flow is an
-open-source tool which lets us skip past the issue of implementing
-togglable, draggable, (multi)selectable nodes, and get right into the
-core business of working on module dependency logic.
+This is the library that is responsible for displaying nodes and edges that
+represent modules and their requirements. React Flow is an open-source tool
+which lets us skip past the issue of implementing togglable, draggable,
+(multi)selectable nodes, and get right into the core business of working on
+module dependency logic.
+
+### Redux
+
+Redux is a core part of our frontend. It centralizes our application’s state and
+abstracts the logic away from frontend components. This helps us to get a single
+source of truth for the global state of our application, so that any changes a
+user makes is correctly updated throughout our application.
 
 ### Tailwind CSS
 
-Tailwind CSS allows us to write CSS directly in JSX, a major
-convenience when we are building fresh components and are in the
-experimental stage. Though this breaks the philosophy of the cascade,
-it provides us a much needed speed boost when doing up
-proof-of-concepts. It also still lets us use vanilla CSS, which we do
-move over to for more mature components.
+Tailwind CSS allows us to write CSS directly in JSX, a major convenience when we
+are building fresh components and are in the experimental stage. Though this
+breaks the philosophy of the cascade, it provides us a much needed speed boost
+when doing up proof-of-concepts. It also still lets us use vanilla CSS, which we
+do move over to for more mature components.
+
+## Testing
+
+### Jest
+
+We write our tests in TypeScript, using Jest as our testing framework.
+
+At Milestone 2, we spin up a database instance whenever we run unit tests for
+our core functionality. Since we also wanted to keep our code coverage high,
+this made our unit tests run for longer than 2 minutes, both locally and in the
+CI.
+
+The bottleneck of the unit tests is spinning up the database instance. Hence, we
+decided to introduce mocking to eliminate such external dependencies from unit
+testing. As a result, our unit tests run in 10 seconds now.
+
+### Cypress
+
+We use Cypress for end-to-end testing. Cypress spawns a browser and helps us to
+simulate user actions such as clicking and typing into a text box, effectively
+simulating a real user. We are also able to assert that certain elements are
+loaded in the page. Overall, this helps us to confirm that our core business
+logic works.
