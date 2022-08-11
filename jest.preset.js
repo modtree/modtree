@@ -1,20 +1,26 @@
-const path = require('path')
-const fs = require('fs')
+const { join, resolve } = require('path')
+const { readFileSync } = require('fs')
 
-const tsconfig = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, 'tsconfig.base.json')).toString()
+// locating tsconfig.json
+const dir = __dirname
+const file = 'tsconfig.base.json'
+
+/** @type { import('typescript').CompilerOptions} */
+const { baseUrl, paths } = JSON.parse(
+  readFileSync(resolve(dir, file), 'utf8')
+).compilerOptions
+
+/** @type { import('typescript').MapLike<string[]> */
+const resolvedPaths = Object.entries(paths).reduce(
+  (a, [k, v]) => ({ ...a, [k]: resolve(dir, baseUrl, v[0]) }),
+  {}
 )
-const { baseUrl, paths } = tsconfig.compilerOptions
 
-const resolvedPaths = Object.entries(paths).reduce((acc, [key, value]) => {
-  acc[key] = path.resolve(__dirname, baseUrl, value[0])
-  return acc
-}, {})
-
+/** @type { import('@jest/types').Config.InitialOptions } */
 module.exports = {
   preset: 'ts-jest',
   moduleNameMapper: resolvedPaths,
-  setupFilesAfterEnv: [path.join(__dirname, 'libs/test-env/src/jest.ts')],
+  setupFilesAfterEnv: [join(__dirname, 'libs/test-env/src/jest.ts')],
   coverageReporters: ['cobertura', 'text', 'lcov'],
   coveragePathIgnorePatterns: ['/repo-pull/'],
   passWithNoTests: true,

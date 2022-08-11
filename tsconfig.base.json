@@ -1,22 +1,10 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "noPropertyAccessFromIndexSignature": false,
-    "strictPropertyInitialization": false,
     "rootDir": ".",
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
     "target": "es6",
     "module": "commonjs",
     "lib": ["es5", "es6", "dom"],
-    "skipLibCheck": false,
-    "skipDefaultLibCheck": false,
+    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@modtree/repos": ["libs/repos/src/index.ts"],
@@ -31,7 +19,18 @@
       "@modtree/typeorm-config": ["libs/typeorm-config/src/index.ts"],
       "@modtree/types": ["libs/types/src/index.ts"],
       "@modtree/utils": ["libs/utils/src/index.ts"]
-    }
+    },
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "resolveJsonModule": true,
+    "skipDefaultLibCheck": false,
+    "skipLibCheck": false,
+    "sourceMap": true,
+    "strictPropertyInitialization": false
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules"]
 }
