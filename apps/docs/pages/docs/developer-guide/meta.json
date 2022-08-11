@@ -3,9 +3,11 @@
     "title": "Build",
     "hidden": true
   },
+  "setup": {
+    "title": "Setup"
+  },
   "build-prerequisites": {
-    "title": "Build prerequisites",
-    "hidden": true
+    "title": "Build prerequisites"
   },
   "tests": {
     "title": "Tests",
