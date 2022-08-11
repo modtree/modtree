@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import type { Test, TestGroup } from './types'
 import chalk from 'chalk'
+import { helpText } from './help'
 
 const rootDir = path.resolve(__dirname, '../..')
 
@@ -107,11 +108,20 @@ export function handleArgs(
    * args processing reporter
    */
   if (hasError || args.length === 0) {
+    // Print help text
+    console.debug(helpText)
+    // Print workspaces
     console.debug(
       chalk.cyan('Please choose from these tests:'),
       tests
         .sort(sortByAlias)
         .map(({ name, alias }) => (alias ? { name, alias } : { name })),
+      '\n'
+    )
+    // Print groups
+    console.debug(
+      chalk.cyan('or from these groups:'),
+      groups.map((group) => ({ name: group.name, tests: group.tests })),
       '\n'
     )
     process.exit(0)
