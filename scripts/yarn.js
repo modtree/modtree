@@ -1,21 +1,29 @@
 const { spawnSync } = require('child_process')
 const { resolve } = require('path')
-const fs = require('fs')
+const { lstatSync, readlinkSync, existsSync } = require('fs')
+const { green, yellow } = require('chalk')
+
+// paths
 const rootDir = resolve(__dirname, '..')
 const root = (...p) => resolve(rootDir, ...p)
-const { green, yellow } = require('chalk')
+
+const log = {
+  yellow: (...t) => console.log(yellow(...t)),
+  green: (...t) => console.log(green(...t)),
+}
 
 /**
  * symlinks a file
  *
  * @param {string} src - source directory
  * @param {string} dst - destination directory
- * @param {string} filename
+ * @param {string} srcFile
+ * @param {string} dstFile
  * @returns {string} full path to destination
  */
-function symlink(src, dst, filename) {
-  const fullDst = resolve(dst, filename)
-  spawnSync('ln', ['-sf', resolve(src, filename), fullDst])
+function symlink(src, dst, srcFile, dstFile = '') {
+  const fullDst = resolve(dst, dstFile || srcFile)
+  spawnSync('ln', ['-sf', resolve(src, srcFile), fullDst])
   return fullDst
 }
 
@@ -30,18 +38,54 @@ const envFiles = [
   },
 ]
 
-envFiles.forEach(({ file, target }) => {
-  const link = symlink(process.env.MODTREE_ENV_SOURCE, target, file)
+/**
+ * logs the success status of the symlink execution
+ * @param {string} link
+ * @param {string} file
+ * @return {boolean} if it's a success
+ */
+function logStatus(link, file) {
   // check that symlink exists
-  const lstat = fs.lstatSync(link, { throwIfNoEntry: false })
+  const lstat = lstatSync(link, { throwIfNoEntry: false })
   if (!lstat || !lstat.isSymbolicLink()) {
-    console.log(yellow(` ✗ ${file} not loaded`))
-    return
+    log.yellow(` ✗ ${file} not loaded`)
+    return false
   }
   // check that symlink points to a file that exists
-  if (!fs.existsSync(fs.readlinkSync(link))) {
-    console.log(yellow(` ✗ ${file} symlink broken`))
-    return
+  if (!existsSync(readlinkSync(link))) {
+    log.yellow(` ✗ ${file} symlink broken`)
+    return false
   }
-  console.log(green(` ✓ ${file} loaded`))
-})
+  log.green(` ✓ ${file} loaded`)
+  return true
+}
+
+/**
+ * load all env files from the source directory
+ * @param {string} source
+ */
+function loadEnv(source) {
+  envFiles.forEach(({ file, target }) => {
+    const link = symlink(source, target, file)
+    logStatus(link, file)
+  })
+}
+
+/**
+ * when there is no source directory
+ * this uses .env.example as the .env file
+ */
+function loadFallback() {
+  log.yellow('$MODTREE_ENV_SOURCE not found, falling back on standard env')
+  const link = symlink('.', '.', '.env.example', '.env')
+  logStatus(link, '.env')
+}
+
+/**
+ * source the secret env files based on the
+ * MODTREE_ENV_SOURCE environment variable
+ */
+;(() => {
+  const source = process.env.MODTREE_ENV_SOURCE
+  source ? loadEnv(source) : loadFallback()
+})()
