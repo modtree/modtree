@@ -35,13 +35,13 @@ envFiles.forEach(({ file, target }) => {
   // check that symlink exists
   const lstat = fs.lstatSync(link, { throwIfNoEntry: false })
   if (!lstat || !lstat.isSymbolicLink()) {
-    console.log(yellow(` ✗ [ ${file} ] not loaded.`))
+    console.log(yellow(` ✗ ${file} not loaded`))
     return
   }
   // check that symlink points to a file that exists
   if (!fs.existsSync(fs.readlinkSync(link))) {
-    console.log(yellow(` ✗ [ ${file} ] symlink broken.`))
+    console.log(yellow(` ✗ ${file} symlink broken`))
     return
   }
-  console.log(green(` ✓ [ ${file} ] loaded.`))
+  console.log(green(` ✓ ${file} loaded`))
 })
