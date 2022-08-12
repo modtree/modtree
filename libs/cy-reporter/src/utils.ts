@@ -2,13 +2,9 @@ import path from 'path'
 import fs from 'fs'
 import { green, red, cyan, bgGreen, bgRed, bgWhite, gray, yellow } from 'chalk'
 import axios from 'axios'
-import { useProd } from './env'
+import { baseURL } from './env'
 
-export const client = axios.create({
-  baseURL: useProd
-    ? 'https://modtree-cy-reporter.herokuapp.com/'
-    : 'http://localhost:8081',
-})
+export const client = axios.create({ baseURL })
 
 export const log = {
   pass: (...a: any) => console.log(bgGreen.black(' PASS '), green(' ✓'), ...a),

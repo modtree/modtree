@@ -9,4 +9,9 @@ import { config } from 'dotenv'
 // namely apps/web-e2e/reporters
 config({ path: resolve(__dirname, '../../../.env') })
 
-export const useProd = process.env['NODE_ENV'] === 'production'
+// hard-coded because even in dev-time, we want to use the remote
+// server to read/write the runs
+export const useProd = true
+export const baseURL = useProd
+  ? 'https://modtree-cy-reporter.herokuapp.com'
+  : 'http://localhost:8081'

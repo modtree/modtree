@@ -33,7 +33,10 @@ client.get<Result[]>('/list', { params }).then((res) => {
   res.data
     .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
     .forEach((r) => {
-      print[r.state](r.shortHash, r.file)
+      // all tests currently live in ./cypress/integration/
+      // relative to the e2e project directory
+      const file = r.file.replace('cypress/integration/', '')
+      print[r.state](r.shortHash, file)
     })
   log.gray(`(results from ${client.defaults.baseURL})`)
 })
