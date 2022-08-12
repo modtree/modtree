@@ -26,9 +26,9 @@ class Runner {
    * @param {webpack.Compiler} compiler
    * @param {string} script
    */
-  constructor(compiler, script) {
+  constructor(compiler, script = '') {
     this.#compiler = compiler
-    this.#script = resolve(compiler.outputPath, script)
+    this.#script = script ? resolve(compiler.outputPath, script) : ''
   }
 
   /**
@@ -46,12 +46,15 @@ class Runner {
    */
   watch() {
     this.#compiler.watch({ aggregateTimeout: 300 }, (_, s) => showErrors(s))
-    nodemon({ script: this.#script, watch: this.#compiler.outputPath })
-    nodemon
-      .on('quit', () => process.exit())
-      .on('restart', () => {
-        console.log(magenta('nodemon restarted', date()))
-      })
+    // run the script if it exists
+    if (this.#script) {
+      nodemon({ script: this.#script, watch: this.#compiler.outputPath })
+      nodemon
+        .on('quit', () => process.exit())
+        .on('restart', () => {
+          console.log(magenta('nodemon restarted', date()))
+        })
+    }
   }
 
   /**
