@@ -6,11 +6,13 @@ import type { Parser, Options } from './types'
 
 // default options
 const opts: Options = {
+  action: 'unset',
   force: false,
   all: false,
-  run: false,
-  list: false,
-  help: false,
+}
+
+function setAction(action: Options['action']) {
+  if (opts.action === 'unset') opts.action = action
 }
 
 const parsers: Parser[] = [
@@ -23,7 +25,7 @@ const parsers: Parser[] = [
   {
     arg: ['-h', '--help'],
     type: 'boolean',
-    callback: () => (opts.help = true),
+    callback: () => setAction('help'),
   },
   {
     arg: ['-a', '--all'],
@@ -34,25 +36,30 @@ const parsers: Parser[] = [
   {
     arg: ['r', 'run'],
     type: 'boolean',
-    callback: () => (opts.run = true),
+    callback: () => setAction('run'),
   },
   {
     arg: ['ra', 'run-all'],
     type: 'boolean',
     callback: () => {
-      opts.run = true
+      setAction('run')
       opts.all = true
     },
   },
   {
     arg: ['ls', 'list'],
     type: 'boolean',
-    callback: () => (opts.list = true),
+    callback: () => setAction('list'),
+  },
+  {
+    arg: ['o', 'open'],
+    type: 'boolean',
+    callback: () => setAction('open'),
   },
 ]
 
 const args = process.argv.slice(2)
-if (args.length === 0) opts.help = true
+if (args.length === 0) setAction('help')
 for (let i = 0; i < args.length; i++) {
   const parser = parsers.find((p) => p.arg.includes(args[i]))
 

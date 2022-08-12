@@ -19,31 +19,35 @@ const dir = {
 // dist
 const exe = {
   list: path.resolve(dir.dist, 'list.js'),
-  cypress: path.resolve(rootDir, 'scripts/cypress/run.js'),
+  run: path.resolve(rootDir, 'scripts/cypress/run.js'),
+  open: path.resolve(rootDir, 'scripts/cypress/open.js'),
 }
 
-if (opts.help) {
+if (opts.action === 'help') {
   console.log(helpText)
   process.exit(0)
 }
 
-if (opts.list) {
-  opts.run = false
+if (opts.action === 'list') {
   fork(exe.list, { stdio: 'inherit' })
 }
 
+if (opts.action === 'open') {
+  fork(exe.open, { stdio: 'inherit' })
+}
+
 // check for a clean git status before running
-if (opts.run && !isStatusClean()) {
+if (opts.action === 'run' && !isStatusClean()) {
   log.warn('Warning: git status is not clean.')
   if (!opts.force) process.exit(1)
 }
 
-if (opts.run && opts.all) {
+if (opts.action === 'run' && opts.all) {
   log.green('Running all tests')
-  fork(exe.cypress, ['--all'])
+  fork(exe.run, ['--all'])
 }
 
-if (opts.run && !opts.all) {
+if (opts.action === 'run' && !opts.all) {
   const fzf = spawn(
     'fzf',
     [
@@ -68,6 +72,6 @@ if (opts.run && !opts.all) {
   fzf.stdout.on('data', (data: string) => {
     const target = data.trim()
     log.green('Running test:', target)
-    fork(exe.cypress, [path.resolve(dir.spec, target)])
+    fork(exe.run, [path.resolve(dir.spec, target)])
   })
 }

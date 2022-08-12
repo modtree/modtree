@@ -6,6 +6,8 @@ import { EventEmitter } from 'events'
 import { basename } from 'path'
 import type { Packet } from '../types'
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1'
+
 /**
  * mini mutex
  *

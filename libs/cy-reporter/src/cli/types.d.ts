@@ -10,9 +10,7 @@ type ParserFlag =
 export type Parser = { arg: string[] } & ParserFlag
 
 export type Options = {
+  action: 'unset' | 'open' | 'run' | 'list' | 'help'
   force: boolean
   all: boolean
-  run: boolean
-  list: boolean
-  help: boolean
 }
