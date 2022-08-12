@@ -1,5 +1,6 @@
 const nodemon = require('nodemon')
 const webpack = require('webpack')
+const { EventEmitter } = require('events')
 const { resolve } = require('path')
 const { gray, magenta } = require('chalk')
 const date = () => new Date().toLocaleString()
@@ -45,16 +46,23 @@ class Runner {
    * run the build and watch for changes
    */
   watch() {
-    this.#compiler.watch({ aggregateTimeout: 300 }, (_, s) => showErrors(s))
-    // run the script if it exists
-    if (this.#script) {
-      nodemon({ script: this.#script, watch: this.#compiler.outputPath })
-      nodemon
-        .on('quit', () => process.exit())
-        .on('restart', () => {
-          console.log(magenta('nodemon restarted', date()))
-        })
-    }
+    const bus = new EventEmitter()
+    console.log(gray('building for the first time...'))
+    this.#compiler.watch({ aggregateTimeout: 300 }, (_, s) => {
+      showErrors(s)
+      bus.emit('built')
+    })
+    bus.once('built', () => {
+      // run the script if it exists
+      if (this.#script) {
+        nodemon({ script: this.#script, watch: this.#compiler.outputPath })
+        nodemon
+          .on('quit', () => process.exit())
+          .on('restart', () => {
+            console.log(magenta('nodemon restarted', date()))
+          })
+      }
+    })
   }
 
   /**
