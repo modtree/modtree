@@ -86,6 +86,8 @@ function loadFallback() {
  * MODTREE_ENV_SOURCE environment variable
  */
 ;(() => {
+  // don't load any environment variables on CI runs
+  if (process.env.CI) return
   const source = process.env.MODTREE_ENV_SOURCE
   source ? loadEnv(source) : loadFallback()
 })()
