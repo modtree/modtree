@@ -1,9 +1,7 @@
-import './env'
+import { useProd } from './env'
 import { config } from '@modtree/typeorm-config'
 import { DataSource, Repository } from 'typeorm'
 import { CypressRun } from './entity'
-
-const useProd = process.env['NODE_ENV'] === 'production'
 
 export const db = new DataSource({
   ...(useProd ? config.production : config.development),

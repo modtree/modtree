@@ -2,9 +2,12 @@ import path from 'path'
 import fs from 'fs'
 import { green, red, cyan, bgGreen, bgRed, bgWhite, gray, yellow } from 'chalk'
 import axios from 'axios'
+import { useProd } from './env'
 
 export const client = axios.create({
-  baseURL: process.env['CYPRESS_REPORTER_URL'],
+  baseURL: useProd
+    ? 'https://modtree-cy-reporter.herokuapp.com/'
+    : 'http://localhost:8081',
 })
 
 export const log = {

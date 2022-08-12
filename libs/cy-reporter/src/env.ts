@@ -8,3 +8,5 @@ import { config } from 'dotenv'
 // this is relative to the output directory,
 // namely apps/web-e2e/reporters
 config({ path: resolve(__dirname, '../../../.env') })
+
+export const useProd = process.env['NODE_ENV'] === 'production'
