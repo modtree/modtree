@@ -33,7 +33,7 @@ if (opts.action === 'list') {
 }
 
 if (opts.action === 'open') {
-  fork(exe.list, { stdio: 'inherit' })
+  fork(exe.open, { stdio: 'inherit' })
 }
 
 // check for a clean git status before running

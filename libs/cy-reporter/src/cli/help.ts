@@ -9,6 +9,7 @@ COMMAND:
                     to have fzf prompt you for which test to run)
       ra, run-all   run all cypress tests
       ls, list      list cypress runs related to current commit
+      o, open       open the cypress graphical user interface
 
 OPTIONS
       -a, --all     run all tests (ls --all is not supported)
