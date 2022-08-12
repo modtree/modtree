@@ -29,7 +29,7 @@
     "tc": "bash scripts/migration/test-connect.sh",
     "version": "auto-changelog -p && git add --all",
     "i": "bash scripts/yarn.sh inverse || exit 0",
-    "prepare": "bash scripts/yarn.sh setup || exit 0"
+    "prepare": "node scripts/yarn.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.4",
