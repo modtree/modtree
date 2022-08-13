@@ -75,11 +75,6 @@ process.on('message', (packet: Packet) => {
   if (packet.action === 'end') {
     handleTestEnd(packet)
   }
-  // quick log
-  ;({
-    start: () => log.start(packet.data.file),
-    end: () => log.end(packet.data.file),
-  }[packet.action]())
 })
 
 /**
