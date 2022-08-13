@@ -2,7 +2,7 @@ import { resolve } from 'path'
 
 // hard-coded because even in dev-time, we want to use the remote
 // server to read/write the runs
-export const useProd = false
+export const useProd = true
 
 // paths
 const rootDir = resolve(__dirname, '../../..')
