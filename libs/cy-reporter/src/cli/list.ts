@@ -29,14 +29,17 @@ const params = {
   files: getAllFiles(specRoot).filter((f) => f.endsWith('.cy.ts')),
   commits: ancestryPath('origin/main', 'HEAD'),
 }
-client.get<Result[]>('/list', { params }).then((res) => {
-  res.data
-    .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
-    .forEach((r) => {
-      // all tests currently live in ./cypress/integration/
-      // relative to the e2e project directory
-      const file = r.file.replace('cypress/integration/', '')
-      print[r.state](r.shortHash, file)
-    })
-  log.gray(`(results from ${client.defaults.baseURL})`)
-})
+
+export function list() {
+  client.get<Result[]>('/list', { params }).then((res) => {
+    res.data
+      .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state))
+      .forEach((r) => {
+        // all tests currently live in ./cypress/integration/
+        // relative to the e2e project directory
+        const file = r.file.replace('cypress/integration/', '')
+        print[r.state](r.shortHash, file)
+      })
+    log.gray(`(results from ${client.defaults.baseURL})`)
+  })
+}

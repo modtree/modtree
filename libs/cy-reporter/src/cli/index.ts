@@ -4,6 +4,7 @@ import { opts } from './parse-args'
 import { fork, spawn } from 'child_process'
 import { isStatusClean } from '../git'
 import { log } from '../utils'
+import { list } from './list'
 
 // paths
 const rootDir = path.resolve(__dirname, '../../..')
@@ -29,7 +30,7 @@ if (opts.action === 'help') {
 }
 
 if (opts.action === 'list') {
-  fork(exe.list, { stdio: 'inherit' })
+  list()
 }
 
 if (opts.action === 'open') {
