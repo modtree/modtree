@@ -1,1 +1,0 @@
-../../../dist/libs/cy-reporter/list.js

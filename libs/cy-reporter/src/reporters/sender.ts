@@ -1,7 +1,5 @@
-import '../env'
 import { CypressRun } from '../entity'
-import { getCurrentHash } from '../git'
-import { log, client } from '../utils'
+import { log, client, getCurrentHash } from '../utils'
 import { EventEmitter } from 'events'
 import { basename } from 'path'
 import type { Packet } from '../types'
@@ -75,11 +73,6 @@ process.on('message', (packet: Packet) => {
   if (packet.action === 'end') {
     handleTestEnd(packet)
   }
-  // quick log
-  ;({
-    start: () => log.start(packet.data.file),
-    end: () => log.end(packet.data.file),
-  }[packet.action]())
 })
 
 /**
@@ -87,8 +80,10 @@ process.on('message', (packet: Packet) => {
  */
 process.on('disconnect', () => {
   // execute after settling queue
-  const settleQueue = () =>
+  const settleQueue = () => {
+    log.gray('waiting for result write requests to be resolved...')
     Promise.allSettled(queue).then((results) => {
+      log.gray('result write requests resolved!')
       let [saved, passed] = [0, 0]
       results.forEach((res) => {
         if (res.status === 'fulfilled') {
@@ -99,6 +94,7 @@ process.on('disconnect', () => {
       const pst = 'passed / saved / total: '
       log.normal(pst, passed, '/', saved, '/', results.length, '\n')
     })
+  }
   // wait for lock to be gone
   if (lock) {
     bus.once('unlocked', () => settleQueue())

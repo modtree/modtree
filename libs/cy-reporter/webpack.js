@@ -26,7 +26,6 @@ const compiler = webpack({
   entry: {
     cli: resolve(__dirname, 'src/cli'),
     json: resolve(__dirname, 'src/reporters/json.ts'),
-    list: resolve(__dirname, 'src/reporters/list.ts'),
     sender: resolve(__dirname, 'src/reporters/sender.ts'),
     server: resolve(__dirname, 'src/server/main.ts'),
   },

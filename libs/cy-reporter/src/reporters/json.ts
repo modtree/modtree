@@ -24,10 +24,13 @@ export const main = (runner: Runner) => {
     })
 
   // send data to postgres
-  runner.once('end', () => send('end'))
-  runner.once('start', () => send('start'))
+  runner.once('end', () => {
+    log.end(runner.suite.file)
+    send('end')
+  })
 
   // intermittent stuff
+  runner.once('start', () => log.start(runner.suite.file))
   runner.on('pass', (t) => log.pass(t.fullTitle()))
   runner.on('fail', (t, err) => log.fail(t.fullTitle(), '→', err.message))
 }
@@ -37,6 +40,7 @@ export const main = (runner: Runner) => {
  * disconnect the sender to allow it to gracefully exit too
  */
 process.on('exit', () => {
+  console.log('Cypress runs have completed.')
   if (sender.connected) sender.disconnect()
 })
 

@@ -43,9 +43,7 @@ if (args.length !== 1) {
  * which is awesome. This means that this script will
  * only close when cypress + sender closes.
  */
-cypress.run(cypressConfig).then(() => {
-  console.log('Cypress runs have completed.')
-})
+cypress.run(cypressConfig)
 
 process.on('exit', () => {
   console.log(gray(thisScript, 'has left the building.'))

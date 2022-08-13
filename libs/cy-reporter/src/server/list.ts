@@ -1,4 +1,3 @@
-import '../env'
 import { In, Repository } from 'typeorm'
 import { CypressRun } from '../entity'
 import type { State } from '../types'
