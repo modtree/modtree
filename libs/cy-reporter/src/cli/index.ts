@@ -32,4 +32,6 @@ if (opts.action === 'run' && opts.all) {
 }
 
 // select one test and run
-if (opts.action === 'run' && !opts.all) selectAndRun(paths.dir.spec)
+if (opts.action === 'run' && !opts.all) {
+  selectAndRun(paths.dir.spec)
+}

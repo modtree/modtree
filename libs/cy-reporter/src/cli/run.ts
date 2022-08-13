@@ -8,15 +8,32 @@ import type { ChildProcessByStdio } from 'child_process'
 
 type ChildProcess = ChildProcessByStdio<null, Readable, Readable>
 
+/**
+ * simple check to see if a binary is installed
+ *
+ * @param {string} bin
+ * @returns {boolean}
+ */
 function hasBin(bin: string): boolean {
   return spawnSync('which', [bin]).status === 0
 }
 
+/**
+ * takes in the full (or resolved) path to a Cypress spec file, and runs it
+ *
+ * @param {string} specFile
+ */
 function run(specFile: string) {
   return fork(paths.executable.run, [specFile])
 }
 
-function selectWithFzf(specDir: string) {
+/**
+ * use `fzf` to find a spec file to run
+ *
+ * @param {string} specDir
+ * @returns {ChildProcess}
+ */
+function selectWithFzf(specDir: string): ChildProcess {
   const fzf = spawn(
     'fzf',
     [
@@ -41,7 +58,13 @@ function selectWithFzf(specDir: string) {
   return fzf
 }
 
-function selectWithShell(specDir: string) {
+/**
+ * use `sh` and its tab-completion abilities to find a spec file to run
+ *
+ * @param {string} specDir
+ * @returns {ChildProcess}
+ */
+function selectWithShell(specDir: string): ChildProcess {
   console.log('Select a spec file to run', gray('(tab completion available)'))
   console.log('path:', blue(specDir))
   const prompt = '> '
@@ -56,13 +79,14 @@ function selectWithShell(specDir: string) {
 }
 
 /**
- * returns a child process whose first stdout has to be the path of the
+ * returns a child process whose first stdout is the path of the
  * spec file relative to the specDir provided
+ *
  * @param {string} specDir
  * @returns {ChildProcess}
  */
 function getSelector(specDir: string): ChildProcess {
-  const forceSh = false
+  const forceSh = true
   const hasFzf = hasBin('fzf')
   if (!hasFzf || forceSh) {
     return selectWithShell(specDir)
@@ -70,11 +94,17 @@ function getSelector(specDir: string): ChildProcess {
   return selectWithFzf(specDir)
 }
 
+/**
+ * select a spec file/directory relative to specDir and runs it
+ *
+ * @param {string} specDir
+ */
 export function selectAndRun(specDir: string) {
-  const p = getSelector(specDir)
-  p.stdout.on('data', (data: string) => {
-    const target = data.trim()
-    log.green('Running test:', target)
-    run(resolve(specDir, target))
-  })
+  getSelector(specDir)
+    // upon first stdout of ChildProcess, run the test
+    .stdout.once('data', (data: string) => {
+      const target = data.trim()
+      log.green('Running test:', target)
+      run(resolve(specDir, target))
+    })
 }
