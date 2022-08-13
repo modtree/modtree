@@ -1,7 +1,6 @@
 import '../env'
 import { CypressRun } from '../entity'
-import { getCurrentHash } from '../git'
-import { log, client } from '../utils'
+import { log, client, getCurrentHash } from '../utils'
 import { EventEmitter } from 'events'
 import { basename } from 'path'
 import type { Packet } from '../types'

@@ -1,8 +1,7 @@
 import '../env'
 import { green, red, gray, Chalk } from 'chalk'
 import { resolve } from 'path'
-import { ancestryPath } from '../git'
-import { getAllFiles, client } from '../utils'
+import { ancestryPath, getAllFiles, client } from '../utils'
 import type { Result, State } from '../types'
 import { log } from '../utils'
 

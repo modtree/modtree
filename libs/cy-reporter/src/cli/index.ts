@@ -2,8 +2,7 @@ import path from 'path'
 import { helpText } from './help'
 import { opts } from './parse-args'
 import { fork, spawn } from 'child_process'
-import { isStatusClean } from '../git'
-import { log } from '../utils'
+import { log, isStatusClean } from '../utils'
 import { list } from './list'
 
 // paths
