@@ -48,7 +48,7 @@ if (opts.action === 'run' && opts.all) {
   fork(exe.run, ['--all'])
 }
 
-if (opts.action === 'run' && !opts.all) {
+function selectWithFzf() {
   const fzf = spawn(
     'fzf',
     [
@@ -75,4 +75,8 @@ if (opts.action === 'run' && !opts.all) {
     log.green('Running test:', target)
     fork(exe.run, [path.resolve(dir.spec, target)])
   })
+}
+
+if (opts.action === 'run' && !opts.all) {
+  selectWithFzf()
 }

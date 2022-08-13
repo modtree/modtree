@@ -40,6 +40,7 @@ export const main = (runner: Runner) => {
  * disconnect the sender to allow it to gracefully exit too
  */
 process.on('exit', () => {
+  console.log('Cypress runs have completed.')
   if (sender.connected) sender.disconnect()
 })
 
