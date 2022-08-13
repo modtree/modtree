@@ -3,6 +3,10 @@
 All deployments are triggered by GitHub Actions at
 `.github/workflows/deploy.yml`.
 
+This page documents configurations not found in the
+[`modtree/modtree`](https://github.com/modtree/modtree) GitHub
+repository.
+
 ## Documentation (Vercel)
 
 This deployment is unique in that it doesn't depend on any outside
@@ -10,7 +14,9 @@ project at all. Hence the root is shifted to the docs project root.
 
 Deployment root directory: `apps/docs`
 
-Build command: `yarn build:docs`
+Install command: `yarn bundle`
+
+Build command: `next build --no-lint`
 
 Output directory: `apps/docs/.next`
 
@@ -18,14 +24,6 @@ Output directory: `apps/docs/.next`
 
 Deployment root directory: same as workspace root.
 
-Build command: `yarn build:web`
+Build command: `next build apps/web`
 
 Output directory: `apps/web/.next`
-
-## Backend (Heroku)
-
-Deployment root directory: same as workspace root.
-
-Build command: `yarn build:server`
-
-Output directory: `dist/apps/server`
