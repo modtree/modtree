@@ -1,4 +1,3 @@
-import '../env'
 import { CypressRun } from '../entity'
 import { log, client, getCurrentHash } from '../utils'
 import { EventEmitter } from 'events'

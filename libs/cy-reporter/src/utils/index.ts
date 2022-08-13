@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { green, red, cyan, bgGreen, bgRed, bgWhite, gray, yellow } from 'chalk'
 import axios from 'axios'
-import { baseURL } from '../env'
+import { baseURL } from '../config'
 export * from './git'
 
 export const client = axios.create({ baseURL })

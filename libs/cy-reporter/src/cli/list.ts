@@ -1,4 +1,3 @@
-import '../env'
 import { green, red, gray, Chalk } from 'chalk'
 import { resolve } from 'path'
 import { ancestryPath, getAllFiles, client } from '../utils'

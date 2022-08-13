@@ -1,7 +1,7 @@
 import { connect } from '@modtree/connect'
 import { config } from '@modtree/typeorm-config'
 import { getApp } from './app'
-import { useProd } from '../env'
+import { useProd } from '../config'
 import { Repository, DataSource } from 'typeorm'
 import { CypressRun } from '../entity'
 
