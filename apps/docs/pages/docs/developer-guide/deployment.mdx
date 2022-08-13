@@ -1,7 +1,13 @@
 # Deploying Modtree
 
 All deployments are triggered by GitHub Actions at
-`.github/workflows/deploy`.
+`.github/workflows/deploy.yml`.
+
+This page documents configurations not found in the
+[`modtree/modtree`](https://github.com/modtree/modtree) GitHub
+repository. For example, Vercel configurations are only reliably
+updated on their web interface, so we can't write a script to keep
+it in sync with our codebase.
 
 ## Documentation (Vercel)
 
@@ -14,18 +20,12 @@ Install command: `yarn bundle`
 
 Build command: `next build --no-lint`
 
+Output directory: `apps/docs/.next`
+
 ## Frontend (Vercel)
 
 Deployment root directory: same as workspace root.
 
-Install command: `npx nx build web --skip-nx-cache`
+Build command: `next build apps/web`
 
-Output directory: `dist/apps/web/.next`
-
-## Backend (Heroku)
-
-Deployment root directory: same as workspace root.
-
-Build command: `yarn heroku-postbuild`
-
-Start command found at: `Procfile`
+Output directory: `apps/web/.next`

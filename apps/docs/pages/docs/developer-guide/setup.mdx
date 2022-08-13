@@ -1,0 +1,30 @@
+# Setting up modtree
+
+## Quick start
+
+- Install [build prerequisites](#build-prerequisites) on your system
+- `git clone https://github.com/modtree/modtree.git`
+- `cd modtree && yarn`
+
+## Running modtree
+
+- Start Docker Desktop (this starts the Docker daemon)
+- `yarn up` to spin up the database. Two databases will be started. One at `http://localhost:4000` to serve the API server, and one at `http://localhost:4001` to use for integration tests.
+- `yarn dev` to serve the frontend website at `http://localhost:3000` and the API server at `http://localhost:8080`.
+- Alternatively, `yarn dev:web` and `yarn dev:server` separately.
+- `yarn dev:docs` to serve the documentation website at `http://localhost:3001`.
+
+## Unit/Integration testing
+
+`yarn test` will spawn our test runner. Running it for the first time may be slower as it needs to be compiled.
+
+## E2E testing
+
+- Make sure both the website and server are running (run `yarn dev` to start both)
+- `yarn cy` will spawn the cypress test runner, printing a usage guide to your terminal. Running it for the first time may be slower as it needs to be compiled.
+
+## Uninstall
+
+modtree doesn't install anything outside of the project root
+directory. To clear out all modtree data, simply delete the project
+directory.
