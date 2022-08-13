@@ -82,8 +82,10 @@ process.on('message', (packet: Packet) => {
  */
 process.on('disconnect', () => {
   // execute after settling queue
-  const settleQueue = () =>
+  const settleQueue = () => {
+    log.gray('waiting for result write requests to be resolved...')
     Promise.allSettled(queue).then((results) => {
+      log.gray('result write requests resolved!')
       let [saved, passed] = [0, 0]
       results.forEach((res) => {
         if (res.status === 'fulfilled') {
@@ -94,6 +96,7 @@ process.on('disconnect', () => {
       const pst = 'passed / saved / total: '
       log.normal(pst, passed, '/', saved, '/', results.length, '\n')
     })
+  }
   // wait for lock to be gone
   if (lock) {
     bus.once('unlocked', () => settleQueue())
