@@ -7,7 +7,14 @@ type ParserFlag =
       type: 'boolean'
       callback: () => void
     }
-export type Parser = { arg: string[] } & ParserFlag
+export type BaseOptions = {
+  [key: string]: string | boolean
+}
+
+export type Parser<T extends BaseOptions> = {
+  arg: string[]
+  set: Partial<T> | ((nextArgument: string) => Partial<T>)
+}
 
 export type Options = {
   action: 'unset' | 'open' | 'run' | 'list' | 'help'
