@@ -1,5 +1,6 @@
 module.exports = {
   'cli:build': 'node libs/cli-tools/dev.js --build',
+  'cli:dev': 'yarn cli:build && node ./dist/libs/cli-tools/jest.js',
   /**
    * copy the contents of file to package.json's scripts
    */

@@ -7,28 +7,30 @@ import { parser } from '../parse-args'
 type Options = {
   action: 'unset' | 'run' | 'help'
   all: boolean
+  match: string
 }
 
 // default options
 let opts: Options = {
   action: 'run',
   all: false,
+  match: '',
 }
 
-parser(
-  [
-    {
-      arg: ['-h', '--help'],
-      option: 'action',
-      value: 'help',
-    },
-    {
-      arg: ['-a', '--all'],
-      option: 'all',
-      value: true,
-    },
-  ],
-  opts
-)
+const output = parser(opts, [
+  {
+    arg: ['-h', '--help'],
+    set: { action: 'help' },
+  },
+  {
+    arg: ['-a', '--all'],
+    set: { all: true },
+  },
+  {
+    arg: ['-m', '--match'],
+    set: (match) => ({ match }),
+  },
+])
+console.log(output)
 
 export { opts }
