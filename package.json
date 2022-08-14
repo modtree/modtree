@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "cli:build": "node libs/cli-tools/dev.js --build",
     "sync": "node scripts/sync-scripts.js",
     "build": "node .github/scripts/build-all.js",
     "build:server": "node apps/server/dev.js --build",
