@@ -15,5 +15,11 @@
     "theme": {
       "toc": true
     }
+  },
+  "splashdown": {
+    "title": "Splashdown",
+    "theme": {
+      "toc": true
+    }
   }
 }
