@@ -107,7 +107,10 @@ type Menus = Record<string, MenuItem[]>
 
 const getItems = (menus: Menus): Menus =>
   Object.entries(menus).reduce(
-    (acc, [type, items]) => ({ ...acc, [type]: fillCallback(items) }),
+    (acc, [type, items]) => ({
+      ...acc,
+      [type]: fillCallback(items.filter((i) => i.show)),
+    }),
     {}
   )
 
