@@ -1,6 +1,8 @@
 module.exports = {
+  // temporary
   'cli:build': 'node libs/cli-tools/dev.js --build',
   'cli:dev': 'yarn cli:build && node ./dist/libs/cli-tools/jest.js',
+
   /**
    * copy the contents of file to package.json's scripts
    */
@@ -96,17 +98,13 @@ module.exports = {
   /**
    * modtree's cli tool for running unit and integration tets
    */
-  // TODO: DELETE NEXT LINE
-  // test: 'bash scripts/run-tests/run.sh',
-  test: 'node dist/libs/cli-tools/jest.js',
+  test: 'node scripts/cli/jest:run',
 
   /**
    * scan for new test files (jest.config.ts or jest.config.js) in
    * the entire workspace, and updates ./tests.json
    */
-  // TODO: DELETE NEXT LINE
-  // 'test:scan': 'ts-node scripts/run-tests/scan.ts',
-  'test:scan': 'node dist/libs/cli-tools/jest_scan.js',
+  'test:scan': 'node scripts/cli/jest:scan',
 
   /**
    * build the source code of `yarn test`

@@ -24,8 +24,8 @@ const compiler = webpack({
     nodeEnv: false,
   },
   entry: {
-    jest: resolve(__dirname, 'src/jest/index.ts'),
-    jest_scan: resolve(__dirname, 'src/jest/scan.ts'),
+    'jest:run': resolve(__dirname, 'src/jest/index.ts'),
+    'jest:scan': resolve(__dirname, 'src/jest/scan.ts'),
   },
   output: {
     filename: '[name].js',
