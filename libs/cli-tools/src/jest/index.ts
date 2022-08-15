@@ -1,2 +1,3 @@
-console.log('hi')
-import './parser'
+import { opts } from './parser'
+
+console.log(opts)

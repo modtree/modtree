@@ -1,8 +1,5 @@
-import { parser } from '../utils'
-
-/**
- * options of the cy-reporter cli, settable by cli arguments
- */
+import { parseArgs } from '../utils'
+import type { Parser } from '../types'
 
 type Options = {
   action: 'unset' | 'run' | 'help'
@@ -10,14 +7,13 @@ type Options = {
   match: string
 }
 
-// default options
-let opts: Options = {
+const defaultOpts: Options = {
   action: 'run',
   all: false,
   match: '',
 }
 
-const output = parser(opts, [
+const parsers: Parser<Options>[] = [
   {
     arg: ['-h', '--help'],
     set: { action: 'help' },
@@ -30,7 +26,6 @@ const output = parser(opts, [
     arg: ['-m', '--match'],
     set: (match) => ({ match }),
   },
-])
-console.log(output)
+]
 
-export { opts }
+export const opts = parseArgs(defaultOpts, parsers)
