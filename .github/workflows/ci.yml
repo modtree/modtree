@@ -57,7 +57,7 @@ jobs:
 
       - name: Start server
         if: ${{ matrix.project == 'server' }}
-        run: yarn dev:server
+        run: yarn dev:server &
         env:
           DEVELOPMENT_POSTGRES_DATABASE: runner
           DEVELOPMENT_POSTGRES_USERNAME: runner
@@ -91,7 +91,7 @@ jobs:
         run: ./.github/scripts/postgres.sh
 
       - name: Start server
-        run: yarn dev
+        run: yarn dev &
         env:
           DEVELOPMENT_POSTGRES_DATABASE: runner
           DEVELOPMENT_POSTGRES_USERNAME: runner
