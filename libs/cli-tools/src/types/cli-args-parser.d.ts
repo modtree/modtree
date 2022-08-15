@@ -1,17 +1,8 @@
-type ParserFlag =
-  | {
-      type: 'string'
-      callback: (s: string) => void
-    }
-  | {
-      type: 'boolean'
-      callback: () => void
-    }
-export type BaseOptions = {
+export type BaseCliOptions = {
   [key: string]: string | boolean
 }
 
-export type Parser<T extends BaseOptions> = {
+export type Parser<T extends BaseCliOptions> = {
   arg: string[]
   set: Partial<T> | ((nextArgument: string) => Partial<T>)
 }

@@ -1,25 +1,25 @@
-import type { Parser, BaseOptions } from './types'
+import type { Parser, BaseCliOptions } from './types'
 
 const safeAssign = <T>(t: T, s: Partial<T>) => Object.assign(t, s)
 
-export function parser<T extends BaseOptions>(
-  defaultOpts: T,
-  parsers: Parser<T>[]
+/**
+ * returns parsed CLI options
+ *
+ * @param {T} opts - default options (will be mutated)
+ * @param {Parser<T>[]} parsers
+ * @param {string[]} args
+ * @returns {T}
+ */
+export function parser<T extends BaseCliOptions>(
+  opts: T,
+  parsers: Parser<T>[],
+  args: string[] = process.argv.slice(2)
 ): T {
-  // read variables
-  const opts = defaultOpts
-  const args = process.argv.slice(2)
-
   for (let i = 0; i < args.length; i++) {
     const parser = parsers.find((p) => p.arg.includes(args[i]))
     if (!parser) continue // continue if parser not found
-
-    if (typeof parser.set === 'function') {
-      i += 1
-      safeAssign(opts, parser.set(args[i]))
-    } else {
-      safeAssign(opts, parser.set)
-    }
+    const set = parser.set
+    safeAssign(opts, typeof set === 'function' ? set(args[++i]) : set)
   }
   return opts
 }
