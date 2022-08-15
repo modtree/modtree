@@ -1,6 +1,6 @@
 import { getAllFiles } from '../utils'
 import { basename } from 'path'
-import ROUTES from '../../../../references/routes.json'
+import ROUTES from './routes.json'
 
 const TEST_DIR = __dirname + '/api'
 const ALL_FILES = getAllFiles(TEST_DIR, [basename(__filename)])
