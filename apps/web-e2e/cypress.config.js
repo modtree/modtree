@@ -2,7 +2,6 @@ const { defineConfig } = require('cypress')
 
 const config = defineConfig({
   projectId: '858xzq',
-  retries: process.env.CI ? 2 : 0,
   fileServerFolder: '.',
   fixturesFolder: './cypress/fixtures',
   reporter: 'reporters/json.js',
