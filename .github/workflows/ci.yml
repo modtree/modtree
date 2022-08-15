@@ -98,7 +98,7 @@ jobs:
           DEVELOPMENT_POSTGRES_PASSWORD: runner
 
       - name: 📦 Run e2e tests
-        run: yarn cy run --all
+        run: yarn cy run --all --force
         env:
           TEST_POSTGRES_DATABASE: runner
           TEST_POSTGRES_USERNAME: runner
