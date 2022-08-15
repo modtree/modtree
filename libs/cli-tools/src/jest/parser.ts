@@ -1,4 +1,4 @@
-import { parser } from '../parse-args'
+import { parser } from '../utils'
 
 /**
  * options of the cy-reporter cli, settable by cli arguments

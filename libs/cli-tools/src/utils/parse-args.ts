@@ -1,4 +1,4 @@
-import type { Parser, BaseCliOptions } from './types'
+import type { Parser, BaseCliOptions } from '../types'
 
 const safeAssign = <T>(t: T, s: Partial<T>) => Object.assign(t, s)
 
@@ -10,7 +10,7 @@ const safeAssign = <T>(t: T, s: Partial<T>) => Object.assign(t, s)
  * @param {string[]} args
  * @returns {T}
  */
-export function parser<T extends BaseCliOptions>(
+export function parseArgs<T extends BaseCliOptions>(
   opts: T,
   parsers: Parser<T>[],
   args: string[] = process.argv.slice(2)
