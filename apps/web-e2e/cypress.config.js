@@ -3,7 +3,7 @@ const { defineConfig } = require('cypress')
 const config = defineConfig({
   fileServerFolder: '.',
   fixturesFolder: './cypress/fixtures',
-  reporter: '../../libs/cli-tools/bin/cypress:json',
+  reporter: 'reporters/json.js',
   modifyObstructiveCode: false,
   video: false,
   videosFolder: '../../dist/cypress/apps/web-e2e/videos',

@@ -144,7 +144,6 @@ function build(_config) {
    */
   function buildNode() {
     start('buildNode')
-    console.log(config.build)
     const p = fork(config.build.module, config.build.args, { stdio: 'inherit' })
     p.on('close', (code) => {
       if (code !== 0) throw new Error('build failed')
