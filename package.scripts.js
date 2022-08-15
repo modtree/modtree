@@ -1,4 +1,8 @@
 module.exports = {
+  // temporary
+  'cli:build': 'node libs/cli-tools/dev.js --build',
+  'cli:dev': 'yarn cli:build && node ./dist/libs/cli-tools/jest.js',
+
   /**
    * copy the contents of file to package.json's scripts
    */
@@ -94,6 +98,7 @@ module.exports = {
   /**
    * modtree's cli tool for running unit and integration tets
    */
+  _test: 'node scripts/cli/jest:run',
   test: 'bash scripts/run-tests/run.sh',
 
   /**
@@ -101,6 +106,7 @@ module.exports = {
    * the entire workspace, and updates ./tests.json
    */
   'test:scan': 'ts-node scripts/run-tests/scan.ts',
+  '_test:scan': 'node scripts/cli/jest:scan',
 
   /**
    * build the source code of `yarn test`
