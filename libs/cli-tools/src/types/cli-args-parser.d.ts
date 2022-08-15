@@ -1,5 +1,6 @@
 export type BaseCliOptions = {
-  [key: string]: string | boolean
+  positionalArgs: string[]
+  [key: string]: string | string[] | boolean
 }
 
 export type Parser<T extends BaseCliOptions> = {

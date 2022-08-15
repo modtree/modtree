@@ -5,9 +5,11 @@ type Options = {
   action: 'unset' | 'run' | 'help'
   all: boolean
   match: string
+  positionalArgs: string[]
 }
 
 const defaultOpts: Options = {
+  positionalArgs: [],
   action: 'run',
   all: false,
   match: '',

@@ -3,6 +3,8 @@ import { opts } from './parser'
 import { testJson } from './paths'
 import { getTestsJson } from './utils'
 
+console.log(opts)
+
 export type StrRec = Record<string, string>
 export type ArrRec = Record<string, string[]>
 

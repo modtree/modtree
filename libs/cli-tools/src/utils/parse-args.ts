@@ -17,9 +17,12 @@ export function parseArgs<T extends BaseCliOptions>(
 ): T {
   for (let i = 0; i < args.length; i++) {
     const parser = parsers.find((p) => p.arg.includes(args[i]))
-    if (!parser) continue // continue if parser not found
-    const set = parser.set
-    safeAssign(opts, typeof set === 'function' ? set(args[++i]) : set)
+    if (parser) {
+      const set = parser.set
+      safeAssign(opts, typeof set === 'function' ? set(args[++i]) : set)
+    } else {
+      opts.positionalArgs.push(args[i])
+    }
   }
   return opts
 }
