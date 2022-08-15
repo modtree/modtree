@@ -1,65 +1,36 @@
-import { readFileSync } from 'fs'
 import { opts } from './parser'
-import { testJson } from './paths'
 import { getTestsJson } from './utils'
+import { spawn } from 'child_process'
 
-console.log(opts)
+const { jestProjects, aliases, groups } = getTestsJson()
 
-export type StrRec = Record<string, string>
-export type ArrRec = Record<string, string[]>
+/**
+ * get list of project paths to test
+ */
+const projectPaths = opts.positionalArgs
+  // expand test groups
+  .reduce<string[]>((acc, t) => {
+    const group = groups[t]
+    return group ? [...acc, ...group.tests] : [...acc, t]
+  }, [])
+  .reduce<string[]>((acc, t) => {
+    // direct read from jestProject
+    const jestProject = jestProjects[t]
+    if (jestProject) return [...acc, jestProject]
+    // read from aliases
+    const aliasedProject = jestProjects[aliases[t]]
+    if (aliasedProject) return [...acc, aliasedProject]
+    // skip this positional argument
+    return acc
+  }, [])
 
-type TestGroup = {
-  name: string
-  tests: string[]
-  pattern?: string
-  args?: string[]
-}
+const testPathPattern = opts.match ? ['--testPathPattern', opts.match] : []
+const spawnArgs = ['jest', ...projectPaths, ...testPathPattern]
 
-type TestAlias = {
-  alias: string
-  target: string
-}
+console.log(spawnArgs)
 
-type Test = {
-  name: string
-  path: string
-  groups: string[]
-  alias?: string
-}
-
-const testsJson = getTestsJson()
-
-console.log(testsJson)
-
-const useAddGroup =
-  (groups: TestGroup[]) =>
-  (test: Test): Test => ({
-    ...test,
-    groups: groups
-      .filter((group) => group.tests.includes(test.name))
-      .map((group) => group.name),
-  })
-
-const useAddAlias =
-  (aliases: TestAlias[]) =>
-  (test: Test): Test => {
-    const alias = aliases.find((e) => e.target === test.name)?.alias
-    return alias ? { ...test, alias } : test
-  }
-
-// const groups = parse.groups(json.groups)
-// const addAlias = useAddAlias(parse.aliases(json.aliases))
-// const addGroup = useAddGroup(groups)
-// const tests = parse.tests(json.jestProjects).map(addGroup).map(addAlias)
-// const args = handleArgs(process.argv.slice(2), tests, groups)
-
-// const spawnArgs = [
-//   'yarn',
-//   'jest',
-//   ...args.projectPaths,
-//   ...args.testPathPattern,
-//   ...args.tail,
-// ]
+// spawn('yarn', spawnArgs, { stdio: 'inherit' })
+// spawn('ls', { stdio: 'inherit' })
 
 // if (!args.tail.includes('--dr')) {
 //   fs.writeFileSync('test.command', spawnArgs.join(' '))
