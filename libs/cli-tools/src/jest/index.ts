@@ -2,6 +2,7 @@ import { opts } from './parser'
 import { getTestsJson } from './utils'
 import { spawn } from 'child_process'
 import { log } from '../utils'
+import { helpText } from './help'
 
 const { jestProjects, aliases, groups } = getTestsJson()
 
@@ -33,8 +34,9 @@ const jestArgs = {
 const spawnArgs = ['jest', ...jestArgs.projects, ...jestArgs.testPathPattern]
 
 if (spawnArgs.length === 1) {
-  // TODO: display help message here
-  log.warn('No arguments supplied')
+  // if no valid args supplied, the run will almost certainly not work,
+  // so display help text instead.
+  log.normal(helpText)
 } else {
   spawn('yarn', spawnArgs, { stdio: 'inherit' })
 }
