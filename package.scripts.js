@@ -96,13 +96,17 @@ module.exports = {
   /**
    * modtree's cli tool for running unit and integration tets
    */
-  test: 'bash scripts/run-tests/run.sh',
+  // TODO: DELETE NEXT LINE
+  // test: 'bash scripts/run-tests/run.sh',
+  test: 'node dist/libs/cli-tools/jest.js',
 
   /**
    * scan for new test files (jest.config.ts or jest.config.js) in
    * the entire workspace, and updates ./tests.json
    */
-  'test:scan': 'ts-node scripts/run-tests/scan.ts',
+  // TODO: DELETE NEXT LINE
+  // 'test:scan': 'ts-node scripts/run-tests/scan.ts',
+  'test:scan': 'node dist/libs/cli-tools/jest_scan.js',
 
   /**
    * build the source code of `yarn test`
