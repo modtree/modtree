@@ -1,6 +1,7 @@
 import { opts } from './parser'
 import { getTestsJson } from './utils'
 import { spawn } from 'child_process'
+import { log } from '../utils'
 
 const { jestProjects, aliases, groups } = getTestsJson()
 
@@ -24,14 +25,16 @@ const projectPaths = opts.positionalArgs
     return acc
   }, [])
 
-const testPathPattern = opts.match ? ['--testPathPattern', opts.match] : []
-const spawnArgs = ['jest', ...projectPaths, ...testPathPattern]
+const jestArgs = {
+  testPathPattern: opts.match ? ['--testPathPattern', opts.match] : [],
+  projects: projectPaths.length > 0 ? ['--projects', ...projectPaths] : [],
+}
 
-console.log(spawnArgs)
+const spawnArgs = ['jest', ...jestArgs.projects, ...jestArgs.testPathPattern]
 
-// spawn('yarn', spawnArgs, { stdio: 'inherit' })
-// spawn('ls', { stdio: 'inherit' })
-
-// if (!args.tail.includes('--dr')) {
-//   fs.writeFileSync('test.command', spawnArgs.join(' '))
-// }
+if (spawnArgs.length === 1) {
+  // TODO: display help message here
+  log.warn('No arguments supplied')
+} else {
+  spawn('yarn', spawnArgs, { stdio: 'inherit' })
+}
