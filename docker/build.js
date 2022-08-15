@@ -110,9 +110,10 @@ function build(_config) {
    * see it
    */
   function loadDockerContext() {
+    start('loadDockerContext')
     fs.copyFileSync(
       config.build.output,
-      path.resolve(config.tmpDir, path.basename(config.build.output))
+      path.resolve(config.tmpDir, 'container.js')
     )
   }
 
@@ -143,6 +144,7 @@ function build(_config) {
    */
   function buildNode() {
     start('buildNode')
+    console.log(config.build)
     const p = fork(config.build.module, config.build.args, { stdio: 'inherit' })
     p.on('close', (code) => {
       if (code !== 0) throw new Error('build failed')

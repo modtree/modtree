@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import { rootDir } from './paths'
+import { rootDir } from '../utils'
 import { readFileSync } from 'fs'
 import { z } from 'zod'
 

@@ -5,7 +5,6 @@
     "web": "apps/web/jest.config.ts",
     "connect": "libs/connect/jest.config.ts",
     "integration-tests": "libs/integration-tests/jest.config.ts",
-    "migrations": "libs/migrations/jest.config.ts",
     "repo:api": "libs/repos/src/api/jest.config.ts",
     "repo:base": "libs/repos/src/base/jest.config.ts",
     "repo:degree": "libs/repos/src/degree/jest.config.ts",
@@ -38,25 +37,12 @@
   },
   "groups": {
     "core": {
-      "tests": [
-        "module",
-        "degree",
-        "user",
-        "graph"
-      ]
+      "tests": ["module", "degree", "user", "graph"]
     },
     "init": {
-      "tests": [
-        "module",
-        "degree",
-        "user",
-        "graph",
-        "integration-tests"
-      ],
+      "tests": ["module", "degree", "user", "graph", "integration-tests"],
       "pattern": "initialize",
-      "args": [
-        "--runInBand"
-      ]
+      "args": ["--runInBand"]
     }
   }
 }

@@ -1,1 +1,0 @@
-export { CypressRun } from './entity'

@@ -1,4 +1,4 @@
 import { resolve } from 'path'
+import { rootDir } from '../utils'
 
-export const rootDir = resolve(__dirname, '../../..')
 export const testJson = resolve(rootDir, 'tests.json')

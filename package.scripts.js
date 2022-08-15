@@ -1,7 +1,9 @@
+const cli = (s) => 'node libs/cli-tools/entry.js ' + s
+
 module.exports = {
   // temporary
   'cli:build': 'node libs/cli-tools/dev.js --build',
-  'cli:dev': 'yarn cli:build && node ./dist/libs/cli-tools/jest.js',
+  'cli:dev': 'node libs/cli-tools/dev.js --watch',
 
   /**
    * copy the contents of file to package.json's scripts
@@ -91,71 +93,31 @@ module.exports = {
    */
   'docker:cy-reporter': 'node docker/cy-reporter/build.js',
 
-  //  ┌──────────────────────────────┐
-  //  │  UNIT / INTEGRATION TESTING  │
-  //  └──────────────────────────────┘
+  //  ┌─────────────┐
+  //  │  CLI TOOLS  │
+  //  └─────────────┘
 
   /**
    * modtree's cli tool for running unit and integration tets
    */
-  _test: 'node scripts/cli/jest:run',
-  test: 'bash scripts/run-tests/run.sh',
+  test: cli('jest:main'),
 
   /**
    * scan for new test files (jest.config.ts or jest.config.js) in
    * the entire workspace, and updates ./tests.json
    */
-  'test:scan': 'ts-node scripts/run-tests/scan.ts',
-  '_test:scan': 'node scripts/cli/jest:scan',
-
-  /**
-   * build the source code of `yarn test`
-   */
-  'test:build': 'yarn test:scan && node scripts/run-tests/build.js',
-
-  //  ┌──────────────────────┐
-  //  │  END-TO-END TESTING  │
-  //  └──────────────────────┘
+  'test:scan': cli('jest:scan'),
 
   /**
    * modtree's cli tool for running end-to-end tests
    */
-  cy: 'node libs/cy-reporter/entry.js',
+  cy: cli('cypress:main'),
 
   /**
-   * build the source code of `yarn cy`
+   * modtree's cli tool for migrating database schema to keep up to date with
+   * the codebase
    */
-  'cy:build': 'node libs/cy-reporter/dev.js --build',
-
-  /**
-   * build and watch the source code of `yarn cy`
-   */
-  'cy:dev': 'node libs/cy-reporter/dev.js --watch',
-
-  //  ┌──────────────┐
-  //  │  MIGRATIONS  │
-  //  └──────────────┘
-  //  (more info at ./libs/migrations/README.md)
-
-  /**
-   * (migration step 0, pre-migration)
-   * try to connect to a database, and check if that database is up to
-   * date with the source code's schema.
-   * (config → ./libs/migrations/src/config.ts)
-   */
-  tc: 'bash scripts/migration/test-connect.sh',
-
-  /**
-   * (migration step 1)
-   * generate a *.ts file containing the commands to run for migration
-   */
-  mg: 'bash scripts/migration/generate.sh',
-
-  /**
-   * (migration step 2)
-   * execute the migration
-   */
-  mr: 'bash scripts/migration/run.sh',
+  mg: cli('migration:main'),
 
   //  ┌───────────────┐
   //  │  AUTOMATIONS  │
