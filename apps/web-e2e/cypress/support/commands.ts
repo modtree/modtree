@@ -125,22 +125,18 @@ Cypress.Commands.add('openModuleModal', (moduleCode: string, title: string) => {
 })
 
 Cypress.Commands.add('addGraphModule', (moduleCode: string, title: string) => {
-  cy.openModuleModal(moduleCode, title).then(() => {
-    cy.get('button').contains('Add to graph').click()
-    cy.getCy(`node-${moduleCode}`)
-  })
+  cy.openModuleModal(moduleCode, title)
+  cy.get('button').contains('Add to graph').click()
+  cy.getCy(`node-${moduleCode}`)
 })
 
 Cypress.Commands.add('removeGraphModule', (moduleCode: string) => {
-  cy.getCy(`node-${moduleCode}`)
-    .rightclick()
-    .then(() => {
-      // force a click, because sometimes the node is outside
-      // of the screen and cypress checks for that
-      cy.get('[data-cy=context-menu-item] > div > a')
-        .contains('Remove')
-        .click({ force: true })
-    })
+  cy.getCy(`node-${moduleCode}`).rightclick()
+  // force a click, because sometimes the node is outside
+  // of the screen and cypress checks for that
+  cy.get('[data-cy=context-menu-item] > div > a')
+    .contains('Remove')
+    .click({ force: true })
 })
 
 Cypress.Commands.add('resetUser', () => {
