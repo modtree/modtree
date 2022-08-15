@@ -3,12 +3,14 @@
 /dist
 /coverage
 *.mdx
-/references
 openapi-docs.json
+routes.json
 
 # cypress reporters
 apps/web-e2e/reporters/*.js
 !apps/web-e2e/reporters/cypress.js
+
+libs/cli-tools/bin
 
 # github telegram build output
 .github/actions/telegram/dist
