@@ -57,7 +57,7 @@ jobs:
 
       - name: Start server
         if: ${{ matrix.project == 'server' }}
-        run: ./.github/scripts/server.sh
+        run: yarn dev:server &
         env:
           DEVELOPMENT_POSTGRES_DATABASE: runner
           DEVELOPMENT_POSTGRES_USERNAME: runner
@@ -75,6 +75,35 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         continue-on-error: true
+
+  e2e: # don't change this name, else will also need to change branch rules
+    needs: [pre_job]
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bahmutov/npm-install@v1.6.0
+        continue-on-error: true
+      - run: yarn --frozen-lockfile --silent
+        continue-on-error: true
+
+      - name: Start PostgreSQL
+        run: ./.github/scripts/postgres.sh
+
+      - name: Start server
+        run: yarn dev &
+        env:
+          DEVELOPMENT_POSTGRES_DATABASE: runner
+          DEVELOPMENT_POSTGRES_USERNAME: runner
+          DEVELOPMENT_POSTGRES_PASSWORD: runner
+
+      - name: 📦 Run e2e tests
+        run: yarn cy run --all --force
+        env:
+          TEST_POSTGRES_DATABASE: runner
+          TEST_POSTGRES_USERNAME: runner
+          TEST_POSTGRES_PASSWORD: runner
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
 
   build: # don't change this name, else will also need to change branch rules
     needs: [pre_job]

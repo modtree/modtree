@@ -4,11 +4,6 @@ import { basename, dirname, join, resolve } from 'path'
 import { AppRouter } from './trpc'
 
 const rootDir = resolve(__dirname, '../../..')
-console.log(rootDir)
-console.log(rootDir)
-console.log(rootDir)
-console.log(rootDir)
-console.log(rootDir)
 
 /**
  * checks if file exists, then writes to it

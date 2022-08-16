@@ -7,16 +7,14 @@ import { validModuleRegex } from '../../../../../libs/utils/src/string'
  * Inserts a module into a degree
  */
 function insertModule(moduleCode: string, title: string) {
+  const regexStr = `trpc\/search\/modules.*${moduleCode}`
+  cy.intercept(new RegExp(regexStr)).as('search')
   modules.push(moduleCode)
-  return cy
-    .getCy('degree-modules-search')
-    .clear()
-    .type(moduleCode)
-    .then(() => {
-      cy.getCy('search-result').contains(title).click()
-      // Wait for module to be added
-      cy.getCy('degree-modules-list').contains(title)
-    })
+  cy.getCy('degree-modules-search').clear().type(moduleCode)
+  cy.wait('@search')
+  cy.getCy('search-result').contains(title).click()
+  // Wait for module to be added
+  cy.getCy('degree-modules-list').contains(title)
 }
 
 /**
