@@ -4,8 +4,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "cli:build": "node libs/cli-tools/dev.js --build",
-    "cli:dev": "node libs/cli-tools/dev.js --watch",
     "sync": "node scripts/sync-scripts.js",
     "build": "node .github/scripts/build-all.js",
     "build:server": "node apps/server/dev.js --build",
@@ -19,6 +17,8 @@
     "down": "cd docker && docker compose --profile all down",
     "docker:server": "node docker/server/build.js",
     "docker:cy-reporter": "node docker/cy-reporter/build.js",
+    "cli:build": "node libs/cli-tools/dev.js --build",
+    "cli:dev": "node libs/cli-tools/dev.js --watch",
     "test": "node libs/cli-tools/entry.js jest:main",
     "test:scan": "node libs/cli-tools/entry.js jest:scan",
     "cy": "node libs/cli-tools/entry.js cypress:main",

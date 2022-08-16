@@ -11,7 +11,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
  */
 const rootDir = resolve(__dirname, '../..')
 const outDir = resolve(rootDir, 'dist/libs/cli-tools')
-const tsconfig = resolve(__dirname, 'tsconfig.json')
+const tsconfig = resolve(__dirname, 'tsconfig.lib.json')
 
 /**
  * webpack config

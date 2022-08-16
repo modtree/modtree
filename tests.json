@@ -3,6 +3,7 @@
     "docs": "apps/docs/jest.config.ts",
     "server": "apps/server/jest.config.ts",
     "web": "apps/web/jest.config.ts",
+    "cli-tools": "libs/cli-tools/jest.config.ts",
     "connect": "libs/connect/jest.config.ts",
     "integration-tests": "libs/integration-tests/jest.config.ts",
     "repo:api": "libs/repos/src/api/jest.config.ts",
@@ -23,6 +24,7 @@
     "utils": "libs/utils/jest.config.ts"
   },
   "aliases": {
+    "cli": "cli-tools",
     "base": "repo:base",
     "module": "repo:module",
     "degree": "repo:degree",
