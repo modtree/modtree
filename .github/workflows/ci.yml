@@ -124,7 +124,7 @@ jobs:
           ${{ needs.pre_job.outputs.build_args }}
 
   results:
-    needs: [tests, build, e2e, pre_job]
+    needs: [tests, build, pre_job]
     if: |
       always() &&
       needs.pre_job.outputs.should_skip != 'true' &&
