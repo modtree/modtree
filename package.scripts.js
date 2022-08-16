@@ -1,10 +1,6 @@
 const cli = (s) => 'node libs/cli-tools/entry.js ' + s
 
 module.exports = {
-  // temporary
-  'cli:build': 'node libs/cli-tools/dev.js --build',
-  'cli:dev': 'node libs/cli-tools/dev.js --watch',
-
   /**
    * copy the contents of file to package.json's scripts
    */
@@ -96,6 +92,12 @@ module.exports = {
   //  ┌─────────────┐
   //  │  CLI TOOLS  │
   //  └─────────────┘
+
+  /**
+   * building/watching the cli tools to work on them
+   */
+  'cli:build': 'node libs/cli-tools/dev.js --build',
+  'cli:dev': 'node libs/cli-tools/dev.js --watch',
 
   /**
    * modtree's cli tool for running unit and integration tets
