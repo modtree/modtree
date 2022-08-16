@@ -110,9 +110,10 @@ function build(_config) {
    * see it
    */
   function loadDockerContext() {
+    start('loadDockerContext')
     fs.copyFileSync(
       config.build.output,
-      path.resolve(config.tmpDir, path.basename(config.build.output))
+      path.resolve(config.tmpDir, 'container.js')
     )
   }
 

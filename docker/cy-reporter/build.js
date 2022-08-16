@@ -6,9 +6,9 @@ build({
   tmpDir: resolve(__dirname, 'tmp'),
   herokuProject: 'modtree-cy-reporter',
   build: {
-    module: root('libs/cy-reporter/dev.js'),
+    module: root('libs/cli-tools/dev.js'),
     args: ['--build'],
-    output: root('dist/libs/cy-reporter/server.js'),
+    output: root('dist/libs/cli-tools/cypress:server.js'),
   },
   dockerfile: resolve(__dirname, 'Dockerfile'),
 })

@@ -11,7 +11,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
  */
 const rootDir = resolve(__dirname, '../..')
 const outDir = resolve(rootDir, 'dist/libs/cli-tools')
-const tsconfig = resolve(__dirname, 'tsconfig.json')
+const tsconfig = resolve(__dirname, 'tsconfig.lib.json')
 
 /**
  * webpack config
@@ -19,13 +19,15 @@ const tsconfig = resolve(__dirname, 'tsconfig.json')
 const compiler = webpack({
   target: 'node',
   mode: 'development',
-  optimization: {
-    minimize: false,
-    nodeEnv: false,
-  },
+  optimization: { nodeEnv: false },
   entry: {
-    'jest:run': resolve(__dirname, 'src/jest/index.ts'),
+    'jest:main': resolve(__dirname, 'src/jest/index.ts'),
     'jest:scan': resolve(__dirname, 'src/jest/scan.ts'),
+    'cypress:main': resolve(__dirname, 'src/cypress/cli/index.ts'),
+    'cypress:json': resolve(__dirname, './src/cypress/reporters/json.ts'),
+    'cypress:sender': resolve(__dirname, './src/cypress/reporters/sender.ts'),
+    'cypress:server': resolve(__dirname, './src/cypress/server/main.ts'),
+    'migration:main': resolve(__dirname, './src/migration/index.ts'),
   },
   output: {
     filename: '[name].js',
@@ -35,9 +37,9 @@ const compiler = webpack({
   module: {
     rules: [{ test: /\.ts$/, use: 'ts-loader', exclude: /node_modules/ }],
   },
+  plugins: [new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ })],
   resolve: {
-    roots: [rootDir],
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
     plugins: [new TsconfigPathsPlugin({ configFile: tsconfig })],
   },
 })

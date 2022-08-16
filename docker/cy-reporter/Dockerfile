@@ -1,5 +1,5 @@
 FROM node:16-alpine
 
-COPY server.js .
+COPY container.js .
 
-CMD ["node", "server.js"]
+CMD ["node", "container.js"]

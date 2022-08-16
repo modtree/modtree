@@ -1,7 +1,14 @@
 import { generateOpenApiDocument } from '@modtree/trpc-openapi'
 import * as fs from 'fs'
-import { basename, dirname, join } from 'path'
+import { basename, dirname, join, resolve } from 'path'
 import { AppRouter } from './trpc'
+
+const rootDir = resolve(__dirname, '../../..')
+console.log(rootDir)
+console.log(rootDir)
+console.log(rootDir)
+console.log(rootDir)
+console.log(rootDir)
 
 /**
  * checks if file exists, then writes to it
@@ -29,7 +36,7 @@ export function generateDocs(appRouter: AppRouter) {
 
   // JSON equivalent
   const contents = JSON.stringify(openApiDocument, null, 2)
-  const filepath = `${__dirname}/../../../apps/docs/public/openapi-docs.json`
+  const filepath = resolve(rootDir, 'apps/docs/public/openapi-docs.json')
   safeWrite(filepath, contents)
 }
 
@@ -47,6 +54,7 @@ export function generateRoutes(appRouter: AppRouter) {
   const routes = [...queries, ...mutations]
 
   const contents = JSON.stringify(routes, null, 2)
-  const filepath = `${__dirname}/../../../references/routes.json`
+  const filepath = resolve(rootDir, 'apps/server/test/openapi/routes.json')
+
   safeWrite(filepath, contents)
 }

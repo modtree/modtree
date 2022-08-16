@@ -1,1 +1,1 @@
-../../../dist/libs/cy-reporter/json.js
+../../../libs/cli-tools/bin/cypress:json

@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress')
 
 const config = defineConfig({
+  projectId: '858xzq',
   fileServerFolder: '.',
   fixturesFolder: './cypress/fixtures',
   reporter: 'reporters/json.js',

@@ -1,5 +1,6 @@
 const { basename } = require('path')
 const { gray } = require('chalk')
+const { runConfig } = require('./config')
 
 /**
  * honestly no idea why but this particular file cannot be written in TypeScript
@@ -16,12 +17,6 @@ const cypress = require('cypress')
 //
 // all don't work
 
-const cypressConfig = {
-  project: 'apps/web-e2e', // relative to process.cwd()
-  configFile: 'cypress.config.js', // relative to project
-  quiet: true,
-}
-
 /**
  * read the one and only argument,
  * which will be the spec file to run
@@ -34,7 +29,7 @@ if (args.length !== 1) {
 } else if (args[0] !== '--all') {
   // if that one argument is --all, don't specify a spec file
   // else, add that to the config
-  Object.assign(cypressConfig, { spec: args[0] })
+  Object.assign(runConfig, { spec: args[0] })
 }
 
 /**
@@ -43,7 +38,7 @@ if (args.length !== 1) {
  * which is awesome. This means that this script will
  * only close when cypress + sender closes.
  */
-cypress.run(cypressConfig)
+cypress.run(runConfig)
 
 process.on('exit', () => {
   console.log(gray(thisScript, 'has left the building.'))

@@ -1,1 +1,1 @@
-../../../dist/libs/cy-reporter/sender.js
+../../../libs/cli-tools/bin/cypress:sender

@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs'
-import { getAllFiles, log } from '../utils'
-import { rootDir, testJson } from './paths'
+import { getAllFiles, log, rootDir } from '../utils'
+import { testJson } from './paths'
 
 type StrRec = Record<string, string>
 

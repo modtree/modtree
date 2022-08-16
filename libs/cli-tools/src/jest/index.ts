@@ -38,5 +38,5 @@ if (spawnArgs.length === 1) {
   // so display help text instead.
   log.normal(helpText)
 } else {
-  spawn('yarn', spawnArgs, { stdio: 'inherit' })
+  spawn('yarn', ['--silent', ...spawnArgs], { stdio: 'inherit' })
 }
